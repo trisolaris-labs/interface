@@ -1,0 +1,46 @@
+{
+  "name": "wcag-contrast",
+  "version": "3.0.0",
+  "description": "evaluate the wcag color contrast score for two colors",
+  "source": "index.js",
+  "main": "dist/index.js",
+  "umd:main": "dist/index.umd.js",
+  "unpkg": "dist/index.umd.js",
+  "module": "dist/index.m.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "microbundle --external=none && tape test/*.js",
+    "release": "microbundle --external=none && standard-version",
+    "docs": "documentation readme index.js -s API index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tmcw/wcag-contrast.git"
+  },
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "keywords": [
+    "color",
+    "contrast",
+    "wcag"
+  ],
+  "author": "Tom MacWright",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/tmcw/wcag-contrast/issues"
+  },
+  "dependencies": {
+    "relative-luminance": "^2.0.0"
+  },
+  "devDependencies": {
+    "documentation": "^12.1.3",
+    "microbundle": "^0.11.0",
+    "prettier": "^1.11.1",
+    "standard-version": "^7.0.0",
+    "tape": "^4.9.1"
+  }
+}

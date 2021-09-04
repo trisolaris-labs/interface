@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "NamerTestFakeOptionalERC20",
+  "sourceName": "contracts/pangolin-lib/test/SafeERC20NamerTest.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212202ecc8a5e20bc69307b80dc3d34248c8051ba134cbb6c122d50653fccd5f6cd4464736f6c63430007060033",
+  "deployedBytecode": "0x6080604052600080fdfea26469706673582212202ecc8a5e20bc69307b80dc3d34248c8051ba134cbb6c122d50653fccd5f6cd4464736f6c63430007060033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
