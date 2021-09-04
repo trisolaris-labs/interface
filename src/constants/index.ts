@@ -359,15 +359,15 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 export const NetworkContextName = 'NETWORK'
 
 export const AVALANCHE_CHAIN_PARAMS = {
-  chainId: '0xa86a', // A 0x-prefixed hexadecimal chainId
-  chainName: 'Avalanche Mainnet C-Chain',
+  chainId: '0x89', // A 0x-prefixed hexadecimal chainId
+  chainName: 'Polygon Mainnet',
   nativeCurrency: {
-    name: 'Avalanche',
-    symbol: 'AVAX',
+    name: 'MATIC',
+    symbol: 'MATIC',
     decimals: 18
   },
-  rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
-  blockExplorerUrls: ['https://cchain.explorer.avax.network/']
+  rpcUrls: ['https://polygon-rpc.com/'],
+  blockExplorerUrls: ['https://polygonscan.com/']
 }
 
 // default allowed slippage, in bips

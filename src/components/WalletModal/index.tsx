@@ -310,7 +310,7 @@ export default function WalletModal({
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
               <>
-                <h5>{t('walletModal.pleaseConnectAvalanche')}</h5>
+                <h5>{t('Please connect to')}</h5>
                 {isMetamask && (
                   <ButtonLight onClick={addAvalancheNetwork}>{t('walletModal.switchAvalanche')}</ButtonLight>
                 )}

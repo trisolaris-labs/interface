@@ -324,9 +324,7 @@ export default function Header() {
       <HeaderControls>
         <HeaderElement>
           <HideSmall>
-            {chainId && NETWORK_LABELS[chainId] && (
-              <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
-            )}
+            <NetworkCard title="MATIC">MATIC</NetworkCard>
           </HideSmall>
           {aggregateBalance && (
             //TODO - change false back to true when ready for token stats.
