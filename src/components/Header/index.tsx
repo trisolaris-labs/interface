@@ -303,14 +303,14 @@ export default function Header() {
           >
             {t('header.pool')}
           </StyledNavLink>
-          <StyledNavLink
+          {/* <StyledNavLink
             id={`stake-nav-link`}
             to={'/png/1'}
             isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/png')}
           >
             PNG
-          </StyledNavLink>
-          <StyledNavLink id={`stake-nav-link`} to={'/vote'}>
+          </StyledNavLink> */}
+          {/* <StyledNavLink id={`stake-nav-link`} to={'/vote'}>
             {t('header.vote')}
           </StyledNavLink>
           <StyledExternalLink id={`info-nav-link`} href={ANALYTICS_PAGE}>
@@ -318,7 +318,7 @@ export default function Header() {
           </StyledExternalLink>
           <StyledExternalLink id={`gov-nav-link`} href={'https://gov.pangolin.exchange'}>
             {t('header.forum')} <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
+          </StyledExternalLink> */}
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
@@ -329,7 +329,8 @@ export default function Header() {
             )}
           </HideSmall>
           {aggregateBalance && (
-            <PNGWrapper onClick={() => setShowPngBalanceModal(true)}>
+            //TODO - change false back to true when ready for token stats.
+            <PNGWrapper onClick={() => setShowPngBalanceModal(false)}>
               <PNGAmount active={!!account} style={{ pointerEvents: 'auto' }}>
                 {account && (
                   <HideSmall>
@@ -349,7 +350,7 @@ export default function Header() {
                     </TYPE.white>
                   </HideSmall>
                 )}
-                PNG
+                TRI
               </PNGAmount>
               <CardNoise />
             </PNGWrapper>
