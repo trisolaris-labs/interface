@@ -42,11 +42,11 @@ export default function Menu() {
 
       {open && (
         <NarrowMenuFlyout>
-          <MenuItem id="link" href={LANDING_PAGE}>
+          <MenuItem id="link" href='https://github.com/trisolaris-labs'>
             <Info size={14} />
-            {t('menu.about')}
+            {t('menu.code')}
           </MenuItem>
-          <MenuItem id="link" href={TutorialPage}>
+          {/* <MenuItem id="link" href={TutorialPage}>
             <Book size={14} />
             {t('menu.tutorials')}
           </MenuItem>
@@ -65,7 +65,7 @@ export default function Menu() {
           <MenuItem id="link" href="https://github.com/pangolindex">
             <GitHub size={14} />
             {t('menu.code')}
-          </MenuItem>
+          </MenuItem> */}
         </NarrowMenuFlyout>
       )}
     </StyledMenu>

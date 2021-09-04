@@ -47,10 +47,10 @@ import { useTranslation } from 'react-i18next'
 import { useIsSelectedAEBToken } from '../../state/lists/hooks'
 import { DeprecatedWarning } from '../../components/Warning'
 
-const TopText = styled.span`
-  margin-bottom: 8px;
-  font-size: 18px;
-`
+// const TopText = styled.span`
+//   margin-bottom: 8px;
+//   font-size: 18px;
+// `
 
 const BottomText = styled.span`
   margin-top: 8px;
