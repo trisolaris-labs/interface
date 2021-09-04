@@ -300,13 +300,6 @@ export default function Swap() {
         </WarningWrapper>
       )}
 
-      <TopText>
-        Set a limit order on{' '}
-        <VeloxLink href={'https://app.velox.global/'} target={'_blank'}>
-          Velox
-        </VeloxLink>
-      </TopText>
-
       <AppBody>
         <SwapPoolTabs active={'swap'} />
         <Wrapper id="swap-page">
@@ -520,13 +513,6 @@ export default function Swap() {
           </BottomGrouping>
         </Wrapper>
       </AppBody>
-
-      <BottomText>
-        Trade with leverage on{' '}
-        <MarginswapLink href={'https://app.marginswap.exchange/swap'} target={'_blank'}>
-          Marginswap
-        </MarginswapLink>
-      </BottomText>
 
       <AdvancedSwapDetailsDropdown trade={trade} />
     </>
