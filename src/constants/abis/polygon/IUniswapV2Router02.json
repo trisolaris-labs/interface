@@ -1,5 +1,4 @@
-{
-  "abi": [
+[
     {
       "inputs": [],
       "name": "WETH",
@@ -951,6 +950,4 @@
       "stateMutability": "nonpayable",
       "type": "function"
     }
-  ],
-  "bytecode": ""
-}
+  ]
