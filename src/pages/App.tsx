@@ -23,11 +23,6 @@ import RemoveLiquidity from './RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
 import Swap from './Swap'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
-import Airdrop from './Airdrop'
-
-import Vote from './Vote'
-import VotePage from './Vote/VotePage'
-import Migrate from './Earn/Migrate'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -87,8 +82,6 @@ export default function App() {
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/pool" component={Pool} />
               <Route exact strict path="/png/:version" component={Earn} />
-              <Route exact strict path="/vote" component={Vote} />
-              <Route exact strict path="/airdrop" component={Airdrop} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
               <Route exact path="/add" component={AddLiquidity} />
               <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
@@ -99,8 +92,6 @@ export default function App() {
               <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
               <Route exact strict path="/png/:currencyIdA/:currencyIdB/:version" component={Manage} />
-              <Route exact strict path="/vote/:id" component={VotePage} />
-	            <Route exact path="/migrate/:currencyIdFromA/:currencyIdFromB/:versionFrom/:currencyIdToA/:currencyIdToB/:versionTo/" component={Migrate} />
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>

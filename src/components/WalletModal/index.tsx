@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { injected } from '../../connectors'
-import { LANDING_PAGE, SUPPORTED_WALLETS, AVALANCHE_CHAIN_PARAMS } from '../../constants'
+import { LANDING_PAGE, SUPPORTED_WALLETS, CHAIN_PARAMS } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
@@ -286,7 +286,7 @@ export default function WalletModal({
       provider
         .request({
           method: 'wallet_addEthereumChain',
-          params: [AVALANCHE_CHAIN_PARAMS]
+          params: [CHAIN_PARAMS]
         })
         .catch((error: any) => {
           console.log(error)
