@@ -255,7 +255,8 @@ const StyledExternalLink = styled(ExternalLink).attrs({
 
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: 'Fuji',
-  [ChainId.AVALANCHE]: 'Avalanche'
+  [ChainId.AVALANCHE]: 'Avalanche',
+  [ChainId.POLYGON]: 'Polygon'
 }
 
 export default function Header() {
@@ -323,8 +324,10 @@ export default function Header() {
       </HeaderRow>
       <HeaderControls>
         <HeaderElement>
-          <HideSmall>
-            <NetworkCard title="MATIC">MATIC</NetworkCard>
+        <HideSmall>
+            {chainId && NETWORK_LABELS[chainId] && (
+              <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
+            )}
           </HideSmall>
           {aggregateBalance && (
             //TODO - change false back to true when ready for token stats.
