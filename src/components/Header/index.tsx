@@ -287,9 +287,9 @@ export default function Header() {
           <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
             {t('header.swap')}
           </StyledNavLink>
-          <StyledNavLink id={`swap-nav-link`} to={'/buy'}>
+         {/* <StyledNavLink id={`swap-nav-link`} to={'/buy'}>
             Buy
-          </StyledNavLink>
+          </StyledNavLink>*/}
           <StyledNavLink
             id={`pool-nav-link`}
             to={'/pool'}
