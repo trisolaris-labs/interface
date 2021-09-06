@@ -1,13 +1,13 @@
 import { TokenAmount, Pair, Currency, ChainId } from '@pangolindex/sdk'
 import { useMemo } from 'react'
-import { abi as IPangolinPairABI } from '@pangolindex/exchange-contracts/artifacts/contracts/pangolin-core/interfaces/IPangolinPair.sol/IPangolinPair.json'
+import IUniswapV2Pair_ABI from '../constants/abis/polygon/IUniswapV2Pair.json'
 import { Interface } from '@ethersproject/abi'
 import { useActiveWeb3React } from '../hooks'
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
-const PAIR_INTERFACE = new Interface(IPangolinPairABI)
+const PAIR_INTERFACE = new Interface(IUniswapV2Pair_ABI)
 
 export enum PairState {
   LOADING,
