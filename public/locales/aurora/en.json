@@ -2,21 +2,19 @@
   "header": {
     "swap": "Swap",
     "pool": "Pool",
-    "newPng": "New PNG",
-    "oldPng": "Old PNG",
     "vote": "Vote",
     "charts": "Charts",
     "forum": "Forum",
-    "pngBreakDown": "Your PNG Breakdown",
+    "pngBreakDown": "Your {{token}} Breakdown",
     "balance": "Balance: ",
     "unclaimed": "Unclaimed: ",
-    "pngPrice": "PNG price:",
-    "pngCirculation": "PNG in circulation:",
+    "pngPrice": "{{token}}  price:",
+    "pngCirculation": "{{token}}  in circulation:",
     "totalSupply": "Total Supply",
     "makeSureURLWarning": "Make sure the URL is",
     "alwaysMakeSureWarning": "Always make sure the URL is",
     "bookmarkIt": "bookmark it to be safe.",
-    "addmetamask": "Add PNG to MetaMask"
+    "addmetamask": "Add {{token}} to MetaMask"
   },
   "accountDetails": {
     "connectedWith": "Connected with ",
@@ -24,7 +22,7 @@
     "disconnect": "Disconnect",
     "change": "Change",
     "copy": "Copy Address",
-    "viewExplorer": "View on the C-Chain Explorer",
+    "viewExplorer": "View on the Explorer",
     "clearAll": "(clear all)",
     "transactionAppear": "Your transactions will appear here...",
     "recentTransactions": "Recent Transactions",
@@ -32,7 +30,7 @@
   },
   "addressInputPanel": {
     "recipient": "Recipient",
-    "viewExplorer": "(View on Avalanche C-Chain Explorer)",
+    "viewExplorer": "(View on Polygon Explorer)",
     "walletAddress": "Wallet Address"
   },
   "currencyInputPanel": {
@@ -88,7 +86,7 @@
   },
   "modalView": {
     "confirmTransaction": "Confirm this transaction in your wallet",
-    "viewTransaction": "View transaction on the C-Chain Explorer"
+    "viewTransaction": "View transaction on the Explorer"
   },
   "navigationTabs": {
     "useThisTool": "Use this tool to find pairs that don't automatically appear in the interface.",
@@ -104,7 +102,7 @@
   "popups": {
     "tokenListUpdated": "The token list \" {{oldList}} \" has been updated to ",
     "updateAvailable": "An update is available for the token list \" {{oldList}} \"",
-    "viewExplorer": "View on the C-Chain Explorer",
+    "viewExplorer": "View on the Explorer",
     "hash": "Hash: ",
     "added": "added",
     "removed": "removed",
@@ -196,13 +194,13 @@
     "purchaseArbitraryWarning": "If you purchase an arbitrary token, <strong>you may be unable to sell it back.</strong>",
     "understand": "I understand",
     "continue": "Continue",
-    "viewExplorer": "View on the C-Chain Explorer"
+    "viewExplorer": "View on the Explorer"
   },
   "transactionConfirmation": {
     "waitingConfirmation": "Waiting For Confirmation",
     "confirmTransaction": "Confirm this transaction in your wallet",
     "transactionSubmitted": "Transaction Submitted",
-    "viewExplorer": "View on the C-Chain Explorer",
+    "viewExplorer": "View on the Explorer",
     "close": "Close",
     "error": "Error",
     "dismiss": "Dismiss"
@@ -235,16 +233,16 @@
     "votes": "Votes",
     "submittingVote": "Submitting Vote",
     "confirmTransaction": "Confirm this transaction in your wallet",
-    "viewExplorer": "View on the C-Chain Explorer"
+    "viewExplorer": "View on the Explorer"
   },
   "walletModal": {
     "wrongNetwork": "Wrong Network",
     "errorConnecting": "Error connecting",
-    "pleaseConnectAvalanche": "Please connect to the appropriate Avalanche network.",
-    "switchAvalanche": "Switch to Avalanche Chain",
+    "pleaseConnectAvalanche": "Please connect to the appropriate network.",
+    "switchAvalanche": "Switch to Polygon Chain",
     "errorConnectingRefresh": "Error connecting. Try refreshing the page.",
     "connectToWallet": "Connect to a wallet",
-    "newToAvalanche": "New to Avalanche? ",
+    "newToAvalanche": "New to Polygon? ",
     "learnMoreWallet": "Learn more about setting up a wallet",
     "initializing": "Initializing...",
     "tryAgain": "Try Again"

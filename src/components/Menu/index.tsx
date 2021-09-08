@@ -1,8 +1,9 @@
 import React, { useRef } from 'react'
-import { MessageCircle, Send, Info, Twitter, GitHub, Book } from 'react-feather'
+// import { MessageCircle, Send, Info, Twitter, GitHub, Book } from 'react-feather'
+import { GitHub } from 'react-feather'
 import styled from 'styled-components'
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
-import { LANDING_PAGE } from '../../constants'
+// import { LANDING_PAGE } from '../../constants'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleModal } from '../../state/application/hooks'
@@ -11,7 +12,7 @@ import { StyledMenu, StyledMenuButton, MenuFlyout, MenuItem } from '../StyledMen
 
 import { useTranslation } from 'react-i18next'
 
-const TutorialPage = LANDING_PAGE + 'tutorials'
+// const TutorialPage = LANDING_PAGE + 'tutorials'
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {
@@ -42,10 +43,10 @@ export default function Menu() {
 
       {open && (
         <NarrowMenuFlyout>
-          <MenuItem id="link" href='https://github.com/trisolaris-labs'>
-            <Info size={14} />
+           <MenuItem id="link" href="https://github.com/trisolaris-labs">
+            <GitHub size={14} />
             {t('menu.code')}
-          </MenuItem>
+          </MenuItem> */
           {/* <MenuItem id="link" href={TutorialPage}>
             <Book size={14} />
             {t('menu.tutorials')}
