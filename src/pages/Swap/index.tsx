@@ -52,20 +52,20 @@ import { DeprecatedWarning } from '../../components/Warning'
 //   font-size: 18px;
 // `
 
-const BottomText = styled.span`
-  margin-top: 8px;
-  font-size: 18px;
-`
+// const BottomText = styled.span`
+//   margin-top: 8px;
+//   font-size: 18px;
+// `
 
-const VeloxLink = styled.a`
-  color: #f25c23;
-  text-decoration: none;
-`
+// const VeloxLink = styled.a`
+//   color: #f25c23;
+//   text-decoration: none;
+// `
 
-const MarginswapLink = styled.a`
-  color: #f25c23;
-  text-decoration: none;
-`
+// const MarginswapLink = styled.a`
+//   color: #f25c23;
+//   text-decoration: none;
+// `
 
 const WarningWrapper = styled.div`
   max-width: 420px;

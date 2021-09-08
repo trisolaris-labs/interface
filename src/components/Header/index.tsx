@@ -14,7 +14,8 @@ import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances, useAggregatePngBalance } from '../../state/wallet/hooks'
 import { CardNoise } from '../earn/styled'
 import { CountUp } from 'use-count-up'
-import { TYPE, ExternalLink } from '../../theme'
+// import { TYPE, ExternalLink } from '../../theme'
+import { TYPE } from '../../theme'
 
 import { RedCard } from '../Card'
 import Settings from '../Settings'
@@ -25,7 +26,7 @@ import Web3Status from '../Web3Status'
 import Modal from '../Modal'
 import PngBalanceContent from './PngBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
-import { ANALYTICS_PAGE } from '../../constants'
+// import { ANALYTICS_PAGE } from '../../constants'
 import LanguageSelection from '../LanguageSelection'
 
 const HeaderFrame = styled.div`
@@ -221,37 +222,37 @@ const StyledNavLink = styled(NavLink).attrs({
   }
 `
 
-const StyledExternalLink = styled(ExternalLink).attrs({
-  activeClassName
-})<{ isActive?: boolean }>`
-  ${({ theme }) => theme.flexRowNoWrap}
-  align-items: left;
-  border-radius: 3rem;
-  outline: none;
-  cursor: pointer;
-  text-decoration: none;
-  color: ${({ theme }) => theme.text2};
-  font-size: 1rem;
-  width: fit-content;
-  margin: 0 12px;
-  font-weight: 500;
+// const StyledExternalLink = styled(ExternalLink).attrs({
+//   activeClassName
+// })<{ isActive?: boolean }>`
+//   ${({ theme }) => theme.flexRowNoWrap}
+//   align-items: left;
+//   border-radius: 3rem;
+//   outline: none;
+//   cursor: pointer;
+//   text-decoration: none;
+//   color: ${({ theme }) => theme.text2};
+//   font-size: 1rem;
+//   width: fit-content;
+//   margin: 0 12px;
+//   font-weight: 500;
 
-  &.${activeClassName} {
-    border-radius: 12px;
-    font-weight: 600;
-    color: ${({ theme }) => theme.text1};
-  }
+//   &.${activeClassName} {
+//     border-radius: 12px;
+//     font-weight: 600;
+//     color: ${({ theme }) => theme.text1};
+//   }
 
-  :hover,
-  :focus {
-    text-decoration: none;
-    color: ${({ theme }) => darken(0.1, theme.text1)};
-  }
+//   :hover,
+//   :focus {
+//     text-decoration: none;
+//     color: ${({ theme }) => darken(0.1, theme.text1)};
+//   }
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      display: none;
-`}
-`
+//   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+//       display: none;
+// `}
+// `
 
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: 'Fuji',

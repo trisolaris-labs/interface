@@ -14,10 +14,10 @@ import {
   RedirectOldAddLiquidityPathStructure,
   RedirectToAddLiquidity
 } from './AddLiquidity/redirects'
-import Earn from './Earn'
+// import Earn from './Earn'
 import Manage from './Earn/Manage'
 import Pool from './Pool'
-import Buy from './Buy'
+// import Buy from './Buy'
 import PoolFinder from './PoolFinder'
 import RemoveLiquidity from './RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
