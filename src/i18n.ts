@@ -11,7 +11,6 @@ const determineLngFn = (code: string): string => {
   if (!code || code.length === 0) {
     return i18next.language = defaultLocale
   }
-
   // Full locale match
   if (availableLanguages.includes(code.toLowerCase())) {
     return i18next.language = code.toLowerCase()
@@ -26,6 +25,7 @@ const determineLngFn = (code: string): string => {
   // Fallback
   return i18next.language = defaultLocale
 }
+
 
 i18next
   .use(XHR)
