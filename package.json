@@ -1,7 +1,7 @@
 {
   "name": "@pangolindex/interface",
   "description": "Pangolin Interface",
-  "homepage": ".",
+  "homepage": "https://trisolaris-labs.github.io/interface/",
   "private": true,
   "devDependencies": {
     "@babel/parser": "^7.15.5",
