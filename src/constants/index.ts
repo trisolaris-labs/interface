@@ -2,6 +2,9 @@ import { ChainId, JSBI, Percent, Token, WAVAX } from '@pangolindex/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
 import { injected, walletlink } from '../connectors'
+import { useFetchListCallback } from '../hooks/useFetchListCallback'
+import { DEFAULT_TOKEN_LIST_URL } from './lists'
+
 
 //Chain specific constants
 export const GAS_PRICE = 225
