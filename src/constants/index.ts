@@ -55,7 +55,7 @@ export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
 const WAVAX_AND_PNG_ONLY: ChainTokenList = {
   [ChainId.FUJI]: [WAVAX[ChainId.FUJI], PNG[ChainId.FUJI]],
   [ChainId.AVALANCHE]: [WAVAX[ChainId.AVALANCHE], PNG[ChainId.AVALANCHE]],
-  [ChainId.POLYGON]: [WAVAX[ChainId.AVALANCHE], PNG[ChainId.AVALANCHE]]
+  [ChainId.POLYGON]: [WAVAX[ChainId.POLYGON], PNG[ChainId.POLYGON]]
 }
 
 // used to construct intermediary pairs for trading
