@@ -400,10 +400,8 @@ export default function AddLiquidity({
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
             ) : (
               <AutoColumn gap={'md'}>
-                {(approvalA === ApprovalState.UNKNOWN ||
-                  approvalA === ApprovalState.NOT_APPROVED ||
+                {(approvalA === ApprovalState.NOT_APPROVED ||
                   approvalA === ApprovalState.PENDING ||
-                  approvalB === ApprovalState.UNKNOWN ||
                   approvalB === ApprovalState.NOT_APPROVED ||
                   approvalB === ApprovalState.PENDING) &&
                   isValid && (
