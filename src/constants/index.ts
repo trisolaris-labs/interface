@@ -3,10 +3,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 
 import { injected, walletlink } from '../connectors'
 
-//Chain specific constants
-export const GAS_PRICE = 225
-
-export const ROUTER_ADDRESS = '0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106'
+export const GAS_PRICE = 250
 
 export const LANDING_PAGE = 'https://pangolin.exchange/'
 export const ANALYTICS_PAGE = 'https://info.pangolin.exchange/'
@@ -51,6 +48,19 @@ export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.AVALANCHE]: '0x0C58C2041da4CfCcF5818Bbe3b66DBC23B3902d9',
   [ChainId.POLYGON]: ZERO_ADDRESS
 }
+
+export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
+  [ChainId.FUJI]: ZERO_ADDRESS,
+  [ChainId.AVALANCHE]: '0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106',
+  [ChainId.POLYGON]: '0x9b2AEF2F0A66600A159EBaA3660778cEFB83caC2'
+}
+
+
+// export const GAS_PRICE: { [chainId in ChainId]?: number } = {
+//   [ChainId.FUJI]: 0,
+//   [ChainId.AVALANCHE]: 225,
+//   [ChainId.POLYGON]: 100
+// }
 
 const WAVAX_AND_PNG_ONLY: ChainTokenList = {
   [ChainId.FUJI]: [WAVAX[ChainId.FUJI], PNG[ChainId.FUJI]],
