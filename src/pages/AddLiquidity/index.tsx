@@ -82,7 +82,6 @@ export default function AddLiquidity({
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
 
   const isValid = !error
-
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
@@ -118,15 +117,14 @@ export default function AddLiquidity({
     },
     {}
   )
-
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
-    chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.AVALANCHE]
+    chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON]
   )
   const [approvalB, approveBCallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_B],
-    chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.AVALANCHE]
+    chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON]
   )
 
   const addTransaction = useTransactionAdder()
@@ -402,8 +400,10 @@ export default function AddLiquidity({
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
             ) : (
               <AutoColumn gap={'md'}>
-                {(approvalA === ApprovalState.NOT_APPROVED ||
+                {(approvalA === ApprovalState.UNKNOWN ||
+                  approvalA === ApprovalState.NOT_APPROVED ||
                   approvalA === ApprovalState.PENDING ||
+                  approvalB === ApprovalState.UNKNOWN ||
                   approvalB === ApprovalState.NOT_APPROVED ||
                   approvalB === ApprovalState.PENDING) &&
                   isValid && (
