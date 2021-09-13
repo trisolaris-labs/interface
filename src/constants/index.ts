@@ -49,19 +49,6 @@ export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.POLYGON]: ZERO_ADDRESS
 }
 
-export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
-  [ChainId.FUJI]: ZERO_ADDRESS,
-  [ChainId.AVALANCHE]: '0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106',
-  [ChainId.POLYGON]: '0x9b2AEF2F0A66600A159EBaA3660778cEFB83caC2'
-}
-
-
-// export const GAS_PRICE: { [chainId in ChainId]?: number } = {
-//   [ChainId.FUJI]: 0,
-//   [ChainId.AVALANCHE]: 225,
-//   [ChainId.POLYGON]: 100
-// }
-
 const WAVAX_AND_PNG_ONLY: ChainTokenList = {
   [ChainId.FUJI]: [WAVAX[ChainId.FUJI], PNG[ChainId.FUJI]],
   [ChainId.AVALANCHE]: [WAVAX[ChainId.AVALANCHE], PNG[ChainId.AVALANCHE]],
