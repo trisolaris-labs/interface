@@ -1,6 +1,6 @@
 import { Version } from '../../hooks/useToggledVersion'
 import { parseUnits } from '@ethersproject/units'
-import { Currency, CurrencyAmount, CAVAX, JSBI, Token, TokenAmount, Trade, FACTORY_ADDRESS, ChainId } from '@pangolindex/sdk'
+import { Currency, CurrencyAmount, CAVAX, JSBI, Token, TokenAmount, Trade, FACTORY_ADDRESS, ChainId, ROUTER_ADDRESS } from '@pangolindex/sdk'
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,7 +16,6 @@ import { SwapState } from './reducer'
 import useToggledVersion from '../../hooks/useToggledVersion'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
-import { ROUTER_ADDRESS } from '../../constants'
 import { useTranslation } from 'react-i18next'
 
 export function useSwapState(): AppState['swap'] {
