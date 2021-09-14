@@ -2,13 +2,15 @@ import { Currency, CAVAX, Token } from '@pangolindex/sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 
-import AvaxLogo from '../../assets/images/avalanche_token_round.png'
+// import AvaxLogo from '../../assets/images/avalanche_token_round.png'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from '../Logo'
 
 const getTokenLogoURL = (address: string) =>
   `https://raw.githubusercontent.com/pangolindex/tokens/main/assets/${address}/logo.png`
+
+const maticLogoURL = `https://raw.githubusercontent.com/pangolindex/tokens/main/assets/0x885ca6663E1E19DAD31c1e08D9958a2b8F538D53/logo.png`
 
 export const StyledEthereumLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
@@ -49,7 +51,7 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency === CAVAX) {
-    return <StyledEthereumLogo src={AvaxLogo} size={size} style={style} />
+    return <StyledEthereumLogo src={maticLogoURL} size={size} style={style} />
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
