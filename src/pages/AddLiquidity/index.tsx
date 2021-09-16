@@ -148,8 +148,8 @@ export default function AddLiquidity({
       value: BigNumber | null
     if (currencyA === CAVAX || currencyB === CAVAX) {
       const tokenBIsETH = currencyB === CAVAX
-      estimate = router.estimateGas.addLiquidityAVAX
-      method = router.addLiquidityAVAX
+      estimate = router.estimateGas.addLiquidityETH
+      method = router.addLiquidityETH
       args = [
         wrappedCurrency(tokenBIsETH ? currencyA : currencyB, chainId)?.address ?? '', // token
         (tokenBIsETH ? parsedAmountA : parsedAmountB).raw.toString(), // token desired
@@ -292,7 +292,7 @@ export default function AddLiquidity({
           history.push(`/add/${newCurrencyIdB}`)
         }
       } else {
-        history.push(`/add/${currencyIdA ? currencyIdA : 'AVAX'}/${newCurrencyIdB}`)
+        history.push(`/add/${currencyIdA ? currencyIdA : 'MATIC'}/${newCurrencyIdB}`)
       }
     },
     [currencyIdA, history, currencyIdB]

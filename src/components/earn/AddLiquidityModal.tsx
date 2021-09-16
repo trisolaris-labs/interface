@@ -147,8 +147,8 @@ export default function AddLiquidityModal({ isOpen, onDismiss, currencyIdA: _cur
       value: BigNumber | null
     if (currencyA === CAVAX || currencyB === CAVAX) {
       const tokenBIsETH = currencyB === CAVAX
-      estimate = router.estimateGas.addLiquidityAVAX
-      method = router.addLiquidityAVAX
+      estimate = router.estimateGas.addLiquidityETH
+      method = router.addLiquidityETH
       args = [
         wrappedCurrency(tokenBIsETH ? currencyA : currencyB, chainId)?.address ?? '', // token
         (tokenBIsETH ? parsedAmountA : parsedAmountB).raw.toString(), // token desired
