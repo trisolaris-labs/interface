@@ -219,7 +219,7 @@ export default function RemoveLiquidity({
 
     const currencyBIsETH = currencyB === CAVAX
     const oneCurrencyIsETH = currencyA === CAVAX || currencyBIsETH
-
+    
     // TODO: Translate using i18n
     if (!tokenA || !tokenB) throw new Error('could not wrap')
 
@@ -228,7 +228,7 @@ export default function RemoveLiquidity({
     if (approval === ApprovalState.APPROVED) {
       // removeLiquidityAVAX
       if (oneCurrencyIsETH) {
-        methodNames = ['removeLiquidityAVAX', 'removeLiquidityAVAXSupportingFeeOnTransferTokens']
+        methodNames = ['removeLiquidityETH', 'removeLiquidityETHSupportingFeeOnTransferTokens']
         args = [
           currencyBIsETH ? tokenA.address : tokenB.address,
           liquidityAmount.raw.toString(),
@@ -256,7 +256,7 @@ export default function RemoveLiquidity({
     else if (signatureData !== null) {
       // removeLiquidityAVAXWithPermit
       if (oneCurrencyIsETH) {
-        methodNames = ['removeLiquidityAVAXWithPermit', 'removeLiquidityAVAXWithPermitSupportingFeeOnTransferTokens']
+        methodNames = ['removeLiquidityETHWithPermit', 'removeLiquidityETHWithPermitSupportingFeeOnTransferTokens']
         args = [
           currencyBIsETH ? tokenA.address : tokenB.address,
           liquidityAmount.raw.toString(),
