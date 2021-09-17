@@ -569,7 +569,7 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
                             setCurrencyIdB(currencyB === CAVAX ? WAVAX[chainId].address : currencyIdB)
                           }}
                         >
-                          {t('removeLiquidity.receiveWavax')}
+                          {t('removeLiquidity.receiveWmatic')}
                         </LinkStyledButton>
                       ) : oneCurrencyIsWAVAX ? (
                         <LinkStyledButton
@@ -578,7 +578,7 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
                             setCurrencyIdB(currencyB && currencyEquals(currencyB, WAVAX[chainId]) ? 'AVAX' : currencyIdB)
                           }}
                         >
-                          {t('removeLiquidity.receiveAvax')}
+                          {t('removeLiquidity.receiveMatic')}
                         </LinkStyledButton>
                       ) : null}
                     </RowBetween>

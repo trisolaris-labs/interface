@@ -123,38 +123,6 @@ export default function Pool() {
       <PageWrapper>
         <SwapPoolTabs active={'pool'} />
 
-        <VoteCard>
-          <CardBGImage />
-          <CardNoise />
-          <CardSection>
-            <AutoColumn gap="md">
-              <RowBetween>
-                <TYPE.white fontWeight={600}>{t('pool.liquidityProviderRewards')}</TYPE.white>
-              </RowBetween>
-              <RowBetween>
-                <TYPE.white fontSize={14}>{t('pool.liquidityProvidersEarn')}</TYPE.white>
-              </RowBetween>
-              <ExternalLink
-                style={{ color: 'white', textDecoration: 'underline' }}
-                target="_blank"
-                href={LiquidityTutorial}
-              >
-                <TYPE.white fontSize={14}>{t('pool.readMoreProviding')}</TYPE.white>
-              </ExternalLink>
-            </AutoColumn>
-          </CardSection>
-          <CardBGImage />
-          <CardNoise />
-        </VoteCard>
-
-        <ExternalLink
-          style={{ marginTop: '1.5rem', color: 'black', textDecoration: 'underline' }}
-          target="_blank"
-          href={AccountAnalytics}
-        >
-          <TYPE.black fontSize={18}>{t('pool.viewStakedLiquidity')}</TYPE.black>
-        </ExternalLink>
-
         <AutoColumn gap="lg" justify="center">
           <AutoColumn gap="lg" style={{ width: '100%' }}>
             <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
