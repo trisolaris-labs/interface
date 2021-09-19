@@ -129,7 +129,7 @@ export default function RemoveLiquidity({
       { name: 'verifyingContract', type: 'address' }
     ]
     const domain = {
-      name: 'SushiSwap LP Token',
+      name: 'Trisolaris LP Token',
       version: '1',
       chainId: chainId,
       verifyingContract: pair.liquidityToken.address
@@ -585,7 +585,7 @@ export default function RemoveLiquidity({
                               currencyB === CAVAX ? WAVAX[chainId].address : currencyIdB
                             }`}
                           >
-                            {t('removeLiquidity.receiveWavax')}
+                            {t('removeLiquidity.receiveWmatic')}
                           </StyledInternalLink>
                         ) : oneCurrencyIsWAVAX ? (
                           <StyledInternalLink
@@ -593,7 +593,7 @@ export default function RemoveLiquidity({
                               currencyA && currencyEquals(currencyA, WAVAX[chainId]) ? 'AVAX' : currencyIdA
                             }/${currencyB && currencyEquals(currencyB, WAVAX[chainId]) ? 'AVAX' : currencyIdB}`}
                           >
-                            {t('removeLiquidity.receiveAvax')}
+                            {t('removeLiquidity.receiveMatic')}
                           </StyledInternalLink>
                         ) : null}
                       </RowBetween>
