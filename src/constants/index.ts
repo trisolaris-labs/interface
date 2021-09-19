@@ -49,15 +49,15 @@ export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.POLYGON]: ZERO_ADDRESS
 }
 
-const WAVAX_AND_PNG_ONLY: ChainTokenList = {
-  [ChainId.FUJI]: [WAVAX[ChainId.FUJI], PNG[ChainId.FUJI]],
-  [ChainId.AVALANCHE]: [WAVAX[ChainId.AVALANCHE], PNG[ChainId.AVALANCHE]],
-  [ChainId.POLYGON]: [WAVAX[ChainId.POLYGON], PNG[ChainId.POLYGON]]
+const COMMON_BASES: ChainTokenList = {
+  [ChainId.FUJI]: [DAI[ChainId.FUJI], USDT[ChainId.FUJI]],
+  [ChainId.AVALANCHE]: [DAI[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+  [ChainId.POLYGON]: [DAI[ChainId.POLYGON], USDT[ChainId.POLYGON]]
 }
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
-  ...WAVAX_AND_PNG_ONLY,
+  ...COMMON_BASES,
 }
 
 /**
@@ -72,12 +72,12 @@ export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: To
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
-  ...WAVAX_AND_PNG_ONLY,
+  ...COMMON_BASES,
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
-  ...WAVAX_AND_PNG_ONLY,
+  ...COMMON_BASES,
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
