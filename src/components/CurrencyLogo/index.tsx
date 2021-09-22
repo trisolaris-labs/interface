@@ -10,8 +10,6 @@ import Logo from '../Logo'
 const getTokenLogoURL = (address: string) =>
   `https://raw.githubusercontent.com/pangolindex/tokens/main/assets/${address}/logo.png`
 
-const maticLogoURL = `https://raw.githubusercontent.com/pangolindex/tokens/main/assets/0x885ca6663E1E19DAD31c1e08D9958a2b8F538D53/logo.png`
-
 export const StyledEthereumLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
@@ -51,7 +49,7 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency === CAVAX) {
-    return <StyledEthereumLogo src={maticLogoURL} size={size} style={style} />
+    return <StyledEthereumLogo src={getTokenLogoURL('0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB')} size={size} style={style} />
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />

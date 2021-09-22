@@ -223,7 +223,7 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
     if (approval === ApprovalState.APPROVED) {
       // removeLiquidityAVAX
       if (oneCurrencyIsAVAX) {
-        methodNames = ['removeLiquidityAVAX', 'removeLiquidityAVAXSupportingFeeOnTransferTokens']
+        methodNames = ['removeLiquidityETH', 'removeLiquidityETHSupportingFeeOnTransferTokens']
         args = [
           currencyBIsAVAX ? tokenA.address : tokenB.address,
           liquidityAmount.raw.toString(),
@@ -249,9 +249,9 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
     }
     // we have a signature, use permit versions of remove liquidity
     else if (signatureData !== null) {
-      // removeLiquidityAVAXWithPermit
+      // removeLiquidityETHWithPermit
       if (oneCurrencyIsAVAX) {
-        methodNames = ['removeLiquidityAVAXWithPermit', 'removeLiquidityAVAXWithPermitSupportingFeeOnTransferTokens']
+        methodNames = ['removeLiquidityETHWithPermit', 'removeLiquidityETHWithPermitSupportingFeeOnTransferTokens']
         args = [
           currencyBIsAVAX ? tokenA.address : tokenB.address,
           liquidityAmount.raw.toString(),
@@ -265,7 +265,7 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
           signatureData.s
         ]
       }
-      // removeLiquidityAVAXWithPermit
+      // removeLiquidityETHWithPermit
       else {
         methodNames = ['removeLiquidityWithPermit']
         args = [
@@ -574,8 +574,8 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
                       ) : oneCurrencyIsWAVAX ? (
                         <LinkStyledButton
                           onClick={() => {
-                            setCurrencyIdA(currencyA && currencyEquals(currencyA, WAVAX[chainId]) ? 'AVAX' : currencyIdA)
-                            setCurrencyIdB(currencyB && currencyEquals(currencyB, WAVAX[chainId]) ? 'AVAX' : currencyIdB)
+                            setCurrencyIdA(currencyA && currencyEquals(currencyA, WAVAX[chainId]) ? 'ETH' : currencyIdA)
+                            setCurrencyIdB(currencyB && currencyEquals(currencyB, WAVAX[chainId]) ? 'ETH' : currencyIdB)
                           }}
                         >
                           {t('removeLiquidity.receiveMatic')}
