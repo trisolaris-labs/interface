@@ -134,15 +134,15 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 export const NetworkContextName = 'NETWORK'
 
 export const CHAIN_PARAMS = {
-  chainId: '0x89', // A 0x-prefixed hexadecimal chainId
-  chainName: 'Polygon Mainnet',
+  chainId: '0x4e454152', // A 0x-prefixed hexadecimal chainId
+  chainName: 'Aurora Mainnet',
   nativeCurrency: {
-    name: 'MATIC',
-    symbol: 'MATIC',
+    name: 'ETH',
+    symbol: 'ETH',
     decimals: 18
   },
-  rpcUrls: ['https://polygon-rpc.com/'],
-  blockExplorerUrls: ['https://polygonscan.com/']
+  rpcUrls: ['https://mainnet.aurora.dev'],
+  blockExplorerUrls: ['https://etherscan.io/']
 }
 
 // default allowed slippage, in bips
