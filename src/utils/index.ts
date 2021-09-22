@@ -19,8 +19,10 @@ export function isAddress(value: any): string | false {
 const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
   43113: 'https://cchain.explorer.avax-test.network',
   43114: 'https://cchain.explorer.avax.network',
-  137: 'https://polygonscan.com/'
+  137: 'https://polygonscan.com/',
+  1313161554: 'https://polygonscan.com/',
 }
+//TODO NEED TO CHANGE WITH CORRECT EXPLORER LINK
 
 export function getEtherscanLink(
   chainId: ChainId,

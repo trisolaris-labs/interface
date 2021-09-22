@@ -33,7 +33,7 @@ i18next
   .use(initReactI18next)
   .init({
     backend: {
-      loadPath: `./locales/polygon/{{lng}}.json`
+      loadPath: `./locales/aurora/{{lng}}.json`
     },
     react: {
       useSuspense: true
