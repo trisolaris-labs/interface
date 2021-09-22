@@ -256,7 +256,8 @@ const StyledExternalLink = styled(ExternalLink).attrs({
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: 'Fuji',
   [ChainId.AVALANCHE]: 'Avalanche',
-  [ChainId.POLYGON]: 'Polygon'
+  [ChainId.POLYGON]: 'Polygon',
+  [ChainId.AURORA]: 'Aurora'
 }
 
 export default function Header() {
@@ -359,7 +360,7 @@ export default function Header() {
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                {userEthBalance?.toSignificant(4)} MATIC
+                {userEthBalance?.toSignificant(4)} ETH
               </BalanceText>
             ) : null}
             <Web3Status />
