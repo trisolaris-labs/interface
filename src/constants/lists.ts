@@ -7,10 +7,13 @@ export const DEFI_TOKEN_LIST = 'https://raw.githubusercontent.com/pangolindex/to
 export const AVAX_STABLECOIN_TOKEN_LIST = 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/stablecoin.tokenlist.json'
 export const AVAX_BRIDGE_LIST = 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/ab.tokenlist.json'
 export const POLYGON_BRIDGE_LIST = 'https://gist.githubusercontent.com/baboobhaiya/8ba0cdfc6d942e2d828500dee3ff1a16/raw/07dc935f7ebc8e1716296719b8b06ebf5ee977bd/polygon_token_list'
+export const AURORA_BRIDGE_LIST = 'https://gist.githubusercontent.com/0xchain1/25ac542539b392891656a79bcff5bb92/raw/7a43f144b86848cde5af3af3df384e300ac024b8/aurora_token_list'
+
 const DEFAULT_LISTS: Map<ChainId, string> =
 new Map([
  [ChainId.AVALANCHE, AVAX_BRIDGE_LIST],
  [ChainId.POLYGON, POLYGON_BRIDGE_LIST],
+ [ChainId.AURORA, AURORA_BRIDGE_LIST]
 ]);
 const STABLECOIN_LISTS: Map<ChainId, string> =
 new Map([
@@ -19,9 +22,9 @@ new Map([
 const LIST_OF_LISTS: Map<ChainId, string[]> =
 new Map([
  [ChainId.AVALANCHE, [AEB_TOKENLIST, TOP_15_TOKEN_List, DEFI_TOKEN_LIST, AVAX_STABLECOIN_TOKEN_LIST, AVAX_BRIDGE_LIST]],
- [ChainId.POLYGON, [POLYGON_BRIDGE_LIST],
-]
+ [ChainId.POLYGON, [POLYGON_BRIDGE_LIST]],
+ [ChainId.AURORA, [AURORA_BRIDGE_LIST]]
 ]);
-export const DEFAULT_LIST_OF_LISTS = LIST_OF_LISTS.get(ChainId.POLYGON)!
-export const DEFAULT_TOKEN_LIST_URL = DEFAULT_LISTS.get(ChainId.POLYGON)!
+export const DEFAULT_LIST_OF_LISTS = LIST_OF_LISTS.get(ChainId.AURORA)!
+export const DEFAULT_TOKEN_LIST_URL = DEFAULT_LISTS.get(ChainId.AURORA)!
 export const STABLECOIN_TOKEN_LIST = STABLECOIN_LISTS.get(ChainId.AVALANCHE)!
