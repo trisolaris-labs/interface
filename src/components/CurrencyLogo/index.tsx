@@ -1,4 +1,4 @@
-import { Currency, CAVAX, Token } from '@pangolindex/sdk'
+import { Currency, CETH, Token } from '@pangolindex/sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 
@@ -36,7 +36,7 @@ export default function CurrencyLogo({
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
 
   const srcs: string[] = useMemo(() => {
-    if (currency === CAVAX) return []
+    if (currency === CETH) return []
 
     if (currency instanceof Token) {
       if (currency instanceof WrappedTokenInfo) {
@@ -48,7 +48,7 @@ export default function CurrencyLogo({
     return []
   }, [currency, uriLocations])
 
-  if (currency === CAVAX) {
+  if (currency === CETH) {
     return <StyledEthereumLogo src={getTokenLogoURL('0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB')} size={size} style={style} />
   }
 

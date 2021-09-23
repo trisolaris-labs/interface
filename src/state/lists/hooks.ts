@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../index'
 import { AEB_TOKENLIST } from '../../constants/lists'
-import { WAVAX } from '@pangolindex/sdk'
+import { WETH } from '@pangolindex/sdk'
 import { PNG } from '../../constants'
 
 type TagDetails = Tags[keyof Tags]
@@ -155,8 +155,8 @@ export function useIsSelectedAEBToken(): Boolean {
 
   const aebToken = allAEBTokens.find(token => token?.address === selectedOutputToken?.currencyId)
 
-  // ignore PNG and WAVAX token
-  if (aebToken?.address === PNG[ChainId.AVALANCHE].address || aebToken?.address === WAVAX[ChainId.AVALANCHE].address) {
+  // ignore PNG and WETH token
+  if (aebToken?.address === PNG[ChainId.AVALANCHE].address || aebToken?.address === WETH[ChainId.AVALANCHE].address) {
     return false
   }
 

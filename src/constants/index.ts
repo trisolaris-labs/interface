@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Percent, Token, WAVAX } from '@pangolindex/sdk'
+import { ChainId, JSBI, Percent, Token, WETH } from '@pangolindex/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
 import { injected, walletlink } from '../connectors'

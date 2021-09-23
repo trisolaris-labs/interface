@@ -1,4 +1,4 @@
-import { Currency, currencyEquals, CAVAX, WAVAX } from '@pangolindex/sdk'
+import { Currency, currencyEquals, CETH, WETH } from '@pangolindex/sdk'
 import { useMemo } from 'react'
 import { tryParseAmount } from '../state/swap/hooks'
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -36,7 +36,7 @@ export default function useWrapCallback(
 
     const sufficientBalance = inputAmount && balance && !balance.lessThan(inputAmount)
 
-    if (inputCurrency === CAVAX && currencyEquals(WAVAX[chainId], outputCurrency)) {
+    if (inputCurrency === CETH && currencyEquals(WETH[chainId], outputCurrency)) {
       return {
         wrapType: WrapType.WRAP,
         execute:
@@ -52,7 +52,7 @@ export default function useWrapCallback(
             : undefined,
         inputError: sufficientBalance ? undefined : 'Insufficient AVAX balance'
       }
-    } else if (currencyEquals(WAVAX[chainId], inputCurrency) && outputCurrency === CAVAX) {
+    } else if (currencyEquals(WETH[chainId], inputCurrency) && outputCurrency === CETH) {
       return {
         wrapType: WrapType.UNWRAP,
         execute:

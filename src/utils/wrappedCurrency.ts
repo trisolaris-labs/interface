@@ -1,7 +1,7 @@
-import { ChainId, Currency, CurrencyAmount, CAVAX, Token, TokenAmount, WAVAX } from '@pangolindex/sdk'
+import { ChainId, Currency, CurrencyAmount, CETH, Token, TokenAmount, WETH } from '@pangolindex/sdk'
 
 export function wrappedCurrency(currency: Currency | undefined, chainId: ChainId | undefined): Token | undefined {
-  return chainId && currency === CAVAX ? WAVAX[chainId] : currency instanceof Token ? currency : undefined
+  return chainId && currency === CETH ? WETH[chainId] : currency instanceof Token ? currency : undefined
 }
 
 export function wrappedCurrencyAmount(
@@ -13,6 +13,6 @@ export function wrappedCurrencyAmount(
 }
 
 export function unwrappedToken(token: Token): Currency {
-  if (token.equals(WAVAX[token.chainId])) return CAVAX
+  if (token.equals(WETH[token.chainId])) return CETH
   return token
 }

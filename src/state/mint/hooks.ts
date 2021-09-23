@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, CAVAX, InsufficientInputAmountError, JSBI, Pair, Percent, Price, TokenAmount } from '@pangolindex/sdk'
+import { Currency, CurrencyAmount, CETH, InsufficientInputAmountError, JSBI, Pair, Percent, Price, TokenAmount } from '@pangolindex/sdk'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
@@ -88,7 +88,7 @@ export function useDerivedMintInfo(
           dependentField === Field.CURRENCY_B
             ? pair.priceOf(tokenA).quote(wrappedIndependentAmount)
             : pair.priceOf(tokenB).quote(wrappedIndependentAmount)
-        return dependentCurrency === CAVAX ? CurrencyAmount.ether(dependentTokenAmount.raw) : dependentTokenAmount
+        return dependentCurrency === CETH ? CurrencyAmount.ether(dependentTokenAmount.raw) : dependentTokenAmount
       }
       return undefined
     } else {

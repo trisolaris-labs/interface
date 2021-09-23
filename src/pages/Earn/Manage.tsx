@@ -3,7 +3,7 @@ import { AutoColumn } from '../../components/Column'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import { JSBI, TokenAmount, CAVAX, Token, WAVAX } from '@pangolindex/sdk'
+import { JSBI, TokenAmount, CETH, Token, WETH } from '@pangolindex/sdk'
 import { RouteComponentProps } from 'react-router-dom'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { useCurrency } from '../../hooks/Tokens'
@@ -103,18 +103,18 @@ export default function Manage({
   const [, stakingTokenPair] = usePair(tokenA, tokenB)
   const stakingInfo = useStakingInfo(Number(version), stakingTokenPair)?.[0]
 
-  const avaxPool = currencyA === CAVAX || currencyB === CAVAX
+  const avaxPool = currencyA === CETH || currencyB === CETH
 
   let valueOfTotalStakedAmountInWavax: TokenAmount | undefined
   // let valueOfTotalStakedAmountInUSDC: CurrencyAmount | undefined
   let backgroundColor: string
   let token: Token | undefined
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
-  const [, avaxPngTokenPair] = usePair(CAVAX, PNG[chainId ? chainId : 43114])
+  const [, avaxPngTokenPair] = usePair(CETH, PNG[chainId ? chainId : 43114])
   // let usdToken: Token | undefined
   if (avaxPool) {
-    token = currencyA === CAVAX ? tokenB : tokenA
-    const wavax = currencyA === CAVAX ? tokenA : tokenB
+    token = currencyA === CETH ? tokenB : tokenA
+    const wavax = currencyA === CETH ? tokenA : tokenB
 
     // let returnOverMonth: Percent = new Percent('0')
     if (totalSupplyOfStakingToken && stakingTokenPair && wavax) {
@@ -146,14 +146,14 @@ export default function Manage({
     if (totalSupplyOfStakingToken && stakingTokenPair && avaxPngTokenPair && tokenB && png) {
       const oneToken = JSBI.BigInt(1000000000000000000)
       const avaxPngRatio = JSBI.divide(
-        JSBI.multiply(oneToken, avaxPngTokenPair.reserveOf(WAVAX[tokenB.chainId]).raw),
+        JSBI.multiply(oneToken, avaxPngTokenPair.reserveOf(WETH[tokenB.chainId]).raw),
         avaxPngTokenPair.reserveOf(png).raw
       )
 
       const valueOfPngInAvax = JSBI.divide(JSBI.multiply(stakingTokenPair.reserveOf(png).raw, avaxPngRatio), oneToken)
 
       valueOfTotalStakedAmountInWavax = new TokenAmount(
-        WAVAX[tokenB.chainId],
+        WETH[tokenB.chainId],
         JSBI.divide(
           JSBI.multiply(
             JSBI.multiply(stakingInfo.totalStakedAmount.raw, valueOfPngInAvax),
@@ -185,17 +185,17 @@ export default function Manage({
   // fade cards if nothing staked or nothing earned yet
   const disableTop = !stakingInfo?.stakedAmount || stakingInfo.stakedAmount.equalTo(JSBI.BigInt(0))
 
-  // get WAVAX value of staked LP tokens
+  // get WETH value of staked LP tokens
 
-  // let valueOfTotalStakedAmountInWAVAX: TokenAmount | undefined
-  // if (totalSupplyOfStakingToken && stakingTokenPair && stakingInfo && WAVAX) {
+  // let valueOfTotalStakedAmountInWETH: TokenAmount | undefined
+  // if (totalSupplyOfStakingToken && stakingTokenPair && stakingInfo && WETH) {
   // 	// take the total amount of LP tokens staked, multiply by AVAX value of all LP tokens, divide by all LP tokens
-  // 	valueOfTotalStakedAmountInWAVAX = new TokenAmount(
-  // 		WAVAX,
+  // 	valueOfTotalStakedAmountInWETH = new TokenAmount(
+  // 		WETH,
   // 		JSBI.divide(
   // 			JSBI.multiply(
-  // 				JSBI.multiply(stakingInfo.totalStakedAmount.raw, stakingTokenPair.reserveOf(WAVAX).raw),
-  // 				JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the WAVAX they entitle owner to
+  // 				JSBI.multiply(stakingInfo.totalStakedAmount.raw, stakingTokenPair.reserveOf(WETH).raw),
+  // 				JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the WETH they entitle owner to
   // 			),
   // 			totalSupplyOfStakingToken.raw
   // 		)

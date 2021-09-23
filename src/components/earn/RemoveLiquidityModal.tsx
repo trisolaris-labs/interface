@@ -15,7 +15,7 @@ import { useCurrency } from '../../hooks/Tokens'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 import { Field } from '../../state/burn/actions'
-import { CAVAX, ChainId, currencyEquals, Percent, WAVAX, ROUTER_ADDRESS } from '@pangolindex/sdk'
+import { CETH, ChainId, currencyEquals, Percent, WETH, ROUTER_ADDRESS } from '@pangolindex/sdk'
 import { Contract } from '@ethersproject/contracts'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { splitSignature } from '@ethersproject/bytes'
@@ -212,8 +212,8 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
     if (!liquidityAmount) throw new Error('missing liquidity amount')
 
-    const currencyBIsAVAX = currencyB === CAVAX
-    const oneCurrencyIsAVAX = currencyA === CAVAX || currencyBIsAVAX
+    const currencyBIsAVAX = currencyB === CETH
+    const oneCurrencyIsAVAX = currencyA === CETH || currencyBIsAVAX
 
     // TODO: Translate using i18n
     if (!tokenA || !tokenB) throw new Error('could not wrap')
@@ -440,11 +440,11 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
     [onUserInput]
   )
 
-  const oneCurrencyIsAVAX = currencyA === CAVAX || currencyB === CAVAX
+  const oneCurrencyIsAVAX = currencyA === CETH || currencyB === CETH
   const oneCurrencyIsWAVAX = Boolean(
     chainId &&
-    ((currencyA && currencyEquals(WAVAX[chainId], currencyA)) ||
-      (currencyB && currencyEquals(WAVAX[chainId], currencyB)))
+    ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||
+      (currencyB && currencyEquals(WETH[chainId], currencyB)))
   )
 
   const handleDismissConfirmation = useCallback(() => {
@@ -565,8 +565,8 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
                       {oneCurrencyIsAVAX ? (
                         <LinkStyledButton
                           onClick={() => {
-                            setCurrencyIdA(currencyA === CAVAX ? WAVAX[chainId].address : currencyIdA)
-                            setCurrencyIdB(currencyB === CAVAX ? WAVAX[chainId].address : currencyIdB)
+                            setCurrencyIdA(currencyA === CETH ? WETH[chainId].address : currencyIdA)
+                            setCurrencyIdB(currencyB === CETH ? WETH[chainId].address : currencyIdB)
                           }}
                         >
                           {t('removeLiquidity.receiveWmatic')}
@@ -574,8 +574,8 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
                       ) : oneCurrencyIsWAVAX ? (
                         <LinkStyledButton
                           onClick={() => {
-                            setCurrencyIdA(currencyA && currencyEquals(currencyA, WAVAX[chainId]) ? 'ETH' : currencyIdA)
-                            setCurrencyIdB(currencyB && currencyEquals(currencyB, WAVAX[chainId]) ? 'ETH' : currencyIdB)
+                            setCurrencyIdA(currencyA && currencyEquals(currencyA, WETH[chainId]) ? 'ETH' : currencyIdA)
+                            setCurrencyIdB(currencyB && currencyEquals(currencyB, WETH[chainId]) ? 'ETH' : currencyIdB)
                           }}
                         >
                           {t('removeLiquidity.receiveMatic')}

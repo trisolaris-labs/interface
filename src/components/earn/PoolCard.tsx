@@ -4,7 +4,7 @@ import { RowBetween } from '../Row'
 import styled from 'styled-components'
 import { TYPE, StyledInternalLink } from '../../theme'
 import DoubleCurrencyLogo from '../DoubleLogo'
-import { CAVAX, Token } from '@pangolindex/sdk'
+import { CETH, Token } from '@pangolindex/sdk'
 import { ButtonPrimary } from '../Button'
 import { Staking, StakingInfo } from '../../state/stake/hooks'
 import { useColor } from '../../hooks/useColor'
@@ -99,8 +99,8 @@ export default function PoolCard({
   const isStaking = Boolean(stakingInfo.stakedAmount.greaterThan('0'))
 
   const token: Token =
-    currency0 === CAVAX || currency1 === CAVAX
-      ? currency0 === CAVAX
+    currency0 === CETH || currency1 === CETH
+      ? currency0 === CETH
         ? token1
         : token0
       : token0.equals(PNG[token0.chainId])

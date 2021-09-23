@@ -1,4 +1,4 @@
-import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WAVAX, Pair } from '@pangolindex/sdk'
+import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WETH, Pair } from '@pangolindex/sdk'
 import { useMemo } from 'react'
 import {
   USDT,
@@ -33,26 +33,26 @@ export interface BridgeMigrator {
 const STAKING: {
   [key: string]: Staking
 } = {
-  WAVAX_USDT_V0: {
-    tokens: [WAVAX[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+  WETH_USDT_V0: {
+    tokens: [WETH[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x4f019452f51bbA0250Ec8B69D64282B79fC8BD9f',
     version: 0,
     multiplier: 0
   },
-  WAVAX_WBTC_V0: {
-    tokens: [WAVAX[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
+  WETH_WBTC_V0: {
+    tokens: [WETH[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x01897e996EEfFf65AE9999C02D1d8D7E9e0C0352',
     version: 0,
     multiplier: 0
   },
-  WAVAX_USDT_V1: {
-    tokens: [WAVAX[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+  WETH_USDT_V1: {
+    tokens: [WETH[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
     stakingRewardAddress: '0x94C021845EfE237163831DAC39448cFD371279d6',
     version: 1,
     multiplier: 0
   },
-  WAVAX_WBTC_V1: {
-    tokens: [WAVAX[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
+  WETH_WBTC_V1: {
+    tokens: [WETH[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
     stakingRewardAddress: '0xe968E9753fd2c323C2Fe94caFF954a48aFc18546',
     version: 1,
     multiplier: 0
@@ -61,16 +61,16 @@ const STAKING: {
 
 // The first mapping in the list takes priority if multiple migrations exist from the same pool
 export const MIGRATIONS: Migration[] = [
-  { from: STAKING.WAVAX_PNG_V0, to: STAKING.WAVAX_PNG_V1 },
-  { from: STAKING.WAVAX_ETH_V0, to: STAKING.WAVAX_WETHe_V1 },
-  { from: STAKING.WAVAX_USDT_V0, to: STAKING.WAVAX_USDTe_V1 },
-  { from: STAKING.WAVAX_WBTC_V0, to: STAKING.WAVAX_WBTCe_V1 },
-  { from: STAKING.WAVAX_LINK_V0, to: STAKING.WAVAX_LINKe_V1 },
-  { from: STAKING.WAVAX_DAI_V0, to: STAKING.WAVAX_DAIe_V1 },
-  { from: STAKING.WAVAX_UNI_V0, to: STAKING.WAVAX_UNIe_V1 },
-  { from: STAKING.WAVAX_SUSHI_V0, to: STAKING.WAVAX_SUSHIe_V1 },
-  { from: STAKING.WAVAX_AAVE_V0, to: STAKING.WAVAX_AAVEe_V1 },
-  { from: STAKING.WAVAX_YFI_V0, to: STAKING.WAVAX_YFIe_V1 },
+  { from: STAKING.WETH_PNG_V0, to: STAKING.WETH_PNG_V1 },
+  { from: STAKING.WETH_ETH_V0, to: STAKING.WETH_WETHe_V1 },
+  { from: STAKING.WETH_USDT_V0, to: STAKING.WETH_USDTe_V1 },
+  { from: STAKING.WETH_WBTC_V0, to: STAKING.WETH_WBTCe_V1 },
+  { from: STAKING.WETH_LINK_V0, to: STAKING.WETH_LINKe_V1 },
+  { from: STAKING.WETH_DAI_V0, to: STAKING.WETH_DAIe_V1 },
+  { from: STAKING.WETH_UNI_V0, to: STAKING.WETH_UNIe_V1 },
+  { from: STAKING.WETH_SUSHI_V0, to: STAKING.WETH_SUSHIe_V1 },
+  { from: STAKING.WETH_AAVE_V0, to: STAKING.WETH_AAVEe_V1 },
+  { from: STAKING.WETH_YFI_V0, to: STAKING.WETH_YFIe_V1 },
   // From v0 (PNG)
   { from: STAKING.PNG_ETH_V0, to: STAKING.PNG_WETHe_V1 },
   { from: STAKING.PNG_USDT_V0, to: STAKING.PNG_USDTe_V1 },
@@ -82,16 +82,16 @@ export const MIGRATIONS: Migration[] = [
   { from: STAKING.PNG_AAVE_V0, to: STAKING.PNG_AAVEe_V1 },
   { from: STAKING.PNG_YFI_V0, to: STAKING.PNG_YFIe_V1 },
 
-  // From v1 (WAVAX)
-  { from: STAKING.WAVAX_ETH_V1, to: STAKING.WAVAX_WETHe_V1 },
-  { from: STAKING.WAVAX_USDT_V1, to: STAKING.WAVAX_USDTe_V1 },
-  { from: STAKING.WAVAX_WBTC_V1, to: STAKING.WAVAX_WBTCe_V1 },
-  { from: STAKING.WAVAX_LINK_V1, to: STAKING.WAVAX_LINKe_V1 },
-  { from: STAKING.WAVAX_DAI_V1, to: STAKING.WAVAX_DAIe_V1 },
-  { from: STAKING.WAVAX_UNI_V1, to: STAKING.WAVAX_UNIe_V1 },
-  { from: STAKING.WAVAX_SUSHI_V1, to: STAKING.WAVAX_SUSHIe_V1 },
-  { from: STAKING.WAVAX_AAVE_V1, to: STAKING.WAVAX_AAVEe_V1 },
-  { from: STAKING.WAVAX_YFI_V1, to: STAKING.WAVAX_YFIe_V1 },
+  // From v1 (WETH)
+  { from: STAKING.WETH_ETH_V1, to: STAKING.WETH_WETHe_V1 },
+  { from: STAKING.WETH_USDT_V1, to: STAKING.WETH_USDTe_V1 },
+  { from: STAKING.WETH_WBTC_V1, to: STAKING.WETH_WBTCe_V1 },
+  { from: STAKING.WETH_LINK_V1, to: STAKING.WETH_LINKe_V1 },
+  { from: STAKING.WETH_DAI_V1, to: STAKING.WETH_DAIe_V1 },
+  { from: STAKING.WETH_UNI_V1, to: STAKING.WETH_UNIe_V1 },
+  { from: STAKING.WETH_SUSHI_V1, to: STAKING.WETH_SUSHIe_V1 },
+  { from: STAKING.WETH_AAVE_V1, to: STAKING.WETH_AAVEe_V1 },
+  { from: STAKING.WETH_YFI_V1, to: STAKING.WETH_YFIe_V1 },
   // From v1 (PNG)
   { from: STAKING.PNG_ETH_V1, to: STAKING.PNG_WETHe_V1 },
   { from: STAKING.PNG_USDT_V1, to: STAKING.PNG_USDTe_V1 },
@@ -167,7 +167,7 @@ const calculateTotalStakedAmountInAvaxFromPng = function(
   reserveInPng: JSBI
 ): TokenAmount {
   if (JSBI.EQ(amountAvailable, JSBI.BigInt(0))) {
-    return new TokenAmount(WAVAX[ChainId.AVALANCHE], JSBI.BigInt(0))
+    return new TokenAmount(WETH[ChainId.AVALANCHE], JSBI.BigInt(0))
   }
 
   const oneToken = JSBI.BigInt(1000000000000000000)
@@ -175,7 +175,7 @@ const calculateTotalStakedAmountInAvaxFromPng = function(
   const valueOfPngInAvax = JSBI.divide(JSBI.multiply(reserveInPng, avaxPngRatio), oneToken)
 
   return new TokenAmount(
-    WAVAX[ChainId.AVALANCHE],
+    WETH[ChainId.AVALANCHE],
     JSBI.divide(
       JSBI.multiply(
         JSBI.multiply(amountStaked, valueOfPngInAvax),
@@ -194,7 +194,7 @@ const calculateTotalStakedAmountInAvax = function(
   if (JSBI.GT(amountAvailable, 0)) {
     // take the total amount of LP tokens staked, multiply by AVAX value of all LP tokens, divide by all LP tokens
     return new TokenAmount(
-      WAVAX[ChainId.AVALANCHE],
+      WETH[ChainId.AVALANCHE],
       JSBI.divide(
         JSBI.multiply(
           JSBI.multiply(amountStaked, reserveInWavax),
@@ -204,7 +204,7 @@ const calculateTotalStakedAmountInAvax = function(
       )
     )
   } else {
-    return new TokenAmount(WAVAX[ChainId.AVALANCHE], JSBI.BigInt(0))
+    return new TokenAmount(WETH[ChainId.AVALANCHE], JSBI.BigInt(0))
   }
 }
 
@@ -248,7 +248,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
 
   const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply')
 
-  const [avaxPngPairState, avaxPngPair] = usePair(WAVAX[ChainId.AVALANCHE], png)
+  const [avaxPngPairState, avaxPngPair] = usePair(WETH[ChainId.AVALANCHE], png)
 
   // tokens per second, constants
   const rewardRates = useMultipleContractSingleData(
@@ -313,7 +313,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
 
         // get the LP token
         const tokens = info[index].tokens
-        const wavax = tokens[0].equals(WAVAX[tokens[0].chainId]) ? tokens[0] : tokens[1]
+        const wavax = tokens[0].equals(WETH[tokens[0].chainId]) ? tokens[0] : tokens[1]
         const dummyPair = new Pair(new TokenAmount(tokens[0], '0'), new TokenAmount(tokens[1], '0'), chainId)
         // check for account, if no account set to 0
 
@@ -329,14 +329,14 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
         const totalStakedAmount = new TokenAmount(dummyPair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
         const totalRewardRate = new TokenAmount(png, JSBI.BigInt(isPeriodFinished ? 0 : rewardRateState.result?.[0]))
 
-        const isAvaxPool = tokens[0].equals(WAVAX[tokens[0].chainId])
+        const isAvaxPool = tokens[0].equals(WETH[tokens[0].chainId])
         const totalStakedInWavax = isAvaxPool
           ? calculateTotalStakedAmountInAvax(totalSupplyStaked, totalSupplyAvailable, pair.reserveOf(wavax).raw)
           : calculateTotalStakedAmountInAvaxFromPng(
               totalSupplyStaked,
               totalSupplyAvailable,
               avaxPngPair.reserveOf(png).raw,
-              avaxPngPair.reserveOf(WAVAX[tokens[1].chainId]).raw,
+              avaxPngPair.reserveOf(WETH[tokens[1].chainId]).raw,
               pair.reserveOf(png).raw
             )
 

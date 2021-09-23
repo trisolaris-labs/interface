@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, currencyEquals, CAVAX, Token } from '@pangolindex/sdk'
+import { Currency, CurrencyAmount, currencyEquals, CETH, Token } from '@pangolindex/sdk'
 import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
@@ -19,7 +19,7 @@ import { isTokenOnList } from '../../utils'
 import { useTranslation } from 'react-i18next'
 
 function currencyKey(currency: Currency): string {
-  return currency instanceof Token ? currency.address : currency === CAVAX ? 'AVAX' : ''
+  return currency instanceof Token ? currency.address : currency === CETH ? 'AVAX' : ''
 }
 
 const StyledBalanceText = styled(Text)`
@@ -173,7 +173,7 @@ export default function CurrencyList({
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   showETH: boolean
 }) {
-  const itemData = useMemo(() => (showETH ? [Currency.CAVAX, ...currencies] : currencies), [currencies, showETH])
+  const itemData = useMemo(() => (showETH ? [Currency.CETH, ...currencies] : currencies), [currencies, showETH])
 
   const Row = useCallback(
     ({ data, index, style }) => {
