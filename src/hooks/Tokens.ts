@@ -1,5 +1,5 @@
 import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, CAVAX, Token, currencyEquals } from '@pangolindex/sdk'
+import { Currency, CETH, Token, currencyEquals } from '@pangolindex/sdk'
 import { useMemo } from 'react'
 import { useSelectedTokenList } from '../state/lists/hooks'
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
@@ -104,5 +104,5 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
   const isAVAX = currencyId?.toUpperCase() === 'AVAX'
   const token = useToken(isAVAX ? undefined : currencyId)
-  return isAVAX ? CAVAX : token
+  return isAVAX ? CETH : token
 }

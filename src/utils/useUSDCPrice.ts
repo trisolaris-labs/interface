@@ -1,6 +1,6 @@
 // TODO: Actually calculate price
 
-import { ChainId, Currency, currencyEquals, JSBI, Price, WAVAX } from '@pangolindex/sdk'
+import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from '@pangolindex/sdk'
 import { useMemo } from 'react'
 import { DAI } from '../constants'
 import { PairState, usePairs } from '../data/Reserves'
@@ -18,11 +18,11 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
 	const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
 		() => [
 			[
-				chainId && wrapped && currencyEquals(WAVAX[chainId], wrapped) ? undefined : currency,
-				chainId ? WAVAX[chainId] : undefined
+				chainId && wrapped && currencyEquals(WETH[chainId], wrapped) ? undefined : currency,
+				chainId ? WETH[chainId] : undefined
 			],
 			[wrapped?.equals(USDC) ? undefined : wrapped, chainId === ChainId.AVALANCHE ? USDC : undefined],
-			[chainId ? WAVAX[chainId] : undefined, chainId === ChainId.AVALANCHE ? USDC : undefined]
+			[chainId ? WETH[chainId] : undefined, chainId === ChainId.AVALANCHE ? USDC : undefined]
 		],
 		[chainId, currency, wrapped, USDC]
 	)
@@ -33,9 +33,9 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
 			return undefined
 		}
 		// handle wavax/avax
-		if (wrapped.equals(WAVAX[chainId])) {
+		if (wrapped.equals(WETH[chainId])) {
 			if (usdcPair) {
-				const price = usdcPair.priceOf(WAVAX[chainId])
+				const price = usdcPair.priceOf(WETH[chainId])
 				return new Price(currency, USDC, price.denominator, price.numerator)
 			} else {
 				return undefined
@@ -46,9 +46,9 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
 			return new Price(USDC, USDC, '1', '1')
 		}
 
-		const avaxPairAVAXAmount = avaxPair?.reserveOf(WAVAX[chainId])
+		const avaxPairAVAXAmount = avaxPair?.reserveOf(WETH[chainId])
 		const avaxPairAVAXUSDCValue: JSBI =
-			avaxPairAVAXAmount && usdcAvaxPair ? usdcAvaxPair.priceOf(WAVAX[chainId]).quote(avaxPairAVAXAmount).raw : JSBI.BigInt(0)
+			avaxPairAVAXAmount && usdcAvaxPair ? usdcAvaxPair.priceOf(WETH[chainId]).quote(avaxPairAVAXAmount).raw : JSBI.BigInt(0)
 
 		// all other tokens
 		// first try the usdc pair
@@ -57,9 +57,9 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
 			return new Price(currency, USDC, price.denominator, price.numerator)
 		}
 		if (avaxPairState === PairState.EXISTS && avaxPair && usdcAvaxPairState === PairState.EXISTS && usdcAvaxPair) {
-			if (usdcAvaxPair.reserveOf(USDC).greaterThan('0') && avaxPair.reserveOf(WAVAX[chainId]).greaterThan('0')) {
+			if (usdcAvaxPair.reserveOf(USDC).greaterThan('0') && avaxPair.reserveOf(WETH[chainId]).greaterThan('0')) {
 				const avaxUsdcPrice = usdcAvaxPair.priceOf(USDC)
-				const currencyAvaxPrice = avaxPair.priceOf(WAVAX[chainId])
+				const currencyAvaxPrice = avaxPair.priceOf(WETH[chainId])
 				const usdcPrice = avaxUsdcPrice.multiply(currencyAvaxPrice).invert()
 				return new Price(currency, USDC, usdcPrice.denominator, usdcPrice.numerator)
 			}

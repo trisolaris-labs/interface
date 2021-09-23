@@ -13,7 +13,7 @@ import { useCurrency } from '../../hooks/Tokens'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks'
 import { Field } from '../../state/mint/actions'
-import { CAVAX, ChainId, Currency, TokenAmount, ROUTER_ADDRESS } from '@pangolindex/sdk'
+import { CETH, ChainId, Currency, TokenAmount, ROUTER_ADDRESS } from '@pangolindex/sdk'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../utils'
 import { BigNumber } from '@ethersproject/bignumber'
@@ -145,8 +145,8 @@ export default function AddLiquidityModal({ isOpen, onDismiss, currencyIdA: _cur
       method: (...args: any) => Promise<TransactionResponse>,
       args: Array<string | string[] | number>,
       value: BigNumber | null
-    if (currencyA === CAVAX || currencyB === CAVAX) {
-      const tokenBIsETH = currencyB === CAVAX
+    if (currencyA === CETH || currencyB === CETH) {
+      const tokenBIsETH = currencyB === CETH
       estimate = router.estimateGas.addLiquidityETH
       method = router.addLiquidityETH
       args = [

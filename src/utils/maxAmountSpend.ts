@@ -1,4 +1,4 @@
-import { CurrencyAmount, CAVAX, JSBI } from '@pangolindex/sdk'
+import { CurrencyAmount, CETH, JSBI } from '@pangolindex/sdk'
 import { MIN_ETH } from '../constants'
 
 /**
@@ -7,7 +7,7 @@ import { MIN_ETH } from '../constants'
  */
 export function maxAmountSpend(currencyAmount?: CurrencyAmount): CurrencyAmount | undefined {
   if (!currencyAmount) return undefined
-  if (currencyAmount.currency === CAVAX) {
+  if (currencyAmount.currency === CETH) {
     if (JSBI.greaterThan(currencyAmount.raw, MIN_ETH)) {
       return CurrencyAmount.ether(JSBI.subtract(currencyAmount.raw, MIN_ETH))
     } else {

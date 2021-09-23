@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from 'rebass'
-import { ChainId, Currency, currencyEquals, CAVAX, Token } from '@pangolindex/sdk'
+import { ChainId, Currency, currencyEquals, CETH, Token } from '@pangolindex/sdk'
 import styled from 'styled-components'
 
 import { SUGGESTED_BASES } from '../../constants'
@@ -47,13 +47,13 @@ export default function CommonBases({
       <AutoRow gap="4px">
         <BaseWrapper
           onClick={() => {
-            if (!selectedCurrency || !currencyEquals(selectedCurrency, CAVAX)) {
-              onSelect(CAVAX)
+            if (!selectedCurrency || !currencyEquals(selectedCurrency, CETH)) {
+              onSelect(CETH)
             }
           }}
-          disable={selectedCurrency === CAVAX}
+          disable={selectedCurrency === CETH}
         >
-          <CurrencyLogo currency={CAVAX} style={{ marginRight: 8 }} />
+          <CurrencyLogo currency={CETH} style={{ marginRight: 8 }} />
           <Text fontWeight={500} fontSize={16}>
             ETH
           </Text>

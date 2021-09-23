@@ -1,7 +1,7 @@
 import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, CAVAX, Percent, WAVAX, ROUTER_ADDRESS } from '@pangolindex/sdk'
+import { Currency, currencyEquals, CETH, Percent, WETH, ROUTER_ADDRESS } from '@pangolindex/sdk'
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import { ArrowDown, Plus } from 'react-feather'
 import ReactGA from 'react-ga'
@@ -217,8 +217,8 @@ export default function RemoveLiquidity({
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
     if (!liquidityAmount) throw new Error('missing liquidity amount')
 
-    const currencyBIsETH = currencyB === CAVAX
-    const oneCurrencyIsETH = currencyA === CAVAX || currencyBIsETH
+    const currencyBIsETH = currencyB === CETH
+    const oneCurrencyIsETH = currencyA === CETH || currencyBIsETH
     
     // TODO: Translate using i18n
     if (!tokenA || !tokenB) throw new Error('could not wrap')
@@ -444,11 +444,11 @@ export default function RemoveLiquidity({
     [onUserInput]
   )
 
-  const oneCurrencyIsAVAX = currencyA === CAVAX || currencyB === CAVAX
-  const oneCurrencyIsWAVAX = Boolean(
+  const oneCurrencyIsAVAX = currencyA === CETH || currencyB === CETH
+  const oneCurrencyIsWETH = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(WAVAX[chainId], currencyA)) ||
-        (currencyB && currencyEquals(WAVAX[chainId], currencyB)))
+      ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||
+        (currencyB && currencyEquals(WETH[chainId], currencyB)))
   )
 
   const handleSelectCurrencyA = useCallback(
@@ -577,21 +577,21 @@ export default function RemoveLiquidity({
                         </Text>
                       </RowFixed>
                     </RowBetween>
-                    {chainId && (oneCurrencyIsWAVAX || oneCurrencyIsAVAX) ? (
+                    {chainId && (oneCurrencyIsWETH || oneCurrencyIsAVAX) ? (
                       <RowBetween style={{ justifyContent: 'flex-end' }}>
                         {oneCurrencyIsAVAX ? (
                           <StyledInternalLink
-                            to={`/remove/${currencyA === CAVAX ? WAVAX[chainId].address : currencyIdA}/${
-                              currencyB === CAVAX ? WAVAX[chainId].address : currencyIdB
+                            to={`/remove/${currencyA === CETH ? WETH[chainId].address : currencyIdA}/${
+                              currencyB === CETH ? WETH[chainId].address : currencyIdB
                             }`}
                           >
                             {t('removeLiquidity.receiveWmatic')}
                           </StyledInternalLink>
-                        ) : oneCurrencyIsWAVAX ? (
+                        ) : oneCurrencyIsWETH ? (
                           <StyledInternalLink
                             to={`/remove/${
-                              currencyA && currencyEquals(currencyA, WAVAX[chainId]) ? 'AVAX' : currencyIdA
-                            }/${currencyB && currencyEquals(currencyB, WAVAX[chainId]) ? 'AVAX' : currencyIdB}`}
+                              currencyA && currencyEquals(currencyA, WETH[chainId]) ? 'AVAX' : currencyIdA
+                            }/${currencyB && currencyEquals(currencyB, WETH[chainId]) ? 'AVAX' : currencyIdB}`}
                           >
                             {t('removeLiquidity.receiveMatic')}
                           </StyledInternalLink>
@@ -704,7 +704,7 @@ export default function RemoveLiquidity({
 
       {pair ? (
         <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
-          <MinimalPositionCard showUnwrapped={oneCurrencyIsWAVAX} pair={pair} />
+          <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />
         </AutoColumn>
       ) : null}
     </>

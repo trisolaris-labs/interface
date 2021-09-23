@@ -1,6 +1,6 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Trade, TokenAmount, CurrencyAmount, CAVAX, ChainId, ROUTER_ADDRESS } from '@pangolindex/sdk'
+import { Trade, TokenAmount, CurrencyAmount, CETH, ChainId, ROUTER_ADDRESS } from '@pangolindex/sdk'
 import { useCallback, useMemo } from 'react'
 import { useTokenAllowance } from '../data/Allowances'
 import { Field } from '../state/swap/actions'
@@ -30,7 +30,7 @@ export function useApproveCallback(
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
-    if (amountToApprove.currency === CAVAX) return ApprovalState.APPROVED
+    if (amountToApprove.currency === CETH) return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
