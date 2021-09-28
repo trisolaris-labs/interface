@@ -239,7 +239,7 @@
     "wrongNetwork": "Wrong Network",
     "errorConnecting": "Error connecting",
     "pleaseConnectAvalanche": "Please connect to the appropriate Aurora network.",
-    "switchAvalanche": "Switch to Aurora Chain",
+    "switchNetwork": "Switch to Aurora Chain",
     "errorConnectingRefresh": "Error connecting. Try refreshing the page.",
     "connectToWallet": "Connect to a wallet",
     "newToAvalanche": "New to Aurora? ",
