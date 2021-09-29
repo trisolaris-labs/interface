@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from 'rebass'
-import { ChainId, Currency, currencyEquals, CETH, Token } from '@pangolindex/sdk'
+import { ChainId, Currency, currencyEquals, CETH, Token } from '@trisolaris/sdk'
 import styled from 'styled-components'
 
 import { SUGGESTED_BASES } from '../../constants'

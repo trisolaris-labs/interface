@@ -1,4 +1,4 @@
-import { Currency } from '@pangolindex/sdk'
+import { Currency } from '@trisolaris/sdk'
 import React, { useCallback, useEffect, useState } from 'react'
 import ReactGA from 'react-ga'
 import useLast from '../../hooks/useLast'

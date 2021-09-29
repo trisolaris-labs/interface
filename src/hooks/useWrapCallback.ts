@@ -1,4 +1,4 @@
-import { Currency, currencyEquals, CETH, WETH } from '@pangolindex/sdk'
+import { Currency, currencyEquals, CETH, WETH } from '@trisolaris/sdk'
 import { useMemo } from 'react'
 import { tryParseAmount } from '../state/swap/hooks'
 import { useTransactionAdder } from '../state/transactions/hooks'

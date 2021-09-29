@@ -1,5 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
-import { WETH } from '@pangolindex/sdk'
+import { WETH } from '@trisolaris/sdk'
 import IUniswapV2Pair_ABI from '../constants/abis/polygon/IUniswapV2Pair.json'
 import { abi as STAKING_REWARDS_ABI } from '@pangolindex/governance/artifacts/contracts/StakingRewards.sol/StakingRewards.json'
 import { abi as AIRDROP_ABI } from '@pangolindex/governance/artifacts/contracts/Airdrop.sol/Airdrop.json'

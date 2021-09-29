@@ -1,4 +1,4 @@
-import { Trade, TradeType } from '@pangolindex/sdk'
+import { Trade, TradeType } from '@trisolaris/sdk'
 import React, { useContext, useMemo, useState } from 'react'
 import { Repeat } from 'react-feather'
 import { Text } from 'rebass'

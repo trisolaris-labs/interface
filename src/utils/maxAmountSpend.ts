@@ -1,4 +1,4 @@
-import { CurrencyAmount, CETH, JSBI } from '@pangolindex/sdk'
+import { CurrencyAmount, CETH, JSBI } from '@trisolaris/sdk'
 import { MIN_ETH } from '../constants'
 
 /**

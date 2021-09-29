@@ -1,4 +1,4 @@
-import { Token, TokenAmount } from '@pangolindex/sdk'
+import { Token, TokenAmount } from '@trisolaris/sdk'
 import { useMemo } from 'react'
 
 import { useTokenContract } from '../hooks/useContract'

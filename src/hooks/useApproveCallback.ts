@@ -1,6 +1,6 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Trade, TokenAmount, CurrencyAmount, CETH, ChainId, ROUTER_ADDRESS } from '@pangolindex/sdk'
+import { Trade, TokenAmount, CurrencyAmount, CETH, ChainId, ROUTER_ADDRESS } from '@trisolaris/sdk'
 import { useCallback, useMemo } from 'react'
 import { useTokenAllowance } from '../data/Allowances'
 import { Field } from '../state/swap/actions'

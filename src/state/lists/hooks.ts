@@ -1,10 +1,10 @@
-import { ChainId, Token } from '@pangolindex/sdk'
+import { ChainId, Token } from '@trisolaris/sdk'
 import { Tags, TokenInfo, TokenList } from '@pangolindex/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../index'
 import { AEB_TOKENLIST } from '../../constants/lists'
-import { WETH } from '@pangolindex/sdk'
+import { WETH } from '@trisolaris/sdk'
 import { PNG } from '../../constants'
 
 type TagDetails = Tags[keyof Tags]

@@ -1,4 +1,4 @@
-import { ChainId } from '@pangolindex/sdk'
+import { ChainId } from '@trisolaris/sdk'
 import MULTICALL_ABI from './abi.json'
 
 const MULTICALL_NETWORKS = {

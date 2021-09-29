@@ -1,4 +1,4 @@
-import { Currency, CETH, Token } from '@pangolindex/sdk'
+import { Currency, CETH, Token } from '@trisolaris/sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 

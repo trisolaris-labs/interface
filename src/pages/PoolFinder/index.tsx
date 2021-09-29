@@ -1,4 +1,4 @@
-import { Currency, CETH, JSBI, TokenAmount } from '@pangolindex/sdk'
+import { Currency, CETH, JSBI, TokenAmount } from '@trisolaris/sdk'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Plus } from 'react-feather'
 import { Text } from 'rebass'

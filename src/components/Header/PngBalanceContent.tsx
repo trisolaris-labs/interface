@@ -1,4 +1,4 @@
-import { TokenAmount, WETH, JSBI } from '@pangolindex/sdk'
+import { TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
 import React, { useMemo, useState } from 'react'
 import { X } from 'react-feather'
 import styled from 'styled-components'

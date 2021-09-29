@@ -1,6 +1,6 @@
 // TODO: Actually calculate price
 
-import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from '@pangolindex/sdk'
+import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from '@trisolaris/sdk'
 import { useMemo } from 'react'
 import { DAI } from '../constants'
 import { PairState, usePairs } from '../data/Reserves'

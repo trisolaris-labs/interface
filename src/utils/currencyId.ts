@@ -1,4 +1,4 @@
-import { Currency, CETH, Token } from '@pangolindex/sdk'
+import { Currency, CETH, Token } from '@trisolaris/sdk'
 
 export function currencyId(currency: Currency): string {
   if (currency === CETH) return 'AVAX'

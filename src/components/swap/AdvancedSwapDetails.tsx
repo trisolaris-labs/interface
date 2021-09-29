@@ -1,4 +1,4 @@
-import { Trade, TradeType } from '@pangolindex/sdk'
+import { Trade, TradeType } from '@trisolaris/sdk'
 import React, { useContext } from 'react'
 import { ThemeContext } from 'styled-components'
 import { Field } from '../../state/swap/actions'

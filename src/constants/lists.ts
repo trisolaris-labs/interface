@@ -1,4 +1,4 @@
-import { ChainId } from '@pangolindex/sdk'
+import { ChainId } from '@trisolaris/sdk'
  
 // the Pangolin Default token list lives here
 export const AEB_TOKENLIST = 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/aeb.tokenlist.json'

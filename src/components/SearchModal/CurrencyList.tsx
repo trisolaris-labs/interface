@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, currencyEquals, CETH, Token } from '@pangolindex/sdk'
+import { Currency, CurrencyAmount, currencyEquals, CETH, Token } from '@trisolaris/sdk'
 import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
