@@ -25,7 +25,7 @@ import Web3Status from '../Web3Status'
 import Modal from '../Modal'
 import PngBalanceContent from './PngBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
-import { ANALYTICS_PAGE } from '../../constants'
+import { ANALYTICS_PAGE, NETWORK_LABELS } from '../../constants'
 import LanguageSelection from '../LanguageSelection'
 
 const HeaderFrame = styled.div`
@@ -252,13 +252,6 @@ const StyledExternalLink = styled(ExternalLink).attrs({
       display: none;
 `}
 `
-
-const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: 'Fuji',
-  [ChainId.AVALANCHE]: 'Avalanche',
-  [ChainId.POLYGON]: 'Polygon',
-  [ChainId.AURORA]: 'Aurora'
-}
 
 export default function Header() {
   const { account, chainId } = useActiveWeb3React()

@@ -146,6 +146,15 @@ export const CHAIN_PARAMS = {
 }
 
 
+export const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
+  [ChainId.FUJI]: 'Fuji',
+  [ChainId.AVALANCHE]: 'Avalanche',
+  [ChainId.POLYGON]: 'Polygon',
+  [ChainId.AURORA]: 'Aurora'
+}
+
+
+
 export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
   [ChainId.FUJI]: 'https://cchain.explorer.avax-test.network',
   [ChainId.AVALANCHE]: 'https://cchain.explorer.avax.network',
