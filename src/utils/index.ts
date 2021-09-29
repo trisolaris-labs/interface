@@ -4,6 +4,7 @@ import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import IUniswapV2Router02_ABI from '../constants/abis/polygon/IUniswapV2Router02.json'
+import { ETHERSCAN_PREFIXES } from '../constants/index'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, CETH, ROUTER_ADDRESS } from '@pangolindex/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
 
@@ -15,14 +16,6 @@ export function isAddress(value: any): string | false {
     return false
   }
 }
-
-const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
-  43113: 'https://cchain.explorer.avax-test.network',
-  43114: 'https://cchain.explorer.avax.network',
-  137: 'https://polygonscan.com/',
-  1313161554: 'https://etherscan.io/',
-}
-//TODO NEED TO CHANGE WITH CORRECT EXPLORER LINK
 
 export function getEtherscanLink(
   chainId: ChainId,
