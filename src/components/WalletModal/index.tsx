@@ -281,7 +281,7 @@ export default function WalletModal({
     })
   }
 
-  function addAvalancheNetwork() {
+  function addNetwork() {
     injected.getProvider().then(provider => {
       provider
         .request({
@@ -312,7 +312,7 @@ export default function WalletModal({
               <>
                 <h5>{t('Please connect to')}</h5>
                 {isMetamask && (
-                  <ButtonLight onClick={addAvalancheNetwork}>{t('walletModal.switchAvalanche')}</ButtonLight>
+                  <ButtonLight onClick={addNetwork}>{t('walletModal.switchNetwork')}</ButtonLight>
                 )}
               </>
             ) : (
