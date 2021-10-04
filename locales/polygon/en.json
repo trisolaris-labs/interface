@@ -239,7 +239,7 @@
     "wrongNetwork": "Wrong Network",
     "errorConnecting": "Error connecting",
     "pleaseConnectAvalanche": "Please connect to the appropriate Polygon network.",
-    "switchAvalanche": "Switch to Polygon Chain",
+    "switchNetwork": "Switch to Polygon Chain",
     "errorConnectingRefresh": "Error connecting. Try refreshing the page.",
     "connectToWallet": "Connect to a wallet",
     "newToAvalanche": "New to Polygon? ",
