@@ -2,7 +2,6 @@ import React, { useRef } from 'react'
 import { MessageCircle, Send, Info, Twitter, GitHub, Book } from 'react-feather'
 import styled from 'styled-components'
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
-import { LANDING_PAGE } from '../../constants'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleModal } from '../../state/application/hooks'
@@ -10,8 +9,6 @@ import { useModalOpen, useToggleModal } from '../../state/application/hooks'
 import { StyledMenu, StyledMenuButton, MenuFlyout, MenuItem } from '../StyledMenu'
 
 import { useTranslation } from 'react-i18next'
-
-const TutorialPage = LANDING_PAGE + 'tutorials'
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {

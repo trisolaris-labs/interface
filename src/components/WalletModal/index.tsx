@@ -8,20 +8,19 @@ import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { injected } from '../../connectors'
-import { LANDING_PAGE, SUPPORTED_WALLETS, CHAIN_PARAMS } from '../../constants'
+import { SUPPORTED_WALLETS, CHAIN_PARAMS } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ExternalLink } from '../../theme'
 import AccountDetails from '../AccountDetails'
 import { ButtonLight } from '../../components/Button'
-
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
 import { useTranslation } from 'react-i18next'
 
-const WALLET_TUTORIAL = LANDING_PAGE + 'tutorials/getting-started/#set-up-metamask'
+const WALLET_TUTORIAL = 'https://metamask.io/faqs'
 
 const CloseIcon = styled.div`
   position: absolute;

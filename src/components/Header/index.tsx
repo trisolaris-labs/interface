@@ -25,7 +25,7 @@ import Web3Status from '../Web3Status'
 import Modal from '../Modal'
 import PngBalanceContent from './PngBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
-import { ANALYTICS_PAGE, NETWORK_LABELS } from '../../constants'
+import { NETWORK_LABELS, BASE_CURRENCIES } from '../../constants'
 import LanguageSelection from '../LanguageSelection'
 
 const HeaderFrame = styled.div`
@@ -298,22 +298,6 @@ export default function Header() {
           >
             {t('header.pool')}
           </StyledNavLink>
-          {/* <StyledNavLink
-            id={`stake-nav-link`}
-            to={'/png/1'}
-            isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/png')}
-          >
-            PNG
-          </StyledNavLink> */}
-          {/* <StyledNavLink id={`stake-nav-link`} to={'/vote'}>
-            {t('header.vote')}
-          </StyledNavLink>
-          <StyledExternalLink id={`info-nav-link`} href={ANALYTICS_PAGE}>
-            {t('header.charts')} <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
-          <StyledExternalLink id={`gov-nav-link`} href={'https://gov.pangolin.exchange'}>
-            {t('header.forum')} <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink> */}
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
@@ -351,9 +335,9 @@ export default function Header() {
             </PNGWrapper>
           )}
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-            {account && userEthBalance ? (
+            {account && userEthBalance && chainId && BASE_CURRENCIES[chainId] ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                {userEthBalance?.toSignificant(4)} ETH
+                {userEthBalance?.toSignificant(4)} {BASE_CURRENCIES[chainId]}
               </BalanceText>
             ) : null}
             <Web3Status />

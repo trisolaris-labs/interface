@@ -27,6 +27,6 @@ export const injected = new InjectedConnector({
 
 export const walletlink = new WalletLinkConnector({
   url: NETWORK_URL,
-  appName: 'Pangolin',
-  appLogoUrl: 'https://raw.githubusercontent.com/pangolindex/interface/master/public/images/384x384_App_Icon.png'
+  appName: 'Trisolaris',
+  appLogoUrl: 'https://raw.githubusercontent.com/trisolaris-labs/interface/main/public/favicon.png'
 })

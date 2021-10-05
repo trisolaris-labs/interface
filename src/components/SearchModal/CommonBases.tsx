@@ -3,7 +3,7 @@ import { Text } from 'rebass'
 import { ChainId, Currency, currencyEquals, CETH, Token } from '@trisolaris/sdk'
 import styled from 'styled-components'
 
-import { SUGGESTED_BASES } from '../../constants'
+import { SUGGESTED_BASES, BASE_CURRENCIES } from '../../constants'
 import { AutoColumn } from '../Column'
 import QuestionHelper from '../QuestionHelper'
 import { AutoRow } from '../Row'
@@ -57,6 +57,11 @@ export default function CommonBases({
           <Text fontWeight={500} fontSize={16}>
             ETH
           </Text>
+          {chainId && BASE_CURRENCIES[chainId] ? (
+              <Text fontWeight={500} fontSize={16}>
+              {BASE_CURRENCIES[chainId]}
+            </Text>
+            ) : null}
         </BaseWrapper>
         {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {
           const selected = selectedCurrency instanceof Token && selectedCurrency.address === token.address
