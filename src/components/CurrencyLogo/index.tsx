@@ -5,6 +5,7 @@ import styled from 'styled-components'
 // import AvaxLogo from '../../assets/images/avalanche_token_round.png'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
+import { useActiveWeb3React } from '../../hooks'
 import Logo from '../Logo'
 
 const getTokenLogoURL = (address: string) =>
@@ -33,6 +34,7 @@ export default function CurrencyLogo({
   size?: string
   style?: React.CSSProperties
 }) {
+  const { chainId } = useActiveWeb3React()
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
 
   const srcs: string[] = useMemo(() => {
@@ -48,9 +50,14 @@ export default function CurrencyLogo({
     return []
   }, [currency, uriLocations])
 
-  if (currency === CETH) {
-    return <StyledEthereumLogo src={getTokenLogoURL('0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB')} size={size} style={style} />
+  if (currency === CETH){
+    if (chainId === 137) {
+      return <StyledEthereumLogo src={'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0/logo.png'} size={size} style={style} />
+    }
+    else {
+      return <StyledEthereumLogo src={getTokenLogoURL('0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB')} size={size} style={style} />
   }
+}
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
 }

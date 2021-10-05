@@ -19,7 +19,7 @@ import { isTokenOnList } from '../../utils'
 import { useTranslation } from 'react-i18next'
 
 function currencyKey(currency: Currency): string {
-  return currency instanceof Token ? currency.address : currency === CETH ? 'AVAX' : ''
+  return currency instanceof Token ? currency.address : currency === CETH ? 'ETH' : ''
 }
 
 const StyledBalanceText = styled(Text)`
