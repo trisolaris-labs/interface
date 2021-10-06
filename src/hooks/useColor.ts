@@ -5,7 +5,7 @@ import { hex } from 'wcag-contrast'
 import { Token } from '@trisolaris/sdk'
 
 async function getColorFromToken(token: Token): Promise<string | null> {
-  const path = `https://raw.githubusercontent.com/pangolindex/tokens/main/assets/${token.address}/logo.png`
+  const path = `https://raw.githubusercontent.com/trisolaris-labs/tokens/main/assets/${token.address}/logo.png`
 
   return Vibrant.from(path)
     .getPalette()

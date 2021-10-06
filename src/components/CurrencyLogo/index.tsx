@@ -9,7 +9,7 @@ import { useActiveWeb3React } from '../../hooks'
 import Logo from '../Logo'
 
 const getTokenLogoURL = (address: string) =>
-  `https://raw.githubusercontent.com/pangolindex/tokens/main/assets/${address}/logo.png`
+  `https://raw.githubusercontent.com/trisolaris-labs/tokens/main/assets/${address}/logo.png`
 
 export const StyledEthereumLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
@@ -55,7 +55,7 @@ export default function CurrencyLogo({
       return <StyledEthereumLogo src={'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0/logo.png'} size={size} style={style} />
     }
     else {
-      return <StyledEthereumLogo src={getTokenLogoURL('0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB')} size={size} style={style} />
+      return <StyledEthereumLogo src={'https://raw.githubusercontent.com/pangolindex/tokens/main/assets/0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB/logo.png'} size={size} style={style} />
   }
 }
 
