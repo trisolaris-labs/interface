@@ -7,7 +7,7 @@ export const DEFI_TOKEN_LIST = 'https://raw.githubusercontent.com/pangolindex/to
 export const AVAX_STABLECOIN_TOKEN_LIST = 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/stablecoin.tokenlist.json'
 export const AVAX_BRIDGE_LIST = 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/ab.tokenlist.json'
 export const POLYGON_BRIDGE_LIST = 'https://gist.githubusercontent.com/baboobhaiya/8ba0cdfc6d942e2d828500dee3ff1a16/raw/07dc935f7ebc8e1716296719b8b06ebf5ee977bd/polygon_token_list'
-export const AURORA_BRIDGE_LIST = 'https://gist.githubusercontent.com/0xchain1/25ac542539b392891656a79bcff5bb92/raw/9c3df8b190192baef21d0c21e7365eaa8072376f/aurora_token_list'
+export const AURORA_BRIDGE_LIST = 'https://gist.githubusercontent.com/0xchain1/b242fa2ab2b279cdf2eb157fb6fc2faa/raw/db07067aaa08dceacaefb41fa7b282235f26d214/aurora_tesing_list'
 
 
 const DEFAULT_LISTS: Map<ChainId, string> =
