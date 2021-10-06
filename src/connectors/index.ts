@@ -28,5 +28,5 @@ export const injected = new InjectedConnector({
 export const walletlink = new WalletLinkConnector({
   url: NETWORK_URL,
   appName: 'Trisolaris',
-  appLogoUrl: 'https://raw.githubusercontent.com/trisolaris-labs/interface/main/public/favicon.png'
+  appLogoUrl: 'https://raw.githubusercontent.com/trisolaris-labs/interface/master/public/favicon.png'
 })

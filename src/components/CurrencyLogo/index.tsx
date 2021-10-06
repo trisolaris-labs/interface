@@ -9,7 +9,7 @@ import { useActiveWeb3React } from '../../hooks'
 import Logo from '../Logo'
 
 const getTokenLogoURL = (address: string) =>
-  `https://raw.githubusercontent.com/trisolaris-labs/tokens/main/assets/${address}/logo.png`
+  `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${address}/logo.png`
 
 export const StyledEthereumLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
