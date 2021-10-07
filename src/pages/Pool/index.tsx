@@ -127,10 +127,10 @@ export default function Pool() {
                 </TYPE.mediumHeader>
               </HideSmall>
               <ButtonRow>
-                <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/create/AVAX">
+                <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/create/ETH">
                   {t('pool.createPair')}
                 </ResponsiveButtonSecondary>
-                <ResponsiveButtonPrimary id="join-pool-button" as={Link} padding="6px 8px" to="/add/AVAX">
+                <ResponsiveButtonPrimary id="join-pool-button" as={Link} padding="6px 8px" to="/add/ETH">
                   <Text fontWeight={500} fontSize={16}>
                     {t('pool.addLiquidity')}
                   </Text>
