@@ -2890,10 +2890,10 @@
     lz-string "^1.4.4"
     pretty-format "^26.6.2"
 
-"@trisolaris/sdk@1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@trisolaris/sdk/-/sdk-1.3.0.tgz#d542ce801ea173861d5734d1aff78f9d2a72bfa7"
-  integrity sha512-bTNQ23XG1ujer0O7ArOQhp9I+eukJOpdHEKV042NnmqT5anCweW/L1dPVmJlhpzpNpAK2tiSI4MfHiJeXCJYbA==
+"@trisolaris/sdk@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@trisolaris/sdk/-/sdk-1.4.0.tgz#c132386e38735f9397795c16778968e3f622ee40"
+  integrity sha512-fhF65F2R9I5WBaOJx/9jlHL+uvfGGh3Neb7MCRNsWFl3ZBO/ctM1vDU/cUzIp9wWifiNFJtqYy0m9Fgpl05dnw==
   dependencies:
     "@openzeppelin/cli" "^2.8.2"
     big.js "^5.2.2"
