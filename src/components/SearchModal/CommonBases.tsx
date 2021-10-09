@@ -54,9 +54,6 @@ export default function CommonBases({
           disable={selectedCurrency === CETH}
         >
           <CurrencyLogo currency={CETH} style={{ marginRight: 8 }} />
-          <Text fontWeight={500} fontSize={16}>
-            ETH
-          </Text>
           {chainId && BASE_CURRENCIES[chainId] ? (
               <Text fontWeight={500} fontSize={16}>
               {BASE_CURRENCIES[chainId]}
