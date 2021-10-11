@@ -22,7 +22,7 @@ export function getNetworkLibrary(): Web3Provider {
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [43113, 43114, 137, 1313161554]
+  supportedChainIds: [1313161554]
 })
 
 export const walletlink = new WalletLinkConnector({
