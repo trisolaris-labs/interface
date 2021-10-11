@@ -59,15 +59,15 @@ export function colors(darkMode: boolean): Colors {
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
 
     //primary colors
-    primary1: darkMode ? '#2172E5' : '#FF6B00',
-    primary2: darkMode ? '#3680E7' : '#FF6B00',
-    primary3: darkMode ? '#4D8FEA' : '#FF6B00',
-    primary4: darkMode ? '#376bad70' : '#FF6B00',
-    primary5: darkMode ? '#153d6f70' : '#FF6B00',
-    primary6: darkMode ? '#2172E5' : '#FFFFFF',
+    primary1: darkMode ? '#cc0058' : '#cc0058',
+    primary2: darkMode ? '#cc0058' : '#cc0058',
+    primary3: darkMode ? '#cc0058' : '#cc0058',
+    primary4: darkMode ? '#cc0058' : '#cc0058',
+    primary5: darkMode ? '#cc0058' : '#cc0058',
+    primary6: darkMode ? '#FFFFFF' : '#FFFFFF',
 
     // color text
-    primaryText1: darkMode ? '#6da8ff' : '#ffffff',
+    primaryText1: darkMode ? '#ffffff' : '#ffffff',
 
     // secondary colors
     secondary1: darkMode ? '#2172E5' : '#ff007a',
@@ -82,7 +82,7 @@ export function colors(darkMode: boolean): Colors {
     yellow2: '#F3841E',
     blue1: '#2172E5',
 
-    avaxRed: '#E84142'
+    avaxRed: '#e60063'
 
     // dont wanna forget these blue yet
     // blue4: darkMode ? '#153d6f70' : '#C4D9F8',
