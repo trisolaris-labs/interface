@@ -7,7 +7,7 @@ import ReactGA from 'react-ga'
 import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
-import { injected } from '../../connectors'
+import { injected, NETWORK_CHAIN_ID } from '../../connectors'
 import { SUPPORTED_WALLETS, CHAIN_PARAMS } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
@@ -19,6 +19,7 @@ import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
 import { useTranslation } from 'react-i18next'
+import { ChainId} from '@trisolaris/sdk'
 
 const WALLET_TUTORIAL = 'https://metamask.io/faqs'
 
@@ -281,11 +282,12 @@ export default function WalletModal({
   }
 
   function addNetwork() {
+    const chainID: ChainId = NETWORK_CHAIN_ID
     injected.getProvider().then(provider => {
       provider
         .request({
           method: 'wallet_addEthereumChain',
-          params: [CHAIN_PARAMS]
+          params: [CHAIN_PARAMS[chainID]]
         })
         .catch((error: any) => {
           console.log(error)
