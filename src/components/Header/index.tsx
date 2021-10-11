@@ -307,7 +307,7 @@ export default function Header() {
               <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
           </HideSmall>
-          {aggregateBalance && (
+          {/* {aggregateBalance && (
             //TODO - change false back to true when ready for token stats.
             <PNGWrapper onClick={() => setShowPngBalanceModal(false)}>
               <PNGAmount active={!!account} style={{ pointerEvents: 'auto' }}>
@@ -333,7 +333,7 @@ export default function Header() {
               </PNGAmount>
               <CardNoise />
             </PNGWrapper>
-          )}
+          )} */}
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance && chainId && BASE_CURRENCIES[chainId] ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
