@@ -43,10 +43,11 @@ export default function Menu() {
             <Info size={14} />
             {t('menu.code')}
           </MenuItem>
-          {/* <MenuItem id="link" href={TutorialPage}>
+          <MenuItem id="link" href="https://trisolaris-labs.github.io/docs/">
             <Book size={14} />
-            {t('menu.tutorials')}
+            {t('Docs')}
           </MenuItem>
+          {/* 
           <MenuItem id="link" href="https://t.me/pangolindex">
             <Send size={14} />
             {t('menu.telegram')}
