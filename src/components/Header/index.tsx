@@ -298,12 +298,18 @@ export default function Header() {
           >
             {t('header.pool')}
           </StyledNavLink>
+          <StyledExternalLink id="aurora-bridge" href={'https://aurora.dev/bridge'}>
+            Bridge from Ethereum <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink>
+          <StyledExternalLink id="aurora-bridge" href={'https://aurora.bridgetonear.org/'}>
+            Bridge from Near <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink>
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
         <HeaderElement>
         <HideSmall>
-            {chainId && NETWORK_LABELS[chainId] && (
+            {chainId && NETWORK_LABELS[chainId] && (  
               <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
           </HideSmall>
