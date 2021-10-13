@@ -11,5 +11,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
+          cache: 'yarn'
       - run: yarn install --frozen-lockfile
-      - run: yarn deploy
+      - run: CI=false && yarn deploy
