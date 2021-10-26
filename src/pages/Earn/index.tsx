@@ -239,14 +239,14 @@ export default function Earn({
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
-                <TYPE.white fontWeight={600}>{t('earnPage.pangolinLiquidityMining')}</TYPE.white>
+                <TYPE.white fontWeight={600}>{t('earnPage.liquidityMining')}</TYPE.white>
               </RowBetween>
               <RowBetween>
-                <TYPE.white fontSize={14}>{t('earnPage.depositPangolinLiquidity')}</TYPE.white>
+                <TYPE.white fontSize={14}>{t('earnPage.depositLiquidity')}</TYPE.white>
               </RowBetween>{' '}
               <ExternalLink
                 style={{ color: 'white', textDecoration: 'underline' }}
-                href="https://pangolin.exchange/litepaper"
+                href="https://medium.com/trisolaris-labs"
                 target="_blank"
               >
                 <TYPE.white fontSize={14}>{t('earnPage.readMoreAboutPng')}</TYPE.white>
