@@ -4,6 +4,8 @@
     "pool": "Pool",
     "vote": "Vote",
     "charts": "Charts",
+    "stake": "Stake",
+    "farm": "Farm",
     "forum": "Forum",
     "pngBreakDown": "Your PNG Breakdown",
     "balance": "Balance: ",
