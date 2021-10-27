@@ -300,7 +300,7 @@ export default function Header() {
           </StyledNavLink>
           <StyledNavLink
             id={`png-nav-link`}
-            to={'/farm'}
+            to={'/farm/1'}
             isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/png')}
           >
             {t('header.farm')}

@@ -73,7 +73,6 @@ export default function Earn({
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const stakingInfos = useStakingInfo(Number(version))
-
   const [poolCards, setPoolCards] = useState<any[]>()
   const [filteredPoolCards, setFilteredPoolCards] = useState<any[]>()
   const [searchQuery, setSearchQuery] = useState<string>('')
