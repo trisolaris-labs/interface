@@ -38,25 +38,25 @@ const STAKING: {
     stakingRewardAddress: '0xc5ef09BA1C648AaC27ECe9d9d11a500DB55547A5',
     version: 0,
     multiplier: 0
+  },
+  WETH_WBTC_V0: {
+    tokens: [WETH[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x01897e996EEfFf65AE9999C02D1d8D7E9e0C0352',
+    version: 0,
+    multiplier: 0
+  },
+  WETH_USDT_V1: {
+    tokens: [WETH[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x94C021845EfE237163831DAC39448cFD371279d6',
+    version: 1,
+    multiplier: 0
+  },
+  WETH_WBTC_V1: {
+    tokens: [WETH[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0xe968E9753fd2c323C2Fe94caFF954a48aFc18546',
+    version: 1,
+    multiplier: 0
   }
-  // WETH_WBTC_V0: {
-  //   tokens: [WETH[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
-  //   stakingRewardAddress: '0x01897e996EEfFf65AE9999C02D1d8D7E9e0C0352',
-  //   version: 0,
-  //   multiplier: 0
-  // },
-  // WETH_USDT_V1: {
-  //   tokens: [WETH[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
-  //   stakingRewardAddress: '0x94C021845EfE237163831DAC39448cFD371279d6',
-  //   version: 1,
-  //   multiplier: 0
-  // },
-  // WETH_WBTC_V1: {
-  //   tokens: [WETH[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
-  //   stakingRewardAddress: '0xe968E9753fd2c323C2Fe94caFF954a48aFc18546',
-  //   version: 1,
-  //   multiplier: 0
-  // }
 }
 
 // The first mapping in the list takes priority if multiple migrations exist from the same pool
