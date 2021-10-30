@@ -1,0 +1,219 @@
+import { ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
+export type AddressMap = { [chainId: number]: string }
+export const MASTERCHEF_ADDRESS: AddressMap = {
+  [ChainId.POLYGON]: '0xc5ef09BA1C648AaC27ECe9d9d11a500DB55547A5'
+}
+export enum Chef {
+  MASTERCHEF
+}
+
+import { NEVER_RELOAD, useSingleCallResult, useSingleContractMultipleData } from '../../state/multicall/hooks'
+import { Dispatch, useCallback, useEffect, useMemo, useState } from 'react'
+import { Contract } from '@ethersproject/contracts'
+import { PNG } from '../../constants'
+import { Zero } from '@ethersproject/constants'
+import concat from 'lodash/concat'
+import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
+import zip from 'lodash/zip'
+import { getAddress } from '@ethersproject/address'
+import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
+import { AddressZero } from '@ethersproject/constants'
+import MASTERCHEF_ABI from '../../constants/abis/masterchef.json'
+
+export function isAddress(value: any): string | false {
+  try {
+    return getAddress(value)
+  } catch {
+    return false
+  }
+}
+
+export function getSigner(library: Web3Provider, account: string): JsonRpcSigner {
+  return library.getSigner(account).connectUnchecked()
+}
+
+// account is optional
+export function getProviderOrSigner(library: Web3Provider, account?: string): Web3Provider | JsonRpcSigner {
+  return account ? getSigner(library, account) : library
+}
+
+export function getContract(address: string, ABI: any, library: Web3Provider, account?: string): Contract {
+  if (!isAddress(address) || address === AddressZero) {
+    throw Error(`Invalid 'address' parameter '${address}'.`)
+  }
+
+  return new Contract(address, ABI, getProviderOrSigner(library, account) as any)
+}
+
+export function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
+  const { library, account } = useActiveWeb3React()
+
+  return useMemo(() => {
+    if (!address || !ABI || !library) return null
+    try {
+      return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
+    } catch (error) {
+      console.error('Failed to get contract', error)
+      return null
+    }
+  }, [address, ABI, library, withSignerIfPossible, account])
+}
+
+export function useMasterChefContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(chainId && MASTERCHEF_ADDRESS[chainId], MASTERCHEF_ABI, withSignerIfPossible)
+}
+
+export function useChefContract(chef: Chef) {
+  const masterChefContract = useMasterChefContract()
+  //   const masterChefV2Contract = useMasterChefV2Contract()
+  //   const miniChefContract = useMiniChefContract()
+  const contracts = useMemo(
+    () => ({
+      [Chef.MASTERCHEF]: masterChefContract
+    }),
+    [masterChefContract]
+  )
+  return useMemo(() => {
+    return contracts[chef]
+  }, [contracts, chef])
+}
+
+const CHEFS = {
+  [ChainId.POLYGON]: [Chef.MASTERCHEF]
+}
+
+export function useChefContracts(chefs: Chef[]) {
+  const masterChefContract = useMasterChefContract()
+  const contracts = useMemo(
+    () => ({
+      [Chef.MASTERCHEF]: masterChefContract
+    }),
+    [masterChefContract]
+  )
+  return chefs.map(chef => contracts[chef])
+}
+
+export function useUserInfo(farm, token) {
+  const { account } = useActiveWeb3React()
+
+  const contract = useChefContract(farm.chef)
+
+  const args = useMemo(() => {
+    if (!account) {
+      return
+    }
+    return [String(farm.id), String(account)]
+  }, [farm, account])
+
+  const result = useSingleCallResult(args ? contract : null, 'userInfo', args)?.result
+
+  const value = result?.[0]
+
+  const amount = value ? JSBI.BigInt(value.toString()) : undefined
+
+  return amount ? CurrencyAmount : undefined
+}
+
+export function usePendingSushi(farm) {
+  const { account, chainId } = useActiveWeb3React()
+
+  const contract = useChefContract(farm.chef)
+
+  const args = useMemo(() => {
+    if (!account) {
+      return
+    }
+    return [String(farm.id), String(account)]
+  }, [farm, account])
+
+  const result = useSingleCallResult(args ? contract : null, 'pendingSushi', args)?.result
+
+  const value = result?.[0]
+
+  const amount = value ? JSBI.BigInt(value.toString()) : undefined
+
+  return amount ? CurrencyAmount.fromRawAmount(PNG[chainId], amount) : undefined
+}
+
+export function usePendingToken(farm, contract) {
+  const { account } = useActiveWeb3React()
+
+  const args = useMemo(() => {
+    if (!account || !farm) {
+      return
+    }
+    return [String(farm.pid), String(account)]
+  }, [farm, account])
+
+  const pendingTokens = useSingleContractMultipleData(
+    args ? contract : null,
+    'pendingTokens',
+    args.map(arg => [...arg, '0'])
+  )
+
+  return useMemo(() => pendingTokens, [pendingTokens])
+}
+
+export function useChefPositions(contract?: Contract | null, rewarder?: Contract | null, chainId = undefined) {
+  const { account } = useActiveWeb3React()
+
+  const numberOfPools = useSingleCallResult(contract ? contract : null, 'poolLength', undefined, NEVER_RELOAD)
+    ?.result?.[0]
+
+  const args = useMemo(() => {
+    if (!account || !numberOfPools) {
+      return
+    }
+    return [...Array(numberOfPools.toNumber()).keys()].map(pid => [String(pid), String(account)])
+  }, [numberOfPools, account])
+
+  const pendingSushi = useSingleContractMultipleData(args ? contract : null, 'pendingSushi', args)
+
+  const userInfo = useSingleContractMultipleData(args ? contract : null, 'userInfo', args)
+
+  // const pendingTokens = useSingleContractMultipleData(
+  //     rewarder,
+  //     'pendingTokens',
+  //     args.map((arg) => [...arg, '0'])
+  // )
+
+  const getChef = useCallback(() => {
+    if (MASTERCHEF_ADDRESS[chainId] === contract.address) {
+      return Chef.MASTERCHEF
+    }
+  }, [chainId, contract])
+
+  return useMemo(() => {
+    if (!pendingSushi || !userInfo) {
+      return []
+    }
+    return zip(pendingSushi, userInfo)
+      .map((data, i) => ({
+        id: args[i][0],
+        pendingSushi: data[0].result?.[0] || Zero,
+        amount: data[1].result?.[0] || Zero,
+        chef: getChef()
+        // pendingTokens: data?.[2]?.result,
+      }))
+      .filter(({ pendingSushi, amount }) => {
+        return (pendingSushi && !pendingSushi.isZero()) || (amount && !amount.isZero())
+      })
+  }, [args, getChef, pendingSushi, userInfo])
+}
+
+export function usePositions(chainId = undefined) {
+  const [masterChefV1Positions] = [useChefPositions(useMasterChefContract(), undefined, chainId)]
+  return masterChefV1Positions
+}
+
+/*
+    Currently expensive to render farm list item. The infinite scroll is used to
+    to minimize this impact. This hook pairs with it, keeping track of visible
+    items and passes this to <InfiniteScroll> component.
+  */
+export function useInfiniteScroll(items: any[]): [number, Dispatch<number>] {
+  const [itemsDisplayed, setItemsDisplayed] = useState(10)
+  useEffect(() => setItemsDisplayed(10), [items.length])
+  return [itemsDisplayed, setItemsDisplayed]
+}
