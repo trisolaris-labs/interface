@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { AutoColumn } from '../../components/Column'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import styled from 'styled-components'
-import { MIGRATIONS, STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
+import { STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
 import { TYPE, ExternalLink } from '../../theme'
 import PoolCard from '../../components/earn/PoolCard'
 import { RouteComponentProps, NavLink } from 'react-router-dom'
@@ -137,9 +137,6 @@ export default function Earn({
           stakingApr={stakingInfo.stakingApr}
           key={stakingInfo.stakingRewardAddress}
           stakingInfo={stakingInfo}
-          migration={
-            MIGRATIONS.find(migration => migration.from.stakingRewardAddress === stakingInfo.stakingRewardAddress)?.to
-          }
           version={version}
         />
       ))
@@ -172,18 +169,6 @@ export default function Earn({
             return 1
           return 0
         })
-        .sort(function(info_a, info_b) {
-          // Bring pools that require migration to the top
-          const aCanMigrate = MIGRATIONS.find(
-            migration => migration.from.stakingRewardAddress === info_a.stakingRewardAddress
-          )?.to
-          const bCanMigrate = MIGRATIONS.find(
-            migration => migration.from.stakingRewardAddress === info_b.stakingRewardAddress
-          )?.to
-          if (aCanMigrate && !bCanMigrate) return -1
-          if (!aCanMigrate && bCanMigrate) return 1
-          return 0
-        })
         .map(stakingInfo => {
           return fetch(`https://api.pangolin.exchange/pangolin/apr/${stakingInfo.stakingRewardAddress}`)
             .then(res => res.json())
@@ -201,9 +186,6 @@ export default function Earn({
           stakingApr={stakingInfo.stakingApr}
           key={stakingInfo.stakingRewardAddress}
           stakingInfo={stakingInfo}
-          migration={
-            MIGRATIONS.find(migration => migration.from.stakingRewardAddress === stakingInfo.stakingRewardAddress)?.to
-          }
           version={version}
         />
       ))
