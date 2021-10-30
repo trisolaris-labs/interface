@@ -14,7 +14,7 @@ import {
   RedirectOldAddLiquidityPathStructure,
   RedirectToAddLiquidity
 } from './AddLiquidity/redirects'
-import EarnTri from './EarnTri'
+import EarnTri from './Farm'
 import Manage from './Earn/Manage'
 import Pool from './Pool'
 import Buy from './Buy'

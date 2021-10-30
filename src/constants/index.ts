@@ -245,6 +245,9 @@ export const DEFAULT_DEADLINE_FROM_NOW = 60 * 60
 
 export const BIG_INT_ZERO = JSBI.BigInt(0)
 
+export const ZERO_PERCENT = new Percent('0')
+export const ONE_HUNDRED_PERCENT = new Percent('1')
+
 // one basis point
 export const ONE_BIPS = new Percent(JSBI.BigInt(1), JSBI.BigInt(10000))
 export const BIPS_BASE = JSBI.BigInt(10000)
