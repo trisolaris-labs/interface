@@ -1,6 +1,10 @@
 import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WETH, Pair } from '@trisolaris/sdk'
 import { useMemo } from 'react'
-import { USDT, WBTC, PNG } from '../../constants'
+import {
+  USDT,
+  WBTC,
+  PNG
+} from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
@@ -36,20 +40,20 @@ const STAKING: {
     multiplier: 0
   },
   WETH_WBTC_V0: {
-    tokens: [WETH[ChainId.POLYGON], WBTC[ChainId.POLYGON]],
-    stakingRewardAddress: '0xc5ef09BA1C648AaC27ECe9d9d11a500DB55547A5',
+    tokens: [WETH[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x01897e996EEfFf65AE9999C02D1d8D7E9e0C0352',
     version: 0,
     multiplier: 0
   },
   WETH_USDT_V1: {
-    tokens: [WETH[ChainId.POLYGON], USDT[ChainId.POLYGON]],
-    stakingRewardAddress: '0xc5ef09BA1C648AaC27ECe9d9d11a500DB55547A5',
+    tokens: [WETH[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0x94C021845EfE237163831DAC39448cFD371279d6',
     version: 1,
     multiplier: 0
   },
   WETH_WBTC_V1: {
-    tokens: [WETH[ChainId.POLYGON], WBTC[ChainId.POLYGON]],
-    stakingRewardAddress: '0xc5ef09BA1C648AaC27ECe9d9d11a500DB55547A5',
+    tokens: [WETH[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
+    stakingRewardAddress: '0xe968E9753fd2c323C2Fe94caFF954a48aFc18546',
     version: 1,
     multiplier: 0
   }
@@ -64,7 +68,8 @@ export const STAKING_REWARDS_CURRENT_VERSION = Math.max(...Object.values(STAKING
 export const STAKING_REWARDS_INFO: {
   [chainId in ChainId]?: Staking[][]
 } = {
-  [ChainId.POLYGON]: [STAKING_V0, STAKING_V1]
+  [ChainId.AVALANCHE]: [STAKING_V0, STAKING_V1],
+  [ChainId.AURORA]: [STAKING_V0]
 }
 
 export interface StakingInfo {
@@ -107,7 +112,7 @@ const calculateTotalStakedAmountInAvaxFromPng = function(
   reserveInPng: JSBI
 ): TokenAmount {
   if (JSBI.EQ(amountAvailable, JSBI.BigInt(0))) {
-    return new TokenAmount(WETH[ChainId.POLYGON], JSBI.BigInt(0))
+    return new TokenAmount(WETH[ChainId.AVALANCHE], JSBI.BigInt(0))
   }
 
   const oneToken = JSBI.BigInt(1000000000000000000)
@@ -115,7 +120,7 @@ const calculateTotalStakedAmountInAvaxFromPng = function(
   const valueOfPngInAvax = JSBI.divide(JSBI.multiply(reserveInPng, avaxPngRatio), oneToken)
 
   return new TokenAmount(
-    WETH[ChainId.POLYGON],
+    WETH[ChainId.AVALANCHE],
     JSBI.divide(
       JSBI.multiply(
         JSBI.multiply(amountStaked, valueOfPngInAvax),
@@ -134,7 +139,7 @@ const calculateTotalStakedAmountInAvax = function(
   if (JSBI.GT(amountAvailable, 0)) {
     // take the total amount of LP tokens staked, multiply by AVAX value of all LP tokens, divide by all LP tokens
     return new TokenAmount(
-      WETH[ChainId.POLYGON],
+      WETH[ChainId.AVALANCHE],
       JSBI.divide(
         JSBI.multiply(
           JSBI.multiply(amountStaked, reserveInWavax),
@@ -144,7 +149,7 @@ const calculateTotalStakedAmountInAvax = function(
       )
     )
   } else {
-    return new TokenAmount(WETH[ChainId.POLYGON], JSBI.BigInt(0))
+    return new TokenAmount(WETH[ChainId.AVALANCHE], JSBI.BigInt(0))
   }
 }
 
@@ -167,7 +172,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
     [chainId, pairToFilterBy, version]
   )
 
-  const png = PNG[ChainId.POLYGON]
+  const png = PNG[ChainId.AVALANCHE]
 
   const rewardsAddresses = useMemo(() => info.map(({ stakingRewardAddress }) => stakingRewardAddress), [info])
 
@@ -175,14 +180,9 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
 
   // get all the info from the staking rewards contracts
   const tokens = useMemo(() => info.map(({ tokens }) => tokens), [info])
-  const balances = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'userInfo', accountArg)
-  const earnedAmounts = useMultipleContractSingleData(
-    rewardsAddresses,
-    STAKING_REWARDS_INTERFACE,
-    'pendingTri',
-    accountArg
-  )
-  const stakingTotalSupplies = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'poolInfo')
+  const balances = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'balanceOf', accountArg)
+  const earnedAmounts = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'earned', accountArg)
+  const stakingTotalSupplies = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'totalSupply')
   const pairs = usePairs(tokens)
 
   const pairAddresses = useMemo(() => {
@@ -193,7 +193,7 @@ export function useStakingInfo(version: number, pairToFilterBy?: Pair | null): S
 
   const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply')
 
-  const [avaxPngPairState, avaxPngPair] = usePair(WETH[ChainId.POLYGON], png)
+  const [avaxPngPairState, avaxPngPair] = usePair(WETH[ChainId.AVALANCHE], png)
 
   // tokens per second, constants
   const rewardRates = useMultipleContractSingleData(

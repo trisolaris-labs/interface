@@ -1,4 +1,17 @@
-import { ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
+import { ChainId, CurrencyAmount, JSBI, Token } from '@trisolaris/sdk'
+import { NEVER_RELOAD, useSingleCallResult, useSingleContractMultipleData } from '../../state/multicall/hooks'
+import { Dispatch, useCallback, useEffect, useMemo, useState } from 'react'
+import { Contract } from '@ethersproject/contracts'
+import { PNG } from '../../constants'
+import { Zero } from '@ethersproject/constants'
+import concat from 'lodash/concat'
+import { useActiveWeb3React } from '../../hooks'
+import zip from 'lodash/zip'
+import { getAddress } from '@ethersproject/address'
+import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
+import { AddressZero } from '@ethersproject/constants'
+import MASTERCHEF_ABI from '../../constants/abis/masterchef.json'
+
 export type AddressMap = { [chainId: number]: string }
 export const MASTERCHEF_ADDRESS: AddressMap = {
   [ChainId.POLYGON]: '0xc5ef09BA1C648AaC27ECe9d9d11a500DB55547A5'
@@ -6,19 +19,6 @@ export const MASTERCHEF_ADDRESS: AddressMap = {
 export enum Chef {
   MASTERCHEF
 }
-
-import { NEVER_RELOAD, useSingleCallResult, useSingleContractMultipleData } from '../../state/multicall/hooks'
-import { Dispatch, useCallback, useEffect, useMemo, useState } from 'react'
-import { Contract } from '@ethersproject/contracts'
-import { PNG } from '../../constants'
-import { Zero } from '@ethersproject/constants'
-import concat from 'lodash/concat'
-import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
-import zip from 'lodash/zip'
-import { getAddress } from '@ethersproject/address'
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
-import { AddressZero } from '@ethersproject/constants'
-import MASTERCHEF_ABI from '../../constants/abis/masterchef.json'
 
 export function isAddress(value: any): string | false {
   try {
@@ -94,7 +94,7 @@ export function useChefContracts(chefs: Chef[]) {
   return chefs.map(chef => contracts[chef])
 }
 
-export function useUserInfo(farm, token) {
+export function useUserInfo(farm: any, token: any) {
   const { account } = useActiveWeb3React()
 
   const contract = useChefContract(farm.chef)
@@ -112,10 +112,10 @@ export function useUserInfo(farm, token) {
 
   const amount = value ? JSBI.BigInt(value.toString()) : undefined
 
-  return amount ? CurrencyAmount : undefined
+  return amount ? CurrencyAmount.fromRawAmount(token, amount) : undefined
 }
 
-export function usePendingSushi(farm) {
+export function usePendingSushi(farm: any) {
   const { account, chainId } = useActiveWeb3React()
 
   const contract = useChefContract(farm.chef)
@@ -133,10 +133,12 @@ export function usePendingSushi(farm) {
 
   const amount = value ? JSBI.BigInt(value.toString()) : undefined
 
-  return amount ? CurrencyAmount.fromRawAmount(PNG[chainId], amount) : undefined
+  const tokenPNG = new Token(ChainId.POLYGON, '0x831753dd7087cac61ab5644b308642cc1c33dc13', 18, 'QUICK', 'Quick')
+
+  return amount ? CurrencyAmount.fromRawAmount(tokenPNG, amount) : undefined
 }
 
-export function usePendingToken(farm, contract) {
+export function usePendingToken(farm: any, contract: any) {
   const { account } = useActiveWeb3React()
 
   const args = useMemo(() => {
@@ -149,7 +151,7 @@ export function usePendingToken(farm, contract) {
   const pendingTokens = useSingleContractMultipleData(
     args ? contract : null,
     'pendingTokens',
-    args.map(arg => [...arg, '0'])
+    args!.map(arg => [...arg, '0'])
   )
 
   return useMemo(() => pendingTokens, [pendingTokens])
@@ -168,9 +170,9 @@ export function useChefPositions(contract?: Contract | null, rewarder?: Contract
     return [...Array(numberOfPools.toNumber()).keys()].map(pid => [String(pid), String(account)])
   }, [numberOfPools, account])
 
-  const pendingSushi = useSingleContractMultipleData(args ? contract : null, 'pendingSushi', args)
+  const pendingSushi = useSingleContractMultipleData(args ? contract : null, 'pendingSushi', args!)
 
-  const userInfo = useSingleContractMultipleData(args ? contract : null, 'userInfo', args)
+  const userInfo = useSingleContractMultipleData(args ? contract : null, 'userInfo', args!)
 
   // const pendingTokens = useSingleContractMultipleData(
   //     rewarder,
@@ -179,7 +181,7 @@ export function useChefPositions(contract?: Contract | null, rewarder?: Contract
   // )
 
   const getChef = useCallback(() => {
-    if (MASTERCHEF_ADDRESS[chainId] === contract.address) {
+    if (MASTERCHEF_ADDRESS[chainId!] === contract!.address) {
       return Chef.MASTERCHEF
     }
   }, [chainId, contract])
@@ -190,9 +192,9 @@ export function useChefPositions(contract?: Contract | null, rewarder?: Contract
     }
     return zip(pendingSushi, userInfo)
       .map((data, i) => ({
-        id: args[i][0],
-        pendingSushi: data[0].result?.[0] || Zero,
-        amount: data[1].result?.[0] || Zero,
+        id: args![i][0],
+        pendingSushi: data[0]!.result?.[0] || Zero,
+        amount: data[1]!.result?.[0] || Zero,
         chef: getChef()
         // pendingTokens: data?.[2]?.result,
       }))
