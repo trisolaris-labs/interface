@@ -14,6 +14,7 @@ import { JSBI } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { SearchInput } from '../../components/SearchModal/styleds'
 import useDebounce from '../../hooks/useDebounce'
+import { usePositions } from '../../state/stake/hooks-sushi'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
@@ -96,8 +97,6 @@ export default function Earn({
     setFilteredPoolCards(filtered)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [poolCards, debouncedSearchQuery])
-
-
 
   return (
     <PageWrapper gap="lg" justify="center">
