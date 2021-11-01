@@ -12,6 +12,7 @@ import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { AddressZero } from '@ethersproject/constants'
 import MASTERCHEF_ABI from '../../constants/abis/masterchef.json'
 
+
 export type AddressMap = { [chainId: number]: string }
 export const MASTERCHEF_ADDRESS: AddressMap = {
   [ChainId.POLYGON]: '0xc5ef09BA1C648AaC27ECe9d9d11a500DB55547A5'
@@ -127,7 +128,7 @@ export function usePendingSushi(farm: any) {
     return [String(farm.id), String(account)]
   }, [farm, account])
 
-  const result = useSingleCallResult(args ? contract : null, 'pendingSushi', args)?.result
+  const result = useSingleCallResult(args ? contract : null, 'pendingTri', args)?.result
 
   const value = result?.[0]
 
@@ -170,7 +171,7 @@ export function useChefPositions(contract?: Contract | null, rewarder?: Contract
     return [...Array(numberOfPools.toNumber()).keys()].map(pid => [String(pid), String(account)])
   }, [numberOfPools, account])
 
-  const pendingSushi = useSingleContractMultipleData(args ? contract : null, 'pendingSushi', args!)
+  const pendingTri = useSingleContractMultipleData(args ? contract : null, 'pendingTri', args!)
 
   const userInfo = useSingleContractMultipleData(args ? contract : null, 'userInfo', args!)
 
@@ -187,21 +188,21 @@ export function useChefPositions(contract?: Contract | null, rewarder?: Contract
   }, [chainId, contract])
 
   return useMemo(() => {
-    if (!pendingSushi || !userInfo) {
+    if (!pendingTri || !userInfo) {
       return []
     }
-    return zip(pendingSushi, userInfo)
+    return zip(pendingTri, userInfo)
       .map((data, i) => ({
         id: args![i][0],
-        pendingSushi: data[0]!.result?.[0] || Zero,
+        pendingTri: data[0]!.result?.[0] || Zero,
         amount: data[1]!.result?.[0] || Zero,
         chef: getChef()
         // pendingTokens: data?.[2]?.result,
       }))
-      .filter(({ pendingSushi, amount }) => {
-        return (pendingSushi && !pendingSushi.isZero()) || (amount && !amount.isZero())
+      .filter(({ pendingTri, amount }) => {
+        return (pendingTri && !pendingTri.isZero()) || (amount && !amount.isZero())
       })
-  }, [args, getChef, pendingSushi, userInfo])
+  }, [args, getChef, pendingTri, userInfo])
 }
 
 export function usePositions(chainId = undefined) {
@@ -219,3 +220,5 @@ export function useInfiniteScroll(items: any[]): [number, Dispatch<number>] {
   useEffect(() => setItemsDisplayed(10), [items.length])
   return [itemsDisplayed, setItemsDisplayed]
 }
+
+

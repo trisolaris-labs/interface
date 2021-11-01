@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { SearchInput } from '../../components/SearchModal/styleds'
 import useDebounce from '../../hooks/useDebounce'
 import { usePositions } from '../../state/stake/hooks-sushi'
+import { useFarms } from '../../state/stake/apr'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
@@ -88,6 +89,8 @@ export default function Earn({
     setSearchQuery(event.target.value.trim().toUpperCase())
   }, [])
 
+  const farms = useFarms();
+
   useEffect(() => {
     const filtered = poolCards?.filter(
       card =>
@@ -125,7 +128,7 @@ export default function Earn({
           <CardNoise />
         </DataCard>
       </TopSection>
-
+      
       <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
         <DataRow style={{ alignItems: 'baseline' }}>
           <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>{t('earnPage.participatingPools')}</TYPE.mediumHeader>
