@@ -6,37 +6,42 @@ import {
     ZERO_ADDRESS
   } from '../../constants'
 
-export interface Staking {
+export interface StakingTri {
     ID: number
-    Tokens: [Token, Token]
-    LPAddress: string
+    tokens: [Token, Token]
+    stakingRewardAddress: string
+    isPeriodFinished: boolean
   }
 
-const POLYGON_POOLS: {[key: string]: Staking} = {
-    DAI_USDC: {
+const POLYGON_POOLS: StakingTri[] = [
+    {
         ID: 0,
-        Tokens: [DAI[ChainId.POLYGON], USDC[ChainId.POLYGON]],
-        LPAddress: "0xd6f922f6eB4dfa47f53C038c7dE9bE614a49257f"
-    },
-    AAVE_DAI: {
-        ID: 1,
-        Tokens: [AAVE[ChainId.POLYGON], DAI[ChainId.POLYGON]],
-        LPAddress: "0x76F4128B11f429289499BA29518Ef7E5b26025B6"
-    },
-}
+        tokens: [DAI[ChainId.POLYGON], USDC[ChainId.POLYGON]],
+        stakingRewardAddress: "0xd6f922f6eB4dfa47f53C038c7dE9bE614a49257f",
+        isPeriodFinished: false
 
-const NULL_POOLS: {[key: string]: Staking} = {
-    ZERO: {
+    },
+    {
+        ID: 1,
+        tokens: [AAVE[ChainId.POLYGON], DAI[ChainId.POLYGON]],
+        stakingRewardAddress: "0x76F4128B11f429289499BA29518Ef7E5b26025B6",
+        isPeriodFinished: false
+    },
+]
+
+const NULL_POOLS: StakingTri[] = [
+    {
         ID: 0,
-        Tokens: [
+        tokens: [
             new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'ZERO'),
             new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')],
-        LPAddress: ZERO_ADDRESS,
+        stakingRewardAddress: ZERO_ADDRESS,
+        isPeriodFinished: false
     }
-}
+]
 
 export const STAKING: {
-    [chainid in ChainId] : {[key: string]: Staking}
+    [chainid in ChainId] : StakingTri[]
   } = {
     
     [ChainId.FUJI]: NULL_POOLS,
