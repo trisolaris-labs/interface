@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp } from 'react-feather'
 import styled from 'styled-components'
 import { STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
 import { TYPE, ExternalLink } from '../../theme'
-import PoolCard from '../../components/earn/PoolCard'
+import PoolCard from '../../components/earn/PoolCardTri'
 import { RouteComponentProps, NavLink } from 'react-router-dom'
 import { RowBetween } from '../../components/Row'
 import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
@@ -91,6 +91,10 @@ export default function Earn({
 
   const farms = useFarms();
 
+  const farmArr = Object.values(farms["s"]); 
+  console.log(farmArr)
+
+
   useEffect(() => {
     const filtered = poolCards?.filter(
       card =>
@@ -100,6 +104,41 @@ export default function Earn({
     setFilteredPoolCards(filtered)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [poolCards, debouncedSearchQuery])
+
+   const getSortField = (label: string, field: string, sortBy: any, setSortBy: Function) => {
+    return (
+      <SortField
+        onClick={() => {
+          const desc = sortBy?.field === field ? !sortBy?.desc : true
+          setSortBy({ field, desc })
+        }}
+      >
+        {label}
+        {sortBy?.field === field && (sortBy?.desc ? <ChevronDown size="16" /> : <ChevronUp size="16" />)}
+      </SortField>
+    )
+  }
+
+
+  useEffect(() => {
+    Promise.all(
+      farmArr
+    ).then(stakingInfos => {
+      const poolCards = stakingInfos.map(stakingInfo => (
+        <PoolCard
+          swapFeeApr={10}
+          stakingApr={50}
+          key={stakingInfo.stakingRewardAddress}
+          stakingInfo={stakingInfo}
+          version={version}
+        />
+      ))
+      setStakingInfoData(stakingInfos)
+      setPoolCards(poolCards)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stakingInfos?.length, version])
+
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -133,6 +172,28 @@ export default function Earn({
         <DataRow style={{ alignItems: 'baseline' }}>
           <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>{t('earnPage.participatingPools')}</TYPE.mediumHeader>
         </DataRow>
+
+        <PoolSection>
+            <>
+              <SearchInput
+                type="text"
+                id="token-search-input"
+                placeholder={t('searchModal.tokenName')}
+                value={searchQuery}
+                onChange={handleSearch}
+              />
+              <SortSection>
+                Sort by :{' '}
+                <SortFieldContainer>
+                  {getSortField('Liquidity', SortingType.totalStakedInWavax, sortBy, setSortBy)} |{' '}
+                  {getSortField('Pool Weight', SortingType.multiplier, sortBy, setSortBy)} |{' '}
+                </SortFieldContainer>
+                {getSortField('APR', SortingType.totalApr, sortBy, setSortBy)}
+              </SortSection>
+
+              {filteredPoolCards}
+            </>
+        </PoolSection>
       </AutoColumn>
     </PageWrapper>
   )
