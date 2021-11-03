@@ -1,22 +1,28 @@
-import { ChainId } from '@trisolaris/sdk'
+import { ChainId, Token } from '@trisolaris/sdk'
 import { useTokenContract } from '../../hooks/useContract'
 import { useMasterChefContract } from './hooks-sushi'
 import { STAKING } from './stake-constants'
 import { NEVER_RELOAD, useSingleCallResult, useSingleContractMultipleData } from '../../state/multicall/hooks'
 import { Contract } from '@ethersproject/contracts'
+import { applyMiddleware } from '@reduxjs/toolkit'
 
 
-export function useFarms(chainId = undefined) {
+export function useFarms(chainId: ChainId| undefined = undefined) {
     // APR
     // TVL
     // Name of pools
     // Price
-    const s = STAKING[ChainId.POLYGON]
+    const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
+
+    let lpAddresses = Object.keys(activeFarms).map(key => activeFarms[key].LPAddress);
+    let tempTokens = Object.keys(activeFarms).map(key => activeFarms[key].Tokens).flat();
+    var tokenAddresses = [... new Set(tempTokens.map(x => x.address))];
+
+    console.log(tokenAddresses)
     const chefContract = useMasterChefContract()
   
     const totalAllocPoints = useSingleCallResult(chefContract, 'totalAllocPoint', undefined, NEVER_RELOAD)?.result?.[0]
-    var tokens: {[key: string]: Contract | null};
-  
+
     const rewardTokenAddress = useSingleCallResult(chefContract, 'tri', undefined, NEVER_RELOAD)?.result?.[0]
     
     const rewardTokenContract = useTokenContract(rewardTokenAddress);
@@ -24,7 +30,7 @@ export function useFarms(chainId = undefined) {
     const rewardsPerSecond = useSingleCallResult(chefContract, 'triPerBlock', undefined, NEVER_RELOAD)?.result?.[0]
     const tokenDecimals = useSingleCallResult(rewardTokenContract, 'decimals', undefined, NEVER_RELOAD)?.result?.[0]
     const rewardsPerWeek =  rewardsPerSecond / 10 ** tokenDecimals * 3600 * 24 * 7;
-    return { s };
+    return { activeFarms };
     /*
     const pools = useMemo(() => {
       if (!poolCount) {
@@ -98,3 +104,36 @@ export function useFarms(chainId = undefined) {
   
   */
   }
+
+  /*
+  function useTokenPrices(tokenAddresses: String[]) {
+    const prices = {}
+    var i,j, temporary, chunk = 10;
+    for (i = 0,j = tokenAddresses.length; i < j; i += chunk) {
+        temporary = tokenAddresses.slice(i, i + chunk);
+        for (const temp of temporary) {
+          let ids = id_chunk.join('%2C')
+          let res = await $.ajax({
+            url: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=' + ids + '&vs_currencies=usd',
+            type: 'GET',
+          })
+          for (const [key, v] of Object.entries(res)) {
+            if (v.usd) prices[key] = v;
+          }
+        }
+        // do whatever
+    }
+
+    for (const id_chunk of chunk(id_array, 50)) {
+      let ids = id_chunk.join('%2C')
+      let res = await $.ajax({
+        url: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=' + ids + '&vs_currencies=usd',
+        type: 'GET',
+      })
+      for (const [key, v] of Object.entries(res)) {
+        if (v.usd) prices[key] = v;
+      }
+    }
+    return prices
+  }
+  */

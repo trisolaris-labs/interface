@@ -89,7 +89,7 @@ export default function Earn({
     setSearchQuery(event.target.value.trim().toUpperCase())
   }, [])
 
-  const farms = useFarms();
+  const farms = useFarms(chainId);
 
   useEffect(() => {
     const filtered = poolCards?.filter(
