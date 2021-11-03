@@ -1,4 +1,4 @@
-import { ChainId, Token } from "@trisolaris/sdk";
+import { ChainId, Token, TokenAmount } from "@trisolaris/sdk";
 import {
     USDC,
     AAVE,
@@ -11,6 +11,17 @@ export interface StakingTri {
     tokens: [Token, Token]
     stakingRewardAddress: string
     isPeriodFinished: boolean
+    stakedAmount: TokenAmount | undefined,
+    earnedAmount: TokenAmount | undefined,
+    totalStakedAmount: TokenAmount | undefined,
+    totalStakedAmountInUSD: TokenAmount | undefined,
+    totalStakedAmountInETH: TokenAmount | undefined,
+    // the amount of token distributed per second to all LPs, constant
+    totalRewardRate: TokenAmount | undefined,
+    // the current amount of token distributed to the active account per second.
+    // equivalent to percent of total supply * reward rate
+    rewardRate: TokenAmount | undefined,
+    apr: number,
   }
 
 const POLYGON_POOLS: StakingTri[] = [
@@ -18,14 +29,29 @@ const POLYGON_POOLS: StakingTri[] = [
         ID: 0,
         tokens: [DAI[ChainId.POLYGON], USDC[ChainId.POLYGON]],
         stakingRewardAddress: "0xd6f922f6eB4dfa47f53C038c7dE9bE614a49257f",
-        isPeriodFinished: false
-
+        isPeriodFinished: false,
+        stakedAmount: undefined,
+        earnedAmount: undefined,
+        totalStakedAmount: undefined,
+        totalStakedAmountInUSD: undefined,
+        totalStakedAmountInETH: undefined,
+        totalRewardRate: undefined,
+        rewardRate: undefined,
+        apr: 10,
     },
     {
         ID: 1,
         tokens: [AAVE[ChainId.POLYGON], DAI[ChainId.POLYGON]],
         stakingRewardAddress: "0x76F4128B11f429289499BA29518Ef7E5b26025B6",
-        isPeriodFinished: false
+        isPeriodFinished: false,
+        stakedAmount: undefined,
+        earnedAmount: undefined,
+        totalStakedAmount: undefined,
+        totalStakedAmountInUSD: undefined,
+        totalStakedAmountInETH: undefined,
+        totalRewardRate: undefined,
+        rewardRate: undefined,
+        apr: 10,
     },
 ]
 
@@ -36,7 +62,15 @@ const NULL_POOLS: StakingTri[] = [
             new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'ZERO'),
             new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')],
         stakingRewardAddress: ZERO_ADDRESS,
-        isPeriodFinished: false
+        isPeriodFinished: false,
+        stakedAmount: undefined,
+        earnedAmount: undefined,
+        totalStakedAmount: undefined,
+        totalStakedAmountInUSD: undefined,
+        totalStakedAmountInETH: undefined,
+        totalRewardRate: undefined,
+        rewardRate: undefined,
+        apr: 0,
     }
 ]
 
