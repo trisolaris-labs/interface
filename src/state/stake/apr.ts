@@ -8,85 +8,90 @@ import { applyMiddleware } from '@reduxjs/toolkit'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useMemo } from 'react'
 import { PairState, usePairs } from '../../data/Reserves'
+import zip from 'lodash/zip'
+import { useActiveWeb3React } from '../../hooks'
 
 
+// gets the staking info from the network for the active chain id
+export function useFarms(): StakingTri[] {
+  const { chainId, account } = useActiveWeb3React()
 
+  const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
 
-export function useFarms(chainId: ChainId| undefined = undefined) {
-    // APR
-    // TVL
-    // Name of pools
-    // Price
-    const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
-
-    let lpAddresses = activeFarms.map(key => key.stakingRewardAddress);
-    let tempTokens = activeFarms.map(key => key.tokens).flat();
-    var tokenAddresses = [... new Set(tempTokens.map(x => x.address))];
-
-    const chefContract = useMasterChefContract()
-    const accountArg = useMemo(() => [chefContract?.address ?? undefined], [chefContract?.address])
-    const pairTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'totalSupply')
-    const pairTotalStaked = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg)
-    
-    const tokens = useMemo(() => activeFarms.map(({ tokens }) => tokens), [activeFarms])
-    const pairs = usePairs(tokens);
-    
-    return useMemo(() => {
-      if (!chainId) return []
+  let lpAddresses = activeFarms.map(key => key.stakingRewardAddress);
   
-      return lpAddresses.reduce<StakingTri[]>((memo, lpAddress, index) => {
-        // these get fetched regardless of account
-        const stakingTotalSupplyState = pairTotalStaked[index]
-        const [pairState, pair] = pairs[index]
-        const pairTotalSupplyState = pairTotalSupplies[index]
-  
+  const chefContract = useMasterChefContract()
+  const accountArg = useMemo(() => [chefContract?.address ?? undefined], [chefContract?.address])
+    
+  // get all the info from the staking rewards contracts
+  const tokens = useMemo(() => activeFarms.map(({ tokens }) => tokens), [activeFarms])
+  const stakingTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg, NEVER_RELOAD)
+  const pairs = usePairs(tokens)
+
+  const pairAddresses = useMemo(() => {
+    const pairsHaveLoaded = pairs?.every(([state, pair]) => state === PairState.EXISTS)
+    if (!pairsHaveLoaded) return []
+    else return pairs.map(([state, pair]) => pair?.liquidityToken.address)
+  }, [pairs])
+
+  const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply')
+
+  return useMemo(() => {
+    if (!chainId) return []
+
+    return lpAddresses.reduce<StakingTri[]>((memo, lpAddress, index) => {
+      
+      // these get fetched regardless of account
+      const stakingTotalSupplyState = stakingTotalSupplies[index]
+      const [pairState, pair] = pairs[index]
+      const pairTotalSupplyState = pairTotalSupplies[index]
+
+      if (
+        // always need these
+        stakingTotalSupplyState?.loading === false &&
+        pairTotalSupplyState?.loading === false &&
+        pair &&
+        pairState !== PairState.LOADING
+      ) {
         if (
-          // always need these
-          stakingTotalSupplyState?.loading === false &&
-          pairTotalSupplyState?.loading === false &&
-          pair &&
-          pairState !== PairState.LOADING
+          stakingTotalSupplyState.error ||
+          pairTotalSupplyState.error ||
+          pairState === PairState.INVALID ||
+          pairState === PairState.NOT_EXISTS
         ) {
-          if (
-            stakingTotalSupplyState.error ||
-            pairTotalSupplyState.error ||
-            pairState === PairState.INVALID ||
-            pairState === PairState.NOT_EXISTS
-          ) {
-            console.error('Failed to load staking rewards info')
-            return memo
-          }
-  
-          // get the LP token
-          const tokens = activeFarms[index].tokens
-          const dummyPair = new Pair(new TokenAmount(tokens[0], '0'), new TokenAmount(tokens[1], '0'), chainId)
-          // check for account, if no account set to 0
-  
-          const totalSupplyStaked = JSBI.BigInt(stakingTotalSupplyState.result?.[0])
-          const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
-          const totalStakedAmount = new TokenAmount(dummyPair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
-          
-          memo.push({
-            ID: activeFarms[index].ID,
-            tokens: activeFarms[index].tokens,
-            stakingRewardAddress: activeFarms[index].stakingRewardAddress,
-            isPeriodFinished: activeFarms[index].isPeriodFinished,
-            stakedAmount: activeFarms[index].stakedAmount,
-            earnedAmount: activeFarms[index].earnedAmount,
-            totalStakedAmount: totalStakedAmount,
-            totalStakedAmountInUSD: activeFarms[index].totalStakedAmountInUSD,
-            totalStakedAmountInETH: activeFarms[index].totalStakedAmountInETH,
-            apr: activeFarms[index].apr,
-          })
+          console.error('Failed to load staking rewards info')
+          return memo
         }
-        return memo
-      }, [])
-    }, [
-      chainId,
-      activeFarms,
-    ])
-  }
 
+        // get the LP token
+        const tokens = activeFarms[index].tokens
+        
+        // check for account, if no account set to 0
+        const totalSupplyStaked = JSBI.BigInt(stakingTotalSupplyState.result?.[0])
+        const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
+
+        const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
+        memo.push({
+          ID: activeFarms[index].ID,
+          stakingRewardAddress: activeFarms[index].stakingRewardAddress,
+          tokens: tokens,
+          isPeriodFinished: false,
+          earnedAmount: activeFarms[index].earnedAmount,
+          stakedAmount: activeFarms[index].stakedAmount,
+          totalStakedAmount: totalStakedAmount,
+          totalStakedAmountInUSD: activeFarms[index].totalStakedAmountInUSD,
+          totalStakedAmountInETH: activeFarms[index].totalStakedAmountInETH,
+          totalRewardRate: activeFarms[index].totalRewardRate,
+          rewardRate: activeFarms[index].rewardRate,
+          apr: 10,
+        })
+      }
+      return memo
+    }, [])
+  }, [
+    activeFarms,
+  ])
+}
   
 
     

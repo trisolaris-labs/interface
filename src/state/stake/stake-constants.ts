@@ -16,6 +16,11 @@ export interface StakingTri {
     totalStakedAmount: TokenAmount | undefined,
     totalStakedAmountInUSD: TokenAmount | undefined,
     totalStakedAmountInETH: TokenAmount | undefined,
+    // the amount of token distributed per second to all LPs, constant
+    totalRewardRate: TokenAmount | undefined,
+    // the current amount of token distributed to the active account per second.
+    // equivalent to percent of total supply * reward rate
+    rewardRate: TokenAmount | undefined,
     apr: number,
   }
 
@@ -30,6 +35,8 @@ const POLYGON_POOLS: StakingTri[] = [
         totalStakedAmount: undefined,
         totalStakedAmountInUSD: undefined,
         totalStakedAmountInETH: undefined,
+        totalRewardRate: undefined,
+        rewardRate: undefined,
         apr: 10,
     },
     {
@@ -42,6 +49,8 @@ const POLYGON_POOLS: StakingTri[] = [
         totalStakedAmount: undefined,
         totalStakedAmountInUSD: undefined,
         totalStakedAmountInETH: undefined,
+        totalRewardRate: undefined,
+        rewardRate: undefined,
         apr: 10,
     },
 ]
@@ -59,6 +68,8 @@ const NULL_POOLS: StakingTri[] = [
         totalStakedAmount: undefined,
         totalStakedAmountInUSD: undefined,
         totalStakedAmountInETH: undefined,
+        totalRewardRate: undefined,
+        rewardRate: undefined,
         apr: 0,
     }
 ]

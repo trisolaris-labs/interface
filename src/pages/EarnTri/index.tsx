@@ -89,7 +89,7 @@ export default function Earn({
     setSearchQuery(event.target.value.trim().toUpperCase())
   }, [])
 
-  const farmArr = useFarms(chainId);
+  const farmArr = useFarms();
 
   // const farmArr = Object.values(farms["activeFarms"]); 
   console.log(farmArr)
