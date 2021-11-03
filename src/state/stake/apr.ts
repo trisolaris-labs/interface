@@ -1,10 +1,15 @@
-import { ChainId, Token } from '@trisolaris/sdk'
+import { ChainId, Token, JSBI, Pair, TokenAmount } from '@trisolaris/sdk'
 import { useTokenContract } from '../../hooks/useContract'
 import { useMasterChefContract } from './hooks-sushi'
-import { STAKING } from './stake-constants'
-import { NEVER_RELOAD, useSingleCallResult, useSingleContractMultipleData } from '../../state/multicall/hooks'
+import { STAKING, StakingTri } from './stake-constants'
+import { NEVER_RELOAD, useSingleCallResult, useMultipleContractSingleData } from '../../state/multicall/hooks'
 import { Contract } from '@ethersproject/contracts'
 import { applyMiddleware } from '@reduxjs/toolkit'
+import ERC20_INTERFACE from '../../constants/abis/erc20'
+import { useMemo } from 'react'
+import { PairState, usePairs } from '../../data/Reserves'
+
+
 
 
 export function useFarms(chainId: ChainId| undefined = undefined) {
@@ -14,13 +19,82 @@ export function useFarms(chainId: ChainId| undefined = undefined) {
     // Price
     const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
 
-    let lpAddresses = Object.keys(activeFarms).map(key => activeFarms[key].LPAddress);
-    let tempTokens = Object.keys(activeFarms).map(key => activeFarms[key].Tokens).flat();
+    let lpAddresses = activeFarms.map(key => key.stakingRewardAddress);
+    let tempTokens = activeFarms.map(key => key.tokens).flat();
     var tokenAddresses = [... new Set(tempTokens.map(x => x.address))];
 
-    console.log(tokenAddresses)
     const chefContract = useMasterChefContract()
+    const accountArg = useMemo(() => [chefContract?.address ?? undefined], [chefContract?.address])
+    const pairTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'totalSupply')
+    const pairTotalStaked = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg)
+    
+    const tokens = useMemo(() => activeFarms.map(({ tokens }) => tokens), [activeFarms])
+    const pairs = usePairs(tokens);
+    
+    return useMemo(() => {
+      if (!chainId) return []
   
+      return lpAddresses.reduce<StakingTri[]>((memo, lpAddress, index) => {
+        // these get fetched regardless of account
+        const stakingTotalSupplyState = pairTotalStaked[index]
+        const [pairState, pair] = pairs[index]
+        const pairTotalSupplyState = pairTotalSupplies[index]
+  
+        if (
+          // always need these
+          stakingTotalSupplyState?.loading === false &&
+          pairTotalSupplyState?.loading === false &&
+          pair &&
+          pairState !== PairState.LOADING
+        ) {
+          if (
+            stakingTotalSupplyState.error ||
+            pairTotalSupplyState.error ||
+            pairState === PairState.INVALID ||
+            pairState === PairState.NOT_EXISTS
+          ) {
+            console.error('Failed to load staking rewards info')
+            return memo
+          }
+  
+          // get the LP token
+          const tokens = activeFarms[index].tokens
+          const dummyPair = new Pair(new TokenAmount(tokens[0], '0'), new TokenAmount(tokens[1], '0'), chainId)
+          // check for account, if no account set to 0
+  
+          const totalSupplyStaked = JSBI.BigInt(stakingTotalSupplyState.result?.[0])
+          const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
+          const totalStakedAmount = new TokenAmount(dummyPair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
+          
+          memo.push({
+            ID: activeFarms[index].ID,
+            tokens: activeFarms[index].tokens,
+            stakingRewardAddress: activeFarms[index].stakingRewardAddress,
+            isPeriodFinished: activeFarms[index].isPeriodFinished,
+            stakedAmount: activeFarms[index].stakedAmount,
+            earnedAmount: activeFarms[index].earnedAmount,
+            totalStakedAmount: totalStakedAmount,
+            totalStakedAmountInUSD: activeFarms[index].totalStakedAmountInUSD,
+            totalStakedAmountInETH: activeFarms[index].totalStakedAmountInETH,
+            apr: activeFarms[index].apr,
+          })
+        }
+        return memo
+      }, [])
+    }, [
+      chainId,
+      activeFarms,
+    ])
+  }
+
+  
+
+    
+    
+
+    
+    // APR calculation
+    /*
     const totalAllocPoints = useSingleCallResult(chefContract, 'totalAllocPoint', undefined, NEVER_RELOAD)?.result?.[0]
 
     const rewardTokenAddress = useSingleCallResult(chefContract, 'tri', undefined, NEVER_RELOAD)?.result?.[0]
@@ -30,7 +104,8 @@ export function useFarms(chainId: ChainId| undefined = undefined) {
     const rewardsPerSecond = useSingleCallResult(chefContract, 'triPerBlock', undefined, NEVER_RELOAD)?.result?.[0]
     const tokenDecimals = useSingleCallResult(rewardTokenContract, 'decimals', undefined, NEVER_RELOAD)?.result?.[0]
     const rewardsPerWeek =  rewardsPerSecond / 10 ** tokenDecimals * 3600 * 24 * 7;
-    return { activeFarms };
+    */
+
     /*
     const pools = useMemo(() => {
       if (!poolCount) {
@@ -103,7 +178,7 @@ export function useFarms(chainId: ChainId| undefined = undefined) {
     return { prices, totalUserStaked, totalStaked, averageApr }
   
   */
-  }
+  
 
   /*
   function useTokenPrices(tokenAddresses: String[]) {
