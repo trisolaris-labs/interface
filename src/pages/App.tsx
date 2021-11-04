@@ -15,7 +15,7 @@ import {
   RedirectToAddLiquidity
 } from './AddLiquidity/redirects'
 import EarnTri from './EarnTri'
-import Manage from './Earn/Manage'
+import Manage from './EarnTri/Manage'
 import Pool from './Pool'
 import Buy from './Buy'
 import PoolFinder from './PoolFinder'

@@ -1,6 +1,6 @@
 import { ChainId, Token, JSBI, Pair, TokenAmount } from '@trisolaris/sdk'
 import { useTokenContract } from '../../hooks/useContract'
-import { useMasterChefContract } from './hooks-sushi'
+import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
 import { STAKING, StakingTri } from './stake-constants'
 import { NEVER_RELOAD, useSingleCallResult, useMultipleContractSingleData } from '../../state/multicall/hooks'
 import { Contract } from '@ethersproject/contracts'
@@ -73,7 +73,7 @@ export function useFarms(): StakingTri[] {
         const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
         memo.push({
           ID: activeFarms[index].ID,
-          stakingRewardAddress: activeFarms[index].stakingRewardAddress,
+          stakingRewardAddress: MASTERCHEF_ADDRESS[chainId],
           tokens: tokens,
           isPeriodFinished: false,
           earnedAmount: activeFarms[index].earnedAmount,
