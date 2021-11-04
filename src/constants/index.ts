@@ -211,7 +211,7 @@ export const CHAIN_PARAMS = {
       symbol: 'ETH',
       decimals: 18
     },
-    rpcUrls: ['https://mainnet.aurora.dev'],
+    rpcUrls: ['https://mainnet.aurora.dev/Fon6fPMs5rCdJc4mxX4kiSK1vsKdzc3D8k6UF8aruek'],
     blockExplorerUrls: ['https://etherscan.io/']
   }
 }
