@@ -30,6 +30,8 @@ import usePrevious from '../../hooks/usePrevious'
 // import useUSDCPrice from '../../utils/useUSDCPrice'
 import { BIG_INT_ZERO, PNG } from '../../constants'
 import { useTranslation } from 'react-i18next'
+import { useFarms } from '../../state/stake/apr'
+
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
@@ -102,6 +104,8 @@ export default function Manage({
 
   const [, stakingTokenPair] = usePair(tokenA, tokenB)
   const stakingInfo = useStakingInfo(Number(version), stakingTokenPair)?.[0]
+  const farmArr = useFarms();
+  console.log(farmArr)
 
   const avaxPool = currencyA === CETH || currencyB === CETH
 
