@@ -69,7 +69,7 @@ export function useFarms(): StakingTri[] {
         // check for account, if no account set to 0
         const totalSupplyStaked = JSBI.BigInt(stakingTotalSupplyState.result?.[0])
         const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
-
+        
         const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
         memo.push({
           ID: activeFarms[index].ID,
