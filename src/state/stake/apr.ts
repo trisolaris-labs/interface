@@ -44,10 +44,10 @@ export function useFarms(): StakingTri[] {
   }, [pairs])
 
   const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply')
-  
+        
   return useMemo(() => {
-    console.log(pairAddresses)
     if (!chainId) return []
+
     return lpAddresses.reduce<StakingTri[]>((memo, lpAddress, index) => {
       // User based info
       const userStaked = userInfo[index]
@@ -83,19 +83,22 @@ export function useFarms(): StakingTri[] {
         const tokens = activeFarms[index].tokens
         
         // check for account, if no account set to 0
-        const earnedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(rewardsPending.result?.[0]))
-        const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userStaked.result?.[0]))
+        const userInfoPool = JSBI.BigInt(userStaked.result?.["amount"])
+        const earnedRewardPool = JSBI.BigInt(rewardsPending.result?.[0])
         const totalSupplyStaked = JSBI.BigInt(stakingTotalSupplyState.result?.[0])
         const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
-        
+
+        const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
+        const earnedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(earnedRewardPool))
         const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
+        
         memo.push({
           ID: activeFarms[index].ID,
           stakingRewardAddress: MASTERCHEF_ADDRESS[chainId],
           tokens: tokens,
           isPeriodFinished: false,
-          earnedAmount: activeFarms[index].earnedAmount,
-          stakedAmount: activeFarms[index].stakedAmount,
+          earnedAmount: earnedAmount,
+          stakedAmount: stakedAmount,
           totalStakedAmount: totalStakedAmount,
           totalStakedAmountInUSD: activeFarms[index].totalStakedAmountInUSD,
           totalStakedAmountInETH: activeFarms[index].totalStakedAmountInETH,
