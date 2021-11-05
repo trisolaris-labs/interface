@@ -1,14 +1,11 @@
 import { ChainId, Token, JSBI, Pair, TokenAmount } from '@trisolaris/sdk'
 import { useTokenContract } from '../../hooks/useContract'
 import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
-import { STAKING, StakingTri } from './stake-constants'
-import { NEVER_RELOAD, useSingleContractMultipleData, useMultipleContractSingleData } from '../../state/multicall/hooks'
-import { Contract } from '@ethersproject/contracts'
-import { applyMiddleware } from '@reduxjs/toolkit'
+import { STAKING, StakingTri, TRI, ADDRESS_PRICE_MAP } from './stake-constants'
+import { useSingleContractMultipleData, useMultipleContractSingleData } from '../../state/multicall/hooks'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useMemo } from 'react'
 import { PairState, usePairs } from '../../data/Reserves'
-import zip from 'lodash/zip'
 import { useActiveWeb3React } from '../../hooks'
 
 
@@ -32,10 +29,12 @@ export function useFarms(): StakingTri[] {
   const userInfo = useSingleContractMultipleData(args ? chefContract : null, 'userInfo', args!)
     
   // get all the info from the staking rewards contracts
-  const accountArg = useMemo(() => [chefContract?.address ?? undefined], [chefContract?.address])
+  const accountArg = useMemo(() => [chefContract?.address ?? undefined], [chefContract])
   const tokens = useMemo(() => activeFarms.map(({ tokens }) => tokens), [activeFarms])
   const stakingTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg)
   const pairs = usePairs(tokens)
+
+  
 
   const pairAddresses = useMemo(() => {
     const pairsHaveLoaded = pairs?.every(([state, pair]) => state === PairState.EXISTS)
@@ -43,10 +42,11 @@ export function useFarms(): StakingTri[] {
     else return pairs.map(([state, pair]) => pair?.liquidityToken.address)
   }, [pairs])
 
+  // useTokenPrices(tokenAddresses)
   const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply')
         
   return useMemo(() => {
-    if (!chainId) return []
+    if (!chainId) return activeFarms
 
     return lpAddresses.reduce<StakingTri[]>((memo, lpAddress, index) => {
       // User based info
@@ -81,6 +81,7 @@ export function useFarms(): StakingTri[] {
 
         // get the LP token
         const tokens = activeFarms[index].tokens
+        // do whatever
         
         // check for account, if no account set to 0
         const userInfoPool = JSBI.BigInt(userStaked.result?.["amount"])
@@ -89,7 +90,7 @@ export function useFarms(): StakingTri[] {
         const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
 
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
-        const earnedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(earnedRewardPool))
+        const earnedAmount = new TokenAmount(TRI, JSBI.BigInt(earnedRewardPool))
         const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
         
         memo.push({
@@ -106,8 +107,9 @@ export function useFarms(): StakingTri[] {
           rewardRate: activeFarms[index].rewardRate,
           apr: 10,
         })
+        return memo
       }
-      return memo
+      return activeFarms
     }, [])
   }, [
     activeFarms,
@@ -118,6 +120,18 @@ export function useFarms(): StakingTri[] {
     userInfo
   ])
 }
+
+export function useTvl(pair: Pair) {
+  const reserves = pair.reserve0.multiply("2");
+  const price = fetch('https://api.coingecko.com/api/v3/simple/price?ids=' + ADDRESS_PRICE_MAP[pair.token0.address] + '&vs_currencies=usd')
+      .then(res => res.json())
+      .then(res => ({
+        res: res.usd
+      }))
+  console.log(price)
+      // do whatever
+  return
+  }
   
 
     

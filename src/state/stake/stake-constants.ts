@@ -24,6 +24,8 @@ export interface StakingTri {
     apr: number,
   }
 
+export const TRI = new Token(ChainId.POLYGON, "0xFEfA38d6F632aF663869C5B88e2D53AB2d823358", 18, 'TRI', 'Trisolaris')
+
 const POLYGON_POOLS: StakingTri[] = [
     {
         ID: 0,
@@ -83,3 +85,9 @@ export const STAKING: {
     [ChainId.POLYGON]: POLYGON_POOLS,
     [ChainId.AURORA]: NULL_POOLS,
   }
+
+export const ADDRESS_PRICE_MAP: {[key: string]: string} = {
+    "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063": "dai",
+    "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174": "usd-coin",
+    "0xD6DF932A45C0f255f85145f286eA0b292B21C90B": "aave",
+}
