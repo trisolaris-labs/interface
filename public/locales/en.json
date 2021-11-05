@@ -317,11 +317,11 @@
     "liquidityDeposits": "Your liquidity deposits",
     "unclaimedPng": "Your unclaimed PNG",
     "claim": "Claim",
-    "pngPerWeek": " PNG / week",
+    "pngPerWeek": " TRI / week",
     "automagically": "When you withdraw, the contract will automagically claim PNG on your behalf!",
     "deposit": "Deposit",
-    "depositPglTokens": "Deposit PGL Tokens",
-    "pglTokenAvailable": "PGL tokens available"
+    "depositPglTokens": "Deposit TSL Tokens",
+    "pglTokenAvailable": "TSL tokens available"
   },
   "pool": {
     "liquidityProviderRewards": "Liquidity provider rewards",
