@@ -2,7 +2,7 @@ import { ChainId, Token, JSBI, Pair, TokenAmount } from '@trisolaris/sdk'
 import { useTokenContract } from '../../hooks/useContract'
 import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
 import { STAKING, StakingTri } from './stake-constants'
-import { NEVER_RELOAD, useSingleCallResult, useMultipleContractSingleData } from '../../state/multicall/hooks'
+import { NEVER_RELOAD, useSingleContractMultipleData, useMultipleContractSingleData } from '../../state/multicall/hooks'
 import { Contract } from '@ethersproject/contracts'
 import { applyMiddleware } from '@reduxjs/toolkit'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
@@ -17,15 +17,24 @@ export function useFarms(): StakingTri[] {
   const { chainId, account } = useActiveWeb3React()
 
   const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
-
   let lpAddresses = activeFarms.map(key => key.stakingRewardAddress);
-  
   const chefContract = useMasterChefContract()
-  const accountArg = useMemo(() => [chefContract?.address ?? undefined], [chefContract?.address])
+
+  // user info
+  const args = useMemo(() => {
+    if (!account || !lpAddresses) {
+      return
+    }
+    return [...Array(lpAddresses.length).keys()].map(pid => [String(pid), String(account)])
+  }, [lpAddresses.length, account])
+
+  const pendingTri = useSingleContractMultipleData(args ? chefContract : null, 'pendingTri', args!)
+  const userInfo = useSingleContractMultipleData(args ? chefContract : null, 'userInfo', args!)
     
   // get all the info from the staking rewards contracts
+  const accountArg = useMemo(() => [chefContract?.address ?? undefined], [chefContract?.address])
   const tokens = useMemo(() => activeFarms.map(({ tokens }) => tokens), [activeFarms])
-  const stakingTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg, NEVER_RELOAD)
+  const stakingTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg)
   const pairs = usePairs(tokens)
 
   const pairAddresses = useMemo(() => {
@@ -35,12 +44,15 @@ export function useFarms(): StakingTri[] {
   }, [pairs])
 
   const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply')
-
+  
   return useMemo(() => {
+    console.log(pairAddresses)
     if (!chainId) return []
-
     return lpAddresses.reduce<StakingTri[]>((memo, lpAddress, index) => {
-      
+      // User based info
+      const userStaked = userInfo[index]
+      const rewardsPending = pendingTri[index]
+
       // these get fetched regardless of account
       const stakingTotalSupplyState = stakingTotalSupplies[index]
       const [pairState, pair] = pairs[index]
@@ -48,12 +60,16 @@ export function useFarms(): StakingTri[] {
 
       if (
         // always need these
+        userStaked?.loading === false &&
+        rewardsPending?.loading === false &&
         stakingTotalSupplyState?.loading === false &&
         pairTotalSupplyState?.loading === false &&
         pair &&
         pairState !== PairState.LOADING
       ) {
         if (
+          userStaked.error ||
+          rewardsPending.error ||
           stakingTotalSupplyState.error ||
           pairTotalSupplyState.error ||
           pairState === PairState.INVALID ||
@@ -67,6 +83,8 @@ export function useFarms(): StakingTri[] {
         const tokens = activeFarms[index].tokens
         
         // check for account, if no account set to 0
+        const earnedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(rewardsPending.result?.[0]))
+        const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userStaked.result?.[0]))
         const totalSupplyStaked = JSBI.BigInt(stakingTotalSupplyState.result?.[0])
         const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
         
@@ -90,6 +108,11 @@ export function useFarms(): StakingTri[] {
     }, [])
   }, [
     activeFarms,
+    stakingTotalSupplies,
+    pairs,
+    pairTotalSupplies,
+    pendingTri,
+    userInfo
   ])
 }
   
