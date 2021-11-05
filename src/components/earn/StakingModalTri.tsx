@@ -48,17 +48,21 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
 
   // track and parse user input
   const [typedValue, setTypedValue] = useState('')
-  const { parsedAmount, error } = useDerivedStakeInfo(typedValue, stakingInfo.stakedAmount.token, userLiquidityUnstaked)
-  const parsedAmountWrapped = wrappedCurrencyAmount(parsedAmount, chainId)
+  const { parsedAmount, error } = useDerivedStakeInfo(
+    typedValue,
+    stakingInfo.totalStakedAmount!.token,
+    userLiquidityUnstaked
+  )
+  // const parsedAmountWrapped = wrappedCurrencyAmount(parsedAmount, chainId)
 
-  let hypotheticalRewardRate: TokenAmount = new TokenAmount(stakingInfo.rewardRate.token, '0')
-  if (parsedAmountWrapped?.greaterThan('0')) {
-    hypotheticalRewardRate = stakingInfo.getHypotheticalRewardRate(
-      stakingInfo.stakedAmount.add(parsedAmountWrapped),
-      stakingInfo.totalStakedAmount.add(parsedAmountWrapped),
-      stakingInfo.totalRewardRate
-    )
-  }
+  // let hypotheticalRewardRate: TokenAmount = new TokenAmount(stakingInfo.rewardRate.token, '0')
+  // if (parsedAmountWrapped?.greaterThan('0')) {
+  //   hypotheticalRewardRate = stakingInfo.getHypotheticalRewardRate(
+  //     stakingInfo.stakedAmount.add(parsedAmountWrapped),
+  //     stakingInfo.totalStakedAmount.add(parsedAmountWrapped),
+  //     stakingInfo.totalRewardRate
+  //   )
+  // }
 
   // state for pending and submitted txn views
   const addTransaction = useTransactionAdder()
@@ -207,7 +211,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
             onUserInput={onUserInput}
             onMax={handleMax}
             showMaxButton={!atMaxAmount}
-            currency={stakingInfo.stakedAmount.token}
+            currency={stakingInfo.totalStakedAmount!.token}
             pair={dummyPair}
             label={''}
             disableCurrencySelect={true}
@@ -215,7 +219,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
             id="stake-liquidity-token"
           />
 
-          <HypotheticalRewardRate dim={!hypotheticalRewardRate.greaterThan('0')}>
+          {/* <HypotheticalRewardRate dim={!hypotheticalRewardRate.greaterThan('0')}>
             <div>
               <TYPE.black fontWeight={600}>{t('earn.weeklyRewards')}</TYPE.black>
             </div>
@@ -224,7 +228,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
               {hypotheticalRewardRate.multiply((60 * 60 * 24 * 7).toString()).toSignificant(4, { groupSeparator: ',' })}{' '}
               {t('earn.pngWeek')}
             </TYPE.black>
-          </HypotheticalRewardRate>
+          </HypotheticalRewardRate> */}
 
           <RowBetween>
             <ButtonConfirmed
@@ -258,7 +262,9 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
         <SubmittedView onDismiss={wrappedOnDismiss} hash={hash}>
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>{t('earn.transactionSubmitted')}</TYPE.largeHeader>
-            <TYPE.body fontSize={20}>{t('earn.deposited')} {parsedAmount?.toSignificant(4)} PGL</TYPE.body>
+            <TYPE.body fontSize={20}>
+              {t('earn.deposited')} {parsedAmount?.toSignificant(4)} TSL
+            </TYPE.body>
           </AutoColumn>
         </SubmittedView>
       )}

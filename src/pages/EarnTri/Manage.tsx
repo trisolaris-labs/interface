@@ -13,10 +13,10 @@ import { TYPE } from '../../theme'
 import { RowBetween } from '../../components/Row'
 import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
 import { ButtonPrimary, ButtonEmpty } from '../../components/Button'
-import StakingModal from '../../components/earn/StakingModal'
+import StakingModal from '../../components/earn/StakingModalTri'
 import { useStakingInfo } from '../../state/stake/hooks'
-import UnstakingModal from '../../components/earn/UnstakingModal'
-import ClaimRewardModal from '../../components/earn/ClaimRewardModal'
+import UnstakingModal from '../../components/earn/UnstakingModalTri'
+import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { useColor } from '../../hooks/useColor'
@@ -103,9 +103,10 @@ export default function Manage({
   const tokenB = wrappedCurrency(currencyB ?? undefined, chainId)
 
   const [, stakingTokenPair] = usePair(tokenA, tokenB)
-  const stakingInfo = useStakingInfo(Number(version), stakingTokenPair)?.[0]
-  const farmArr = useFarms();
-  console.log(farmArr)
+  const farmArr = useFarms()
+  const stakingInfo = farmArr[0]
+  console.log('staking token pair: ' + stakingTokenPair)
+  console.log('farm array: ' + farmArr[0].totalStakedAmount!.token.address)
 
   const avaxPool = currencyA === CETH || currencyB === CETH
 
@@ -127,7 +128,7 @@ export default function Manage({
         wavax,
         JSBI.divide(
           JSBI.multiply(
-            JSBI.multiply(stakingInfo.totalStakedAmount.raw, stakingTokenPair.reserveOf(wavax).raw),
+            JSBI.multiply(stakingInfo.totalStakedAmount!.raw, stakingTokenPair.reserveOf(wavax).raw),
             JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
           ),
           totalSupplyOfStakingToken.raw
@@ -160,7 +161,7 @@ export default function Manage({
         WETH[tokenB.chainId],
         JSBI.divide(
           JSBI.multiply(
-            JSBI.multiply(stakingInfo.totalStakedAmount.raw, valueOfPngInAvax),
+            JSBI.multiply(stakingInfo.totalStakedAmount!.raw, valueOfPngInAvax),
             JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
           ),
           totalSupplyOfStakingToken.raw
