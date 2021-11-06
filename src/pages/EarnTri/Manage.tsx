@@ -105,8 +105,8 @@ export default function Manage({
   const [, stakingTokenPair] = usePair(tokenA, tokenB)
   const farmArr = useFarms()
   const stakingInfo = farmArr[0]
-  console.log('staking token pair: ' + stakingTokenPair)
-  console.log('farm array: ' + farmArr[0].totalStakedAmount!.token.address)
+  // console.log('staking token pair: ' + stakingTokenPair)
+  // console.log('farm array: ' + farmArr[0].totalStakedAmount!.token.address)
 
   const avaxPool = currencyA === CETH || currencyB === CETH
 
