@@ -12,6 +12,7 @@ import { TokenAmount, Pair, ChainId } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { usePairContract, useStakingContract } from '../../hooks/useContract'
+import { useMasterChefContract } from '../../state/stake/hooks-sushi'
 import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
 import { splitSignature } from 'ethers/lib/utils'
 import { StakingInfo, useDerivedStakeInfo } from '../../state/stake/hooks'
@@ -21,6 +22,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
 import { useTranslation } from 'react-i18next'
+import { parseUnits } from '@ethersproject/units'
 
 const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
   display: flex;
@@ -88,22 +90,23 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(parsedAmount, stakingInfo.stakingRewardAddress)
 
-  const stakingContract = useStakingContract(stakingInfo.stakingRewardAddress)
+  const stakingContract = useMasterChefContract()
+  console.log(parsedAmount)
 
   async function onStake() {
     setAttempting(true)
     if (stakingContract && parsedAmount && deadline) {
       if (approval === ApprovalState.APPROVED) {
-        await stakingContract.stake(`0x${parsedAmount.raw.toString(16)}`, { gasLimit: 350000 })
+        await stakingContract.deposit(0, parseUnits(typedValue))
       } else if (signatureData) {
         stakingContract
-          .stakeWithPermit(
-            `0x${parsedAmount.raw.toString(16)}`,
-            signatureData.deadline,
-            signatureData.v,
-            signatureData.r,
-            signatureData.s,
-            { gasLimit: 350000 }
+          .deposit(
+            0, //pid
+            parseUnits(typedValue)
+            // signatureData.v,
+            // signatureData.r,
+            // signatureData.s,
+            // { gasLimit: 350000 }
           )
           .then((response: TransactionResponse) => {
             addTransaction(response, {
@@ -233,7 +236,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           <RowBetween>
             <ButtonConfirmed
               mr="0.5rem"
-              onClick={onAttemptToApprove}
+              onClick={approveCallback}
               confirmed={approval === ApprovalState.APPROVED || signatureData !== null}
               disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
             >

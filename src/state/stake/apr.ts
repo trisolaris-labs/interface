@@ -120,18 +120,6 @@ export function useFarms(): StakingTri[] {
     userInfo
   ])
 }
-
-export function useTvl(pair: Pair) {
-  const reserves = pair.reserve0.multiply("2");
-  const price = fetch('https://api.coingecko.com/api/v3/simple/price?ids=' + ADDRESS_PRICE_MAP[pair.token0.address] + '&vs_currencies=usd')
-      .then(res => res.json())
-      .then(res => ({
-        res: res.usd
-      }))
-  console.log(price)
-      // do whatever
-  return
-  }
   
 
     
