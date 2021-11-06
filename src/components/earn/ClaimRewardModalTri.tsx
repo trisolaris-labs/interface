@@ -6,7 +6,7 @@ import { RowBetween } from '../Row'
 import { TYPE, CloseIcon } from '../../theme'
 import { ButtonError } from '../Button'
 import { StakingInfo } from '../../state/stake/hooks'
-import { useStakingContract } from '../../hooks/useContract'
+import { useMasterChefContract } from '../../state/stake/hooks-sushi'
 import { SubmittedView, LoadingView } from '../ModalViews'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
@@ -40,13 +40,14 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
     onDismiss()
   }
 
-  const stakingContract = useStakingContract(stakingInfo.stakingRewardAddress)
+  const stakingContract = useMasterChefContract()
+
 
   async function onClaimReward() {
     if (stakingContract && stakingInfo?.stakedAmount) {
       setAttempting(true)
       await stakingContract
-        .getReward({ gasLimit: 350000 })
+        .deposit(stakingInfo.ID,0)
         .then((response: TransactionResponse) => {
           addTransaction(response, {
             summary: t('earn.claimAccumulated')
@@ -81,14 +82,14 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
 							<TYPE.body fontWeight={600} fontSize={36}>
 								{stakingInfo?.earnedAmount?.toSignificant(6)}
 							</TYPE.body>
-							<TYPE.body>{t('earn.unclaimedPng')}</TYPE.body>
+							<TYPE.body>{t('earn.unclaimed')}</TYPE.body>
 						</AutoColumn>
 					)}
 					<TYPE.subHeader style={{ textAlign: 'center' }}>
 						{t('earn.liquidityRemainsPool')}
 					</TYPE.subHeader>
 					<ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onClaimReward}>
-						{error ?? t('earn.unclaimedPng')}
+						{error ?? t('earn.unclaimed')}
 					</ButtonError>
 				</ContentWrapper>
 			)}
