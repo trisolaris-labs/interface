@@ -21,11 +21,6 @@ export interface StakingTri {
 
 const dummyToken = new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
 
-// const dummyPair = new Pair(
-//   new TokenAmount(dummyToken, '0'),
-//   new TokenAmount(dummyToken, '0'),
-//   chainId ? chainId : ChainId.POLYGON
-// )
 const dummyAmount = new TokenAmount(dummyToken, '0')
 
 export const TRI = new Token(ChainId.POLYGON, '0x2CB45Edb4517d5947aFdE3BEAbF95A582506858B', 18, 'TRI', 'Trisolaris')
