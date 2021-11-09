@@ -1,13 +1,40 @@
-import { ChainId, Token, JSBI, Pair, TokenAmount } from '@trisolaris/sdk'
+import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
 import { useTokenContract } from '../../hooks/useContract'
 import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
 import { STAKING, StakingTri, TRI, ADDRESS_PRICE_MAP } from './stake-constants'
 import { useSingleContractMultipleData, useMultipleContractSingleData } from '../../state/multicall/hooks'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useMemo } from 'react'
-import { PairState, usePairs } from '../../data/Reserves'
+import { PairState, usePairs, usePair } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 
+
+const calculateTotalStakedAmountInAvaxFromPng = function(
+  amountStaked: JSBI,
+  amountAvailable: JSBI,
+  avaxPngPairReserveOfPng: JSBI,
+  avaxPngPairReserveOfWavax: JSBI,
+  reserveInPng: JSBI
+): TokenAmount {
+  if (JSBI.EQ(amountAvailable, JSBI.BigInt(0))) {
+    return new TokenAmount(WETH[ChainId.POLYGON], JSBI.BigInt(0))
+  }
+  //TODO CHANGE CHAINID
+  const oneToken = JSBI.BigInt(1000000000000000000)
+  const avaxPngRatio = JSBI.divide(JSBI.multiply(oneToken, avaxPngPairReserveOfWavax), avaxPngPairReserveOfPng)
+  const valueOfPngInAvax = JSBI.divide(JSBI.multiply(reserveInPng, avaxPngRatio), oneToken)
+
+  return new TokenAmount(
+    WETH[ChainId.POLYGON],
+    JSBI.divide(
+      JSBI.multiply(
+        JSBI.multiply(amountStaked, valueOfPngInAvax),
+        JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
+      ),
+      amountAvailable
+    )
+  )
+}
 
 // gets the staking info from the network for the active chain id
 export function useFarms(): StakingTri[] {
@@ -44,7 +71,8 @@ export function useFarms(): StakingTri[] {
 
   // useTokenPrices(tokenAddresses)
   const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply')
-        
+  // const [avaxPngPairState, avaxPngPair] = usePair(WETH[ChainId.POLYGON], png)
+
   return useMemo(() => {
     if (!chainId) return activeFarms
 
@@ -82,7 +110,7 @@ export function useFarms(): StakingTri[] {
         // get the LP token
         const tokens = activeFarms[index].tokens
         // do whatever
-        
+
         // check for account, if no account set to 0
         const userInfoPool = JSBI.BigInt(userStaked.result?.["amount"])
         const earnedRewardPool = JSBI.BigInt(rewardsPending.result?.[0])
@@ -92,7 +120,7 @@ export function useFarms(): StakingTri[] {
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
         const earnedAmount = new TokenAmount(TRI, JSBI.BigInt(earnedRewardPool))
         const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
-        
+
         memo.push({
           ID: activeFarms[index].ID,
           stakingRewardAddress: MASTERCHEF_ADDRESS[chainId],

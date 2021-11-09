@@ -91,17 +91,16 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   const [approval, approveCallback] = useApproveCallback(parsedAmount, stakingInfo.stakingRewardAddress)
 
   const stakingContract = useMasterChefContract()
-  console.log(parsedAmount)
 
   async function onStake() {
     setAttempting(true)
     if (stakingContract && parsedAmount && deadline) {
       if (approval === ApprovalState.APPROVED) {
-        await stakingContract.deposit(0, parseUnits(typedValue))
+        await stakingContract.deposit(stakingInfo.ID, parseUnits(typedValue))
       } else if (signatureData) {
         stakingContract
           .deposit(
-            0, //pid
+            stakingInfo.ID, //pid
             parseUnits(typedValue)
             // signatureData.v,
             // signatureData.r,

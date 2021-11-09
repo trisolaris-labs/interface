@@ -91,10 +91,6 @@ export default function Earn({
 
   const farmArr = useFarms();
 
-  // const farmArr = Object.values(farms["activeFarms"]); 
-  console.log(farmArr)
-
-
   useEffect(() => {
     const filtered = poolCards?.filter(
       card =>
