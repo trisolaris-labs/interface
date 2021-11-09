@@ -24,7 +24,7 @@ export interface StakingTri {
     apr: number,
   }
 
-export const TRI = new Token(ChainId.POLYGON, "0xFEfA38d6F632aF663869C5B88e2D53AB2d823358", 18, 'TRI', 'Trisolaris')
+export const TRI = new Token(ChainId.POLYGON, "0x2CB45Edb4517d5947aFdE3BEAbF95A582506858B", 18, 'TRI', 'Trisolaris')
 
 const POLYGON_POOLS: StakingTri[] = [
     {
@@ -45,6 +45,20 @@ const POLYGON_POOLS: StakingTri[] = [
         ID: 1,
         tokens: [AAVE[ChainId.POLYGON], DAI[ChainId.POLYGON]],
         stakingRewardAddress: "0x76F4128B11f429289499BA29518Ef7E5b26025B6",
+        isPeriodFinished: false,
+        stakedAmount: undefined,
+        earnedAmount: undefined,
+        totalStakedAmount: undefined,
+        totalStakedAmountInUSD: undefined,
+        totalStakedAmountInETH: undefined,
+        totalRewardRate: undefined,
+        rewardRate: undefined,
+        apr: 10,
+    },
+    {
+        ID: 2,
+        tokens: [TRI, USDC[ChainId.POLYGON]],
+        stakingRewardAddress: "0xb0c5eFFD0eA4D4d274971374d696Fa08860Ea709",
         isPeriodFinished: false,
         stakedAmount: undefined,
         earnedAmount: undefined,

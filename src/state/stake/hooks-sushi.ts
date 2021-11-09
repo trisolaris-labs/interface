@@ -15,7 +15,7 @@ import MASTERCHEF_ABI from '../../constants/abis/masterchef.json'
 
 export type AddressMap = { [chainId: number]: string }
 export const MASTERCHEF_ADDRESS: AddressMap = {
-  [ChainId.POLYGON]: '0xc5ef09BA1C648AaC27ECe9d9d11a500DB55547A5'
+  [ChainId.POLYGON]: '0x43A1dD21a5237C6F5eEC94747C28aa3f5C8fa1c7'
 }
 export enum Chef {
   MASTERCHEF
