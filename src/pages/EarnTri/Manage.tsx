@@ -104,9 +104,8 @@ export default function Manage({
 
   const [, stakingTokenPair] = usePair(tokenA, tokenB)
   const farmArr = useFarms()
-  const stakingInfo = farmArr[0]
-  // console.log('staking token pair: ' + stakingTokenPair)
-  // console.log('farm array: ' + farmArr[0].totalStakedAmount!.token.address)
+  const stakingInfo = farmArr[parseInt(version)]
+  console.log(stakingInfo.stakedAmount)
 
   const avaxPool = currencyA === CETH || currencyB === CETH
 
@@ -332,7 +331,7 @@ export default function Manage({
             <AutoColumn gap="sm">
               <RowBetween>
                 <div>
-                  <TYPE.black>{t('earnPage.unclaimedPng')}</TYPE.black>
+                  <TYPE.black>{t('earnPage.unclaimed')}</TYPE.black>
                 </div>
                 {stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
                   <ButtonEmpty

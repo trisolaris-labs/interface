@@ -130,7 +130,7 @@ export default function Earn({
           stakingApr={50}
           key={stakingInfo.stakingRewardAddress}
           stakingInfo={stakingInfo}
-          version={version}
+          version={stakingInfo.ID}
         />
       ))
       setStakingInfoData(stakingInfos)

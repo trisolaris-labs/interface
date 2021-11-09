@@ -52,7 +52,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   const [typedValue, setTypedValue] = useState('')
   const { parsedAmount, error } = useDerivedStakeInfo(
     typedValue,
-    stakingInfo.totalStakedAmount!.token,
+    stakingInfo?.stakedAmount!.token,
     userLiquidityUnstaked
   )
   // const parsedAmountWrapped = wrappedCurrencyAmount(parsedAmount, chainId)
@@ -91,7 +91,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   const [approval, approveCallback] = useApproveCallback(parsedAmount, stakingInfo.stakingRewardAddress)
 
   const stakingContract = useMasterChefContract()
-  console.log(parsedAmount)
+  console.log(stakingInfo.ID)
 
   async function onStake() {
     setAttempting(true)
@@ -101,7 +101,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
       } else if (signatureData) {
         stakingContract
           .deposit(
-            0, //pid
+            stakingInfo.ID, //pid
             parseUnits(typedValue)
             // signatureData.v,
             // signatureData.r,

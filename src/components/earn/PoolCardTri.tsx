@@ -86,7 +86,7 @@ export default function PoolCard({
 }: {
   stakingInfo: StakingTri
   migration?: Staking
-  version: string
+  version: number
   swapFeeApr: number
   stakingApr: number
 }) {
