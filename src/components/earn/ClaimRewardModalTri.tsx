@@ -47,7 +47,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
     if (stakingContract && stakingInfo?.stakedAmount) {
       setAttempting(true)
       await stakingContract
-        .deposit(stakingInfo.ID,0)
+        .harvest(stakingInfo.ID)
         .then((response: TransactionResponse) => {
           addTransaction(response, {
             summary: t('earn.claimAccumulated')
