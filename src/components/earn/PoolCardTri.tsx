@@ -97,8 +97,8 @@ export default function PoolCard({
   const currency1 = unwrappedToken(token1)
 
   const { t } = useTranslation()
-  // const isStaking = Boolean(stakingInfo.stakedAmount.greaterThan('0'))
-  const isStaking = false;
+  const isStaking = Boolean(stakingInfo.stakedAmount.greaterThan('0'))
+  // const isStaking = false;
   const token: Token =
     currency0 === CETH || currency1 === CETH
       ? currency0 === CETH
@@ -121,25 +121,9 @@ export default function PoolCard({
         <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
           {currency0.symbol}-{currency1.symbol}
         </TYPE.white>
-
-       {/*} {migration && isStaking ? (
-          <StyledInternalLink
-            to={`/migrate/${currencyId(currency0)}/${currencyId(currency1)}/${Number(version)}/${currencyId(
-              migration.tokens[0]
-            )}/${currencyId(migration.tokens[1])}/${migration?.version}`}
-            style={{ marginRight: '10px' }}
-          >
-            <ButtonPrimary padding="8px" borderRadius="8px">
-              Mig d drate
-            </ButtonPrimary>
-          </StyledInternalLink>
-        ) : (
-          <span></span>
-        )}*/}
-
         {(isStaking || !stakingInfo.isPeriodFinished) && (
           <StyledInternalLink
-            to={`/png/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}
+            to={`/tri/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}
             style={{ width: '100%' }}
           >
             <ButtonPrimary padding="8px" borderRadius="8px">
@@ -152,20 +136,20 @@ export default function PoolCard({
       <StatContainer>
         <RowBetween>
           <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
-          {/* <TYPE.white>
-            {`${stakingInfo.totalStakedInWavax.toSignificant(4, { groupSeparator: ',' }) ?? '-'} AVAX`}
-          </TYPE.white>*/}
+          <TYPE.white>
+            {`${stakingInfo.totalStakedAmountInUSD.toSignificant(4, { groupSeparator: ',' }) ?? '-'} USDC`}
+          </TYPE.white>
         </RowBetween>
       </StatContainer>
       <AprContainer>
-        <RowBetween>
+          {/*<RowBetween>
           <TYPE.white>Swap Fee APR</TYPE.white>
           <TYPE.white>{`${swapFeeApr}%`}</TYPE.white>
         </RowBetween>
         <RowBetween>
           <TYPE.white>PNG Rewards APR</TYPE.white>
           <TYPE.white>{`${stakingApr}%`}</TYPE.white>
-        </RowBetween>
+        </RowBetween>*/}
         <RowBetween>
           <TYPE.white>Total APR</TYPE.white>
           <TYPE.white>{`${swapFeeApr + stakingApr}%`}</TYPE.white>
