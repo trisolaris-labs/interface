@@ -136,11 +136,8 @@ export function useFarms(): StakingTri[] {
             ? JSBI.divide(JSBI.multiply(totalRewardRate.raw, stakedAmount.raw), totalStakedAmount.raw)
             : JSBI.BigInt(0)
         )
-        /*
-        const triToUsdcRatio = triUSDCPair.priceOf(TRI)
-        const totalYearlyRewards = JSBI.multiply(totalRewardRate.raw, JSBI.BigInt(3600 * 24 * 365)) 
-        const apr = triToUsdcRatio.raw.multiply(totalYearlyRewards).divide(totalStakedAmountInUSD)
-        */
+        const apr = calculateApr(totalStakedAmountInUSD, triUSDCPair, totalRewardRate)
+        
         memo.push({
           ID: activeFarms[index].ID,
           stakingRewardAddress: MASTERCHEF_ADDRESS[chainId],
@@ -154,7 +151,7 @@ export function useFarms(): StakingTri[] {
           allocPoint: activeFarms[index].allocPoint,
           totalRewardRate: totalRewardRate,
           rewardRate: rewardRate,
-          apr: 10,
+          apr: apr,
         })
         return memo
       }
@@ -217,4 +214,18 @@ const calculateTotalStakedAmountInUSDC = function(
       amountAvailable
     )
   )
+}
+
+const calculateApr = function(
+  totalStakedAmountInUSD: TokenAmount,
+  triUSDCPair: Pair,
+  totalRewardRate: TokenAmount
+): number {
+  if (JSBI.EQ(totalStakedAmountInUSD.raw, JSBI.BigInt(0))) {
+    return 0
+  }
+  const triToUsdcRatio = triUSDCPair.priceOf(TRI)
+  const totalYearlyRewards = JSBI.multiply(totalRewardRate.raw, JSBI.BigInt(3600 * 24 * 365))
+  const apr = triToUsdcRatio.raw.multiply(totalYearlyRewards).multiply("100").divide(totalStakedAmountInUSD.raw)
+  return Number(apr.toFixed(4))
 }
