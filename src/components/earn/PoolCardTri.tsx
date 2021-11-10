@@ -98,8 +98,7 @@ export default function PoolCard({
 
   const { t } = useTranslation()
   const isStaking = Boolean(stakingInfo.stakedAmount.greaterThan('0'))
-  console.log(isStaking)
-  // const isStaking = false;
+
   const token: Token =
     currency0 === CETH || currency1 === CETH
       ? currency0 === CETH
