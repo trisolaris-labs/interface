@@ -1,40 +1,16 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
+import { USDC, DAI } from '../../constants'
 import { useTokenContract } from '../../hooks/useContract'
 import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
 import { STAKING, StakingTri, TRI, ADDRESS_PRICE_MAP } from './stake-constants'
-import { useSingleContractMultipleData, useMultipleContractSingleData } from '../../state/multicall/hooks'
+import { useSingleContractMultipleData, useMultipleContractSingleData, useSingleCallResult, NEVER_RELOAD } from '../../state/multicall/hooks'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useMemo } from 'react'
 import { PairState, usePairs, usePair } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 
 
-const calculateTotalStakedAmountInAvaxFromPng = function(
-  amountStaked: JSBI,
-  amountAvailable: JSBI,
-  avaxPngPairReserveOfPng: JSBI,
-  avaxPngPairReserveOfWavax: JSBI,
-  reserveInPng: JSBI
-): TokenAmount {
-  if (JSBI.EQ(amountAvailable, JSBI.BigInt(0))) {
-    return new TokenAmount(WETH[ChainId.POLYGON], JSBI.BigInt(0))
-  }
-  //TODO CHANGE CHAINID
-  const oneToken = JSBI.BigInt(1000000000000000000)
-  const avaxPngRatio = JSBI.divide(JSBI.multiply(oneToken, avaxPngPairReserveOfWavax), avaxPngPairReserveOfPng)
-  const valueOfPngInAvax = JSBI.divide(JSBI.multiply(reserveInPng, avaxPngRatio), oneToken)
 
-  return new TokenAmount(
-    WETH[ChainId.POLYGON],
-    JSBI.divide(
-      JSBI.multiply(
-        JSBI.multiply(amountStaked, valueOfPngInAvax),
-        JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
-      ),
-      amountAvailable
-    )
-  )
-}
 
 // gets the staking info from the network for the active chain id
 export function useFarms(): StakingTri[] {
@@ -60,9 +36,7 @@ export function useFarms(): StakingTri[] {
   const tokens = useMemo(() => activeFarms.map(({ tokens }) => tokens), [activeFarms])
   const stakingTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg)
   const pairs = usePairs(tokens)
-
   
-
   const pairAddresses = useMemo(() => {
     const pairsHaveLoaded = pairs?.every(([state, pair]) => state === PairState.EXISTS)
     if (!pairsHaveLoaded) return []
@@ -71,7 +45,17 @@ export function useFarms(): StakingTri[] {
 
   // useTokenPrices(tokenAddresses)
   const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply')
-  // const [avaxPngPairState, avaxPngPair] = usePair(WETH[ChainId.POLYGON], png)
+  
+  // get pairs for tvl calculation
+  const dai = DAI[chainId ? chainId! : ChainId.AURORA]
+  const usdc = USDC[chainId ? chainId! : ChainId.AURORA]
+  const [daiUSDCPairState, daiUSDCPair] = usePair(dai, usdc);
+  const [triUSDCPairState, triUSDCPair] = usePair(TRI, usdc);
+  // TODO add a wNEAR pair to calculate for wnear pools
+
+  // apr calculation
+  const chefRewardsPerSecond = useSingleCallResult(chefContract, 'triPerBlock')
+  const chefTotalAllocPoints = useSingleCallResult(chefContract, 'totalAllocPoint')
 
   return useMemo(() => {
     if (!chainId) return activeFarms
@@ -92,16 +76,28 @@ export function useFarms(): StakingTri[] {
         rewardsPending?.loading === false &&
         stakingTotalSupplyState?.loading === false &&
         pairTotalSupplyState?.loading === false &&
+        chefRewardsPerSecond?.loading === false &&
+        chefTotalAllocPoints?.loading === false &&
         pair &&
-        pairState !== PairState.LOADING
+        pairState !== PairState.LOADING &&
+        daiUSDCPair &&
+        daiUSDCPairState !== PairState.LOADING &&
+        triUSDCPair &&
+        triUSDCPairState !== PairState.LOADING
       ) {
         if (
           userStaked.error ||
           rewardsPending.error ||
           stakingTotalSupplyState.error ||
           pairTotalSupplyState.error ||
+          chefRewardsPerSecond.error ||
+          chefTotalAllocPoints.error ||
           pairState === PairState.INVALID ||
-          pairState === PairState.NOT_EXISTS
+          pairState === PairState.NOT_EXISTS ||
+          daiUSDCPairState === PairState.INVALID ||
+          daiUSDCPairState === PairState.NOT_EXISTS ||
+          triUSDCPairState === PairState.INVALID ||
+          triUSDCPairState === PairState.NOT_EXISTS
         ) {
           console.error('Failed to load staking rewards info')
           return memo
@@ -121,6 +117,30 @@ export function useFarms(): StakingTri[] {
         const earnedAmount = new TokenAmount(TRI, JSBI.BigInt(earnedRewardPool))
         const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
 
+        // tvl calculation
+        const reserveInUSDC = calculateReserveInUSDC(pair, daiUSDCPair, usdc, dai);
+        const totalStakedAmountInUSD = calculateTotalStakedAmountInUSDC(totalSupplyStaked, totalSupplyAvailable, reserveInUSDC, usdc);
+
+        // apr calculation
+        const rewardsPerSecond = JSBI.BigInt(chefRewardsPerSecond.result?.[0])
+        const totalAllocPoints = JSBI.BigInt(chefTotalAllocPoints.result?.[0])
+        const totalRewardRate = new TokenAmount(TRI, 
+          JSBI.divide(
+            JSBI.multiply(rewardsPerSecond, JSBI.BigInt(activeFarms[index].allocPoint)),
+            totalAllocPoints
+          )
+        )
+        const rewardRate = new TokenAmount(
+          TRI,
+          JSBI.greaterThan(totalStakedAmount.raw, JSBI.BigInt(0))
+            ? JSBI.divide(JSBI.multiply(totalRewardRate.raw, stakedAmount.raw), totalStakedAmount.raw)
+            : JSBI.BigInt(0)
+        )
+        /*
+        const triToUsdcRatio = triUSDCPair.priceOf(TRI)
+        const totalYearlyRewards = JSBI.multiply(totalRewardRate.raw, JSBI.BigInt(3600 * 24 * 365)) 
+        const apr = triToUsdcRatio.raw.multiply(totalYearlyRewards).divide(totalStakedAmountInUSD)
+        */
         memo.push({
           ID: activeFarms[index].ID,
           stakingRewardAddress: MASTERCHEF_ADDRESS[chainId],
@@ -129,10 +149,11 @@ export function useFarms(): StakingTri[] {
           earnedAmount: earnedAmount,
           stakedAmount: stakedAmount,
           totalStakedAmount: totalStakedAmount,
-          totalStakedAmountInUSD: activeFarms[index].totalStakedAmountInUSD,
+          totalStakedAmountInUSD: totalStakedAmountInUSD,
           totalStakedAmountInETH: activeFarms[index].totalStakedAmountInETH,
-          totalRewardRate: activeFarms[index].totalRewardRate,
-          rewardRate: activeFarms[index].rewardRate,
+          allocPoint: activeFarms[index].allocPoint,
+          totalRewardRate: totalRewardRate,
+          rewardRate: rewardRate,
           apr: 10,
         })
         return memo
@@ -142,16 +163,61 @@ export function useFarms(): StakingTri[] {
   }, [
     activeFarms,
     stakingTotalSupplies,
+    daiUSDCPair,
+    triUSDCPair,
     pairs,
     pairTotalSupplies,
     pendingTri,
-    userInfo
+    userInfo,
+    chefRewardsPerSecond,
+    chefTotalAllocPoints,
   ])
 }
-  
 
-    
-    
+const calculateReserveInUSDC = function(
+  pair: Pair,
+  daiUsdcPair: Pair,
+  usdc: Token,
+  dai: Token,
+): JSBI {
+  // calculating TVL
+  if (pair.token0 === usdc || pair.token1 === usdc) {
+    return JSBI.multiply(pair.reserveOf(usdc).raw, JSBI.BigInt(2))
+  } 
+  else if (pair.token0 === dai || pair.token1 === dai) {
+    const oneToken = JSBI.BigInt(1000000000000000000)
+    const reserveInDai = pair.reserveOf(dai).raw
+    const daiReserveInDaiUsdcPair = daiUsdcPair.reserveOf(dai).raw
+    const usdcReserveInDaiUsdcPair = daiUsdcPair.reserveOf(usdc).raw
+    const usdcDaiRatio = JSBI.divide(JSBI.multiply(oneToken, usdcReserveInDaiUsdcPair), daiReserveInDaiUsdcPair)
+    return JSBI.multiply(
+      JSBI.divide(JSBI.multiply(reserveInDai, usdcDaiRatio), oneToken), 
+      JSBI.BigInt(2)
+    ) 
+  }
+  else {
+      console.error('Failed to load staking rewards info')
+      return JSBI.BigInt(0)
+  }
+}
+
+const calculateTotalStakedAmountInUSDC = function(
+  amountStaked: JSBI,
+  amountAvailable: JSBI,
+  reserveInUSDC: JSBI,
+  usdc: Token,
+): TokenAmount {
+  if (JSBI.EQ(amountAvailable, JSBI.BigInt(0))) {
+    return new TokenAmount(usdc, JSBI.BigInt(0))
+  }
+  return new TokenAmount(
+    usdc,
+    JSBI.divide(
+      JSBI.multiply(amountStaked, reserveInUSDC),
+      amountAvailable
+    )
+  )
+}
 
     
     // APR calculation
@@ -240,36 +306,3 @@ export function useFarms(): StakingTri[] {
   
   */
   
-
-  /*
-  function useTokenPrices(tokenAddresses: String[]) {
-    const prices = {}
-    var i,j, temporary, chunk = 10;
-    for (i = 0,j = tokenAddresses.length; i < j; i += chunk) {
-        temporary = tokenAddresses.slice(i, i + chunk);
-        for (const temp of temporary) {
-          let ids = id_chunk.join('%2C')
-          let res = await $.ajax({
-            url: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=' + ids + '&vs_currencies=usd',
-            type: 'GET',
-          })
-          for (const [key, v] of Object.entries(res)) {
-            if (v.usd) prices[key] = v;
-          }
-        }
-        // do whatever
-    }
-
-    for (const id_chunk of chunk(id_array, 50)) {
-      let ids = id_chunk.join('%2C')
-      let res = await $.ajax({
-        url: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=' + ids + '&vs_currencies=usd',
-        type: 'GET',
-      })
-      for (const [key, v] of Object.entries(res)) {
-        if (v.usd) prices[key] = v;
-      }
-    }
-    return prices
-  }
-  */
