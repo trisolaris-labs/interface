@@ -40,7 +40,7 @@ const POLYGON_POOLS: StakingTri[] = [
     allocPoint: 1,
     totalRewardRate: dummyAmount,
     rewardRate: dummyAmount,
-    apr: 10
+    apr: 0
   },
   {
     ID: 1,
@@ -55,7 +55,7 @@ const POLYGON_POOLS: StakingTri[] = [
     allocPoint: 1,
     totalRewardRate: dummyAmount,
     rewardRate: dummyAmount,
-    apr: 10
+    apr: 0
   },
   {
     ID: 2,
@@ -70,7 +70,7 @@ const POLYGON_POOLS: StakingTri[] = [
     allocPoint: 1,
     totalRewardRate: dummyAmount,
     rewardRate: dummyAmount,
-    apr: 10
+    apr: 0
   }
 ]
 

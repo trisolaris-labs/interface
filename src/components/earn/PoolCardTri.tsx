@@ -143,17 +143,9 @@ export default function PoolCard({
         </RowBetween>
       </StatContainer>
       <AprContainer>
-          {/*<RowBetween>
-          <TYPE.white>Swap Fee APR</TYPE.white>
-          <TYPE.white>{`${swapFeeApr}%`}</TYPE.white>
-        </RowBetween>
-        <RowBetween>
-          <TYPE.white>PNG Rewards APR</TYPE.white>
-          <TYPE.white>{`${stakingApr}%`}</TYPE.white>
-        </RowBetween>*/}
         <RowBetween>
           <TYPE.white>Total APR</TYPE.white>
-          <TYPE.white>{`${swapFeeApr + stakingApr}%`}</TYPE.white>
+          <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
         </RowBetween>
       </AprContainer>
       <StatContainer>
