@@ -11,6 +11,7 @@ export interface StakingTri {
   totalStakedAmount: TokenAmount
   totalStakedAmountInUSD: TokenAmount
   totalStakedAmountInETH: TokenAmount
+  allocPoint: number
   // the amount of token distributed per second to all LPs, constant
   totalRewardRate: TokenAmount
   // the current amount of token distributed to the active account per second.
@@ -36,6 +37,7 @@ const POLYGON_POOLS: StakingTri[] = [
     totalStakedAmount: dummyAmount,
     totalStakedAmountInUSD: dummyAmount,
     totalStakedAmountInETH: dummyAmount,
+    allocPoint: 1,
     totalRewardRate: dummyAmount,
     rewardRate: dummyAmount,
     apr: 10
@@ -50,6 +52,7 @@ const POLYGON_POOLS: StakingTri[] = [
     totalStakedAmount: dummyAmount,
     totalStakedAmountInUSD: dummyAmount,
     totalStakedAmountInETH: dummyAmount,
+    allocPoint: 1,
     totalRewardRate: dummyAmount,
     rewardRate: dummyAmount,
     apr: 10
@@ -64,6 +67,7 @@ const POLYGON_POOLS: StakingTri[] = [
     totalStakedAmount: dummyAmount,
     totalStakedAmountInUSD: dummyAmount,
     totalStakedAmountInETH: dummyAmount,
+    allocPoint: 1,
     totalRewardRate: dummyAmount,
     rewardRate: dummyAmount,
     apr: 10
@@ -84,6 +88,7 @@ const NULL_POOLS: StakingTri[] = [
     totalStakedAmount: dummyAmount,
     totalStakedAmountInUSD: dummyAmount,
     totalStakedAmountInETH: dummyAmount,
+    allocPoint: 0,
     totalRewardRate: dummyAmount,
     rewardRate: dummyAmount,
     apr: 0
