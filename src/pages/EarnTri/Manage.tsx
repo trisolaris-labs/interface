@@ -106,15 +106,13 @@ export default function Manage({
   const farmArr = useFarms()
   const stakingInfo = farmArr[parseInt(version)]
 
-  const avaxPool = currencyA === CETH || currencyB === CETH
-
   let valueOfTotalStakedAmountInWavax: TokenAmount | undefined
-  // let valueOfTotalStakedAmountInUSDC: CurrencyAmount | undefined
+
   let backgroundColor: string
   let token: Token | undefined
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
-  const [, avaxPngTokenPair] = usePair(CETH, PNG[chainId ? chainId : 137])
-  // let usdToken: Token | undefined
+
+
 
   // get the color of the token
   backgroundColor = useColor(token)
