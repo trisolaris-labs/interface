@@ -1,4 +1,4 @@
-import { ChainId, Token, TokenAmount, WETH } from '@trisolaris/sdk'
+import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
 import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR } from '../../constants'
 
 
@@ -26,6 +26,9 @@ const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
 const dummyAmount = new TokenAmount(dummyToken, '0')
 
 export const TRI = new Token(ChainId.AURORA, '0x0029050f71704940D77Cfe71D0F1FB868DeeFa03', 18, 'TRI', 'Trisolaris')
+export const rewardsPerSecond = JSBI.BigInt("10000000000000000000")
+export const totalAllocPoints = JSBI.BigInt("2")
+        
 
 const POLYGON_POOLS: StakingTri[] = [
   {

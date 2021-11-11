@@ -1,7 +1,7 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
 import { USDC, DAI, WNEAR } from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
-import { STAKING, StakingTri, TRI, ADDRESS_PRICE_MAP } from './stake-constants'
+import { STAKING, StakingTri, TRI, rewardsPerSecond, totalAllocPoints } from './stake-constants'
 import { useSingleContractMultipleData, useMultipleContractSingleData, useSingleCallResult, NEVER_RELOAD } from '../../state/multicall/hooks'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useMemo } from 'react'
@@ -53,10 +53,6 @@ export function useFarms(): StakingTri[] {
   const [triUSDCPairState, triUSDCPair] = usePair(TRI, usdc);
   const [wnearUSDCPairState, wnearUSDCPair] = usePair(wnear, usdc);
 
-  // apr calculation
-  const chefRewardsPerSecond = useSingleCallResult(chefContract, 'triPerBlock')
-  const chefTotalAllocPoints = useSingleCallResult(chefContract, 'totalAllocPoint')
-
   return useMemo(() => {
     if (!chainId) return activeFarms
 
@@ -76,8 +72,6 @@ export function useFarms(): StakingTri[] {
         rewardsPending?.loading === false &&
         stakingTotalSupplyState?.loading === false &&
         pairTotalSupplyState?.loading === false &&
-        chefRewardsPerSecond?.loading === false &&
-        chefTotalAllocPoints?.loading === false &&
         pair &&
         pairState !== PairState.LOADING &&
         daiUSDCPair &&
@@ -92,8 +86,6 @@ export function useFarms(): StakingTri[] {
           rewardsPending.error ||
           stakingTotalSupplyState.error ||
           pairTotalSupplyState.error ||
-          chefRewardsPerSecond.error ||
-          chefTotalAllocPoints.error ||
           pairState === PairState.INVALID ||
           pairState === PairState.NOT_EXISTS ||
           daiUSDCPairState === PairState.INVALID ||
@@ -124,10 +116,7 @@ export function useFarms(): StakingTri[] {
         // tvl calculation
         const reserveInUSDC = calculateReserveInUSDC(pair, daiUSDCPair, wnearUSDCPair, usdc, dai, wnear);
         const totalStakedAmountInUSD = calculateTotalStakedAmountInUSDC(totalSupplyStaked, totalSupplyAvailable, reserveInUSDC, usdc);
-
         // apr calculation
-        const rewardsPerSecond = JSBI.BigInt(chefRewardsPerSecond.result?.[0])
-        const totalAllocPoints = JSBI.BigInt(chefTotalAllocPoints.result?.[0])
         const totalRewardRate = new TokenAmount(TRI, 
           JSBI.divide(
             JSBI.multiply(rewardsPerSecond, JSBI.BigInt(activeFarms[index].allocPoint)),
@@ -171,8 +160,6 @@ export function useFarms(): StakingTri[] {
     pairTotalSupplies,
     pendingTri,
     userInfo,
-    chefRewardsPerSecond,
-    chefTotalAllocPoints,
   ])
 }
 
