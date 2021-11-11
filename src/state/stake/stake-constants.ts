@@ -1,5 +1,5 @@
 import { ChainId, Token, TokenAmount } from '@trisolaris/sdk'
-import { USDC, AAVE, DAI, ZERO_ADDRESS } from '../../constants'
+import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR } from '../../constants'
 
 export interface StakingTri {
   ID: number
@@ -20,11 +20,11 @@ export interface StakingTri {
   apr: number
 }
 
-const dummyToken = new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
+const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
 
 const dummyAmount = new TokenAmount(dummyToken, '0')
 
-export const TRI = new Token(ChainId.POLYGON, '0x2CB45Edb4517d5947aFdE3BEAbF95A582506858B', 18, 'TRI', 'Trisolaris')
+export const TRI = new Token(ChainId.AURORA, '0x0029050f71704940D77Cfe71D0F1FB868DeeFa03', 18, 'TRI', 'Trisolaris')
 
 const POLYGON_POOLS: StakingTri[] = [
   {
@@ -74,6 +74,25 @@ const POLYGON_POOLS: StakingTri[] = [
   }
 ]
 
+
+const AURORA_POOLS: StakingTri[] = [
+  {
+    ID: 0,
+    tokens: [WNEAR[ChainId.AURORA], USDC[ChainId.AURORA]],
+    stakingRewardAddress: '0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedAmountInUSD: dummyAmount,
+    totalStakedAmountInETH: dummyAmount,
+    allocPoint: 1,
+    totalRewardRate: dummyAmount,
+    rewardRate: dummyAmount,
+    apr: 0
+  }
+]
+
 const NULL_POOLS: StakingTri[] = [
   {
     ID: 0,
@@ -101,7 +120,7 @@ export const STAKING: {
   [ChainId.FUJI]: NULL_POOLS,
   [ChainId.AVALANCHE]: NULL_POOLS,
   [ChainId.POLYGON]: POLYGON_POOLS,
-  [ChainId.AURORA]: NULL_POOLS
+  [ChainId.AURORA]: AURORA_POOLS
 }
 
 export const ADDRESS_PRICE_MAP: { [key: string]: string } = {
