@@ -259,12 +259,7 @@ export default function Header() {
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
 
-  // const aggregateBalance: TokenAmount | undefined = useAggregatePngBalance()
-
   const [showPngBalanceModal, setShowPngBalanceModal] = useState(false)
-
-  // const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
-  // const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
 
   return (
     <HeaderFrame>
@@ -278,9 +273,6 @@ export default function Header() {
           <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
             {t('header.swap')}
           </StyledNavLink>
-         {/* <StyledNavLink id={`swap-nav-link`} to={'/buy'}>
-            Buy
-          </StyledNavLink>*/}
           <StyledNavLink
             id={`pool-nav-link`}
             to={'/pool'}
@@ -316,33 +308,6 @@ export default function Header() {
               <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
           </HideSmall>
-          {/* {aggregateBalance && (
-            //TODO - change false back to true when ready for token stats.
-            <PNGWrapper onClick={() => setShowPngBalanceModal(false)}>
-              <PNGAmount active={!!account} style={{ pointerEvents: 'auto' }}>
-                {account && (
-                  <HideSmall>
-                    <TYPE.white
-                      style={{
-                        paddingRight: '.4rem'
-                      }}
-                    >
-                      <CountUp
-                        key={countUpValue}
-                        isCounting
-                        start={parseFloat(countUpValuePrevious)}
-                        end={parseFloat(countUpValue)}
-                        thousandsSeparator={','}
-                        duration={1}
-                      />
-                    </TYPE.white>
-                  </HideSmall>
-                )}
-                TRI
-              </PNGAmount>
-              <CardNoise />
-            </PNGWrapper>
-          )} */}
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance && chainId && BASE_CURRENCIES[chainId] ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
