@@ -34,8 +34,8 @@ const STAKING: {
   [key: string]: Staking
 } = {
   WETH_USDT_V0: {
-    tokens: [WETH[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
-    stakingRewardAddress: '0x4f019452f51bbA0250Ec8B69D64282B79fC8BD9f',
+    tokens: [WETH[ChainId.POLYGON], USDT[ChainId.POLYGON]],
+    stakingRewardAddress: '0xc5ef09BA1C648AaC27ECe9d9d11a500DB55547A5',
     version: 0,
     multiplier: 0
   },
@@ -59,62 +59,6 @@ const STAKING: {
   }
 }
 
-// The first mapping in the list takes priority if multiple migrations exist from the same pool
-export const MIGRATIONS: Migration[] = [
-  { from: STAKING.WETH_PNG_V0, to: STAKING.WETH_PNG_V1 },
-  { from: STAKING.WETH_ETH_V0, to: STAKING.WETH_WETHe_V1 },
-  { from: STAKING.WETH_USDT_V0, to: STAKING.WETH_USDTe_V1 },
-  { from: STAKING.WETH_WBTC_V0, to: STAKING.WETH_WBTCe_V1 },
-  { from: STAKING.WETH_LINK_V0, to: STAKING.WETH_LINKe_V1 },
-  { from: STAKING.WETH_DAI_V0, to: STAKING.WETH_DAIe_V1 },
-  { from: STAKING.WETH_UNI_V0, to: STAKING.WETH_UNIe_V1 },
-  { from: STAKING.WETH_SUSHI_V0, to: STAKING.WETH_SUSHIe_V1 },
-  { from: STAKING.WETH_AAVE_V0, to: STAKING.WETH_AAVEe_V1 },
-  { from: STAKING.WETH_YFI_V0, to: STAKING.WETH_YFIe_V1 },
-  // From v0 (PNG)
-  { from: STAKING.PNG_ETH_V0, to: STAKING.PNG_WETHe_V1 },
-  { from: STAKING.PNG_USDT_V0, to: STAKING.PNG_USDTe_V1 },
-  { from: STAKING.PNG_WBTC_V0, to: STAKING.PNG_WBTCe_V1 },
-  { from: STAKING.PNG_LINK_V0, to: STAKING.PNG_LINKe_V1 },
-  { from: STAKING.PNG_DAI_V0, to: STAKING.PNG_DAIe_V1 },
-  { from: STAKING.PNG_UNI_V0, to: STAKING.PNG_UNIe_V1 },
-  { from: STAKING.PNG_SUSHI_V0, to: STAKING.PNG_SUSHIe_V1 },
-  { from: STAKING.PNG_AAVE_V0, to: STAKING.PNG_AAVEe_V1 },
-  { from: STAKING.PNG_YFI_V0, to: STAKING.PNG_YFIe_V1 },
-
-  // From v1 (WETH)
-  { from: STAKING.WETH_ETH_V1, to: STAKING.WETH_WETHe_V1 },
-  { from: STAKING.WETH_USDT_V1, to: STAKING.WETH_USDTe_V1 },
-  { from: STAKING.WETH_WBTC_V1, to: STAKING.WETH_WBTCe_V1 },
-  { from: STAKING.WETH_LINK_V1, to: STAKING.WETH_LINKe_V1 },
-  { from: STAKING.WETH_DAI_V1, to: STAKING.WETH_DAIe_V1 },
-  { from: STAKING.WETH_UNI_V1, to: STAKING.WETH_UNIe_V1 },
-  { from: STAKING.WETH_SUSHI_V1, to: STAKING.WETH_SUSHIe_V1 },
-  { from: STAKING.WETH_AAVE_V1, to: STAKING.WETH_AAVEe_V1 },
-  { from: STAKING.WETH_YFI_V1, to: STAKING.WETH_YFIe_V1 },
-  // From v1 (PNG)
-  { from: STAKING.PNG_ETH_V1, to: STAKING.PNG_WETHe_V1 },
-  { from: STAKING.PNG_USDT_V1, to: STAKING.PNG_USDTe_V1 },
-  { from: STAKING.PNG_WBTC_V1, to: STAKING.PNG_WBTCe_V1 },
-  { from: STAKING.PNG_LINK_V1, to: STAKING.PNG_LINKe_V1 },
-  { from: STAKING.PNG_DAI_V1, to: STAKING.PNG_DAIe_V1 },
-  { from: STAKING.PNG_UNI_V1, to: STAKING.PNG_UNIe_V1 },
-  { from: STAKING.PNG_SUSHI_V1, to: STAKING.PNG_SUSHIe_V1 },
-  { from: STAKING.PNG_AAVE_V1, to: STAKING.PNG_AAVEe_V1 },
-  { from: STAKING.PNG_YFI_V1, to: STAKING.PNG_YFIe_V1 }
-]
-
-export const BRIDGE_MIGRATORS: BridgeMigrator[] = [
-  { aeb: '0xf20d962a6c8f70c731bd838a3a388D7d48fA6e15', ab: '0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB' }, // ETH
-  { aeb: '0xde3A24028580884448a5397872046a019649b084', ab: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118' }, // USDT
-  { aeb: '0x408D4cD0ADb7ceBd1F1A1C33A0Ba2098E1295bAB', ab: '0x50b7545627a5162F82A992c33b87aDc75187B218' }, // WBTC
-  { aeb: '0xB3fe5374F67D7a22886A0eE082b2E2f9d2651651', ab: '0x5947BB275c521040051D82396192181b413227A3' }, // LINK
-  { aeb: '0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a', ab: '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70' }, // DAI
-  { aeb: '0xf39f9671906d8630812f9d9863bBEf5D523c84Ab', ab: '0x8eBAf22B6F053dFFeaf46f4Dd9eFA95D89ba8580' }, // UNI
-  { aeb: '0x39cf1BD5f15fb22eC3D9Ff86b0727aFc203427cc', ab: '0x37B608519F91f70F2EeB0e5Ed9AF4061722e4F76' }, // SUSHI
-  { aeb: '0x8cE2Dee54bB9921a2AE0A63dBb2DF8eD88B91dD9', ab: '0x63a72806098Bd3D9520cC43356dD78afe5D386D9' }, // AAVE
-  { aeb: '0x99519AcB025a0e0d44c3875A4BbF03af65933627', ab: '0x9eAaC1B23d935365bD7b542Fe22cEEe2922f52dc' } // YFI
-]
 
 export const STAKING_V0: Staking[] = Object.values(STAKING).filter(staking => staking.version === 0)
 export const STAKING_V1: Staking[] = Object.values(STAKING).filter(staking => staking.version === 1)
@@ -124,7 +68,8 @@ export const STAKING_REWARDS_CURRENT_VERSION = Math.max(...Object.values(STAKING
 export const STAKING_REWARDS_INFO: {
   [chainId in ChainId]?: Staking[][]
 } = {
-  [ChainId.AVALANCHE]: [STAKING_V0, STAKING_V1]
+  [ChainId.AVALANCHE]: [STAKING_V0, STAKING_V1],
+  [ChainId.AURORA]: [STAKING_V0]
 }
 
 export interface StakingInfo {

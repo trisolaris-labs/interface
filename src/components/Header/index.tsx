@@ -298,6 +298,13 @@ export default function Header() {
           >
             {t('header.pool')}
           </StyledNavLink>
+          <StyledNavLink
+            id={`png-nav-link`}
+            to={'/farm/1'}
+            isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/png')}
+          >
+            {t('header.farm')}
+          </StyledNavLink>
           <StyledExternalLink id="aurora-bridge" href={'https://aurora.dev/bridge'}>
             Bridge from Ethereum <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>

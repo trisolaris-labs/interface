@@ -13,10 +13,10 @@ import { TYPE } from '../../theme'
 import { RowBetween } from '../../components/Row'
 import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
 import { ButtonPrimary, ButtonEmpty } from '../../components/Button'
-import StakingModal from '../../components/earn/StakingModal'
+import StakingModal from '../../components/earn/StakingModalTri'
 import { useStakingInfo } from '../../state/stake/hooks'
-import UnstakingModal from '../../components/earn/UnstakingModal'
-import ClaimRewardModal from '../../components/earn/ClaimRewardModal'
+import UnstakingModal from '../../components/earn/UnstakingModalTri'
+import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { useColor } from '../../hooks/useColor'
@@ -30,6 +30,8 @@ import usePrevious from '../../hooks/usePrevious'
 // import useUSDCPrice from '../../utils/useUSDCPrice'
 import { BIG_INT_ZERO, PNG } from '../../constants'
 import { useTranslation } from 'react-i18next'
+import { useFarms } from '../../state/stake/apr'
+
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
@@ -101,77 +103,19 @@ export default function Manage({
   const tokenB = wrappedCurrency(currencyB ?? undefined, chainId)
 
   const [, stakingTokenPair] = usePair(tokenA, tokenB)
-  const stakingInfo = useStakingInfo(Number(version), stakingTokenPair)?.[0]
-
-  const avaxPool = currencyA === CETH || currencyB === CETH
+  const farmArr = useFarms()
+  const stakingInfo = farmArr[parseInt(version)]
 
   let valueOfTotalStakedAmountInWavax: TokenAmount | undefined
-  // let valueOfTotalStakedAmountInUSDC: CurrencyAmount | undefined
+
   let backgroundColor: string
   let token: Token | undefined
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
-  const [, avaxPngTokenPair] = usePair(CETH, PNG[chainId ? chainId : 137])
-  // let usdToken: Token | undefined
-  if (avaxPool) {
-    token = currencyA === CETH ? tokenB : tokenA
-    const wavax = currencyA === CETH ? tokenA : tokenB
 
-    // let returnOverMonth: Percent = new Percent('0')
-    if (totalSupplyOfStakingToken && stakingTokenPair && wavax) {
-      // take the total amount of LP tokens staked, multiply by AVAX value of all LP tokens, divide by all LP tokens
-      valueOfTotalStakedAmountInWavax = new TokenAmount(
-        wavax,
-        JSBI.divide(
-          JSBI.multiply(
-            JSBI.multiply(stakingInfo.totalStakedAmount.raw, stakingTokenPair.reserveOf(wavax).raw),
-            JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
-          ),
-          totalSupplyOfStakingToken.raw
-        )
-      )
-    }
 
-    // get the USD value of staked wavax
-    // usdToken = wavax
-  } else {
-    let png
-    if (tokenA && tokenA.equals(PNG[tokenA.chainId])) {
-      token = tokenB
-      png = tokenA
-    } else {
-      token = tokenA
-      png = tokenB
-    }
-
-    if (totalSupplyOfStakingToken && stakingTokenPair && avaxPngTokenPair && tokenB && png) {
-      const oneToken = JSBI.BigInt(1000000000000000000)
-      const avaxPngRatio = JSBI.divide(
-        JSBI.multiply(oneToken, avaxPngTokenPair.reserveOf(WETH[tokenB.chainId]).raw),
-        avaxPngTokenPair.reserveOf(png).raw
-      )
-
-      const valueOfPngInAvax = JSBI.divide(JSBI.multiply(stakingTokenPair.reserveOf(png).raw, avaxPngRatio), oneToken)
-
-      valueOfTotalStakedAmountInWavax = new TokenAmount(
-        WETH[tokenB.chainId],
-        JSBI.divide(
-          JSBI.multiply(
-            JSBI.multiply(stakingInfo.totalStakedAmount.raw, valueOfPngInAvax),
-            JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
-          ),
-          totalSupplyOfStakingToken.raw
-        )
-      )
-    }
-    // usdToken = png
-  }
 
   // get the color of the token
   backgroundColor = useColor(token)
-
-  // const USDPrice = useUSDCPrice(usdToken)
-  // valueOfTotalStakedAmountInUSDC =
-  // 		valueOfTotalStakedAmountInWavax && USDPrice?.quote(valueOfTotalStakedAmountInWavax)
 
   // detect existing unstaked LP position to show add button if none found
   const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakingInfo?.stakedAmount?.token)
@@ -184,23 +128,6 @@ export default function Manage({
 
   // fade cards if nothing staked or nothing earned yet
   const disableTop = !stakingInfo?.stakedAmount || stakingInfo.stakedAmount.equalTo(JSBI.BigInt(0))
-
-  // get WETH value of staked LP tokens
-
-  // let valueOfTotalStakedAmountInWETH: TokenAmount | undefined
-  // if (totalSupplyOfStakingToken && stakingTokenPair && stakingInfo && WETH) {
-  // 	// take the total amount of LP tokens staked, multiply by AVAX value of all LP tokens, divide by all LP tokens
-  // 	valueOfTotalStakedAmountInWETH = new TokenAmount(
-  // 		WETH,
-  // 		JSBI.divide(
-  // 			JSBI.multiply(
-  // 				JSBI.multiply(stakingInfo.totalStakedAmount.raw, stakingTokenPair.reserveOf(WETH).raw),
-  // 				JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the WETH they entitle owner to
-  // 			),
-  // 			totalSupplyOfStakingToken.raw
-  // 		)
-  // 	)
-  // }
 
   const countUpAmount = stakingInfo?.earnedAmount?.toFixed(6) ?? '0'
   const countUpAmountPrevious = usePrevious(countUpAmount) ?? '0'
@@ -230,10 +157,7 @@ export default function Manage({
           <AutoColumn gap="sm">
             <TYPE.body style={{ margin: 0 }}>{t('earnPage.totalStaked')}</TYPE.body>
             <TYPE.body fontSize={24} fontWeight={500}>
-              {`${valueOfTotalStakedAmountInWavax?.toSignificant(4, { groupSeparator: ',' }) ?? '-'} AVAX`}
-              {/* {valueOfTotalStakedAmountInUSDC
-							? `$${valueOfTotalStakedAmountInUSDC.toFixed(0, { groupSeparator: ',' })}`
-							: `${valueOfTotalStakedAmountInWavax?.toSignificant(4, { groupSeparator: ',' }) ?? '-'} AVAX`} */}
+              {`$${stakingInfo.totalStakedAmountInUSD.toSignificant(4, { groupSeparator: ',' }) ?? '-'} USDC`}
             </TYPE.body>
           </AutoColumn>
         </PoolData>
@@ -315,7 +239,7 @@ export default function Manage({
                     {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'}
                   </TYPE.white>
                   <TYPE.white>
-                    PGL {currencyA?.symbol}-{currencyB?.symbol}
+                    TSL {currencyA?.symbol}-{currencyB?.symbol}
                   </TYPE.white>
                 </RowBetween>
               </AutoColumn>
@@ -327,7 +251,7 @@ export default function Manage({
             <AutoColumn gap="sm">
               <RowBetween>
                 <div>
-                  <TYPE.black>{t('earnPage.unclaimedPng')}</TYPE.black>
+                  <TYPE.black>{t('earnPage.unclaimed')}</TYPE.black>
                 </div>
                 {stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
                   <ButtonEmpty

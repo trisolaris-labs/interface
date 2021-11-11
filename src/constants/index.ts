@@ -86,6 +86,46 @@ export const DAI: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0xe3520349f477a5f6eb06107066048508498a291b', 18, 'DAI', 'Dai Stablecoin')
 }
 
+
+export const USDC: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 6, 'USDC', 'USDC Stablecoin'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664',
+    6,
+    'USDC',
+    'USDC Stablecoin'
+  ),
+  [ChainId.POLYGON]: new Token(
+    ChainId.POLYGON,
+    '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+    6,
+    'USDC',
+    'USDC Stablecoin'
+  ),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xB12BFcA5A55806AaF64E99521918A4bf0fC40802', 6, 'USDC', 'USDC Stablecoin')
+}
+
+export const AAVE: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'AAVE', 'AAVE TOken'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0x63a72806098Bd3D9520cC43356dD78afe5D386D9',
+    18,
+    'AAVE',
+    'AAVE Token'
+  ),
+  [ChainId.POLYGON]: new Token(
+    ChainId.POLYGON,
+    '0xd6df932a45c0f255f85145f286ea0b292b21c90b',
+    18,
+    'AAVE',
+    'AAVE Token'
+  ),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, ZERO_ADDRESS,  18, 'AAVE', 'AAVE TOken')
+}
+
+
 export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: ZERO_ADDRESS,
   [ChainId.AVALANCHE]: '0x0C58C2041da4CfCcF5818Bbe3b66DBC23B3902d9',
@@ -212,7 +252,7 @@ export const CHAIN_PARAMS = {
       decimals: 18
     },
     rpcUrls: ['https://mainnet.aurora.dev/Fon6fPMs5rCdJc4mxX4kiSK1vsKdzc3D8k6UF8aruek'],
-    blockExplorerUrls: ['https://etherscan.io/']
+    blockExplorerUrls: ['https://explorer.mainnet.aurora.dev/']
   }
 }
 
