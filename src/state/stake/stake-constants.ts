@@ -1,5 +1,6 @@
-import { ChainId, Token, TokenAmount } from '@trisolaris/sdk'
+import { ChainId, Token, TokenAmount, WETH } from '@trisolaris/sdk'
 import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR } from '../../constants'
+
 
 export interface StakingTri {
   ID: number
@@ -80,6 +81,21 @@ const AURORA_POOLS: StakingTri[] = [
     ID: 0,
     tokens: [WNEAR[ChainId.AURORA], USDC[ChainId.AURORA]],
     stakingRewardAddress: '0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedAmountInUSD: dummyAmount,
+    totalStakedAmountInETH: dummyAmount,
+    allocPoint: 1,
+    totalRewardRate: dummyAmount,
+    rewardRate: dummyAmount,
+    apr: 0
+  },
+  {
+    ID: 1,
+    tokens: [WETH[ChainId.AURORA], USDC[ChainId.AURORA]],
+    stakingRewardAddress: '0x2F41AF687164062f118297cA10751F4b55478ae1',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,

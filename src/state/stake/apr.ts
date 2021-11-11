@@ -1,6 +1,5 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
-import { USDC, DAI } from '../../constants'
-import { useTokenContract } from '../../hooks/useContract'
+import { USDC, DAI, WNEAR } from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
 import { STAKING, StakingTri, TRI, ADDRESS_PRICE_MAP } from './stake-constants'
 import { useSingleContractMultipleData, useMultipleContractSingleData, useSingleCallResult, NEVER_RELOAD } from '../../state/multicall/hooks'
@@ -49,9 +48,10 @@ export function useFarms(): StakingTri[] {
   // get pairs for tvl calculation
   const dai = DAI[chainId ? chainId! : ChainId.AURORA]
   const usdc = USDC[chainId ? chainId! : ChainId.AURORA]
+  const wnear  = WNEAR[chainId ? chainId! : ChainId.AURORA]
   const [daiUSDCPairState, daiUSDCPair] = usePair(dai, usdc);
   const [triUSDCPairState, triUSDCPair] = usePair(TRI, usdc);
-  // TODO add a wNEAR pair to calculate for wnear pools
+  const [wnearUSDCPairState, wnearUSDCPair] = usePair(wnear, usdc);
 
   // apr calculation
   const chefRewardsPerSecond = useSingleCallResult(chefContract, 'triPerBlock')
@@ -83,7 +83,9 @@ export function useFarms(): StakingTri[] {
         daiUSDCPair &&
         daiUSDCPairState !== PairState.LOADING &&
         triUSDCPair &&
-        triUSDCPairState !== PairState.LOADING
+        triUSDCPairState !== PairState.LOADING &&
+        wnearUSDCPair &&
+        wnearUSDCPairState !== PairState.LOADING
       ) {
         if (
           userStaked.error ||
@@ -97,7 +99,9 @@ export function useFarms(): StakingTri[] {
           daiUSDCPairState === PairState.INVALID ||
           daiUSDCPairState === PairState.NOT_EXISTS ||
           triUSDCPairState === PairState.INVALID ||
-          triUSDCPairState === PairState.NOT_EXISTS
+          triUSDCPairState === PairState.NOT_EXISTS ||
+          wnearUSDCPairState === PairState.INVALID ||
+          wnearUSDCPairState === PairState.NOT_EXISTS
         ) {
           console.error('Failed to load staking rewards info')
           return memo
@@ -118,7 +122,7 @@ export function useFarms(): StakingTri[] {
         const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
 
         // tvl calculation
-        const reserveInUSDC = calculateReserveInUSDC(pair, daiUSDCPair, usdc, dai);
+        const reserveInUSDC = calculateReserveInUSDC(pair, daiUSDCPair, wnearUSDCPair, usdc, dai, wnear);
         const totalStakedAmountInUSD = calculateTotalStakedAmountInUSDC(totalSupplyStaked, totalSupplyAvailable, reserveInUSDC, usdc);
 
         // apr calculation
@@ -162,6 +166,7 @@ export function useFarms(): StakingTri[] {
     stakingTotalSupplies,
     daiUSDCPair,
     triUSDCPair,
+    wnearUSDCPair,
     pairs,
     pairTotalSupplies,
     pendingTri,
@@ -174,8 +179,10 @@ export function useFarms(): StakingTri[] {
 const calculateReserveInUSDC = function(
   pair: Pair,
   daiUsdcPair: Pair,
+  wnearUSDCPair: Pair,
   usdc: Token,
   dai: Token,
+  wnear: Token
 ): JSBI {
   // calculating TVL
   if (pair.token0 === usdc || pair.token1 === usdc) {
@@ -189,6 +196,17 @@ const calculateReserveInUSDC = function(
     const usdcDaiRatio = JSBI.divide(JSBI.multiply(oneToken, usdcReserveInDaiUsdcPair), daiReserveInDaiUsdcPair)
     return JSBI.multiply(
       JSBI.divide(JSBI.multiply(reserveInDai, usdcDaiRatio), oneToken), 
+      JSBI.BigInt(2)
+    ) 
+  }
+  else if (pair.token0 === wnear || pair.token1 === wnear) {
+    const oneToken = JSBI.BigInt(1000000000000000000)
+    const reserveInWnear = pair.reserveOf(wnear).raw
+    const wNearReserveInWNearUsdcPair = wnearUSDCPair.reserveOf(wnear).raw
+    const usdcReserveInWNearUsdcPair = wnearUSDCPair.reserveOf(usdc).raw
+    const usdcWNearRatio = JSBI.divide(JSBI.multiply(oneToken, usdcReserveInWNearUsdcPair), wNearReserveInWNearUsdcPair)
+    return JSBI.multiply(
+      JSBI.divide(JSBI.multiply(reserveInWnear, usdcWNearRatio), oneToken), 
       JSBI.BigInt(2)
     ) 
   }
