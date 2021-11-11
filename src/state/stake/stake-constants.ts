@@ -28,7 +28,7 @@ const dummyAmount = new TokenAmount(dummyToken, '0')
 export const TRI = new Token(ChainId.AURORA, '0x0029050f71704940D77Cfe71D0F1FB868DeeFa03', 18, 'TRI', 'Trisolaris')
 export const rewardsPerSecond = JSBI.BigInt("10000000000000000000")
 export const totalAllocPoints = JSBI.BigInt("3")
-        
+export const tokenAmount = new TokenAmount(dummyToken, '99')       
 
 const POLYGON_POOLS: StakingTri[] = [
   {
@@ -69,12 +69,12 @@ const POLYGON_POOLS: StakingTri[] = [
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
     totalStakedAmount: dummyAmount,
-    totalStakedAmountInUSD: dummyAmount,
+    totalStakedAmountInUSD: dummyAmount,//hardcode
     totalStakedAmountInETH: dummyAmount,
     allocPoint: 1,
-    totalRewardRate: dummyAmount,
+    totalRewardRate: dummyAmount,// hardcode
     rewardRate: dummyAmount,
-    apr: 0
+    apr: 0//hardcode
   }
 ]
 

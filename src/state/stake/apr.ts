@@ -1,7 +1,7 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
 import { USDC, DAI, WNEAR } from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
-import { STAKING, StakingTri, TRI, rewardsPerSecond, totalAllocPoints } from './stake-constants'
+import { STAKING, StakingTri, TRI, rewardsPerSecond, totalAllocPoints, tokenAmount } from './stake-constants'
 import { useSingleContractMultipleData, useMultipleContractSingleData, useSingleCallResult, NEVER_RELOAD } from '../../state/multicall/hooks'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useMemo } from 'react'
@@ -46,12 +46,12 @@ export function useFarms(): StakingTri[] {
   const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply')
   
   // get pairs for tvl calculation
-  const dai = DAI[chainId ? chainId! : ChainId.AURORA]
-  const usdc = USDC[chainId ? chainId! : ChainId.AURORA]
-  const wnear  = WNEAR[chainId ? chainId! : ChainId.AURORA]
-  const [daiUSDCPairState, daiUSDCPair] = usePair(dai, usdc);
-  const [triUSDCPairState, triUSDCPair] = usePair(TRI, usdc);
-  const [wnearUSDCPairState, wnearUSDCPair] = usePair(wnear, usdc);
+  // const dai = DAI[chainId ? chainId! : ChainId.AURORA]
+  // const usdc = USDC[chainId ? chainId! : ChainId.AURORA]
+  // const wnear  = WNEAR[chainId ? chainId! : ChainId.AURORA]
+  // const [daiUSDCPairState, daiUSDCPair] = usePair(dai, usdc);
+  // const [triUSDCPairState, triUSDCPair] = usePair(TRI, usdc);
+  // const [wnearUSDCPairState, wnearUSDCPair] = usePair(wnear, usdc);
 
   return useMemo(() => {
     if (!chainId) return activeFarms
@@ -73,13 +73,14 @@ export function useFarms(): StakingTri[] {
         stakingTotalSupplyState?.loading === false &&
         pairTotalSupplyState?.loading === false &&
         pair &&
-        pairState !== PairState.LOADING &&
-        daiUSDCPair &&
-        daiUSDCPairState !== PairState.LOADING &&
-        triUSDCPair &&
-        triUSDCPairState !== PairState.LOADING &&
-        wnearUSDCPair &&
-        wnearUSDCPairState !== PairState.LOADING
+        pairState !== PairState.LOADING 
+        // &&
+        // daiUSDCPair &&
+        // daiUSDCPairState !== PairState.LOADING &&
+        // triUSDCPair &&
+        // triUSDCPairState !== PairState.LOADING &&
+        // wnearUSDCPair &&
+        // wnearUSDCPairState !== PairState.LOADING
       ) {
         if (
           userStaked.error ||
@@ -87,13 +88,14 @@ export function useFarms(): StakingTri[] {
           stakingTotalSupplyState.error ||
           pairTotalSupplyState.error ||
           pairState === PairState.INVALID ||
-          pairState === PairState.NOT_EXISTS ||
-          daiUSDCPairState === PairState.INVALID ||
-          daiUSDCPairState === PairState.NOT_EXISTS ||
-          triUSDCPairState === PairState.INVALID ||
-          triUSDCPairState === PairState.NOT_EXISTS ||
-          wnearUSDCPairState === PairState.INVALID ||
-          wnearUSDCPairState === PairState.NOT_EXISTS
+          pairState === PairState.NOT_EXISTS 
+          // ||
+          // daiUSDCPairState === PairState.INVALID ||
+          // daiUSDCPairState === PairState.NOT_EXISTS ||
+          // triUSDCPairState === PairState.INVALID ||
+          // triUSDCPairState === PairState.NOT_EXISTS ||
+          // wnearUSDCPairState === PairState.INVALID ||
+          // wnearUSDCPairState === PairState.NOT_EXISTS
         ) {
           console.error('Failed to load staking rewards info')
           return memo
@@ -114,8 +116,10 @@ export function useFarms(): StakingTri[] {
         const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
 
         // tvl calculation
-        const reserveInUSDC = calculateReserveInUSDC(pair, daiUSDCPair, wnearUSDCPair, usdc, dai, wnear);
-        const totalStakedAmountInUSD = calculateTotalStakedAmountInUSDC(totalSupplyStaked, totalSupplyAvailable, reserveInUSDC, usdc);
+        // const reserveInUSDC = calculateReserveInUSDC(pair, daiUSDCPair, wnearUSDCPair, usdc, dai, wnear);
+        const reserveInUSDC = tokenAmount
+        // const totalStakedAmountInUSD = calculateTotalStakedAmountInUSDC(totalSupplyStaked, totalSupplyAvailable, reserveInUSDC, usdc);
+        const totalStakedAmountInUSD = tokenAmount
         // apr calculation
         const totalRewardRate = new TokenAmount(TRI, 
           JSBI.divide(
@@ -129,7 +133,8 @@ export function useFarms(): StakingTri[] {
             ? JSBI.divide(JSBI.multiply(totalRewardRate.raw, stakedAmount.raw), totalStakedAmount.raw)
             : JSBI.BigInt(0)
         )
-        const apr = calculateApr(totalStakedAmountInUSD, triUSDCPair, totalRewardRate)
+        // const apr = calculateApr(totalStakedAmountInUSD, triUSDCPair, totalRewardRate)
+        const apr = 9
         
         memo.push({
           ID: activeFarms[index].ID,
@@ -153,9 +158,9 @@ export function useFarms(): StakingTri[] {
   }, [
     activeFarms,
     stakingTotalSupplies,
-    daiUSDCPair,
-    triUSDCPair,
-    wnearUSDCPair,
+    // daiUSDCPair,
+    // triUSDCPair,
+    // wnearUSDCPair,
     pairs,
     pairTotalSupplies,
     pendingTri,
