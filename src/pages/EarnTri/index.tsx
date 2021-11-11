@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { AutoColumn } from '../../components/Column'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import styled from 'styled-components'
-import { STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
 import { TYPE, ExternalLink } from '../../theme'
 import PoolCard from '../../components/earn/PoolCardTri'
 import { RouteComponentProps, NavLink } from 'react-router-dom'
@@ -74,22 +73,17 @@ export default function Earn({
 }: RouteComponentProps<{ version: string }>) {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  const stakingInfos = useStakingInfo(Number(version))
+  const farmArrs = useFarms();
   const [poolCards, setPoolCards] = useState<any[]>()
   const [filteredPoolCards, setFilteredPoolCards] = useState<any[]>()
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [sortBy, setSortBy] = useState<any>({ field: '', desc: true })
   const debouncedSearchQuery = useDebounce(searchQuery, 250)
-  const [stakingInfoData, setStakingInfoData] = useState<any[]>(stakingInfos)
-
-  const stakingInfoV0 = useStakingInfo(Number(0))
-  const hasPositionV0 = stakingInfoV0?.some(stakingInfo => stakingInfo.stakedAmount.greaterThan('0'))
+  const [stakingInfoData, setStakingInfoData] = useState<any[]>(farmArrs)
 
   const handleSearch = useCallback(event => {
     setSearchQuery(event.target.value.trim().toUpperCase())
   }, [])
-
-  const farmArr = useFarms();
 
   useEffect(() => {
     const filtered = poolCards?.filter(
@@ -118,22 +112,22 @@ export default function Earn({
 
   useEffect(() => {
     Promise.all(
-      farmArr
-    ).then(stakingInfos => {
-      const poolCards = stakingInfos.map(stakingInfo => (
+      farmArrs
+    ).then(farmArrs => {
+      const poolCards = farmArrs.map(farmArr => (
         <PoolCard
           swapFeeApr={10}
           stakingApr={50}
-          key={stakingInfo.stakingRewardAddress}
-          stakingInfo={stakingInfo}
-          version={stakingInfo.ID}
+          key={farmArr.stakingRewardAddress}
+          stakingInfo={farmArr}
+          version={farmArr.ID}
         />
       ))
-      setStakingInfoData(stakingInfos)
+      setStakingInfoData(farmArrs)
       setPoolCards(poolCards)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stakingInfos?.length, version])
+  }, [farmArrs?.length, version])
 
 
   return (

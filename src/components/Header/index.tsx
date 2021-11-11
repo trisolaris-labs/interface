@@ -11,7 +11,7 @@ import Logo from '../../assets/svg/planets.svg'
 import LogoDark from '../../assets/svg/planets.svg'
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
-import { useETHBalances, useAggregatePngBalance } from '../../state/wallet/hooks'
+import { useETHBalances } from '../../state/wallet/hooks'
 import { CardNoise } from '../earn/styled'
 import { CountUp } from 'use-count-up'
 import { TYPE, ExternalLink } from '../../theme'
@@ -23,7 +23,6 @@ import Menu from '../Menu'
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
 import Modal from '../Modal'
-import PngBalanceContent from './PngBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
 import { NETWORK_LABELS, BASE_CURRENCIES } from '../../constants'
 import LanguageSelection from '../LanguageSelection'
@@ -260,18 +259,15 @@ export default function Header() {
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
 
-  const aggregateBalance: TokenAmount | undefined = useAggregatePngBalance()
+  // const aggregateBalance: TokenAmount | undefined = useAggregatePngBalance()
 
   const [showPngBalanceModal, setShowPngBalanceModal] = useState(false)
 
-  const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
-  const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
+  // const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
+  // const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
 
   return (
     <HeaderFrame>
-      <Modal isOpen={showPngBalanceModal} onDismiss={() => setShowPngBalanceModal(false)}>
-        <PngBalanceContent setShowPngBalanceModal={setShowPngBalanceModal} />
-      </Modal>
       <HeaderRow>
         <Title href=".">
           <PngIcon>
