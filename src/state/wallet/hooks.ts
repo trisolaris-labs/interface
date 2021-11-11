@@ -7,7 +7,6 @@ import { useActiveWeb3React } from '../../hooks'
 import { useMulticallContract } from '../../hooks/useContract'
 import { isAddress } from '../../utils'
 import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks'
-// import { useTotalPngEarned } from '../stake/hooks'
 
 
 /**
@@ -133,23 +132,3 @@ export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | u
   const balances = useTokenBalances(account ?? undefined, allTokensArray)
   return balances ?? {}
 }
-
-// get the total owned and unharvested PNG for account
-// export function useAggregatePngBalance(): TokenAmount | undefined {
-//   const { account, chainId } = useActiveWeb3React()
-
-//   const png = chainId ? PNG[chainId] : undefined
-
-//   const pngBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, png)
-//   const pngUnHarvested: TokenAmount | undefined = useTotalPngEarned()
-
-//   if (!png) return undefined
-
-//   return new TokenAmount(
-//     png,
-//     JSBI.add(
-//       pngBalance?.raw ?? JSBI.BigInt(0),
-//       pngUnHarvested?.raw ?? JSBI.BigInt(0)
-//     )
-//   )
-// }
