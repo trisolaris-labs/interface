@@ -1,7 +1,6 @@
 import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
 import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR } from '../../constants'
 
-
 export interface StakingTri {
   ID: number
   tokens: [Token, Token]
@@ -21,14 +20,28 @@ export interface StakingTri {
   apr: number
 }
 
+async function fetchAprData() {
+  let response = await fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/data.json')
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
+
+  return await response.json()
+}
+
+export let aprData = Promise.resolve(fetchAprData()).then(value => {
+  aprData = value
+})
+
 const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
 
 const dummyAmount = new TokenAmount(dummyToken, '0')
 
 export const TRI = new Token(ChainId.AURORA, '0x0029050f71704940D77Cfe71D0F1FB868DeeFa03', 18, 'TRI', 'Trisolaris')
-export const rewardsPerSecond = JSBI.BigInt("10000000000000000000")
-export const totalAllocPoints = JSBI.BigInt("3")
-export const tokenAmount = new TokenAmount(dummyToken, '99')       
+export const rewardsPerSecond = JSBI.BigInt('10000000000000000000')
+export const totalAllocPoints = JSBI.BigInt('3')
+export const tokenAmount = new TokenAmount(dummyToken, '99')
 
 const POLYGON_POOLS: StakingTri[] = [
   {
@@ -69,15 +82,14 @@ const POLYGON_POOLS: StakingTri[] = [
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
     totalStakedAmount: dummyAmount,
-    totalStakedAmountInUSD: dummyAmount,//hardcode
+    totalStakedAmountInUSD: dummyAmount, //hardcode
     totalStakedAmountInETH: dummyAmount,
     allocPoint: 1,
-    totalRewardRate: dummyAmount,// hardcode
+    totalRewardRate: dummyAmount, // hardcode
     rewardRate: dummyAmount,
-    apr: 0//hardcode
+    apr: 0 //hardcode
   }
 ]
-
 
 const AURORA_POOLS: StakingTri[] = [
   {

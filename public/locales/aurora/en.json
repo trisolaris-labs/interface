@@ -48,7 +48,7 @@
     "unclaimed": "Unclaimed TRI",
     "claim": "Claim",
     "liquidityRemainsPool": "When you claim without withdrawing your liquidity remains in the mining pool.",
-    "withdrawingPgl": "Withdrawing {{ amount }} TSL",
+    "withdrawingPgl": "Withdrawing {{ amount }} TLP",
     "claimingPng": "Claiming {{ amount }} TRI",
     "claimedPng": "Claimed TRI!",
     "manage": "Manage",
@@ -72,9 +72,9 @@
     "deposited": "Deposited",
     "withdrawDepositedLiquidity": "Withdraw deposited liquidity",
     "depositedPglLiquidity": "Deposited liquidity:",
-    "whenYouWithdrawWarning": "When you withdraw, your TRI is claimed and your TriSolaris Liquidity tokens, TSL, are returned to you. You will no longer earn TRI rewards on this liquidity. Your original token liquidity will remain in its liquidity pool.",
+    "whenYouWithdrawWarning": "When you withdraw, your TRI is claimed and your TriSolaris Liquidity tokens, TLP, are returned to you. You will no longer earn TRI rewards on this liquidity. Your original token liquidity will remain in its liquidity pool.",
     "withdrawAndClaim": "Withdraw & Claim",
-    "withdrewPgl": "Withdrew TSL!",
+    "withdrewPgl": "Withdrew TLP!",
     "approve": "Approve",
     "poolWeight": "Pool Weight"
   },
@@ -297,7 +297,7 @@
   },
   "earnPage": {
     "liquidityMining": "TriSolaris liquidity mining",
-    "depositLiquidity": "Deposit your TriSolaris Liquidity Provider TSL tokens to receive TRI, the TriSolaris protocol governance token.",
+    "depositLiquidity": "Deposit your TriSolaris Liquidity Provider TLP tokens to receive TRI, the TriSolaris protocol governance token.",
     "readMoreAboutPng": "Read more about TRI",
     "importantUpdate": "IMPORTANT UPDATE",
     "pangolinGovernanceProposalResult": "As a result of Pangolin governance proposal 1, Pangolin is changing staking contracts! After approximately 08:59 UTC on 4/19, all staking rewards will be distributed to the new staking contracts. Before the switch, all rewards will still be distributed to the old contracts. To avoid interruptions to yield farming rewards, you need to unstake your liquidity from the old contracts and restake in the new contracts. You do not need to remove liquidity from your pools or alter your positions.",
@@ -309,8 +309,8 @@
     "liquidityMining": "Liquidity Mining",
     "totalStaked": "Total Staked",
     "poolRate": "Pool Rate",
-    "step1": "Step 1. Get Trisolaris Liquidity tokens (TSL)",
-    "pglTokenRequired": "TSL tokens are required. Once you've added liquidity to the {{ poolHandle }} pool you can stake your liquidity tokens on this page.",
+    "step1": "Step 1. Get Trisolaris Liquidity tokens (TLP)",
+    "pglTokenRequired": "TLP tokens are required. Once you've added liquidity to the {{ poolHandle }} pool you can stake your liquidity tokens on this page.",
     "addPoolLiquidity": "Add {{ poolHandle }} liquidity",
     "liquidityDeposits": "Your liquidity deposits",
     "unclaimed": "Your unclaimed TRI",
@@ -318,8 +318,8 @@
     "pngPerWeek": " TRI / week",
     "automagically": "When you withdraw, the contract will automagically claim PNG on your behalf!",
     "deposit": "Deposit",
-    "depositPglTokens": "Deposit TSL Tokens",
-    "pglTokenAvailable": "TSL tokens available"
+    "depositPglTokens": "Deposit TLP Tokens",
+    "pglTokenAvailable": "TLP tokens available"
   },
   "pool": {
     "liquidityProviderRewards": "Liquidity provider rewards",
