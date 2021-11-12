@@ -1,5 +1,5 @@
 import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
-import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR } from '../../constants'
+import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR, USDT } from '../../constants'
 
 export interface StakingTri {
   ID: number
@@ -39,8 +39,9 @@ const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
 const dummyAmount = new TokenAmount(dummyToken, '0')
 
 export const TRI = new Token(ChainId.AURORA, '0x0029050f71704940D77Cfe71D0F1FB868DeeFa03', 18, 'TRI', 'Trisolaris')
-export const rewardsPerSecond = JSBI.BigInt('10000000000000000000')
-export const totalAllocPoints = JSBI.BigInt('3')
+
+export const rewardsPerSecond = JSBI.BigInt("10000000000000000000")
+export const totalAllocPoints = JSBI.BigInt("5")
 export const tokenAmount = new TokenAmount(dummyToken, '99')
 
 const POLYGON_POOLS: StakingTri[] = [
@@ -136,7 +137,39 @@ const AURORA_POOLS: StakingTri[] = [
     totalRewardRate: dummyAmount,
     rewardRate: dummyAmount,
     apr: 0
+  },
+  {
+    ID: 3,
+    tokens: [USDT[ChainId.AURORA], WNEAR[ChainId.AURORA]],
+    stakingRewardAddress: '0x03B666f3488a7992b2385B12dF7f35156d7b29cD',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedAmountInUSD: dummyAmount,
+    totalStakedAmountInETH: dummyAmount,
+    allocPoint: 1,
+    totalRewardRate: dummyAmount,
+    rewardRate: dummyAmount,
+    apr: 0
+  },
+  {
+    ID: 4,
+    tokens: [USDT[ChainId.AURORA], USDC[ChainId.AURORA]],
+    stakingRewardAddress: '0x2fe064B6c7D274082aa5d2624709bC9AE7D16C77',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedAmountInUSD: dummyAmount,
+    totalStakedAmountInETH: dummyAmount,
+    allocPoint: 1,
+    totalRewardRate: dummyAmount,
+    rewardRate: dummyAmount,
+    apr: 0
   }
+
+  
 ]
 
 const NULL_POOLS: StakingTri[] = [
