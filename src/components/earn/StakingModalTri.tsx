@@ -256,7 +256,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
         <LoadingView onDismiss={wrappedOnDismiss}>
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>{t('earn.depositingLiquidity')}</TYPE.largeHeader>
-            <TYPE.body fontSize={20}>{parsedAmount?.toSignificant(4)} TSL</TYPE.body>
+            <TYPE.body fontSize={20}>{parsedAmount?.toSignificant(4)} TLP</TYPE.body>
           </AutoColumn>
         </LoadingView>
       )}
@@ -265,7 +265,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>{t('earn.transactionSubmitted')}</TYPE.largeHeader>
             <TYPE.body fontSize={20}>
-              {t('earn.deposited')} {parsedAmount?.toSignificant(4)} TSL
+              {t('earn.deposited')} {parsedAmount?.toSignificant(4)} TLP
             </TYPE.body>
           </AutoColumn>
         </SubmittedView>

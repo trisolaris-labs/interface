@@ -102,7 +102,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 }
 
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
-  const isAVAX = currencyId?.toUpperCase() === 'AVAX'
+  const isAVAX = currencyId?.toUpperCase() === 'ETH'
   const token = useToken(isAVAX ? undefined : currencyId)
   return isAVAX ? CETH : token
 }

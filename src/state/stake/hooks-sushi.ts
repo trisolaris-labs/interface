@@ -207,6 +207,7 @@ export function useChefPositions(contract?: Contract | null, rewarder?: Contract
 }
 
 export function usePositions(chainId = undefined) {
+  console.log("calling this")
   const [masterChefV1Positions] = [useChefPositions(useMasterChefContract(), undefined, chainId)]
   return masterChefV1Positions
 }
