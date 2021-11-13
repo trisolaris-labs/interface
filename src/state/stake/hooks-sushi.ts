@@ -117,47 +117,47 @@ export function useUserInfo(farm: any, token: any) {
   return amount ? CurrencyAmount.fromRawAmount(token, amount) : undefined
 }
 
-export function usePendingSushi(farm: any) {
-  const { account, chainId } = useActiveWeb3React()
+// export function usePendingSushi(farm: any) {
+//   const { account, chainId } = useActiveWeb3React()
 
-  const contract = useChefContract(farm.chef)
+//   const contract = useChefContract(farm.chef)
 
-  const args = useMemo(() => {
-    if (!account) {
-      return
-    }
-    return [String(farm.id), String(account)]
-  }, [farm, account])
+//   const args = useMemo(() => {
+//     if (!account) {
+//       return
+//     }
+//     return [String(farm.id), String(account)]
+//   }, [farm, account])
 
-  const result = useSingleCallResult(args ? contract : null, 'pendingTri', args)?.result
+//   const result = useSingleCallResult(args ? contract : null, 'pendingTri', args)?.result
 
-  const value = result?.[0]
+//   const value = result?.[0]
 
-  const amount = value ? JSBI.BigInt(value.toString()) : undefined
+//   const amount = value ? JSBI.BigInt(value.toString()) : undefined
 
-  const tokenPNG = new Token(ChainId.POLYGON, '0x831753dd7087cac61ab5644b308642cc1c33dc13', 18, 'QUICK', 'Quick')
+//   const tokenPNG = new Token(ChainId.POLYGON, '0x831753dd7087cac61ab5644b308642cc1c33dc13', 18, 'QUICK', 'Quick')
 
-  return amount ? CurrencyAmount.fromRawAmount(tokenPNG, amount) : undefined
-}
+//   return amount ? CurrencyAmount.fromRawAmount(tokenPNG, amount) : undefined
+// }
 
-export function usePendingToken(farm: any, contract: any) {
-  const { account } = useActiveWeb3React()
+// export function usePendingToken(farm: any, contract: any) {
+//   const { account } = useActiveWeb3React()
 
-  const args = useMemo(() => {
-    if (!account || !farm) {
-      return
-    }
-    return [String(farm.pid), String(account)]
-  }, [farm, account])
+//   const args = useMemo(() => {
+//     if (!account || !farm) {
+//       return
+//     }
+//     return [String(farm.pid), String(account)]
+//   }, [farm, account])
 
-  const pendingTokens = useSingleContractMultipleData(
-    args ? contract : null,
-    'pendingTokens',
-    args!.map(arg => [...arg, '0'])
-  )
+//   const pendingTokens = useSingleContractMultipleData(
+//     args ? contract : null,
+//     'pendingTokens',
+//     args!.map(arg => [...arg, '0'])
+//   )
 
-  return useMemo(() => pendingTokens, [pendingTokens])
-}
+//   return useMemo(() => pendingTokens, [pendingTokens])
+// }
 
 export function useChefPositions(contract?: Contract | null, rewarder?: Contract | null, chainId = undefined) {
   const { account } = useActiveWeb3React()
