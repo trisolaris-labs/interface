@@ -73,12 +73,12 @@ export default function Earn({
 }: RouteComponentProps<{ version: string }>) {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  const farmArrs = useFarms();
   const [poolCards, setPoolCards] = useState<any[]>()
   const [filteredPoolCards, setFilteredPoolCards] = useState<any[]>()
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [sortBy, setSortBy] = useState<any>({ field: '', desc: true })
   const debouncedSearchQuery = useDebounce(searchQuery, 250)
+  const farmArrs = useFarms()
   const [stakingInfoData, setStakingInfoData] = useState<any[]>(farmArrs)
 
   const handleSearch = useCallback(event => {
@@ -95,7 +95,7 @@ export default function Earn({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [poolCards, debouncedSearchQuery])
 
-   const getSortField = (label: string, field: string, sortBy: any, setSortBy: Function) => {
+  const getSortField = (label: string, field: string, sortBy: any, setSortBy: Function) => {
     return (
       <SortField
         onClick={() => {
@@ -109,11 +109,8 @@ export default function Earn({
     )
   }
 
-
   useEffect(() => {
-    Promise.all(
-      farmArrs
-    ).then(farmArrs => {
+    Promise.all(farmArrs).then(farmArrs => {
       const poolCards = farmArrs.map(farmArr => (
         <PoolCard
           swapFeeApr={10}
@@ -128,7 +125,6 @@ export default function Earn({
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [farmArrs?.length, version])
-
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -157,32 +153,32 @@ export default function Earn({
           <CardNoise />
         </DataCard>
       </TopSection>
-      
+
       <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
         <DataRow style={{ alignItems: 'baseline' }}>
           <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>{t('earnPage.participatingPools')}</TYPE.mediumHeader>
         </DataRow>
 
         <PoolSection>
-            <>
-              <SearchInput
-                type="text"
-                id="token-search-input"
-                placeholder={t('searchModal.tokenName')}
-                value={searchQuery}
-                onChange={handleSearch}
-              />
-              <SortSection>
-                Sort by :{' '}
-                <SortFieldContainer>
-                  {getSortField('Liquidity', SortingType.totalStakedInWavax, sortBy, setSortBy)} |{' '}
-                  {getSortField('Pool Weight', SortingType.multiplier, sortBy, setSortBy)} |{' '}
-                </SortFieldContainer>
-                {getSortField('APR', SortingType.totalApr, sortBy, setSortBy)}
-              </SortSection>
+          <>
+            <SearchInput
+              type="text"
+              id="token-search-input"
+              placeholder={t('searchModal.tokenName')}
+              value={searchQuery}
+              onChange={handleSearch}
+            />
+            <SortSection>
+              Sort by :{' '}
+              <SortFieldContainer>
+                {getSortField('Liquidity', SortingType.totalStakedInWavax, sortBy, setSortBy)} |{' '}
+                {getSortField('Pool Weight', SortingType.multiplier, sortBy, setSortBy)} |{' '}
+              </SortFieldContainer>
+              {getSortField('APR', SortingType.totalApr, sortBy, setSortBy)}
+            </SortSection>
 
-              {filteredPoolCards}
-            </>
+            {filteredPoolCards}
+          </>
         </PoolSection>
       </AutoColumn>
     </PageWrapper>

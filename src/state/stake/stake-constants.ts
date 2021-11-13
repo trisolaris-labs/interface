@@ -1,7 +1,6 @@
 import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
 import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR } from '../../constants'
 
-
 export interface StakingTri {
   ID: number
   tokens: [Token, Token]
@@ -21,14 +20,25 @@ export interface StakingTri {
   apr: number
 }
 
+export interface ExternalInfo {
+  id: number
+  lpAddress: string
+  totalSupply: number
+  totalStaked: number
+  totalStakedInUSD: number
+  totalRewardRate: number
+  allocPoint: number
+  apr: number
+}
+
 const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
 
 const dummyAmount = new TokenAmount(dummyToken, '0')
+export const tokenAmount = new TokenAmount(dummyToken, '0')
 
 export const TRI = new Token(ChainId.AURORA, '0x0029050f71704940D77Cfe71D0F1FB868DeeFa03', 18, 'TRI', 'Trisolaris')
-export const rewardsPerSecond = JSBI.BigInt("10000000000000000000")
-export const totalAllocPoints = JSBI.BigInt("3")
-        
+export const rewardsPerSecond = JSBI.BigInt('10000000000000000000')
+export const totalAllocPoints = JSBI.BigInt('3')
 
 const POLYGON_POOLS: StakingTri[] = [
   {
@@ -77,7 +87,6 @@ const POLYGON_POOLS: StakingTri[] = [
     apr: 0
   }
 ]
-
 
 const AURORA_POOLS: StakingTri[] = [
   {

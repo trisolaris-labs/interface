@@ -134,7 +134,7 @@ export default function PoolCard({
         <RowBetween>
           <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
           <TYPE.white>
-            {`$${stakingInfo.totalStakedAmountInUSD.toSignificant(4, { groupSeparator: ',' }) ?? '-'} USDC`}
+            {`$${stakingInfo.totalStakedAmountInUSD.toSignificant(4, { groupSeparator: ',' }) ?? '-'}`}
           </TYPE.white>
         </RowBetween>
       </StatContainer>
