@@ -95,21 +95,6 @@ export default function Earn({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [poolCards, debouncedSearchQuery])
 
-   const getSortField = (label: string, field: string, sortBy: any, setSortBy: Function) => {
-    return (
-      <SortField
-        onClick={() => {
-          const desc = sortBy?.field === field ? !sortBy?.desc : true
-          setSortBy({ field, desc })
-        }}
-      >
-        {label}
-        {sortBy?.field === field && (sortBy?.desc ? <ChevronDown size="16" /> : <ChevronUp size="16" />)}
-      </SortField>
-    )
-  }
-
-
   useEffect(() => {
     Promise.all(
       farmArrs
@@ -165,22 +150,6 @@ export default function Earn({
 
         <PoolSection>
             <>
-              <SearchInput
-                type="text"
-                id="token-search-input"
-                placeholder={t('searchModal.tokenName')}
-                value={searchQuery}
-                onChange={handleSearch}
-              />
-              <SortSection>
-                Sort by :{' '}
-                <SortFieldContainer>
-                  {getSortField('Liquidity', SortingType.totalStakedInWavax, sortBy, setSortBy)} |{' '}
-                  {getSortField('Pool Weight', SortingType.multiplier, sortBy, setSortBy)} |{' '}
-                </SortFieldContainer>
-                {getSortField('APR', SortingType.totalApr, sortBy, setSortBy)}
-              </SortSection>
-
               {filteredPoolCards}
             </>
         </PoolSection>
