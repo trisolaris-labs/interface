@@ -16,7 +16,6 @@ import { useActiveWeb3React } from '../../hooks'
 // gets the staking info from the network for the active chain id
 export function useFarms(): StakingTri[] {
   const { chainId, account } = useActiveWeb3React()
-  console.log(aprData) // TODO: INPUT VALUES FROM THIS INTO VARIABLES
 
   const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
   let lpAddresses = activeFarms.map(key => key.stakingRewardAddress)
@@ -180,64 +179,4 @@ export function useFarms(): StakingTri[] {
     pendingTri,
     userInfo
   ])
-}
-
-const calculateReserveInUSDC = function(
-  pair: Pair,
-  daiUsdcPair: Pair,
-  wnearUSDCPair: Pair,
-  usdc: Token,
-  dai: Token,
-  wnear: Token
-): JSBI {
-  // calculating TVL
-  if (pair.token0 === usdc || pair.token1 === usdc) {
-    return JSBI.multiply(pair.reserveOf(usdc).raw, JSBI.BigInt(2))
-  } else if (pair.token0 === dai || pair.token1 === dai) {
-    const oneToken = JSBI.BigInt(1000000000000000000)
-    const reserveInDai = pair.reserveOf(dai).raw
-    const daiReserveInDaiUsdcPair = daiUsdcPair.reserveOf(dai).raw
-    const usdcReserveInDaiUsdcPair = daiUsdcPair.reserveOf(usdc).raw
-    const usdcDaiRatio = JSBI.divide(JSBI.multiply(oneToken, usdcReserveInDaiUsdcPair), daiReserveInDaiUsdcPair)
-    return JSBI.multiply(JSBI.divide(JSBI.multiply(reserveInDai, usdcDaiRatio), oneToken), JSBI.BigInt(2))
-  } else if (pair.token0 === wnear || pair.token1 === wnear) {
-    const oneToken = JSBI.BigInt(1000000000000000000)
-    const reserveInWnear = pair.reserveOf(wnear).raw
-    const wNearReserveInWNearUsdcPair = wnearUSDCPair.reserveOf(wnear).raw
-    const usdcReserveInWNearUsdcPair = wnearUSDCPair.reserveOf(usdc).raw
-    const usdcWNearRatio = JSBI.divide(JSBI.multiply(oneToken, usdcReserveInWNearUsdcPair), wNearReserveInWNearUsdcPair)
-    return JSBI.multiply(JSBI.divide(JSBI.multiply(reserveInWnear, usdcWNearRatio), oneToken), JSBI.BigInt(2))
-  } else {
-    console.error('Failed to load staking rewards info')
-    return JSBI.BigInt(0)
-  }
-}
-
-const calculateTotalStakedAmountInUSDC = function(
-  amountStaked: JSBI,
-  amountAvailable: JSBI,
-  reserveInUSDC: JSBI,
-  usdc: Token
-): TokenAmount {
-  if (JSBI.EQ(amountAvailable, JSBI.BigInt(0))) {
-    return new TokenAmount(usdc, JSBI.BigInt(0))
-  }
-  return new TokenAmount(usdc, JSBI.divide(JSBI.multiply(amountStaked, reserveInUSDC), amountAvailable))
-}
-
-const calculateApr = function(
-  totalStakedAmountInUSD: TokenAmount,
-  triUSDCPair: Pair,
-  totalRewardRate: TokenAmount
-): number {
-  if (JSBI.EQ(totalStakedAmountInUSD.raw, JSBI.BigInt(0))) {
-    return 0
-  }
-  const triToUsdcRatio = triUSDCPair.priceOf(TRI)
-  const totalYearlyRewards = JSBI.multiply(totalRewardRate.raw, JSBI.BigInt(3600 * 24 * 365))
-  const apr = triToUsdcRatio.raw
-    .multiply(totalYearlyRewards)
-    .multiply('100')
-    .divide(totalStakedAmountInUSD.raw)
-  return Number(apr.toFixed(4))
 }
