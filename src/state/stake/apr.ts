@@ -1,7 +1,7 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
 import { USDC, DAI, WNEAR } from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
-import { STAKING, StakingTri, TRI, rewardsPerSecond, totalAllocPoints, tokenAmount, aprData } from './stake-constants'
+import { STAKING, StakingTri, TRI, rewardsPerSecond, totalAllocPoints, tokenAmount, aprData, ExternalInfo } from './stake-constants'
 import {
   useSingleContractMultipleData,
   useMultipleContractSingleData,
@@ -9,7 +9,7 @@ import {
   NEVER_RELOAD
 } from '../../state/multicall/hooks'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { PairState, usePairs, usePair } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 
@@ -21,6 +21,19 @@ export function useFarms(): StakingTri[] {
   const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
   let lpAddresses = activeFarms.map(key => key.stakingRewardAddress)
   const chefContract = useMasterChefContract()
+
+  const [stakingInfoData, setStakingInfoData] = useState<ExternalInfo[]>()
+
+
+  useEffect(() => {
+    fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/data.json')
+      .then(results => results.json())
+      .then(data => {
+        setStakingInfoData(data)
+      })
+  }, [])
+
+  console.log(stakingInfoData)
 
   // user info
   const args = useMemo(() => {
