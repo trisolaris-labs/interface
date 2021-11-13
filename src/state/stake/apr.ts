@@ -30,13 +30,13 @@ export function useFarms(): StakingTri[] {
     return [...Array(lpAddresses.length).keys()].map(pid => [String(pid), String(account)])
   }, [lpAddresses.length, account])
 
-  const pendingTri = useSingleContractMultipleData(args ? chefContract : null, 'pendingTri', args!)
-  const userInfo = useSingleContractMultipleData(args ? chefContract : null, 'userInfo', args!)
+  const pendingTri = useSingleContractMultipleData(args ? chefContract : null, 'pendingTri', args!) //user related
+  const userInfo = useSingleContractMultipleData(args ? chefContract : null, 'userInfo', args!)  //user related
 
   // get all the info from the staking rewards contracts
   const accountArg = useMemo(() => [chefContract?.address ?? undefined], [chefContract])
   const tokens = useMemo(() => activeFarms.map(({ tokens }) => tokens), [activeFarms])
-  const stakingTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg)
+  const stakingTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg) //totalStaked TO REPLACE
   const pairs = usePairs(tokens)
 
   const pairAddresses = useMemo(() => {
@@ -46,7 +46,7 @@ export function useFarms(): StakingTri[] {
   }, [pairs])
 
   // useTokenPrices(tokenAddresses)
-  const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply')
+  const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply') //totalSupply TO REPLACE
 
   // get pairs for tvl calculation
   // const dai = DAI[chainId ? chainId! : ChainId.AURORA]
@@ -122,12 +122,12 @@ export function useFarms(): StakingTri[] {
         // const reserveInUSDC = calculateReserveInUSDC(pair, daiUSDCPair, wnearUSDCPair, usdc, dai, wnear);
         const reserveInUSDC = tokenAmount
         // const totalStakedAmountInUSD = calculateTotalStakedAmountInUSDC(totalSupplyStaked, totalSupplyAvailable, reserveInUSDC, usdc);
-        const totalStakedAmountInUSD = tokenAmount
+        const totalStakedAmountInUSD = tokenAmount // TO REPLACE
         // apr calculation
         const totalRewardRate = new TokenAmount(
           TRI,
           JSBI.divide(JSBI.multiply(rewardsPerSecond, JSBI.BigInt(activeFarms[index].allocPoint)), totalAllocPoints)
-        )
+        ) // TO REPLACE
         const rewardRate = new TokenAmount(
           TRI,
           JSBI.greaterThan(totalStakedAmount.raw, JSBI.BigInt(0))
@@ -135,7 +135,7 @@ export function useFarms(): StakingTri[] {
             : JSBI.BigInt(0)
         )
         // const apr = calculateApr(totalStakedAmountInUSD, triUSDCPair, totalRewardRate)
-        const apr = 9
+        const apr = 9 // TO REPLACE
 
         memo.push({
           ID: activeFarms[index].ID,
