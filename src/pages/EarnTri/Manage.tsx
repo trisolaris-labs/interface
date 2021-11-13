@@ -28,7 +28,7 @@ import { usePair } from '../../data/Reserves'
 import usePrevious from '../../hooks/usePrevious'
 import { BIG_INT_ZERO, PNG } from '../../constants'
 import { useTranslation } from 'react-i18next'
-import { useFarms } from '../../state/stake/apr'
+import { useSingleFarm } from '../../state/stake/user-farms'
 
 
 const PageWrapper = styled(AutoColumn)`
@@ -101,11 +101,10 @@ export default function Manage({
   const tokenB = wrappedCurrency(currencyB ?? undefined, chainId)
 
   const [, stakingTokenPair] = usePair(tokenA, tokenB)
-  const farmArr = useFarms()
-  const stakingInfo = farmArr[parseInt(version)]
+  const farmArr = useSingleFarm(version)
 
-  let valueOfTotalStakedAmountInWavax: TokenAmount | undefined
-
+  const stakingInfo = farmArr[0]
+  console.log("stakingingo",stakingInfo)
   let backgroundColor: string
   let token: Token | undefined
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
