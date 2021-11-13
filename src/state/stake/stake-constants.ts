@@ -20,6 +20,18 @@ export interface StakingTri {
   apr: number
 }
 
+export interface ExternalInfo {
+  id: number
+  lpAddress: string
+  totalSupply: number
+  totalStaked: number
+  totalStakedInUSD: number
+  totalRewardRate: number
+  allocPoint: number
+  apr: number
+}
+
+
 async function fetchAprData() {
   let response = await fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/data.json')
 
