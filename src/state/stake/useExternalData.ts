@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ExternalStakeConstant, Service, STAKING_TOKEN_LIST } from './external-stake-constants'
 
-
 export interface ExternalStakeConstants {
   results: ExternalStakeConstant[]
 }
@@ -24,8 +23,8 @@ const useExternalDataService = () => {
               totalRewardRate: responseobj.totalRewardRate,
               allocPoint: responseobj.allocPoint,
               apr: responseobj.apr,
-              token0: STAKING_TOKEN_LIST['0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0'][0],
-              token1: STAKING_TOKEN_LIST['0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0'][1]
+              token0: STAKING_TOKEN_LIST['0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0'][0], //hardcoded lp address
+              token1: STAKING_TOKEN_LIST['0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0'][1] //hardcoded lp address
             } as ExternalStakeConstant)
         )
         setResult(parsedResponseArr)
