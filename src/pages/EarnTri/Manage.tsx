@@ -104,7 +104,6 @@ export default function Manage({
   const farmArr = useSingleFarm(version)
 
   const stakingInfo = farmArr[0]
-  console.log("stakingingo",stakingInfo)
   let backgroundColor: string
   let token: Token | undefined
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
@@ -154,7 +153,7 @@ export default function Manage({
           <AutoColumn gap="sm">
             <TYPE.body style={{ margin: 0 }}>{t('earnPage.totalStaked')}</TYPE.body>
             <TYPE.body fontSize={24} fontWeight={500}>
-              {`$${stakingInfo.totalStakedAmountInUSD.toSignificant(4, { groupSeparator: ',' }) ?? '-'} USDC`}
+              {`$${Math.round(stakingInfo.totalStakedInUSD)}`}
             </TYPE.body>
           </AutoColumn>
         </PoolData>
@@ -273,7 +272,7 @@ export default function Manage({
                     duration={1}
                   />
                 </TYPE.largeHeader>
-                <TYPE.black fontSize={16} fontWeight={500}>
+                {/*<TYPE.black fontSize={16} fontWeight={500}>
                   <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px ' }}>
                     ⚡
                   </span>
@@ -281,7 +280,7 @@ export default function Manage({
                     ?.multiply((60 * 60 * 24 * 7).toString())
                     ?.toSignificant(4, { groupSeparator: ',' }) ?? '-'}
                   {t('earnPage.pngPerWeek')}
-                </TYPE.black>
+                </TYPE.black>*/}
               </RowBetween>
             </AutoColumn>
           </StyledBottomCard>

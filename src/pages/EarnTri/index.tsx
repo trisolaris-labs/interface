@@ -15,6 +15,8 @@ import { SearchInput } from '../../components/SearchModal/styleds'
 import useDebounce from '../../hooks/useDebounce'
 import { usePositions } from '../../state/stake/hooks-sushi'
 import { useFarms } from '../../state/stake/apr'
+import useExternalDataService from "../../state/stake/useExternalData"
+import { STAKING_TOKEN_LIST } from "../../state/stake/external-stake-constants"
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
@@ -80,41 +82,8 @@ export default function Earn({
   const [sortBy, setSortBy] = useState<any>({ field: '', desc: true })
   const debouncedSearchQuery = useDebounce(searchQuery, 250)
   const [stakingInfoData, setStakingInfoData] = useState<any[]>(farmArrs)
-
-  const handleSearch = useCallback(event => {
-    setSearchQuery(event.target.value.trim().toUpperCase())
-  }, [])
-
-  useEffect(() => {
-    const filtered = poolCards?.filter(
-      card =>
-        card.props.stakingInfo.tokens[0].symbol.toUpperCase().includes(debouncedSearchQuery) ||
-        card.props.stakingInfo.tokens[1].symbol.toUpperCase().includes(debouncedSearchQuery)
-    )
-    setFilteredPoolCards(filtered)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [poolCards, debouncedSearchQuery])
-
-  useEffect(() => {
-    Promise.all(
-      farmArrs
-    ).then(farmArrs => {
-      const poolCards = farmArrs.map(farmArr => (
-        <PoolCard
-          swapFeeApr={10}
-          stakingApr={50}
-          key={farmArr.stakingRewardAddress}
-          stakingInfo={farmArr}
-          version={farmArr.ID}
-        />
-      ))
-      setStakingInfoData(farmArrs)
-      setPoolCards(poolCards)
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [farmArrs?.length, version])
-
-
+  
+  console.log(farmArrs)
   return (
     <PageWrapper gap="lg" justify="center">
       <TopSection gap="md">
@@ -150,7 +119,32 @@ export default function Earn({
 
         <PoolSection>
             <>
-              {filteredPoolCards}
+                      <PoolCard
+                        key={farmArrs[0].stakingRewardAddress}
+                        stakingInfo={farmArrs[0]}
+                        version={farmArrs[0].ID}
+                      />
+                      <PoolCard
+                        key={farmArrs[1].stakingRewardAddress}
+                        stakingInfo={farmArrs[1]}
+                        version={farmArrs[1].ID}
+                      />
+                      <PoolCard
+                        key={farmArrs[2].stakingRewardAddress}
+                        stakingInfo={farmArrs[2]}
+                        version={farmArrs[2].ID}
+                      />
+                      <PoolCard
+                        key={farmArrs[3].stakingRewardAddress}
+                        stakingInfo={farmArrs[3]}
+                        version={farmArrs[3].ID}
+                      />
+                      <PoolCard
+                        key={farmArrs[4].stakingRewardAddress}
+                        stakingInfo={farmArrs[4]}
+                        version={farmArrs[4].ID}
+                      />
+
             </>
         </PoolSection>
       </AutoColumn>
