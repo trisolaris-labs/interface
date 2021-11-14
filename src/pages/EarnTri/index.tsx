@@ -16,6 +16,7 @@ import useDebounce from '../../hooks/useDebounce'
 import { usePositions } from '../../state/stake/hooks-sushi'
 import { useFarms } from '../../state/stake/apr'
 import useExternalDataService from "../../state/stake/useExternalData"
+import { STAKING_TOKEN_LIST } from "../../state/stake/external-stake-constants"
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
@@ -84,6 +85,7 @@ export default function Earn({
   
   const data = useExternalDataService()
   console.log(data)
+  console.log(STAKING_TOKEN_LIST)
 
   useEffect(() => {
     const filtered = poolCards?.filter(
