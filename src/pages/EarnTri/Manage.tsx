@@ -104,7 +104,6 @@ export default function Manage({
   const farmArr = useSingleFarm(version)
 
   const stakingInfo = farmArr[0]
-  console.log("stakingingo",stakingInfo)
   let backgroundColor: string
   let token: Token | undefined
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
