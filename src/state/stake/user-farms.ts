@@ -113,7 +113,6 @@ export function useSingleFarm(version: string): StakingTri[] {
           stakedAmount: stakedAmount,
           totalStakedAmount: tokenAmount,
           totalStakedInUSD: 10,//TODO FIX
-          totalStakedAmountInETH: tokenAmount,
           allocPoint: activeFarms[index].allocPoint,
           totalRewardRate: tokenAmount,
           rewardRate: tokenAmount,

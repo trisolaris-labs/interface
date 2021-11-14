@@ -41,7 +41,6 @@ export function useFarms(): StakingTri[] {
     return [...Array(lpAddresses.length).keys()].map(pid => [String(pid), String(account)])
   }, [lpAddresses.length, account])
 
-  // const pendingTri = useSingleContractMultipleData(args ? chefContract : null, 'pendingTri', args!) //user related
   const userInfo = useSingleContractMultipleData(args ? chefContract : null, 'userInfo', args!)  //user related
 
   // get all the info from the staking rewards contracts
@@ -56,8 +55,6 @@ export function useFarms(): StakingTri[] {
     else return pairs.map(([state, pair]) => pair?.liquidityToken.address)
   }, [pairs])
 
-  // useTokenPrices(tokenAddresses)
-  const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply') //totalSupply TO REPLACE
 
   return useMemo(() => {
     if (!chainId) return activeFarms
@@ -70,23 +67,18 @@ export function useFarms(): StakingTri[] {
       // these get fetched regardless of account
       const stakingTotalSupplyState = stakingTotalSupplies[index]
       const [pairState, pair] = pairs[index]
-      const pairTotalSupplyState = pairTotalSupplies[index]
    
 
       if (
         // always need these
         userStaked?.loading === false &&
-        // rewardsPending?.loading === false &&
         stakingTotalSupplyState?.loading === false &&
-        pairTotalSupplyState?.loading === false &&
         pair &&
         pairState !== PairState.LOADING && stakingInfoData
       ) {
         if (
           userStaked.error ||
-          // rewardsPending.error ||
           stakingTotalSupplyState.error ||
-          pairTotalSupplyState.error ||
           pairState === PairState.INVALID ||
           pairState === PairState.NOT_EXISTS || !stakingInfoData
         ) {
@@ -100,16 +92,12 @@ export function useFarms(): StakingTri[] {
 
         // check for account, if no account set to 0
         const userInfoPool = JSBI.BigInt(userStaked.result?.['amount'])
-        // const earnedRewardPool = JSBI.BigInt(rewardsPending.result?.[0])
         const totalSupplyStaked = JSBI.BigInt(stakingTotalSupplyState.result?.[0])
-        const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
 
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
-        // const earnedAmount = new TokenAmount(dummyToken, '0')
+
         const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
 
-        // tvl calculation
-        // const reserveInUSDC = calculateReserveInUSDC(pair, daiUSDCPair, wnearUSDCPair, usdc, dai, wnear);
         const reserveInUSDC = tokenAmount
         
         const totalStakedInUSD = stakingInfoData[index].totalStakedInUSD
@@ -137,7 +125,6 @@ export function useFarms(): StakingTri[] {
           stakedAmount: stakedAmount,
           totalStakedAmount: totalStakedAmount,
           totalStakedInUSD: totalStakedInUSD,
-          totalStakedAmountInETH: activeFarms[index].totalStakedAmountInETH,
           allocPoint: activeFarms[index].allocPoint,
           totalRewardRate: totalRewardRate,
           rewardRate: rewardRate,
@@ -151,7 +138,6 @@ export function useFarms(): StakingTri[] {
     activeFarms,
     stakingTotalSupplies,
     pairs,
-    pairTotalSupplies,
     userInfo
   ])
 }
