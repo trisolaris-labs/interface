@@ -272,7 +272,7 @@ export default function Manage({
                     duration={1}
                   />
                 </TYPE.largeHeader>
-                <TYPE.black fontSize={16} fontWeight={500}>
+                {/*<TYPE.black fontSize={16} fontWeight={500}>
                   <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px ' }}>
                     ⚡
                   </span>
@@ -280,7 +280,7 @@ export default function Manage({
                     ?.multiply((60 * 60 * 24 * 7).toString())
                     ?.toSignificant(4, { groupSeparator: ',' }) ?? '-'}
                   {t('earnPage.pngPerWeek')}
-                </TYPE.black>
+                </TYPE.black>*/}
               </RowBetween>
             </AutoColumn>
           </StyledBottomCard>
