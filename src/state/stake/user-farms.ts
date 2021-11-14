@@ -95,26 +95,12 @@ export function useSingleFarm(version: string): StakingTri[] {
         // check for account, if no account set to 0
         const userInfoPool = JSBI.BigInt(userStaked.result?.['amount'])
         const earnedRewardPool = JSBI.BigInt(rewardsPending.result?.[0])
-        // const totalSupplyStaked = JSBI.BigInt(stakingTotalSupplyState.result?.[0])
         const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
 
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
         const earnedAmount = new TokenAmount(TRI, JSBI.BigInt(earnedRewardPool))
-        // const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
 
-        // tvl calculation
-        // const totalStakedAmountInUSD = tokenAmount // TO REPLACE
-        // apr calculation
-        // const totalRewardRate = new TokenAmount(
-        //   TRI,
-        //   JSBI.divide(JSBI.multiply(rewardsPerSecond, JSBI.BigInt(activeFarms[index].allocPoint)), totalAllocPoints)
-        // ) // TO REPLACE
-        // const rewardRate = new TokenAmount(
-        //   TRI,
-        //   JSBI.greaterThan(totalStakedAmount.raw, JSBI.BigInt(0))
-        //     ? JSBI.divide(JSBI.multiply(totalRewardRate.raw, stakedAmount.raw), totalStakedAmount.raw)
-        //     : JSBI.BigInt(0)
-        // )
+
 
         const apr = 9 // TO REPLACE
 
@@ -126,7 +112,7 @@ export function useSingleFarm(version: string): StakingTri[] {
           earnedAmount: earnedAmount,
           stakedAmount: stakedAmount,
           totalStakedAmount: tokenAmount,
-          totalStakedAmountInUSD: tokenAmount,
+          totalStakedInUSD: 10,//TODO FIX
           totalStakedAmountInETH: tokenAmount,
           allocPoint: activeFarms[index].allocPoint,
           totalRewardRate: tokenAmount,

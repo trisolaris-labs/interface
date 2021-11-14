@@ -80,6 +80,7 @@ export default function Earn({
   const [sortBy, setSortBy] = useState<any>({ field: '', desc: true })
   const debouncedSearchQuery = useDebounce(searchQuery, 250)
   const [stakingInfoData, setStakingInfoData] = useState<any[]>(farmArrs)
+  
 
   const handleSearch = useCallback(event => {
     setSearchQuery(event.target.value.trim().toUpperCase())

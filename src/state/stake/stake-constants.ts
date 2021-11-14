@@ -9,7 +9,7 @@ export interface StakingTri {
   stakedAmount: TokenAmount
   earnedAmount: TokenAmount
   totalStakedAmount: TokenAmount
-  totalStakedAmountInUSD: TokenAmount
+  totalStakedInUSD: number
   totalStakedAmountInETH: TokenAmount
   allocPoint: number
   // the amount of token distributed per second to all LPs, constant
@@ -65,7 +65,7 @@ const POLYGON_POOLS: StakingTri[] = [
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
     totalStakedAmount: dummyAmount,
-    totalStakedAmountInUSD: dummyAmount,
+    totalStakedInUSD: 0,
     totalStakedAmountInETH: dummyAmount,
     allocPoint: 1,
     totalRewardRate: dummyAmount,
@@ -80,7 +80,7 @@ const POLYGON_POOLS: StakingTri[] = [
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
     totalStakedAmount: dummyAmount,
-    totalStakedAmountInUSD: dummyAmount,
+    totalStakedInUSD: 0,
     totalStakedAmountInETH: dummyAmount,
     allocPoint: 1,
     totalRewardRate: dummyAmount,
@@ -95,7 +95,7 @@ const POLYGON_POOLS: StakingTri[] = [
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
     totalStakedAmount: dummyAmount,
-    totalStakedAmountInUSD: dummyAmount, //hardcode
+    totalStakedInUSD: 0, //hardcode
     totalStakedAmountInETH: dummyAmount,
     allocPoint: 1,
     totalRewardRate: dummyAmount, // hardcode
@@ -113,7 +113,7 @@ const AURORA_POOLS: StakingTri[] = [
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
     totalStakedAmount: dummyAmount,
-    totalStakedAmountInUSD: dummyAmount,
+    totalStakedInUSD: 0,
     totalStakedAmountInETH: dummyAmount,
     allocPoint: 1,
     totalRewardRate: dummyAmount,
@@ -128,7 +128,7 @@ const AURORA_POOLS: StakingTri[] = [
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
     totalStakedAmount: dummyAmount,
-    totalStakedAmountInUSD: dummyAmount,
+    totalStakedInUSD: 0,
     totalStakedAmountInETH: dummyAmount,
     allocPoint: 1,
     totalRewardRate: dummyAmount,
@@ -143,7 +143,7 @@ const AURORA_POOLS: StakingTri[] = [
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
     totalStakedAmount: dummyAmount,
-    totalStakedAmountInUSD: dummyAmount,
+    totalStakedInUSD: 0,
     totalStakedAmountInETH: dummyAmount,
     allocPoint: 1,
     totalRewardRate: dummyAmount,
@@ -158,7 +158,7 @@ const AURORA_POOLS: StakingTri[] = [
   //   stakedAmount: dummyAmount,
   //   earnedAmount: dummyAmount,
   //   totalStakedAmount: dummyAmount,
-  //   totalStakedAmountInUSD: dummyAmount,
+  //   totalStakedInUSD: 0,
   //   totalStakedAmountInETH: dummyAmount,
   //   allocPoint: 1,
   //   totalRewardRate: dummyAmount,
@@ -173,7 +173,7 @@ const AURORA_POOLS: StakingTri[] = [
   //   stakedAmount: dummyAmount,
   //   earnedAmount: dummyAmount,
   //   totalStakedAmount: dummyAmount,
-  //   totalStakedAmountInUSD: dummyAmount,
+  //   totalStakedInUSD: 0,
   //   totalStakedAmountInETH: dummyAmount,
   //   allocPoint: 1,
   //   totalRewardRate: dummyAmount,
@@ -196,7 +196,7 @@ const NULL_POOLS: StakingTri[] = [
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
     totalStakedAmount: dummyAmount,
-    totalStakedAmountInUSD: dummyAmount,
+    totalStakedInUSD: 0,
     totalStakedAmountInETH: dummyAmount,
     allocPoint: 0,
     totalRewardRate: dummyAmount,
