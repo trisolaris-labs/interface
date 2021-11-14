@@ -154,7 +154,7 @@ export default function Manage({
           <AutoColumn gap="sm">
             <TYPE.body style={{ margin: 0 }}>{t('earnPage.totalStaked')}</TYPE.body>
             <TYPE.body fontSize={24} fontWeight={500}>
-              {`$${stakingInfo.totalStakedInUSD}`}
+              {`$${Math.round(stakingInfo.totalStakedInUSD)}`}
             </TYPE.body>
           </AutoColumn>
         </PoolData>
