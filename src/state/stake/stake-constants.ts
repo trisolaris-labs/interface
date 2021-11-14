@@ -1,5 +1,5 @@
-import { ChainId, Token, TokenAmount } from '@trisolaris/sdk'
-import { USDC, AAVE, DAI, ZERO_ADDRESS } from '../../constants'
+import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
+import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR, USDT } from '../../constants'
 
 export interface StakingTri {
   ID: number
@@ -9,8 +9,7 @@ export interface StakingTri {
   stakedAmount: TokenAmount
   earnedAmount: TokenAmount
   totalStakedAmount: TokenAmount
-  totalStakedAmountInUSD: TokenAmount
-  totalStakedAmountInETH: TokenAmount
+  totalStakedInUSD: number
   allocPoint: number
   // the amount of token distributed per second to all LPs, constant
   totalRewardRate: TokenAmount
@@ -20,11 +19,41 @@ export interface StakingTri {
   apr: number
 }
 
-const dummyToken = new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
+export interface ExternalInfo {
+  id: number
+  lpAddress: string
+  totalSupply: number
+  totalStaked: number
+  totalStakedInUSD: number
+  totalRewardRate: number
+  allocPoint: number
+  apr: number
+}
+
+
+async function fetchAprData() {
+  let response = await fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/data.json')
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
+
+  return await response.json()
+}
+
+export let aprData = Promise.resolve(fetchAprData()).then(value => {
+  aprData = value
+})
+
+const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
 
 const dummyAmount = new TokenAmount(dummyToken, '0')
 
-export const TRI = new Token(ChainId.POLYGON, '0x2CB45Edb4517d5947aFdE3BEAbF95A582506858B', 18, 'TRI', 'Trisolaris')
+export const TRI = new Token(ChainId.AURORA, '0x0029050f71704940D77Cfe71D0F1FB868DeeFa03', 18, 'TRI', 'Trisolaris')
+
+export const rewardsPerSecond = JSBI.BigInt("10000000000000000000")
+export const totalAllocPoints = JSBI.BigInt("5")
+export const tokenAmount = new TokenAmount(dummyToken, '99')
 
 const POLYGON_POOLS: StakingTri[] = [
   {
@@ -35,8 +64,7 @@ const POLYGON_POOLS: StakingTri[] = [
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
     totalStakedAmount: dummyAmount,
-    totalStakedAmountInUSD: dummyAmount,
-    totalStakedAmountInETH: dummyAmount,
+    totalStakedInUSD: 0,
     allocPoint: 1,
     totalRewardRate: dummyAmount,
     rewardRate: dummyAmount,
@@ -50,8 +78,7 @@ const POLYGON_POOLS: StakingTri[] = [
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
     totalStakedAmount: dummyAmount,
-    totalStakedAmountInUSD: dummyAmount,
-    totalStakedAmountInETH: dummyAmount,
+    totalStakedInUSD: 0,
     allocPoint: 1,
     totalRewardRate: dummyAmount,
     rewardRate: dummyAmount,
@@ -65,13 +92,87 @@ const POLYGON_POOLS: StakingTri[] = [
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
     totalStakedAmount: dummyAmount,
-    totalStakedAmountInUSD: dummyAmount,
-    totalStakedAmountInETH: dummyAmount,
+    totalStakedInUSD: 0, //hardcode
+    allocPoint: 1,
+    totalRewardRate: dummyAmount, // hardcode
+    rewardRate: dummyAmount,
+    apr: 0 //hardcode
+  }
+]
+
+const AURORA_POOLS: StakingTri[] = [
+  {
+    ID: 0,
+    tokens: [WNEAR[ChainId.AURORA], USDC[ChainId.AURORA]],
+    stakingRewardAddress: '0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: dummyAmount,
+    rewardRate: dummyAmount,
+    apr: 0
+  },
+  {
+    ID: 1,
+    tokens: [WETH[ChainId.AURORA], USDC[ChainId.AURORA]],
+    stakingRewardAddress: '0x2F41AF687164062f118297cA10751F4b55478ae1',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: dummyAmount,
+    rewardRate: dummyAmount,
+    apr: 0
+  },
+  {
+    ID: 2,
+    tokens: [WETH[ChainId.AURORA], WNEAR[ChainId.AURORA]],
+    stakingRewardAddress: '0x63da4DB6Ef4e7C62168aB03982399F9588fCd198',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: dummyAmount,
+    rewardRate: dummyAmount,
+    apr: 0
+  },
+  {
+    ID: 3,
+    tokens: [USDT[ChainId.AURORA], WNEAR[ChainId.AURORA]],
+    stakingRewardAddress: '0x03B666f3488a7992b2385B12dF7f35156d7b29cD',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: dummyAmount,
+    rewardRate: dummyAmount,
+    apr: 0
+  },
+  {
+    ID: 4,
+    tokens: [USDT[ChainId.AURORA], USDC[ChainId.AURORA]],
+    stakingRewardAddress: '0x2fe064B6c7D274082aa5d2624709bC9AE7D16C77',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
     allocPoint: 1,
     totalRewardRate: dummyAmount,
     rewardRate: dummyAmount,
     apr: 0
   }
+
+  
 ]
 
 const NULL_POOLS: StakingTri[] = [
@@ -86,8 +187,7 @@ const NULL_POOLS: StakingTri[] = [
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
     totalStakedAmount: dummyAmount,
-    totalStakedAmountInUSD: dummyAmount,
-    totalStakedAmountInETH: dummyAmount,
+    totalStakedInUSD: 0,
     allocPoint: 0,
     totalRewardRate: dummyAmount,
     rewardRate: dummyAmount,
@@ -101,7 +201,7 @@ export const STAKING: {
   [ChainId.FUJI]: NULL_POOLS,
   [ChainId.AVALANCHE]: NULL_POOLS,
   [ChainId.POLYGON]: POLYGON_POOLS,
-  [ChainId.AURORA]: NULL_POOLS
+  [ChainId.AURORA]: AURORA_POOLS
 }
 
 export const ADDRESS_PRICE_MAP: { [key: string]: string } = {

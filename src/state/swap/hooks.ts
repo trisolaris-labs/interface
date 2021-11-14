@@ -34,7 +34,7 @@ export function useSwapActionHandlers(): {
       dispatch(
         selectCurrency({
           field,
-          currencyId: currency instanceof Token ? currency.address : currency === CETH ? 'AVAX' : ''
+          currencyId: currency instanceof Token ? currency.address : currency === CETH ? 'ETH' : ''
         })
       )
     },
@@ -220,10 +220,10 @@ function parseCurrencyFromURLParameter(urlParam: any): string {
   if (typeof urlParam === 'string') {
     const valid = isAddress(urlParam)
     if (valid) return valid
-    if (urlParam.toUpperCase() === 'AVAX') return 'AVAX'
-    if (valid === false) return 'AVAX'
+    if (urlParam.toUpperCase() === 'AVAX') return 'ETH'
+    if (valid === false) return 'ETH'
   }
-  return 'AVAX' ?? ''
+  return 'ETH' ?? ''
 }
 
 function parseTokenAmountURLParameter(urlParam: any): string {

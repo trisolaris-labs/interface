@@ -6,7 +6,6 @@ import { TYPE, StyledInternalLink } from '../../theme'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { CETH, Token } from '@trisolaris/sdk'
 import { ButtonPrimary } from '../Button'
-import { Staking } from '../../state/stake/hooks'
 import { StakingTri } from '../../state/stake/stake-constants'
 import { useColor } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
@@ -79,16 +78,10 @@ const BottomSection = styled.div<{ showBackground: boolean }>`
 
 export default function PoolCard({
   stakingInfo,
-  migration,
   version,
-  swapFeeApr,
-  stakingApr
 }: {
   stakingInfo: StakingTri
-  migration?: Staking
   version: number
-  swapFeeApr: number
-  stakingApr: number
 }) {
   const token0 = stakingInfo.tokens[0]
   const token1 = stakingInfo.tokens[1]
@@ -137,7 +130,7 @@ export default function PoolCard({
         <RowBetween>
           <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
           <TYPE.white>
-            {`$${stakingInfo.totalStakedAmountInUSD.toSignificant(4, { groupSeparator: ',' }) ?? '-'} USDC`}
+            {`$${stakingInfo.totalStakedInUSD}`}
           </TYPE.white>
         </RowBetween>
       </StatContainer>

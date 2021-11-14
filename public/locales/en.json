@@ -50,7 +50,7 @@
     "unclaimed": "Unclaimed TRI",
     "claim": "Claim",
     "liquidityRemainsPool": "When you claim without withdrawing your liquidity remains in the mining pool.",
-    "withdrawingPgl": "Withdrawing {{ amount }} TSL",
+    "withdrawingPgl": "Withdrawing {{ amount }} TLP",
     "claimingPng": "Claiming {{ amount }} TRI",
     "claimedPng": "Claimed TRI!",
     "manage": "Manage",
@@ -73,10 +73,10 @@
     "missingDependencies": "missing dependencies",
     "deposited": "Deposited",
     "withdrawDepositedLiquidity": "Withdraw deposited liquidity",
-    "depositedPglLiquidity": "Deposited TSL liquidity:",
-    "whenYouWithdrawWarning": "When you withdraw, your TRI is claimed and your Trisolaris Liquidity tokens, TSL, are returned to you. You will no longer earn TSL rewards on this liquidity. Your original token liquidity will remain in its liquidity pool.",
+    "depositedPglLiquidity": "Deposited TLP liquidity:",
+    "whenYouWithdrawWarning": "When you withdraw, your TRI is claimed and your Trisolaris Liquidity tokens, TLP, are returned to you. You will no longer earn TLP rewards on this liquidity. Your original token liquidity will remain in its liquidity pool.",
     "withdrawAndClaim": "Withdraw & Claim",
-    "withdrewPgl": "Withdrew TSL!",
+    "withdrewPgl": "Withdrew TLP!",
     "approve": "Approve",
     "poolWeight": "Pool Weight"
   },
@@ -320,8 +320,8 @@
     "pngPerWeek": " TRI / week",
     "automagically": "When you withdraw, the contract will automagically claim PNG on your behalf!",
     "deposit": "Deposit",
-    "depositPglTokens": "Deposit TSL Tokens",
-    "pglTokenAvailable": "TSL tokens available"
+    "depositPglTokens": "Deposit TLP Tokens",
+    "pglTokenAvailable": "TLP tokens available"
   },
   "pool": {
     "liquidityProviderRewards": "Liquidity provider rewards",

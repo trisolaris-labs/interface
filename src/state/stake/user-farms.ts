@@ -1,16 +1,7 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
 import { USDC, DAI, WNEAR } from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
-import {
-  STAKING,
-  StakingTri,
-  TRI,
-  rewardsPerSecond,
-  totalAllocPoints,
-  tokenAmount,
-  aprData,
-  ExternalInfo
-} from './stake-constants'
+import { STAKING, StakingTri, TRI, rewardsPerSecond, totalAllocPoints, tokenAmount, aprData, ExternalInfo } from './stake-constants'
 import {
   useSingleContractMultipleData,
   useMultipleContractSingleData,
@@ -23,14 +14,15 @@ import { PairState, usePairs, usePair } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 
 // gets the staking info from the network for the active chain id
-export function useFarms(): StakingTri[] {
+export function useSingleFarm(version: string): StakingTri[] {
   const { chainId, account } = useActiveWeb3React()
 
   const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
-  let lpAddresses = activeFarms.map(key => key.stakingRewardAddress)
+  let addresses = activeFarms.map(key => key.stakingRewardAddress)
   const chefContract = useMasterChefContract()
 
   const [stakingInfoData, setStakingInfoData] = useState<ExternalInfo[]>()
+
 
   useEffect(() => {
     fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/data.json')
@@ -40,21 +32,30 @@ export function useFarms(): StakingTri[] {
       })
   }, [])
 
-  // user info
+
+  let lpAddresses = [String(addresses[Number(version)])]
+
   const args = useMemo(() => {
-    if (!account || !lpAddresses) {
+    if (!account || !version) {
       return
     }
-    return [...Array(lpAddresses.length).keys()].map(pid => [String(pid), String(account)])
-  }, [lpAddresses.length, account])
+    return [String(version), String(account)]
+  }, [version, account])
 
-  const userInfo = useSingleContractMultipleData(args ? chefContract : null, 'userInfo', args!) //user related
+
+  const pendingTri = useSingleCallResult(args ? chefContract : null, 'pendingTri', args!) //user related
+  const userInfo = useSingleCallResult(args ? chefContract : null, 'userInfo', args!)  //user related
 
   // get all the info from the staking rewards contracts
   const accountArg = useMemo(() => [chefContract?.address ?? undefined], [chefContract])
-  const tokens = useMemo(() => activeFarms.map(({ tokens }) => tokens), [activeFarms])
-  const stakingTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg) //totalStaked TO REPLACE
+  const tokens = useMemo(() => activeFarms.filter(farm => {
+        return farm.ID == Number(version)
+      }).map(({ tokens }) => tokens), [activeFarms])
+
+  // const stakingTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg) //totalStaked TO REPLACE
   const pairs = usePairs(tokens)
+
+
 
   const pairAddresses = useMemo(() => {
     const pairsHaveLoaded = pairs?.every(([state, pair]) => state === PairState.EXISTS)
@@ -62,84 +63,73 @@ export function useFarms(): StakingTri[] {
     else return pairs.map(([state, pair]) => pair?.liquidityToken.address)
   }, [pairs])
 
+  const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply') //totalSupply TO REPLACE
+
   return useMemo(() => {
     if (!chainId) return activeFarms
 
     return lpAddresses.reduce<StakingTri[]>((memo, lpAddress, index) => {
       // User based info
-      const userStaked = userInfo[index]
-      // const rewardsPending = pendingTri[index]
-
-      // these get fetched regardless of account
-      const stakingTotalSupplyState = stakingTotalSupplies[index]
+      const userStaked = userInfo
+      const rewardsPending = pendingTri
       const [pairState, pair] = pairs[index]
+      const pairTotalSupplyState = pairTotalSupplies[index]
+
 
       if (
         // always need these
         userStaked?.loading === false &&
-        stakingTotalSupplyState?.loading === false &&
+        rewardsPending?.loading === false &&
+        pairTotalSupplyState?.loading === false &&
         pair &&
-        pairState !== PairState.LOADING &&
-        stakingInfoData
+        pairState !== PairState.LOADING && stakingInfoData
       ) {
         if (
           userStaked.error ||
-          stakingTotalSupplyState.error ||
+          rewardsPending.error ||
+          pairTotalSupplyState.error ||
           pairState === PairState.INVALID ||
-          pairState === PairState.NOT_EXISTS ||
-          !stakingInfoData
+          pairState === PairState.NOT_EXISTS || !stakingInfoData
         ) {
           console.error('Failed to load staking rewards info')
           return memo
         }
 
         // get the LP token
-        const tokens = activeFarms[index].tokens
-        // do whatever
-
+        const tokens = activeFarms[Number(version)].tokens
+        // data from offchain
         // check for account, if no account set to 0
         const userInfoPool = JSBI.BigInt(userStaked.result?.['amount'])
-        const totalSupplyStaked = JSBI.BigInt(stakingTotalSupplyState.result?.[0])
+        const earnedRewardPool = JSBI.BigInt(rewardsPending.result?.[0])
+        const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
 
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
+        const earnedAmount = new TokenAmount(TRI, JSBI.BigInt(earnedRewardPool))
 
-        const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
-
-        const reserveInUSDC = tokenAmount
-
-        const totalStakedInUSD = Math.round(stakingInfoData[index].totalStakedInUSD)
-        // const totalStakedInUSD = 100
-        // apr calculation
-        const totalRewardRate = new TokenAmount(
-          TRI,
-          JSBI.divide(JSBI.multiply(rewardsPerSecond, JSBI.BigInt(activeFarms[index].allocPoint)), totalAllocPoints)
-        ) // TO REPLACE
-        const rewardRate = new TokenAmount(
-          TRI,
-          JSBI.greaterThan(totalStakedAmount.raw, JSBI.BigInt(0))
-            ? JSBI.divide(JSBI.multiply(totalRewardRate.raw, stakedAmount.raw), totalStakedAmount.raw)
-            : JSBI.BigInt(0)
-        )
-
-        const apr = Math.round(Number(String(stakingInfoData[index].apr)))
 
         memo.push({
-          ID: activeFarms[index].ID,
+          ID: activeFarms[Number(version)].ID,
           stakingRewardAddress: MASTERCHEF_ADDRESS[chainId],
           tokens: tokens,
           isPeriodFinished: false,
-          earnedAmount: tokenAmount,
+          earnedAmount: earnedAmount,
           stakedAmount: stakedAmount,
-          totalStakedAmount: totalStakedAmount,
-          totalStakedInUSD: totalStakedInUSD,
+          totalStakedAmount: tokenAmount,
+          totalStakedInUSD: stakingInfoData[Number(version)].totalStakedInUSD,
           allocPoint: activeFarms[index].allocPoint,
-          totalRewardRate: totalRewardRate,
-          rewardRate: rewardRate,
-          apr: apr
+          totalRewardRate: tokenAmount,
+          rewardRate: tokenAmount,
+          apr: stakingInfoData[Number(version)].apr
         })
         return memo
       }
       return activeFarms
     }, [])
-  }, [activeFarms, stakingTotalSupplies, pairs, userInfo])
+  }, [
+    activeFarms,
+    pairs,
+    pairTotalSupplies,
+    pendingTri,
+    userInfo
+  ])
 }

@@ -125,6 +125,13 @@ export const AAVE: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, ZERO_ADDRESS,  18, 'AAVE', 'AAVE TOken')
 }
 
+export const WNEAR: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'WNEAR', 'WNEAR Token'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'WNEAR', 'WNEAR Token'),
+  [ChainId.POLYGON]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'WNEAR', 'WNEAR Token'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, "0xc42c30ac6cc15fac9bd938618bcaa1a1fae8501d",  24, 'WNEAR', 'WNEAR TOken')
+}
+
 
 export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: ZERO_ADDRESS,

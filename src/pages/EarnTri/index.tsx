@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { AutoColumn } from '../../components/Column'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import styled from 'styled-components'
-import { STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
 import { TYPE, ExternalLink } from '../../theme'
 import PoolCard from '../../components/earn/PoolCardTri'
 import { RouteComponentProps, NavLink } from 'react-router-dom'
@@ -16,6 +15,8 @@ import { SearchInput } from '../../components/SearchModal/styleds'
 import useDebounce from '../../hooks/useDebounce'
 import { usePositions } from '../../state/stake/hooks-sushi'
 import { useFarms } from '../../state/stake/apr'
+import useExternalDataService from "../../state/stake/useExternalData"
+import { STAKING_TOKEN_LIST } from "../../state/stake/external-stake-constants"
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
@@ -74,68 +75,15 @@ export default function Earn({
 }: RouteComponentProps<{ version: string }>) {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  const stakingInfos = useStakingInfo(Number(version))
+  const farmArrs = useFarms();
   const [poolCards, setPoolCards] = useState<any[]>()
   const [filteredPoolCards, setFilteredPoolCards] = useState<any[]>()
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [sortBy, setSortBy] = useState<any>({ field: '', desc: true })
   const debouncedSearchQuery = useDebounce(searchQuery, 250)
-  const [stakingInfoData, setStakingInfoData] = useState<any[]>(stakingInfos)
-
-  const stakingInfoV0 = useStakingInfo(Number(0))
-  const hasPositionV0 = stakingInfoV0?.some(stakingInfo => stakingInfo.stakedAmount.greaterThan('0'))
-
-  const handleSearch = useCallback(event => {
-    setSearchQuery(event.target.value.trim().toUpperCase())
-  }, [])
-
-  const farmArr = useFarms();
-
-  useEffect(() => {
-    const filtered = poolCards?.filter(
-      card =>
-        card.props.stakingInfo.tokens[0].symbol.toUpperCase().includes(debouncedSearchQuery) ||
-        card.props.stakingInfo.tokens[1].symbol.toUpperCase().includes(debouncedSearchQuery)
-    )
-    setFilteredPoolCards(filtered)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [poolCards, debouncedSearchQuery])
-
-   const getSortField = (label: string, field: string, sortBy: any, setSortBy: Function) => {
-    return (
-      <SortField
-        onClick={() => {
-          const desc = sortBy?.field === field ? !sortBy?.desc : true
-          setSortBy({ field, desc })
-        }}
-      >
-        {label}
-        {sortBy?.field === field && (sortBy?.desc ? <ChevronDown size="16" /> : <ChevronUp size="16" />)}
-      </SortField>
-    )
-  }
-
-
-  useEffect(() => {
-    Promise.all(
-      farmArr
-    ).then(stakingInfos => {
-      const poolCards = stakingInfos.map(stakingInfo => (
-        <PoolCard
-          swapFeeApr={10}
-          stakingApr={50}
-          key={stakingInfo.stakingRewardAddress}
-          stakingInfo={stakingInfo}
-          version={stakingInfo.ID}
-        />
-      ))
-      setStakingInfoData(stakingInfos)
-      setPoolCards(poolCards)
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stakingInfos?.length, version])
-
-
+  const [stakingInfoData, setStakingInfoData] = useState<any[]>(farmArrs)
+  
+  console.log(farmArrs)
   return (
     <PageWrapper gap="lg" justify="center">
       <TopSection gap="md">
@@ -171,23 +119,32 @@ export default function Earn({
 
         <PoolSection>
             <>
-              <SearchInput
-                type="text"
-                id="token-search-input"
-                placeholder={t('searchModal.tokenName')}
-                value={searchQuery}
-                onChange={handleSearch}
-              />
-              <SortSection>
-                Sort by :{' '}
-                <SortFieldContainer>
-                  {getSortField('Liquidity', SortingType.totalStakedInWavax, sortBy, setSortBy)} |{' '}
-                  {getSortField('Pool Weight', SortingType.multiplier, sortBy, setSortBy)} |{' '}
-                </SortFieldContainer>
-                {getSortField('APR', SortingType.totalApr, sortBy, setSortBy)}
-              </SortSection>
+                      <PoolCard
+                        key={farmArrs[0].stakingRewardAddress}
+                        stakingInfo={farmArrs[0]}
+                        version={farmArrs[0].ID}
+                      />
+                      <PoolCard
+                        key={farmArrs[1].stakingRewardAddress}
+                        stakingInfo={farmArrs[1]}
+                        version={farmArrs[1].ID}
+                      />
+                      <PoolCard
+                        key={farmArrs[2].stakingRewardAddress}
+                        stakingInfo={farmArrs[2]}
+                        version={farmArrs[2].ID}
+                      />
+                      <PoolCard
+                        key={farmArrs[3].stakingRewardAddress}
+                        stakingInfo={farmArrs[3]}
+                        version={farmArrs[3].ID}
+                      />
+                      <PoolCard
+                        key={farmArrs[4].stakingRewardAddress}
+                        stakingInfo={farmArrs[4]}
+                        version={farmArrs[4].ID}
+                      />
 
-              {filteredPoolCards}
             </>
         </PoolSection>
       </AutoColumn>

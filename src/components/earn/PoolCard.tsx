@@ -152,7 +152,7 @@ export default function PoolCard({
         <RowBetween>
           <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
           <TYPE.white>
-            {`${stakingInfo.totalStakedInWavax.toSignificant(4, { groupSeparator: ',' }) ?? '-'} AVAX`}
+            {`${stakingInfo.totalStakedInWavax.toSignificant(4, { groupSeparator: ',' }) ?? '-'} ETH`}
           </TYPE.white>
         </RowBetween>
       </StatContainer>

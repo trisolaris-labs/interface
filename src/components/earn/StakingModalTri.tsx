@@ -15,7 +15,7 @@ import { usePairContract, useStakingContract } from '../../hooks/useContract'
 import { useMasterChefContract } from '../../state/stake/hooks-sushi'
 import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
 import { splitSignature } from 'ethers/lib/utils'
-import { StakingInfo, useDerivedStakeInfo } from '../../state/stake/hooks'
+import { useDerivedStakeInfo } from '../../state/stake/hooks'
 import { StakingTri } from '../../state/stake/stake-constants'
 import { wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
 import { TransactionResponse } from '@ethersproject/providers'
@@ -256,7 +256,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
         <LoadingView onDismiss={wrappedOnDismiss}>
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>{t('earn.depositingLiquidity')}</TYPE.largeHeader>
-            <TYPE.body fontSize={20}>{parsedAmount?.toSignificant(4)} TSL</TYPE.body>
+            <TYPE.body fontSize={20}>{parsedAmount?.toSignificant(4)} TLP</TYPE.body>
           </AutoColumn>
         </LoadingView>
       )}
@@ -265,7 +265,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>{t('earn.transactionSubmitted')}</TYPE.largeHeader>
             <TYPE.body fontSize={20}>
-              {t('earn.deposited')} {parsedAmount?.toSignificant(4)} TSL
+              {t('earn.deposited')} {parsedAmount?.toSignificant(4)} TLP
             </TYPE.body>
           </AutoColumn>
         </SubmittedView>
