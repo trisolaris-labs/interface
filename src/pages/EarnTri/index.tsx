@@ -179,29 +179,21 @@ export default function Earn({
         <PoolSection>
             <>
                       <PoolCard
-                        swapFeeApr={10}
-                        stakingApr={50}
                         key={farmArrs[0].stakingRewardAddress}
                         stakingInfo={farmArrs[0]}
                         version={farmArrs[0].ID}
                       />
                       <PoolCard
-                        swapFeeApr={10}
-                        stakingApr={50}
                         key={farmArrs[1].stakingRewardAddress}
                         stakingInfo={farmArrs[1]}
                         version={farmArrs[1].ID}
                       />
                       <PoolCard
-                        swapFeeApr={10}
-                        stakingApr={50}
                         key={farmArrs[2].stakingRewardAddress}
                         stakingInfo={farmArrs[2]}
                         version={farmArrs[2].ID}
                       />
                       <PoolCard
-                        swapFeeApr={10}
-                        stakingApr={50}
                         key={farmArrs[3].stakingRewardAddress}
                         stakingInfo={farmArrs[3]}
                         version={farmArrs[3].ID}

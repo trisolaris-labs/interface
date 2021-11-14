@@ -79,13 +79,9 @@ const BottomSection = styled.div<{ showBackground: boolean }>`
 export default function PoolCard({
   stakingInfo,
   version,
-  swapFeeApr,
-  stakingApr
 }: {
   stakingInfo: StakingTri
   version: number
-  swapFeeApr: number
-  stakingApr: number
 }) {
   const token0 = stakingInfo.tokens[0]
   const token1 = stakingInfo.tokens[1]
