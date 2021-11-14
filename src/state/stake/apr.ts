@@ -1,7 +1,16 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
 import { USDC, DAI, WNEAR } from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
-import { STAKING, StakingTri, TRI, rewardsPerSecond, totalAllocPoints, tokenAmount, aprData, ExternalInfo} from './stake-constants'
+import {
+  STAKING,
+  StakingTri,
+  TRI,
+  rewardsPerSecond,
+  totalAllocPoints,
+  tokenAmount,
+  aprData,
+  ExternalInfo
+} from './stake-constants'
 import {
   useSingleContractMultipleData,
   useMultipleContractSingleData,
@@ -23,7 +32,6 @@ export function useFarms(): StakingTri[] {
 
   const [stakingInfoData, setStakingInfoData] = useState<ExternalInfo[]>()
 
-
   useEffect(() => {
     fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/data.json')
       .then(results => results.json())
@@ -31,7 +39,6 @@ export function useFarms(): StakingTri[] {
         setStakingInfoData(data)
       })
   }, [])
-
 
   // user info
   const args = useMemo(() => {
@@ -41,7 +48,7 @@ export function useFarms(): StakingTri[] {
     return [...Array(lpAddresses.length).keys()].map(pid => [String(pid), String(account)])
   }, [lpAddresses.length, account])
 
-  const userInfo = useSingleContractMultipleData(args ? chefContract : null, 'userInfo', args!)  //user related
+  const userInfo = useSingleContractMultipleData(args ? chefContract : null, 'userInfo', args!) //user related
 
   // get all the info from the staking rewards contracts
   const accountArg = useMemo(() => [chefContract?.address ?? undefined], [chefContract])
@@ -55,7 +62,6 @@ export function useFarms(): StakingTri[] {
     else return pairs.map(([state, pair]) => pair?.liquidityToken.address)
   }, [pairs])
 
-
   return useMemo(() => {
     if (!chainId) return activeFarms
 
@@ -67,20 +73,21 @@ export function useFarms(): StakingTri[] {
       // these get fetched regardless of account
       const stakingTotalSupplyState = stakingTotalSupplies[index]
       const [pairState, pair] = pairs[index]
-   
 
       if (
         // always need these
         userStaked?.loading === false &&
         stakingTotalSupplyState?.loading === false &&
         pair &&
-        pairState !== PairState.LOADING && stakingInfoData
+        pairState !== PairState.LOADING &&
+        stakingInfoData
       ) {
         if (
           userStaked.error ||
           stakingTotalSupplyState.error ||
           pairState === PairState.INVALID ||
-          pairState === PairState.NOT_EXISTS || !stakingInfoData
+          pairState === PairState.NOT_EXISTS ||
+          !stakingInfoData
         ) {
           console.error('Failed to load staking rewards info')
           return memo
@@ -99,8 +106,8 @@ export function useFarms(): StakingTri[] {
         const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
 
         const reserveInUSDC = tokenAmount
-        
-        const totalStakedInUSD = stakingInfoData[index].totalStakedInUSD
+
+        const totalStakedInUSD = Math.round(stakingInfoData[index].totalStakedInUSD)
         // const totalStakedInUSD = 100
         // apr calculation
         const totalRewardRate = new TokenAmount(
@@ -114,7 +121,7 @@ export function useFarms(): StakingTri[] {
             : JSBI.BigInt(0)
         )
 
-        const apr = stakingInfoData[index].apr
+        const apr = Math.round(Number(String(stakingInfoData[index].apr)))
 
         memo.push({
           ID: activeFarms[index].ID,
@@ -134,10 +141,5 @@ export function useFarms(): StakingTri[] {
       }
       return activeFarms
     }, [])
-  }, [
-    activeFarms,
-    stakingTotalSupplies,
-    pairs,
-    userInfo
-  ])
+  }, [activeFarms, stakingTotalSupplies, pairs, userInfo])
 }
