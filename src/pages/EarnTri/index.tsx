@@ -4,7 +4,6 @@ import { ChevronDown, ChevronUp } from 'react-feather'
 import styled from 'styled-components'
 import { TYPE, ExternalLink } from '../../theme'
 import PoolCard from '../../components/earn/PoolCardTri'
-import PoolCardTemp from '../../components/earn/PoolCardTemp'
 import { RouteComponentProps, NavLink } from 'react-router-dom'
 import { RowBetween } from '../../components/Row'
 import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
@@ -73,69 +72,69 @@ export default function Earn({
     params: { version }
   }
 }: RouteComponentProps<{ version: string }>) {
-  // const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  // const farmArrs = useFarms();
-  // const [poolCards, setPoolCards] = useState<any[]>()
-  // const [filteredPoolCards, setFilteredPoolCards] = useState<any[]>()
-  // const [searchQuery, setSearchQuery] = useState<string>('')
-  // const [sortBy, setSortBy] = useState<any>({ field: '', desc: true })
-  // const debouncedSearchQuery = useDebounce(searchQuery, 250)
-  // const [stakingInfoData, setStakingInfoData] = useState<any[]>(farmArrs)
+  const farmArrs = useFarms();
+  const [poolCards, setPoolCards] = useState<any[]>()
+  const [filteredPoolCards, setFilteredPoolCards] = useState<any[]>()
+  const [searchQuery, setSearchQuery] = useState<string>('')
+  const [sortBy, setSortBy] = useState<any>({ field: '', desc: true })
+  const debouncedSearchQuery = useDebounce(searchQuery, 250)
+  const [stakingInfoData, setStakingInfoData] = useState<any[]>(farmArrs)
   
-  // const data = useExternalDataService()
-  // console.log(data)
+  const data = useExternalDataService()
+  console.log(data)
 
-  // useEffect(() => {
-  //   const filtered = poolCards?.filter(
-  //     card =>
-  //       card.props.stakingInfo.tokens[0].symbol.toUpperCase().includes(debouncedSearchQuery) ||
-  //       card.props.stakingInfo.tokens[1].symbol.toUpperCase().includes(debouncedSearchQuery)
-  //   )
-  //   setFilteredPoolCards(filtered)
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [poolCards, debouncedSearchQuery])
+  useEffect(() => {
+    const filtered = poolCards?.filter(
+      card =>
+        card.props.stakingInfo.tokens[0].symbol.toUpperCase().includes(debouncedSearchQuery) ||
+        card.props.stakingInfo.tokens[1].symbol.toUpperCase().includes(debouncedSearchQuery)
+    )
+    setFilteredPoolCards(filtered)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [poolCards, debouncedSearchQuery])
 
-  // useEffect(() => {
-  //   Promise.all(
-  //     farmArrs
-  //   ).then(farmArrs => {
-  //     const poolCards = farmArrs.map(farmArr => (
-  //       <PoolCard
-  //         swapFeeApr={10}
-  //         stakingApr={50}
-  //         key={farmArr.stakingRewardAddress}
-  //         stakingInfo={farmArr}
-  //         version={farmArr.ID}
-  //       />
-  //     ))
-  //     setStakingInfoData(farmArrs)
-  //     setPoolCards(poolCards)
-  //   })
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [farmArrs?.length, version])
-
-  //TEMP WORK
-
-  const externalDataArr = useExternalDataService()
-  console.log(externalDataArr)
   useEffect(() => {
     Promise.all(
-      externalDataArr
-    ).then(externalDataArr => {
-      const poolCards = externalDataArr.map(externalData => (
-        <PoolCardTemp
+      farmArrs
+    ).then(farmArrs => {
+      const poolCards = farmArrs.map(farmArr => (
+        <PoolCard
           swapFeeApr={10}
           stakingApr={50}
-          stakingInfo={externalData}
-          version={externalData.ID}
+          key={farmArr.stakingRewardAddress}
+          stakingInfo={farmArr}
+          version={farmArr.ID}
         />
       ))
-      setStakingInfoData(externalDataArr)
+      setStakingInfoData(farmArrs)
       setPoolCards(poolCards)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [externalDataArr?.length, version])
+  }, [farmArrs?.length, version])
+
+  //TEMP WORK
+
+  // const externalDataArr = useExternalDataService()
+  // console.log(externalDataArr)
+  // useEffect(() => {
+  //   Promise.all(
+  //     externalDataArr
+  //   ).then(externalDataArr => {
+  //     const poolCards = externalDataArr.map(externalData => (
+  //       <PoolCardTemp
+  //         swapFeeApr={10}
+  //         stakingApr={50}
+  //         stakingInfo={externalData}
+  //         version={externalData.ID}
+  //       />
+  //     ))
+  //     setStakingInfoData(externalDataArr)
+  //     setPoolCards(poolCards)
+  //   })
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [externalDataArr?.length, version])
 
 
 
