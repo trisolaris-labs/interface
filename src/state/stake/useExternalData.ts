@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
 import { ExternalStakeConstant, Service, STAKING_TOKEN_LIST } from './external-stake-constants'
+import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR, USDT } from '../../constants'
 
 export interface ExternalStakeConstants {
   results: ExternalStakeConstant[]
@@ -7,6 +9,7 @@ export interface ExternalStakeConstants {
 
 const useExternalDataService = () => {
   const [result, setResult] = useState<Service<ExternalStakeConstants[]>>()
+  const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
 
   useEffect(() => {
     fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/data.json')
@@ -23,14 +26,13 @@ const useExternalDataService = () => {
               totalRewardRate: responseobj.totalRewardRate,
               allocPoint: responseobj.allocPoint,
               apr: responseobj.apr,
-              token0: STAKING_TOKEN_LIST['0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0'][0], //hardcoded lp address
-              token1: STAKING_TOKEN_LIST['0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0'][1] //hardcoded lp address
+              // token0: responseobj ? STAKING_TOKEN_LIST[responseobj.lpAddress][0] : dummyToken, //hardcoded lp address
+              // token1: responseobj ? STAKING_TOKEN_LIST[responseobj.lpAddress][1] : dummyToken //hardcoded lp address
             } as ExternalStakeConstant)
         )
         setResult(parsedResponseArr)
       })
   }, [])
-
   return result
 }
 

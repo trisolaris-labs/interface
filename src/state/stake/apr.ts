@@ -1,7 +1,7 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
 import { USDC, DAI, WNEAR } from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
-import { STAKING, StakingTri, TRI, rewardsPerSecond, totalAllocPoints, tokenAmount, aprData, ExternalInfo } from './stake-constants'
+import { STAKING, StakingTri, TRI, rewardsPerSecond, totalAllocPoints, tokenAmount, aprData, ExternalInfo} from './stake-constants'
 import {
   useSingleContractMultipleData,
   useMultipleContractSingleData,
@@ -41,7 +41,7 @@ export function useFarms(): StakingTri[] {
     return [...Array(lpAddresses.length).keys()].map(pid => [String(pid), String(account)])
   }, [lpAddresses.length, account])
 
-  const pendingTri = useSingleContractMultipleData(args ? chefContract : null, 'pendingTri', args!) //user related
+  // const pendingTri = useSingleContractMultipleData(args ? chefContract : null, 'pendingTri', args!) //user related
   const userInfo = useSingleContractMultipleData(args ? chefContract : null, 'userInfo', args!)  //user related
 
   // get all the info from the staking rewards contracts
@@ -65,7 +65,7 @@ export function useFarms(): StakingTri[] {
     return lpAddresses.reduce<StakingTri[]>((memo, lpAddress, index) => {
       // User based info
       const userStaked = userInfo[index]
-      const rewardsPending = pendingTri[index]
+      // const rewardsPending = pendingTri[index]
 
       // these get fetched regardless of account
       const stakingTotalSupplyState = stakingTotalSupplies[index]
@@ -76,7 +76,7 @@ export function useFarms(): StakingTri[] {
       if (
         // always need these
         userStaked?.loading === false &&
-        rewardsPending?.loading === false &&
+        // rewardsPending?.loading === false &&
         stakingTotalSupplyState?.loading === false &&
         pairTotalSupplyState?.loading === false &&
         pair &&
@@ -84,7 +84,7 @@ export function useFarms(): StakingTri[] {
       ) {
         if (
           userStaked.error ||
-          rewardsPending.error ||
+          // rewardsPending.error ||
           stakingTotalSupplyState.error ||
           pairTotalSupplyState.error ||
           pairState === PairState.INVALID ||
@@ -100,12 +100,12 @@ export function useFarms(): StakingTri[] {
 
         // check for account, if no account set to 0
         const userInfoPool = JSBI.BigInt(userStaked.result?.['amount'])
-        const earnedRewardPool = JSBI.BigInt(rewardsPending.result?.[0])
+        // const earnedRewardPool = JSBI.BigInt(rewardsPending.result?.[0])
         const totalSupplyStaked = JSBI.BigInt(stakingTotalSupplyState.result?.[0])
         const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
 
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
-        const earnedAmount = new TokenAmount(TRI, JSBI.BigInt(earnedRewardPool))
+        // const earnedAmount = new TokenAmount(dummyToken, '0')
         const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
 
         // tvl calculation
@@ -133,7 +133,7 @@ export function useFarms(): StakingTri[] {
           stakingRewardAddress: MASTERCHEF_ADDRESS[chainId],
           tokens: tokens,
           isPeriodFinished: false,
-          earnedAmount: earnedAmount,
+          earnedAmount: tokenAmount,
           stakedAmount: stakedAmount,
           totalStakedAmount: totalStakedAmount,
           totalStakedInUSD: totalStakedInUSD,
@@ -152,7 +152,6 @@ export function useFarms(): StakingTri[] {
     stakingTotalSupplies,
     pairs,
     pairTotalSupplies,
-    pendingTri,
     userInfo
   ])
 }
