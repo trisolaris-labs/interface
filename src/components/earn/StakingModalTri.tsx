@@ -95,18 +95,8 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   async function onStake() {
     setAttempting(true)
     if (stakingContract && parsedAmount && deadline) {
-      if (approval === ApprovalState.APPROVED) {
-        await stakingContract.deposit(stakingInfo.ID, parseUnits(typedValue))
-      } else if (signatureData) {
-        stakingContract
-          .deposit(
-            stakingInfo.ID, //pid
-            parseUnits(typedValue)
-            // signatureData.v,
-            // signatureData.r,
-            // signatureData.s,
-            // { gasLimit: 350000 }
-          )
+        await stakingContract
+          .deposit(stakingInfo.ID, parseUnits(typedValue))
           .then((response: TransactionResponse) => {
             addTransaction(response, {
               summary: t('earn.depositLiquidity')
@@ -116,13 +106,12 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           .catch((error: any) => {
             setAttempting(false)
             console.log(error)
-          })
-      } else {
+          })} 
+       else {
         setAttempting(false)
         throw new Error(t('earn.attemptingToStakeError'))
+        }
       }
-    }
-  }
 
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback((typedValue: string) => {
