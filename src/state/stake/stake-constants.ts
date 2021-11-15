@@ -49,8 +49,6 @@ const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
 
 const dummyAmount = new TokenAmount(dummyToken, '0')
 
-// export const TRI = new Token(ChainId.AURORA, '0xFa94348467f64D5A457F75F8bc40495D33c65aBB', 18, 'TRI', 'Trisolaris')
-
 export const rewardsPerSecond = JSBI.BigInt("10000000000000000000")
 export const totalAllocPoints = JSBI.BigInt("5")
 export const tokenAmount = new TokenAmount(dummyToken, '99')
