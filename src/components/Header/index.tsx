@@ -293,11 +293,8 @@ export default function Header() {
           >
             {t('header.farm')}
           </StyledNavLink>
-          <StyledExternalLink id="aurora-bridge" href={'https://aurora.dev/bridge'}>
-            Bridge from Ethereum <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
-          <StyledExternalLink id="aurora-bridge" href={'https://aurora.bridgetonear.org/'}>
-            Bridge from Near <span style={{ fontSize: '11px' }}>↗</span>
+          <StyledExternalLink id="aurora-bridge" href={'https://rainbowbridge.app/transfer'}>
+            Bridge Funds <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
         </HeaderLinks>
       </HeaderRow>
