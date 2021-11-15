@@ -161,9 +161,10 @@ export default function Manage({
           <AutoColumn gap="sm">
             <TYPE.body style={{ margin: 0 }}>{t('earnPage.poolRate')}</TYPE.body>
             <TYPE.body fontSize={24} fontWeight={500}>
-              {stakingInfo?.totalRewardRate
+              {/* {stakingInfo?.totalRewardRate
                 ?.multiply((60 * 60 * 24 * 7).toString())
-                ?.toFixed(0, { groupSeparator: ',' }) ?? '-'}
+                ?.toFixed(0, { groupSeparator: ',' }) ?? '-'} */}
+              {'-'}
               {t('earnPage.pngPerWeek')}
             </TYPE.body>
           </AutoColumn>

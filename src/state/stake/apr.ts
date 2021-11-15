@@ -1,10 +1,9 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
-import { USDC, DAI, WNEAR } from '../../constants'
+import { USDC, DAI, WNEAR, TRI} from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
 import {
   STAKING,
   StakingTri,
-  TRI,
   rewardsPerSecond,
   totalAllocPoints,
   tokenAmount,
@@ -111,11 +110,11 @@ export function useFarms(): StakingTri[] {
         // const totalStakedInUSD = 100
         // apr calculation
         const totalRewardRate = new TokenAmount(
-          TRI,
+          TRI[ChainId.AURORA],
           JSBI.divide(JSBI.multiply(rewardsPerSecond, JSBI.BigInt(activeFarms[index].allocPoint)), totalAllocPoints)
         ) // TO REPLACE
         const rewardRate = new TokenAmount(
-          TRI,
+          TRI[ChainId.AURORA],
           JSBI.greaterThan(totalStakedAmount.raw, JSBI.BigInt(0))
             ? JSBI.divide(JSBI.multiply(totalRewardRate.raw, stakedAmount.raw), totalStakedAmount.raw)
             : JSBI.BigInt(0)

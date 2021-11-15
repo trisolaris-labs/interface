@@ -137,7 +137,8 @@ export default function PoolCard({
       <AprContainer>
         <RowBetween>
           <TYPE.white>Total APR</TYPE.white>
-          <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
+          {/* <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white> */}
+          <TYPE.white>-</TYPE.white>
         </RowBetween>
       </AprContainer>
       <StatContainer>
