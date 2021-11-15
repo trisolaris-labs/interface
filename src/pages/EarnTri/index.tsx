@@ -83,7 +83,6 @@ export default function Earn({
   const debouncedSearchQuery = useDebounce(searchQuery, 250)
   const [stakingInfoData, setStakingInfoData] = useState<any[]>(farmArrs)
   
-  console.log(farmArrs)
   return (
     <PageWrapper gap="lg" justify="center">
       <TopSection gap="md">

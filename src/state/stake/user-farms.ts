@@ -1,7 +1,7 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
-import { USDC, DAI, WNEAR } from '../../constants'
+import { USDC, DAI, WNEAR, TRI} from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
-import { STAKING, StakingTri, TRI, rewardsPerSecond, totalAllocPoints, tokenAmount, aprData, ExternalInfo } from './stake-constants'
+import { STAKING, StakingTri, rewardsPerSecond, totalAllocPoints, tokenAmount, aprData, ExternalInfo } from './stake-constants'
 import {
   useSingleContractMultipleData,
   useMultipleContractSingleData,
@@ -104,7 +104,7 @@ export function useSingleFarm(version: string): StakingTri[] {
         const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
 
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
-        const earnedAmount = new TokenAmount(TRI, JSBI.BigInt(earnedRewardPool))
+        const earnedAmount = new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(earnedRewardPool))
 
 
         memo.push({
