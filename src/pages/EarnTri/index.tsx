@@ -118,11 +118,11 @@ export default function Earn({
 
         <PoolSection>
             <>        
-                     {/*<PoolCard
+                     {/* <PoolCard
                         key={farmArrs[5].stakingRewardAddress}
                         stakingInfo={farmArrs[5]}
                         version={farmArrs[5].ID}
-                      />*/}
+                      /> */}
                       <PoolCard
                         key={farmArrs[0].stakingRewardAddress}
                         stakingInfo={farmArrs[0]}

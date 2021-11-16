@@ -158,7 +158,7 @@ const AURORA_POOLS: StakingTri[] = [
   // {
   //   ID: 5,
   //   tokens: [TRI[ChainId.AURORA], WNEAR[ChainId.AURORA]],
-  //   stakingRewardAddress: '',
+  //   stakingRewardAddress: '0x84b123875F0F36B966d0B6Ca14b31121bd9676AD',
   //   isPeriodFinished: false,
   //   stakedAmount: dummyAmount,
   //   earnedAmount: dummyAmount,

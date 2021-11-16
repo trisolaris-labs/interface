@@ -76,13 +76,7 @@ const BottomSection = styled.div<{ showBackground: boolean }>`
   z-index: 1;
 `
 
-export default function PoolCard({
-  stakingInfo,
-  version,
-}: {
-  stakingInfo: StakingTri
-  version: number
-}) {
+export default function PoolCard({ stakingInfo, version }: { stakingInfo: StakingTri; version: number }) {
   const token0 = stakingInfo.tokens[0]
   const token1 = stakingInfo.tokens[1]
 
@@ -104,7 +98,7 @@ export default function PoolCard({
   // get the color of the token
   const backgroundColor = useColor(token)
 
-  const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
   return (
     <Wrapper showBackground={isStaking} bgColor={backgroundColor}>
@@ -131,15 +125,14 @@ export default function PoolCard({
       <StatContainer>
         <RowBetween>
           <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
-          <TYPE.white>
-            {`$${totalStakedInUSD}`}
-          </TYPE.white>
+          <TYPE.white>{`$${totalStakedInUSD}`}</TYPE.white>
         </RowBetween>
       </StatContainer>
       <AprContainer>
         <RowBetween>
           <TYPE.white>Total APR</TYPE.white>
-           <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
+          {/* <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white> */}
+          {'-'}
         </RowBetween>
       </AprContainer>
       <StatContainer>
@@ -152,7 +145,7 @@ export default function PoolCard({
       {isStaking && (
         <>
           <Break />
-            {/*<BottomSection showBackground={true}>
+          {/*<BottomSection showBackground={true}>
             <TYPE.black color={'white'} fontWeight={500}>
               <span>{t('earn.yourRate')}</span>
             </TYPE.black>
