@@ -115,11 +115,11 @@ export function useSingleFarm(version: string): StakingTri[] {
           earnedAmount: earnedAmount,
           stakedAmount: stakedAmount,
           totalStakedAmount: tokenAmount,
-          totalStakedInUSD: stakingInfoData[Number(version)].totalStakedInUSD,
+          totalStakedInUSD: Math.round(stakingInfoData[Number(version)].totalStakedInUSD),
           allocPoint: activeFarms[index].allocPoint,
-          totalRewardRate: tokenAmount,
+          totalRewardRate: Math.round(stakingInfoData[Number(version)].totalRewardRate),
           rewardRate: tokenAmount,
-          apr: stakingInfoData[Number(version)].apr
+          apr: Math.round(stakingInfoData[Number(version)].apr)
         })
         return memo
       }

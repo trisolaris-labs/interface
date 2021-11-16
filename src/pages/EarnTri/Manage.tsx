@@ -108,7 +108,8 @@ export default function Manage({
   let token: Token | undefined
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
 
-
+  const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const totalRewardRate = stakingInfo.totalRewardRate.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   // get the color of the token
   backgroundColor = useColor(token)
@@ -153,7 +154,7 @@ export default function Manage({
           <AutoColumn gap="sm">
             <TYPE.body style={{ margin: 0 }}>{t('earnPage.totalStaked')}</TYPE.body>
             <TYPE.body fontSize={24} fontWeight={500}>
-              {`$${Math.round(stakingInfo.totalStakedInUSD)}`}
+              {`$${totalStakedInUSD}`}
             </TYPE.body>
           </AutoColumn>
         </PoolData>
@@ -161,10 +162,10 @@ export default function Manage({
           <AutoColumn gap="sm">
             <TYPE.body style={{ margin: 0 }}>{t('earnPage.poolRate')}</TYPE.body>
             <TYPE.body fontSize={24} fontWeight={500}>
+              {`${totalRewardRate}`}
               {/* {stakingInfo?.totalRewardRate
                 ?.multiply((60 * 60 * 24 * 7).toString())
                 ?.toFixed(0, { groupSeparator: ',' }) ?? '-'} */}
-              {'-'}
               {t('earnPage.pngPerWeek')}
             </TYPE.body>
           </AutoColumn>

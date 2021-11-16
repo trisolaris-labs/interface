@@ -104,6 +104,8 @@ export default function PoolCard({
   // get the color of the token
   const backgroundColor = useColor(token)
 
+  const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
   return (
     <Wrapper showBackground={isStaking} bgColor={backgroundColor}>
       <CardBGImage desaturate />
@@ -130,15 +132,14 @@ export default function PoolCard({
         <RowBetween>
           <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
           <TYPE.white>
-            {`$${stakingInfo.totalStakedInUSD}`}
+            {`$${totalStakedInUSD}`}
           </TYPE.white>
         </RowBetween>
       </StatContainer>
       <AprContainer>
         <RowBetween>
           <TYPE.white>Total APR</TYPE.white>
-          {/* <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white> */}
-          <TYPE.white>-</TYPE.white>
+           <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
         </RowBetween>
       </AprContainer>
       <StatContainer>

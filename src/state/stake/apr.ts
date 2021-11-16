@@ -106,9 +106,6 @@ export function useFarms(): StakingTri[] {
 
         const reserveInUSDC = tokenAmount
 
-        const totalStakedInUSD = Math.round(stakingInfoData[index].totalStakedInUSD)
-        // const totalStakedInUSD = 100
-        // apr calculation
         const totalRewardRate = new TokenAmount(
           TRI[ChainId.AURORA],
           JSBI.divide(JSBI.multiply(rewardsPerSecond, JSBI.BigInt(activeFarms[index].allocPoint)), totalAllocPoints)
@@ -120,8 +117,6 @@ export function useFarms(): StakingTri[] {
             : JSBI.BigInt(0)
         )
 
-        const apr = Math.round(Number(String(stakingInfoData[index].apr)))
-
         memo.push({
           ID: activeFarms[index].ID,
           stakingRewardAddress: MASTERCHEF_ADDRESS[chainId],
@@ -130,11 +125,11 @@ export function useFarms(): StakingTri[] {
           earnedAmount: tokenAmount,
           stakedAmount: stakedAmount,
           totalStakedAmount: totalStakedAmount,
-          totalStakedInUSD: totalStakedInUSD,
+          totalStakedInUSD: Math.round(stakingInfoData[index].totalStakedInUSD),
           allocPoint: activeFarms[index].allocPoint,
-          totalRewardRate: totalRewardRate,
+          totalRewardRate: Math.round(stakingInfoData[index].totalRewardRate),
           rewardRate: rewardRate,
-          apr: apr
+          apr: Math.round((stakingInfoData[index].apr))
         })
         return memo
       }
