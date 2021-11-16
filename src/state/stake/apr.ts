@@ -52,7 +52,7 @@ export function useFarms(): StakingTri[] {
   // get all the info from the staking rewards contracts
   const accountArg = useMemo(() => [chefContract?.address ?? undefined], [chefContract])
   const tokens = useMemo(() => activeFarms.map(({ tokens }) => tokens), [activeFarms])
-  const stakingTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg) //totalStaked TO REPLACE
+  // const stakingTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg) //totalStaked TO REPLACE
   const pairs = usePairs(tokens)
 
   const pairAddresses = useMemo(() => {
@@ -67,23 +67,18 @@ export function useFarms(): StakingTri[] {
     return lpAddresses.reduce<StakingTri[]>((memo, lpAddress, index) => {
       // User based info
       const userStaked = userInfo[index]
-      // const rewardsPending = pendingTri[index]
 
-      // these get fetched regardless of account
-      const stakingTotalSupplyState = stakingTotalSupplies[index]
       const [pairState, pair] = pairs[index]
 
       if (
         // always need these
         userStaked?.loading === false &&
-        stakingTotalSupplyState?.loading === false &&
         pair &&
         pairState !== PairState.LOADING &&
         stakingInfoData
       ) {
         if (
           userStaked.error ||
-          stakingTotalSupplyState.error ||
           pairState === PairState.INVALID ||
           pairState === PairState.NOT_EXISTS ||
           !stakingInfoData
@@ -98,29 +93,8 @@ export function useFarms(): StakingTri[] {
 
         // check for account, if no account set to 0
         const userInfoPool = JSBI.BigInt(userStaked.result?.['amount'])
-        const totalSupplyStaked = JSBI.BigInt(stakingTotalSupplyState.result?.[0])
 
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
-
-        const totalStakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(totalSupplyStaked))
-
-        const reserveInUSDC = tokenAmount
-
-        const totalStakedInUSD = Math.round(stakingInfoData[index].totalStakedInUSD)
-        // const totalStakedInUSD = 100
-        // apr calculation
-        const totalRewardRate = new TokenAmount(
-          TRI[ChainId.AURORA],
-          JSBI.divide(JSBI.multiply(rewardsPerSecond, JSBI.BigInt(activeFarms[index].allocPoint)), totalAllocPoints)
-        ) // TO REPLACE
-        const rewardRate = new TokenAmount(
-          TRI[ChainId.AURORA],
-          JSBI.greaterThan(totalStakedAmount.raw, JSBI.BigInt(0))
-            ? JSBI.divide(JSBI.multiply(totalRewardRate.raw, stakedAmount.raw), totalStakedAmount.raw)
-            : JSBI.BigInt(0)
-        )
-
-        const apr = Math.round(Number(String(stakingInfoData[index].apr)))
 
         memo.push({
           ID: activeFarms[index].ID,
@@ -129,16 +103,16 @@ export function useFarms(): StakingTri[] {
           isPeriodFinished: false,
           earnedAmount: tokenAmount,
           stakedAmount: stakedAmount,
-          totalStakedAmount: totalStakedAmount,
-          totalStakedInUSD: totalStakedInUSD,
+          totalStakedAmount: tokenAmount,
+          totalStakedInUSD: Math.round(stakingInfoData[index].totalStakedInUSD),
           allocPoint: activeFarms[index].allocPoint,
-          totalRewardRate: totalRewardRate,
-          rewardRate: rewardRate,
-          apr: apr
+          totalRewardRate: Math.round(stakingInfoData[index].totalRewardRate),
+          rewardRate: tokenAmount,
+          apr: Math.round((stakingInfoData[index].apr))
         })
         return memo
       }
       return activeFarms
     }, [])
-  }, [activeFarms, stakingTotalSupplies, pairs, userInfo])
+  }, [activeFarms, pairs, userInfo])
 }
