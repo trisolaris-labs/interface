@@ -155,20 +155,20 @@ const AURORA_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0
   },
-  // {
-  //   ID: 5,
-  //   tokens: [TRI[ChainId.AURORA], WNEAR[ChainId.AURORA]],
-  //   stakingRewardAddress: '0x84b123875F0F36B966d0B6Ca14b31121bd9676AD',
-  //   isPeriodFinished: false,
-  //   stakedAmount: dummyAmount,
-  //   earnedAmount: dummyAmount,
-  //   totalStakedAmount: dummyAmount,
-  //   totalStakedInUSD: 0,
-  //   allocPoint: 1,
-  //   totalRewardRate: 1,
-  //   rewardRate: dummyAmount,
-  //   apr: 0
-  // }
+  {
+    ID: 5,
+    tokens: [TRI[ChainId.AURORA], WNEAR[ChainId.AURORA]],
+    stakingRewardAddress: '0x84b123875F0F36B966d0B6Ca14b31121bd9676AD',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: 1,
+    rewardRate: dummyAmount,
+    apr: 0
+  }
 ]
 
 const NULL_POOLS: StakingTri[] = [
