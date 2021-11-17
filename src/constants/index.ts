@@ -88,12 +88,16 @@ export const DAI: { [chainId in ChainId]: Token } = {
 
 export const TRI: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'TRI', 'Trisolaris Token'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE,ZERO_ADDRESS, 18, 'TRI', 'Trisolaris Token'),
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON,ZERO_ADDRESS, 18, 'TRI', 'Trisolaris Token'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xFa94348467f64D5A457F75F8bc40495D33c65aBB', 18, 'TRI', 'Trisolaris Token')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'TRI', 'Trisolaris Token'),
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'TRI', 'Trisolaris Token'),
+  [ChainId.AURORA]: new Token(
+    ChainId.AURORA,
+    '0xFa94348467f64D5A457F75F8bc40495D33c65aBB',
+    18,
+    'TRI',
+    'Trisolaris Token'
+  )
 }
-
-
 
 export const USDC: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 6, 'USDC', 'USDC Stablecoin'),
@@ -111,7 +115,13 @@ export const USDC: { [chainId in ChainId]: Token } = {
     'USDC',
     'USDC Stablecoin'
   ),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xB12BFcA5A55806AaF64E99521918A4bf0fC40802', 6, 'USDC', 'USDC Stablecoin')
+  [ChainId.AURORA]: new Token(
+    ChainId.AURORA,
+    '0xB12BFcA5A55806AaF64E99521918A4bf0fC40802',
+    6,
+    'USDC',
+    'USDC Stablecoin'
+  )
 }
 
 export const AAVE: { [chainId in ChainId]: Token } = {
@@ -123,23 +133,16 @@ export const AAVE: { [chainId in ChainId]: Token } = {
     'AAVE',
     'AAVE Token'
   ),
-  [ChainId.POLYGON]: new Token(
-    ChainId.POLYGON,
-    '0xd6df932a45c0f255f85145f286ea0b292b21c90b',
-    18,
-    'AAVE',
-    'AAVE Token'
-  ),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, ZERO_ADDRESS,  18, 'AAVE', 'AAVE TOken')
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0xd6df932a45c0f255f85145f286ea0b292b21c90b', 18, 'AAVE', 'AAVE Token'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'AAVE', 'AAVE TOken')
 }
 
 export const WNEAR: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'WNEAR', 'WNEAR Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'WNEAR', 'WNEAR Token'),
   [ChainId.POLYGON]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'WNEAR', 'WNEAR Token'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, "0xc42c30ac6cc15fac9bd938618bcaa1a1fae8501d",  24, 'WNEAR', 'WNEAR Token')
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xc42c30ac6cc15fac9bd938618bcaa1a1fae8501d', 24, 'WNEAR', 'WNEAR Token')
 }
-
 
 export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: ZERO_ADDRESS,
@@ -152,7 +155,7 @@ const COMMON_BASES: ChainTokenList = {
   [ChainId.FUJI]: [DAI[ChainId.FUJI], USDT[ChainId.FUJI]],
   [ChainId.AVALANCHE]: [DAI[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
   [ChainId.POLYGON]: [DAI[ChainId.POLYGON], USDT[ChainId.POLYGON]],
-  [ChainId.AURORA]: [DAI[ChainId.AURORA], USDT[ChainId.AURORA]]
+  [ChainId.AURORA]: [WNEAR[ChainId.AURORA], USDT[ChainId.AURORA]]
 }
 
 // used to construct intermediary pairs for trading
