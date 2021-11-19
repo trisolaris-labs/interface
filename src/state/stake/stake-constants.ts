@@ -1,5 +1,5 @@
 import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
-import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR, USDT, WBTC ,TRI } from '../../constants'
+import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR, USDT, WBTC, TRI, AURORA } from '../../constants'
 
 export interface StakingTri {
   ID: number
@@ -30,7 +30,6 @@ export interface ExternalInfo {
   apr: number
 }
 
-
 async function fetchAprData() {
   let response = await fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/data.json')
 
@@ -49,8 +48,8 @@ const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
 
 const dummyAmount = new TokenAmount(dummyToken, '0')
 
-export const rewardsPerSecond = JSBI.BigInt("10000000000000000000")
-export const totalAllocPoints = JSBI.BigInt("5")
+export const rewardsPerSecond = JSBI.BigInt('10000000000000000000')
+export const totalAllocPoints = JSBI.BigInt('5')
 export const tokenAmount = new TokenAmount(dummyToken, '99')
 
 const POLYGON_POOLS: StakingTri[] = [
@@ -81,7 +80,7 @@ const POLYGON_POOLS: StakingTri[] = [
     totalRewardRate: 1,
     rewardRate: dummyAmount,
     apr: 0
-  },
+  }
 ]
 
 const AURORA_POOLS: StakingTri[] = [
@@ -159,6 +158,20 @@ const AURORA_POOLS: StakingTri[] = [
     ID: 5,
     tokens: [TRI[ChainId.AURORA], WNEAR[ChainId.AURORA]],
     stakingRewardAddress: '0x84b123875F0F36B966d0B6Ca14b31121bd9676AD',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: 1,
+    rewardRate: dummyAmount,
+    apr: 0
+  },
+  {
+    ID: 6,
+    tokens: [AURORA[ChainId.AURORA], WETH[ChainId.AURORA]],
+    stakingRewardAddress: '0x5eeC60F348cB1D661E4A5122CF4638c7DB7A886e',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
