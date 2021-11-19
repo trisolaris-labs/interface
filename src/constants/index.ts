@@ -99,6 +99,13 @@ export const TRI: { [chainId in ChainId]: Token } = {
   )
 }
 
+export const AURORA: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'AURORA', 'Aurora'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'AURORA', 'Aurora'),
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'AURORA', 'Aurora'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79', 18, 'AURORA', 'Aurora')
+}
+
 export const USDC: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 6, 'USDC', 'USDC Stablecoin'),
   [ChainId.AVALANCHE]: new Token(
