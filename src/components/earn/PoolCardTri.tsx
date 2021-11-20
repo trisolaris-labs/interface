@@ -131,11 +131,7 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
       <AprContainer>
         <RowBetween>
           <TYPE.white>Total APR</TYPE.white>
-          {stakingInfo.ID == 6 ? (
-            <TYPE.white>{'Starting 11/20'}</TYPE.white>
-          ) : (
-            <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
-          )}
+          <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
         </RowBetween>
       </AprContainer>
       <StatContainer>
