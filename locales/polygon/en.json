@@ -318,7 +318,7 @@
     "pngPerWeek": " TRI / week",
     "automagically": "When you withdraw, the contract will automagically claim PNG on your behalf!",
     "deposit": "Deposit",
-    "depositPglTokens": "Deposit TLP Tokens",
+    "depositPglTokens": "Deposit",
     "pglTokenAvailable": "TLP tokens available"
   },
   "pool": {
