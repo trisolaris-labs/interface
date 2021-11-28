@@ -98,7 +98,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "clean": "rm -rf node_modules && yarn install",
     "predeploy": "yarn clean && yarn build",
     "deploy": "gh-pages -d build",
