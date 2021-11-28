@@ -105,7 +105,7 @@ export default function Manage({
   const stakingInfo = farmArr[0]
   let backgroundColor: string
   let token: Token | undefined
-  const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
+  // const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
 
   const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   const totalRewardRate = stakingInfo.totalRewardRate.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
