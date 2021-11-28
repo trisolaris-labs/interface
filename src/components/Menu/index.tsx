@@ -47,23 +47,18 @@ export default function Menu() {
             <Book size={14} />
             {t('Docs')}
           </MenuItem>
-          {/* 
-          <MenuItem id="link" href="https://t.me/pangolindex">
+          <MenuItem id="link" href="https://t.me/TrisolarisLabs">
             <Send size={14} />
             {t('menu.telegram')}
           </MenuItem>
-          <MenuItem id="link" href="https://discord.com/invite/PARrDYYbfw">
+          <MenuItem id="link" href="http://discord.gg/my6GtSTmmX">
             <MessageCircle size={14} />
             {t('menu.discord')}
           </MenuItem>
-          <MenuItem id="link" href="https://twitter.com/pangolindex">
+          <MenuItem id="link" href="https://twitter.com/trisolarislabs">
             <Twitter size={14} />
             {t('menu.twitter')}
           </MenuItem>
-          <MenuItem id="link" href="https://github.com/pangolindex">
-            <GitHub size={14} />
-            {t('menu.code')}
-          </MenuItem> */}
         </NarrowMenuFlyout>
       )}
     </StyledMenu>
