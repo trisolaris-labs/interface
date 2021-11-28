@@ -118,42 +118,41 @@ export default function Earn({
 
         <PoolSection>
             <>        
-                     <PoolCard
-                        key={farmArrs[5].stakingRewardAddress}
-                        stakingInfo={farmArrs[5]}
-                        version={farmArrs[5].ID}
-                      />
-                      <PoolCard
-                        key={farmArrs[6].stakingRewardAddress}
-                        stakingInfo={farmArrs[6]}
-                        version={farmArrs[6].ID}
-                      />
-                      <PoolCard
-                        key={farmArrs[0].stakingRewardAddress}
-                        stakingInfo={farmArrs[0]}
-                        version={farmArrs[0].ID}
-                      />
-                      <PoolCard
-                        key={farmArrs[1].stakingRewardAddress}
-                        stakingInfo={farmArrs[1]}
-                        version={farmArrs[1].ID}
-                      />
-                      <PoolCard
-                        key={farmArrs[2].stakingRewardAddress}
-                        stakingInfo={farmArrs[2]}
-                        version={farmArrs[2].ID}
-                      />
-                      <PoolCard
-                        key={farmArrs[3].stakingRewardAddress}
-                        stakingInfo={farmArrs[3]}
-                        version={farmArrs[3].ID}
-                      />
-                      <PoolCard
-                        key={farmArrs[4].stakingRewardAddress}
-                        stakingInfo={farmArrs[4]}
-                        version={farmArrs[4].ID}
-                      />
-
+              <PoolCard
+                 key={0}
+                 stakingInfo={farmArrs[5]}
+                 version={farmArrs[5].ID}
+               />
+               <PoolCard
+                 key={1}
+                 stakingInfo={farmArrs[6]}
+                 version={farmArrs[6].ID}
+               />
+               <PoolCard
+                 key={2}
+                 stakingInfo={farmArrs[0]}
+                 version={farmArrs[0].ID}
+               />
+               <PoolCard
+                 key={3}
+                 stakingInfo={farmArrs[1]}
+                 version={farmArrs[1].ID}
+               />
+               <PoolCard
+                 key={4}
+                 stakingInfo={farmArrs[2]}
+                 version={farmArrs[2].ID}
+               />
+               <PoolCard
+                 key={5}
+                 stakingInfo={farmArrs[3]}
+                 version={farmArrs[3].ID}
+               />
+               <PoolCard
+                 key={6}
+                 stakingInfo={farmArrs[4]}
+                 version={farmArrs[4].ID}
+               />
             </>
         </PoolSection>
       </AutoColumn>

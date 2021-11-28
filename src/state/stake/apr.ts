@@ -72,13 +72,13 @@ export function useFarms(): StakingTri[] {
 
       if (
         // always need these
-        userStaked?.loading === false &&
+        !userStaked?.loading &&
         pair &&
         pairState !== PairState.LOADING &&
         stakingInfoData
       ) {
         if (
-          userStaked.error ||
+          userStaked?.error ||
           pairState === PairState.INVALID ||
           pairState === PairState.NOT_EXISTS ||
           !stakingInfoData
@@ -92,7 +92,7 @@ export function useFarms(): StakingTri[] {
         // do whatever
 
         // check for account, if no account set to 0
-        const userInfoPool = JSBI.BigInt(userStaked.result?.['amount'])
+        const userInfoPool = JSBI.BigInt(userStaked?.result?.['amount'] ?? 0)
 
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
 
