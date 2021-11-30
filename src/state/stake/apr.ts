@@ -25,7 +25,7 @@ export function useFarms(): StakingTri[] {
   const { chainId, account } = useActiveWeb3React()
 
   const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
-  let lpAddresses = activeFarms.map(key => key.stakingRewardAddress)
+  let lpAddresses = activeFarms.map(key => key.lpAddress)
   const chefContract = useMasterChefContract()
 
   const [stakingInfoData, setStakingInfoData] = useState<ExternalInfo[]>()
@@ -100,7 +100,8 @@ export function useFarms(): StakingTri[] {
         memo.push({
           ID: activeFarms[index].ID,
           poolId: activeFarms[index].poolId,
-          stakingRewardAddress: MASTERCHEF_ADDRESS_V1[chainId],
+          stakingRewardAddress: activeFarms[index].stakingRewardAddress,
+          lpAddress: activeFarms[index].lpAddress,
           tokens: tokens,
           isPeriodFinished: false,
           earnedAmount: tokenAmount,
@@ -111,6 +112,7 @@ export function useFarms(): StakingTri[] {
           totalRewardRate: Math.round(stakingInfoData[index].totalRewardRate),
           rewardRate: tokenAmount,
           apr: Math.round((stakingInfoData[index].apr)),
+          apr2: 0,
           chefVersion:chefVersion
         })
         return memo
