@@ -59,7 +59,7 @@ export default function StakeTri() {
   const chainId = _chainId ? _chainId! : ChainId.AURORA
 
   const [stakeState, setStakeState] = useState<StakeState>(StakeState.stakeTRI);
-  const [input, setInput] = useState<string>('')
+  const [input, _setInput] = useState<string>('')
   const [usingBalance, setUsingBalance] = useState(false);
   const [pendingTx, setPendingTx] = useState(false);
   const { enter, leave } = useTriBar();
@@ -82,12 +82,12 @@ export default function StakeTri() {
     setInput('');
   }, [isStaking, setInput]);
 
-  function handleInput(v: string) {
+  function setInput(v: string) {
     // Allows user to paste in long balances
     const value = v.slice(0, INPUT_CHAR_LIMIT);
-    
+
     setUsingBalance(false);
-    setInput(value);
+    _setInput(value);
   }
 
   function handleClickMax() {
@@ -133,10 +133,12 @@ export default function StakeTri() {
         </ButtonError>
       );
     }
-    
+
     // If unapproved, render button approval flow
+    // Approval is only needed for staking
     const shouldSeekApproval = (
-      approvalState !== ApprovalState.APPROVED && 
+      isStaking &&
+      approvalState !== ApprovalState.APPROVED &&
       parsedAmount?.greaterThan(JSBI.BigInt(0))
     );
     if (shouldSeekApproval) {
@@ -161,11 +163,29 @@ export default function StakeTri() {
     return (
       <ButtonPrimary
         disabled={pendingTx}
-        onClick={() => isStaking ? enter(parsedAmount) : leave(parsedAmount)}
+        onClick={handleStake}
       >
         {isStaking ? 'Stake' : 'Unstake'}
       </ButtonPrimary>
     );
+  }
+
+  async function handleStake() {
+    try {
+      setPendingTx(true);
+
+      if (isStaking) {
+        await enter(parsedAmount);
+      } else {
+        await leave(parsedAmount);
+      }
+
+      setInput('');
+    } catch (e) {
+      console.error(`Error ${isStaking ? 'Staking' : 'Unstaking'}: `, e);
+    } finally {
+      setPendingTx(false);
+    }
   }
 
   return (
@@ -246,7 +266,7 @@ export default function StakeTri() {
             </RowBetween>
             <StakeInputPanel
               value={input!}
-              onUserInput={handleInput}
+              onUserInput={setInput}
               currency={isStaking ? TRI[chainId] : XTRI[chainId]}
               id="stake-currency-input"
               onMax={handleClickMax}
