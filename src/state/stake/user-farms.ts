@@ -111,7 +111,7 @@ export function useSingleFarm(version: string): StakingTri[] {
         memo.push({
           ID: activeFarms[Number(version)].ID,
           poolId: activeFarms[Number(version)].poolId,
-          stakingRewardAddress: MASTERCHEF_ADDRESS_V1[chainId],
+          stakingRewardAddress: activeFarms[Number(version)].stakingRewardAddress,
           lpAddress: activeFarms[Number(version)].lpAddress,
           tokens: tokens,
           isPeriodFinished: false,

@@ -100,7 +100,7 @@ export function useFarms(): StakingTri[] {
         memo.push({
           ID: activeFarms[index].ID,
           poolId: activeFarms[index].poolId,
-          stakingRewardAddress: MASTERCHEF_ADDRESS_V1[chainId],
+          stakingRewardAddress: activeFarms[index].stakingRewardAddress,
           lpAddress: activeFarms[index].lpAddress,
           tokens: tokens,
           isPeriodFinished: false,
