@@ -12,6 +12,7 @@ export interface StakingTri {
   poolId: number
   tokens: [Token, Token]
   stakingRewardAddress: string
+  lpAddress: string
   isPeriodFinished: boolean
   stakedAmount: TokenAmount
   earnedAmount: TokenAmount
@@ -52,6 +53,7 @@ const POLYGON_POOLS: StakingTri[] = [
     poolId: 0,
     tokens: [DAI[ChainId.POLYGON], USDC[ChainId.POLYGON]],
     stakingRewardAddress: '0xd6f922f6eB4dfa47f53C038c7dE9bE614a49257f',
+    lpAddress: '0xd6f922f6eB4dfa47f53C038c7dE9bE614a49257f',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
@@ -68,6 +70,7 @@ const POLYGON_POOLS: StakingTri[] = [
     poolId: 1,
     tokens: [AAVE[ChainId.POLYGON], DAI[ChainId.POLYGON]],
     stakingRewardAddress: '0x76F4128B11f429289499BA29518Ef7E5b26025B6',
+    lpAddress: '0x76F4128B11f429289499BA29518Ef7E5b26025B6',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
@@ -87,6 +90,7 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 0,
     tokens: [WETH[ChainId.AURORA], WNEAR[ChainId.AURORA]],
     stakingRewardAddress: '0x63da4DB6Ef4e7C62168aB03982399F9588fCd198',
+    lpAddress: '0x63da4DB6Ef4e7C62168aB03982399F9588fCd198',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
@@ -103,6 +107,7 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 1,
     tokens: [WNEAR[ChainId.AURORA], USDC[ChainId.AURORA]],
     stakingRewardAddress: '0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0',
+    lpAddress: '0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
@@ -119,6 +124,7 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 2,
     tokens: [WNEAR[ChainId.AURORA], USDT[ChainId.AURORA]],
     stakingRewardAddress: '0x03B666f3488a7992b2385B12dF7f35156d7b29cD',
+    lpAddress: '0x03B666f3488a7992b2385B12dF7f35156d7b29cD',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
@@ -135,6 +141,7 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 3,
     tokens: [USDT[ChainId.AURORA], USDC[ChainId.AURORA]],
     stakingRewardAddress: '0x2fe064B6c7D274082aa5d2624709bC9AE7D16C77',
+    lpAddress: '0x2fe064B6c7D274082aa5d2624709bC9AE7D16C77',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
@@ -151,6 +158,7 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 4,
     tokens: [WNEAR[ChainId.AURORA], WBTC[ChainId.AURORA]],
     stakingRewardAddress: '0xbc8A244e8fb683ec1Fd6f88F3cc6E565082174Eb',
+    lpAddress: '0xbc8A244e8fb683ec1Fd6f88F3cc6E565082174Eb',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
@@ -167,6 +175,7 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 5,
     tokens: [TRI[ChainId.AURORA], WNEAR[ChainId.AURORA]],
     stakingRewardAddress: '0x84b123875F0F36B966d0B6Ca14b31121bd9676AD',
+    lpAddress: '0x84b123875F0F36B966d0B6Ca14b31121bd9676AD',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
@@ -183,6 +192,7 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 6,
     tokens: [AURORA[ChainId.AURORA], WETH[ChainId.AURORA]],
     stakingRewardAddress: '0x5eeC60F348cB1D661E4A5122CF4638c7DB7A886e',
+    lpAddress: '0x5eeC60F348cB1D661E4A5122CF4638c7DB7A886e',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
@@ -205,6 +215,7 @@ const NULL_POOLS: StakingTri[] = [
       new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
     ],
     stakingRewardAddress: ZERO_ADDRESS,
+    lpAddress: ZERO_ADDRESS,
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
