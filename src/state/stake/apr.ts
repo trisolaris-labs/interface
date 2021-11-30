@@ -1,13 +1,12 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
 import { USDC, DAI, WNEAR, TRI} from '../../constants'
-import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
+import { useMasterChefContract, MASTERCHEF_ADDRESS_V1,MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 import {
   STAKING,
   StakingTri,
   rewardsPerSecond,
   totalAllocPoints,
   tokenAmount,
-  aprData,
   ExternalInfo
 } from './stake-constants'
 import {
@@ -89,6 +88,8 @@ export function useFarms(): StakingTri[] {
 
         // get the LP token
         const tokens = activeFarms[index].tokens
+
+        const chefVersion = activeFarms[index].chefVersion
         // do whatever
 
         // check for account, if no account set to 0
@@ -98,7 +99,8 @@ export function useFarms(): StakingTri[] {
 
         memo.push({
           ID: activeFarms[index].ID,
-          stakingRewardAddress: MASTERCHEF_ADDRESS[chainId],
+          poolId: activeFarms[index].poolId,
+          stakingRewardAddress: MASTERCHEF_ADDRESS_V1[chainId],
           tokens: tokens,
           isPeriodFinished: false,
           earnedAmount: tokenAmount,
@@ -108,7 +110,8 @@ export function useFarms(): StakingTri[] {
           allocPoint: activeFarms[index].allocPoint,
           totalRewardRate: Math.round(stakingInfoData[index].totalRewardRate),
           rewardRate: tokenAmount,
-          apr: Math.round((stakingInfoData[index].apr))
+          apr: Math.round((stakingInfoData[index].apr)),
+          chefVersion:chefVersion
         })
         return memo
       }
