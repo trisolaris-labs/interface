@@ -13,7 +13,6 @@ import { JSBI } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { SearchInput } from '../../components/SearchModal/styleds'
 import useDebounce from '../../hooks/useDebounce'
-import { usePositions } from '../../state/stake/hooks-sushi'
 import { useFarms } from '../../state/stake/apr'
 import useExternalDataService from "../../state/stake/useExternalData"
 import { STAKING_TOKEN_LIST } from "../../state/stake/external-stake-constants"
