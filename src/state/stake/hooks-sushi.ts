@@ -11,6 +11,7 @@ import { getAddress } from '@ethersproject/address'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { AddressZero } from '@ethersproject/constants'
 import MASTERCHEF_ABI from '../../constants/abis/masterchef.json'
+import MASTERCHEF_V2_ABI from '../../constants/abis/masterchefv2.json'
 
 
 export type AddressMap = { [chainId: number]: string }
@@ -76,6 +77,12 @@ export function useMasterChefContract(withSignerIfPossible?: boolean): Contract 
   const { chainId } = useActiveWeb3React()
   return useContract(chainId && MASTERCHEF_ADDRESS_V1[chainId], MASTERCHEF_ABI, withSignerIfPossible)
 }
+
+export function useMasterChefV2Contract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(chainId && MASTERCHEF_ADDRESS_V2[chainId], MASTERCHEF_V2_ABI, withSignerIfPossible)
+}
+
 
 export function useChefContract(chef: Chef) {
   const masterChefContract = useMasterChefContract()
