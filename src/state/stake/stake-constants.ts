@@ -1,6 +1,12 @@
 import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
 import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR, USDT, WBTC, TRI, AURORA } from '../../constants'
 
+export enum ChefVersions{
+    V1,
+    V2
+}
+
+
 export interface StakingTri {
   ID: number
   tokens: [Token, Token]
@@ -17,6 +23,7 @@ export interface StakingTri {
   // equivalent to percent of total supply * reward rate
   rewardRate: TokenAmount
   apr: number
+  chefVersion: ChefVersions
 }
 
 export interface ExternalInfo {
@@ -65,7 +72,8 @@ const POLYGON_POOLS: StakingTri[] = [
     allocPoint: 1,
     totalRewardRate: 1,
     rewardRate: dummyAmount,
-    apr: 0
+    apr: 0,
+    chefVersion: ChefVersions.V1
   },
   {
     ID: 1,
@@ -79,7 +87,8 @@ const POLYGON_POOLS: StakingTri[] = [
     allocPoint: 1,
     totalRewardRate: 1,
     rewardRate: dummyAmount,
-    apr: 0
+    apr: 0,
+    chefVersion: ChefVersions.V2
   }
 ]
 
@@ -96,7 +105,8 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     totalRewardRate: 1,
     rewardRate: dummyAmount,
-    apr: 0
+    apr: 0,
+    chefVersion: ChefVersions.V1
   },
   {
     ID: 1,
@@ -110,7 +120,8 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     totalRewardRate: 1,
     rewardRate: dummyAmount,
-    apr: 0
+    apr: 0,
+    chefVersion: ChefVersions.V1
   },
   {
     ID: 2,
@@ -124,7 +135,8 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     totalRewardRate: 1,
     rewardRate: dummyAmount,
-    apr: 0
+    apr: 0,
+    chefVersion: ChefVersions.V1
   },
   {
     ID: 3,
@@ -138,7 +150,8 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     totalRewardRate: 1,
     rewardRate: dummyAmount,
-    apr: 0
+    apr: 0,
+    chefVersion: ChefVersions.V1
   },
   {
     ID: 4,
@@ -152,7 +165,8 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     totalRewardRate: 1,
     rewardRate: dummyAmount,
-    apr: 0
+    apr: 0,
+    chefVersion: ChefVersions.V1
   },
   {
     ID: 5,
@@ -166,7 +180,8 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     totalRewardRate: 1,
     rewardRate: dummyAmount,
-    apr: 0
+    apr: 0,
+    chefVersion: ChefVersions.V1
   },
   {
     ID: 6,
@@ -180,7 +195,8 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     totalRewardRate: 1,
     rewardRate: dummyAmount,
-    apr: 0
+    apr: 0,
+    chefVersion: ChefVersions.V1
   }
 ]
 
@@ -200,7 +216,8 @@ const NULL_POOLS: StakingTri[] = [
     allocPoint: 0,
     totalRewardRate: 1,
     rewardRate: dummyAmount,
-    apr: 0
+    apr: 0,
+    chefVersion: ChefVersions.V1
   }
 ]
 

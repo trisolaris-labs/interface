@@ -14,10 +14,21 @@ import MASTERCHEF_ABI from '../../constants/abis/masterchef.json'
 
 
 export type AddressMap = { [chainId: number]: string }
-export const MASTERCHEF_ADDRESS: AddressMap = {
+// export const MASTERCHEF_ADDRESS: AddressMap = {
+//   [ChainId.POLYGON]: '0x43A1dD21a5237C6F5eEC94747C28aa3f5C8fa1c7',
+//   [ChainId.AURORA]: '0x1f1Ed214bef5E83D8f5d0eB5D7011EB965D0D79B',
+// }
+
+export const MASTERCHEF_ADDRESS_V1: AddressMap = {
   [ChainId.POLYGON]: '0x43A1dD21a5237C6F5eEC94747C28aa3f5C8fa1c7',
-  [ChainId.AURORA]: '0x1f1Ed214bef5E83D8f5d0eB5D7011EB965D0D79B',
+  [ChainId.AURORA]: '0xa229265a8C7655ae59C9081B5D5e85C453e28C78',
 }
+
+export const MASTERCHEF_ADDRESS_V2: AddressMap = {
+  [ChainId.POLYGON]: '0x43A1dD21a5237C6F5eEC94747C28aa3f5C8fa1c7',
+  [ChainId.AURORA]: '0xBa3B61394873D0ED1d0d61793ef428c113069d96',
+}
+
 export enum Chef {
   MASTERCHEF
 }
@@ -63,7 +74,7 @@ export function useContract(address: string | undefined, ABI: any, withSignerIfP
 
 export function useMasterChefContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId && MASTERCHEF_ADDRESS[chainId], MASTERCHEF_ABI, withSignerIfPossible)
+  return useContract(chainId && MASTERCHEF_ADDRESS_V1[chainId], MASTERCHEF_ABI, withSignerIfPossible)
 }
 
 export function useChefContract(chef: Chef) {
@@ -183,7 +194,7 @@ export function useChefPositions(contract?: Contract | null, rewarder?: Contract
   // )
 
   const getChef = useCallback(() => {
-    if (MASTERCHEF_ADDRESS[chainId!] === contract!.address) {
+    if (MASTERCHEF_ADDRESS_V1[chainId!] === contract!.address) {
       return Chef.MASTERCHEF
     }
   }, [chainId, contract])

@@ -1,6 +1,6 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
 import { USDC, DAI, WNEAR, TRI} from '../../constants'
-import { useMasterChefContract, MASTERCHEF_ADDRESS } from './hooks-sushi'
+import { useMasterChefContract, MASTERCHEF_ADDRESS_V1 } from './hooks-sushi'
 import { STAKING, StakingTri, rewardsPerSecond, totalAllocPoints, tokenAmount, aprData, ExternalInfo } from './stake-constants'
 import {
   useSingleContractMultipleData,
@@ -105,11 +105,12 @@ export function useSingleFarm(version: string): StakingTri[] {
 
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
         const earnedAmount = new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(earnedRewardPool))
+        const chefVersion = activeFarms[Number(version)].chefVersion
 
 
         memo.push({
           ID: activeFarms[Number(version)].ID,
-          stakingRewardAddress: MASTERCHEF_ADDRESS[chainId],
+          stakingRewardAddress: MASTERCHEF_ADDRESS_V1[chainId],
           tokens: tokens,
           isPeriodFinished: false,
           earnedAmount: earnedAmount,
@@ -119,7 +120,8 @@ export function useSingleFarm(version: string): StakingTri[] {
           allocPoint: activeFarms[index].allocPoint,
           totalRewardRate: Math.round(stakingInfoData[Number(version)].totalRewardRate),
           rewardRate: tokenAmount,
-          apr: Math.round(stakingInfoData[Number(version)].apr)
+          apr: Math.round(stakingInfoData[Number(version)].apr),
+          chefVersion: chefVersion
         })
         return memo
       }
