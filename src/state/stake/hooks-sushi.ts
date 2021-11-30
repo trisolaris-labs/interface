@@ -22,7 +22,7 @@ export type AddressMap = { [chainId: number]: string }
 
 export const MASTERCHEF_ADDRESS_V1: AddressMap = {
   [ChainId.POLYGON]: '0x43A1dD21a5237C6F5eEC94747C28aa3f5C8fa1c7',
-  [ChainId.AURORA]: '0xa229265a8C7655ae59C9081B5D5e85C453e28C78',
+  [ChainId.AURORA]: '0x1f1Ed214bef5E83D8f5d0eB5D7011EB965D0D79B',
 }
 
 export const MASTERCHEF_ADDRESS_V2: AddressMap = {
