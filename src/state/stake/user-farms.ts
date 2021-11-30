@@ -123,6 +123,7 @@ export function useSingleFarm(version: string): StakingTri[] {
           totalRewardRate: Math.round(stakingInfoData[Number(version)].totalRewardRate),
           rewardRate: tokenAmount,
           apr: Math.round(stakingInfoData[Number(version)].apr),
+          apr2: 0,
           chefVersion: chefVersion
         })
         return memo
