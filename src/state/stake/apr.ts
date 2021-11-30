@@ -7,7 +7,6 @@ import {
   rewardsPerSecond,
   totalAllocPoints,
   tokenAmount,
-  aprData,
   ExternalInfo
 } from './stake-constants'
 import {
@@ -100,6 +99,7 @@ export function useFarms(): StakingTri[] {
 
         memo.push({
           ID: activeFarms[index].ID,
+          poolId: activeFarms[index].poolId,
           stakingRewardAddress: MASTERCHEF_ADDRESS_V1[chainId],
           tokens: tokens,
           isPeriodFinished: false,

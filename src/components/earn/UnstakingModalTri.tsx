@@ -48,7 +48,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
     if (stakingContract && stakingInfo?.stakedAmount) {
       setAttempting(true)
       await stakingContract
-        .withdraw(stakingInfo.ID, stakingInfo.stakedAmount.raw.toString())
+        .withdraw(stakingInfo.poolId, stakingInfo.stakedAmount.raw.toString())
         .then((response: TransactionResponse) => {
           addTransaction(response, {
             summary: t('earn.withdrawDepositedLiquidity')

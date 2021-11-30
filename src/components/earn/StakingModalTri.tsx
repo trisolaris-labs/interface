@@ -96,7 +96,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
     setAttempting(true)
     if (stakingContract && parsedAmount && deadline) {
         await stakingContract
-          .deposit(stakingInfo.ID, parseUnits(typedValue))
+          .deposit(stakingInfo.poolId, parseUnits(typedValue))
           .then((response: TransactionResponse) => {
             addTransaction(response, {
               summary: t('earn.depositLiquidity')

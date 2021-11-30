@@ -1,7 +1,7 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
 import { USDC, DAI, WNEAR, TRI} from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS_V1 } from './hooks-sushi'
-import { STAKING, StakingTri, rewardsPerSecond, totalAllocPoints, tokenAmount, aprData, ExternalInfo } from './stake-constants'
+import { STAKING, StakingTri, rewardsPerSecond, totalAllocPoints, tokenAmount, ExternalInfo } from './stake-constants'
 import {
   useSingleContractMultipleData,
   useMultipleContractSingleData,
@@ -110,6 +110,7 @@ export function useSingleFarm(version: string): StakingTri[] {
 
         memo.push({
           ID: activeFarms[Number(version)].ID,
+          poolId: activeFarms[Number(version)].poolId,
           stakingRewardAddress: MASTERCHEF_ADDRESS_V1[chainId],
           tokens: tokens,
           isPeriodFinished: false,
