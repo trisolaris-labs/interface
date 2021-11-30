@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { AutoColumn } from '../../components/Column'
-import { RowBetween } from '../../components/Row'
+import { AutoColumn } from '../Column'
+import { RowBetween } from '../Row'
 import { TYPE } from '../../theme'
-import { CardSection } from '../../components/earn/styled'
+import { CardSection } from '../earn/styled'
 
 type Props = {
     children: React.ReactNode,
