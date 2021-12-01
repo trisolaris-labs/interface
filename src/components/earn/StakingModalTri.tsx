@@ -88,7 +88,6 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   async function onStake() {
     setAttempting(true)
     if(stakingInfo.chefVersion == 0) {
-      console.log("in heree")
       if (stakingContract && parsedAmount && deadline) {
         await stakingContract
           .deposit(stakingInfo.poolId, parseUnits(typedValue))
@@ -108,7 +107,6 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
         }
     } else {
       if (stakingContractv2 && parsedAmount && deadline) {
-        console.log("in v22")
         await stakingContractv2
           .deposit(stakingInfo.poolId, parseUnits(typedValue), account)
           .then((response: TransactionResponse) => {
