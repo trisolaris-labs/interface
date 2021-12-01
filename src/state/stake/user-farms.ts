@@ -1,6 +1,6 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
 import { USDC, DAI, WNEAR, TRI} from '../../constants'
-import { useMasterChefContract, MASTERCHEF_ADDRESS_V1 } from './hooks-sushi'
+import { useMasterChefContract, useMasterChefV2Contract, MASTERCHEF_ADDRESS_V1 } from './hooks-sushi'
 import { STAKING, StakingTri, rewardsPerSecond, totalAllocPoints, tokenAmount, ExternalInfo } from './stake-constants'
 import {
   useSingleContractMultipleData,
@@ -20,6 +20,7 @@ export function useSingleFarm(version: string): StakingTri[] {
   const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
   let addresses = activeFarms.map(key => key.lpAddress)
   const chefContract = useMasterChefContract()
+  const chefContractv2 = useMasterChefV2Contract()
 
   const [stakingInfoData, setStakingInfoData] = useState<ExternalInfo[]>()
 
