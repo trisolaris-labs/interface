@@ -1,6 +1,6 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
 import { USDC, DAI, WNEAR, TRI} from '../../constants'
-import { useMasterChefContract, MASTERCHEF_ADDRESS_V1,MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
+import { useMasterChefContract, useMasterChefV2Contract, MASTERCHEF_ADDRESS_V1,MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 import {
   STAKING,
   StakingTri,
@@ -27,6 +27,7 @@ export function useFarms(): StakingTri[] {
   const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
   let lpAddresses = activeFarms.map(key => key.lpAddress)
   const chefContract = useMasterChefContract()
+  const chefContractv2 = useMasterChefV2Contract()
 
   const [stakingInfoData, setStakingInfoData] = useState<ExternalInfo[]>()
 
@@ -49,9 +50,7 @@ export function useFarms(): StakingTri[] {
   const userInfo = useSingleContractMultipleData(args ? chefContract : null, 'userInfo', args!) //user related
 
   // get all the info from the staking rewards contracts
-  const accountArg = useMemo(() => [chefContract?.address ?? undefined], [chefContract])
   const tokens = useMemo(() => activeFarms.map(({ tokens }) => tokens), [activeFarms])
-  // const stakingTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg) //totalStaked TO REPLACE
   const pairs = usePairs(tokens)
 
   const pairAddresses = useMemo(() => {

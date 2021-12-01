@@ -43,17 +43,19 @@ export function useSingleFarm(version: string): StakingTri[] {
     return [String(version), String(account)]
   }, [version, account])
 
+  var contract = chefContract
+  if (activeFarms[Number(version)].chefVersion != 0) {
+    var contract = chefContractv2
+  }
 
-  const pendingTri = useSingleCallResult(args ? chefContract : null, 'pendingTri', args!) //user related
-  const userInfo = useSingleCallResult(args ? chefContract : null, 'userInfo', args!)  //user related
+  const pendingTri = useSingleCallResult(args ? contract : null, 'pendingTri', args!) //user related
+  const userInfo = useSingleCallResult(args ? contract : null, 'userInfo', args!)  //user related
 
   // get all the info from the staking rewards contracts
-  const accountArg = useMemo(() => [chefContract?.address ?? undefined], [chefContract])
   const tokens = useMemo(() => activeFarms.filter(farm => {
         return farm.ID == Number(version)
       }).map(({ tokens }) => tokens), [activeFarms])
 
-  // const stakingTotalSupplies = useMultipleContractSingleData(lpAddresses, ERC20_INTERFACE, 'balanceOf', accountArg) //totalStaked TO REPLACE
   const pairs = usePairs(tokens)
 
 
