@@ -101,16 +101,10 @@ export const TRI: { [chainId in ChainId]: Token } = {
 
 // @TODO Update with xTRI Token Address
 export const XTRI: { [chainId in ChainId]: Token } = {
-  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'xTRI', 'xTrisolaris Token'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'xTRI', 'xTrisolaris Token'),
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'xTRI', 'xTrisolaris Token'),
-  [ChainId.AURORA]: new Token(
-    ChainId.AURORA,
-    '0xFa94348467f64D5A457F75F8bc40495D33c65aBB',
-    18,
-    'xTRI',
-    'xTrisolaris Token'
-  )
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'xTRI', 'TriBar Token'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'xTRI', 'TriBar Token'),
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'xTRI', 'TriBar Token'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'xTRI', 'TriBar'),
 }
 
 export const AURORA: { [chainId in ChainId]: Token } = {

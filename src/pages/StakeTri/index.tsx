@@ -1,5 +1,5 @@
-import { ChainId, JSBI, } from '@trisolaris/sdk'
-import React, { useContext, useState, useEffect } from 'react'
+import { ChainId, CurrencyAmount, JSBI, } from '@trisolaris/sdk'
+import React, { useState, useCallback } from 'react'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { LightCard } from '../../components/Card'
@@ -11,7 +11,6 @@ import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallbac
 import { tryParseAmount } from '../../state/swap/hooks'
 import { TYPE } from '../../theme'
 import { ClickableText } from '../Pool/styleds'
-import { useTranslation } from 'react-i18next'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { DataCard, CardBGImage, CardNoise, CardSection } from '../../components/earn/styled'
 import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
@@ -21,6 +20,7 @@ import StakeTriDataCard from '../../components/StakeTri/StakeTriDataCard'
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Dots } from '../../components/swap/styleds'
+import { maxAmountSpend } from '../../utils/maxAmountSpend'
 
 const DataRow = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -52,7 +52,6 @@ enum StakeState {
 const INPUT_CHAR_LIMIT = 18;
 
 export default function StakeTri() {
-  const { t } = useTranslation()
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
   const { chainId: _chainId, account } = useActiveWeb3React()
@@ -72,15 +71,17 @@ export default function StakeTri() {
   const balance = isStaking ? triBalance : xTriBalance;
   const parsedAmount = usingBalance ? balance : tryParseAmount(input, balance?.currency)
 
-  // @TODO ADD TRIBAR ADDRESS
-  const TRIBAR_ADDRESS = '0x0000000000000000000000000000000000000000';
+  const [approvalState, handleApproval] = useApproveCallback(parsedAmount, XTRI[chainId].address);
 
-  const [approvalState, handleApproval] = useApproveCallback(parsedAmount, TRIBAR_ADDRESS);
-
-  // Reset input when toggling staking/unstaking
-  useEffect(() => {
+  // // Reset input when toggling staking/unstaking
+  function handleStakeTRI() {
+    setStakeState(StakeState.stakeTRI);
     setInput('');
-  }, [isStaking, setInput]);
+  }
+  function handleUnstakeXTRI() {
+    setStakeState(StakeState.unstakeXTRI);
+    setInput('');
+  }
 
   function setInput(v: string) {
     // Allows user to paste in long balances
@@ -90,16 +91,20 @@ export default function StakeTri() {
     _setInput(value);
   }
 
-  function handleClickMax() {
-    setInput(parsedAmount?.toSignificant(Math.min(balance.currency.decimals, INPUT_CHAR_LIMIT)) ?? '')
-    setUsingBalance(true)
-  }
+  const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(balance)
+  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
+
+  const handleClickMax = useCallback(() => {
+    if (maxAmountInput) {
+      setInput(maxAmountInput.toExact());
+      setUsingBalance(true);
+    }
+  }, [maxAmountInput, setInput])
 
   // Flow
   // 1)   Connect Wallet
   // 2)   Check for sufficient funds
-  // 3)   Approve
-  // 3a)  Approval Pending
+  // 3)   Approve | Approve Pending
   // 4)   Stake/Unstake
   function buttonRenderer() {
     // If no wallet, show connect wallet
@@ -136,26 +141,32 @@ export default function StakeTri() {
 
     // If unapproved, render button approval flow
     // Approval is only needed for staking
-    const shouldSeekApproval = (
-      isStaking &&
-      approvalState !== ApprovalState.APPROVED &&
-      parsedAmount?.greaterThan(JSBI.BigInt(0))
-    );
-    if (shouldSeekApproval) {
-      if (ApprovalState.NOT_APPROVED) {
+    if (isStaking) {
+      if (approvalState === ApprovalState.UNKNOWN) {
+        // Disable approve button while approval is being checked
         return (
-          <ButtonPrimary onClick={handleApproval}>
+          <ButtonPrimary disabled={true}>
             Approve
           </ButtonPrimary>
-        );
-      }
+        )
+      } 
+      
+      if (approvalState !== ApprovalState.APPROVED) {
+        if (approvalState === ApprovalState.NOT_APPROVED) {
+          return (
+            <ButtonPrimary onClick={handleApproval}>
+              Approve
+            </ButtonPrimary>
+          );
+        }
 
-      if (ApprovalState.PENDING) {
-        return (
-          <ButtonPrimary disabled={true} onClick={handleApproval}>
-            <Dots>Approving</Dots>
-          </ButtonPrimary>
-        );
+        if (approvalState === ApprovalState.PENDING) {
+          return (
+            <ButtonPrimary disabled={true} onClick={handleApproval}>
+              <Dots>Approving</Dots>
+            </ButtonPrimary>
+          );
+        }
       }
     }
 
@@ -223,17 +234,17 @@ export default function StakeTri() {
 
       <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
         <DataRow style={{ alignItems: 'baseline', gap: '10px' }}>
-          <StakeTriDataCard label="APR">XX%</StakeTriDataCard>
+          <StakeTriDataCard label="APR">Coming Soon</StakeTriDataCard>
           <StakeTriDataCard label="Balance xTRI">
             <Row align="center" justifyContent="start">
               <CurrencyLogo currency={XTRI[chainId]} size={'20px'} style={{ marginRight: '10px' }} />
-              <TYPE.black fontWeight={400}>{xTriBalance?.toSignificant(4) ?? 0}</TYPE.black>
+              <TYPE.black fontWeight={400}>{xTriBalance?.toFixed(4) ?? 0}</TYPE.black>
             </Row>
           </StakeTriDataCard>
           <StakeTriDataCard label="Unstaked TRI">
             <Row align="center" justifyContent="start">
               <CurrencyLogo currency={TRI[chainId]} size={'20px'} style={{ marginRight: '10px' }} />
-              <TYPE.black fontWeight={400}>{triBalance?.toSignificant(4) ?? 0}</TYPE.black>
+              <TYPE.black fontWeight={400}>{triBalance?.toFixed(4) ?? 0}</TYPE.black>
             </Row>
           </StakeTriDataCard>
         </DataRow>
@@ -251,13 +262,13 @@ export default function StakeTri() {
                   <StakeClickableText
                     selected={isStaking}
                     style={{ paddingRight: '10px' }}
-                    onClick={() => setStakeState(StakeState.stakeTRI)}
+                    onClick={handleStakeTRI}
                   >
                     Stake
                   </StakeClickableText>
                   <StakeClickableText
                     selected={!isStaking}
-                    onClick={() => setStakeState(StakeState.unstakeXTRI)}
+                    onClick={handleUnstakeXTRI}
                   >
                     Unstake
                   </StakeClickableText>
@@ -267,6 +278,7 @@ export default function StakeTri() {
             <StakeInputPanel
               value={input!}
               onUserInput={setInput}
+              showMaxButton={!atMaxAmountInput}
               currency={isStaking ? TRI[chainId] : XTRI[chainId]}
               id="stake-currency-input"
               onMax={handleClickMax}

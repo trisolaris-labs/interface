@@ -1,4 +1,4 @@
-import { ChainId, Currency, CurrencyAmount, Token } from '@trisolaris/sdk';
+import { CurrencyAmount } from '@trisolaris/sdk';
 
 import { useCallback } from 'react';
 import { useTransactionAdder } from '../transactions/hooks';
@@ -6,11 +6,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { useContract } from '../stake/hooks-sushi';
 import { Contract } from '@ethersproject/contracts';
 import { abi as TRIBAR_ABI } from '../../constants/abis/TriBar.json'
-
-export const TRIBAR_ADDRESS: { [chainId: number]: string } = {
-    // @TODO Update Deployed Address
-    [ChainId.AURORA]: '0x0000000000000000000000000000000000000000',
-}
+import { XTRI } from '../../constants';
 
 const useTriBar = () => {
     const addTransaction = useTransactionAdder();
@@ -18,8 +14,8 @@ const useTriBar = () => {
 
     const enter = useCallback(
         async (amount: CurrencyAmount | undefined) => {
-            if (amount?.quotient) {
-                const tx = await barContract?.enter(amount?.quotient.toString());
+            if (amount?.raw) {
+                const tx = await barContract?.enter(amount?.raw.toString());
                 return addTransaction(tx, { summary: 'Enter TriBar' });
             }
         },
@@ -28,8 +24,8 @@ const useTriBar = () => {
 
     const leave = useCallback(
         async (amount: CurrencyAmount | undefined) => {
-            if (amount?.quotient) {
-                const tx = await barContract?.leave(amount?.quotient.toString());
+            if (amount?.raw) {
+                const tx = await barContract?.leave(amount?.raw.toString());
                 return addTransaction(tx, { summary: 'Leave TriBar' });
             }
         },
@@ -41,7 +37,7 @@ const useTriBar = () => {
 
 export function useTriBarContract(withSignerIfPossible?: boolean): Contract | null {
     const { chainId } = useActiveWeb3React()
-    return useContract(chainId && TRIBAR_ADDRESS[chainId], TRIBAR_ABI, withSignerIfPossible)
+    return useContract(chainId && XTRI[chainId].address, TRIBAR_ABI, withSignerIfPossible)
 }
 
 export default useTriBar

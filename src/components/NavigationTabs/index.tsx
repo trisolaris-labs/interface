@@ -66,20 +66,6 @@ export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' }) {
   )
 }
 
-export function StakeTriTabs({ active }: { active: 'stake' | 'unstake' }) {
-  const { t } = useTranslation()
-  return (
-    <Tabs style={{ marginBottom: '20px' }}>
-      <StyledNavLink id={`stake-nav-link`} to={'/stake'} isActive={() => active === 'stake'}>
-        {t('navigationTabs.stake')}
-      </StyledNavLink>
-      <StyledNavLink id={`unstake-nav-link`} to={'/unstake'} isActive={() => active === 'unstake'}>
-        {t('navigationTabs.unstake')}
-      </StyledNavLink>
-    </Tabs>
-  )
-}
-
 export function FindPoolTabs() {
   const { t } = useTranslation()
   return (
