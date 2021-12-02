@@ -15,6 +15,7 @@ import {
   RedirectToAddLiquidity
 } from './AddLiquidity/redirects'
 import EarnTri from './EarnTri'
+import StakeTri from './StakeTri'
 import Manage from './EarnTri/Manage'
 import Pool from './Pool'
 import Buy from './Buy'
@@ -83,6 +84,7 @@ export default function App() {
               <Route exact strict path="/pool" component={Pool} />
               <Route exact strict path="/farm/:version" component={EarnTri} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
+              <Route exact strict path="/stake" component={StakeTri} />
               <Route exact path="/add" component={AddLiquidity} />
               <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
               <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
