@@ -1,4 +1,4 @@
-import { ChainId, CurrencyAmount, JSBI, } from '@trisolaris/sdk'
+import { ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
 import React, { useState, useCallback } from 'react'
 import { Text } from 'rebass'
 import styled from 'styled-components'
@@ -149,8 +149,8 @@ export default function StakeTri() {
             Approve
           </ButtonPrimary>
         )
-      } 
-      
+      }
+
       if (approvalState !== ApprovalState.APPROVED) {
         if (approvalState === ApprovalState.NOT_APPROVED) {
           return (
@@ -211,11 +211,14 @@ export default function StakeTri() {
                 <TYPE.white fontWeight={600}>Earn more TRI</TYPE.white>
               </RowBetween>
               <RowBetween>
-                <TYPE.white fontSize={14}>For every swap on the exchange on every chain, XX% of the swap fees are distributed as TRI
-                  proportional to your share of the TriBar. When your TRI is staked into the TriBar, you receive
-                  xTRI in return for voting rights and a fully composable token that can interact with other protocols.
-                  Your xTRI is continuously compounding, when you unstake you will receive all the originally deposited
-                  TRI and any additional from fees.</TYPE.white>
+                <TYPE.white fontSize={14}>
+                  For every swap on the exchange, 0.05% of every trade on the Trisolaris DEX 
+                  will be used to buy back TRI and be distributed to TRI stakers 
+                  proportionally based on their share of the staking pool.
+                  When you stake TRI, you receive xTRI. Your xTRI is continuously compounding, 
+                  and when you unstake you will receive all of your originally deposited TRI 
+                  and additional TRI earned from fees.
+                </TYPE.white>
               </RowBetween>{' '}
               {/* @TODO ADD LINK */}
               {/* <ExternalLink
