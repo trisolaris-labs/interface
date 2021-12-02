@@ -212,7 +212,7 @@ export default function StakeTri() {
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
-                  For every swap on the exchange, 0.05% of every trade on the Trisolaris DEX 
+                  0.05% of every trade on the Trisolaris DEX 
                   will be used to buy back TRI and be distributed to TRI stakers 
                   proportionally based on their share of the staking pool.
                   When you stake TRI, you receive xTRI. Your xTRI is continuously compounding, 
