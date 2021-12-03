@@ -1,6 +1,6 @@
 import { ChainId, CurrencyAmount } from '@trisolaris/sdk';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useTransactionAdder } from '../transactions/hooks';
 import { useActiveWeb3React } from '../../hooks';
 import { useContract } from '../stake/hooks-sushi';
@@ -37,6 +37,11 @@ export function useTriBar() {
     return { enter, leave }
 }
 
+export function useTriBarContract(withSignerIfPossible?: boolean): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract(chainId && XTRI[chainId].address, TRIBAR_ABI, withSignerIfPossible)
+}
+
 export function useTriBarStats() {
     const chainId = ChainId.AURORA
     const totalXTri = useTotalSupply(XTRI[chainId]);
@@ -51,9 +56,4 @@ export function useTriBarStats() {
         totalXTri,
         triToXTRIRatio,
     }
-}
-
-export function useTriBarContract(withSignerIfPossible?: boolean): Contract | null {
-    const { chainId } = useActiveWeb3React()
-    return useContract(chainId && XTRI[chainId].address, TRIBAR_ABI, withSignerIfPossible)
 }

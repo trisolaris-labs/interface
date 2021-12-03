@@ -1,6 +1,5 @@
 import { ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
 import React, { useState, useCallback } from 'react'
-import { Text } from 'rebass'
 import styled from 'styled-components'
 import { LightCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
@@ -15,12 +14,13 @@ import { useTokenBalance } from '../../state/wallet/hooks'
 import { DataCard, CardBGImage, CardNoise, CardSection } from '../../components/earn/styled'
 import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
 import CurrencyLogo from '../../components/CurrencyLogo'
-import useTriBar from '../../state/stakeTri/hooks'
+import { useTriBar, useTriBarStats } from '../../state/stakeTri/hooks'
 import StakeTriDataCard from '../../components/StakeTri/StakeTriDataCard'
 import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Dots } from '../../components/swap/styleds'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
+import StakingAPRCard from './StakingAPRCard'
 
 const DataRow = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -42,6 +42,10 @@ const PageWrapper = styled(AutoColumn)`
 const StakeClickableText = styled(ClickableText) <{ selected: boolean }>`
   color: ${({ selected, theme }) => selected ? theme.primary1 : theme.bg5};
   font-weight: ${({ selected }) => selected ? 500 : 400};
+`
+
+const LargeHeaderWhite = styled(TYPE.largeHeader)`
+  color: white;
 `
 
 enum StakeState {
@@ -73,7 +77,7 @@ export default function StakeTri() {
 
   const [approvalState, handleApproval] = useApproveCallback(parsedAmount, XTRI[chainId].address);
 
-  // // Reset input when toggling staking/unstaking
+  // Reset input when toggling staking/unstaking
   function handleStakeTRI() {
     setStakeState(StakeState.stakeTRI);
     setInput('');
@@ -175,6 +179,9 @@ export default function StakeTri() {
     }
   }
 
+  const { totalTriStaked } = useTriBarStats();
+  const totalTriStakedFormatted = totalTriStaked?.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
   return (
     <PageWrapper gap="lg" justify="center">
       <TopSection gap="md">
@@ -184,7 +191,7 @@ export default function StakeTri() {
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
-                <TYPE.white fontWeight={600}>Earn more TRI</TYPE.white>
+                <LargeHeaderWhite fontWeight={600}>Earn more TRI</LargeHeaderWhite>
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
@@ -211,9 +218,18 @@ export default function StakeTri() {
         </DataCard>
       </TopSection>
 
+      <TopSection gap="md">
+        <StakingAPRCard />
+      </TopSection>
+
       <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
         <DataRow style={{ alignItems: 'baseline', gap: '10px' }}>
-          <StakeTriDataCard label="APR">Coming Soon</StakeTriDataCard>
+          <StakeTriDataCard label="Total TRI Staked">
+            <Row align="center" justifyContent="start">
+              <CurrencyLogo currency={TRI[chainId]} size={'20px'} style={{ marginRight: '10px' }} />
+              <TYPE.black fontWeight={400}>{totalTriStakedFormatted ?? 'Loading...'}</TYPE.black>
+            </Row>
+          </StakeTriDataCard>
           <StakeTriDataCard label="Balance xTRI">
             <Row align="center" justifyContent="start">
               <CurrencyLogo currency={XTRI[chainId]} size={'20px'} style={{ marginRight: '10px' }} />
@@ -234,7 +250,7 @@ export default function StakeTri() {
           <AutoColumn gap="20px">
             <RowBetween>
               <AutoColumn gap="20px" justify="start">
-                <Text fontWeight={500}>{isStaking ? 'Stake TRI' : 'Unstake xTRI'}</Text>
+                <TYPE.mediumHeader>{isStaking ? 'Stake TRI' : 'Unstake xTRI'}</TYPE.mediumHeader>
               </AutoColumn>
               <AutoColumn gap="20px">
                 <RowBetween>
