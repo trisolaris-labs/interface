@@ -17,7 +17,7 @@ import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import useTriBar from '../../state/stakeTri/hooks'
 import StakeTriDataCard from '../../components/StakeTri/StakeTriDataCard'
-import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
+import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Dots } from '../../components/swap/styleds'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -101,21 +101,28 @@ export default function StakeTri() {
     }
   }, [maxAmountInput, setInput])
 
-  // Flow
-  // 1)   Connect Wallet
-  // 2)   Check for sufficient funds
-  // 3)   Approve | Approve Pending
-  // 4)   Stake/Unstake
-  function buttonRenderer() {
-    // If no wallet, show connect wallet
-    if (account == null) {
-      return (
-        <ButtonLight onClick={toggleWalletModal}>
-          Connect Wallet
-        </ButtonLight>
-      );
+  function renderApproveButton() {
+    if (!isStaking) {
+      return null;
     }
 
+    return (
+      <ButtonConfirmed
+        mr="0.5rem"
+        onClick={handleApproval}
+        confirmed={approvalState === ApprovalState.APPROVED}
+        disabled={approvalState !== ApprovalState.NOT_APPROVED}
+      >
+        {approvalState === ApprovalState.PENDING
+          ? (<Dots>Approving</Dots>)
+          : approvalState === ApprovalState.APPROVED
+            ? 'Approved'
+            : 'Approve'}
+      </ButtonConfirmed>
+    )
+  }
+
+  function renderStakeButton() {
     // If input does not have value
     if (parsedAmount?.greaterThan(JSBI.BigInt(0)) !== true) {
       return (
@@ -126,11 +133,7 @@ export default function StakeTri() {
     }
 
     // If account balance is less than inputted amount
-    // This flow should be _before_ approval flow
-    const insufficientFunds = (
-      (balance?.equalTo(JSBI.BigInt(0)) ?? false) ||
-      parsedAmount?.greaterThan(balance)
-    )
+    const insufficientFunds = (balance?.equalTo(JSBI.BigInt(0)) ?? false) || parsedAmount?.greaterThan(balance);
     if (insufficientFunds) {
       return (
         <ButtonError error={true} disabled={true}>
@@ -139,41 +142,14 @@ export default function StakeTri() {
       );
     }
 
-    // If unapproved, render button approval flow
-    // Approval is only needed for staking
-    if (isStaking) {
-      if (approvalState === ApprovalState.UNKNOWN) {
-        // Disable approve button while approval is being checked
-        return (
-          <ButtonPrimary disabled={true}>
-            Approve
-          </ButtonPrimary>
-        )
-      }
+    // If user is unstaking, we don't need to check approval status
+    const isDisabled = isStaking
+      ? (approvalState !== ApprovalState.APPROVED || pendingTx)
+      : pendingTx;
 
-      if (approvalState !== ApprovalState.APPROVED) {
-        if (approvalState === ApprovalState.NOT_APPROVED) {
-          return (
-            <ButtonPrimary onClick={handleApproval}>
-              Approve
-            </ButtonPrimary>
-          );
-        }
-
-        if (approvalState === ApprovalState.PENDING) {
-          return (
-            <ButtonPrimary disabled={true} onClick={handleApproval}>
-              <Dots>Approving</Dots>
-            </ButtonPrimary>
-          );
-        }
-      }
-    }
-
-    // Attempt the (un)staking transaction
     return (
       <ButtonPrimary
-        disabled={pendingTx}
+        disabled={isDisabled}
         onClick={handleStake}
       >
         {isStaking ? 'Stake' : 'Unstake'}
@@ -212,11 +188,11 @@ export default function StakeTri() {
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
-                  0.05% of every trade on the Trisolaris DEX 
-                  will be used to buy back TRI and be distributed to TRI stakers 
+                  0.05% of every trade on the Trisolaris DEX
+                  will be used to buy back TRI and be distributed to TRI stakers
                   proportionally based on their share of the staking pool.
-                  When you stake TRI, you receive xTRI. Your xTRI is continuously compounding, 
-                  and when you unstake you will receive all of your originally deposited TRI 
+                  When you stake TRI, you receive xTRI. Your xTRI is continuously compounding,
+                  and when you unstake you will receive all of your originally deposited TRI
                   and additional TRI earned from fees.
                 </TYPE.white>
               </RowBetween>{' '}
@@ -288,7 +264,17 @@ export default function StakeTri() {
             />
           </AutoColumn>
           <div style={{ marginTop: '1rem' }}>
-            {buttonRenderer()}
+            {(account == null)
+              ? (
+                <ButtonLight onClick={toggleWalletModal}>
+                  Connect Wallet
+                </ButtonLight>
+              ) : (
+                <RowBetween>
+                  {renderApproveButton()}
+                  {renderStakeButton()}
+                </RowBetween>
+              )}
           </div>
         </LightCard>
       </AutoColumn>
