@@ -1,14 +1,16 @@
-import { CurrencyAmount } from '@trisolaris/sdk';
+import { ChainId, CurrencyAmount } from '@trisolaris/sdk';
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTransactionAdder } from '../transactions/hooks';
 import { useActiveWeb3React } from '../../hooks';
 import { useContract } from '../stake/hooks-sushi';
 import { Contract } from '@ethersproject/contracts';
 import { abi as TRIBAR_ABI } from '../../constants/abis/TriBar.json'
-import { XTRI } from '../../constants';
+import { TRI, XTRI } from '../../constants';
+import { useTotalSupply } from '../../data/TotalSupply';
+import { useTokenBalance } from '../wallet/hooks';
 
-const useTriBar = () => {
+export function useTriBar() {
     const addTransaction = useTransactionAdder();
     const barContract = useTriBarContract();
 
@@ -35,9 +37,23 @@ const useTriBar = () => {
     return { enter, leave }
 }
 
+export function useTriBarStats() {
+    const chainId = ChainId.AURORA
+    const totalXTri = useTotalSupply(XTRI[chainId]);
+    const totalTriStaked = useTokenBalance(XTRI[chainId].address, TRI[chainId]);
+
+    const triToXTRIRatio = totalTriStaked != null && totalXTri != null
+        ? totalTriStaked?.divide(totalXTri)
+        : null;
+
+    return {
+        totalTriStaked,
+        totalXTri,
+        triToXTRIRatio,
+    }
+}
+
 export function useTriBarContract(withSignerIfPossible?: boolean): Contract | null {
     const { chainId } = useActiveWeb3React()
     return useContract(chainId && XTRI[chainId].address, TRIBAR_ABI, withSignerIfPossible)
 }
-
-export default useTriBar
