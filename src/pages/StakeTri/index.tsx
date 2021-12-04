@@ -236,7 +236,7 @@ export default function StakeTri() {
       </TopSection>
 
       <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
-        <DataRow style={{ alignItems: 'baseline', gap: '10px' }}>
+        <DataRow style={{ alignItems: 'baseline', gap: '10px', margin: 0 }}>
           <StakeTriDataCard label="APR">Coming Soon</StakeTriDataCard>
           <StakeTriDataCard label="Balance xTRI">
             <Row align="center" justifyContent="start">
