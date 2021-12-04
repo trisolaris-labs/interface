@@ -223,7 +223,7 @@ export default function StakeTri() {
       </TopSection>
 
       <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
-        <DataRow style={{ alignItems: 'baseline', gap: '10px' }}>
+        <DataRow style={{ alignItems: 'baseline', gap: '10px', margin: 0 }}>
           <StakeTriDataCard label="Total TRI Staked">
             <Row align="center" justifyContent="start">
               <CurrencyLogo currency={TRI[chainId]} size={'20px'} style={{ marginRight: '10px' }} />
