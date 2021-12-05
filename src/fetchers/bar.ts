@@ -7,17 +7,16 @@ type APRResponse = {
     "triBarTri": number,
 }
 
-async function fetcher(): Promise<APRResponse> {
+async function fetcher(): Promise<APRResponse | null> {
     // @TODO Use this after https://github.com/trisolaris-labs/apr/pull/5 is merged
     // const response = fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/xtri.json')
 
-    const response = await fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/e7d38425b6a602c0d822645169108df0077d2c04/xtri.json')
-
-    return response.json();
+    // return response.json();
+    return null;
 }
 
 async function getTriBarAPR() {
-    const { apr } = await fetcher();
+    const { apr } = await fetcher() ?? {};
 
     return apr;
 }
