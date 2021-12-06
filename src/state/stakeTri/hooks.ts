@@ -48,7 +48,7 @@ export function useTriBarStats() {
     const totalTriStaked = useTokenBalance(XTRI[chainId].address, TRI[chainId]);
 
     const triToXTRIRatio = totalTriStaked != null && totalXTri != null
-        ? totalTriStaked?.divide(totalXTri)
+        ? totalXTri?.divide(totalTriStaked)
         : null;
 
     return {
