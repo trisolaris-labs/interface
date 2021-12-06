@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { AutoColumn } from '../../components/Column'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import { JSBI, TokenAmount, CETH, Token, WETH } from '@trisolaris/sdk'
+import { JSBI, TokenAmount, CETH, Token, WETH, ChainId } from '@trisolaris/sdk'
 import { RouteComponentProps } from 'react-router-dom'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { useCurrency } from '../../hooks/Tokens'
@@ -29,6 +29,7 @@ import usePrevious from '../../hooks/usePrevious'
 import { BIG_INT_ZERO, PNG } from '../../constants'
 import { useTranslation } from 'react-i18next'
 import { useSingleFarm } from '../../state/stake/user-farms'
+import useUserFarmStatistics from '../../state/stake/useUserFarmStatistics'
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
@@ -131,6 +132,22 @@ export default function Manage({
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
 
+  const lpToken = useMemo(() => {
+    return new Token(
+      ChainId.AURORA,
+      stakingInfo.lpAddress,
+      18,
+      'TLP',
+      `TLP ${currencyA?.symbol}-${currencyB?.symbol}`,
+    );
+  }, [currencyA?.symbol, currencyB?.symbol, stakingInfo.lpAddress]);
+
+  const { userLPAmountUSDFormatted } = useUserFarmStatistics({
+    lpToken,
+    userLPStakedAmount: stakingInfo?.stakedAmount,
+    totalPoolAmountUSD: stakingInfo?.totalStakedInUSD,
+  }) ?? {};
+
   const handleDepositClick = useCallback(() => {
     if (account) {
       setShowStakingModal(true)
@@ -232,11 +249,13 @@ export default function Manage({
                   <TYPE.white fontWeight={600}>{t('earnPage.liquidityDeposits')}</TYPE.white>
                 </RowBetween>
                 <RowBetween style={{ alignItems: 'baseline' }}>
+                <AutoColumn gap="md">
                   <TYPE.white fontSize={36} fontWeight={600}>
-                    {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'}
+                    {userLPAmountUSDFormatted ?? '$0'}
                   </TYPE.white>
+                </AutoColumn>
                   <TYPE.white>
-                    TLP {currencyA?.symbol}-{currencyB?.symbol}
+                    {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'} TLP {currencyA?.symbol}-{currencyB?.symbol}
                   </TYPE.white>
                 </RowBetween>
               </AutoColumn>
