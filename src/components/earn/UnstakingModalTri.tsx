@@ -6,7 +6,7 @@ import { RowBetween } from '../Row'
 import { TYPE, CloseIcon } from '../../theme'
 import { ButtonError } from '../Button'
 import { SubmittedView, LoadingView } from '../ModalViews'
-import { useMasterChefContract } from '../../state/stake/hooks-sushi'
+import { useMasterChefContract, useMasterChefV2Contract } from '../../state/stake/hooks-sushi'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import FormattedCurrencyAmount from '../FormattedCurrencyAmount'
@@ -44,8 +44,11 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
   }
 
   const stakingContract = useMasterChefContract()
+  const stakingContractv2 = useMasterChefV2Contract()
+
   async function onWithdraw() {
-    if (stakingContract && stakingInfo?.stakedAmount) {
+    if(stakingInfo.chefVersion == 0) {
+      if (stakingContract && stakingInfo?.stakedAmount) {
       setAttempting(true)
       await stakingContract
         .withdraw(stakingInfo.poolId, stakingInfo.stakedAmount.raw.toString())
@@ -59,6 +62,23 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
           setAttempting(false)
           console.log(error)
         })
+      }
+    } else {
+      if (stakingContractv2 && stakingInfo?.stakedAmount) {
+      setAttempting(true)
+      await stakingContractv2
+        .withdrawAndHarvest(stakingInfo.poolId, stakingInfo.stakedAmount.raw.toString(), account)
+        .then((response: TransactionResponse) => {
+          addTransaction(response, {
+            summary: t('earn.withdrawDepositedLiquidity')
+          })
+          setHash(response.hash)
+        })
+        .catch((error: any) => {
+          setAttempting(false)
+          console.log(error)
+        })
+      }
     }
   }
 

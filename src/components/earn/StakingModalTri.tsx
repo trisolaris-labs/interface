@@ -12,7 +12,7 @@ import { TokenAmount, Pair, ChainId } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { usePairContract, useStakingContract } from '../../hooks/useContract'
-import { useMasterChefContract } from '../../state/stake/hooks-sushi'
+import { useMasterChefContract, useMasterChefV2Contract } from '../../state/stake/hooks-sushi'
 import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
 import { splitSignature } from 'ethers/lib/utils'
 import { useDerivedStakeInfo } from '../../state/stake/hooks'
@@ -81,11 +81,14 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(parsedAmount, stakingInfo.stakingRewardAddress)
 
+
   const stakingContract = useMasterChefContract()
+  const stakingContractv2 = useMasterChefV2Contract()
 
   async function onStake() {
     setAttempting(true)
-    if (stakingContract && parsedAmount && deadline) {
+    if(stakingInfo.chefVersion == 0) {
+      if (stakingContract && parsedAmount && deadline) {
         await stakingContract
           .deposit(stakingInfo.poolId, parseUnits(typedValue))
           .then((response: TransactionResponse) => {
@@ -102,7 +105,26 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
         setAttempting(false)
         throw new Error(t('earn.attemptingToStakeError'))
         }
-      }
+    } else {
+      if (stakingContractv2 && parsedAmount && deadline) {
+        await stakingContractv2
+          .deposit(stakingInfo.poolId, parseUnits(typedValue), account)
+          .then((response: TransactionResponse) => {
+            addTransaction(response, {
+              summary: t('earn.depositLiquidity')
+            })
+            setHash(response.hash)
+          })
+          .catch((error: any) => {
+            setAttempting(false)
+            console.log(error)
+          })} 
+       else {
+        setAttempting(false)
+        throw new Error(t('earn.attemptingToStakeError'))
+        }
+    }
+  }
 
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback((typedValue: string) => {
