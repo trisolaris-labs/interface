@@ -22,27 +22,13 @@ const LargeHeaderWhite = styled(TYPE.largeHeader)`
 `
 
 export default function StakingAPRCard() {
-    const { triToXTRIRatio } = useTriBarStats();
+    const { xtriToTRIRatio } = useTriBarStats();
     const apr = useFetchTriBarAPR();
-    // @TODO Use this after prod APR is ready
-    // const aprText = (
-    //     <>
-    //         <LargeHeaderWhite>
-    //             {apr == null
-    //                 ? 'Loading...'
-    //                 : `${apr?.toFixed(2)}%`}
-    //         </LargeHeaderWhite>
-    //         <SubHeaderWhite>
-    //             Yesterday's APR
-    //         </SubHeaderWhite>
-    //     </>
-    // );
-    const aprText = <LargeHeaderWhite>Coming Soon</LargeHeaderWhite>;
 
-    const triToXTRIRatioFormatted = triToXTRIRatio?.toFixed(6);
-    const ratioText = triToXTRIRatioFormatted == null
+    const xtriToTRIRatioFormatted = xtriToTRIRatio?.toFixed(6);
+    const ratioText = xtriToTRIRatioFormatted == null
         ? 'Loading...'
-        : `1 TRI = ${triToXTRIRatioFormatted} xTRI`;
+        : `1 xTRI = ${xtriToTRIRatioFormatted} TRI`;
 
     return (
         <Card>
@@ -58,7 +44,14 @@ export default function StakingAPRCard() {
                             </SubHeaderWhite>
                         </AutoColumn>
                         <AutoColumn gap="sm" justify="end">
-                            {aprText}
+                            <LargeHeaderWhite>
+                                {apr == null
+                                    ? 'Loading...'
+                                    : `${apr?.toFixed(2)}%`}
+                            </LargeHeaderWhite>
+                            <SubHeaderWhite>
+                                Yesterday's APR
+                            </SubHeaderWhite>
                         </AutoColumn>
                     </RowBetween>
                 </AutoColumn>
