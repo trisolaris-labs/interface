@@ -93,7 +93,7 @@ const AURORA_POOLS: StakingTri[] = [
     ID: 0,
     poolId: 0,
     tokens: [WETH[ChainId.AURORA], WNEAR[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V1[ChainId.AURORA],
+    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0x63da4DB6Ef4e7C62168aB03982399F9588fCd198',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
@@ -105,7 +105,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2: 0,
-    chefVersion: ChefVersions.V1
+    chefVersion: ChefVersions.V2
   },
   {
     ID: 1,
@@ -214,7 +214,7 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V1
-  }
+  },
 ]
 
 const NULL_POOLS: StakingTri[] = [
