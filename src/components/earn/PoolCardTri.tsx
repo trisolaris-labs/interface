@@ -55,13 +55,13 @@ const Wrapper = styled(AutoColumn)<{ showBackground: boolean; bgColor: any }>`
 
 const TopSection = styled.div`
   display: grid;
-  grid-template-columns: 48px 1fr auto 120px;
+  grid-template-columns: 48px 1fr auto;
   grid-gap: 0px;
   align-items: center;
   padding: 1rem;
   z-index: 1;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-     grid-template-columns: 48px 1fr auto 96px;
+     grid-template-columns: 48px 1fr auto;
    `};
 `
 
