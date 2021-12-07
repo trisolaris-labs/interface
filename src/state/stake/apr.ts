@@ -53,12 +53,6 @@ export function useFarms(): StakingTri[] {
   const tokens = useMemo(() => activeFarms.map(({ tokens }) => tokens), [activeFarms])
   const pairs = usePairs(tokens)
 
-  const pairAddresses = useMemo(() => {
-    const pairsHaveLoaded = pairs?.every(([state, pair]) => state === PairState.EXISTS)
-    if (!pairsHaveLoaded) return []
-    else return pairs.map(([state, pair]) => pair?.liquidityToken.address)
-  }, [pairs])
-
   return useMemo(() => {
     if (!chainId) return activeFarms
 
