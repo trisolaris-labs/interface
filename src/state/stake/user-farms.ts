@@ -40,14 +40,15 @@ export function useSingleFarm(version: string): StakingTri[] {
     if (!account || !version) {
       return
     }
-    return [String(version), String(account)]
+    return [String(activeFarms[Number(version)].poolId), String(account)]
   }, [version, account])
+
 
   var contract = chefContract
   if (activeFarms[Number(version)].chefVersion != 0) {
     var contract = chefContractv2
   }
-
+    //TODO args are incorrect here
   const pendingTri = useSingleCallResult(args ? contract : null, 'pendingTri', args!) //user related
   const userInfo = useSingleCallResult(args ? contract : null, 'userInfo', args!)  //user related
 
@@ -67,7 +68,6 @@ export function useSingleFarm(version: string): StakingTri[] {
       const userStaked = userInfo
       const rewardsPending = pendingTri
       const [pairState, pair] = pairs[index]
-
 
       if (
         // always need these
