@@ -23,7 +23,7 @@ export const MASTERCHEF_ADDRESS_V1: AddressMap = {
 
 export const MASTERCHEF_ADDRESS_V2: AddressMap = {
   [ChainId.POLYGON]: '0x43A1dD21a5237C6F5eEC94747C28aa3f5C8fa1c7',
-  [ChainId.AURORA]: '0xBa3B61394873D0ED1d0d61793ef428c113069d96',
+  [ChainId.AURORA]: '0x5A4a5Ca6D3b6A46FE69aadD28a9e1fdb954Ba350',
 }
 
 export enum Chef {

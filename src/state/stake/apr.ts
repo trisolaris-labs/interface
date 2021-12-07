@@ -32,7 +32,7 @@ export function useFarms(): StakingTri[] {
   const [stakingInfoData, setStakingInfoData] = useState<ExternalInfo[]>()
 
   useEffect(() => {
-    fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/data.json')
+    fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/datav2.json')
       .then(results => results.json())
       .then(data => {
         setStakingInfoData(data)
@@ -111,7 +111,7 @@ export function useFarms(): StakingTri[] {
           totalRewardRate: Math.round(stakingInfoData[index].totalRewardRate),
           rewardRate: tokenAmount,
           apr: Math.round((stakingInfoData[index].apr)),
-          apr2: 0,
+          apr2: Math.round((stakingInfoData[index].apr2)),
           chefVersion:chefVersion
         })
         return memo

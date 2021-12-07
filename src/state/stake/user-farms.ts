@@ -26,7 +26,7 @@ export function useSingleFarm(version: string): StakingTri[] {
 
 
   useEffect(() => {
-    fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/data.json')
+    fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/datav2.json')
       .then(results => results.json())
       .then(data => {
         setStakingInfoData(data)
@@ -59,15 +59,6 @@ export function useSingleFarm(version: string): StakingTri[] {
   const pairs = usePairs(tokens)
 
 
-
-  const pairAddresses = useMemo(() => {
-    const pairsHaveLoaded = pairs?.every(([state, pair]) => state === PairState.EXISTS)
-    if (!pairsHaveLoaded) return []
-    else return pairs.map(([state, pair]) => pair?.liquidityToken.address)
-  }, [pairs])
-
-  const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply') //totalSupply TO REPLACE
-
   return useMemo(() => {
     if (!chainId) return activeFarms
 
@@ -76,21 +67,18 @@ export function useSingleFarm(version: string): StakingTri[] {
       const userStaked = userInfo
       const rewardsPending = pendingTri
       const [pairState, pair] = pairs[index]
-      const pairTotalSupplyState = pairTotalSupplies[index]
 
 
       if (
         // always need these
         userStaked?.loading === false &&
         rewardsPending?.loading === false &&
-        pairTotalSupplyState?.loading === false &&
         pair &&
         pairState !== PairState.LOADING && stakingInfoData
       ) {
         if (
           userStaked.error ||
           rewardsPending.error ||
-          pairTotalSupplyState.error ||
           pairState === PairState.INVALID ||
           pairState === PairState.NOT_EXISTS || !stakingInfoData
         ) {
@@ -104,12 +92,10 @@ export function useSingleFarm(version: string): StakingTri[] {
         // check for account, if no account set to 0
         const userInfoPool = JSBI.BigInt(userStaked.result?.['amount'])
         const earnedRewardPool = JSBI.BigInt(rewardsPending.result?.[0])
-        const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
 
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
         const earnedAmount = new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(earnedRewardPool))
         const chefVersion = activeFarms[Number(version)].chefVersion
-
 
         memo.push({
           ID: activeFarms[Number(version)].ID,
@@ -126,7 +112,7 @@ export function useSingleFarm(version: string): StakingTri[] {
           totalRewardRate: Math.round(stakingInfoData[Number(version)].totalRewardRate),
           rewardRate: tokenAmount,
           apr: Math.round(stakingInfoData[Number(version)].apr),
-          apr2: 0,
+          apr2: Math.round(stakingInfoData[Number(version)].apr2),
           chefVersion: chefVersion
         })
         return memo
@@ -136,7 +122,6 @@ export function useSingleFarm(version: string): StakingTri[] {
   }, [
     activeFarms,
     pairs,
-    pairTotalSupplies,
     pendingTri,
     userInfo
   ])

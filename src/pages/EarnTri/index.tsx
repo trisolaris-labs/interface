@@ -81,7 +81,7 @@ export default function Earn({
   const [sortBy, setSortBy] = useState<any>({ field: '', desc: true })
   const debouncedSearchQuery = useDebounce(searchQuery, 250)
   const [stakingInfoData, setStakingInfoData] = useState<any[]>(farmArrs)
-  
+
   return (
     <PageWrapper gap="lg" justify="center">
       <TopSection gap="md">
@@ -151,6 +151,16 @@ export default function Earn({
                  key={6}
                  stakingInfo={farmArrs[4]}
                  version={farmArrs[4].ID}
+               />
+               <PoolCard
+                 key={7}
+                 stakingInfo={farmArrs[7]}
+                 version={farmArrs[7].ID}
+               />
+              <PoolCard
+                 key={8}
+                 stakingInfo={farmArrs[8]}
+                 version={farmArrs[8].ID}
                />
             </>
         </PoolSection>

@@ -39,6 +39,7 @@ export interface ExternalInfo {
   totalRewardRate: number
   allocPoint: number
   apr: number
+  apr2: number
 }
 
 const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
@@ -93,7 +94,7 @@ const AURORA_POOLS: StakingTri[] = [
     ID: 0,
     poolId: 0,
     tokens: [WETH[ChainId.AURORA], WNEAR[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
+    stakingRewardAddress: MASTERCHEF_ADDRESS_V1[ChainId.AURORA],
     lpAddress: '0x63da4DB6Ef4e7C62168aB03982399F9588fCd198',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
@@ -105,7 +106,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2: 0,
-    chefVersion: ChefVersions.V2
+    chefVersion: ChefVersions.V1
   },
   {
     ID: 1,
@@ -214,6 +215,42 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V1
+  },
+  {
+    ID: 7,
+    poolId: 0,
+    tokens: [AURORA[ChainId.AURORA], WETH[ChainId.AURORA]],
+    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
+    lpAddress: '0x5eeC60F348cB1D661E4A5122CF4638c7DB7A886e',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: 1,
+    rewardRate: dummyAmount,
+    apr: 0,
+    apr2: 0,
+    chefVersion: ChefVersions.V2
+  },
+  {
+    ID: 8,
+    poolId: 1,
+    tokens: [TRI[ChainId.AURORA], AURORA[ChainId.AURORA]],
+    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
+    lpAddress: '0xd1654a7713617d41A8C9530Fb9B948d00e162194',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: 1,
+    rewardRate: dummyAmount,
+    apr: 0,
+    apr2: 0,
+    chefVersion: ChefVersions.V2
   },
 ]
 

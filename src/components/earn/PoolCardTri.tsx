@@ -100,6 +100,8 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
 
   const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
+  const chefVersion = stakingInfo.chefVersion
+
   return (
     <Wrapper showBackground={isStaking} bgColor={backgroundColor}>
       <CardBGImage desaturate />
@@ -130,9 +132,15 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
       </StatContainer>
       <AprContainer>
         <RowBetween>
-          <TYPE.white>Total APR</TYPE.white>
+          <TYPE.white>TRI APR</TYPE.white>
           <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
         </RowBetween>
+        {(chefVersion==1) && (
+        <RowBetween>
+          <TYPE.white>Double Rewards APR</TYPE.white>
+          <TYPE.white>{`${stakingInfo.apr2}%`}</TYPE.white>
+        </RowBetween>
+        )}
       </AprContainer>
       <StatContainer>
         {/*<RowBetween>
