@@ -44,10 +44,6 @@ export function useBridgeMigratorContract(): Contract | null {
   return useContract(BRIDGE_MIGRATOR_ADDRESS, BRIDGE_MIGRATOR_ABI, true)
 }
 
-export function useComplexRewarderContract(address: string | undefined, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(address, COMPLEX_REWARDER_ABI, withSignerIfPossible)
-}
-
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
   return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }

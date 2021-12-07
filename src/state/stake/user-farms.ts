@@ -1,6 +1,6 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
 import { USDC, DAI, WNEAR, TRI} from '../../constants'
-import { useMasterChefContract, useMasterChefV2Contract, MASTERCHEF_ADDRESS_V1 } from './hooks-sushi'
+import { useMasterChefContract, useMasterChefV2Contract, useComplexRewarderContract, MASTERCHEF_ADDRESS_V1 } from './hooks-sushi'
 import { STAKING, StakingTri, rewardsPerSecond, totalAllocPoints, tokenAmount, ExternalInfo } from './stake-constants'
 import {
   useSingleContractMultipleData,
@@ -21,8 +21,8 @@ export function useSingleFarm(version: string): StakingTri[] {
   let addresses = activeFarms.map(key => key.lpAddress)
   const chefContract = useMasterChefContract()
   const chefContractv2 = useMasterChefV2Contract()
-
   const [stakingInfoData, setStakingInfoData] = useState<ExternalInfo[]>()
+  const complexRewarderContract = useComplexRewarderContract(String(activeFarms[Number(version)].rewarderAddress))
 
 
   useEffect(() => {
@@ -44,6 +44,15 @@ export function useSingleFarm(version: string): StakingTri[] {
   }, [version, account])
 
 
+  const args2 = useMemo(() => {
+    if (!account || !version) {
+      return
+    }
+    return [String(activeFarms[Number(version)].poolId), String(account), "0"]
+  }, [version, account])
+
+  console.log(args2)
+
   var contract = chefContract
   if (activeFarms[Number(version)].chefVersion != 0) {
     var contract = chefContractv2
@@ -51,6 +60,9 @@ export function useSingleFarm(version: string): StakingTri[] {
     //TODO args are incorrect here
   const pendingTri = useSingleCallResult(args ? contract : null, 'pendingTri', args!) //user related
   const userInfo = useSingleCallResult(args ? contract : null, 'userInfo', args!)  //user related
+  const complexRewards = useSingleCallResult(args2 ? complexRewarderContract : null, 'pendingTokens', args2!)
+
+  console.log(complexRewards)
 
   // get all the info from the staking rewards contracts
   const tokens = useMemo(() => activeFarms.filter(farm => {
