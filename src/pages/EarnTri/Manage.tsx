@@ -99,9 +99,8 @@ export default function Manage({
   const [currencyA, currencyB] = [useCurrency(currencyIdA), useCurrency(currencyIdB)]
   const tokenA = wrappedCurrency(currencyA ?? undefined, chainId)
   const tokenB = wrappedCurrency(currencyB ?? undefined, chainId)
-  console.log(tokenA)
-  console.log(tokenB)
-  const [, stakingTokenPair] = usePair(tokenA, tokenB)
+  // const [, stakingTokenPair] = usePair(tokenA, tokenB)
+  // console.log(stakingTokenPair)
   const farmArr = useSingleFarm(version)
 
   const stakingInfo = farmArr[0]
