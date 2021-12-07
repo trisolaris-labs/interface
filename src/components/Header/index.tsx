@@ -26,6 +26,7 @@ import Modal from '../Modal'
 import usePrevious from '../../hooks/usePrevious'
 import { NETWORK_LABELS, BASE_CURRENCIES } from '../../constants'
 import LanguageSelection from '../LanguageSelection'
+import useTriPrice from '../../hooks/useTriPrice'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -220,6 +221,16 @@ const StyledNavLink = styled(NavLink).attrs({
   }
 `
 
+const IconWrapper = styled.div<{ size?: number }>`
+  ${({ theme }) => theme.flexColumnNoWrap};
+  align-items: center;
+  justify-content: center;
+  & > * {
+    height: ${({ size }) => (size ? size + 'px' : '32px')};
+    width: ${({ size }) => (size ? size + 'px' : '32px')};
+  }
+`
+
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName
 })<{ isActive?: boolean }>`
@@ -258,6 +269,8 @@ export default function Header() {
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
+  const triPrice = useTriPrice();
+  console.log('triPrice: ', triPrice);
 
   const [showPngBalanceModal, setShowPngBalanceModal] = useState(false)
 
@@ -312,6 +325,14 @@ export default function Header() {
               <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
           </HideSmall>
+          <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+            <IconWrapper size={16}>
+              <img src={'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/0xFa94348467f64D5A457F75F8bc40495D33c65aBB/logo.png'} />
+            </IconWrapper>
+              <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
+              {triPrice ?? '$0.00'}
+              </BalanceText>
+          </AccountElement>
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance && chainId && BASE_CURRENCIES[chainId] ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
