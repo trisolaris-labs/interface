@@ -8,7 +8,7 @@ import { abi as PNG_ABI } from '@pangolindex/governance/artifacts/contracts/PNG.
 import { abi as BRIDGE_MIGRATOR_ABI } from '@pangolindex/exchange-contracts/artifacts/contracts/pangolin-periphery/PangolinBridgeMigrationRouter.sol/PangolinBridgeMigrationRouter.json'
 import { useMemo } from 'react'
 
-
+import COMPLEX_REWARDER_ABI from '../constants/abis/complex-rewarder.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
 import ERC20_ABI from '../constants/abis/erc20.json'
@@ -42,6 +42,10 @@ export function useV2MigratorContract(): Contract | null {
 
 export function useBridgeMigratorContract(): Contract | null {
   return useContract(BRIDGE_MIGRATOR_ADDRESS, BRIDGE_MIGRATOR_ABI, true)
+}
+
+export function useComplexRewarderContract(address: string | undefined, withSignerIfPossible?: boolean): Contract | null {
+  return useContract(address, COMPLEX_REWARDER_ABI, withSignerIfPossible)
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
