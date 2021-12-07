@@ -1,88 +1,130 @@
-import { BigintIsh, ChainId, Currency, JSBI, Pair, Token, TokenAmount } from '@trisolaris/sdk';
+import { ChainId, Fraction, JSBI, Token } from '@trisolaris/sdk';
 import { TRI, USDC, WNEAR } from '../constants';
 import IUniswapV2Pair_ABI from '../constants/abis/polygon/IUniswapV2Pair.json'
-import { usePair } from '../data/Reserves';
-import { useMultipleContractSingleData, useSingleContractMultipleData } from '../state/multicall/hooks';
 import { useContract } from '../state/stake/hooks-sushi';
 import { STAKING } from '../state/stake/stake-constants';
-import { Interface } from '@ethersproject/abi'
 import { Contract } from '@ethersproject/contracts';
-import { useEffect, useState } from 'react';
-import { BigNumberish } from '@ethersproject/bignumber';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-const PAIR_INTERFACE = new Interface(IUniswapV2Pair_ABI)
-
+type LPData = {
+    [key: string]: JSBI,
+}
 
 export default function useTriPrice() {
-    const pools = STAKING[ChainId.AURORA];
-
-    const wnearUsdcPool = pools.find(pool => {
-        const [tokenA, tokenB] = pool.tokens;
-
-        const hasWnear = tokenA.address === WNEAR[ChainId.AURORA].address || 
-        tokenB.address === WNEAR[ChainId.AURORA].address;
-        const hasUsdc = tokenA.address === USDC[ChainId.AURORA].address || 
-        tokenB.address === USDC[ChainId.AURORA].address;
-
-        return (hasWnear && hasUsdc);
-    });
-    const wnearTriPool = pools.find(pool => {
-        const [tokenA, tokenB] = pool.tokens;
-
-        const hasWnear = tokenA.address === WNEAR[ChainId.AURORA].address || 
-        tokenB.address === WNEAR[ChainId.AURORA].address;
-        const hasTri = tokenA.address === TRI[ChainId.AURORA].address || 
-        tokenB.address === TRI[ChainId.AURORA].address;
-
-        return (hasWnear && hasTri);
-    });
+    const wnearUsdcPool = findPoolContract(WNEAR[ChainId.AURORA], USDC[ChainId.AURORA]);
+    const wnearTriPool = findPoolContract(WNEAR[ChainId.AURORA], TRI[ChainId.AURORA]);
 
     const wnearUsdcContract = useContract(wnearUsdcPool?.lpAddress, IUniswapV2Pair_ABI);
     const wnearTriContract = useContract(wnearTriPool?.lpAddress, IUniswapV2Pair_ABI);
-    const [price, setPrice] = useState<BigintIsh | null>(null);
 
-    useEffect(() => {
-        if (price != null && price !== JSBI.BigInt(0)) {
-            return;
-        }
+    const wnearUsdcLPData = useRef<LPData | null>(null);
+    const wnearTriLPData = useRef<LPData | null>(null);
 
-        getTriPrice()
-            .then(triPrice => {
-                console.log('triPricetriPrice: ', triPrice);
-                setPrice(triPrice);
-            });
-    }, [getTriPrice, price]);
+    const [price, setPrice] = useState<string | null>(null);
 
-    async function getTriPrice() {
-        if (wnearUsdcContract == null || wnearTriContract == null) {
+    const calculatePrice = useCallback(() => {
+        if (wnearUsdcLPData.current == null || wnearTriLPData.current == null) {
             return null;
         }
 
+        // USDC contract uses 6 decimals
+        // TRI and wNEAR use 18 decimals
+        // Multiply USDC balance by 10^(18-6) to normalize
+        const normalizedUSDCRatio = JSBI.multiply(
+            JSBI.BigInt(wnearUsdcLPData.current.usdcReserve!),
+            JSBI.BigInt(
+                10 ** (TRI[ChainId.AURORA].decimals - USDC[ChainId.AURORA].decimals)
+            ),
+        );
+
+        // USDC/NEAR
+        const usdcToWnearRatio = new Fraction(
+            normalizedUSDCRatio,
+            wnearUsdcLPData.current.wnearReserve!,
+        );
+
+        // TRI/NEAR
+        const WnearToTriRatio = new Fraction(
+            wnearTriLPData.current.triReserve!,
+            wnearTriLPData.current.wnearReserve!,
+        );
+
+        // USDC/NEAR / TRI/NEAR => USDC/TRI
+        // Price is USDC/TRI (where TRI = 1)
+        const result = usdcToWnearRatio.divide(WnearToTriRatio).toFixed(2);
+
+        return result;
+    }, [wnearUsdcLPData, wnearTriLPData]);
+
+    async function getWnearUSDCPairReserves(contract?: Contract | null) {
+        if (contract == null) {
+            return;
+        }
+
         const {
-            reserves: wnearUsdcReserves,
-            token0: wnearUsdcToken0,
-            token1: wnearUsdcToken1,
-        } = await getPairReserves(wnearUsdcContract);
-        
-        const wnearUsdcPairRatio = wnearUsdcToken0 === WNEAR[ChainId.AURORA].address 
-        ? JSBI.divide(JSBI.BigInt(wnearUsdcReserves[0]), JSBI.BigInt(wnearUsdcReserves[1]))
-        : JSBI.divide(JSBI.BigInt(wnearUsdcReserves[1]), JSBI.BigInt(wnearUsdcReserves[0]));
-        
-        const {
-            reserves: wnearTriReserves,
-            token0: wnearTriToken0,
-            token1: wnearTriToken1,
-        } = await getPairReserves(wnearTriContract);
+            reserves,
+            token0,
+            token1: _token1,
+        } = await getPairReserves(contract);
 
-        const wnearTriPairRatio = wnearTriToken0 === WNEAR[ChainId.AURORA].address
-            ? JSBI.divide(JSBI.BigInt(wnearTriReserves[1]), JSBI.BigInt(wnearTriReserves[0]))
-            : JSBI.divide(JSBI.BigInt(wnearTriReserves[0]), JSBI.BigInt(wnearTriReserves[1]));
-        
-        const price = JSBI.multiply(wnearTriPairRatio, wnearUsdcPairRatio);
-
-
-        return price;
+        if (token0 === USDC[ChainId.AURORA].address) {
+            wnearUsdcLPData.current = {
+                usdcReserve: reserves[0],
+                wnearReserve: reserves[1],
+            };
+        } else {
+            wnearUsdcLPData.current = {
+                usdcReserve: reserves[1],
+                wnearReserve: reserves[0],
+            };
+        }
     }
+
+    async function getWnearTriPairReserves(contract?: Contract | null) {
+        if (contract == null) {
+            return;
+        }
+
+        const {
+            reserves,
+            token0,
+            token1: _token1,
+        } = await getPairReserves(contract);
+
+        if (token0 === TRI[ChainId.AURORA].address) {
+            wnearTriLPData.current = {
+                triReserve: reserves[0],
+                wnearReserve: reserves[1],
+            };
+        } else {
+            wnearTriLPData.current = {
+                triReserve: reserves[1],
+                wnearReserve: reserves[0],
+            };
+        }
+    }
+
+    useEffect(() => {
+        if (wnearUsdcLPData.current == null) {
+            getWnearUSDCPairReserves(wnearUsdcContract);
+        }
+        if (wnearTriLPData.current == null) {
+            getWnearTriPairReserves(wnearTriContract);
+        }
+
+        if (wnearUsdcLPData.current != null && wnearTriLPData.current != null) {
+            setPrice(calculatePrice());
+        }
+    }, [
+        wnearUsdcLPData,
+        wnearTriLPData,
+        getWnearUSDCPairReserves,
+        getWnearTriPairReserves,
+        wnearUsdcContract,
+        wnearTriContract,
+        setPrice,
+        calculatePrice
+    ]);
 
     return price;
 }
@@ -99,4 +141,16 @@ async function getPairReserves(contract: Contract) {
         token1,
         reserves,
     }
+}
+
+function findPoolContract(tokenA: Token, tokenB: Token) {
+    const pools = STAKING[ChainId.AURORA];
+
+    return pools.find(pool => {
+        const [poolTokenA, poolTokenB] = pool.tokens;
+        const hasTokenA = [poolTokenA.address, poolTokenB.address].includes(tokenA.address);
+        const hasTokenB = [poolTokenA.address, poolTokenB.address].includes(tokenB.address);
+
+        return (hasTokenA && hasTokenB);
+    });
 }

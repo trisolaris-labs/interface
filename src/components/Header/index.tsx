@@ -224,6 +224,7 @@ const StyledNavLink = styled(NavLink).attrs({
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
   align-items: center;
+  background-color: ${({ theme }) => theme.bg1};
   justify-content: center;
   & > * {
     height: ${({ size }) => (size ? size + 'px' : '32px')};
@@ -270,7 +271,6 @@ export default function Header() {
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
   const triPrice = useTriPrice();
-  console.log('triPrice: ', triPrice);
 
   const [showPngBalanceModal, setShowPngBalanceModal] = useState(false)
 
@@ -320,25 +320,22 @@ export default function Header() {
       </HeaderRow>
       <HeaderControls>
         <HeaderElement>
-        <HideSmall>
-            {chainId && NETWORK_LABELS[chainId] && (  
+          <HideSmall>
+            {chainId && NETWORK_LABELS[chainId] && (
               <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
           </HideSmall>
-          <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-            <IconWrapper size={16}>
-              <img src={'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/0xFa94348467f64D5A457F75F8bc40495D33c65aBB/logo.png'} />
-            </IconWrapper>
-              <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-              {triPrice ?? '$0.00'}
+          <HideSmall>
+            <AccountElement active={true} style={{ pointerEvents: 'none', height: 36, padding: 8 }}>
+              <IconWrapper size={16}>
+                <img src={'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/0xFa94348467f64D5A457F75F8bc40495D33c65aBB/logo.png'} />
+              </IconWrapper>
+              <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
+                {triPrice != null ? `$${triPrice}` : '-'}
               </BalanceText>
-          </AccountElement>
+            </AccountElement>
+          </HideSmall>
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-            {account && userEthBalance && chainId && BASE_CURRENCIES[chainId] ? (
-              <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                {userEthBalance?.toSignificant(4)} {BASE_CURRENCIES[chainId]}
-              </BalanceText>
-            ) : null}
             <Web3Status />
           </AccountElement>
         </HeaderElement>
