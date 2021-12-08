@@ -270,8 +270,13 @@ export default function Manage({
             <AutoColumn gap="sm">
               <RowBetween>
                 <div>
-                  <TYPE.black>{t('earnPage.unclaimed')}</TYPE.black>
+                  <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
                 </div>
+                {(chefVersion == 1) && (
+                <div>
+                  <TYPE.black>{t('earnPage.unclaimed')} AURORA</TYPE.black>
+                </div>
+                )}
               </RowBetween>
               <RowBetween style={{ alignItems: 'baseline' }}>
                 <TYPE.largeHeader fontSize={36} fontWeight={600}>
