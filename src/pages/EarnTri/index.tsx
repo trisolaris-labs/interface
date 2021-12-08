@@ -109,60 +109,65 @@ export default function Earn({
           <CardNoise />
         </DataCard>
       </TopSection>
-      
+
       <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
         <DataRow style={{ alignItems: 'baseline' }}>
           <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>{t('earnPage.participatingPools')}</TYPE.mediumHeader>
         </DataRow>
 
         <PoolSection>
-            <>        
-              <PoolCard
-                 key={0}
-                 stakingInfo={farmArrs[5]}
-                 version={farmArrs[5].ID}
-               />
-               <PoolCard
-                 key={1}
-                 stakingInfo={farmArrs[6]}
-                 version={farmArrs[6].ID}
-               />
-               <PoolCard
-                 key={2}
-                 stakingInfo={farmArrs[0]}
-                 version={farmArrs[0].ID}
-               />
-               <PoolCard
-                 key={3}
-                 stakingInfo={farmArrs[1]}
-                 version={farmArrs[1].ID}
-               />
-               <PoolCard
-                 key={4}
-                 stakingInfo={farmArrs[2]}
-                 version={farmArrs[2].ID}
-               />
-               <PoolCard
-                 key={5}
-                 stakingInfo={farmArrs[3]}
-                 version={farmArrs[3].ID}
-               />
-               <PoolCard
-                 key={6}
-                 stakingInfo={farmArrs[4]}
-                 version={farmArrs[4].ID}
-               />
-               <PoolCard
-                 key={7}
-                 stakingInfo={farmArrs[7]}
-                 version={farmArrs[7].ID}
-               />
-              <PoolCard
-                 key={8}
-                 stakingInfo={farmArrs[8]}
-                 version={farmArrs[8].ID}
-               />
-            </>
+          <>
+            <PoolCard
+              key={0}
+              stakingInfo={farmArrs[5]}
+              version={farmArrs[5].ID}
+            />
+            <PoolCard
+              key={7}
+              stakingInfo={farmArrs[7]}
+              version={farmArrs[7].ID}
+            />
+            <PoolCard
+              key={8}
+              stakingInfo={farmArrs[8]}
+              version={farmArrs[8].ID}
+            />
+            <PoolCard
+              key={2}
+              stakingInfo={farmArrs[0]}
+              version={farmArrs[0].ID}
+            />
+            <PoolCard
+              key={3}
+              stakingInfo={farmArrs[1]}
+              version={farmArrs[1].ID}
+            />
+            <PoolCard
+              key={4}
+              stakingInfo={farmArrs[2]}
+              version={farmArrs[2].ID}
+            />
+            <PoolCard
+              key={5}
+              stakingInfo={farmArrs[3]}
+              version={farmArrs[3].ID}
+            />
+            <PoolCard
+              key={6}
+              stakingInfo={farmArrs[4]}
+              version={farmArrs[4].ID}
+            />
+          </>
+        </PoolSection>
+        <PoolSection>
+          <DataRow style={{ alignItems: 'baseline' }}>
+            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
+          </DataRow>
+          <PoolCard
+            key={1}
+            stakingInfo={farmArrs[6]}
+            version={farmArrs[6].ID}
+          />
         </PoolSection>
       </AutoColumn>
     </PageWrapper>

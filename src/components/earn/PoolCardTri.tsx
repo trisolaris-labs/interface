@@ -37,14 +37,16 @@ const AprContainer = styled.div`
   margin-left: 1rem;
 `
 
-const Wrapper = styled(AutoColumn)<{ showBackground: boolean; bgColor: any }>`
+const Wrapper = styled(AutoColumn) <{ showBackground: boolean; bgColor1: any, bgColor2?: any }>`
   border-radius: 12px;
   width: 100%;
   overflow: hidden;
   position: relative;
   opacity: ${({ showBackground }) => (showBackground ? '1' : '1')};
-  background: ${({ theme, bgColor, showBackground }) =>
-    `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor} 0%, ${showBackground ? theme.black : theme.bg5} 100%) `};
+  background: ${({ theme, bgColor1, bgColor2, showBackground }) =>
+    bgColor2 != null
+      ? `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor1} 30%, ${bgColor2} 100%) `
+      : `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor1} 0%, ${showBackground ? theme.black : theme.bg5} 100%) `};
   color: ${({ theme, showBackground }) => (showBackground ? theme.white : theme.text1)} !important;
 
   ${({ showBackground }) =>
@@ -92,18 +94,19 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
         ? token1
         : token0
       : token0.equals(PNG[token0.chainId])
-      ? token1
-      : token0
+        ? token1
+        : token0
 
   // get the color of the token
-  const backgroundColor = useColor(token)
+  const backgroundColor1 = useColor(token);
+  const backgroundColor2 = useColor(token === token1 ? token0 : token1);
 
   const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
-  const chefVersion = stakingInfo.chefVersion
+  const isDualRewards = stakingInfo.chefVersion == 1;
 
   return (
-    <Wrapper showBackground={isStaking} bgColor={backgroundColor}>
+    <Wrapper showBackground={isStaking} bgColor1={backgroundColor1} bgColor2={isDualRewards ? backgroundColor2 : null}>
       <CardBGImage desaturate />
       <CardNoise />
 
@@ -135,12 +138,12 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
           <TYPE.white>TRI APR</TYPE.white>
           <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
         </RowBetween>
-        {(chefVersion==1) && (
-        <RowBetween>
-          <TYPE.white>Double Rewards APR</TYPE.white>
-          <TYPE.white>{`${stakingInfo.apr2}%`}</TYPE.white>
-        </RowBetween>
-        )}
+        {isDualRewards ? (
+          <RowBetween>
+            <TYPE.white>Double Rewards APR</TYPE.white>
+            <TYPE.white>{`${stakingInfo.apr2}%`}</TYPE.white>
+          </RowBetween>
+        ) : null}
       </AprContainer>
       <StatContainer>
         {/*<RowBetween>
