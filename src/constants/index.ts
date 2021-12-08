@@ -112,6 +112,19 @@ export const XTRI: { [chainId in ChainId]: Token } = {
   ),
 }
 
+export const fAURORA2: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'fAURORA2', 'Fake Aurora'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'fAURORA2', 'Fake Aurora'),
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'fAURORA2', 'Fake Aurora'),
+  [ChainId.AURORA]: new Token(
+    ChainId.AURORA,
+    '0x74917188Dac79feb7935aac0b16C92d6D29A3AFb',
+    18,
+    'fAURORA2',
+    'Fake Aurora',
+  ),
+}
+
 export const AURORA: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'AURORA', 'Aurora'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'AURORA', 'Aurora'),

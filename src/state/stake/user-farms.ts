@@ -1,5 +1,5 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
-import { USDC, DAI, WNEAR, TRI} from '../../constants'
+import { USDC, DAI, WNEAR, TRI, fAURORA2} from '../../constants'
 import { useMasterChefContract, useMasterChefV2Contract, useComplexRewarderContract, MASTERCHEF_ADDRESS_V1 } from './hooks-sushi'
 import { STAKING, StakingTri, rewardsPerSecond, totalAllocPoints, tokenAmount, ExternalInfo } from './stake-constants'
 import {
@@ -51,7 +51,6 @@ export function useSingleFarm(version: string): StakingTri[] {
     return [String(activeFarms[Number(version)].poolId), String(account), "0"]
   }, [version, account])
 
-  console.log(args2)
 
   var contract = chefContract
   if (activeFarms[Number(version)].chefVersion != 0) {
@@ -60,9 +59,7 @@ export function useSingleFarm(version: string): StakingTri[] {
     //TODO args are incorrect here
   const pendingTri = useSingleCallResult(args ? contract : null, 'pendingTri', args!) //user related
   const userInfo = useSingleCallResult(args ? contract : null, 'userInfo', args!)  //user related
-  const complexRewards = useSingleCallResult(args2 ? complexRewarderContract : null, 'pendingTokens', args2!)
-
-  console.log(complexRewards)
+  const pendingComplexRewards = useSingleCallResult(args2 ? complexRewarderContract : null, 'pendingTokens', args2!)
 
   // get all the info from the staking rewards contracts
   const tokens = useMemo(() => activeFarms.filter(farm => {
@@ -80,16 +77,19 @@ export function useSingleFarm(version: string): StakingTri[] {
       const userStaked = userInfo
       const rewardsPending = pendingTri
       const [pairState, pair] = pairs[index]
+      const complexRewardPending = pendingComplexRewards
 
       if (
         // always need these
         userStaked?.loading === false &&
         rewardsPending?.loading === false &&
+        complexRewardPending?.loading == false &&
         pair &&
         pairState !== PairState.LOADING && stakingInfoData
       ) {
         if (
           userStaked.error ||
+          complexRewardPending.error ||
           rewardsPending.error ||
           pairState === PairState.INVALID ||
           pairState === PairState.NOT_EXISTS || !stakingInfoData
@@ -104,9 +104,11 @@ export function useSingleFarm(version: string): StakingTri[] {
         // check for account, if no account set to 0
         const userInfoPool = JSBI.BigInt(userStaked.result?.['amount'])
         const earnedRewardPool = JSBI.BigInt(rewardsPending.result?.[0])
+        const earnedComplexRewardPool = JSBI.BigInt(complexRewardPending.result?.rewardAmounts?.[0] ?? 0)
 
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
         const earnedAmount = new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(earnedRewardPool))
+        const earnedComplexAmount = new TokenAmount(fAURORA2[ChainId.AURORA], JSBI.BigInt(earnedComplexRewardPool))
         const chefVersion = activeFarms[Number(version)].chefVersion
 
         memo.push({
@@ -118,7 +120,7 @@ export function useSingleFarm(version: string): StakingTri[] {
           tokens: tokens,
           isPeriodFinished: false,
           earnedAmount: earnedAmount,
-          doubleRewardAmount: earnedAmount,
+          doubleRewardAmount: earnedComplexAmount,
           stakedAmount: stakedAmount,
           totalStakedAmount: tokenAmount,
           totalStakedInUSD: Math.round(stakingInfoData[Number(version)].totalStakedInUSD),

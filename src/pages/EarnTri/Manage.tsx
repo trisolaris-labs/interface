@@ -100,14 +100,12 @@ export default function Manage({
   const [currencyA, currencyB] = [useCurrency(currencyIdA), useCurrency(currencyIdB)]
   const tokenA = wrappedCurrency(currencyA ?? undefined, chainId)
   const tokenB = wrappedCurrency(currencyB ?? undefined, chainId)
-  // const [, stakingTokenPair] = usePair(tokenA, tokenB)
-  // console.log(stakingTokenPair)
   const farmArr = useSingleFarm(version)
+
 
   const stakingInfo = farmArr[0]
   let backgroundColor: string
   let token: Token | undefined
-  // const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
 
   const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   const totalRewardRate = stakingInfo.totalRewardRate.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
@@ -129,6 +127,10 @@ export default function Manage({
 
   const countUpAmount = stakingInfo?.earnedAmount?.toFixed(6) ?? '0'
   const countUpAmountPrevious = usePrevious(countUpAmount) ?? '0'
+
+  const countUpAmount2 = stakingInfo?.doubleRewardAmount?.toFixed(6) ?? '0'
+  const countUpAmountPrevious2 = usePrevious(countUpAmount2) ?? '0'
+  const chefVersion = stakingInfo.chefVersion
 
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
@@ -283,6 +285,19 @@ export default function Manage({
                     duration={1}
                   />
                 </TYPE.largeHeader>
+                {(chefVersion==1) && (
+                <TYPE.largeHeader fontSize={36} fontWeight={600}>
+                  <CountUp
+                    key={countUpAmount2}
+                    isCounting
+                    decimalPlaces={4}
+                    start={parseFloat(countUpAmountPrevious2)}
+                    end={parseFloat(countUpAmount2)}
+                    thousandsSeparator={','}
+                    duration={1}
+                  />
+                </TYPE.largeHeader>
+                )}
                 {/*<TYPE.black fontSize={16} fontWeight={500}>
                   <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px ' }}>
                     ⚡
