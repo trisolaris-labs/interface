@@ -26,6 +26,7 @@ import Modal from '../Modal'
 import usePrevious from '../../hooks/usePrevious'
 import { NETWORK_LABELS, BASE_CURRENCIES } from '../../constants'
 import LanguageSelection from '../LanguageSelection'
+import useTriPrice from '../../hooks/useTriPrice'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -220,6 +221,16 @@ const StyledNavLink = styled(NavLink).attrs({
   }
 `
 
+const IconWrapper = styled.div<{ size?: number }>`
+  ${({ theme }) => theme.flexColumnNoWrap};
+  align-items: center;
+  justify-content: center;
+  & > * {
+    height: ${({ size }) => (size ? size + 'px' : '32px')};
+    width: ${({ size }) => (size ? size + 'px' : '32px')};
+  }
+`
+
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName
 })<{ isActive?: boolean }>`
@@ -258,6 +269,7 @@ export default function Header() {
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
+  const triPrice = useTriPrice();
 
   const [showPngBalanceModal, setShowPngBalanceModal] = useState(false)
 
@@ -307,17 +319,22 @@ export default function Header() {
       </HeaderRow>
       <HeaderControls>
         <HeaderElement>
-        <HideSmall>
-            {chainId && NETWORK_LABELS[chainId] && (  
+          <HideSmall>
+            {chainId && NETWORK_LABELS[chainId] && (
               <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
           </HideSmall>
-          <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-            {account && userEthBalance && chainId && BASE_CURRENCIES[chainId] ? (
-              <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                {userEthBalance?.toSignificant(4)} {BASE_CURRENCIES[chainId]}
+          <HideSmall>
+            <AccountElement active={true} style={{ pointerEvents: 'none', height: 36, padding: 8 }}>
+              <IconWrapper size={16}>
+                <img src={'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/0xFa94348467f64D5A457F75F8bc40495D33c65aBB/logo.png'} />
+              </IconWrapper>
+              <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
+                {triPrice != null ? `$${triPrice}` : '-'}
               </BalanceText>
-            ) : null}
+            </AccountElement>
+          </HideSmall>
+          <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             <Web3Status />
           </AccountElement>
         </HeaderElement>
