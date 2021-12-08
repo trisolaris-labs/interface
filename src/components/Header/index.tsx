@@ -224,7 +224,6 @@ const StyledNavLink = styled(NavLink).attrs({
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
   align-items: center;
-  background-color: ${({ theme }) => theme.bg1};
   justify-content: center;
   & > * {
     height: ${({ size }) => (size ? size + 'px' : '32px')};
