@@ -6,6 +6,7 @@ import { TYPE, StyledInternalLink } from '../../theme'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { CETH, Token } from '@trisolaris/sdk'
 import { ButtonPrimary } from '../Button'
+import { AutoRow } from '../Row'
 import { StakingTri } from '../../state/stake/stake-constants'
 import { useColor } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
@@ -112,9 +113,18 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
 
       <TopSection>
         <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
-        <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
-          {currency0.symbol}-{currency1.symbol}
-        </TYPE.white>
+        <AutoRow align="baseline">
+          <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
+            {currency0.symbol}-{currency1.symbol}
+          </TYPE.white>
+          {isDualRewards
+            ? (
+              <TYPE.white fontWeight={600} fontSize={16} style={{ marginLeft: '8px' }}>
+                Dual Rewards
+              </TYPE.white>
+            )
+            : null}
+        </AutoRow>
         {(isStaking || !stakingInfo.isPeriodFinished) && (
           <StyledInternalLink
             to={`/tri/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}
