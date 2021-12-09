@@ -46,7 +46,7 @@ const Wrapper = styled(AutoColumn)<{ showBackground: boolean; bgColor1: any; bgC
   opacity: ${({ showBackground }) => (showBackground ? '1' : '1')};
   background: ${({ theme, bgColor1, bgColor2, showBackground }) =>
     bgColor2 != null
-      ? `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor1} 30%, ${bgColor2} 100%) `
+      ? `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor1} 30%, ${bgColor2} 70%, ${showBackground ? theme.black : theme.bg5} 100%)`
       : `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor1} 0%, ${showBackground ? theme.black : theme.bg5} 100%) `};
   color: ${({ theme, showBackground }) => (showBackground ? theme.white : theme.text1)} !important;
 
