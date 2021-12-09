@@ -1,6 +1,6 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
-import { USDC, DAI, WNEAR, TRI} from '../../constants'
-import { useMasterChefContract, useMasterChefV2Contract, MASTERCHEF_ADDRESS_V1 } from './hooks-sushi'
+import { USDC, DAI, WNEAR, TRI, AURORA} from '../../constants'
+import { useMasterChefContract, useMasterChefV2Contract, useComplexRewarderContract, MASTERCHEF_ADDRESS_V1 } from './hooks-sushi'
 import { STAKING, StakingTri, rewardsPerSecond, totalAllocPoints, tokenAmount, ExternalInfo } from './stake-constants'
 import {
   useSingleContractMultipleData,
@@ -21,12 +21,12 @@ export function useSingleFarm(version: string): StakingTri[] {
   let addresses = activeFarms.map(key => key.lpAddress)
   const chefContract = useMasterChefContract()
   const chefContractv2 = useMasterChefV2Contract()
-
   const [stakingInfoData, setStakingInfoData] = useState<ExternalInfo[]>()
+  const complexRewarderContract = useComplexRewarderContract(String(activeFarms[Number(version)].rewarderAddress))
 
 
   useEffect(() => {
-    fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/data.json')
+    fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/datav2.json')
       .then(results => results.json())
       .then(data => {
         setStakingInfoData(data)
@@ -40,8 +40,17 @@ export function useSingleFarm(version: string): StakingTri[] {
     if (!account || !version) {
       return
     }
-    return [String(version), String(account)]
+    return [String(activeFarms[Number(version)].poolId), String(account)]
   }, [version, account])
+
+
+  const args2 = useMemo(() => {
+    if (!account || !version) {
+      return
+    }
+    return [String(activeFarms[Number(version)].poolId), String(account), "0"]
+  }, [version, account])
+
 
   var contract = chefContract
   if (activeFarms[Number(version)].chefVersion != 0) {
@@ -50,7 +59,7 @@ export function useSingleFarm(version: string): StakingTri[] {
 
   const pendingTri = useSingleCallResult(args ? contract : null, 'pendingTri', args!) //user related
   const userInfo = useSingleCallResult(args ? contract : null, 'userInfo', args!)  //user related
-
+  const pendingComplexRewards = useSingleCallResult(args2 ? complexRewarderContract : null, 'pendingTokens', args2!)
   // get all the info from the staking rewards contracts
   const tokens = useMemo(() => activeFarms.filter(farm => {
         return farm.ID == Number(version)
@@ -58,15 +67,6 @@ export function useSingleFarm(version: string): StakingTri[] {
 
   const pairs = usePairs(tokens)
 
-
-
-  const pairAddresses = useMemo(() => {
-    const pairsHaveLoaded = pairs?.every(([state, pair]) => state === PairState.EXISTS)
-    if (!pairsHaveLoaded) return []
-    else return pairs.map(([state, pair]) => pair?.liquidityToken.address)
-  }, [pairs])
-
-  const pairTotalSupplies = useMultipleContractSingleData(pairAddresses, ERC20_INTERFACE, 'totalSupply') //totalSupply TO REPLACE
 
   return useMemo(() => {
     if (!chainId) return activeFarms
@@ -76,21 +76,20 @@ export function useSingleFarm(version: string): StakingTri[] {
       const userStaked = userInfo
       const rewardsPending = pendingTri
       const [pairState, pair] = pairs[index]
-      const pairTotalSupplyState = pairTotalSupplies[index]
-
+      const complexRewardPending = pendingComplexRewards
 
       if (
         // always need these
         userStaked?.loading === false &&
         rewardsPending?.loading === false &&
-        pairTotalSupplyState?.loading === false &&
+        complexRewardPending?.loading == false &&
         pair &&
         pairState !== PairState.LOADING && stakingInfoData
       ) {
         if (
           userStaked.error ||
+          complexRewardPending.error ||
           rewardsPending.error ||
-          pairTotalSupplyState.error ||
           pairState === PairState.INVALID ||
           pairState === PairState.NOT_EXISTS || !stakingInfoData
         ) {
@@ -104,21 +103,23 @@ export function useSingleFarm(version: string): StakingTri[] {
         // check for account, if no account set to 0
         const userInfoPool = JSBI.BigInt(userStaked.result?.['amount'])
         const earnedRewardPool = JSBI.BigInt(rewardsPending.result?.[0])
-        const totalSupplyAvailable = JSBI.BigInt(pairTotalSupplyState.result?.[0])
+        const earnedComplexRewardPool = JSBI.BigInt(complexRewardPending.result?.rewardAmounts?.[0] ?? 0)
 
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
         const earnedAmount = new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(earnedRewardPool))
+        const earnedComplexAmount = new TokenAmount(AURORA[ChainId.AURORA], JSBI.BigInt(earnedComplexRewardPool))
         const chefVersion = activeFarms[Number(version)].chefVersion
-
 
         memo.push({
           ID: activeFarms[Number(version)].ID,
           poolId: activeFarms[Number(version)].poolId,
           stakingRewardAddress: activeFarms[Number(version)].stakingRewardAddress,
           lpAddress: activeFarms[Number(version)].lpAddress,
+          rewarderAddress: activeFarms[Number(version)].rewarderAddress,
           tokens: tokens,
           isPeriodFinished: false,
           earnedAmount: earnedAmount,
+          doubleRewardAmount: earnedComplexAmount,
           stakedAmount: stakedAmount,
           totalStakedAmount: tokenAmount,
           totalStakedInUSD: Math.round(stakingInfoData[Number(version)].totalStakedInUSD),
@@ -126,7 +127,7 @@ export function useSingleFarm(version: string): StakingTri[] {
           totalRewardRate: Math.round(stakingInfoData[Number(version)].totalRewardRate),
           rewardRate: tokenAmount,
           apr: Math.round(stakingInfoData[Number(version)].apr),
-          apr2: 0,
+          apr2: Math.round(stakingInfoData[Number(version)].apr2),
           chefVersion: chefVersion
         })
         return memo
@@ -136,7 +137,6 @@ export function useSingleFarm(version: string): StakingTri[] {
   }, [
     activeFarms,
     pairs,
-    pairTotalSupplies,
     pendingTri,
     userInfo
   ])

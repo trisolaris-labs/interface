@@ -6,6 +6,7 @@ import { TYPE, StyledInternalLink } from '../../theme'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { CETH, Token } from '@trisolaris/sdk'
 import { ButtonPrimary } from '../Button'
+import { AutoRow } from '../Row'
 import { StakingTri } from '../../state/stake/stake-constants'
 import { useColor } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
@@ -37,14 +38,16 @@ const AprContainer = styled.div`
   margin-left: 1rem;
 `
 
-const Wrapper = styled(AutoColumn)<{ showBackground: boolean; bgColor: any }>`
+const Wrapper = styled(AutoColumn)<{ showBackground: boolean; bgColor1: any; bgColor2?: any }>`
   border-radius: 12px;
   width: 100%;
   overflow: hidden;
   position: relative;
   opacity: ${({ showBackground }) => (showBackground ? '1' : '1')};
-  background: ${({ theme, bgColor, showBackground }) =>
-    `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor} 0%, ${showBackground ? theme.black : theme.bg5} 100%) `};
+  background: ${({ theme, bgColor1, bgColor2, showBackground }) =>
+    bgColor2 != null
+      ? `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor1} 30%, ${bgColor2} 70%, ${showBackground ? theme.black : theme.bg5} 100%)`
+      : `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor1} 0%, ${showBackground ? theme.black : theme.bg5} 100%) `};
   color: ${({ theme, showBackground }) => (showBackground ? theme.white : theme.text1)} !important;
 
   ${({ showBackground }) =>
@@ -96,20 +99,30 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
       : token0
 
   // get the color of the token
-  const backgroundColor = useColor(token)
+  const backgroundColor1 = useColor(token)
+  const backgroundColor2 = useColor(token === token1 ? token0 : token1)
 
   const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
+  const isDualRewards = stakingInfo.chefVersion == 1
+
   return (
-    <Wrapper showBackground={isStaking} bgColor={backgroundColor}>
+    <Wrapper showBackground={isStaking} bgColor1={backgroundColor1} bgColor2={isDualRewards ? backgroundColor2 : null}>
       <CardBGImage desaturate />
       <CardNoise />
 
       <TopSection>
         <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
-        <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
-          {currency0.symbol}-{currency1.symbol}
-        </TYPE.white>
+        <AutoRow align="baseline">
+          <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
+            {currency0.symbol}-{currency1.symbol}
+          </TYPE.white>
+          {isDualRewards ? (
+            <TYPE.white fontWeight={600} fontSize={16} style={{ marginLeft: '8px' }}>
+              Dual Rewards
+            </TYPE.white>
+          ) : null}
+        </AutoRow>
         {(isStaking || !stakingInfo.isPeriodFinished) && (
           <StyledInternalLink
             to={`/tri/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}
@@ -123,17 +136,37 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
       </TopSection>
 
       <StatContainer>
-        <RowBetween>
-          <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
-          <TYPE.white>{`$${totalStakedInUSD}`}</TYPE.white>
-        </RowBetween>
+        {isDualRewards ? (
+          <RowBetween>
+            <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
+            <TYPE.white>-</TYPE.white>
+          </RowBetween>
+        ) : (
+          <RowBetween>
+            <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
+            <TYPE.white>{`$${totalStakedInUSD}`}</TYPE.white>
+          </RowBetween>
+        )}
       </StatContainer>
-      <AprContainer>
-        <RowBetween>
-          <TYPE.white>Total APR</TYPE.white>
-          <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
-        </RowBetween>
-      </AprContainer>
+      {isDualRewards ? (
+        <AprContainer>
+          <RowBetween>
+            <TYPE.white>TRI APR</TYPE.white>
+            <TYPE.white>Coming soon</TYPE.white>
+          </RowBetween>
+          <RowBetween>
+            <TYPE.white>AURORA APR</TYPE.white>
+            <TYPE.white>Coming soon</TYPE.white>
+          </RowBetween>
+        </AprContainer>
+      ) : (
+        <AprContainer>
+          <RowBetween>
+            <TYPE.white>TRI APR</TYPE.white>
+            <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
+          </RowBetween>
+        </AprContainer>
+      )}
       <StatContainer>
         {/*<RowBetween>
           <TYPE.white> {t('earn.poolWeight')} </TYPE.white>

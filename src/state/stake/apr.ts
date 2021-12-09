@@ -26,13 +26,15 @@ export function useFarms(): StakingTri[] {
 
   const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
   let lpAddresses = activeFarms.map(key => key.lpAddress)
+  let lpAddressesv2 = activeFarms.filter(key => key.chefVersion == 1).map(key => key.lpAddress)
+
   const chefContract = useMasterChefContract()
   const chefContractv2 = useMasterChefV2Contract()
 
   const [stakingInfoData, setStakingInfoData] = useState<ExternalInfo[]>()
 
   useEffect(() => {
-    fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/data.json')
+    fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/datav2.json')
       .then(results => results.json())
       .then(data => {
         setStakingInfoData(data)
@@ -47,24 +49,34 @@ export function useFarms(): StakingTri[] {
     return [...Array(lpAddresses.length).keys()].map(pid => [String(pid), String(account)])
   }, [lpAddresses.length, account])
 
+
+  const args2 = useMemo(() => {
+    if (!account || !lpAddressesv2) {
+      return
+    }
+    return [...Array(lpAddressesv2.length).keys()].map(pid => [String(pid), String(account)])
+  }, [lpAddressesv2.length, account])
+
   const userInfo = useSingleContractMultipleData(args ? chefContract : null, 'userInfo', args!) //user related
 
+  const userInfov2 = useSingleContractMultipleData(args2 ? chefContractv2 : null, 'userInfo', args2!) //user related
+  
   // get all the info from the staking rewards contracts
   const tokens = useMemo(() => activeFarms.map(({ tokens }) => tokens), [activeFarms])
   const pairs = usePairs(tokens)
-
-  const pairAddresses = useMemo(() => {
-    const pairsHaveLoaded = pairs?.every(([state, pair]) => state === PairState.EXISTS)
-    if (!pairsHaveLoaded) return []
-    else return pairs.map(([state, pair]) => pair?.liquidityToken.address)
-  }, [pairs])
 
   return useMemo(() => {
     if (!chainId) return activeFarms
 
     return lpAddresses.reduce<StakingTri[]>((memo, lpAddress, index) => {
       // User based info
-      const userStaked = userInfo[index]
+      var userStaked = userInfo[index]
+      if (index == 7) {
+        var userStaked= userInfov2[0]
+      } else if (index == 8) {
+        var userStaked = userInfov2[1]
+      }
+      
 
       const [pairState, pair] = pairs[index]
 
@@ -101,9 +113,11 @@ export function useFarms(): StakingTri[] {
           poolId: activeFarms[index].poolId,
           stakingRewardAddress: activeFarms[index].stakingRewardAddress,
           lpAddress: activeFarms[index].lpAddress,
+          rewarderAddress: activeFarms[index].rewarderAddress,
           tokens: tokens,
           isPeriodFinished: false,
           earnedAmount: tokenAmount,
+          doubleRewardAmount: tokenAmount,
           stakedAmount: stakedAmount,
           totalStakedAmount: tokenAmount,
           totalStakedInUSD: Math.round(stakingInfoData[index].totalStakedInUSD),
@@ -111,7 +125,7 @@ export function useFarms(): StakingTri[] {
           totalRewardRate: Math.round(stakingInfoData[index].totalRewardRate),
           rewardRate: tokenAmount,
           apr: Math.round((stakingInfoData[index].apr)),
-          apr2: 0,
+          apr2: Math.round((stakingInfoData[index].apr2)),
           chefVersion:chefVersion
         })
         return memo

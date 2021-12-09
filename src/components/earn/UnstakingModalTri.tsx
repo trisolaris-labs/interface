@@ -45,6 +45,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
 
   const stakingContract = useMasterChefContract()
   const stakingContractv2 = useMasterChefV2Contract()
+  const chefVersion = stakingInfo.chefVersion
 
   async function onWithdraw() {
     if(stakingInfo.chefVersion == 0) {
@@ -114,6 +115,14 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               <TYPE.body>{t('earn.unclaimed')}</TYPE.body>
             </AutoColumn>
           )}
+          {stakingInfo?.doubleRewardAmount && chefVersion==1 &&(
+            <AutoColumn justify="center" gap="md">
+              <TYPE.body fontWeight={600} fontSize={36}>
+                {<FormattedCurrencyAmount currencyAmount={stakingInfo?.doubleRewardAmount} />}
+              </TYPE.body>
+              <TYPE.body>{"Unclaimed Aurora"}</TYPE.body>
+            </AutoColumn>
+          )}
           <TYPE.subHeader style={{ textAlign: 'center' }}>
             {t('earn.whenYouWithdrawWarning')}
           </TYPE.subHeader>
@@ -127,6 +136,9 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.body fontSize={20}>{t('earn.withdrawingPgl', {"amount": stakingInfo?.stakedAmount?.toSignificant(4)})}</TYPE.body>
             <TYPE.body fontSize={20}>{t('earn.claimingPng', {"amount": stakingInfo?.earnedAmount?.toSignificant(4)})}</TYPE.body>
+            {stakingInfo?.doubleRewardAmount && chefVersion==1 &&(
+            <TYPE.body fontSize={20}>{t('earn.claimingAurora', {"amount": stakingInfo?.doubleRewardAmount?.toSignificant(4)})}</TYPE.body>
+            )}
           </AutoColumn>
         </LoadingView>
       )}

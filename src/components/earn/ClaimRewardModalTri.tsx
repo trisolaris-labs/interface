@@ -32,6 +32,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
   const addTransaction = useTransactionAdder()
   const [hash, setHash] = useState<string | undefined>()
   const [attempting, setAttempting] = useState(false)
+  const chefVersion = stakingInfo.chefVersion
 
   function wrappedOnDismiss() {
     setHash(undefined)
@@ -101,6 +102,14 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
                                 {stakingInfo?.earnedAmount?.toSignificant(6)}
                             </TYPE.body>
                             <TYPE.body>{t('earn.unclaimed')}</TYPE.body>
+                        </AutoColumn>
+                    )}
+                    {(chefVersion==1) && (
+                     <AutoColumn justify="center" gap="md">
+                            <TYPE.body fontWeight={600} fontSize={36}>
+                                {stakingInfo?.doubleRewardAmount?.toSignificant(6)}
+                            </TYPE.body>
+                            <TYPE.body>{"Unclaimed Aurora"}</TYPE.body>
                         </AutoColumn>
                     )}
                     <TYPE.subHeader style={{ textAlign: 'center' }}>
