@@ -38,7 +38,7 @@ const AprContainer = styled.div`
   margin-left: 1rem;
 `
 
-const Wrapper = styled(AutoColumn) <{ showBackground: boolean; bgColor1: any, bgColor2?: any }>`
+const Wrapper = styled(AutoColumn)<{ showBackground: boolean; bgColor1: any; bgColor2?: any }>`
   border-radius: 12px;
   width: 100%;
   overflow: hidden;
@@ -95,16 +95,16 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
         ? token1
         : token0
       : token0.equals(PNG[token0.chainId])
-        ? token1
-        : token0
+      ? token1
+      : token0
 
   // get the color of the token
-  const backgroundColor1 = useColor(token);
-  const backgroundColor2 = useColor(token === token1 ? token0 : token1);
+  const backgroundColor1 = useColor(token)
+  const backgroundColor2 = useColor(token === token1 ? token0 : token1)
 
   const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
-  const isDualRewards = stakingInfo.chefVersion == 1;
+  const isDualRewards = stakingInfo.chefVersion == 1
 
   return (
     <Wrapper showBackground={isStaking} bgColor1={backgroundColor1} bgColor2={isDualRewards ? backgroundColor2 : null}>
@@ -117,13 +117,11 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
           <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
             {currency0.symbol}-{currency1.symbol}
           </TYPE.white>
-          {isDualRewards
-            ? (
-              <TYPE.white fontWeight={600} fontSize={16} style={{ marginLeft: '8px' }}>
-                Dual Rewards
-              </TYPE.white>
-            )
-            : null}
+          {isDualRewards ? (
+            <TYPE.white fontWeight={600} fontSize={16} style={{ marginLeft: '8px' }}>
+              Dual Rewards
+            </TYPE.white>
+          ) : null}
         </AutoRow>
         {(isStaking || !stakingInfo.isPeriodFinished) && (
           <StyledInternalLink
@@ -138,23 +136,37 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
       </TopSection>
 
       <StatContainer>
-        <RowBetween>
-          <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
-          <TYPE.white>{`$${totalStakedInUSD}`}</TYPE.white>
-        </RowBetween>
-      </StatContainer>
-      <AprContainer>
-        <RowBetween>
-          <TYPE.white>TRI APR</TYPE.white>
-          <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
-        </RowBetween>
         {isDualRewards ? (
           <RowBetween>
-            <TYPE.white>Double Rewards APR</TYPE.white>
-            <TYPE.white>{`${stakingInfo.apr2}%`}</TYPE.white>
+            <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
+            <TYPE.white>-</TYPE.white>
           </RowBetween>
-        ) : null}
-      </AprContainer>
+        ) : (
+          <RowBetween>
+            <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
+            <TYPE.white>{`$${totalStakedInUSD}`}</TYPE.white>
+          </RowBetween>
+        )}
+      </StatContainer>
+      {isDualRewards ? (
+        <AprContainer>
+          <RowBetween>
+            <TYPE.white>TRI APR</TYPE.white>
+            <TYPE.white>Coming soon</TYPE.white>
+          </RowBetween>
+          <RowBetween>
+            <TYPE.white>AURORA APR</TYPE.white>
+            <TYPE.white>Coming soon</TYPE.white>
+          </RowBetween>
+        </AprContainer>
+      ) : (
+        <AprContainer>
+          <RowBetween>
+            <TYPE.white>TRI APR</TYPE.white>
+            <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
+          </RowBetween>
+        </AprContainer>
+      )}
       <StatContainer>
         {/*<RowBetween>
           <TYPE.white> {t('earn.poolWeight')} </TYPE.white>
