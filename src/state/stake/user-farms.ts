@@ -1,5 +1,5 @@
 import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
-import { USDC, DAI, WNEAR, TRI, fAURORA2} from '../../constants'
+import { USDC, DAI, WNEAR, TRI, AURORA} from '../../constants'
 import { useMasterChefContract, useMasterChefV2Contract, useComplexRewarderContract, MASTERCHEF_ADDRESS_V1 } from './hooks-sushi'
 import { STAKING, StakingTri, rewardsPerSecond, totalAllocPoints, tokenAmount, ExternalInfo } from './stake-constants'
 import {
@@ -56,11 +56,10 @@ export function useSingleFarm(version: string): StakingTri[] {
   if (activeFarms[Number(version)].chefVersion != 0) {
     var contract = chefContractv2
   }
-    //TODO args are incorrect here
+
   const pendingTri = useSingleCallResult(args ? contract : null, 'pendingTri', args!) //user related
   const userInfo = useSingleCallResult(args ? contract : null, 'userInfo', args!)  //user related
   const pendingComplexRewards = useSingleCallResult(args2 ? complexRewarderContract : null, 'pendingTokens', args2!)
-
   // get all the info from the staking rewards contracts
   const tokens = useMemo(() => activeFarms.filter(farm => {
         return farm.ID == Number(version)
@@ -108,7 +107,7 @@ export function useSingleFarm(version: string): StakingTri[] {
 
         const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
         const earnedAmount = new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(earnedRewardPool))
-        const earnedComplexAmount = new TokenAmount(fAURORA2[ChainId.AURORA], JSBI.BigInt(earnedComplexRewardPool))
+        const earnedComplexAmount = new TokenAmount(AURORA[ChainId.AURORA], JSBI.BigInt(earnedComplexRewardPool))
         const chefVersion = activeFarms[Number(version)].chefVersion
 
         memo.push({

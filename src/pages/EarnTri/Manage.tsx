@@ -102,7 +102,6 @@ export default function Manage({
   const tokenB = wrappedCurrency(currencyB ?? undefined, chainId)
   const farmArr = useSingleFarm(version)
 
-
   const stakingInfo = farmArr[0]
   let backgroundColor: string
   let token: Token | undefined
