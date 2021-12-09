@@ -1,0 +1,1 @@
+(this["webpackJsonp@pangolindex/interface"]=this["webpackJsonp@pangolindex/interface"]||[]).push([[5],{867:function(n,i){},874:function(n,i){},876:function(n,i){}}]);
