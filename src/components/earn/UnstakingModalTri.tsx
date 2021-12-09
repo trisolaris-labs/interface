@@ -136,6 +136,9 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.body fontSize={20}>{t('earn.withdrawingPgl', {"amount": stakingInfo?.stakedAmount?.toSignificant(4)})}</TYPE.body>
             <TYPE.body fontSize={20}>{t('earn.claimingPng', {"amount": stakingInfo?.earnedAmount?.toSignificant(4)})}</TYPE.body>
+            {stakingInfo?.doubleRewardAmount && chefVersion==1 &&(
+            <TYPE.body fontSize={20}>{t('earn.claimingAurora', {"amount": stakingInfo?.doubleRewardAmount?.toSignificant(4)})}</TYPE.body>
+            )}
           </AutoColumn>
         </LoadingView>
       )}
