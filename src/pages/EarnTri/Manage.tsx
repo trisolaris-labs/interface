@@ -251,14 +251,33 @@ export default function Manage({
                   <TYPE.white fontWeight={600}>{t('earnPage.liquidityDeposits')}</TYPE.white>
                 </RowBetween>
                 <RowBetween style={{ alignItems: 'baseline' }}>
-                <AutoColumn gap="md">
-                  <TYPE.white fontSize={36} fontWeight={600}>
-                    {userLPAmountUSDFormatted ?? '$0'}
-                  </TYPE.white>
-                </AutoColumn>
-                  <TYPE.white>
-                    {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'} TLP {currencyA?.symbol}-{currencyB?.symbol}
-                  </TYPE.white>
+                  {(chefVersion == 1)
+                    ? (
+                      // If MasterChefV2, only show the TLP Amount (no $ amount)
+                      <>
+                        <AutoColumn gap="md">
+                          <TYPE.white fontSize={36} fontWeight={600}>
+                            {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'}
+                          </TYPE.white>
+                        </AutoColumn>
+                        <TYPE.white>
+                          TLP {currencyA?.symbol}-{currencyB?.symbol}
+                        </TYPE.white>
+                      </>
+                    )
+                    : (
+                      // If MasterChefV1, show $ amount as primary text and TLP amount as secondary text
+                      <>
+                        <AutoColumn gap="md">
+                          <TYPE.white fontSize={36} fontWeight={600}>
+                            {userLPAmountUSDFormatted ?? '$0'}
+                          </TYPE.white>
+                        </AutoColumn>
+                        <TYPE.white>
+                          {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'} TLP {currencyA?.symbol}-{currencyB?.symbol}
+                        </TYPE.white>
+                      </>
+                    )}
                 </RowBetween>
               </AutoColumn>
             </CardSection>
