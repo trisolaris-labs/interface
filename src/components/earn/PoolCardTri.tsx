@@ -144,7 +144,7 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
         ) : (
           <RowBetween>
             <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
-            <TYPE.white>{`$${totalStakedInUSD}`}</TYPE.white>
+            <TYPE.white>{`${totalStakedInUSD}`}</TYPE.white>
           </RowBetween>
         )}
       </StatContainer>
