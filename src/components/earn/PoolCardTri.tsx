@@ -139,7 +139,7 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
         {isDualRewards ? (
           <RowBetween>
             <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
-            <TYPE.white>-</TYPE.white>
+            <TYPE.white>{`$${totalStakedInUSD}`}</TYPE.white>
           </RowBetween>
         ) : (
           <RowBetween>
