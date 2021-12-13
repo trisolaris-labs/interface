@@ -145,11 +145,11 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
         <AprContainer>
           <RowBetween>
             <TYPE.white>TRI APR</TYPE.white>
-            <TYPE.white>Coming soon</TYPE.white>
+            <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
           </RowBetween>
           <RowBetween>
             <TYPE.white>AURORA APR</TYPE.white>
-            <TYPE.white>Coming soon</TYPE.white>
+            <TYPE.white>{`${stakingInfo.apr2}%`}</TYPE.white>
           </RowBetween>
         </AprContainer>
       ) : (
