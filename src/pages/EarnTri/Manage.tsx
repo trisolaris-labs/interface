@@ -18,7 +18,7 @@ import UnstakingModal from '../../components/earn/UnstakingModalTri'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
-import { useColor } from '../../hooks/useColor'
+import { useColorWithDefault } from '../../hooks/useColor'
 import { CountUp } from 'use-count-up'
 
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
@@ -110,7 +110,7 @@ export default function Manage({
   const totalRewardRate = stakingInfo.totalRewardRate.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
   // get the color of the token
-  backgroundColor = useColor(token)
+  backgroundColor = useColorWithDefault('#2172E5', token);
 
   // detect existing unstaked LP position to show add button if none found
   const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakingInfo?.stakedAmount?.token)

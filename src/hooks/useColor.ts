@@ -4,7 +4,13 @@ import Vibrant from 'node-vibrant'
 import { hex } from 'wcag-contrast'
 import { Token } from '@trisolaris/sdk'
 
+const COLOR_MAP = new Map();
+
 async function getColorFromToken(token: Token): Promise<string | null> {
+  if (COLOR_MAP.has(token.address)) {
+    return COLOR_MAP.get(token.address);
+  }
+
   const path = `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${token.address}/logo.png`
 
   return Vibrant.from(path)
@@ -21,11 +27,18 @@ async function getColorFromToken(token: Token): Promise<string | null> {
       }
       return null
     })
+    .then(color => {
+      if (color != null) {
+        COLOR_MAP.set(token.address, color);
+      }
+
+      return color;
+    })
     .catch(() => null)
 }
 
 export function useColor(token?: Token) {
-  const [color, setColor] = useState('#2172E5')
+  const [color, setColor] = useState<string | null>(null);
 
   useLayoutEffect(() => {
     let stale = false
@@ -40,9 +53,13 @@ export function useColor(token?: Token) {
 
     return () => {
       stale = true
-      setColor('#2172E5')
+      setColor(null);
     }
   }, [token])
 
-  return color
+  return color;
+}
+
+export function useColorWithDefault(defaultColor: string, token?: Token) {
+  return useColor(token) ?? defaultColor;
 }

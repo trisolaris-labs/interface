@@ -7,7 +7,7 @@ import DoubleCurrencyLogo from '../DoubleLogo'
 import { CETH, Token } from '@trisolaris/sdk'
 import { ButtonPrimary } from '../Button'
 import { Staking, StakingInfo } from '../../state/stake/hooks'
-import { useColor } from '../../hooks/useColor'
+import { useColorWithDefault } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
 import { Break, CardNoise, CardBGImage } from './styled'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
@@ -108,7 +108,7 @@ export default function PoolCard({
       : token0
 
   // get the color of the token
-  const backgroundColor = useColor(token)
+  const backgroundColor = useColorWithDefault('#2172E5', token);
 
   return (
     <Wrapper showBackground={isStaking} bgColor={backgroundColor}>

@@ -43,11 +43,12 @@ const Wrapper = styled(AutoColumn)<{ showBackground: boolean; bgColor1: any; bgC
   width: 100%;
   overflow: hidden;
   position: relative;
-  opacity: ${({ showBackground }) => (showBackground ? '1' : '1')};
+  opacity: 1;
   background: ${({ theme, bgColor1, bgColor2, showBackground }) =>
     bgColor2 != null
       ? `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor1} 30%, ${bgColor2} 70%, ${showBackground ? theme.black : theme.bg5} 100%)`
       : `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor1} 0%, ${showBackground ? theme.black : theme.bg5} 100%) `};
+  background-color: grey;
   color: ${({ theme, showBackground }) => (showBackground ? theme.white : theme.text1)} !important;
 
   ${({ showBackground }) =>
@@ -79,6 +80,8 @@ const BottomSection = styled.div<{ showBackground: boolean }>`
   z-index: 1;
 `
 
+const GREY_ICON_TOKENS = ['ETH', 'WETH', 'WBTC', 'WNEAR'];
+
 export default function PoolCard({ stakingInfo, version }: { stakingInfo: StakingTri; version: number }) {
   const token0 = stakingInfo.tokens[0]
   const token1 = stakingInfo.tokens[1]
@@ -99,12 +102,25 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
       : token0
 
   // get the color of the token
-  const backgroundColor1 = useColor(token)
-  const backgroundColor2 = useColor(token === token1 ? token0 : token1)
+  let backgroundColor1 = useColor(token)
+  const secondaryToken = token === token1 ? token0 : token1;
+  let backgroundColor2 = useColor(secondaryToken);
 
   const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
   const isDualRewards = stakingInfo.chefVersion == 1
+
+  // Colors are dynamically chosen based on token logos
+  // These tokens are mostly grey; Override color to blue
+  
+  if (GREY_ICON_TOKENS.includes(token?.symbol ?? '')) {
+    backgroundColor1 = '#2172E5';
+  }
+  
+  // Only override `backgroundColor2` if it's a dual rewards pool
+  if (isDualRewards && GREY_ICON_TOKENS.includes(secondaryToken?.symbol ?? '')) {
+    backgroundColor2 = '#2172E5';
+  }
 
   return (
     <Wrapper showBackground={isStaking} bgColor1={backgroundColor1} bgColor2={isDualRewards ? backgroundColor2 : null}>
