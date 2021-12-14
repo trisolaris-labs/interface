@@ -80,6 +80,8 @@ const BottomSection = styled.div<{ showBackground: boolean }>`
   z-index: 1;
 `
 
+const GREY_ICON_TOKENS = ['ETH', 'WETH', 'WBTC', 'WNEAR'];
+
 export default function PoolCard({ stakingInfo, version }: { stakingInfo: StakingTri; version: number }) {
   const token0 = stakingInfo.tokens[0]
   const token1 = stakingInfo.tokens[1]
@@ -101,7 +103,8 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
 
   // get the color of the token
   let backgroundColor1 = useColor(token)
-  const backgroundColor2 = useColor(token === token1 ? token0 : token1)
+  const secondaryToken = token === token1 ? token0 : token1;
+  let backgroundColor2 = useColor(secondaryToken);
 
   const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
@@ -109,13 +112,14 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
 
   // Colors are dynamically chosen based on token logos
   // These tokens are mostly grey; Override color to blue
-  if ([
-    'ETH',
-    'WETH',
-    'WBTC',
-    'WNEAR'
-  ].includes(token?.symbol ?? '')) {
+  
+  if (GREY_ICON_TOKENS.includes(token?.symbol ?? '')) {
     backgroundColor1 = '#2172E5';
+  }
+  
+  // Only override `backgroundColor2` if it's a dual rewards pool
+  if (isDualRewards && GREY_ICON_TOKENS.includes(secondaryToken?.symbol ?? '')) {
+    backgroundColor2 = '#2172E5';
   }
 
   return (
