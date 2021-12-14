@@ -175,7 +175,7 @@ const COMMON_BASES: ChainTokenList = {
   [ChainId.FUJI]: [DAI[ChainId.FUJI], USDT[ChainId.FUJI]],
   [ChainId.AVALANCHE]: [DAI[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
   [ChainId.POLYGON]: [DAI[ChainId.POLYGON], USDT[ChainId.POLYGON]],
-  [ChainId.AURORA]: [WNEAR[ChainId.AURORA], USDT[ChainId.AURORA]]
+  [ChainId.AURORA]: [WNEAR[ChainId.AURORA], USDT[ChainId.AURORA], WETH[ChainId.AURORA], TRI[ChainId.AURORA]]
 }
 
 // used to construct intermediary pairs for trading
