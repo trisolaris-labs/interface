@@ -1,6 +1,6 @@
 {
-  "name": "@pangolindex/interface",
-  "description": "Pangolin Interface",
+  "name": "interface",
+  "description": "Trisolaris Interface",
   "homepage": ".",
   "private": true,
   "devDependencies": {
