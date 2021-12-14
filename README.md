@@ -1,18 +1,16 @@
-# Pangolin Interface
+# Trisolaris Interface
 
-An open source interface for Pangolin -- a community-driven decentralized exchange for Avalanche and Ethereum assets with fast settlement, low transaction fees, and a democratic distribution -- powered by Avalanche.
+An open source interface for Trisolaris -- a community-driven decentralized exchange for Aurora and Ethereum assets with fast settlement, low transaction fees, and a democratic distribution -- powered by Aurora.
 
-- Website: [pangolin.exchange](https://pangolin.exchange/)
-- Interface: [app.pangolin.exchange](https://app.pangolin.exchange)
-- Telegram: [Pangolin](https://t.me/pangolindex)
-- Discord: [Pangolin](https://discord.com/invite/PARrDYYbfw)
-- Twitter: [@pangolindex](https://twitter.com/pangolindex)
-
+- Website: [https://www.trisolaris.io/](https://www.trisolaris.io/)
+- Telegram: [TrisolarisLabs](https://t.me/TrisolarisLabs)
+- Discord: [TrisolarisLabs](discord.gg/my6GtSTmmX)
+- Twitter: [@trisolarislabs](https://twitter.com/trisolarislabs)
 
 
-## Accessing the Pangolin Interface
+## Accessing the Trisolaris Interface
 
-Visit [app.pangolin.exchange](https://app.pangolin.exchange).
+Visit [https://www.trisolaris.io/](https://www.trisolaris.io/).
 
 ## Development
 
@@ -35,11 +33,6 @@ To have the interface default to a different network when a wallet is not connec
 1. Make a copy of `.env` named `.env.local`
 2. Change `REACT_APP_NETWORK_ID` to `"{YOUR_NETWORK_ID}"`
 3. Change `REACT_APP_NETWORK_URL` to your JSON-RPC provider 
-
-Note that the interface only works on testnets where both 
-[Pangolin](https://github.com/pangolindex/exchange-contracts) and 
-[multicall](https://github.com/makerdao/multicall) are deployed.
-The interface will not work on other networks.
 
 ## Attribution
 This code was adapted from this Uniswap repo: [uniswap-interface](https://github.com/Uniswap/uniswap-interface).
