@@ -16,7 +16,7 @@ import { ButtonPrimary, ButtonEmpty } from '../Button'
 import { transparentize } from 'polished'
 import { CardNoise } from '../earn/styled'
 
-import { useColor } from '../../hooks/useColor'
+import { useColorWithDefault } from '../../hooks/useColor'
 
 import Card, { GreyCard, LightCard } from '../Card'
 import { AutoColumn } from '../Column'
@@ -187,7 +187,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
         ]
       : [undefined, undefined]
 
-  const backgroundColor = useColor(pair?.token0)
+  const backgroundColor = useColorWithDefault('#2172E5', pair?.token0);
 
   return (
     <StyledPositionCard border={border} bgColor={backgroundColor}>
