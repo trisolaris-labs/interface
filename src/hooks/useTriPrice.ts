@@ -20,7 +20,7 @@ export default function useTriPrice() {
     const wnearUsdcLPData = useRef<LPData | null>(null);
     const wnearTriLPData = useRef<LPData | null>(null);
 
-    const [price, setPrice] = useState<string | null>(null);
+    const price = useRef<Fraction | null>(null);
 
     const calculatePrice = useCallback(() => {
         if (wnearUsdcLPData.current == null || wnearTriLPData.current == null) {
@@ -51,7 +51,7 @@ export default function useTriPrice() {
 
         // USDC/NEAR / TRI/NEAR => USDC/TRI
         // Price is USDC/TRI (where TRI = 1)
-        const result = usdcToWnearRatio.divide(WnearToTriRatio).toFixed(2);
+        const result = usdcToWnearRatio.divide(WnearToTriRatio);
 
         return result;
     }, [wnearUsdcLPData, wnearTriLPData]);
@@ -113,7 +113,7 @@ export default function useTriPrice() {
         }
 
         if (wnearUsdcLPData.current != null && wnearTriLPData.current != null) {
-            setPrice(calculatePrice());
+            price.current = calculatePrice();
         }
     }, [
         wnearUsdcLPData,
@@ -122,11 +122,10 @@ export default function useTriPrice() {
         getWnearTriPairReserves,
         wnearUsdcContract,
         wnearTriContract,
-        setPrice,
         calculatePrice
     ]);
 
-    return price;
+    return price.current;
 }
 
 async function getPairReserves(contract: Contract) {
