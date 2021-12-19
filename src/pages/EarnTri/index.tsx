@@ -1,21 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { AutoColumn } from '../../components/Column'
-import { ChevronDown, ChevronUp } from 'react-feather'
 import styled from 'styled-components'
 import { TYPE, ExternalLink } from '../../theme'
 import PoolCard from '../../components/earn/PoolCardTri'
-import { RouteComponentProps, NavLink } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { RowBetween } from '../../components/Row'
 import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
-import Loader from '../../components/Loader'
-import { useActiveWeb3React } from '../../hooks'
-import { JSBI } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
-import { SearchInput } from '../../components/SearchModal/styleds'
-import useDebounce from '../../hooks/useDebounce'
 import { useFarms } from '../../state/stake/apr'
-import useExternalDataService from "../../state/stake/useExternalData"
-import { STAKING_TOKEN_LIST } from "../../state/stake/external-stake-constants"
 
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
@@ -67,20 +59,16 @@ enum SortingType {
   totalApr = 'totalApr'
 }
 
+const POOLS_ORDER = [5, 8, 7, 0, 1, 2, 3, 4];
+
 export default function Earn({
   match: {
     params: { version }
   }
 }: RouteComponentProps<{ version: string }>) {
-  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const farmArrs = useFarms();
-  const [poolCards, setPoolCards] = useState<any[]>()
-  const [filteredPoolCards, setFilteredPoolCards] = useState<any[]>()
-  const [searchQuery, setSearchQuery] = useState<string>('')
-  const [sortBy, setSortBy] = useState<any>({ field: '', desc: true })
-  const debouncedSearchQuery = useDebounce(searchQuery, 250)
-  const [stakingInfoData, setStakingInfoData] = useState<any[]>(farmArrs)
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -114,50 +102,14 @@ export default function Earn({
         <DataRow style={{ alignItems: 'baseline' }}>
           <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>{t('earnPage.participatingPools')}</TYPE.mediumHeader>
         </DataRow>
-
         <PoolSection>
-          <>
+          {POOLS_ORDER.map(index => (
             <PoolCard
-              key={0}
-              stakingInfo={farmArrs[5]}
-              version={farmArrs[5].ID}
+              key={index}
+              stakingInfo={farmArrs[index]}
+              version={farmArrs[index].ID}
             />
-            <PoolCard
-              key={8}
-              stakingInfo={farmArrs[8]}
-              version={farmArrs[8].ID}
-            />
-            <PoolCard
-              key={7}
-              stakingInfo={farmArrs[7]}
-              version={farmArrs[7].ID}
-            />
-            <PoolCard
-              key={2}
-              stakingInfo={farmArrs[0]}
-              version={farmArrs[0].ID}
-            />
-            <PoolCard
-              key={3}
-              stakingInfo={farmArrs[1]}
-              version={farmArrs[1].ID}
-            />
-            <PoolCard
-              key={4}
-              stakingInfo={farmArrs[2]}
-              version={farmArrs[2].ID}
-            />
-            <PoolCard
-              key={5}
-              stakingInfo={farmArrs[3]}
-              version={farmArrs[3].ID}
-            />
-            <PoolCard
-              key={6}
-              stakingInfo={farmArrs[4]}
-              version={farmArrs[4].ID}
-            />
-          </>
+          ))}
         </PoolSection>
         <PoolSection>
           <DataRow style={{ alignItems: 'baseline' }}>

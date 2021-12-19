@@ -8,7 +8,13 @@ export enum ChefVersions{
 }
 
 
-export interface StakingTri {
+export type StakingTri = StakingTriStakedAmounts & StakingTriFarms
+
+export type StakingTriStakedAmounts = {
+  ID: number
+  stakedAmount: TokenAmount | null
+}
+export type StakingTriFarms = {
   ID: number
   poolId: number
   tokens: [Token, Token]
@@ -16,7 +22,6 @@ export interface StakingTri {
   lpAddress: string
   rewarderAddress: string
   isPeriodFinished: boolean
-  stakedAmount: TokenAmount
   earnedAmount: TokenAmount
   doubleRewardAmount: TokenAmount
   totalStakedAmount: TokenAmount
