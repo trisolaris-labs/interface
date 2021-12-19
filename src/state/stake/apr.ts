@@ -126,7 +126,8 @@ export function useFarms(): StakingTri[] {
           rewardRate: tokenAmount,
           apr: Math.round((stakingInfoData[index].apr)),
           apr2: Math.round((stakingInfoData[index].apr2)),
-          chefVersion:chefVersion
+          chefVersion:chefVersion,
+          doubleRewards: activeFarms[index].doubleRewards
         })
         return memo
       }
