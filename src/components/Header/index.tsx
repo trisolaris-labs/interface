@@ -1,8 +1,7 @@
-import { ChainId, TokenAmount } from '@trisolaris/sdk'
-import React, { useState } from 'react'
+import React from 'react'
 import { Text } from 'rebass'
 import { NavLink } from 'react-router-dom'
-import { darken } from 'polished'
+import { darken, lighten } from 'polished'
 import { useTranslation } from 'react-i18next'
 
 import styled from 'styled-components'
@@ -11,10 +10,8 @@ import Logo from '../../assets/svg/planets.svg'
 import LogoDark from '../../assets/svg/planets.svg'
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
-import { useETHBalances } from '../../state/wallet/hooks'
-import { CardNoise } from '../earn/styled'
-import { CountUp } from 'use-count-up'
-import { TYPE, ExternalLink } from '../../theme'
+import { ExternalLink } from '../../theme'
+import { ButtonSecondary } from '../Button'
 
 import { RedCard } from '../Card'
 import Settings from '../Settings'
@@ -22,11 +19,11 @@ import Menu from '../Menu'
 
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
-import Modal from '../Modal'
-import usePrevious from '../../hooks/usePrevious'
-import { NETWORK_LABELS, BASE_CURRENCIES } from '../../constants'
+import { NETWORK_LABELS } from '../../constants'
 import LanguageSelection from '../LanguageSelection'
 import useTriPrice from '../../hooks/useTriPrice'
+import { useToggleTriPriceModal } from '../../state/application/hooks'
+import TriPriceModal from '../TriPriceModal'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -111,7 +108,6 @@ const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.bg1 : theme.bg3)};
   border-radius: 12px;
   white-space: nowrap;
   width: 100%;
@@ -125,25 +121,34 @@ const AccountElement = styled.div<{ active: boolean }>`
   } */
 `
 
-const PNGAmount = styled(AccountElement)`
+const TRIButton = styled(ButtonSecondary) <{ isDark: boolean }>`
   color: white;
   padding: 4px 8px;
   height: 36px;
   font-weight: 500;
-  background-color: ${({ theme }) => theme.bg3};
-  background: radial-gradient(174.47% 188.91% at 1.84% 0%, #f97316 0%, #e84142 100%), #edeef2;
-`
+  border: ${({ theme }) => `1px solid ${theme.bg3}`};
+  background: ${({ theme, isDark }) => {
+    const color1 = isDark ? darken(0.08, theme.blue1) : lighten(0.08, theme.blue1);
+    const color2 = isDark ? darken(0.08, '#e84142') : '#e84142';
+    return `radial-gradient(174.47% 188.91% at 1.84% 0%, ${color1} 0%, ${color2} 100%), ${theme.white}`;
+  }};
 
-const PNGWrapper = styled.span`
-  width: fit-content;
-  position: relative;
-  cursor: pointer;
-  :hover {
-    opacity: 0.8;
+  &:hover, &:focus, &:active {
+    box-shadow: none;
+    border: 1px solid ${({ theme }) => theme.primary3};
+    background: ${({ theme, isDark }) => {
+    const color1 = isDark ? darken(0.12, theme.blue1) : lighten(0.12, theme.blue1);
+    const color2 = isDark ? darken(0.12, '#e84142') : '#e84142';
+    return `radial-gradient(174.47% 188.91% at 1.84% 0%, ${color1} 0%, ${color2} 100%), ${theme.white}`;
+  }};
   }
-  :active {
-    opacity: 0.9;
-  }
+  `
+
+const TRIWrapper = styled(AccountElement) <{ isDark: boolean }>`
+  color: white;
+  padding: 4px 8px;
+  height: 36px;
+  font-weight: 500;
 `
 
 const HideSmall = styled.span`
@@ -185,7 +190,7 @@ const Title = styled.a`
   }
 `
 
-const PngIcon = styled.div`
+const TRIIcon = styled.div`
   transition: transform 0.3s ease;
   :hover {
     transform: rotate(-5deg);
@@ -233,7 +238,7 @@ const IconWrapper = styled.div<{ size?: number }>`
 
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName
-})<{ isActive?: boolean }>`
+}) <{ isActive?: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
   border-radius: 3rem;
@@ -267,19 +272,18 @@ export default function Header() {
   const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
 
-  const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
   const triPrice = useTriPrice();
 
-  const [showPngBalanceModal, setShowPngBalanceModal] = useState(false)
+  const toggleTriPriceModal = useToggleTriPriceModal();
 
   return (
     <HeaderFrame>
       <HeaderRow>
         <Title href=".">
-          <PngIcon>
+          <TRIIcon>
             <img width={'24px'} src={isDark ? LogoDark : Logo} alt="logo" />
-          </PngIcon>
+          </TRIIcon>
         </Title>
         <HeaderLinks>
           <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
@@ -325,14 +329,20 @@ export default function Header() {
             )}
           </HideSmall>
           <HideSmall>
-            <AccountElement active={true} style={{ pointerEvents: 'none', height: 36, padding: 8 }}>
-              <IconWrapper size={16}>
-                <img src={'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/0xFa94348467f64D5A457F75F8bc40495D33c65aBB/logo.png'} />
-              </IconWrapper>
-              <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
-                {triPrice != null ? `$${triPrice}` : '-'}
-              </BalanceText>
-            </AccountElement>
+            <TRIWrapper active={true} isDark={isDark}>
+              <TRIButton isDark={isDark} onClick={(e) => {
+                e.currentTarget.blur();
+                toggleTriPriceModal();
+              }}>
+                <IconWrapper size={16}>
+                  <img src={'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/0xFa94348467f64D5A457F75F8bc40495D33c65aBB/logo.png'} />
+                </IconWrapper>
+                <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
+                  <Text>{triPrice != null ? `$${triPrice.toFixed(2)}` : '-'}</Text>
+                </BalanceText>
+              </TRIButton>
+              <TriPriceModal />
+            </TRIWrapper>
           </HideSmall>
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             <Web3Status />
