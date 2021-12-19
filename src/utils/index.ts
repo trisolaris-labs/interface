@@ -102,3 +102,7 @@ export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currenc
   if (currency === CETH) return true
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }
+
+export function addCommasToNumber(string: string): string {
+  return string.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}

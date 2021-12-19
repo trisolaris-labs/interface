@@ -59,6 +59,10 @@ export function useToggleVoteModal(): () => void {
   return useToggleModal(ApplicationModal.VOTE)
 }
 
+export function useToggleTriPriceModal(): () => void {
+  return useToggleModal(ApplicationModal.TRI_PRICE)
+}
+
 // returns a function that allows adding a popup
 export function useAddPopup(): (content: PopupContent, key?: string) => void {
   const dispatch = useDispatch()
