@@ -1,5 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
-import { WETH } from '@trisolaris/sdk'
+import { ChainId, Token, WETH } from '@trisolaris/sdk'
 import IUniswapV2Pair_ABI from '../constants/abis/polygon/IUniswapV2Pair.json'
 import { abi as STAKING_REWARDS_ABI } from '@pangolindex/governance/artifacts/contracts/StakingRewards.sol/StakingRewards.json'
 import { abi as AIRDROP_ABI } from '@pangolindex/governance/artifacts/contracts/Airdrop.sol/Airdrop.json'
@@ -18,8 +18,9 @@ import WETH_ABI from '../constants/abis/polygon/weth.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
-import { AIRDROP_ADDRESS, BRIDGE_MIGRATOR_ADDRESS } from '../constants'
+import { AIRDROP_ADDRESS, BRIDGE_MIGRATOR_ADDRESS, TRI, USDC, WNEAR } from '../constants'
 import { GOVERNANCE_ADDRESS, PNG } from '../constants'
+import { STAKING } from '../state/stake/stake-constants'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -90,4 +91,26 @@ export function useStakingContract(stakingAddress?: string, withSignerIfPossible
 export function useAirdropContract(): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(chainId ? AIRDROP_ADDRESS[chainId] : undefined, AIRDROP_ABI, true)
+}
+
+export function useUSDCWNEARPoolContract(): Contract | null {
+  const contractAddress = findPoolContract(WNEAR[ChainId.AURORA], USDC[ChainId.AURORA])?.lpAddress;
+  return useContract(contractAddress, IUniswapV2Pair_ABI)
+}
+
+export function useTRIWNEARPoolContract(): Contract | null {
+  const contractAddress = findPoolContract(WNEAR[ChainId.AURORA], TRI[ChainId.AURORA])?.lpAddress;
+  return useContract(contractAddress, IUniswapV2Pair_ABI)
+}
+
+function findPoolContract(tokenA: Token, tokenB: Token) {
+  const pools = STAKING[ChainId.AURORA];
+
+  return pools.find(pool => {
+    const [poolTokenA, poolTokenB] = pool.tokens;
+    const hasTokenA = [poolTokenA.address, poolTokenB.address].includes(tokenA.address);
+    const hasTokenB = [poolTokenA.address, poolTokenB.address].includes(tokenB.address);
+
+    return (hasTokenA && hasTokenB);
+  });
 }
