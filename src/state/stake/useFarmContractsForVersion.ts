@@ -20,6 +20,8 @@ export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTr
 
     const userInfo = useSingleContractMultipleData(lpAddressesArgs ? contract : null, 'userInfo', lpAddressesArgs!) //user related
 
+    const isLoading = userInfo?.some(({ loading }) => loading);
+
     // get all the info from the staking rewards contracts
     const tokens = activeFarms.filter(v => v.chefVersion === chefVersion).map(({ tokens }) => tokens)
     const pairs = usePairs(tokens);
@@ -43,10 +45,7 @@ export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTr
             const activeFarmID = getActiveFarmID(lpAddress);
             const [_pairState, pair] = pairs[index]
 
-            if (
-                // always need these
-                userStaked?.loading !== false || pair == null
-            ) {
+            if (isLoading || pair == null) {
                 return {
                     ID: activeFarmID,
                     stakedAmount: null,
@@ -62,7 +61,7 @@ export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTr
                 stakedAmount: stakedAmount,
             }
         })
-    }, [chainId, lpAddresses, chefVersion, latestBlock]);
+    }, [chainId, lpAddresses, chefVersion, latestBlock, isLoading]);
 
     return data;
 }
