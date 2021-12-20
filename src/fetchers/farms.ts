@@ -2,7 +2,7 @@ import useSWR from 'swr';
 import { ExternalInfo } from '../state/stake/stake-constants';
 
 async function fetcher() {
-    const response = await fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/datav2.json')
+    const response = await fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/datatest.json')
 
     return response.json();
 }

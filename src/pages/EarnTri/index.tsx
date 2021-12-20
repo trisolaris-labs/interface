@@ -59,7 +59,7 @@ enum SortingType {
   totalApr = 'totalApr'
 }
 
-const POOLS_ORDER = [5, 8, 7, 0, 1, 2, 3, 4];
+const POOLS_ORDER = [5, 8, 7, 0, 1, 2, 3, 4, 9, 10];
 
 export default function Earn({
   match: {
