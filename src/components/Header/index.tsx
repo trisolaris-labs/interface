@@ -170,12 +170,6 @@ const NetworkCard = styled(RedCard)`
   `};
 `
 
-const BalanceText = styled(Text)`
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    display: none;
-  `};
-`
-
 const Title = styled.a`
   display: flex;
   align-items: center;
@@ -328,7 +322,6 @@ export default function Header() {
               <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
           </HideSmall>
-          <HideSmall>
             <TRIWrapper active={true} isDark={isDark}>
               <TRIButton isDark={isDark} onClick={(e) => {
                 e.currentTarget.blur();
@@ -337,20 +330,18 @@ export default function Header() {
                 <IconWrapper size={16}>
                   <img src={'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/0xFa94348467f64D5A457F75F8bc40495D33c65aBB/logo.png'} />
                 </IconWrapper>
-                <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
-                  <Text>{triPrice != null ? `$${triPrice.toFixed(2)}` : '-'}</Text>
-                </BalanceText>
+                <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
+                  {triPrice != null ? `$${triPrice.toFixed(2)}` : '-'}
+                </Text>
               </TRIButton>
               <TriPriceModal />
             </TRIWrapper>
-          </HideSmall>
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             <Web3Status />
           </AccountElement>
         </HeaderElement>
         <HeaderElementWrap>
           <Settings />
-          <LanguageSelection />
           <Menu />
         </HeaderElementWrap>
       </HeaderControls>
