@@ -244,7 +244,7 @@
     "pleaseConnectAvalanche": "Please connect to the appropriate Aurora network.",
     "switchNetwork": "Switch to Aurora Chain",
     "errorConnectingRefresh": "Error connecting. Try refreshing the page.",
-    "connectToWallet": "Connect to a wallet",
+    "connectToWallet": "Connect Wallet",
     "newToAvalanche": "New to Aurora? ",
     "learnMoreWallet": "Learn more about setting up a wallet",
     "initializing": "Initializing...",
@@ -257,7 +257,7 @@
     "pending": "Pending",
     "wrongNetwork": "Wrong Network",
     "error": "Error",
-    "connectToWallet": "Connect to a wallet"
+    "connectToWallet": "Connect Wallet"
   },
   "gasFeeAlert": {
     "gasFeeReduction": "!!! Gas Fee Reduction !!!",

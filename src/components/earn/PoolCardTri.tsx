@@ -7,7 +7,7 @@ import DoubleCurrencyLogo from '../DoubleLogo'
 import { CETH, Token } from '@trisolaris/sdk'
 import { ButtonPrimary } from '../Button'
 import { AutoRow } from '../Row'
-import { StakingTri } from '../../state/stake/stake-constants'
+import { StakingTri, StakingTriFarms, StakingTriStakedAmounts } from '../../state/stake/stake-constants'
 import { useColor } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
 import { Break, CardNoise, CardBGImage } from './styled'
@@ -38,7 +38,7 @@ const AprContainer = styled.div`
   margin-left: 1rem;
 `
 
-const Wrapper = styled(AutoColumn)<{ showBackground: boolean; bgColor1: any; bgColor2?: any }>`
+const Wrapper = styled(AutoColumn) <{ showBackground: boolean; bgColor1: any; bgColor2?: any }>`
   border-radius: 12px;
   width: 100%;
   overflow: hidden;
@@ -90,7 +90,7 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
   const currency1 = unwrappedToken(token1)
 
   const { t } = useTranslation()
-  const isStaking = Boolean(stakingInfo.stakedAmount.greaterThan('0'))
+  const isStaking = Boolean(stakingInfo?.stakedAmount?.greaterThan('0') ?? false)
 
   const token: Token =
     currency0 === CETH || currency1 === CETH
@@ -98,8 +98,8 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
         ? token1
         : token0
       : token0.equals(PNG[token0.chainId])
-      ? token1
-      : token0
+        ? token1
+        : token0
 
   // get the color of the token
   let backgroundColor1 = useColor(token)
@@ -107,16 +107,15 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
   let backgroundColor2 = useColor(secondaryToken);
 
   const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-
   const isDualRewards = stakingInfo.chefVersion == 1
 
   // Colors are dynamically chosen based on token logos
   // These tokens are mostly grey; Override color to blue
-  
+
   if (GREY_ICON_TOKENS.includes(token?.symbol ?? '')) {
     backgroundColor1 = '#2172E5';
   }
-  
+
   // Only override `backgroundColor2` if it's a dual rewards pool
   if (isDualRewards && GREY_ICON_TOKENS.includes(secondaryToken?.symbol ?? '')) {
     backgroundColor2 = '#2172E5';

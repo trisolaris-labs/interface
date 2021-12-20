@@ -3,7 +3,7 @@ import { useTotalSupply } from '../../data/TotalSupply';
 
 type Props = {
     lpToken?: Token,
-    userLPStakedAmount?: TokenAmount,
+    userLPStakedAmount?: TokenAmount | null,
     totalPoolAmountUSD?: number,
 }
 
