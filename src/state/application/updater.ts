@@ -16,6 +16,7 @@ export default function Updater(): null {
     blockNumber: null
   })
 
+  const [hasChainID, setHasChainID] = useState<boolean>(chainId != null);
   const blockNumberCallback = useCallback(
     (blockNumber: number) => {
       setState(state => {
@@ -29,9 +30,17 @@ export default function Updater(): null {
     [chainId, setState]
   )
 
+  useEffect(() => { 
+    if (chainId != null && !hasChainID) {
+      setHasChainID(true);
+    }
+  }, [chainId, hasChainID, setHasChainID])
+
   // attach/detach listeners
   useEffect(() => {
-    if (!library || !chainId || !windowVisible) return undefined
+    if (!library || !chainId || !windowVisible) {
+      return undefined;
+    }
 
     setState({ chainId, blockNumber: null })
 
