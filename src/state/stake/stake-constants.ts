@@ -319,7 +319,7 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 3,
     tokens: [WNEAR[ChainId.AURORA], UST[ChainId.AURORA]],
     stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
-    lpAddress: '0xd1654a7713617d41A8C9530Fb9B948d00e162194',
+    lpAddress: '0xa9eded3E339b9cd92bB6DEF5c5379d678131fF90',
     rewarderAddress: '',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
