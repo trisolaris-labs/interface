@@ -13,6 +13,7 @@ import { AddressZero } from '@ethersproject/constants'
 import MASTERCHEF_ABI from '../../constants/abis/masterchef.json'
 import MASTERCHEF_V2_ABI from '../../constants/abis/masterchefv2.json'
 import COMPLEX_REWARDER_ABI from '../../constants/abis/complex-rewarder.json'
+import { ChefVersions } from './stake-constants'
 
 
 export type AddressMap = { [chainId: number]: string }
@@ -78,6 +79,22 @@ export function useMasterChefContract(withSignerIfPossible?: boolean): Contract 
 export function useMasterChefV2Contract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(chainId && MASTERCHEF_ADDRESS_V2[chainId], MASTERCHEF_V2_ABI, withSignerIfPossible)
+}
+
+export function useMasterChefV2ContractForVersion(chefVersion: ChefVersions, withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+
+  const abi = chefVersion === ChefVersions.V1
+    ? MASTERCHEF_ABI
+    : MASTERCHEF_V2_ABI;
+
+  return useContract(
+    chainId && (chefVersion === ChefVersions.V1
+      ? MASTERCHEF_ADDRESS_V1[chainId]
+      : MASTERCHEF_ADDRESS_V2[chainId]),
+    abi,
+    withSignerIfPossible,
+  );
 }
 
 export function useComplexRewarderContract(address: string | undefined, withSignerIfPossible?: boolean): Contract | null {

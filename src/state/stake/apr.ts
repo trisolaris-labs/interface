@@ -1,12 +1,13 @@
 import {
+  ChefVersions,
   STAKING,
   StakingTri,
 } from './stake-constants'
 import { useMemo } from 'react'
 import { useFarmsAPI } from './useFarmsAPI'
-import { useFarmsContracts } from './useFarmContracts'
 import { useActiveWeb3React } from '../../hooks'
 import { ChainId } from '@trisolaris/sdk'
+import { useFarmContractsForVersion } from './useFarmContractsForVersion'
 
 // gets the staking info from the network for the active chain id
 export function useFarms(): StakingTri[] {
@@ -14,7 +15,10 @@ export function useFarms(): StakingTri[] {
 
   const activeFarms = STAKING[chainId ?? ChainId.AURORA]
   const farms = useFarmsAPI();
-  const stakingInfo = useFarmsContracts();
+  const stakingInfoV1 = useFarmContractsForVersion(ChefVersions.V1);
+  const stakingInfoV2 = useFarmContractsForVersion(ChefVersions.V2);
+
+  const stakingInfo = stakingInfoV1.concat(stakingInfoV2);
 
   const stakingInfoMap = useMemo(() =>
     stakingInfo.reduce((acc, item) => {
