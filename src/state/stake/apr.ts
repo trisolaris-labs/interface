@@ -1,136 +1,52 @@
-import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
-import { USDC, DAI, WNEAR, TRI} from '../../constants'
-import { useMasterChefContract, useMasterChefV2Contract, MASTERCHEF_ADDRESS_V1,MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 import {
   STAKING,
   StakingTri,
-  rewardsPerSecond,
-  totalAllocPoints,
-  tokenAmount,
-  ExternalInfo
 } from './stake-constants'
-import {
-  useSingleContractMultipleData,
-  useMultipleContractSingleData,
-  useSingleCallResult,
-  NEVER_RELOAD
-} from '../../state/multicall/hooks'
-import ERC20_INTERFACE from '../../constants/abis/erc20'
-import { useMemo, useState, useEffect } from 'react'
-import { PairState, usePairs, usePair } from '../../data/Reserves'
+import { useMemo } from 'react'
+import { useFarmsAPI } from './useFarmsAPI'
+import { useFarmsContracts } from './useFarmContracts'
 import { useActiveWeb3React } from '../../hooks'
+import { ChainId } from '@trisolaris/sdk'
 
 // gets the staking info from the network for the active chain id
 export function useFarms(): StakingTri[] {
-  const { chainId, account } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
 
-  const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
-  let lpAddresses = activeFarms.map(key => key.lpAddress)
-  let lpAddressesv2 = activeFarms.filter(key => key.chefVersion == 1).map(key => key.lpAddress)
+  const activeFarms = STAKING[chainId ?? ChainId.AURORA]
+  const farms = useFarmsAPI();
+  const stakingInfo = useFarmsContracts();
 
-  const chefContract = useMasterChefContract()
-  const chefContractv2 = useMasterChefV2Contract()
+  const stakingInfoMap = useMemo(() =>
+    stakingInfo.reduce((acc, item) => {
+      acc.set(item.ID, item);
+      return acc;
+    }, new Map())
+    , [stakingInfo]);
 
-  const [stakingInfoData, setStakingInfoData] = useState<ExternalInfo[]>()
+  const farmsMap = useMemo(() =>
+    farms.reduce((acc, item) => {
+      acc.set(item.ID, item);
+      return acc;
+    }, new Map())
+    , [farms]);
 
-  useEffect(() => {
-    fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/datav2.json')
-      .then(results => results.json())
-      .then(data => {
-        setStakingInfoData(data)
-      })
-  }, [])
+  const result = useMemo(() =>
+    activeFarms.reduce<StakingTri[]>((acc, farm) => {
+      const farmID = farm.ID;
+      const farmResult = farmsMap.has(farmID)
+        ? farmsMap.get(farmID)
+        : farm;
 
-  // user info
-  const args = useMemo(() => {
-    if (!account || !lpAddresses) {
-      return
-    }
-    return [...Array(lpAddresses.length).keys()].map(pid => [String(pid), String(account)])
-  }, [lpAddresses.length, account])
-
-
-  const args2 = useMemo(() => {
-    if (!account || !lpAddressesv2) {
-      return
-    }
-    return [...Array(lpAddressesv2.length).keys()].map(pid => [String(pid), String(account)])
-  }, [lpAddressesv2.length, account])
-
-  const userInfo = useSingleContractMultipleData(args ? chefContract : null, 'userInfo', args!) //user related
-
-  const userInfov2 = useSingleContractMultipleData(args2 ? chefContractv2 : null, 'userInfo', args2!) //user related
-  
-  // get all the info from the staking rewards contracts
-  const tokens = useMemo(() => activeFarms.map(({ tokens }) => tokens), [activeFarms])
-  const pairs = usePairs(tokens)
-
-  return useMemo(() => {
-    if (!chainId) return activeFarms
-
-    return lpAddresses.reduce<StakingTri[]>((memo, lpAddress, index) => {
-      // User based info
-      var userStaked = userInfo[index]
-      if (index == 7) {
-        var userStaked= userInfov2[0]
-      } else if (index == 8) {
-        var userStaked = userInfov2[1]
+      if (stakingInfoMap.has(farmID)) {
+        const { stakedAmount } = stakingInfoMap.get(farmID);
+        farmResult.stakedAmount = stakedAmount;
       }
-      
 
-      const [pairState, pair] = pairs[index]
+      acc.push(farmResult);
 
-      if (
-        // always need these
-        !userStaked?.loading &&
-        pair &&
-        pairState !== PairState.LOADING &&
-        stakingInfoData
-      ) {
-        if (
-          userStaked?.error ||
-          pairState === PairState.INVALID ||
-          pairState === PairState.NOT_EXISTS ||
-          !stakingInfoData
-        ) {
-          console.error('Failed to load staking rewards info')
-          return memo
-        }
-
-        // get the LP token
-        const tokens = activeFarms[index].tokens
-
-        const chefVersion = activeFarms[index].chefVersion
-        // do whatever
-
-        // check for account, if no account set to 0
-        const userInfoPool = JSBI.BigInt(userStaked?.result?.['amount'] ?? 0)
-
-        const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
-
-        memo.push({
-          ID: activeFarms[index].ID,
-          poolId: activeFarms[index].poolId,
-          stakingRewardAddress: activeFarms[index].stakingRewardAddress,
-          lpAddress: activeFarms[index].lpAddress,
-          rewarderAddress: activeFarms[index].rewarderAddress,
-          tokens: tokens,
-          isPeriodFinished: false,
-          earnedAmount: tokenAmount,
-          doubleRewardAmount: tokenAmount,
-          stakedAmount: stakedAmount,
-          totalStakedAmount: tokenAmount,
-          totalStakedInUSD: Math.round(stakingInfoData[index].totalStakedInUSD),
-          allocPoint: activeFarms[index].allocPoint,
-          totalRewardRate: Math.round(stakingInfoData[index].totalRewardRate),
-          rewardRate: tokenAmount,
-          apr: Math.round((stakingInfoData[index].apr)),
-          apr2: Math.round((stakingInfoData[index].apr2)),
-          chefVersion:chefVersion
-        })
-        return memo
-      }
-      return activeFarms
+      return acc;
     }, [])
-  }, [activeFarms, pairs, userInfo])
+    , [stakingInfoMap, farms]);
+
+  return result;
 }
