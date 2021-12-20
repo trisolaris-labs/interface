@@ -1,5 +1,5 @@
 import { ChainId, JSBI, TokenAmount } from '@trisolaris/sdk'
-import { useMasterChefContract, useMasterChefV2Contract } from './hooks-sushi'
+import { useMasterChefV2ContractForVersion } from './hooks-sushi'
 import { ChefVersions, STAKING, StakingTri, StakingTriStakedAmounts } from './stake-constants'
 import { useSingleContractMultipleData } from '../multicall/hooks'
 import { useCallback, useMemo } from 'react'
@@ -12,9 +12,7 @@ export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTr
     const { chainId, account } = useActiveWeb3React()
 
     const activeFarms = STAKING[chainId ?? ChainId.AURORA]
-    const chefContract = useMasterChefContract()
-    const chefContractv2 = useMasterChefV2Contract()
-    const contract = chefVersion === ChefVersions.V1 ? chefContract : chefContractv2;
+    const contract = useMasterChefV2ContractForVersion(chefVersion);
     const latestBlock = useBlockNumber();
 
     const lpAddresses = getLPAddresses(activeFarms, chefVersion);
@@ -42,9 +40,7 @@ export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTr
         return lpAddresses.map((lpAddress, index) => {
             // User based info
             const userStaked = userInfo[index]
-
             const activeFarmID = getActiveFarmID(lpAddress);
-
             const [_pairState, pair] = pairs[index]
 
             if (
@@ -66,7 +62,6 @@ export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTr
                 stakedAmount: stakedAmount,
             }
         })
-            .filter(Boolean)
     }, [chainId, lpAddresses, chefVersion, latestBlock]);
 
     return data;
