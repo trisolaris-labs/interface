@@ -133,7 +133,7 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
           <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
             {currency0.symbol}-{currency1.symbol}
           </TYPE.white>
-          {isDualRewards && doubleRewardsOn ? (
+          {isDualRewards && doubleRewardsOn? (
             <TYPE.white fontWeight={600} fontSize={16} style={{ marginLeft: '8px' }}>
               Dual Rewards
             </TYPE.white>
@@ -172,7 +172,12 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
         <AprContainer>
           <RowBetween>
             <TYPE.white>TRI APR</TYPE.white>
-            <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
+             {!isDualRewards && (
+               <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
+             )}
+             {isDualRewards && (
+                <TYPE.white>{`Coming Soon`}</TYPE.white>
+             )}
           </RowBetween>
         </AprContainer>
       )}
