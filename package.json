@@ -86,6 +86,7 @@
     "react-window": "^1.8.5",
     "rebass": "^4.0.7",
     "redux-localstorage-simple": "^2.3.1",
+    "redux-persist": "^6.0.0",
     "serve": "^11.3.0",
     "start-server-and-test": "^1.11.0",
     "styled-components": "^4.2.0",

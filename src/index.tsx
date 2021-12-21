@@ -6,10 +6,12 @@ import ReactDOM from 'react-dom'
 import ReactGA from 'react-ga'
 import { Provider } from 'react-redux'
 import { HashRouter } from 'react-router-dom'
+import { Dots } from './components/swap/styleds'
 import { NetworkContextName } from './constants'
+import { PersistGate } from 'redux-persist/integration/react'
 import './i18n'
 import App from './pages/App'
-import store from './state'
+import store, { persistor } from './state'
 import ApplicationUpdater from './state/application/updater'
 import ListsUpdater from './state/lists/updater'
 import MulticallUpdater from './state/multicall/updater'
@@ -58,6 +60,7 @@ ReactDOM.render(
     <FixedGlobalStyle />
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ProviderNetwork getLibrary={getLibrary}>
+        <PersistGate loading={<Dots>loading</Dots>} persistor={persistor}></PersistGate>
         <Provider store={store}>
           <Updaters />
           <ThemeProvider>
