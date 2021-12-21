@@ -130,6 +130,7 @@ export default function Manage({
   const countUpAmount2 = stakingInfo?.doubleRewardAmount?.toFixed(6) ?? '0'
   const countUpAmountPrevious2 = usePrevious(countUpAmount2) ?? '0'
   const chefVersion = stakingInfo.chefVersion
+  const doubleRewardsOn = stakingInfo.doubleRewards
 
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
@@ -271,7 +272,7 @@ export default function Manage({
                 <div>
                   <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
                 </div>
-                {(chefVersion == 1) && (
+                {(chefVersion == 1 && doubleRewardsOn) && (
                 <div>
                   <TYPE.black>{t('earnPage.unclaimed')} AURORA</TYPE.black>
                 </div>
@@ -289,7 +290,7 @@ export default function Manage({
                     duration={1}
                   />
                 </TYPE.largeHeader>
-                {(chefVersion==1) && (
+                {(chefVersion==1 && doubleRewardsOn) && (
                 <TYPE.largeHeader fontSize={36} fontWeight={600}>
                   <CountUp
                     key={countUpAmount2}
