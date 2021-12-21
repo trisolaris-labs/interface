@@ -46,7 +46,8 @@ export function useFarmsAPI(): StakingTriFarms[] {
             rewardRate: tokenAmount,
             apr: Math.round(apr ?? 0),
             apr2: Math.round(apr2 ?? 0),
-            chefVersion: chefVersion
+            chefVersion: chefVersion,
+            doubleRewards: activeFarms[index].doubleRewards
         }
     });
 

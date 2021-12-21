@@ -119,6 +119,32 @@ export const AURORA: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79', 18, 'AURORA', 'Aurora')
 }
 
+export const UST: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'UST', 'Wrapped UST'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'UST', 'Wrapped UST'),
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'UST', 'Wrapped UST'),
+  [ChainId.AURORA]: new Token(
+    ChainId.AURORA,
+    '0x5ce9F0B6AFb36135b5ddBF11705cEB65E634A9dC',
+    18,
+    'UST',
+    'Wrapped UST',
+  ),
+}
+
+export const LUNA: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'LUNA', 'Wrapped LUNA'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'LUNA', 'Wrapped LUNA'),
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'LUNA', 'Wrapped LUNA'),
+  [ChainId.AURORA]: new Token(
+    ChainId.AURORA,
+    '0xC4bdd27c33ec7daa6fcfd8532ddB524Bf4038096',
+    18,
+    'LUNA',
+    'Wrapped LUNA',
+  ),
+}
+
 export const USDC: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 6, 'USDC', 'USDC Stablecoin'),
   [ChainId.AVALANCHE]: new Token(

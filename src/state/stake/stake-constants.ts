@@ -1,5 +1,5 @@
 import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
-import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR, USDT, WBTC, TRI, AURORA } from '../../constants'
+import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR, USDT, WBTC, TRI, AURORA, LUNA, UST } from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS_V1,MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
 export enum ChefVersions{
@@ -35,6 +35,7 @@ export type StakingTriFarms = {
   apr: number
   apr2: number
   chefVersion: ChefVersions
+  doubleRewards: boolean
 }
 
 export interface ExternalInfo {
@@ -76,7 +77,8 @@ const POLYGON_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2:0,
-    chefVersion: ChefVersions.V1
+    chefVersion: ChefVersions.V1,
+    doubleRewards: false
   },
   {
     ID: 1,
@@ -96,7 +98,8 @@ const POLYGON_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2:0,
-    chefVersion: ChefVersions.V1
+    chefVersion: ChefVersions.V1,
+    doubleRewards: false
   }
 ]
 
@@ -119,7 +122,8 @@ const AURORA_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2: 0,
-    chefVersion: ChefVersions.V1
+    chefVersion: ChefVersions.V1,
+    doubleRewards: false
   },
   {
     ID: 1,
@@ -139,7 +143,8 @@ const AURORA_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2: 0,
-    chefVersion: ChefVersions.V1
+    chefVersion: ChefVersions.V1,
+    doubleRewards: false
   },
   {
     ID: 2,
@@ -159,7 +164,8 @@ const AURORA_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2: 0,
-    chefVersion: ChefVersions.V1
+    chefVersion: ChefVersions.V1,
+    doubleRewards: false
   },
   {
     ID: 3,
@@ -179,7 +185,8 @@ const AURORA_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2: 0,
-    chefVersion: ChefVersions.V1
+    chefVersion: ChefVersions.V1,
+    doubleRewards: false
   },
   {
     ID: 4,
@@ -199,7 +206,8 @@ const AURORA_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2: 0,
-    chefVersion: ChefVersions.V1
+    chefVersion: ChefVersions.V1,
+    doubleRewards: false
   },
   {
     ID: 5,
@@ -219,7 +227,8 @@ const AURORA_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2: 0,
-    chefVersion: ChefVersions.V1
+    chefVersion: ChefVersions.V1,
+    doubleRewards: false
   },
   {
     ID: 6,
@@ -239,7 +248,8 @@ const AURORA_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2: 0,
-    chefVersion: ChefVersions.V1
+    chefVersion: ChefVersions.V1,
+    doubleRewards: false
   },
   {
     ID: 7,
@@ -259,7 +269,8 @@ const AURORA_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2: 0,
-    chefVersion: ChefVersions.V2
+    chefVersion: ChefVersions.V2,
+    doubleRewards: true
   },
   {
     ID: 8,
@@ -279,8 +290,51 @@ const AURORA_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2: 0,
-    chefVersion: ChefVersions.V2
+    chefVersion: ChefVersions.V2,
+    doubleRewards: true
   },
+  {
+    ID: 9,
+    poolId: 2,
+    tokens: [WNEAR[ChainId.AURORA], LUNA[ChainId.AURORA]],
+    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
+    lpAddress: '0xdF8CbF89ad9b7dAFdd3e37acEc539eEcC8c47914',
+    rewarderAddress: '',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    doubleRewardAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: 1,
+    rewardRate: dummyAmount,
+    apr: 0,
+    apr2: 0,
+    chefVersion: ChefVersions.V2,
+    doubleRewards: false
+  },
+  {
+    ID: 10,
+    poolId: 3,
+    tokens: [WNEAR[ChainId.AURORA], UST[ChainId.AURORA]],
+    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
+    lpAddress: '0xa9eded3E339b9cd92bB6DEF5c5379d678131fF90',
+    rewarderAddress: '',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    doubleRewardAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: 1,
+    rewardRate: dummyAmount,
+    apr: 0,
+    apr2: 0,
+    chefVersion: ChefVersions.V2,
+    doubleRewards: false
+  }
 ]
 
 const NULL_POOLS: StakingTri[] = [
@@ -305,7 +359,8 @@ const NULL_POOLS: StakingTri[] = [
     rewardRate: dummyAmount,
     apr: 0,
     apr2: 0,
-    chefVersion: ChefVersions.V1
+    chefVersion: ChefVersions.V1,
+    doubleRewards: false
   }
 ]
 

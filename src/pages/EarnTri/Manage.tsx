@@ -130,6 +130,7 @@ export default function Manage({
   const countUpAmount2 = stakingInfo?.doubleRewardAmount?.toFixed(6) ?? '0'
   const countUpAmountPrevious2 = usePrevious(countUpAmount2) ?? '0'
   const chefVersion = stakingInfo.chefVersion
+  const doubleRewardsOn = stakingInfo.doubleRewards
 
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
@@ -251,14 +252,42 @@ export default function Manage({
                   <TYPE.white fontWeight={600}>{t('earnPage.liquidityDeposits')}</TYPE.white>
                 </RowBetween>
                 <RowBetween style={{ alignItems: 'baseline' }}>
-                  <AutoColumn gap="md">
+                 {/* <AutoColumn gap="md">
                     <TYPE.white fontSize={36} fontWeight={600}>
                       {userLPAmountUSDFormatted ?? '$0'}
                     </TYPE.white>
                   </AutoColumn>
                   <TYPE.white>
                     {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'} TLP {currencyA?.symbol}-{currencyB?.symbol}
-                  </TYPE.white>
+                  </TYPE.white> */}
+
+                  {(chefVersion == 1 && !doubleRewardsOn )
+                    ? (
+                      // If MasterChefV2, only show the TLP Amount (no $ amount)
+                      <>
+                        <AutoColumn gap="md">
+                          <TYPE.white fontSize={36} fontWeight={600}>
+                            {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'}
+                          </TYPE.white>
+                        </AutoColumn>
+                        <TYPE.white>
+                          TLP {currencyA?.symbol}-{currencyB?.symbol}
+                        </TYPE.white>
+                      </>
+                    )
+                    : (
+                      // If MasterChefV1, show $ amount as primary text and TLP amount as secondary text
+                      <>
+                        <AutoColumn gap="md">
+                          <TYPE.white fontSize={36} fontWeight={600}>
+                            {userLPAmountUSDFormatted ?? '$0'}
+                          </TYPE.white>
+                        </AutoColumn>
+                        <TYPE.white>
+                          {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'} TLP {currencyA?.symbol}-{currencyB?.symbol}
+                        </TYPE.white>
+                      </>
+                    )}
                 </RowBetween>
               </AutoColumn>
             </CardSection>
@@ -271,7 +300,7 @@ export default function Manage({
                 <div>
                   <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
                 </div>
-                {(chefVersion == 1) && (
+                {(chefVersion == 1 && doubleRewardsOn) && (
                 <div>
                   <TYPE.black>{t('earnPage.unclaimed')} AURORA</TYPE.black>
                 </div>
@@ -289,7 +318,7 @@ export default function Manage({
                     duration={1}
                   />
                 </TYPE.largeHeader>
-                {(chefVersion==1) && (
+                {(chefVersion==1 && doubleRewardsOn) && (
                 <TYPE.largeHeader fontSize={36} fontWeight={600}>
                   <CountUp
                     key={countUpAmount2}

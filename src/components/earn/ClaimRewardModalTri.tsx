@@ -33,6 +33,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
   const [hash, setHash] = useState<string | undefined>()
   const [attempting, setAttempting] = useState(false)
   const chefVersion = stakingInfo.chefVersion
+  const doubleRewardsOn = stakingInfo.doubleRewards
 
   function wrappedOnDismiss() {
     setHash(undefined)
@@ -104,7 +105,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
                             <TYPE.body>{t('earn.unclaimed')}</TYPE.body>
                         </AutoColumn>
                     )}
-                    {(chefVersion==1) && (
+                    {(chefVersion==1 && doubleRewardsOn) && (
                      <AutoColumn justify="center" gap="md">
                             <TYPE.body fontWeight={600} fontSize={36}>
                                 {stakingInfo?.doubleRewardAmount?.toSignificant(6)}

@@ -108,6 +108,7 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
 
   const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   const isDualRewards = stakingInfo.chefVersion == 1
+  const doubleRewardsOn = stakingInfo.doubleRewards
 
   // Colors are dynamically chosen based on token logos
   // These tokens are mostly grey; Override color to blue
@@ -132,7 +133,7 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
           <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
             {currency0.symbol}-{currency1.symbol}
           </TYPE.white>
-          {isDualRewards ? (
+          {isDualRewards && doubleRewardsOn? (
             <TYPE.white fontWeight={600} fontSize={16} style={{ marginLeft: '8px' }}>
               Dual Rewards
             </TYPE.white>
@@ -156,7 +157,7 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
             <TYPE.white>{`$${totalStakedInUSD}`}</TYPE.white>
           </RowBetween>
       </StatContainer>
-      {isDualRewards ? (
+      {isDualRewards && doubleRewardsOn ? (
         <AprContainer>
           <RowBetween>
             <TYPE.white>TRI APR</TYPE.white>
@@ -171,7 +172,12 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
         <AprContainer>
           <RowBetween>
             <TYPE.white>TRI APR</TYPE.white>
-            <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
+             {!isDualRewards && (
+               <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
+             )}
+             {isDualRewards && (
+                <TYPE.white>{`Coming Soon`}</TYPE.white>
+             )}
           </RowBetween>
         </AprContainer>
       )}
