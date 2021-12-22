@@ -36,6 +36,7 @@ export type StakingTriFarms = {
   apr2: number
   chefVersion: ChefVersions
   doubleRewards: boolean
+  inStaging: boolean
 }
 
 export interface ExternalInfo {
@@ -78,7 +79,8 @@ const POLYGON_POOLS: StakingTri[] = [
     apr: 0,
     apr2:0,
     chefVersion: ChefVersions.V1,
-    doubleRewards: false
+    doubleRewards: false,
+    inStaging: false
   },
   {
     ID: 1,
@@ -99,7 +101,8 @@ const POLYGON_POOLS: StakingTri[] = [
     apr: 0,
     apr2:0,
     chefVersion: ChefVersions.V1,
-    doubleRewards: false
+    doubleRewards: false,
+    inStaging: false
   }
 ]
 
@@ -123,7 +126,8 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V1,
-    doubleRewards: false
+    doubleRewards: false,
+    inStaging: false
   },
   {
     ID: 1,
@@ -144,7 +148,8 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V1,
-    doubleRewards: false
+    doubleRewards: false,
+    inStaging: false
   },
   {
     ID: 2,
@@ -165,7 +170,8 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V1,
-    doubleRewards: false
+    doubleRewards: false,
+    inStaging: false
   },
   {
     ID: 3,
@@ -186,7 +192,8 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V1,
-    doubleRewards: false
+    doubleRewards: false,
+    inStaging: false
   },
   {
     ID: 4,
@@ -207,7 +214,8 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V1,
-    doubleRewards: false
+    doubleRewards: false,
+    inStaging: false
   },
   {
     ID: 5,
@@ -228,7 +236,8 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V1,
-    doubleRewards: false
+    doubleRewards: false,
+    inStaging: false
   },
   {
     ID: 6,
@@ -249,7 +258,8 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V1,
-    doubleRewards: false
+    doubleRewards: false,
+    inStaging: false
   },
   {
     ID: 7,
@@ -270,7 +280,8 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V2,
-    doubleRewards: true
+    doubleRewards: true,
+    inStaging: false
   },
   {
     ID: 8,
@@ -291,7 +302,8 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V2,
-    doubleRewards: true
+    doubleRewards: true,
+    inStaging: false
   },
   {
     ID: 9,
@@ -312,7 +324,8 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V2,
-    doubleRewards: false
+    doubleRewards: false,
+    inStaging: false
   },
   {
     ID: 10,
@@ -333,7 +346,8 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V2,
-    doubleRewards: false
+    doubleRewards: false,
+    inStaging: false
   }
 ]
 
@@ -360,7 +374,8 @@ const NULL_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V1,
-    doubleRewards: false
+    doubleRewards: false,
+    inStaging: false
   }
 ]
 
