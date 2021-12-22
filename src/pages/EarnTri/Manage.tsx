@@ -131,6 +131,7 @@ export default function Manage({
   const countUpAmountPrevious2 = usePrevious(countUpAmount2) ?? '0'
   const chefVersion = stakingInfo.chefVersion
   const doubleRewardsOn = stakingInfo.doubleRewards
+  const inStaging = stakingInfo.inStaging
 
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
@@ -261,7 +262,7 @@ export default function Manage({
                     {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'} TLP {currencyA?.symbol}-{currencyB?.symbol}
                   </TYPE.white> */}
 
-                  {(chefVersion == 1 && !doubleRewardsOn )
+                  {(chefVersion == 1 && inStaging )
                     ? (
                       // If MasterChefV2, only show the TLP Amount (no $ amount)
                       <>

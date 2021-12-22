@@ -129,7 +129,8 @@ export function useSingleFarm(version: string): StakingTri[] {
           apr: Math.round(stakingInfoData[Number(version)].apr),
           apr2: Math.round(stakingInfoData[Number(version)].apr2),
           chefVersion: chefVersion,
-          doubleRewards: activeFarms[Number(version)].doubleRewards
+          doubleRewards: activeFarms[Number(version)].doubleRewards,
+          inStaging: activeFarms[Number(version)].inStaging,
         })
         return memo
       }
