@@ -5,12 +5,14 @@ type PopupList = Array<{ key: string; show: boolean; content: PopupContent; remo
 
 export interface ApplicationState {
   readonly blockNumber: { readonly [chainId: number]: number }
+  readonly pollID: { readonly [chainId: number]: number }
   readonly popupList: PopupList
   readonly openModal: ApplicationModal | null
 }
 
 const initialState: ApplicationState = {
   blockNumber: {},
+  pollID: {},
   popupList: [],
   openModal: null
 }

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useActiveWeb3React } from '../../hooks'
-import useDebounce from '../../hooks/useDebounce'
+// import useDebounce from '../../hooks/useDebounce'
+import { useDebounce } from 'use-debounce';
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { updateBlockNumber } from './actions'
 import { useDispatch } from 'react-redux'
@@ -55,7 +56,7 @@ export default function Updater(): null {
     }
   }, [dispatch, chainId, library, blockNumberCallback, windowVisible])
 
-  const debouncedState = useDebounce(state, 100)
+  const [debouncedState] = useDebounce(state, 100, {leading: true, trailing: true, maxWait: 100})
 
   useEffect(() => {
     if (!debouncedState.chainId || !debouncedState.blockNumber || !windowVisible) return

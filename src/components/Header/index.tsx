@@ -269,6 +269,8 @@ export default function Header() {
   const [isDark] = useDarkModeManager()
   const triPrice = useTriPrice();
 
+  console.log('triPrice: ', triPrice?.toFixed(2));
+
   const toggleTriPriceModal = useToggleTriPriceModal();
 
   return (
