@@ -311,7 +311,10 @@ export default function Header() {
             {t('header.farm')}
           </StyledNavLink>
           <StyledExternalLink id="aurora-bridge" href={'https://rainbowbridge.app/transfer'}>
-            Bridge Funds <span style={{ fontSize: '11px' }}>↗</span>
+            Rainbow Bridge <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink>
+          <StyledExternalLink id="aurora-bridge" href={'https://app.allbridge.io/bridge'}>
+            Bridge from Terra <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
         </HeaderLinks>
       </HeaderRow>

@@ -65,7 +65,7 @@ export default function CirculatingSupplyMarketCap({
         ? null
         : (new Fraction(circulating!, '1'))
             .multiply(triPrice!)
-            .toFixed(2)
+            .toFixed(0)
         , [isLoading, triPrice, circulating]);
 
     const lockedTRIFriendly = addCommasToNumber(isLoading ? '-' : LOCKED_TRI?.toString() ?? '-');
