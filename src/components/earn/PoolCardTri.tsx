@@ -176,7 +176,7 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
                <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
              )}
              {isDualRewards && (
-                <TYPE.white>{`Coming Soon`}</TYPE.white>
+                <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
              )}
           </RowBetween>
         </AprContainer>
