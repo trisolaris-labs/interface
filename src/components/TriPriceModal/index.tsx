@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ChainId } from '@trisolaris/sdk';
 import { TRI } from '../../constants';
 import { ApplicationModal } from '../../state/application/actions';
@@ -6,6 +6,7 @@ import { useModalOpen, useToggleTriPriceModal } from '../../state/application/ho
 import Modal from '../Modal';
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { ExternalLink, TYPE } from '../../theme'
+import { isMobile } from 'react-device-detect'
 import React from 'react'
 import { AutoRow } from '../Row';
 import { AutoColumn } from '../Column';
@@ -46,13 +47,23 @@ const HeaderRow = styled.div`
   `};
 `
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled.div<{ mobile: boolean }>`
   background-color: ${({ theme }) => theme.bg2};
   padding: 2rem;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`padding: 1rem`};
+
+  ${({ theme, mobile }) => theme.mediaWidth.upToSmall`
+      width:  85vw;
+      ${mobile &&
+    css`
+          width: 100vw;
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        `}
+    `}
 `
 
 const UpperSection = styled.div`
@@ -109,7 +120,7 @@ export default function TriPriceModal() {
           <HeaderRow color="blue">
             Trisolaris Token
           </HeaderRow>
-          <ContentWrapper>
+          <ContentWrapper mobile={isMobile}>
             <AutoRow>
               <AutoColumn>
                 <IconWrapper size={32}>
@@ -134,5 +145,5 @@ export default function TriPriceModal() {
         </UpperSection>
       </Wrapper>
     </Modal>
-  )
+  );
 }
