@@ -60,6 +60,7 @@ enum SortingType {
 }
 
 const POOLS_ORDER = [5, 8, 7, 0, 1, 2, 3, 4, 9, 10];
+const LEGACY_POOLS = [6]
 
 export default function Earn({
   match: {
@@ -69,6 +70,8 @@ export default function Earn({
   const { t } = useTranslation()
   const farmArrs = useFarms();
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const farmArrsInOrder = POOLS_ORDER.map(index => farmArrs[index]);
+  const legacyFarmArrsInOrder = LEGACY_POOLS.map(index => farmArrs[index]);
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -103,11 +106,18 @@ export default function Earn({
           <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>{t('earnPage.participatingPools')}</TYPE.mediumHeader>
         </DataRow>
         <PoolSection>
-          {POOLS_ORDER.map(index => (
+          {farmArrsInOrder.map(farm => (
             <PoolCard
-              key={index}
-              stakingInfo={farmArrs[index]}
-              version={farmArrs[index].ID}
+              key={farm.ID}
+              apr={farm.apr}
+              apr2={farm.apr2}
+              chefVersion={farm.chefVersion}
+              isPeriodFinished={farm.isPeriodFinished}
+              stakedAmount={farm.stakedAmount}
+              token0={farm.tokens[0]}
+              token1={farm.tokens[1]}
+              totalStakedInUSD={farm.totalStakedInUSD}
+              version={farm.ID}
             />
           ))}
         </PoolSection>
@@ -115,11 +125,20 @@ export default function Earn({
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
           </DataRow>
-          <PoolCard
-            key={1}
-            stakingInfo={farmArrs[6]}
-            version={farmArrs[6].ID}
-          />
+          {legacyFarmArrsInOrder.map(farm => (
+            <PoolCard
+              key={farm.ID}
+              apr={farm.apr}
+              apr2={farm.apr2}
+              chefVersion={farm.chefVersion}
+              isPeriodFinished={farm.isPeriodFinished}
+              stakedAmount={farm.stakedAmount}
+              token0={farm.tokens[0]}
+              token1={farm.tokens[1]}
+              totalStakedInUSD={farm.totalStakedInUSD}
+              version={farm.ID}
+            />
+          ))}
         </PoolSection>
       </AutoColumn>
     </PageWrapper>
