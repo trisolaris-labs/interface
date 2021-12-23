@@ -4,10 +4,10 @@ import { RowBetween } from '../Row'
 import styled from 'styled-components'
 import { TYPE, StyledInternalLink } from '../../theme'
 import DoubleCurrencyLogo from '../DoubleLogo'
-import { CETH, Token } from '@trisolaris/sdk'
+import { CETH, Token, TokenAmount } from '@trisolaris/sdk'
 import { ButtonPrimary } from '../Button'
 import { AutoRow } from '../Row'
-import { StakingTri, StakingTriFarms, StakingTriStakedAmounts } from '../../state/stake/stake-constants'
+import { ChefVersions } from '../../state/stake/stake-constants'
 import { useColor } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
 import { Break, CardNoise, CardBGImage } from './styled'
@@ -82,15 +82,41 @@ const BottomSection = styled.div<{ showBackground: boolean }>`
 
 const GREY_ICON_TOKENS = ['ETH', 'WETH', 'WBTC', 'WNEAR'];
 
-export default function PoolCard({ stakingInfo, version }: { stakingInfo: StakingTri; version: number }) {
-  const token0 = stakingInfo.tokens[0]
-  const token1 = stakingInfo.tokens[1]
+/**
+ * token0
+ * token1
+ * stakedAmount
+ */
+
+type Props = {
+  apr: number,
+  apr2: number,
+  chefVersion: ChefVersions,
+  isPeriodFinished: boolean,
+  stakedAmount: TokenAmount | null,
+  token0: Token,
+  token1: Token,
+  totalStakedInUSD: number,
+  version: number,
+};
+
+export default function PoolCard({
+  apr,
+  apr2,
+  chefVersion,
+  isPeriodFinished,
+  stakedAmount,
+  token0,
+  token1,
+  totalStakedInUSD,
+  version,
+}: Props) {
 
   const currency0 = unwrappedToken(token0)
   const currency1 = unwrappedToken(token1)
 
   const { t } = useTranslation()
-  const isStaking = Boolean(stakingInfo?.stakedAmount?.greaterThan('0') ?? false)
+  const isStaking = Boolean(stakedAmount?.greaterThan('0') ?? false)
 
   const token: Token =
     currency0 === CETH || currency1 === CETH
@@ -106,9 +132,8 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
   const secondaryToken = token === token1 ? token0 : token1;
   let backgroundColor2 = useColor(secondaryToken);
 
-  const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-  const isDualRewards = stakingInfo.chefVersion == 1
-  const doubleRewardsOn = stakingInfo.doubleRewards
+  const totalStakedInUSDFriendly = totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  const isDualRewards = chefVersion == 1;
 
   // Colors are dynamically chosen based on token logos
   // These tokens are mostly grey; Override color to blue
@@ -133,13 +158,13 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
           <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
             {currency0.symbol}-{currency1.symbol}
           </TYPE.white>
-          {isDualRewards && doubleRewardsOn? (
+          {isDualRewards ? (
             <TYPE.white fontWeight={600} fontSize={16} style={{ marginLeft: '8px' }}>
               Dual Rewards
             </TYPE.white>
           ) : null}
         </AutoRow>
-        {(isStaking || !stakingInfo.isPeriodFinished) && (
+        {(isStaking || !isPeriodFinished) && (
           <StyledInternalLink
             to={`/tri/${currencyId(currency0)}/${currencyId(currency1)}/${version}`}
             style={{ width: '100%' }}
@@ -152,32 +177,27 @@ export default function PoolCard({ stakingInfo, version }: { stakingInfo: Stakin
       </TopSection>
 
       <StatContainer>
-          <RowBetween>
-            <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
-            <TYPE.white>{`$${totalStakedInUSD}`}</TYPE.white>
-          </RowBetween>
+        <RowBetween>
+          <TYPE.white> {t('earn.totalStaked')}</TYPE.white>
+          <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
+        </RowBetween>
       </StatContainer>
-      {isDualRewards && doubleRewardsOn ? (
+      {isDualRewards ? (
         <AprContainer>
           <RowBetween>
             <TYPE.white>TRI APR</TYPE.white>
-            <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
+            <TYPE.white>{`${apr}%`}</TYPE.white>
           </RowBetween>
           <RowBetween>
             <TYPE.white>AURORA APR</TYPE.white>
-            <TYPE.white>{`${stakingInfo.apr2}%`}</TYPE.white>
+            <TYPE.white>{`${apr2}%`}</TYPE.white>
           </RowBetween>
         </AprContainer>
       ) : (
         <AprContainer>
           <RowBetween>
             <TYPE.white>TRI APR</TYPE.white>
-             {!isDualRewards && (
-               <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
-             )}
-             {isDualRewards && (
-                <TYPE.white>{`${stakingInfo.apr}%`}</TYPE.white>
-             )}
+            <TYPE.white>{`${apr}%`}</TYPE.white>
           </RowBetween>
         </AprContainer>
       )}

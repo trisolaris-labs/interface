@@ -93,16 +93,12 @@ export default function Manage({
     params: { currencyIdA, currencyIdB, version }
   }
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string; version: string }>) {
-  const { account, chainId } = useActiveWeb3React()
-
+  const { account } = useActiveWeb3React()
 
   // get currencies and pair
   const [currencyA, currencyB] = [useCurrency(currencyIdA), useCurrency(currencyIdB)]
-  const tokenA = wrappedCurrency(currencyA ?? undefined, chainId)
-  const tokenB = wrappedCurrency(currencyB ?? undefined, chainId)
-  const farmArr = useSingleFarm(version)
+  const stakingInfo = useSingleFarm(Number(version))
 
-  const stakingInfo = farmArr[0]
   let backgroundColor: string
   let token: Token | undefined
 
