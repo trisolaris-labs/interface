@@ -1,145 +1,110 @@
-import { ChainId, Token, JSBI, Pair, WETH, TokenAmount } from '@trisolaris/sdk'
-import { USDC, DAI, WNEAR, TRI, AURORA} from '../../constants'
-import { useMasterChefContract, useMasterChefV2Contract, useComplexRewarderContract, MASTERCHEF_ADDRESS_V1 } from './hooks-sushi'
-import { STAKING, StakingTri, rewardsPerSecond, totalAllocPoints, tokenAmount, ExternalInfo } from './stake-constants'
-import {
-  useSingleContractMultipleData,
-  useMultipleContractSingleData,
-  useSingleCallResult,
-  NEVER_RELOAD
-} from '../../state/multicall/hooks'
-import ERC20_INTERFACE from '../../constants/abis/erc20'
-import { useMemo, useState, useEffect } from 'react'
-import { PairState, usePairs, usePair } from '../../data/Reserves'
+import { ChainId, JSBI, TokenAmount } from '@trisolaris/sdk'
+import { TRI, AURORA } from '../../constants'
+import { useComplexRewarderContract, useMasterChefV2ContractForVersion } from './hooks-sushi'
+import { STAKING, StakingTri, tokenAmount, ChefVersions } from './stake-constants'
+import { useSingleCallResult } from '../../state/multicall/hooks'
+import { PairState, usePair } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
+import { useFetchStakingInfoData } from '../../fetchers/farms'
+import { useMemo } from 'react'
+import { useBlockNumber } from '../application/hooks'
 
 // gets the staking info from the network for the active chain id
-export function useSingleFarm(version: string): StakingTri[] {
+export function useSingleFarm(version: number): StakingTri {
   const { chainId, account } = useActiveWeb3React()
+  const latestBlock = useBlockNumber();
 
-  const activeFarms = STAKING[chainId ? chainId! : ChainId.AURORA]
-  let addresses = activeFarms.map(key => key.lpAddress)
-  const chefContract = useMasterChefContract()
-  const chefContractv2 = useMasterChefV2Contract()
-  const [stakingInfoData, setStakingInfoData] = useState<ExternalInfo[]>()
-  const complexRewarderContract = useComplexRewarderContract(String(activeFarms[Number(version)].rewarderAddress))
+  const activeFarms = STAKING[chainId ?? ChainId.AURORA];
+  const { chefVersion, poolId, rewarderAddress } = activeFarms[version];
 
+  const stakingInfoData = useFetchStakingInfoData();
+  const complexRewarderContract = useComplexRewarderContract(rewarderAddress);
 
-  useEffect(() => {
-    fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/datav2.json')
-      .then(results => results.json())
-      .then(data => {
-        setStakingInfoData(data)
-      })
-  }, [])
+  const v1args = [poolId.toString(), account?.toString()];
+  const v2args = [poolId.toString(), account?.toString(), '0'];
 
+  const contract = useMasterChefV2ContractForVersion(chefVersion)
 
-  let lpAddresses = [String(addresses[Number(version)])]
-
-  const args = useMemo(() => {
-    if (!account || !version) {
-      return
-    }
-    return [String(activeFarms[Number(version)].poolId), String(account)]
-  }, [version, account])
-
-
-  const args2 = useMemo(() => {
-    if (!account || !version) {
-      return
-    }
-    return [String(activeFarms[Number(version)].poolId), String(account), "0"]
-  }, [version, account])
-
-
-  var contract = chefContract
-  if (activeFarms[Number(version)].chefVersion != 0) {
-    var contract = chefContractv2
-  }
-
-  const pendingTri = useSingleCallResult(args ? contract : null, 'pendingTri', args!) //user related
-  const userInfo = useSingleCallResult(args ? contract : null, 'userInfo', args!)  //user related
-  const pendingComplexRewards = useSingleCallResult(args2 ? complexRewarderContract : null, 'pendingTokens', args2!)
+  const pendingTri = useSingleCallResult(contract, 'pendingTri', v1args) //user related
+  const userInfo = useSingleCallResult(contract, 'userInfo', v1args)  //user related
+  const pendingComplexRewards = useSingleCallResult(
+    chefVersion === ChefVersions.V2 ? complexRewarderContract : null,
+    'pendingTokens',
+    v2args,
+  )
   // get all the info from the staking rewards contracts
-  const tokens = useMemo(() => activeFarms.filter(farm => {
-        return farm.ID == Number(version)
-      }).map(({ tokens }) => tokens), [activeFarms])
+  const tokens = activeFarms.find(({ ID }) => ID === version)?.tokens;
+  const [tokenA, tokenB] = tokens ?? [];
+  const [pairState, pair] = usePair(tokenA, tokenB);
 
-  const pairs = usePairs(tokens)
+  const result = useMemo(() => {
+
+    // Loading
+    if (
+      chainId == null ||
+      userInfo?.loading ||
+      pendingTri?.loading ||
+      pendingComplexRewards?.loading ||
+      pairState === PairState.LOADING
+    ) {
+      return activeFarms[version]
+    }
+
+    // Error
+    if (
+      userInfo.error ||
+      pendingComplexRewards.error ||
+      pendingTri.error ||
+      pair == null ||
+      stakingInfoData?.[version] == null ||
+      tokenA == null ||
+      tokenB == null
+    ) {
+      console.error('Failed to load staking rewards info');
+      return activeFarms[version];
+    }
+
+    const userInfoPool = JSBI.BigInt(userInfo.result?.['amount'] ?? 0)
+    const earnedRewardPool = JSBI.BigInt(pendingTri.result?.[0] ?? 0)
+    const earnedComplexRewardPool = JSBI.BigInt(pendingComplexRewards.result?.rewardAmounts?.[0] ?? 0)
+    const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
+    const earnedAmount = new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(earnedRewardPool))
+    const earnedComplexAmount = new TokenAmount(AURORA[ChainId.AURORA], JSBI.BigInt(earnedComplexRewardPool))
+
+    const {
+      totalStakedInUSD,
+      totalRewardRate,
+      apr,
+      apr2,
+    } = stakingInfoData[version];
 
 
-  return useMemo(() => {
-    if (!chainId) return activeFarms
-
-    return lpAddresses.reduce<StakingTri[]>((memo, lpAddress, index) => {
-      // User based info
-      const userStaked = userInfo
-      const rewardsPending = pendingTri
-      const [pairState, pair] = pairs[index]
-      const complexRewardPending = pendingComplexRewards
-
-      if (
-        // always need these
-        userStaked?.loading === false &&
-        rewardsPending?.loading === false &&
-        complexRewardPending?.loading == false &&
-        pair &&
-        pairState !== PairState.LOADING && stakingInfoData
-      ) {
-        if (
-          userStaked.error ||
-          complexRewardPending.error ||
-          rewardsPending.error ||
-          pairState === PairState.INVALID ||
-          pairState === PairState.NOT_EXISTS || !stakingInfoData
-        ) {
-          console.error('Failed to load staking rewards info')
-          return memo
-        }
-
-        // get the LP token
-        const tokens = activeFarms[Number(version)].tokens
-        // data from offchain
-        // check for account, if no account set to 0
-        const userInfoPool = JSBI.BigInt(userStaked.result?.['amount'])
-        const earnedRewardPool = JSBI.BigInt(rewardsPending.result?.[0])
-        const earnedComplexRewardPool = JSBI.BigInt(complexRewardPending.result?.rewardAmounts?.[0] ?? 0)
-
-        const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
-        const earnedAmount = new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(earnedRewardPool))
-        const earnedComplexAmount = new TokenAmount(AURORA[ChainId.AURORA], JSBI.BigInt(earnedComplexRewardPool))
-        const chefVersion = activeFarms[Number(version)].chefVersion
-
-        memo.push({
-          ID: activeFarms[Number(version)].ID,
-          poolId: activeFarms[Number(version)].poolId,
-          stakingRewardAddress: activeFarms[Number(version)].stakingRewardAddress,
-          lpAddress: activeFarms[Number(version)].lpAddress,
-          rewarderAddress: activeFarms[Number(version)].rewarderAddress,
-          tokens: tokens,
-          isPeriodFinished: false,
-          earnedAmount: earnedAmount,
-          doubleRewardAmount: earnedComplexAmount,
-          stakedAmount: stakedAmount,
-          totalStakedAmount: tokenAmount,
-          totalStakedInUSD: Math.round(stakingInfoData[Number(version)].totalStakedInUSD),
-          allocPoint: activeFarms[index].allocPoint,
-          totalRewardRate: Math.round(stakingInfoData[Number(version)].totalRewardRate),
-          rewardRate: tokenAmount,
-          apr: Math.round(stakingInfoData[Number(version)].apr),
-          apr2: Math.round(stakingInfoData[Number(version)].apr2),
-          chefVersion: chefVersion,
-          doubleRewards: activeFarms[Number(version)].doubleRewards,
-          inStaging: activeFarms[Number(version)].inStaging,
-        })
-        return memo
-      }
-      return activeFarms
-    }, [])
+    return {
+      ...activeFarms[version],
+      tokens: tokens!,
+      isPeriodFinished: false,
+      earnedAmount: earnedAmount,
+      doubleRewardAmount: earnedComplexAmount,
+      stakedAmount,
+      totalStakedAmount: tokenAmount,
+      totalStakedInUSD: Math.round(totalStakedInUSD),
+      totalRewardRate: Math.round(totalRewardRate),
+      rewardRate: tokenAmount,
+      apr: Math.round(apr),
+      apr2: Math.round(apr2),
+      chefVersion,
+    }
   }, [
-    activeFarms,
-    pairs,
+    chainId,
+    userInfo,
     pendingTri,
-    userInfo
-  ])
+    pendingComplexRewards,
+    pairState,
+    tokens,
+    tokenA,
+    tokenB,
+    latestBlock,
+  ]);
+
+  return result;
 }
