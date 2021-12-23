@@ -96,7 +96,12 @@ function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): C
 
         const result = callResults[chainId]?.[toCallKey(call)]
         let data
-        if (result?.data && result?.data !== '0x') {
+
+        if (result?.data != null &&
+          ![
+            '0x',
+            '0x0000000000000000000000000000000000000000',
+          ].includes(result.data)) {
           data = result.data
         }
 
@@ -170,11 +175,11 @@ export function useSingleContractMultipleData(
     () =>
       contract && fragment && callInputs && callInputs.length > 0
         ? callInputs.map<Call>(inputs => {
-            return {
-              address: contract.address,
-              callData: contract.interface.encodeFunctionData(fragment, inputs)
-            }
-          })
+          return {
+            address: contract.address,
+            callData: contract.interface.encodeFunctionData(fragment, inputs)
+          }
+        })
         : [],
     [callInputs, contract, fragment]
   )
@@ -208,13 +213,13 @@ export function useMultipleContractSingleData(
     () =>
       fragment && addresses && addresses.length > 0 && callData
         ? addresses.map<Call | undefined>(address => {
-            return address && callData
-              ? {
-                  address,
-                  callData
-                }
-              : undefined
-          })
+          return address && callData
+            ? {
+              address,
+              callData
+            }
+            : undefined
+        })
         : [],
     [addresses, callData, fragment]
   )
@@ -239,11 +244,11 @@ export function useSingleCallResult(
   const calls = useMemo<Call[]>(() => {
     return contract && fragment && isValidMethodArgs(inputs)
       ? [
-          {
-            address: contract.address,
-            callData: contract.interface.encodeFunctionData(fragment, inputs)
-          }
-        ]
+        {
+          address: contract.address,
+          callData: contract.interface.encodeFunctionData(fragment, inputs)
+        }
+      ]
       : []
   }, [contract, fragment, inputs])
 

@@ -94,45 +94,45 @@ const IconWrapper = styled.div<{ size?: number }>`
 `
 
 export default function TriPriceModal() {
-    const isModalOpen = useModalOpen(ApplicationModal.TRI_PRICE)
-    const toggleWalletModal = useToggleTriPriceModal()
-    const triPrice = useTriPrice();
-    const totalTRI = useTotalSupply(TRI[ChainId.AURORA]);
+  const isModalOpen = useModalOpen(ApplicationModal.TRI_PRICE)
+  const toggleWalletModal = useToggleTriPriceModal()
+  const { getTriPrice, triPriceFriendly } = useTriPrice();
+  const totalTRI = useTotalSupply(TRI[ChainId.AURORA]);
 
-    return (
-        <Modal isOpen={isModalOpen} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}>
-            <Wrapper>
-                <UpperSection>
-                    <CloseIcon onClick={toggleWalletModal}>
-                        <CloseColor />
-                    </CloseIcon>
-                    <HeaderRow color="blue">
-                        Trisolaris Token
-                    </HeaderRow>
-                    <ContentWrapper>
-                        <AutoRow>
-                            <AutoColumn>
-                                <IconWrapper size={32}>
-                                    <img src={'https://github.com/trisolaris-labs/tokens/blob/master/assets/0xFa94348467f64D5A457F75F8bc40495D33c65aBB/logo.png?raw=true'} />
-                                </IconWrapper>
-                            </AutoColumn>
-                            <AutoColumn style={{ padding: '0 .75em', flex: '1 1 0%' }}>
-                                <AutoRow>
-                                    <TYPE.largeHeader>TRI</TYPE.largeHeader>
-                                </AutoRow>
-                            </AutoColumn>
-                            <AutoColumn>
-                                <TYPE.mediumHeader fontWeight={500}>{triPrice != null ? `$${triPrice.toFixed(2)}` : '-'}</TYPE.mediumHeader>
-                            </AutoColumn>
-                        </AutoRow>
-                        <CirculatingSupplyMarketCap totalTRI={totalTRI} triPrice={triPrice} />
-                        <AutoRow align="center" justify="space-around" padding="1rem 0 0 0">
-                            <Link href="https://explorer.mainnet.aurora.dev/token/0xFa94348467f64D5A457F75F8bc40495D33c65aBB">Contract</Link>
-                            <Link href="https://dexscreener.com/aurora/0x84b123875f0f36b966d0b6ca14b31121bd9676ad">DEX Screener</Link>
-                        </AutoRow>
-                    </ContentWrapper>
-                </UpperSection>
-            </Wrapper>
-        </Modal>
-    )
+  return (
+    <Modal isOpen={isModalOpen} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}>
+      <Wrapper>
+        <UpperSection>
+          <CloseIcon onClick={toggleWalletModal}>
+            <CloseColor />
+          </CloseIcon>
+          <HeaderRow color="blue">
+            Trisolaris Token
+          </HeaderRow>
+          <ContentWrapper>
+            <AutoRow>
+              <AutoColumn>
+                <IconWrapper size={32}>
+                  <img src={'https://github.com/trisolaris-labs/tokens/blob/master/assets/0xFa94348467f64D5A457F75F8bc40495D33c65aBB/logo.png?raw=true'} />
+                </IconWrapper>
+              </AutoColumn>
+              <AutoColumn style={{ padding: '0 .75em', flex: '1 1 0%' }}>
+                <AutoRow>
+                  <TYPE.largeHeader>TRI</TYPE.largeHeader>
+                </AutoRow>
+              </AutoColumn>
+              <AutoColumn>
+                <TYPE.mediumHeader fontWeight={500}>{triPriceFriendly != null ? `$${triPriceFriendly}` : '-'}</TYPE.mediumHeader>
+              </AutoColumn>
+            </AutoRow>
+            <CirculatingSupplyMarketCap totalTRI={totalTRI} triPrice={getTriPrice()} />
+            <AutoRow align="center" justify="space-around" padding="1rem 0 0 0">
+              <Link href="https://explorer.mainnet.aurora.dev/token/0xFa94348467f64D5A457F75F8bc40495D33c65aBB">Contract</Link>
+              <Link href="https://dexscreener.com/aurora/0x84b123875f0f36b966d0b6ca14b31121bd9676ad">DEX Screener</Link>
+            </AutoRow>
+          </ContentWrapper>
+        </UpperSection>
+      </Wrapper>
+    </Modal>
+  )
 }
