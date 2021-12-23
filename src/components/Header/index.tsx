@@ -267,7 +267,7 @@ export default function Header() {
   const { t } = useTranslation()
 
   const [isDark] = useDarkModeManager()
-  const triPrice = useTriPrice();
+  const { triPriceFriendly } = useTriPrice();
 
   const toggleTriPriceModal = useToggleTriPriceModal();
 
@@ -334,7 +334,7 @@ export default function Header() {
                   <img src={'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/0xFa94348467f64D5A457F75F8bc40495D33c65aBB/logo.png'} />
                 </IconWrapper>
                 <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
-                  {triPrice != null ? `$${triPrice.toFixed(2)}` : '-'}
+                  {triPriceFriendly != null ? `$${triPriceFriendly}` : '-'}
                 </Text>
               </TRIButton>
               <TriPriceModal />
