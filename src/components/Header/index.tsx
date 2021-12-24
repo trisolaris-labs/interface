@@ -137,16 +137,16 @@ const TRIButton = styled(ButtonSecondary) <{ isDark: boolean }>`
     box-shadow: none;
     border: 1px solid ${({ theme }) => theme.primary3};
     background: ${({ theme, isDark }) => {
-    const color1 = isDark ? darken(0.12, theme.blue1) : lighten(0.12, theme.blue1);
-    const color2 = isDark ? darken(0.12, '#e84142') : '#e84142';
-    return `radial-gradient(174.47% 188.91% at 1.84% 0%, ${color1} 0%, ${color2} 100%), ${theme.white}`;
-  }};
+      const color1 = isDark ? darken(0.12, theme.blue1) : lighten(0.12, theme.blue1);
+      const color2 = isDark ? darken(0.12, '#e84142') : '#e84142';
+      return `radial-gradient(174.47% 188.91% at 1.84% 0%, ${color1} 0%, ${color2} 100%), ${theme.white}`;
+    }};
   }
   `
 
 const TRIWrapper = styled(AccountElement) <{ isDark: boolean }>`
   color: white;
-  padding: 4px 8px;
+  padding: 4px 0;
   height: 36px;
   font-weight: 500;
 `
@@ -313,18 +313,13 @@ export default function Header() {
           <StyledExternalLink id="aurora-bridge" href={'https://rainbowbridge.app/transfer'}>
             Rainbow Bridge <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
-          <StyledExternalLink id="aurora-bridge" href={'https://app.allbridge.io/bridge'}>
+          <StyledExternalLink id="terra-bridge" href={'https://app.allbridge.io/bridge'}>
             Bridge from Terra <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
         <HeaderElement>
-          <HideSmall>
-            {chainId && NETWORK_LABELS[chainId] && (
-              <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
-            )}
-          </HideSmall>
             <TRIWrapper active={true} isDark={isDark}>
               <TRIButton isDark={isDark} onClick={(e) => {
                 e.currentTarget.blur();
