@@ -1,6 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Token, TokenAmount, ChainId } from '@trisolaris/sdk'
-import { AURORA } from '../constants'
 import { ChefVersions } from '../state/stake/stake-constants'
 import { MASTERCHEF_ADDRESS_V1,MASTERCHEF_ADDRESS_V2 } from '../state/stake/hooks-sushi'
 import { useTokenContract } from '../hooks/useContract'
