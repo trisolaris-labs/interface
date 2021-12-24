@@ -118,6 +118,7 @@ export default function Earn({
               token1={farm.tokens[1]}
               totalStakedInUSD={farm.totalStakedInUSD}
               version={farm.ID}
+              doubleRewards={farm.doubleRewards}
             />
           ))}
         </PoolSection>
@@ -137,6 +138,7 @@ export default function Earn({
               token1={farm.tokens[1]}
               totalStakedInUSD={farm.totalStakedInUSD}
               version={farm.ID}
+              doubleRewards={farm.doubleRewards}
             />
           ))}
         </PoolSection>
