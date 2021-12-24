@@ -38,7 +38,7 @@ const AprContainer = styled.div`
   margin-left: 1rem;
 `
 
-const Wrapper = styled(AutoColumn) <{ showBackground: boolean; bgColor1: any; bgColor2?: any }>`
+const Wrapper = styled(AutoColumn)<{ showBackground: boolean; bgColor1: any; bgColor2?: any }>`
   border-radius: 12px;
   width: 100%;
   overflow: hidden;
@@ -46,7 +46,9 @@ const Wrapper = styled(AutoColumn) <{ showBackground: boolean; bgColor1: any; bg
   opacity: 1;
   background: ${({ theme, bgColor1, bgColor2, showBackground }) =>
     bgColor2 != null
-      ? `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor1} 30%, ${bgColor2} 70%, ${showBackground ? theme.black : theme.bg5} 100%)`
+      ? `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor1} 30%, ${bgColor2} 70%, ${
+          showBackground ? theme.black : theme.bg5
+        } 100%)`
       : `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor1} 0%, ${showBackground ? theme.black : theme.bg5} 100%) `};
   background-color: grey;
   color: ${({ theme, showBackground }) => (showBackground ? theme.white : theme.text1)} !important;
@@ -80,7 +82,7 @@ const BottomSection = styled.div<{ showBackground: boolean }>`
   z-index: 1;
 `
 
-const GREY_ICON_TOKENS = ['ETH', 'WETH', 'WBTC', 'WNEAR'];
+const GREY_ICON_TOKENS = ['ETH', 'WETH', 'WBTC', 'WNEAR']
 
 /**
  * token0
@@ -89,16 +91,17 @@ const GREY_ICON_TOKENS = ['ETH', 'WETH', 'WBTC', 'WNEAR'];
  */
 
 type Props = {
-  apr: number,
-  apr2: number,
-  chefVersion: ChefVersions,
-  isPeriodFinished: boolean,
-  stakedAmount: TokenAmount | null,
-  token0: Token,
-  token1: Token,
-  totalStakedInUSD: number,
-  version: number,
-};
+  apr: number
+  apr2: number
+  chefVersion: ChefVersions
+  isPeriodFinished: boolean
+  stakedAmount: TokenAmount | null
+  token0: Token
+  token1: Token
+  totalStakedInUSD: number
+  version: number
+  doubleRewards: boolean
+}
 
 export default function PoolCard({
   apr,
@@ -110,8 +113,8 @@ export default function PoolCard({
   token1,
   totalStakedInUSD,
   version,
+  doubleRewards
 }: Props) {
-
   const currency0 = unwrappedToken(token0)
   const currency1 = unwrappedToken(token1)
 
@@ -124,27 +127,27 @@ export default function PoolCard({
         ? token1
         : token0
       : token0.equals(PNG[token0.chainId])
-        ? token1
-        : token0
+      ? token1
+      : token0
 
   // get the color of the token
   let backgroundColor1 = useColor(token)
-  const secondaryToken = token === token1 ? token0 : token1;
-  let backgroundColor2 = useColor(secondaryToken);
+  const secondaryToken = token === token1 ? token0 : token1
+  let backgroundColor2 = useColor(secondaryToken)
 
   const totalStakedInUSDFriendly = totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-  const isDualRewards = chefVersion == 1;
+  const isDualRewards = chefVersion == 1
 
   // Colors are dynamically chosen based on token logos
   // These tokens are mostly grey; Override color to blue
 
   if (GREY_ICON_TOKENS.includes(token?.symbol ?? '')) {
-    backgroundColor1 = '#2172E5';
+    backgroundColor1 = '#2172E5'
   }
 
   // Only override `backgroundColor2` if it's a dual rewards pool
   if (isDualRewards && GREY_ICON_TOKENS.includes(secondaryToken?.symbol ?? '')) {
-    backgroundColor2 = '#2172E5';
+    backgroundColor2 = '#2172E5'
   }
 
   return (
@@ -158,7 +161,7 @@ export default function PoolCard({
           <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
             {currency0.symbol}-{currency1.symbol}
           </TYPE.white>
-          {isDualRewards ? (
+          {isDualRewards && doubleRewards ? (
             <TYPE.white fontWeight={600} fontSize={16} style={{ marginLeft: '8px' }}>
               Dual Rewards
             </TYPE.white>
@@ -182,7 +185,7 @@ export default function PoolCard({
           <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
         </RowBetween>
       </StatContainer>
-      {isDualRewards ? (
+      {isDualRewards && doubleRewards ? (
         <AprContainer>
           <RowBetween>
             <TYPE.white>TRI APR</TYPE.white>
