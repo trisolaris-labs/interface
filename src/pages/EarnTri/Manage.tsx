@@ -146,6 +146,7 @@ export default function Manage({
     lpToken,
     userLPStakedAmount: stakingInfo?.stakedAmount,
     totalPoolAmountUSD: stakingInfo?.totalStakedInUSD,
+    chefVersion: stakingInfo?.chefVersion,
   }) ?? {};
 
   const handleDepositClick = useCallback(() => {

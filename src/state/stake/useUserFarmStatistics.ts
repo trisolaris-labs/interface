@@ -1,21 +1,25 @@
 import { JSBI, Token, TokenAmount } from '@trisolaris/sdk';
-import { useTotalSupply } from '../../data/TotalSupply';
+import { useTotalStakedInPool } from '../../data/TotalStakedInPool';
+import { ChefVersions } from './stake-constants'
+import { addCommasToNumber } from '../../utils';
 
 type Props = {
     lpToken?: Token,
     userLPStakedAmount?: TokenAmount | null,
     totalPoolAmountUSD?: number,
+    chefVersion?: ChefVersions,
 }
 
 export default function useUserFarmStatistics({
     lpToken,
     userLPStakedAmount,
     totalPoolAmountUSD,
+    chefVersion,
 }: Props) {
-    const totalSupply = useTotalSupply(lpToken);
+    const totalStakedInPool = useTotalStakedInPool(lpToken, chefVersion);
 
     if (
-        totalSupply == null ||
+        totalStakedInPool == null ||
         lpToken == null ||
         userLPStakedAmount == null ||
         totalPoolAmountUSD == null ||
@@ -24,14 +28,14 @@ export default function useUserFarmStatistics({
         return null;
     }
 
-    const userLPShare = userLPStakedAmount.divide(totalSupply);
+    const userLPShare = userLPStakedAmount.divide(totalStakedInPool);
     const userLPAmountUSD = userLPShare?.multiply(JSBI.BigInt(totalPoolAmountUSD));
     const userLPAmountUSDFormatted = userLPAmountUSD != null
-        ? `$${userLPAmountUSD?.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+        ? `$${addCommasToNumber(userLPAmountUSD.toFixed(2))}`
         : null;
 
     return {
-        totalSupply,
+        totalStakedInPool,
         userLPShare,
         userLPAmountUSD,
         userLPAmountUSDFormatted,
