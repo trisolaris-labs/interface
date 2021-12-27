@@ -101,6 +101,7 @@ type Props = {
   totalStakedInUSD: number
   version: number
   doubleRewards: boolean
+  inStaging: boolean 
 }
 
 export default function PoolCard({
@@ -113,7 +114,8 @@ export default function PoolCard({
   token1,
   totalStakedInUSD,
   version,
-  doubleRewards
+  doubleRewards,
+  inStaging
 }: Props) {
   const currency0 = unwrappedToken(token0)
   const currency1 = unwrappedToken(token1)
@@ -200,7 +202,12 @@ export default function PoolCard({
         <AprContainer>
           <RowBetween>
             <TYPE.white>TRI APR</TYPE.white>
+            {!inStaging && (
             <TYPE.white>{`${apr}%`}</TYPE.white>
+            )}
+            {inStaging && (
+            <TYPE.white>{`Coming Soon`}</TYPE.white>
+            )}
           </RowBetween>
         </AprContainer>
       )}
