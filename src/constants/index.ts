@@ -190,6 +190,28 @@ export const WNEAR: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0xc42c30ac6cc15fac9bd938618bcaa1a1fae8501d', 24, 'WNEAR', 'WNEAR Token')
 }
 
+export const AVAX: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'AVAX', 'Avalanche'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'AVAX', 'Avalanche'),
+  [ChainId.POLYGON]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'AVAX', 'Avalanche'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844', 18, 'AVAX', 'Avalanche')
+}
+
+export const MATIC: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'MATIC', 'Polygon'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'MATIC', 'Polygon'),
+  [ChainId.POLYGON]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'MATIC', 'Polygon'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8', 18, 'MATIC', 'Polygon')
+}
+
+export const BNB: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'BNB', 'Binance'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'BNB', 'Binance'),
+  [ChainId.POLYGON]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'BNB', 'Binance'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x2bF9b864cdc97b08B6D79ad4663e71B8aB65c45c', 18, 'BNB', 'Binance')
+}
+
+
 export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: ZERO_ADDRESS,
   [ChainId.AVALANCHE]: '0x0C58C2041da4CfCcF5818Bbe3b66DBC23B3902d9',

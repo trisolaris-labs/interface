@@ -1,5 +1,5 @@
 import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
-import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR, USDT, WBTC, TRI, AURORA, LUNA, UST } from '../../constants'
+import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR, USDT, WBTC, TRI, AURORA, LUNA, UST, BNB, AVAX, MATIC } from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS_V1,MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
 export enum ChefVersions{
@@ -348,7 +348,29 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V2,
     doubleRewards: false,
     inStaging: false
-  }
+  },
+  {
+    ID: 11,
+    poolId: 4,
+    tokens: [TRI[ChainId.AURORA], USDT[ChainId.AURORA]],
+    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
+    lpAddress: '0x61C9E05d1Cdb1b70856c7a2c53fA9c220830633c',
+    rewarderAddress: '',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    doubleRewardAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: 1,
+    rewardRate: dummyAmount,
+    apr: 0,
+    apr2: 0,
+    chefVersion: ChefVersions.V2,
+    doubleRewards: false,
+    inStaging: true
+  },
 ]
 
 const NULL_POOLS: StakingTri[] = [
