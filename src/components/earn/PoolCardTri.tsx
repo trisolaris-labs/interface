@@ -202,12 +202,7 @@ export default function PoolCard({
         <AprContainer>
           <RowBetween>
             <TYPE.white>TRI APR</TYPE.white>
-            {!inStaging && (
-            <TYPE.white>{`${apr}%`}</TYPE.white>
-            )}
-            {inStaging && (
-            <TYPE.white>{`Coming Soon`}</TYPE.white>
-            )}
+            <TYPE.white>{inStaging ? `Coming Soon`: `${apr}%`}</TYPE.white>
           </RowBetween>
         </AprContainer>
       )}
