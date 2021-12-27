@@ -350,7 +350,7 @@ const AURORA_POOLS: StakingTri[] = [
     inStaging: false
   },
   {
-    ID: 14,
+    ID: 11,
     poolId: 4,
     tokens: [TRI[ChainId.AURORA], USDT[ChainId.AURORA]],
     stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],

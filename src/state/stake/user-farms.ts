@@ -13,7 +13,6 @@ import { useBlockNumber } from '../application/hooks'
 export function useSingleFarm(version: number): StakingTri {
   const { chainId, account } = useActiveWeb3React()
   const latestBlock = useBlockNumber();
-
   const activeFarms = STAKING[chainId ?? ChainId.AURORA];
   const { chefVersion, poolId, rewarderAddress } = activeFarms[version];
 
