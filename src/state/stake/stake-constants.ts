@@ -369,7 +369,7 @@ const AURORA_POOLS: StakingTri[] = [
     apr2: 0,
     chefVersion: ChefVersions.V2,
     doubleRewards: false,
-    inStaging: true
+    inStaging: false
   },
 ]
 
