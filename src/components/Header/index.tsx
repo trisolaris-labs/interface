@@ -126,21 +126,16 @@ const TRIButton = styled(ButtonSecondary) <{ isDark: boolean }>`
   padding: 4px 8px;
   height: 36px;
   font-weight: 500;
-  border: ${({ theme }) => `1px solid ${theme.bg3}`};
-  background: ${({ theme, isDark }) => {
-    const color1 = isDark ? darken(0.08, theme.blue1) : lighten(0.08, theme.blue1);
-    const color2 = isDark ? darken(0.08, '#e84142') : '#e84142';
-    return `radial-gradient(174.47% 188.91% at 1.84% 0%, ${color1} 0%, ${color2} 100%), ${theme.white}`;
-  }};
-
+  border: none;
+  background: ${({ theme, isDark }) =>
+    `radial-gradient(100% 100%, ${theme.primary1} 25%, #0014FF 100%), ${theme.white};`
+  }
   &:hover, &:focus, &:active {
+    border: none;
     box-shadow: none;
-    border: 1px solid ${({ theme }) => theme.primary3};
-    background: ${({ theme, isDark }) => {
-      const color1 = isDark ? darken(0.12, theme.blue1) : lighten(0.12, theme.blue1);
-      const color2 = isDark ? darken(0.12, '#e84142') : '#e84142';
-      return `radial-gradient(174.47% 188.91% at 1.84% 0%, ${color1} 0%, ${color2} 100%), ${theme.white}`;
-    }};
+    background: ${({ theme, isDark }) =>
+    `radial-gradient(100% 100%, ${darken(0.12, theme.primary1)} 25%, ${darken(0.12, '#0014FF')} 100%), ${theme.white};`
+    }
   }
   `
 
