@@ -5,6 +5,11 @@ import Card from '../Card';
 import { AutoRow } from '../Row';
 import spacemanOnPlanet from '../../assets/svg/spaceman_on_planet.svg';
 import { AutoColumn } from '../Column';
+import { useFarms } from '../../state/stake/apr';
+import { addCommasToNumber } from '../../utils';
+import { JSBI } from '@trisolaris/sdk';
+
+const ZERO = JSBI.BigInt(0)
 
 const StyledCard = styled(Card)`
     background: radial-gradient(farthest-corner at 0% 0%, #32B4FF 0%,#000000 70%);
@@ -30,7 +35,16 @@ const IconContainer = styled.div`
   `};
 `
 
-export default function FarmBannerRadialCornerSpaceman13() {
+export default function FarmBanner() {
+    const farmTVL = useFarms()
+        .reduce(
+            (acc, farm) => JSBI.add(acc, JSBI.BigInt(farm.totalStakedInUSD)), 
+            ZERO,
+        );
+    const farmTVLFriendly = JSBI.GE(farmTVL, ZERO) 
+        ? `$${addCommasToNumber(farmTVL.toString())}` 
+        : '-'
+
     return (
         <StyledCard>
             <AutoRow justifyContent="space-between" style={{ alignItems: 'flex-start' }}>
@@ -39,7 +53,7 @@ export default function FarmBannerRadialCornerSpaceman13() {
                         Farm
                     </TYPE.largeHeader>
                     <TYPE.subHeader>
-                        Total TVL: $1,000
+                        TVL: {farmTVLFriendly}
                     </TYPE.subHeader>
                 </AutoColumn>
                 <IconContainer>
