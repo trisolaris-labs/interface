@@ -79,7 +79,6 @@ export default function PoolCard({
     inStaging
 }: Props) {
     const [token0, token1] = getTokenPairRenderOrder(_token0, _token1)
-    
     const currency0 = unwrappedToken(token0)
     const currency1 = unwrappedToken(token1)
 
