@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import { darken } from 'polished'
 
 const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean }>`
   padding: 0.25rem 0.5rem;
@@ -12,15 +13,15 @@ const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean }>`
 
   padding: 0.35rem 0.6rem;
   border-radius: 12px;
-  background: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.primary1 : theme.text4) : 'none')};
+  background: ${({ theme, isActive }) => (isActive ? theme.primary1 : 'none')};
   color: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.white : theme.text2) : theme.text2)};
   font-size: 1rem;
   font-weight: ${({ isOnSwitch }) => (isOnSwitch ? '500' : '400')};
   :hover {
     user-select: ${({ isOnSwitch }) => (isOnSwitch ? 'none' : 'initial')};
-    background: ${({ theme, isActive, isOnSwitch }) =>
-      isActive ? (isOnSwitch ? theme.primary1 : theme.text3) : 'none'};
-    color: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.white : theme.text2) : theme.text3)};
+    background: ${({ theme, isActive }) =>
+      isActive ? darken(0.12, theme.primary1) : 'none'};
+    color: ${({ theme }) => theme.text3};
   }
 `
 

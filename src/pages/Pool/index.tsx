@@ -20,11 +20,7 @@ import { Dots } from '../../components/swap/styleds'
 import { ChainId } from '@trisolaris/sdk'
 import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
 import { useTranslation } from 'react-i18next'
-
-const PageWrapper = styled(AutoColumn)`
-  max-width: 640px;
-  width: 100%;
-`
+import { PageWrapper } from '../../components/Page'
 
 const VoteCard = styled(DataCard)`
   background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
@@ -64,7 +60,7 @@ const ResponsiveButtonSecondary = styled(ButtonSecondary)`
 `
 
 const EmptyProposals = styled.div`
-  border: 1px solid ${({ theme }) => theme.text4};
+  border: 1px solid ${({ theme }) => theme.bg3};
   padding: 16px 12px;
   border-radius: 12px;
   display: flex;
@@ -112,7 +108,6 @@ export default function Pool() {
   const hasV1Liquidity = undefined
 
   return (
-    <>
       <PageWrapper>
         <SwapPoolTabs active={'pool'} />
 
@@ -173,6 +168,5 @@ export default function Pool() {
           </AutoColumn>
         </AutoColumn>
       </PageWrapper>
-    </>
   )
 }

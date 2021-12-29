@@ -63,3 +63,15 @@ export function useColor(token?: Token) {
 export function useColorWithDefault(defaultColor: string, token?: Token) {
   return useColor(token) ?? defaultColor;
 }
+
+const GREY_ICON_TOKENS = ['ETH', 'WETH', 'WBTC', 'WNEAR'];
+const FALLBACK_COLOR = '#2172E5';
+export function useColorForToken(token?: Token) {
+  const color = useColor(token);
+
+  if (GREY_ICON_TOKENS.includes(token?.symbol ?? '')) {
+    return FALLBACK_COLOR;
+  }
+
+  return color;
+}

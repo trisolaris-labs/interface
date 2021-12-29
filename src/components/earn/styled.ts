@@ -24,6 +24,14 @@ export const DataCard = styled(AutoColumn) <{ disabled?: boolean }>`
    overflow: hidden;
  `
 
+export const HighlightCard = styled(AutoColumn) <{ disabled?: boolean }>`
+   border: ${({ theme }) => `1px solid ${theme.primary1}`}
+   border-radius: 10px;
+   width: 100%;
+   position: relative;
+   overflow: hidden;
+`
+
 export const CardBGImage = styled.span<{ desaturate?: boolean }>`
    background: url(${uImage});
    background-color: #3f4e66; // This is the average color of "uImage"
