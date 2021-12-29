@@ -140,6 +140,7 @@ export default function TriPriceModal() {
             <AutoRow align="center" justify="space-around" padding="1rem 0 0 0">
               <Link href="https://explorer.mainnet.aurora.dev/token/0xFa94348467f64D5A457F75F8bc40495D33c65aBB">Contract</Link>
               <Link href="https://dexscreener.com/aurora/0x84b123875f0f36b966d0b6ca14b31121bd9676ad">DEX Screener</Link>
+              <Link href="https://geckoterminal.com/aurora/pools/0x84b123875f0f36b966d0b6ca14b31121bd9676ad">Gecko Terminal</Link>
             </AutoRow>
           </ContentWrapper>
         </UpperSection>
