@@ -222,12 +222,12 @@ html {
 
 body {
   min-height: 100vh;
-  background-position: 0 -30vh;
+  background-position: 0 -10vh;
   background-repeat: no-repeat;
   background-image: ${({ theme }) =>
-    `radial-gradient(50% 50% at 50% 50%, ${transparentize(0.85, theme.bg1)} 0%, ${transparentize(
+    `radial-gradient(50% 50% at 50% 50%, ${transparentize(0.85, theme.primary1)} 0%, ${transparentize(
       1,
-      theme.primary1
+      theme.bg1
     )} 100%)`};
 }
 `
