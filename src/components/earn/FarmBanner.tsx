@@ -52,7 +52,7 @@ export default function FarmBanner() {
                     <TYPE.largeHeader>
                         Farm
                     </TYPE.largeHeader>
-                    <TYPE.subHeader>
+                    <TYPE.subHeader marginTop="1rem">
                         TVL: {farmTVLFriendly}
                     </TYPE.subHeader>
                 </AutoColumn>
