@@ -43,7 +43,7 @@ export function colors(darkMode: boolean): Colors {
     // text
     text1: '#FFF',
     text2: '#FFF',
-    text3: '#FFF',
+    text3: 'rgb(108, 114, 132)',
     text4: '#FFF',
     text5: '#FFF',
 
