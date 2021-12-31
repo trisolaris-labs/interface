@@ -14,7 +14,7 @@ import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { ButtonPrimary, ButtonEmpty } from '../Button'
 import { transparentize } from 'polished'
-import { CardNoise } from '../earn/styled'
+import { CardNoise, TokenPairBackgroundColor } from '../earn/styled'
 
 import { useColorWithDefault } from '../../hooks/useColor'
 
@@ -25,6 +25,7 @@ import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween, RowFixed } from '../Row'
 import { Dots } from '../swap/styleds'
 import { useTranslation } from 'react-i18next'
+import getTokenPairRenderOrder from '../../utils/getTokenPairRenderOrder'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -37,9 +38,8 @@ export const HoverCard = styled(Card)`
   }
 `
 const StyledPositionCard = styled(LightCard)<{ bgColor: any }>`
+  background-color: unset;
   border: none;
-  background: ${({ theme, bgColor }) =>
-    `radial-gradient(91.85% 100% at 1.84% 0%, ${transparentize(0.8, bgColor)} 0%, ${theme.bg3} 100%) `};
   position: relative;
   overflow: hidden;
 `
@@ -49,6 +49,10 @@ interface PositionCardProps {
   showUnwrapped?: boolean
   border?: string
 }
+
+const ManageButton = styled(ButtonEmpty)`
+  color: ${({theme}) => theme.white};
+`
 
 export function MinimalPositionCard({ pair, showUnwrapped = false, border }: PositionCardProps) {
   const { account } = useActiveWeb3React()
@@ -187,26 +191,29 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
         ]
       : [undefined, undefined]
 
-  const backgroundColor = useColorWithDefault('#2172E5', pair?.token0);
+  const [token0, token1] = getTokenPairRenderOrder(pair?.token0, pair?.token1);
+
+  const backgroundColor1 = useColorWithDefault('#2172E5', token0);
+  const backgroundColor2 = useColorWithDefault('#2172E5', token1)
 
   return (
-    <StyledPositionCard border={border} bgColor={backgroundColor}>
-      <CardNoise />
+    <StyledPositionCard border={border} bgColor={backgroundColor1}>
+      <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
       <AutoColumn gap="12px">
         <FixedHeightRow>
           <RowFixed>
-            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
+            <DoubleCurrencyLogo currency0={token0} currency1={token1} margin={true} size={20} />
             <Text fontWeight={500} fontSize={20}>
-              {!currency0 || !currency1 ? (
+              {!token0 || !token1 ? (
                 <Dots>{t('positionCard.loading')}</Dots>
               ) : (
-                `${currency0.symbol}/${currency1.symbol}`
+                `${token0.symbol}/${token1.symbol}`
               )}
             </Text>
           </RowFixed>
 
           <RowFixed gap="8px">
-            <ButtonEmpty
+            <ManageButton
               padding="6px 8px"
               borderRadius="12px"
               width="fit-content"
@@ -224,7 +231,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                   <ChevronDown size="20" style={{ marginLeft: '10px' }} />
                 </>
               )}
-            </ButtonEmpty>
+            </ManageButton>
           </RowFixed>
         </FixedHeightRow>
 
@@ -241,7 +248,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             <FixedHeightRow>
               <RowFixed>
                 <Text fontSize={16} fontWeight={500}>
-                  {t('positionCard.pooled')} {currency0.symbol}:
+                  {t('positionCard.pooled')} {token0.symbol}:
                 </Text>
               </RowFixed>
               {token0Deposited ? (
@@ -249,7 +256,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                   <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
                     {token0Deposited?.toSignificant(6)}
                   </Text>
-                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency0} />
+                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={token0} />
                 </RowFixed>
               ) : (
                 '-'
@@ -259,7 +266,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             <FixedHeightRow>
               <RowFixed>
                 <Text fontSize={16} fontWeight={500}>
-                  {t('positionCard.pooled')} {currency1.symbol}:
+                  {t('positionCard.pooled')} {token1.symbol}:
                 </Text>
               </RowFixed>
               {token1Deposited ? (
@@ -267,7 +274,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                   <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
                     {token1Deposited?.toSignificant(6)}
                   </Text>
-                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency1} />
+                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={token1} />
                 </RowFixed>
               ) : (
                 '-'

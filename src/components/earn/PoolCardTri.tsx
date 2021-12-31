@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom'
 import { addCommasToNumber } from '../../utils'
 import getTokenPairRenderOrder from '../../utils/getTokenPairRenderOrder'
 import { darken, lighten } from 'polished'
+import { TokenPairBackgroundColor } from './styled'
 
 const Wrapper = styled(Card) < { bgColor1: string | null, bgColor2?: string | null, isDoubleRewards: boolean }>`
   border: ${({ isDoubleRewards, theme }) =>
@@ -35,22 +36,6 @@ const Wrapper = styled(Card) < { bgColor1: string | null, bgColor2?: string | nu
     }
   position: relative;
 `
-
-const BackgroundColor = styled.span< { bgColor1: string | null, bgColor2?: string | null }>`
-   background: ${({ theme, bgColor1, bgColor2 }) =>
-        `linear-gradient(90deg, ${bgColor1 ?? theme.blue1} 0%, ${bgColor2 ?? 'grey'} 90%);`
-    }
-   background-size: cover;
-   mix-blend-mode: overlay;
-   border-radius: 10px;
-   width: 100%;
-   height: 100%;
-   opacity: 0.5;
-   position: absolute;
-   top: 0;
-   left: 0;
-   user-select: none;
- `
 
 const PairContainer = styled.div`
    display: flex;
@@ -112,7 +97,7 @@ export default function PoolCardTRI({
     const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
     return (
         <Wrapper bgColor1={backgroundColor1} bgColor2={backgroundColor2} isDoubleRewards={doubleRewards}>
-            <BackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
+            <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
             <AutoRow justifyContent="space-between">
                 <PairContainer>
                     <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
