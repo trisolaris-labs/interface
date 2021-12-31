@@ -9,7 +9,7 @@ import { CardSection, DataCard, CardNoise, CardBGImage, HighlightCard } from '..
 import { useTranslation } from 'react-i18next'
 import { useFarms } from '../../state/stake/apr'
 import { PageWrapper } from '../../components/Page'
-import PoolCardTRIV2 from '../../components/earn/PoolCardTriV2'
+import PoolCardTRI from '../../components/earn/PoolCardTri'
 import FarmBanner from '../../components/earn/FarmBanner'
 
 const TopSection = styled(AutoColumn)`
@@ -110,7 +110,7 @@ export default function Earn({
         </DataRow>
         <PoolSectionV2>
           {dualRewardPools.map(farm => (
-            <PoolCardTRIV2
+            <PoolCardTRI
               key={farm.ID}
               apr={farm.apr}
               apr2={farm.apr2}
@@ -136,7 +136,7 @@ export default function Earn({
         </DataRow>
         <PoolSectionV2>
           {nonDualRewardPools.map(farm => (
-            <PoolCardTRIV2
+            <PoolCardTRI
               key={farm.ID}
               apr={farm.apr}
               apr2={farm.apr2}
@@ -162,7 +162,7 @@ export default function Earn({
         </DataRow>
         <PoolSectionV2>
           {legacyFarmArrsInOrder.map(farm => (
-            <PoolCardTRIV2
+            <PoolCardTRI
               key={farm.ID}
               apr={farm.apr}
               apr2={farm.apr2}
