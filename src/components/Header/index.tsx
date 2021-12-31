@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from 'rebass'
 import { NavLink } from 'react-router-dom'
-import { darken, lighten } from 'polished'
+import { darken } from 'polished'
 import { useTranslation } from 'react-i18next'
 
 import styled from 'styled-components'
@@ -9,7 +9,6 @@ import styled from 'styled-components'
 import Logo from '../../assets/svg/planets.svg'
 import LogoDark from '../../assets/svg/planets.svg'
 import { useActiveWeb3React } from '../../hooks'
-import { useDarkModeManager } from '../../state/user/hooks'
 import { ExternalLink } from '../../theme'
 import { ButtonSecondary } from '../Button'
 
@@ -19,8 +18,6 @@ import Menu from '../Menu'
 
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
-import { NETWORK_LABELS } from '../../constants'
-import LanguageSelection from '../LanguageSelection'
 import useTriPrice from '../../hooks/useTriPrice'
 import { useToggleTriPriceModal } from '../../state/application/hooks'
 import TriPriceModal from '../TriPriceModal'
@@ -121,25 +118,27 @@ const AccountElement = styled.div<{ active: boolean }>`
   } */
 `
 
-const TRIButton = styled(ButtonSecondary) <{ isDark: boolean }>`
+const TRIButton = styled(ButtonSecondary)`
   color: white;
   padding: 4px 8px;
   height: 36px;
   font-weight: 500;
   border: none;
-  background: ${({ theme, isDark }) =>
-    `radial-gradient(100% 100%, ${theme.primary1} 25%, #0014FF 100%), ${theme.white};`
+  background: ${({ theme }) =>
+  `radial-gradient(circle at 10% 50%, ${theme.primary1} 0%, #1f69f4 75%), ${theme.white};`
+  // theme.primary1
   }
   &:hover, &:focus, &:active {
     border: none;
     box-shadow: none;
-    background: ${({ theme, isDark }) =>
-    `radial-gradient(100% 100%, ${darken(0.12, theme.primary1)} 25%, ${darken(0.12, '#0014FF')} 100%), ${theme.white};`
+    background: ${({ theme }) =>
+  `radial-gradient(circle at 10% 50%, ${darken(0.12, theme.primary1)} 0%, ${darken(0.12, '#1f69f4')} 75%), ${theme.white};`
+  // darken(0.12, theme.primary1)
     }
   }
   `
 
-const TRIWrapper = styled(AccountElement) <{ isDark: boolean }>`
+const TRIWrapper = styled(AccountElement)`
   color: white;
   padding: 4px 0;
   height: 36px;
@@ -258,10 +257,9 @@ const StyledExternalLink = styled(ExternalLink).attrs({
 `
 
 export default function Header() {
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
-  const [isDark] = useDarkModeManager()
   const { triPriceFriendly } = useTriPrice();
 
   const toggleTriPriceModal = useToggleTriPriceModal();
@@ -271,7 +269,7 @@ export default function Header() {
       <HeaderRow>
         <Title href=".">
           <TRIIcon>
-            <img width={'24px'} src={isDark ? LogoDark : Logo} alt="logo" />
+            <img width={'24px'} src={LogoDark} alt="logo" />
           </TRIIcon>
         </Title>
         <HeaderLinks>
@@ -315,8 +313,8 @@ export default function Header() {
       </HeaderRow>
       <HeaderControls>
         <HeaderElement>
-            <TRIWrapper active={true} isDark={isDark}>
-              <TRIButton isDark={isDark} onClick={(e) => {
+            <TRIWrapper active={true}>
+              <TRIButton onClick={(e) => {
                 e.currentTarget.blur();
                 toggleTriPriceModal();
               }}>
