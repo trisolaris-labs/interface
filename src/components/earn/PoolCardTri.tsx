@@ -57,7 +57,7 @@ type Props = {
 }
 
 const Button = styled(ButtonPrimary) < { isStaking: boolean }>`
-  background: ${({ isStaking, theme }) => isStaking ? theme.black : darken(0.15, theme.primary1)}
+  background: ${({ isStaking, theme }) => isStaking ? theme.black : theme.primary1}
 
   ${({ isStaking, theme }) => isStaking && `
         &:focus, &:hover, &:active {

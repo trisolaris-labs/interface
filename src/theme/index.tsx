@@ -59,11 +59,11 @@ export function colors(darkMode: boolean): Colors {
     advancedBG: '#1C1F26',
 
     //primary colors
-    primary1: '#32B4FF',
-    primary2: '#32B4FF',
-    primary3: '#32B4FF',
-    primary4: '#32B4FF',
-    primary5: '#32B4FF',
+    primary1: '#1350ff',
+    primary2: '#1350ff', // Not used
+    primary3: '#1350ff',
+    primary4: '#1350ff',
+    primary5: '#1350ff',
     primary6: '#0050FF',
 
     // color text

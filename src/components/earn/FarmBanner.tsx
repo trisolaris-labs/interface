@@ -12,7 +12,8 @@ import { JSBI } from '@trisolaris/sdk';
 const ZERO = JSBI.BigInt(0)
 
 const StyledCard = styled(Card)`
-    background: radial-gradient(farthest-corner at 0% 0%, #32B4FF 0%, transparent 70%);
+    background: ${({theme}) => 
+      `radial-gradient(farthest-corner at 0% 0%, ${theme.primary1} 0%, transparent 70%)`};
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;

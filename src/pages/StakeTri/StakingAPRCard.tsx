@@ -13,7 +13,8 @@ const Card = styled(HighlightCard)`
  `
 
 const CardBackground = styled.span`
-   background: linear-gradient(90deg, #0014FF 0%, #0050FF 16.66%, #32B4FF 33.33%, #5AFFFF 50%, #32B4FF 66.67%, #0050FF 83.33%, #0014FF 100%);
+background: rgb(0,20,255);
+background: linear-gradient(90deg, rgba(0,20,255,1) 0%, rgba(0,131,255,1) 21%, rgba(19,156,255,1) 36%, rgba(49,188,247,1) 50%, rgba(19,156,255,1) 64%, rgba(0,131,255,1) 79%, rgba(0,20,255,1) 100%);
    background-size: cover;
    mix-blend-mode: overlay;
    border-radius: 10px;
@@ -25,16 +26,6 @@ const CardBackground = styled.span`
    left: 0;
    user-select: none;
  `
-
-const MediumHeaderWhite = styled(TYPE.mediumHeader)`
-  color: white;
-`
-const SubHeaderWhite = styled(TYPE.subHeader)`
-  color: white;
-`
-const LargeHeaderWhite = styled(TYPE.largeHeader)`
-  color: white;
-`
 
 export default function StakingAPRCard() {
     const { xtriToTRIRatio } = useTriBarStats();
@@ -52,22 +43,22 @@ export default function StakingAPRCard() {
                 <AutoColumn gap="md">
                     <RowBetween>
                         <AutoColumn gap="sm" justify="start">
-                            <MediumHeaderWhite fontWeight={600}>
+                            <TYPE.mediumHeader color="white" fontWeight={600}>
                                 Staking APR
-                            </MediumHeaderWhite>
-                            <SubHeaderWhite>
+                            </TYPE.mediumHeader>
+                            <TYPE.subHeader color="white">
                                 {ratioText}
-                            </SubHeaderWhite>
+                            </TYPE.subHeader>
                         </AutoColumn>
                         <AutoColumn gap="sm" justify="end">
-                            <LargeHeaderWhite>
+                            <TYPE.largeHeader color="white">
                                 {apr == null
                                     ? 'Loading...'
                                     : `${apr?.toFixed(2)}%`}
-                            </LargeHeaderWhite>
-                            <SubHeaderWhite>
+                            </TYPE.largeHeader>
+                            <TYPE.subHeader color="white">
                                 Yesterday's APR
-                            </SubHeaderWhite>
+                            </TYPE.subHeader>
                         </AutoColumn>
                     </RowBetween>
                 </AutoColumn>
