@@ -22,7 +22,6 @@ import { useToggleTriPriceModal } from '../../state/application/hooks'
 import TriPriceModal from '../TriPriceModal'
 
 const HeaderFrame = styled.div`
-  background-color: ${({theme}) => theme.bg2};
   display: grid;
   grid-template-columns: 1fr 120px;
   align-items: center;

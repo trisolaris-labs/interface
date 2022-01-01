@@ -76,7 +76,6 @@ const Root = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  padding: 2rem;
   min-height: 80vh;
 `
 
