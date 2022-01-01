@@ -45,7 +45,7 @@ export function colors(darkMode: boolean): Colors {
     text2: '#FFF',
     text3: 'rgb(108, 114, 132)',
     text4: '#FFF',
-    text5: '#FFF',
+    text5: '#b1b1b1', // used on PoolCardTri as a muted header color
 
     // backgrounds / greys
     bg1: '#00050F', // desktop background
@@ -154,6 +154,9 @@ export const TYPE = {
   },
   subHeader(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={14} {...props} />
+  },
+  mutedSubHeader(props: TextProps) {
+    return <TextWrapper fontWeight={500} fontSize={14} color="text5" {...props} />
   },
   small(props: TextProps) {
     return <TextWrapper fontWeight={500} fontSize={11} {...props} />

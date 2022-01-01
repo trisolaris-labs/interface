@@ -121,17 +121,17 @@ export default function PoolCardTRI({
 
             <RowBetween>
                 <AutoColumn>
-                    <TYPE.subHeader>
+                    <TYPE.mutedSubHeader>
                         {t('earn.totalStaked')}
-                    </TYPE.subHeader>
+                    </TYPE.mutedSubHeader>
                     <TYPE.main>
                         {`$${totalStakedInUSDFriendly}`}
                     </TYPE.main>
                 </AutoColumn>
                 <AutoColumn >
-                    <TYPE.subHeader textAlign="end">
+                    <TYPE.mutedSubHeader textAlign="end">
                         APR
-                    </TYPE.subHeader>
+                    </TYPE.mutedSubHeader>
                     <TYPE.main textAlign="end">
                         {(isDualRewards && doubleRewards
                             ? `${apr}% TRI + ${`${apr2}%`} AURORA`
