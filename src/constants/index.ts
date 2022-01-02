@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Percent, Token, WETH } from '@trisolaris/sdk'
+import { ChainId, JSBI, Percent, Token, WETH as _WETH } from '@trisolaris/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
 import { injected, walletlink, walletconnect } from '../connectors'
@@ -219,11 +219,26 @@ export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.AURORA]: ZERO_ADDRESS
 }
 
+// This is actually WETH
+// WETH[ChainId.AURORA]?.symbol != null && (WETH[ChainId.AURORA].symbol = 'WETH');
+
+function createProperlyNamedWETH() {
+  const {address, decimals, name} = _WETH[ChainId.AURORA];
+  
+  return new Token(
+    ChainId.AURORA,
+    address,
+    decimals,
+    'WETH',
+    name,
+  );
+}
+
 const COMMON_BASES: ChainTokenList = {
   [ChainId.FUJI]: [DAI[ChainId.FUJI], USDT[ChainId.FUJI]],
   [ChainId.AVALANCHE]: [DAI[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
   [ChainId.POLYGON]: [DAI[ChainId.POLYGON], USDT[ChainId.POLYGON]],
-  [ChainId.AURORA]: [WNEAR[ChainId.AURORA], USDT[ChainId.AURORA], WETH[ChainId.AURORA], TRI[ChainId.AURORA]]
+  [ChainId.AURORA]: [WNEAR[ChainId.AURORA], USDT[ChainId.AURORA], createProperlyNamedWETH(), TRI[ChainId.AURORA]]
 }
 
 // used to construct intermediary pairs for trading
