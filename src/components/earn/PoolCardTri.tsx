@@ -100,8 +100,8 @@ export default function PoolCardTRI({
             <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
             <AutoRow justifyContent="space-between">
                 <PairContainer>
-                    <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
-                    <TYPE.white marginLeft="0.5rem">
+                    <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
+                    <TYPE.white fontSize={20} marginLeft="0.5rem">
                         {currency0.symbol}-{currency1.symbol}
                     </TYPE.white>
                 </PairContainer>
