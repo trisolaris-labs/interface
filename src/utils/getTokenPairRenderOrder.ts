@@ -16,7 +16,7 @@ export default function getTokenPairRenderOrder(
             : [token0, token1];
     }
 
-    // If pair has TRI, put TRI second
+    // If pair has TRI, put TRI first
     return token0.equals(TRI[token0.chainId])
         ? [token0, token1]
         : [token1, token0];
