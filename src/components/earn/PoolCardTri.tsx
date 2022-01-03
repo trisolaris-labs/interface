@@ -101,9 +101,9 @@ export default function PoolCardTRI({
             <AutoRow justifyContent="space-between">
                 <PairContainer>
                     <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
-                    <TYPE.main marginLeft="0.5rem">
+                    <TYPE.white marginLeft="0.5rem">
                         {currency0.symbol}-{currency1.symbol}
-                    </TYPE.main>
+                    </TYPE.white>
                 </PairContainer>
                 <Button
                     disabled={(isStaking || !isPeriodFinished) === false}
@@ -124,22 +124,22 @@ export default function PoolCardTRI({
                     <TYPE.mutedSubHeader>
                         {t('earn.totalStaked')}
                     </TYPE.mutedSubHeader>
-                    <TYPE.main>
+                    <TYPE.white>
                         {`$${totalStakedInUSDFriendly}`}
-                    </TYPE.main>
+                    </TYPE.white>
                 </AutoColumn>
                 <AutoColumn >
                     <TYPE.mutedSubHeader textAlign="end">
                         APR
                     </TYPE.mutedSubHeader>
-                    <TYPE.main textAlign="end">
+                    <TYPE.white textAlign="end">
                         {(isDualRewards && doubleRewards
                             ? `${apr}% TRI + ${`${apr2}%`} AURORA`
                             : inStaging
                                 ? `Coming Soon`
                                 : `${apr}%`
                         )}
-                    </TYPE.main>
+                    </TYPE.white>
                 </AutoColumn>
             </RowBetween>
         </Wrapper>
