@@ -220,8 +220,6 @@ export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
 }
 
 // This is actually WETH
-// WETH[ChainId.AURORA]?.symbol != null && (WETH[ChainId.AURORA].symbol = 'WETH');
-
 function createProperlyNamedWETH() {
   const {address, decimals, name} = _WETH[ChainId.AURORA];
   
