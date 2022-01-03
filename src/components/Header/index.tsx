@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from 'rebass'
 import { NavLink } from 'react-router-dom'
-import { darken } from 'polished'
+import { darken, lighten } from 'polished'
 import { useTranslation } from 'react-i18next'
 
 import styled from 'styled-components'
@@ -123,19 +123,14 @@ const TRIButton = styled(ButtonSecondary)`
   height: 36px;
   font-weight: 500;
   border: none;
-  background: ${({ theme }) =>
-  `radial-gradient(circle at 10% 50%, ${theme.primary1} 0%, #1f69f4 75%), ${theme.white};`
-  // theme.primary1
+  background: ${({ theme }) => theme.primary1
   }
   &:hover, &:focus, &:active {
     border: none;
     box-shadow: none;
-    background: ${({ theme }) =>
-  `radial-gradient(circle at 10% 50%, ${darken(0.12, theme.primary1)} 0%, ${darken(0.12, '#1f69f4')} 75%), ${theme.white};`
-  // darken(0.12, theme.primary1)
-    }
+    background: ${({ theme }) => darken(0.12, theme.primary1)}
   }
-  `
+`
 
 const TRIWrapper = styled(AccountElement)`
   color: white;
