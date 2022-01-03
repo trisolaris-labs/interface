@@ -23,8 +23,10 @@ export default function AdvancedSwapDetailsDropdown({ trade, ...rest }: Advanced
   const lastTrade = useLastTruthy(trade)
 
   return (
-    <AdvancedDetailsFooter show={Boolean(trade)}>
-      <AdvancedSwapDetails {...rest} trade={trade ?? lastTrade ?? undefined} />
-    </AdvancedDetailsFooter>
+    <div> {/* This div is needed to maintain event capturing for nested nodes (eg mouseover events) */}
+      <AdvancedDetailsFooter show={Boolean(trade)}>
+        <AdvancedSwapDetails {...rest} trade={trade ?? lastTrade ?? undefined} />
+      </AdvancedDetailsFooter>
+    </div>
   )
 }
