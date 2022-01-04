@@ -44,20 +44,16 @@ const BottomSection = styled(AutoColumn)`
   position: relative;
 `
 
-const StyledDataCard = styled(DataCard) <{ bgColor?: any; showBackground?: any }>`
-  background: radial-gradient(76.02% 75.41% at 1.84% 0%, #1e1a31 0%, #3d51a5 100%);
-  z-index: 2;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  background: ${({ theme, bgColor, showBackground }) =>
-    `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor} 0%,  ${showBackground ? theme.black : theme.bg5} 100%) `};
+const ResponsiveRowBetween = styled(RowBetween)`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    flex-direction: column;
+  `};
 `
 
 const StyledBottomCard = styled(DataCard) <{ dim: any }>`
   background: ${({ theme }) => theme.bg3};
   opacity: ${({ dim }) => (dim ? 0.4 : 1)};
-  padding: 0 1.25rem 1rem 1.25rem;
-  padding-top: 32px;
-  z-index: 1;
+  padding: 1rem 1.25rem;
 `
 
 const PoolData = styled(DarkGreyCard)`
@@ -104,7 +100,6 @@ const DataRow = styled(RowBetween)`
   gap: 12px;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-     flex-direction: column;
      gap: 12px;
    `};
 `
@@ -262,7 +257,7 @@ export default function Manage({
                 <RowBetween>
                   <TYPE.white fontWeight={600}>{t('earnPage.liquidityDeposits')}</TYPE.white>
                 </RowBetween>
-                <RowBetween style={{ alignItems: 'baseline' }}>
+                <ResponsiveRowBetween style={{alignItems: 'baseline'}}>
                   {(isDualRewards && inStaging)
                     ? (
                       // If MasterChefV2, only show the TLP Amount (no $ amount)
@@ -290,7 +285,7 @@ export default function Manage({
                         </TYPE.white>
                       </>
                     )}
-                </RowBetween>
+                </ResponsiveRowBetween>
               </AutoColumn>
             </CardSection>
           </Wrapper>
