@@ -35,12 +35,25 @@ const Wrapper = styled(Card) < { bgColor1: string | null, bgColor2?: string | nu
             : `0 2px 8px 0 ${theme.bg3}`
     }
   position: relative;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+        grid-template-rows: auto 1fr;
+        padding: .75rem;
+  `};
 `
 
 const PairContainer = styled.div`
    display: flex;
    align-items: center;
  `
+
+const ResponsiveCurrencyLabel = styled(TYPE.white)`
+    font-size: 20 !important;
+    margin-left: 0.5rem !important;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        font-size: 14 !important;
+    `};
+`
 
 type Props = {
     apr: number
@@ -57,13 +70,20 @@ type Props = {
 }
 
 const Button = styled(ButtonPrimary) < { isStaking: boolean }>`
-  background: ${({ isStaking, theme }) => isStaking ? theme.black : theme.primary1}
-
+    background: ${({ isStaking, theme }) => isStaking ? theme.black : theme.primary1}
+    padding: 8px;
+    border-radius: 10px;
+    max-width: 80px;
   ${({ isStaking, theme }) => isStaking && `
         &:focus, &:hover, &:active {
             background-color: ${lighten(0.12, theme.black)};
         }
   `}
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+        padding: 4px;
+        border-radius: 5px;
+    `};
 `
 
 export default function PoolCardTRI({
@@ -101,16 +121,13 @@ export default function PoolCardTRI({
             <AutoRow justifyContent="space-between">
                 <PairContainer>
                     <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
-                    <TYPE.white fontSize={20} marginLeft="0.5rem">
+                    <ResponsiveCurrencyLabel>
                         {currency0.symbol}-{currency1.symbol}
-                    </TYPE.white>
+                    </ResponsiveCurrencyLabel>
                 </PairContainer>
                 <Button
                     disabled={(isStaking || !isPeriodFinished) === false}
                     isStaking={isStaking}
-                    padding="8px"
-                    borderRadius="10px"
-                    maxWidth="80px"
                     onClick={() => {
                         history.push(`/tri/${currencyId(currency0)}/${currencyId(currency1)}/${version}`)
                     }}

@@ -17,7 +17,7 @@ const TopSection = styled(AutoColumn)`
   width: 100%;
 `
 
-const PoolSectionV2 = styled.div`
+const PoolSection = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
@@ -108,7 +108,7 @@ export default function Earn({
             Dual Rewards Pools
           </TYPE.mediumHeader>
         </DataRow>
-        <PoolSectionV2>
+        <PoolSection>
           {dualRewardPools.map(farm => (
             <PoolCardTRI
               key={farm.ID}
@@ -125,7 +125,7 @@ export default function Earn({
               inStaging={farm.inStaging}
             />
           ))}
-        </PoolSectionV2>
+        </PoolSection>
       </AutoColumn>
 
       <AutoColumn gap="lg" style={{ width: '100%' }}>
@@ -134,7 +134,7 @@ export default function Earn({
             Participating Pools
           </TYPE.mediumHeader>
         </DataRow>
-        <PoolSectionV2>
+        <PoolSection>
           {nonDualRewardPools.map(farm => (
             <PoolCardTRI
               key={farm.ID}
@@ -151,7 +151,7 @@ export default function Earn({
               inStaging={farm.inStaging}
             />
           ))}
-        </PoolSectionV2>
+        </PoolSection>
       </AutoColumn>
 
       <AutoColumn gap="lg" style={{ width: '100%' }}>
@@ -160,7 +160,7 @@ export default function Earn({
             Legacy Pools
           </TYPE.mediumHeader>
         </DataRow>
-        <PoolSectionV2>
+        <PoolSection>
           {legacyFarmArrsInOrder.map(farm => (
             <PoolCardTRI
               key={farm.ID}
@@ -177,7 +177,7 @@ export default function Earn({
               inStaging={farm.inStaging}
             />
           ))}
-        </PoolSectionV2>
+        </PoolSection>
       </AutoColumn>
     </PageWrapper>
   )
