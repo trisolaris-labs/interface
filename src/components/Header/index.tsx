@@ -267,7 +267,7 @@ export default function Header() {
             {t('header.farm')}
           </StyledNavLink>
           <StyledHomeNavLink id={`home-link`} to={'/'}>
-            {'Trisolaris'}
+            Trisolaris
           </StyledHomeNavLink>
         </HeaderLinks>
         <BridgesMenu />

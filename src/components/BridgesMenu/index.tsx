@@ -11,12 +11,13 @@ import { ApplicationModal } from '../../state/application/actions'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 
 const StyledMenuFlyout = styled(MenuFlyout)`
-  min-width: 11rem;
   top: 3rem;
   right: unset;
   ${({ theme }) => theme.mediaWidth.upToLarge`
       right: 0.15rem;
 `}
+  min-width: fit-content;
+  white-space: nowrap;
 `
 
 const activeClassName = 'ACTIVE'
@@ -34,6 +35,7 @@ const StyledExternalLink = styled(ExternalLink).attrs({
   font-size: 1rem;
   margin: 8px;
   font-weight: 500;
+  justify-content: space-between;
 
   &.${activeClassName} {
     border-radius: 12px;
@@ -63,6 +65,11 @@ const MenuButton = styled(ButtonDropdown)`
   margin: 0px 4px;
 `
 
+const StyledArrow = styled.span`
+  font-size: 11px;
+  margin-left: 0.25rem;
+`
+
 export default function BridgesMenu() {
   const node = useRef<HTMLDivElement>()
   const open = useModalOpen(ApplicationModal.BRIDGES_MENU)
@@ -76,10 +83,10 @@ export default function BridgesMenu() {
       {open && (
         <StyledMenuFlyout>
           <StyledExternalLink id="rainbow" href="https://rainbowbridge.app/transfer">
-            Rainbow Bridge <span style={{ fontSize: '11px' }}>↗</span>
+            Rainbow Bridge <StyledArrow>↗</StyledArrow>
           </StyledExternalLink>
           <StyledExternalLink id="terra" href="https://app.allbridge.io/bridge">
-            Bridge from Terra <span style={{ fontSize: '11px' }}>↗</span>
+            Bridge from Terra <StyledArrow>↗</StyledArrow>
           </StyledExternalLink>
         </StyledMenuFlyout>
       )}
