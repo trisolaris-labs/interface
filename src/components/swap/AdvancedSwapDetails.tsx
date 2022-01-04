@@ -22,13 +22,13 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
 
   return (
     <>
-      <AutoColumn style={{ padding: '0 20px' }}>
+      <AutoColumn gap="4px" style={{ padding: '0 20px' }}>
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
               {isExactIn ? t('swap.minimumReceived') : t('swap.maximumSold')}
             </TYPE.black>
-            <QuestionHelper text={t('swap.transactionRevertHelper')} />
+            {/* <QuestionHelper text={t('swap.transactionRevertHelper')} /> */}
           </RowFixed>
           <RowFixed>
             <TYPE.black color={theme.text1} fontSize={14}>
@@ -45,7 +45,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
               {t('swap.priceImpact')}
             </TYPE.black>
-            <QuestionHelper text={t('swap.priceImpactHelper')} />
+            {/* <QuestionHelper text={t('swap.priceImpactHelper')} /> */}
           </RowFixed>
           <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
         </RowBetween>
@@ -55,7 +55,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
               {t('swap.liquidityProviderFee')}
             </TYPE.black>
-            <QuestionHelper text={t('swap.liquidityProviderHelper')} />
+            {/* <QuestionHelper text={t('swap.liquidityProviderHelper')} /> */}
           </RowFixed>
           <TYPE.black fontSize={14} color={theme.text1}>
             {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.currency.symbol}` : '-'}
@@ -91,7 +91,7 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
                   <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
                     {t('swap.route')}
                   </TYPE.black>
-                  <QuestionHelper text={t('swap.routingHelper')} />
+                  {/* <QuestionHelper text={t('swap.routingHelper')} /> */}
                 </RowFixed>
                 <SwapRoute trade={trade} />
               </AutoColumn>

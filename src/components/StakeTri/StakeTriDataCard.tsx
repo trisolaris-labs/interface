@@ -1,44 +1,40 @@
 import React from 'react'
 import styled from 'styled-components'
 import { AutoColumn } from '../Column'
-import { RowBetween } from '../Row'
+import { AutoRow } from '../Row'
 import { TYPE } from '../../theme'
 import { CardSection } from '../earn/styled'
+import { DarkGreyCard } from '../Card'
 
 type Props = {
     children: React.ReactNode,
     label: string,
 }
 
-const DataColumn = styled(RowBetween)`
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-   flex-direction: row;
- `};
- `
+export const StyledDataCard = styled(DarkGreyCard)`
+    padding: 0;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 110px;
+   `};
+`
 
-export const StyledDataCard = styled(AutoColumn)`
-   border: 1px solid black
-   border-radius: 12px;
-   width: 100%;
-   position: relative;
-   overflow: hidden;
- `
 export default function StakeTriDataCard({
     children,
     label,
 }: Props) {
     return (
-        <DataColumn style={{ alignItems: 'baseline' }}>
-            <StyledDataCard>
-                <CardSection>
-                    <AutoColumn gap="md">
-                        <RowBetween>
-                            <TYPE.black fontWeight={600}>{label}</TYPE.black>
-                        </RowBetween>
-                        {children}
-                    </AutoColumn>
-                </CardSection>
-            </StyledDataCard>
-        </DataColumn>
+        <StyledDataCard>
+            <CardSection>
+                <AutoColumn gap="md">
+                    <AutoRow justify='center'>
+                        <TYPE.black fontWeight={600}>{label}</TYPE.black>
+                    </AutoRow>
+                    {children}
+                </AutoColumn>
+            </CardSection>
+        </StyledDataCard>
     )
 }

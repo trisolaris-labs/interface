@@ -33,6 +33,7 @@ import { ConfirmAddModalBottom } from '../../pages/AddLiquidity/ConfirmAddModalB
 import { currencyId } from '../../utils/currencyId'
 import { PairState } from '../../data/Reserves'
 import { PoolPriceBar } from '../../pages/AddLiquidity/PoolPriceBar'
+import PriceAndPoolShare from '../../pages/AddLiquidity/PriceAndPoolShare'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -364,23 +365,12 @@ export default function AddLiquidityModal({ isOpen, onDismiss, currencyIdA: _cur
             showCommonBases
           />
           {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
-            <>
-              <LightCard padding="0px" borderRadius={'20px'}>
-                <RowBetween padding="1rem">
-                  <TYPE.subHeader fontWeight={500} fontSize={14}>
-                    {noLiquidity ? t('addLiquidity.initialPrices') : t('addLiquidity.prices')} {t('addLiquidity.poolShare')}
-                  </TYPE.subHeader>
-                </RowBetween>{' '}
-                <LightCard padding="1rem" borderRadius={'20px'}>
-                  <PoolPriceBar
-                    currencies={currencies}
-                    poolTokenPercentage={poolTokenPercentage}
-                    noLiquidity={noLiquidity}
-                    price={price}
-                  />
-                </LightCard>
-              </LightCard>
-            </>
+            <PriceAndPoolShare
+              currencies={currencies}
+              noLiquidity={noLiquidity}
+              poolTokenPercentage={poolTokenPercentage}
+              price={price}
+            />
           )}
 
           {!account ? (

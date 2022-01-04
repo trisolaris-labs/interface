@@ -1,7 +1,7 @@
 import { ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { LightCard } from '../../components/Card'
+import { DarkGreyCard, LightCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import Row, { RowBetween } from '../../components/Row'
 import { TRI, XTRI } from '../../constants'
@@ -11,7 +11,7 @@ import { tryParseAmount } from '../../state/swap/hooks'
 import { TYPE } from '../../theme'
 import { ClickableText } from '../Pool/styleds'
 import { useTokenBalance } from '../../state/wallet/hooks'
-import { DataCard, CardBGImage, CardNoise, CardSection } from '../../components/earn/styled'
+import { DataCard, CardBGImage, CardNoise, CardSection, HighlightCard } from '../../components/earn/styled'
 import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { useTriBar, useTriBarStats } from '../../state/stakeTri/hooks'
@@ -21,9 +21,12 @@ import { useWalletModalToggle } from '../../state/application/hooks'
 import { Dots } from '../../components/swap/styleds'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import StakingAPRCard from './StakingAPRCard'
+import { PageWrapper } from '../../components/Page'
+
+const ZERO = JSBI.BigInt(0);
 
 const DataRow = styled(RowBetween)`
-  ${({ theme }) => theme.mediaWidth.upToSmall`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
    flex-direction: column;
    margin: 15px;
  `};
@@ -31,11 +34,6 @@ const DataRow = styled(RowBetween)`
 
 const TopSection = styled(AutoColumn)`
   max-width: 720px;
-  width: 100%;
-`
-
-const PageWrapper = styled(AutoColumn)`
-  max-width: 640px;
   width: 100%;
 `
 
@@ -127,17 +125,8 @@ export default function StakeTri() {
   }
 
   function renderStakeButton() {
-    // If input does not have value
-    if (parsedAmount?.greaterThan(JSBI.BigInt(0)) !== true) {
-      return (
-        <ButtonPrimary disabled={true}>
-          Enter an amount
-        </ButtonPrimary>
-      );
-    }
-
     // If account balance is less than inputted amount
-    const insufficientFunds = (balance?.equalTo(JSBI.BigInt(0)) ?? false) || parsedAmount?.greaterThan(balance);
+    const insufficientFunds = (balance?.equalTo(ZERO) ?? false) || parsedAmount?.greaterThan(balance);
     if (insufficientFunds) {
       return (
         <ButtonError error={true} disabled={true}>
@@ -146,14 +135,16 @@ export default function StakeTri() {
       );
     }
 
-    // If user is unstaking, we don't need to check approval status
-    const isDisabled = isStaking
-      ? (approvalState !== ApprovalState.APPROVED || pendingTx)
-      : pendingTx;
+    const isValid = (
+      // If user is unstaking, we don't need to check approval status
+      (isStaking ? approvalState === ApprovalState.APPROVED : true) &&
+      !pendingTx &&
+      parsedAmount?.greaterThan(ZERO) === true
+    );      
 
     return (
       <ButtonPrimary
-        disabled={isDisabled}
+        disabled={!isValid}
         onClick={handleStake}
       >
         {isStaking ? 'Stake' : 'Unstake'}
@@ -185,9 +176,7 @@ export default function StakeTri() {
   return (
     <PageWrapper gap="lg" justify="center">
       <TopSection gap="md">
-        <DataCard>
-          <CardBGImage />
-          <CardNoise />
+        <HighlightCard>
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
@@ -213,9 +202,7 @@ export default function StakeTri() {
                   </ExternalLink> */}
             </AutoColumn>
           </CardSection>
-          <CardBGImage />
-          <CardNoise />
-        </DataCard>
+        </HighlightCard>
       </TopSection>
 
       <TopSection gap="md">
@@ -223,21 +210,21 @@ export default function StakeTri() {
       </TopSection>
 
       <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
-        <DataRow style={{ alignItems: 'baseline', gap: '10px', margin: 0 }}>
+        <DataRow style={{ gap: '10px', margin: 0 }}>
           <StakeTriDataCard label="Total TRI Staked">
-            <Row align="center" justifyContent="start">
+            <Row align="center" justifyContent="center">
               <CurrencyLogo currency={TRI[chainId]} size={'20px'} style={{ marginRight: '10px' }} />
               <TYPE.black fontWeight={400}>{totalTriStakedFormatted ?? 'Loading...'}</TYPE.black>
             </Row>
           </StakeTriDataCard>
           <StakeTriDataCard label="Balance xTRI">
-            <Row align="center" justifyContent="start">
+            <Row align="center" justifyContent="center">
               <CurrencyLogo currency={XTRI[chainId]} size={'20px'} style={{ marginRight: '10px' }} />
               <TYPE.black fontWeight={400}>{xTriBalance?.toFixed(4) ?? 0}</TYPE.black>
             </Row>
           </StakeTriDataCard>
           <StakeTriDataCard label="Unstaked TRI">
-            <Row align="center" justifyContent="start">
+            <Row align="center" justifyContent="center">
               <CurrencyLogo currency={TRI[chainId]} size={'20px'} style={{ marginRight: '10px' }} />
               <TYPE.black fontWeight={400}>{triBalance?.toFixed(4) ?? 0}</TYPE.black>
             </Row>
@@ -246,7 +233,7 @@ export default function StakeTri() {
       </AutoColumn>
 
       <AutoColumn style={{ width: '100%' }}>
-        <LightCard>
+        <DarkGreyCard>
           <AutoColumn gap="20px">
             <RowBetween>
               <AutoColumn gap="20px" justify="start">
@@ -292,7 +279,7 @@ export default function StakeTri() {
                 </RowBetween>
               )}
           </div>
-        </LightCard>
+        </DarkGreyCard>
       </AutoColumn>
     </PageWrapper>
   )

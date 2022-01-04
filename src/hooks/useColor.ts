@@ -63,3 +63,18 @@ export function useColor(token?: Token) {
 export function useColorWithDefault(defaultColor: string, token?: Token) {
   return useColor(token) ?? defaultColor;
 }
+
+// These tokens are mostly grey; Override color to blue
+const GREY_ICON_TOKENS = ['ETH', 'WETH', 'WBTC', 'WNEAR'];
+const FALLBACK_COLOR = '#2172E5';
+// Colors are dynamically chosen based on token logos
+export function useColorForToken(token?: Token, fallbackPredicate?: () => boolean) {
+  const color = useColor(token);
+  const predicateResult = fallbackPredicate?.() ?? true;
+
+  if (predicateResult && GREY_ICON_TOKENS.includes(token?.symbol ?? '')) {
+    return FALLBACK_COLOR;
+  }
+
+  return color;
+}

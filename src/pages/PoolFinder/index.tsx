@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Plus } from 'react-feather'
 import { Text } from 'rebass'
 import { ButtonDropdownLight } from '../../components/Button'
-import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { FindPoolTabs } from '../../components/NavigationTabs'
@@ -19,6 +18,7 @@ import { currencyId } from '../../utils/currencyId'
 import AppBody from '../AppBody'
 import { Dots } from '../Pool/styleds'
 import { useTranslation } from 'react-i18next'
+import { GreyCard } from '../../components/Card'
 
 enum Fields {
   TOKEN0 = 0,
@@ -71,11 +71,11 @@ export default function PoolFinder() {
   }, [setShowSearch])
 
   const prerequisiteMessage = (
-    <LightCard padding="45px 10px">
+    <GreyCard padding="45px 10px">
       <Text textAlign="center">
         {!account ? t('poolFinder.connectToFind') : t('poolFinder.selectTokenToFind')}
       </Text>
-    </LightCard>
+    </GreyCard>
   )
 
   return (
@@ -144,41 +144,41 @@ export default function PoolFinder() {
             hasPosition && pair ? (
               <MinimalPositionCard pair={pair} border="1px solid #CED0D9" />
             ) : (
-              <LightCard padding="45px 10px">
+              <GreyCard padding="45px 10px">
                 <AutoColumn gap="sm" justify="center">
                   <Text textAlign="center">{t('poolFinder.noLiquidityYet')}</Text>
                   <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
                     <Text textAlign="center">{t('poolFinder.addLiquidity')}</Text>
                   </StyledInternalLink>
                 </AutoColumn>
-              </LightCard>
+              </GreyCard>
             )
           ) : validPairNoLiquidity ? (
-            <LightCard padding="45px 10px">
+            <GreyCard padding="45px 10px">
               <AutoColumn gap="sm" justify="center">
                 <Text textAlign="center">{t('poolFinder.noPoolFound')}</Text>
                 <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
                   {t('poolFinder.createPool')}
                 </StyledInternalLink>
               </AutoColumn>
-            </LightCard>
+            </GreyCard>
           ) : pairState === PairState.INVALID ? (
-            <LightCard padding="45px 10px">
+            <GreyCard padding="45px 10px">
               <AutoColumn gap="sm" justify="center">
                 <Text textAlign="center" fontWeight={500}>
                   {t('poolFinder.invalidPair')}
                 </Text>
               </AutoColumn>
-            </LightCard>
+            </GreyCard>
           ) : pairState === PairState.LOADING ? (
-            <LightCard padding="45px 10px">
+            <GreyCard padding="45px 10px">
               <AutoColumn gap="sm" justify="center">
                 <Text textAlign="center">
                   {t('poolFinder.loading')}
                   <Dots />
                 </Text>
               </AutoColumn>
-            </LightCard>
+            </GreyCard>
           ) : null
         ) : (
           prerequisiteMessage

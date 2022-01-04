@@ -23,6 +23,7 @@ import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
 import { useTranslation } from 'react-i18next'
 import { parseUnits } from '@ethersproject/units'
+import useTLP from '../../hooks/useTLP'
 
 const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
   display: flex;
@@ -73,7 +74,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
     new TokenAmount(stakingInfo.tokens[1], '0'),
     chainId ? chainId : ChainId.POLYGON
   )
-  const pairContract = usePairContract(dummyPair.liquidityToken.address)
+  const lpToken = useTLP({lpAddress: stakingInfo.lpAddress, token0: stakingInfo.tokens[0], token1: stakingInfo.tokens[1]});
 
   // approval data for stake
   const deadline = useTransactionDeadline()
@@ -152,7 +153,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
             onUserInput={onUserInput}
             onMax={handleMax}
             showMaxButton={!atMaxAmount}
-            currency={stakingInfo.totalStakedAmount!.token}
+            currency={lpToken}
             pair={dummyPair}
             label={''}
             disableCurrencySelect={true}

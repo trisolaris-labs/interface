@@ -24,12 +24,12 @@ export const MaxButton = styled.button<{ width: string }>`
   cursor: pointer;
   margin: 0.25rem;
   overflow: hidden;
-  color: ${({ theme }) => theme.primary6};
+  color: ${({ theme }) => theme.text1};
   :hover {
-    border: 1px solid ${({ theme }) => theme.primary6};
+    border: 1px solid ${({ theme }) => theme.white};
   }
   :focus {
-    border: 1px solid ${({ theme }) => theme.primary6};
+    border: 1px solid ${({ theme }) => theme.white};
     outline: none;
   }
 `
