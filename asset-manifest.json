@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.js": "./static/js/main.1cc2fd20.chunk.js",
-    "runtime-main.js": "./static/js/runtime-main.41998e6c.js",
+    "main.js": "./static/js/main.abb0de4c.chunk.js",
+    "runtime-main.js": "./static/js/runtime-main.bca96228.js",
     "static/css/2.5aa401b8.chunk.css": "./static/css/2.5aa401b8.chunk.css",
-    "static/js/2.fdd956bf.chunk.js": "./static/js/2.fdd956bf.chunk.js",
-    "static/js/3.c80a28f6.chunk.js": "./static/js/3.c80a28f6.chunk.js",
-    "static/js/4.1d01888a.chunk.js": "./static/js/4.1d01888a.chunk.js",
-    "static/js/5.fbcb7a79.chunk.js": "./static/js/5.fbcb7a79.chunk.js",
-    "static/js/6.66e9dd38.chunk.js": "./static/js/6.66e9dd38.chunk.js",
+    "static/js/2.0de86779.chunk.js": "./static/js/2.0de86779.chunk.js",
+    "static/js/3.ff82d4a3.chunk.js": "./static/js/3.ff82d4a3.chunk.js",
+    "static/js/4.cd732f32.chunk.js": "./static/js/4.cd732f32.chunk.js",
+    "static/js/5.b9614a70.chunk.js": "./static/js/5.b9614a70.chunk.js",
+    "static/js/6.18f26534.chunk.js": "./static/js/6.18f26534.chunk.js",
     "index.html": "./index.html",
-    "precache-manifest.bb81e33a40439aa1fe3ee4a8e6dfeb1a.js": "./precache-manifest.bb81e33a40439aa1fe3ee4a8e6dfeb1a.js",
+    "precache-manifest.b0d9cc5f99256bd3d3802b65c99f19d4.js": "./precache-manifest.b0d9cc5f99256bd3d3802b65c99f19d4.js",
     "service-worker.js": "./service-worker.js",
-    "static/js/2.fdd956bf.chunk.js.LICENSE.txt": "./static/js/2.fdd956bf.chunk.js.LICENSE.txt",
-    "static/js/3.c80a28f6.chunk.js.LICENSE.txt": "./static/js/3.c80a28f6.chunk.js.LICENSE.txt",
+    "static/js/2.0de86779.chunk.js.LICENSE.txt": "./static/js/2.0de86779.chunk.js.LICENSE.txt",
+    "static/js/3.ff82d4a3.chunk.js.LICENSE.txt": "./static/js/3.ff82d4a3.chunk.js.LICENSE.txt",
     "static/media/inter.css": "./static/media/Inter.var.8dd26c3d.woff2",
     "static/media/arrow-down-blue.svg": "./static/media/arrow-down-blue.cd061363.svg",
     "static/media/arrow-down-grey.svg": "./static/media/arrow-down-grey.c0dedd2f.svg",
@@ -38,6 +38,8 @@
     "static/media/portisIcon.png": "./static/media/portisIcon.b234b2bf.png",
     "static/media/question-mark.svg": "./static/media/question-mark.1ae4d9f4.svg",
     "static/media/question.svg": "./static/media/question.a46e8bc1.svg",
+    "static/media/spaceman_on_planet.svg": "./static/media/spaceman_on_planet.53cb5c76.svg",
+    "static/media/spacemen_and_planets.svg": "./static/media/spacemen_and_planets.e5cb045c.svg",
     "static/media/spinner.svg": "./static/media/spinner.be00fc4a.svg",
     "static/media/token-logo.png": "./static/media/token-logo.41584879.png",
     "static/media/trustWallet.png": "./static/media/trustWallet.edcc1ab5.png",
@@ -46,9 +48,9 @@
     "static/media/xl_uni.png": "./static/media/xl_uni.ed12c533.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.41998e6c.js",
+    "static/js/runtime-main.bca96228.js",
     "static/css/2.5aa401b8.chunk.css",
-    "static/js/2.fdd956bf.chunk.js",
-    "static/js/main.1cc2fd20.chunk.js"
+    "static/js/2.0de86779.chunk.js",
+    "static/js/main.abb0de4c.chunk.js"
   ]
 }

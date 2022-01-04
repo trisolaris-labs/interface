@@ -1,47 +1,47 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "a09e215c8a8fe43e463c2f701d6c86a8",
+    "revision": "64b7e2fe292e78c8c9e81edd8cc96140",
     "url": "./index.html"
   },
   {
-    "revision": "a28f8a09ceaea6de1f3c",
+    "revision": "3d4ae16cd6b7a56037b7",
     "url": "./static/css/2.5aa401b8.chunk.css"
   },
   {
-    "revision": "a28f8a09ceaea6de1f3c",
-    "url": "./static/js/2.fdd956bf.chunk.js"
+    "revision": "3d4ae16cd6b7a56037b7",
+    "url": "./static/js/2.0de86779.chunk.js"
   },
   {
     "revision": "03c1b96f83368d082fce95edbe159551",
-    "url": "./static/js/2.fdd956bf.chunk.js.LICENSE.txt"
+    "url": "./static/js/2.0de86779.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "482b7e4beacbe34695e3",
-    "url": "./static/js/3.c80a28f6.chunk.js"
+    "revision": "0bfa9dfbc52e06af7fc1",
+    "url": "./static/js/3.ff82d4a3.chunk.js"
   },
   {
     "revision": "cce47455db60d20b3fbfd0c194f3c073",
-    "url": "./static/js/3.c80a28f6.chunk.js.LICENSE.txt"
+    "url": "./static/js/3.ff82d4a3.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "f06cf66158b50d84b753",
-    "url": "./static/js/4.1d01888a.chunk.js"
+    "revision": "fbc74948b54dd051064e",
+    "url": "./static/js/4.cd732f32.chunk.js"
   },
   {
-    "revision": "52350b576aad02ae8eb4",
-    "url": "./static/js/5.fbcb7a79.chunk.js"
+    "revision": "a768b4f5da9c67c8aff3",
+    "url": "./static/js/5.b9614a70.chunk.js"
   },
   {
-    "revision": "33196d0c74a26de446f3",
-    "url": "./static/js/6.66e9dd38.chunk.js"
+    "revision": "b0aab300e29c79cd05b4",
+    "url": "./static/js/6.18f26534.chunk.js"
   },
   {
-    "revision": "9a12ade35b916c48c2d3",
-    "url": "./static/js/main.1cc2fd20.chunk.js"
+    "revision": "ee7e50260b7925a7dd2f",
+    "url": "./static/js/main.abb0de4c.chunk.js"
   },
   {
-    "revision": "70dcd4049128870db0c8",
-    "url": "./static/js/runtime-main.41998e6c.js"
+    "revision": "ba9e5656f62489727b4e",
+    "url": "./static/js/runtime-main.bca96228.js"
   },
   {
     "revision": "661569afe57a38e1529a775a465da20b",
@@ -294,6 +294,14 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "a46e8bc1a36444be83a85007353d692f",
     "url": "./static/media/question.a46e8bc1.svg"
+  },
+  {
+    "revision": "53cb5c76542f7744944c0456ab387862",
+    "url": "./static/media/spaceman_on_planet.53cb5c76.svg"
+  },
+  {
+    "revision": "e5cb045c94f529b3649964c17d5e4254",
+    "url": "./static/media/spacemen_and_planets.e5cb045c.svg"
   },
   {
     "revision": "be00fc4a29d03016e78b28c9943e3f51",
