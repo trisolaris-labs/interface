@@ -8,12 +8,12 @@ import styled from 'styled-components'
 
 import LogoDark from '../../assets/svg/planets.svg'
 import { useActiveWeb3React } from '../../hooks'
-import { ExternalLink } from '../../theme'
 import { ButtonSecondary } from '../Button'
 
 import { RedCard } from '../Card'
 import Settings from '../Settings'
 import Menu from '../Menu'
+import BridgesMenu from '../BridgesMenu'
 
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
@@ -123,8 +123,7 @@ const TRIButton = styled(ButtonSecondary)`
   height: 36px;
   font-weight: 500;
   border: none;
-  background: ${({ theme }) => theme.primary1
-  }
+  background: ${({ theme }) => theme.primary1}
   &:hover, &:focus, &:active {
     border: none;
     box-shadow: none;
@@ -218,45 +217,19 @@ const IconWrapper = styled.div<{ size?: number }>`
   }
 `
 
-const StyledExternalLink = styled(ExternalLink).attrs({
-  activeClassName
-}) <{ isActive?: boolean }>`
-  ${({ theme }) => theme.flexRowNoWrap}
-  align-items: left;
-  border-radius: 3rem;
-  outline: none;
-  cursor: pointer;
-  text-decoration: none;
-  color: ${({ theme }) => theme.text2};
-  font-size: 1rem;
-  width: fit-content;
-  margin: 0 12px;
-  font-weight: 500;
-
-  &.${activeClassName} {
-    border-radius: 12px;
-    font-weight: 600;
-    color: ${({ theme }) => theme.text1};
-  }
-
-  :hover,
-  :focus {
-    text-decoration: none;
-    color: ${({ theme }) => darken(0.1, theme.text1)};
-  }
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      display: none;
-`}
+const StyledHomeNavLink = styled(StyledNavLink)`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    display:none;
+  `};
 `
 
 export default function Header() {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
-  const { triPriceFriendly } = useTriPrice();
+  const { triPriceFriendly } = useTriPrice()
 
-  const toggleTriPriceModal = useToggleTriPriceModal();
+  const toggleTriPriceModal = useToggleTriPriceModal()
 
   return (
     <HeaderFrame>
@@ -283,11 +256,7 @@ export default function Header() {
           >
             {t('header.pool')}
           </StyledNavLink>
-          <StyledNavLink
-            id={`xtri-nav-link`}
-            to={'/stake'}
-            isActive={Boolean}
-          >
+          <StyledNavLink id={`xtri-nav-link`} to={'/stake'} isActive={Boolean}>
             {t('header.stake')}
           </StyledNavLink>
           <StyledNavLink
@@ -297,30 +266,34 @@ export default function Header() {
           >
             {t('header.farm')}
           </StyledNavLink>
-          <StyledExternalLink id="aurora-bridge" href={'https://rainbowbridge.app/transfer'}>
-            Rainbow Bridge <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
-          <StyledExternalLink id="terra-bridge" href={'https://app.allbridge.io/bridge'}>
-            Bridge from Terra <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
+          <StyledHomeNavLink id={`home-link`} to={'/'}>
+            {'Trisolaris'}
+          </StyledHomeNavLink>
         </HeaderLinks>
+        <BridgesMenu />
       </HeaderRow>
       <HeaderControls>
         <HeaderElement>
-            <TRIWrapper active={true}>
-              <TRIButton onClick={(e) => {
-                e.currentTarget.blur();
-                toggleTriPriceModal();
-              }}>
-                <IconWrapper size={16}>
-                  <img src={'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/0xFa94348467f64D5A457F75F8bc40495D33c65aBB/logo.png'} />
-                </IconWrapper>
-                <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
-                  {triPriceFriendly != null ? `$${triPriceFriendly}` : '-'}
-                </Text>
-              </TRIButton>
-              <TriPriceModal />
-            </TRIWrapper>
+          <TRIWrapper active={true}>
+            <TRIButton
+              onClick={e => {
+                e.currentTarget.blur()
+                toggleTriPriceModal()
+              }}
+            >
+              <IconWrapper size={16}>
+                <img
+                  src={
+                    'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/0xFa94348467f64D5A457F75F8bc40495D33c65aBB/logo.png'
+                  }
+                />
+              </IconWrapper>
+              <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
+                {triPriceFriendly != null ? `$${triPriceFriendly}` : '-'}
+              </Text>
+            </TRIButton>
+            <TriPriceModal />
+          </TRIWrapper>
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             <Web3Status />
           </AccountElement>
