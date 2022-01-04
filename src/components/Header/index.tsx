@@ -157,7 +157,7 @@ const NetworkCard = styled(RedCard)`
   `};
 `
 
-const Title = styled.a`
+const Title = styled(NavLink)`
   display: flex;
   align-items: center;
   pointer-events: auto;
@@ -218,9 +218,16 @@ const IconWrapper = styled.div<{ size?: number }>`
 `
 
 const StyledHomeNavLink = styled(StyledNavLink)`
+  margin: 0 0 0 0.25rem;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display:none;
   `};
+`
+
+const HomeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 2rem;
 `
 
 export default function Header() {
@@ -234,15 +241,17 @@ export default function Header() {
   return (
     <HeaderFrame>
       <HeaderRow>
-        <Title href=".">
-          <TRIIcon>
-            <img width={'24px'} src={LogoDark} alt="logo" />
-          </TRIIcon>
-        </Title>
-        <HeaderLinks>
+        <HomeContainer>
+          <Title id={`home-link`} to={'/'}>
+            <TRIIcon>
+              <img width={'24px'} src={LogoDark} alt="logo" />
+            </TRIIcon>
+          </Title>
           <StyledHomeNavLink id={`home-link`} to={'/'}>
             Trisolaris
           </StyledHomeNavLink>
+        </HomeContainer>
+        <HeaderLinks>
           <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
             {t('header.swap')}
           </StyledNavLink>
