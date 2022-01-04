@@ -9,8 +9,15 @@ export const Wrapper = styled.div`
   position: relative;
 `
 
-export const ArrowWrapper = styled.div<{ clickable: boolean }>`
+export const ChevronWrapper = styled.div<{ clickable: boolean, height: number, width: number, borderRadius?: number }>`
   padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ theme }) => theme.bg3};
+  height: ${({ height }) => height};
+  width: ${({ width }) => width};
+  border-radius: ${({ borderRadius }) => borderRadius ?? '20px'};
 
   ${({ clickable }) =>
     clickable
@@ -26,7 +33,7 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
 export const SectionBreak = styled.div`
   height: 1px;
   width: 100%;
-  background-color: ${({ theme }) => theme.bg3};
+  background-color: ${({ theme }) => theme.bg2};
 `
 
 export const BottomGrouping = styled.div`
@@ -47,7 +54,7 @@ export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
 export const StyledBalanceMaxMini = styled.button`
   height: 22px;
   width: 22px;
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.bg3};
   border: none;
   border-radius: 50%;
   padding: 0.2rem;

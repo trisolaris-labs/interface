@@ -41,30 +41,30 @@ export function colors(darkMode: boolean): Colors {
     black,
 
     // text
-    text1: darkMode ? '#FFFFFF' : '#000000',
-    text2: darkMode ? '#C3C5CB' : '#565A69',
-    text3: darkMode ? '#6C7284' : '#888D9B',
-    text4: darkMode ? '#565A69' : '#C3C5CB',
-    text5: darkMode ? '#2C2F36' : '#EDEEF2',
+    text1: '#FFF',
+    text2: '#FFF',
+    text3: 'rgb(108, 114, 132)',
+    text4: '#FFF',
+    text5: '#b1b1b1', // used on PoolCardTri as a muted header color
 
     // backgrounds / greys
-    bg1: darkMode ? '#212429' : '#FFFFFF',
-    bg2: darkMode ? '#2C2F36' : '#F7F8FA',
-    bg3: darkMode ? '#40444F' : '#EDEEF2',
-    bg4: darkMode ? '#565A69' : '#CED0D9',
-    bg5: darkMode ? '#6C7284' : '#888D9B',
+    bg1: '#00050F', // desktop background
+    bg2: '#12141A', // swap container background
+    bg3: '#1C1F26', // swap token background
+    bg4: '#565A69',
+    bg5: '#6C7284',
 
     //specialty colors
-    modalBG: darkMode ? 'rgba(0,0,0,.425)' : 'rgba(0,0,0,0.3)',
-    advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
+    modalBG: '#12141A',
+    advancedBG: '#1C1F26',
 
     //primary colors
-    primary1: darkMode ? '#cc0058' : '#cc0058',
-    primary2: darkMode ? '#cc0058' : '#cc0058',
-    primary3: darkMode ? '#cc0058' : '#cc0058',
-    primary4: darkMode ? '#cc0058' : '#cc0058',
-    primary5: darkMode ? '#cc0058' : '#cc0058',
-    primary6: darkMode ? '#FFFFFF' : '#FFFFFF',
+    primary1: '#1350ff',
+    primary2: '#1350ff', // Not used
+    primary3: '#1350ff',
+    primary4: '#1350ff',
+    primary5: '#1350ff',
+    primary6: '#0050FF',
 
     // color text
     primaryText1: darkMode ? '#ffffff' : '#ffffff',
@@ -114,14 +114,14 @@ export function theme(darkMode: boolean): DefaultTheme {
     flexRowNoWrap: css`
       display: flex;
       flex-flow: row nowrap;
-    `
+    `,
+
+    pageWidth: '720px',
   }
 }
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const darkMode = useIsDarkMode()
-
-  const themeObject = useMemo(() => theme(darkMode), [darkMode])
+  const themeObject = useMemo(() => theme(false /* dark mode */), [])
 
   return <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>
 }
@@ -154,6 +154,9 @@ export const TYPE = {
   },
   subHeader(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={14} {...props} />
+  },
+  mutedSubHeader(props: TextProps) {
+    return <TextWrapper fontWeight={500} fontSize={14} color="text5" {...props} />
   },
   small(props: TextProps) {
     return <TextWrapper fontWeight={500} fontSize={11} {...props} />
@@ -217,12 +220,12 @@ html {
 export const ThemedGlobalStyle = createGlobalStyle`
 html {
   color: ${({ theme }) => theme.text1};
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.bg1};
 }
 
 body {
   min-height: 100vh;
-  background-position: 0 -30vh;
+  background-position: 0 -10vh;
   background-repeat: no-repeat;
   background-image: ${({ theme }) =>
     `radial-gradient(50% 50% at 50% 50%, ${transparentize(0.85, theme.primary1)} 0%, ${transparentize(

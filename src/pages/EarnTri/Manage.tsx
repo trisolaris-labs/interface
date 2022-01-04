@@ -1,44 +1,39 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { AutoColumn } from '../../components/Column'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import { JSBI, TokenAmount, CETH, Token, WETH, ChainId } from '@trisolaris/sdk'
+import { JSBI } from '@trisolaris/sdk'
 import { RouteComponentProps } from 'react-router-dom'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
-import { useCurrency } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { TYPE } from '../../theme'
 
 import { RowBetween } from '../../components/Row'
-import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
+import { CardSection, DataCard, HighlightCard } from '../../components/earn/styled'
 import { ButtonPrimary } from '../../components/Button'
 import StakingModal from '../../components/earn/StakingModalTri'
 import UnstakingModal from '../../components/earn/UnstakingModalTri'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
-import { useColorWithDefault } from '../../hooks/useColor'
-import { CountUp } from 'use-count-up'
+import { useColorForToken } from '../../hooks/useColor'
 
-import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { currencyId } from '../../utils/currencyId'
-import { useTotalSupply } from '../../data/TotalSupply'
-import { usePair } from '../../data/Reserves'
-import usePrevious from '../../hooks/usePrevious'
-import { BIG_INT_ZERO, PNG } from '../../constants'
 import { useTranslation } from 'react-i18next'
 import { useSingleFarm } from '../../state/stake/user-farms'
 import useUserFarmStatistics from '../../state/stake/useUserFarmStatistics'
+import { PageWrapper } from '../../components/Page'
+import { Card } from 'rebass'
+import { DarkGreyCard } from '../../components/Card'
+import { addCommasToNumber } from '../../utils'
+import getTokenPairRenderOrder from '../../utils/getTokenPairRenderOrder'
+import CountUp from '../../components/CountUp'
+import { unwrappedToken } from '../../utils/wrappedCurrency'
+import useTLP from '../../hooks/useTLP'
 
-const PageWrapper = styled(AutoColumn)`
-  max-width: 640px;
-  width: 100%;
-`
-
-const PositionInfo = styled(AutoColumn)<{ dim: any }>`
+const PositionInfo = styled(AutoColumn) <{ dim: any }>`
   position: relative;
-  max-width: 640px;
   width: 100%;
   opacity: ${({ dim }) => (dim ? 0.6 : 1)};
 `
@@ -49,33 +44,55 @@ const BottomSection = styled(AutoColumn)`
   position: relative;
 `
 
-const StyledDataCard = styled(DataCard)<{ bgColor?: any; showBackground?: any }>`
-  background: radial-gradient(76.02% 75.41% at 1.84% 0%, #1e1a31 0%, #3d51a5 100%);
-  z-index: 2;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  background: ${({ theme, bgColor, showBackground }) =>
-    `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor} 0%,  ${showBackground ? theme.black : theme.bg5} 100%) `};
+const ResponsiveRowBetween = styled(RowBetween)`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    flex-direction: column;
+  `};
 `
 
-const StyledBottomCard = styled(DataCard)<{ dim: any }>`
+const StyledBottomCard = styled(DataCard) <{ dim: any }>`
   background: ${({ theme }) => theme.bg3};
   opacity: ${({ dim }) => (dim ? 0.4 : 1)};
-  margin-top: -40px;
-  padding: 0 1.25rem 1rem 1.25rem;
-  padding-top: 32px;
-  z-index: 1;
+  padding: 1rem 1.25rem;
 `
 
-const PoolData = styled(DataCard)`
-  background: none;
-  border: 1px solid ${({ theme }) => theme.bg4};
-  padding: 1rem;
-  z-index: 1;
+const PoolData = styled(DarkGreyCard)`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 110px;
+    text-align: center;
+  `};
 `
 
-const VoteCard = styled(DataCard)`
-  background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
-  overflow: hidden;
+const Wrapper = styled(Card)`
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  width: 100%;
+`
+
+const VoteCard = styled(HighlightCard)`
+  // background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
+  // overflow: hidden;
+`
+
+const BackgroundColor = styled.span< { bgColor1: string | null, bgColor2?: string | null }>`
+   background: ${({ theme, bgColor1, bgColor2 }) =>
+    `linear-gradient(90deg, ${bgColor1 ?? theme.blue1} 0%, ${bgColor2 ?? 'grey'} 90%);`
+  }
+   background-size: cover;
+   mix-blend-mode: overlay;
+   border-radius: 10px;
+   width: 100%;
+   height: 100%;
+   opacity: 0.5;
+   position: absolute;
+   top: 0;
+   left: 0;
+   user-select: none;
 `
 
 const DataRow = styled(RowBetween)`
@@ -83,10 +100,11 @@ const DataRow = styled(RowBetween)`
   gap: 12px;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-     flex-direction: column;
      gap: 12px;
    `};
 `
+
+const ZERO = JSBI.BigInt(0);
 
 export default function Manage({
   match: {
@@ -95,21 +113,35 @@ export default function Manage({
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string; version: string }>) {
   const { account } = useActiveWeb3React()
 
+  const stakingInfo = useSingleFarm(Number(version));
+  const {
+    chefVersion,
+    doubleRewards,
+    doubleRewardAmount,
+    earnedAmount,
+    inStaging,
+    lpAddress,
+    stakedAmount,
+    tokens,
+    totalRewardRate,
+    totalStakedInUSD,
+  } = stakingInfo;
+  const isDualRewards = chefVersion == 1;
+
   // get currencies and pair
-  const [currencyA, currencyB] = [useCurrency(currencyIdA), useCurrency(currencyIdB)]
-  const stakingInfo = useSingleFarm(Number(version))
+  const [token0, token1] = getTokenPairRenderOrder(...tokens);
+  const [currency0, currency1] = [unwrappedToken(token0), unwrappedToken(token1)];
 
-  let backgroundColor: string
-  let token: Token | undefined
-
-  const totalStakedInUSD = stakingInfo.totalStakedInUSD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-  const totalRewardRate = stakingInfo.totalRewardRate.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString());
+  const totalRewardRateFriendly = addCommasToNumber(totalRewardRate.toString());
 
   // get the color of the token
-  backgroundColor = useColorWithDefault('#2172E5', token);
+  const backgroundColor1 = useColorForToken(token0)
 
+  // Only override `backgroundColor2` if it's a dual rewards pool
+  const backgroundColor2 = useColorForToken(token1, () => isDualRewards);
   // detect existing unstaked LP position to show add button if none found
-  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakingInfo?.stakedAmount?.token)
+  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakedAmount?.token)
   const showAddLiquidityButton = Boolean(stakingInfo?.stakedAmount?.equalTo('0') && userLiquidityUnstaked?.equalTo('0'))
 
   // toggle for staking modal and unstaking modal
@@ -118,36 +150,21 @@ export default function Manage({
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
   // fade cards if nothing staked or nothing earned yet
-  const disableTop = !stakingInfo?.stakedAmount || stakingInfo.stakedAmount.equalTo(JSBI.BigInt(0))
-
-  const countUpAmount = stakingInfo?.earnedAmount?.toFixed(6) ?? '0'
-  const countUpAmountPrevious = usePrevious(countUpAmount) ?? '0'
-
-  const countUpAmount2 = stakingInfo?.doubleRewardAmount?.toFixed(6) ?? '0'
-  const countUpAmountPrevious2 = usePrevious(countUpAmount2) ?? '0'
-  const chefVersion = stakingInfo.chefVersion
-  const doubleRewardsOn = stakingInfo.doubleRewards
-  const inStaging = stakingInfo.inStaging
+  const disableTop = !stakedAmount || stakedAmount.equalTo(ZERO)
 
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
 
-  const lpToken = useMemo(() => {
-    return new Token(
-      ChainId.AURORA,
-      stakingInfo.lpAddress,
-      18,
-      'TLP',
-      `TLP ${currencyA?.symbol}-${currencyB?.symbol}`,
-    );
-  }, [currencyA?.symbol, currencyB?.symbol, stakingInfo.lpAddress]);
+  const lpToken = useTLP({ lpAddress, token0, token1 });
 
   const { userLPAmountUSDFormatted } = useUserFarmStatistics({
     lpToken,
-    userLPStakedAmount: stakingInfo?.stakedAmount,
-    totalPoolAmountUSD: stakingInfo?.totalStakedInUSD,
-    chefVersion: stakingInfo?.chefVersion,
+    userLPStakedAmount: stakedAmount,
+    totalPoolAmountUSD: totalStakedInUSD,
+    chefVersion: chefVersion,
   }) ?? {};
+
+  const poolHandle = `${token0.symbol}-${token1.symbol}`
 
   const handleDepositClick = useCallback(() => {
     if (account) {
@@ -160,39 +177,33 @@ export default function Manage({
   return (
     <PageWrapper gap="lg" justify="center">
       <RowBetween style={{ gap: '24px' }}>
-        <TYPE.mediumHeader style={{ margin: 0 }}>
-          {currencyA?.symbol}-{currencyB?.symbol} {t('earnPage.liquidityMining')}
-        </TYPE.mediumHeader>
-        <DoubleCurrencyLogo currency0={currencyA ?? undefined} currency1={currencyB ?? undefined} size={24} />
+        <TYPE.largeHeader >
+          {poolHandle} {t('earnPage.liquidityMining')}
+        </TYPE.largeHeader>
+        <DoubleCurrencyLogo currency0={token0} currency1={token1} size={24} />
       </RowBetween>
 
       <DataRow style={{ gap: '24px' }}>
         <PoolData>
           <AutoColumn gap="sm">
-            <TYPE.body style={{ margin: 0 }}>{t('earnPage.totalStaked')}</TYPE.body>
+            <TYPE.subHeader>{t('earnPage.totalStaked')}</TYPE.subHeader>
             <TYPE.body fontSize={24} fontWeight={500}>
-              {`$${totalStakedInUSD}`}
+              {`$${totalStakedInUSDFriendly}`}
             </TYPE.body>
           </AutoColumn>
         </PoolData>
         <PoolData>
           <AutoColumn gap="sm">
-            <TYPE.body style={{ margin: 0 }}>{t('earnPage.poolRate')}</TYPE.body>
+            <TYPE.subHeader>{t('earnPage.poolRate')}</TYPE.subHeader>
             <TYPE.body fontSize={24} fontWeight={500}>
-              {`${totalRewardRate}`}
-              {/* {stakingInfo?.totalRewardRate
-                ?.multiply((60 * 60 * 24 * 7).toString())
-                ?.toFixed(0, { groupSeparator: ',' }) ?? '-'} */}
-              {t('earnPage.pngPerWeek')}
+              {`${totalRewardRateFriendly}` + t('earnPage.pngPerWeek')}
             </TYPE.body>
           </AutoColumn>
         </PoolData>
       </DataRow>
 
-      {showAddLiquidityButton && (
+      {showAddLiquidityButton ? (
         <VoteCard>
-          <CardBGImage />
-          <CardNoise />
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
@@ -200,25 +211,23 @@ export default function Manage({
               </RowBetween>
               <RowBetween style={{ marginBottom: '1rem' }}>
                 <TYPE.white fontSize={14}>
-                  {t('earnPage.pglTokenRequired', { poolHandle: currencyA?.symbol + '-' + currencyB?.symbol })}
+                  {t('earnPage.pglTokenRequired', { poolHandle })}
                 </TYPE.white>
               </RowBetween>
               <ButtonPrimary
                 padding="8px"
                 width={'fit-content'}
                 as={Link}
-                to={`/add/${currencyA && currencyId(currencyA)}/${currencyB && currencyId(currencyB)}`}
+                to={`/add/${currency0 && currencyId(currency0)}/${currency1 && currencyId(currency1)}`}
               >
-                {t('earnPage.addPoolLiquidity', { poolHandle: currencyA?.symbol + '-' + currencyB?.symbol })}
+                {t('earnPage.addPoolLiquidity', { poolHandle })}
               </ButtonPrimary>
             </AutoColumn>
           </CardSection>
-          <CardBGImage />
-          <CardNoise />
         </VoteCard>
-      )}
+      ) : null}
 
-      {stakingInfo && (
+      {stakingInfo != null ? (
         <>
           <StakingModal
             isOpen={showStakingModal}
@@ -237,39 +246,29 @@ export default function Manage({
             stakingInfo={stakingInfo}
           />
         </>
-      )}
+      ) : null}
 
       <PositionInfo gap="lg" justify="center" dim={showAddLiquidityButton}>
         <BottomSection gap="lg" justify="center">
-          <StyledDataCard disabled={disableTop} bgColor={backgroundColor} showBackground={!showAddLiquidityButton}>
-            <CardSection>
-              <CardBGImage desaturate />
-              <CardNoise />
+          <Wrapper disabled={disableTop}>
+            <CardSection style={{ position: 'relative' }}>
+              <BackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
               <AutoColumn gap="md">
                 <RowBetween>
                   <TYPE.white fontWeight={600}>{t('earnPage.liquidityDeposits')}</TYPE.white>
                 </RowBetween>
-                <RowBetween style={{ alignItems: 'baseline' }}>
-                 {/* <AutoColumn gap="md">
-                    <TYPE.white fontSize={36} fontWeight={600}>
-                      {userLPAmountUSDFormatted ?? '$0'}
-                    </TYPE.white>
-                  </AutoColumn>
-                  <TYPE.white>
-                    {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'} TLP {currencyA?.symbol}-{currencyB?.symbol}
-                  </TYPE.white> */}
-
-                  {(chefVersion == 1 && inStaging )
+                <ResponsiveRowBetween style={{alignItems: 'baseline'}}>
+                  {(isDualRewards && inStaging)
                     ? (
                       // If MasterChefV2, only show the TLP Amount (no $ amount)
                       <>
                         <AutoColumn gap="md">
                           <TYPE.white fontSize={36} fontWeight={600}>
-                            {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'}
+                            {stakedAmount?.toSignificant(6) ?? '-'}
                           </TYPE.white>
                         </AutoColumn>
                         <TYPE.white>
-                          TLP {currencyA?.symbol}-{currencyB?.symbol}
+                          TLP {poolHandle}
                         </TYPE.white>
                       </>
                     )
@@ -282,103 +281,75 @@ export default function Manage({
                           </TYPE.white>
                         </AutoColumn>
                         <TYPE.white>
-                          {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'} TLP {currencyA?.symbol}-{currencyB?.symbol}
+                          {stakedAmount?.toSignificant(6) ?? '-'} TLP {poolHandle}
                         </TYPE.white>
                       </>
                     )}
-                </RowBetween>
+                </ResponsiveRowBetween>
               </AutoColumn>
             </CardSection>
-          </StyledDataCard>
-          <StyledBottomCard dim={stakingInfo?.stakedAmount?.equalTo(JSBI.BigInt(0))}>
-            <CardBGImage desaturate />
-            <CardNoise />
+          </Wrapper>
+          <StyledBottomCard dim={stakedAmount?.equalTo(ZERO)}>
             <AutoColumn gap="sm">
               <RowBetween>
-                <div>
-                  <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
-                </div>
-                {(chefVersion == 1 && doubleRewardsOn) && (
-                <div>
+                <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
+                {(isDualRewards && doubleRewards) ? (
                   <TYPE.black>{t('earnPage.unclaimed')} AURORA</TYPE.black>
-                </div>
-                )}
+                ) : null}
               </RowBetween>
               <RowBetween style={{ alignItems: 'baseline' }}>
                 <TYPE.largeHeader fontSize={36} fontWeight={600}>
-                  <CountUp
-                    key={countUpAmount}
-                    isCounting
-                    decimalPlaces={4}
-                    start={parseFloat(countUpAmountPrevious)}
-                    end={parseFloat(countUpAmount)}
-                    thousandsSeparator={','}
-                    duration={1}
-                  />
+                  <CountUp enabled={earnedAmount?.greaterThan(ZERO)} value={parseFloat(earnedAmount?.toFixed(6) ?? '0')} />
                 </TYPE.largeHeader>
-                {(chefVersion==1 && doubleRewardsOn) && (
-                <TYPE.largeHeader fontSize={36} fontWeight={600}>
-                  <CountUp
-                    key={countUpAmount2}
-                    isCounting
-                    decimalPlaces={4}
-                    start={parseFloat(countUpAmountPrevious2)}
-                    end={parseFloat(countUpAmount2)}
-                    thousandsSeparator={','}
-                    duration={1}
-                  />
-                </TYPE.largeHeader>
-                )}
-                {/*<TYPE.black fontSize={16} fontWeight={500}>
-                  <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px ' }}>
-                    ⚡
-                  </span>
-                  {stakingInfo?.rewardRate
-                    ?.multiply((60 * 60 * 24 * 7).toString())
-                    ?.toSignificant(4, { groupSeparator: ',' }) ?? '-'}
-                  {t('earnPage.pngPerWeek')}
-                </TYPE.black>*/}
+                {(isDualRewards && doubleRewards) ? (
+                  <TYPE.largeHeader fontSize={36} fontWeight={600}>
+                    <CountUp enabled={doubleRewardAmount?.greaterThan(ZERO)} value={parseFloat(doubleRewardAmount?.toFixed(6) ?? '0')} />
+                  </TYPE.largeHeader>
+                ) : null}
               </RowBetween>
             </AutoColumn>
           </StyledBottomCard>
         </BottomSection>
 
-        {!showAddLiquidityButton && (
+        {!showAddLiquidityButton ? (
           <DataRow style={{ marginBottom: '1rem' }}>
-            <ButtonPrimary padding="8px" borderRadius="8px" width="160px" onClick={handleDepositClick}>
+            <ButtonPrimary
+              borderRadius="8px"
+              disabled={userLiquidityUnstaked == null || userLiquidityUnstaked?.equalTo(ZERO)}
+              width="160px"
+              padding="8px"
+              onClick={handleDepositClick}
+            >
               {t('earnPage.depositPglTokens')}
             </ButtonPrimary>
 
-            {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) && (
-              <>
-                <ButtonPrimary
-                  padding="8px"
-                  borderRadius="8px"
-                  width="160px"
-                  onClick={() => setShowUnstakingModal(true)}
-                >
-                  Withdraw
-                </ButtonPrimary>
-              </>
-            )}
+            <ButtonPrimary
+              disabled={stakedAmount == null || stakedAmount?.equalTo(ZERO)}
+              padding="8px"
+              borderRadius="8px"
+              width="160px"
+              onClick={() => setShowUnstakingModal(true)}
+            >
+              Withdraw
+            </ButtonPrimary>
 
-            {stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
-              <ButtonPrimary
-                padding="8px"
-                borderRadius="8px"
-                width="160px"
-                onClick={() => setShowClaimRewardModal(true)}
-              >
-                {t('earnPage.claim')}
-              </ButtonPrimary>
-            )}
+            <ButtonPrimary
+              disabled={earnedAmount == null || earnedAmount?.equalTo(ZERO)}
+              padding="8px"
+              borderRadius="8px"
+              width="160px"
+              onClick={() => setShowClaimRewardModal(true)}
+            >
+              {t('earnPage.claim')}
+            </ButtonPrimary>
           </DataRow>
-        )}
-        {!userLiquidityUnstaked ? null : userLiquidityUnstaked.equalTo('0') ? null : (
+        ) : null}
+
+        {userLiquidityUnstaked?.greaterThan(ZERO) ? (
           <TYPE.main>
             {userLiquidityUnstaked.toSignificant(6)} {t('earnPage.pglTokenAvailable')}
           </TYPE.main>
-        )}
+        ) : null}
       </PositionInfo>
     </PageWrapper>
   )

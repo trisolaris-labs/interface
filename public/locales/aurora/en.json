@@ -72,7 +72,7 @@
     "missingDependencies": "missing dependencies",
     "deposited": "Deposited",
     "withdrawDepositedLiquidity": "Withdraw deposited liquidity",
-    "depositedPglLiquidity": "Deposited liquidity:",
+    "depositedPglLiquidity": "Deposited liquidity",
     "whenYouWithdrawWarning": "When you withdraw, your TRI is claimed and your TriSolaris Liquidity tokens, TLP, are returned to you. You will no longer earn TRI rewards on this liquidity. Your original token liquidity will remain in its liquidity pool.",
     "withdrawAndClaim": "Withdraw & Claim",
     "withdrewPgl": "Withdrew TLP!",

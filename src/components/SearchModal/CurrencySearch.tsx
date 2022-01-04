@@ -4,7 +4,7 @@ import ReactGA from 'react-ga'
 import { useTranslation } from 'react-i18next'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
 import { useAllTokens, useToken } from '../../hooks/Tokens'
 import { useSelectedListInfo } from '../../state/lists/hooks'
@@ -32,6 +32,15 @@ interface CurrencySearchProps {
   showCommonBases?: boolean
   onChangeList: () => void
 }
+
+const StyledTokenList = styled(Column)`
+  flex: 1;
+  background: ${({ theme }) => theme.bg3}
+`
+
+const StyledSearchInput = styled(SearchInput)`
+  background: ${({ theme }) => theme.bg3}
+`
 
 export function CurrencySearch({
   selectedCurrency,
@@ -147,7 +156,7 @@ export function CurrencySearch({
           </Text>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
-        <SearchInput
+        <StyledSearchInput
           type="text"
           id="token-search-input"
           placeholder={t('searchModal.tokenSearchPlaceholder')}
@@ -169,7 +178,7 @@ export function CurrencySearch({
 
       <Separator />
 
-      <div style={{ flex: '1' }}>
+      <StyledTokenList>
         <AutoSizer disableWidth>
           {({ height }) => (
             <CurrencyList
@@ -183,7 +192,7 @@ export function CurrencySearch({
             />
           )}
         </AutoSizer>
-      </div>
+      </StyledTokenList>
 
       <Separator />
       <Card>

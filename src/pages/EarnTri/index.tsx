@@ -5,27 +5,28 @@ import { TYPE, ExternalLink } from '../../theme'
 import PoolCard from '../../components/earn/PoolCardTri'
 import { RouteComponentProps } from 'react-router-dom'
 import { RowBetween } from '../../components/Row'
-import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
+import { CardSection, DataCard, CardNoise, CardBGImage, HighlightCard } from '../../components/earn/styled'
 import { useTranslation } from 'react-i18next'
 import { useFarms } from '../../state/stake/apr'
-
-const PageWrapper = styled(AutoColumn)`
-  max-width: 640px;
-  width: 100%;
-`
+import { PageWrapper } from '../../components/Page'
+import PoolCardTRI from '../../components/earn/PoolCardTri'
+import FarmBanner from '../../components/earn/FarmBanner'
 
 const TopSection = styled(AutoColumn)`
-  max-width: 720px;
+  max-width: ${({ theme }) => theme.pageWidth};
   width: 100%;
 `
 
 const PoolSection = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
-  column-gap: 10px;
-  row-gap: 15px;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
   width: 100%;
   justify-self: center;
+  
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    grid-template-columns: 1fr;
+ `};
 `
 
 const DataRow = styled(RowBetween)`
@@ -73,12 +74,14 @@ export default function Earn({
   const farmArrsInOrder = POOLS_ORDER.map(index => farmArrs[index]);
   const legacyFarmArrsInOrder = LEGACY_POOLS.map(index => farmArrs[index]);
 
+  const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards)
+  const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards)
+
   return (
     <PageWrapper gap="lg" justify="center">
+      <FarmBanner />
       <TopSection gap="md">
-        <DataCard>
-          <CardBGImage />
-          <CardNoise />
+        <HighlightCard>
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
@@ -96,18 +99,18 @@ export default function Earn({
               </ExternalLink>
             </AutoColumn>
           </CardSection>
-          <CardBGImage />
-          <CardNoise />
-        </DataCard>
+        </HighlightCard>
       </TopSection>
 
-      <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
+      <AutoColumn gap="lg" style={{ width: '100%' }}>
         <DataRow style={{ alignItems: 'baseline' }}>
-          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>{t('earnPage.participatingPools')}</TYPE.mediumHeader>
+          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>
+            Dual Rewards Pools
+          </TYPE.mediumHeader>
         </DataRow>
         <PoolSection>
-          {farmArrsInOrder.map(farm => (
-            <PoolCard
+          {dualRewardPools.map(farm => (
+            <PoolCardTRI
               key={farm.ID}
               apr={farm.apr}
               apr2={farm.apr2}
@@ -123,12 +126,43 @@ export default function Earn({
             />
           ))}
         </PoolSection>
+      </AutoColumn>
+
+      <AutoColumn gap="lg" style={{ width: '100%' }}>
+        <DataRow style={{ alignItems: 'baseline' }}>
+          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>
+            Participating Pools
+          </TYPE.mediumHeader>
+        </DataRow>
         <PoolSection>
-          <DataRow style={{ alignItems: 'baseline' }}>
-            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
-          </DataRow>
+          {nonDualRewardPools.map(farm => (
+            <PoolCardTRI
+              key={farm.ID}
+              apr={farm.apr}
+              apr2={farm.apr2}
+              chefVersion={farm.chefVersion}
+              isPeriodFinished={farm.isPeriodFinished}
+              stakedAmount={farm.stakedAmount}
+              token0={farm.tokens[0]}
+              token1={farm.tokens[1]}
+              totalStakedInUSD={farm.totalStakedInUSD}
+              version={farm.ID}
+              doubleRewards={farm.doubleRewards}
+              inStaging={farm.inStaging}
+            />
+          ))}
+        </PoolSection>
+      </AutoColumn>
+
+      <AutoColumn gap="lg" style={{ width: '100%' }}>
+        <DataRow style={{ alignItems: 'baseline' }}>
+          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>
+            Legacy Pools
+          </TYPE.mediumHeader>
+        </DataRow>
+        <PoolSection>
           {legacyFarmArrsInOrder.map(farm => (
-            <PoolCard
+            <PoolCardTRI
               key={farm.ID}
               apr={farm.apr}
               apr2={farm.apr2}
