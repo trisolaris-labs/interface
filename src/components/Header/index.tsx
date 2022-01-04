@@ -240,6 +240,9 @@ export default function Header() {
           </TRIIcon>
         </Title>
         <HeaderLinks>
+          <StyledHomeNavLink id={`home-link`} to={'/'}>
+            Trisolaris
+          </StyledHomeNavLink>
           <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
             {t('header.swap')}
           </StyledNavLink>
@@ -266,9 +269,6 @@ export default function Header() {
           >
             {t('header.farm')}
           </StyledNavLink>
-          <StyledHomeNavLink id={`home-link`} to={'/'}>
-            Trisolaris
-          </StyledHomeNavLink>
         </HeaderLinks>
         <BridgesMenu />
       </HeaderRow>
