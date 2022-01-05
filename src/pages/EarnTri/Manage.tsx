@@ -27,10 +27,9 @@ import { PageWrapper } from '../../components/Page'
 import { Card } from 'rebass'
 import { DarkGreyCard } from '../../components/Card'
 import { addCommasToNumber } from '../../utils'
-import getTokenPairRenderOrder from '../../utils/getTokenPairRenderOrder'
 import CountUp from '../../components/CountUp'
-import { unwrappedToken } from '../../utils/wrappedCurrency'
 import useTLP from '../../hooks/useTLP'
+import getPairRenderOrder from '../../utils/getPairRenderOrder'
 
 const PositionInfo = styled(AutoColumn) <{ dim: any }>`
   position: relative;
@@ -129,8 +128,7 @@ export default function Manage({
   const isDualRewards = chefVersion == 1;
 
   // get currencies and pair
-  const [token0, token1] = getTokenPairRenderOrder(...tokens);
-  const [currency0, currency1] = [unwrappedToken(token0), unwrappedToken(token1)];
+  const { currency0, currency1, token0, token1 } = getPairRenderOrder(...tokens);
 
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString());
   const totalRewardRateFriendly = addCommasToNumber(totalRewardRate.toString());
@@ -180,7 +178,7 @@ export default function Manage({
         <TYPE.largeHeader >
           {poolHandle} {t('earnPage.liquidityMining')}
         </TYPE.largeHeader>
-        <DoubleCurrencyLogo currency0={token0} currency1={token1} size={24} />
+        <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
       </RowBetween>
 
       <DataRow style={{ gap: '24px' }}>
