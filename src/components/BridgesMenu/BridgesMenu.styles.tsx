@@ -64,3 +64,9 @@ export const StyledArrow = styled.span`
   font-size: 11px;
   margin-left: 0.3rem;
 `
+
+export const StyledButtonText = styled.span`
+  ${({ theme }) => theme.mediaWidth.upToXxxs`
+    display: none;
+  `}
+`

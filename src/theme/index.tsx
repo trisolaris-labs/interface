@@ -13,6 +13,8 @@ import { Colors } from './styled'
 export * from './components'
 
 const MEDIA_WIDTHS = {
+  upToXxxs: 325,
+  upToXxs: 375,
   upToExtraSmall: 500,
   upToSmall: 720,
   upToMedium: 960,
@@ -116,7 +118,7 @@ export function theme(darkMode: boolean): DefaultTheme {
       flex-flow: row nowrap;
     `,
 
-    pageWidth: '720px',
+    pageWidth: '720px'
   }
 }
 

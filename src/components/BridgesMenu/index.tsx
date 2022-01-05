@@ -6,7 +6,7 @@ import { useModalOpen, useToggleModal } from '../../state/application/hooks'
 import { ApplicationModal } from '../../state/application/actions'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 
-import { StyledMenuFlyout, StyledExternalLink, MenuButton, StyledArrow } from './BridgesMenu.styles'
+import { StyledMenuFlyout, StyledExternalLink, MenuButton, StyledArrow, StyledButtonText } from './BridgesMenu.styles'
 
 import { BRIDGES } from './BridgesMenu.constants'
 
@@ -18,7 +18,9 @@ export default function BridgesMenu() {
 
   return (
     <StyledMenu ref={node as any}>
-      <MenuButton onClick={toggle}>Bridges</MenuButton>
+      <MenuButton onClick={toggle}>
+        <StyledButtonText>Bridges</StyledButtonText>
+      </MenuButton>
 
       {open && (
         <StyledMenuFlyout>
