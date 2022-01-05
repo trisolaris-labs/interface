@@ -19,7 +19,7 @@ import { ChevronWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../.
 import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
-import spacemenAndPlanets from '../../assets/svg/spacemen_and_planets.svg';
+import spacemenAndPlanets from '../../assets/svg/spacemen_and_planets.svg'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
@@ -47,6 +47,7 @@ import useENS from '../../hooks/useENS'
 import { useTranslation } from 'react-i18next'
 import { useIsSelectedAEBToken } from '../../state/lists/hooks'
 import { DeprecatedWarning } from '../../components/Warning'
+import Settings from '../../components/Settings'
 
 const BottomText = styled.span`
   margin-top: 8px;
@@ -92,14 +93,20 @@ const SwapContainer = styled.div`
 const IconContainer = styled.div`
   margin-right: 10em;
 
-    ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToMedium`
       display: none;
   `};
-    ${({ theme }) => theme.mediaWidth.upToLarge`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
         & > * {
             height: 400px;
         }
   `};
+`
+
+const HeadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 
 export default function Swap() {
@@ -162,13 +169,13 @@ export default function Swap() {
 
   const parsedAmounts = showWrap
     ? {
-      [Field.INPUT]: parsedAmount,
-      [Field.OUTPUT]: parsedAmount
-    }
+        [Field.INPUT]: parsedAmount,
+        [Field.OUTPUT]: parsedAmount
+      }
     : {
-      [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-      [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
-    }
+        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
+      }
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
   const isValid = !swapInputError
@@ -254,8 +261,8 @@ export default function Swap() {
             recipient === null
               ? 'Swap w/o Send'
               : (recipientAddress ?? recipient) === account
-                ? 'Swap w/o Send + recipient'
-                : 'Swap w/ Send',
+              ? 'Swap w/o Send + recipient'
+              : 'Swap w/ Send',
           label: [trade?.inputAmount?.currency?.symbol, trade?.outputAmount?.currency?.symbol, Version.v2].join('/')
         })
       })
@@ -350,11 +357,12 @@ export default function Swap() {
                 swapErrorMessage={swapErrorMessage}
                 onDismiss={handleConfirmDismiss}
               />
-
               <AutoColumn gap={'md'}>
-                <TYPE.largeHeader>
-                  Swap
-                </TYPE.largeHeader>
+                <HeadingContainer>
+                  <TYPE.largeHeader>Swap</TYPE.largeHeader>
+                  <Settings />
+                </HeadingContainer>
+
                 <CurrencyInputPanel
                   label={
                     independentField === Field.OUTPUT && !showWrap && trade
@@ -393,7 +401,9 @@ export default function Swap() {
                   value={formattedAmounts[Field.OUTPUT]}
                   onUserInput={handleTypeOutput}
                   label={
-                    independentField === Field.INPUT && !showWrap && trade ? t('swapPage.toEstimated') : t('swapPage.to')
+                    independentField === Field.INPUT && !showWrap && trade
+                      ? t('swapPage.toEstimated')
+                      : t('swapPage.to')
                   }
                   showMaxButton={false}
                   currency={currencies[Field.OUTPUT]}
@@ -454,8 +464,8 @@ export default function Swap() {
                       (wrapType === WrapType.WRAP
                         ? t('swapPage.wrap')
                         : wrapType === WrapType.UNWRAP
-                          ? t('swapPage.unwrap')
-                          : null)}
+                        ? t('swapPage.unwrap')
+                        : null)}
                   </ButtonPrimary>
                 ) : noRoute && userHasSpecifiedInputOutput ? (
                   <GreyCard style={{ textAlign: 'center' }}>
@@ -531,8 +541,8 @@ export default function Swap() {
                       {swapInputError
                         ? swapInputError
                         : priceImpactSeverity > 3 && !isExpertMode
-                          ? t('swapPage.priceImpactHigh')
-                          : t('swapPage.swap') + `${priceImpactSeverity > 2 ? t('swapPage.anyway') : ''}`}
+                        ? t('swapPage.priceImpactHigh')
+                        : t('swapPage.swap') + `${priceImpactSeverity > 2 ? t('swapPage.anyway') : ''}`}
                     </Text>
                   </ButtonError>
                 )}

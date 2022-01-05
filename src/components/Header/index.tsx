@@ -11,7 +11,6 @@ import { useActiveWeb3React } from '../../hooks'
 import { ButtonSecondary } from '../Button'
 
 import { RedCard } from '../Card'
-import Settings from '../Settings'
 import Menu from '../Menu'
 import BridgesMenu from '../BridgesMenu'
 
@@ -308,7 +307,6 @@ export default function Header() {
           </AccountElement>
         </HeaderElement>
         <HeaderElementWrap>
-          <Settings />
           <Menu />
         </HeaderElementWrap>
       </HeaderControls>
