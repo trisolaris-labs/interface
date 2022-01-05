@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { MessageCircle, Send, Info, Twitter, GitHub, Book } from 'react-feather'
+import { MessageCircle, Send, Twitter, GitHub, Book } from 'react-feather'
 import styled from 'styled-components'
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
@@ -39,8 +39,8 @@ export default function Menu() {
 
       {open && (
         <NarrowMenuFlyout>
-          <MenuItem id="link" href='https://github.com/trisolaris-labs'>
-            <Info size={14} />
+          <MenuItem id="link" href="https://github.com/trisolaris-labs">
+            <GitHub size={14} />
             {t('menu.code')}
           </MenuItem>
           <MenuItem id="link" href="https://trisolaris-labs.github.io/docs/">
