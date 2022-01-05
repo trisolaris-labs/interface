@@ -11,7 +11,7 @@ export const BRIDGES = [
   { id: 'polygon', link: 'https://app.multichain.org/#/router', label: 'Bridge from Polygon' },
   {
     id: 'synapse',
-    link: 'https://synapseprotocol.com/?inputCurrency=USDC&outputCurrency=USDC&outputChain=1',
+    link: 'https://synapseprotocol.com/?inputCurrency=USDC&outputCurrency=USDC&outputChain=1313161554',
     label: 'Synapse Bridge'
   }
 ]
