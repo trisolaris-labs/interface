@@ -9,14 +9,13 @@ import { AutoRow, RowBetween } from '../Row'
 import { ChefVersions } from '../../state/stake/stake-constants'
 import { useColorForToken } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
-import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { useTranslation } from 'react-i18next'
 import Card from '../Card'
 import { useHistory } from 'react-router-dom'
 import { addCommasToNumber } from '../../utils'
-import getTokenPairRenderOrder from '../../utils/getTokenPairRenderOrder'
-import { darken, lighten } from 'polished'
+import { lighten } from 'polished'
 import { TokenPairBackgroundColor } from './styled'
+import getPairRenderOrder from '../../utils/getPairRenderOrder'
 
 const Wrapper = styled(Card) < { bgColor1: string | null, bgColor2?: string | null, isDoubleRewards: boolean }>`
   border: ${({ isDoubleRewards, theme }) =>
@@ -99,9 +98,7 @@ export default function PoolCardTRI({
     totalStakedInUSD,
     version,
 }: Props) {
-    const [token0, token1] = getTokenPairRenderOrder(_token0, _token1)
-    const currency0 = unwrappedToken(token0)
-    const currency1 = unwrappedToken(token1)
+    const {currency0, currency1, token0, token1} = getPairRenderOrder(_token0, _token1)
 
     const { t } = useTranslation()
     const isStaking = Boolean(stakedAmount?.greaterThan('0') ?? false)
