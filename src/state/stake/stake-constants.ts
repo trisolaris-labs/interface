@@ -391,7 +391,7 @@ const AURORA_POOLS: StakingTri[] = [
     apr2: 0,
     chefVersion: ChefVersions.V2,
     doubleRewards: false,
-    inStaging: true
+    inStaging: false
   },
   {
     ID: 13,
@@ -413,7 +413,7 @@ const AURORA_POOLS: StakingTri[] = [
     apr2: 0,
     chefVersion: ChefVersions.V2,
     doubleRewards: false,
-    inStaging: true
+    inStaging: false
   },
   {
     ID: 14,
@@ -435,7 +435,7 @@ const AURORA_POOLS: StakingTri[] = [
     apr2: 0,
     chefVersion: ChefVersions.V2,
     doubleRewards: false,
-    inStaging: true
+    inStaging: false
   }
 ]
 
