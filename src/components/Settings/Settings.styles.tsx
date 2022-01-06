@@ -49,6 +49,7 @@ export const ModalContentWrapper = styled.div`
 
 export const SettingsMenuFlyout = styled(MenuFlyout)`
   top: 3rem;
+  border: ${({ theme }) => `1px solid ${theme.bg3}`};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     min-width: 18.125rem;
     right: 0.15rem;
