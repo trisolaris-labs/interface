@@ -66,7 +66,7 @@ export const StyledArrow = styled.span`
 `
 
 export const StyledButtonText = styled.span`
-  ${({ theme }) => theme.mediaWidth.upToXxxs`
+  ${({ theme }) => theme.mediaWidth.upToXxxSmall`
     display: none;
   `}
 `

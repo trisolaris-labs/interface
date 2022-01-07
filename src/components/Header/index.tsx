@@ -211,7 +211,7 @@ const StyledNavLink = styled(NavLink).attrs({
     color: ${({ theme }) => darken(0.1, theme.text1)};
   }
 
-  ${({ theme }) => theme.mediaWidth.upToXxs`
+  ${({ theme }) => theme.mediaWidth.upToXxSmall`
     margin: 0 6px;
   `}
 `

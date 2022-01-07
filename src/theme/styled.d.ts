@@ -64,8 +64,8 @@ declare module 'styled-components' {
 
     // media queries
     mediaWidth: {
-      upToXxxs: ThemedCssFunction<DefaultTheme>
-      upToXxs: ThemedCssFunction<DefaultTheme>
+      upToXxxSmall: ThemedCssFunction<DefaultTheme>
+      upToXxSmall: ThemedCssFunction<DefaultTheme>
       upToExtraSmall: ThemedCssFunction<DefaultTheme>
       upToSmall: ThemedCssFunction<DefaultTheme>
       upToMedium: ThemedCssFunction<DefaultTheme>
