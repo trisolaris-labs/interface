@@ -93,9 +93,14 @@ const HeaderRow = styled(RowFixed)`
 
 const HeaderLinks = styled(Row)`
   justify-content: center;
+
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 1rem 0 1rem 1rem;
     justify-content: flex-end;
+`};
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 1rem 0;
+    justify-content: center;
 `};
 `
 
@@ -204,6 +209,10 @@ const StyledNavLink = styled(NavLink).attrs({
   :focus {
     color: ${({ theme }) => darken(0.1, theme.text1)};
   }
+
+  ${({ theme }) => theme.mediaWidth.upToXxSmall`
+    margin: 0 6px;
+  `}
 `
 
 const IconWrapper = styled.div<{ size?: number }>`
@@ -218,7 +227,7 @@ const IconWrapper = styled.div<{ size?: number }>`
 
 const StyledHomeNavLink = styled(StyledNavLink)`
   margin: 0 0 0 0.25rem;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display:none;
   `};
 `
@@ -227,6 +236,9 @@ const HomeContainer = styled.div`
   display: flex;
   align-items: center;
   margin-right: 2rem;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    margin-right:0;
+  `};
 `
 
 export default function Header() {
@@ -277,8 +289,8 @@ export default function Header() {
           >
             {t('header.farm')}
           </StyledNavLink>
+          <BridgesMenu />
         </HeaderLinks>
-        <BridgesMenu />
       </HeaderRow>
       <HeaderControls>
         <HeaderElement>
