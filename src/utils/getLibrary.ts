@@ -4,6 +4,7 @@ import { ChainId } from '@trisolaris/sdk'
 const DEFAULT_POLLING_INTERVAL = 15_000 // 15 seconds
 
 const NETWORK_POLLING_INTERVALS: { [chainId: number]: number } = {
+  // [ChainId.AURORA]: 5_000, // 1 second
   [ChainId.AURORA]: 1_000, // 1 second
   [ChainId.AVALANCHE]: 1_000, // 1 second
   [ChainId.POLYGON]: DEFAULT_POLLING_INTERVAL

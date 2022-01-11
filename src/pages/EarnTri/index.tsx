@@ -1,16 +1,20 @@
-import React, { useState } from 'react'
-import { AutoColumn } from '../../components/Column'
-import styled from 'styled-components'
-import { TYPE, ExternalLink } from '../../theme'
-import PoolCard from '../../components/earn/PoolCardTri'
+import React, { useState, useMemo, useCallback, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { RowBetween } from '../../components/Row'
-import { CardSection, DataCard, CardNoise, CardBGImage, HighlightCard } from '../../components/earn/styled'
+import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useFarms } from '../../state/stake/apr'
+import { isEqual } from 'lodash'
+
+import { AutoColumn } from '../../components/Column'
+import { RowBetween } from '../../components/Row'
+import { CardSection, HighlightCard } from '../../components/earn/styled'
 import { PageWrapper } from '../../components/Page'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
 import FarmBanner from '../../components/earn/FarmBanner'
+import { SearchInput } from '../../components/SearchModal/styleds'
+
+import { TYPE, ExternalLink } from '../../theme'
+import { useFarms } from '../../state/stake/apr'
+import { StakingTri } from '../../state/stake/stake-constants'
 
 const TopSection = styled(AutoColumn)`
   max-width: ${({ theme }) => theme.pageWidth};
@@ -63,23 +67,87 @@ enum SortingType {
 const POOLS_ORDER = [5, 11, 8, 7, 0, 1, 2, 3, 4, 9, 10, 12, 13, 14]
 const LEGACY_POOLS = [6]
 
+const MemoizedFarmBanner = React.memo(FarmBanner)
+const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
+
 export default function Earn({
   match: {
     params: { version }
   }
 }: RouteComponentProps<{ version: string }>) {
   const { t } = useTranslation()
+
   const farmArrs = useFarms()
+
   const [searchQuery, setSearchQuery] = useState<string>('')
+
   const farmArrsInOrder = POOLS_ORDER.map(index => farmArrs[index])
+
+  const [testFarms, setTestFarms] = useState<StakingTri[]>(farmArrsInOrder)
+
   const legacyFarmArrsInOrder = LEGACY_POOLS.map(index => farmArrs[index])
 
   const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards)
   const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards)
 
+  const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const input = event.target.value.toUpperCase()
+    setSearchQuery(input)
+  }
+
+  // const filterFarms = (searchQuery: string) => {
+  //   return farmArrsInOrder.filter(farm => farm.tokens.some(token => token.symbol?.includes(searchQuery)))
+  // }
+
+  // const handleInput = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  //   const input = event.target.value.toUpperCase()
+  //   const filteredFarms = filterFarms(input)
+  //   setTestFarms(filteredFarms)
+  // }, [])
+
+  const filterFarms = (farms: StakingTri[]) => {
+    return farms.filter(farm => farm.tokens.some(token => token.symbol?.includes(searchQuery)))
+  }
+
+  const filteredFarms = filterFarms(testFarms)
+
+  // const filteredFarms: StakingTri[] = useMemo(() => {
+  //   return !searchQuery ? farmArrsInOrder : filterFarms(farmArrsInOrder)
+  // }, [searchQuery])
+
+  const isDataStale = () => {
+    const isStale = testFarms.some(farm => {
+      console.log(farm)
+      console.log(farmArrsInOrder[farm.ID])
+
+      return farm.apr !== farmArrsInOrder[farm.ID]?.apr
+    })
+    console.log(isStale)
+    // key={farm.ID}
+    // apr={farm.apr}
+    // apr2={farm.apr2}
+    // chefVersion={farm.chefVersion}
+    // isPeriodFinished={farm.isPeriodFinished}
+    // stakedAmount={farm.stakedAmount}
+    // token0={farm.tokens[0]}
+    // token1={farm.tokens[1]}
+    // totalStakedInUSD={farm.totalStakedInUSD}
+    // version={farm.ID}
+    // doubleRewards={farm.doubleRewards}
+    // inStaging={farm.inStaging}
+    return isStale
+  }
+
+  useEffect(() => {
+    if (!isEqual(testFarms, farmArrsInOrder)) {
+      const newFilteredFarms = filterFarms(farmArrsInOrder)
+      setTestFarms(newFilteredFarms)
+    }
+  }, [farmArrsInOrder])
+
   return (
     <PageWrapper gap="lg" justify="center">
-      <FarmBanner />
+      <MemoizedFarmBanner />
       <TopSection gap="md">
         <HighlightCard>
           <CardSection>
@@ -102,13 +170,14 @@ export default function Earn({
         </HighlightCard>
       </TopSection>
 
+      <SearchInput onChange={handleInput} />
       <AutoColumn gap="lg" style={{ width: '100%' }}>
         <DataRow style={{ alignItems: 'baseline' }}>
           <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Dual Rewards Pools</TYPE.mediumHeader>
         </DataRow>
         <PoolSection>
           {dualRewardPools.map(farm => (
-            <PoolCardTRI
+            <MemoizedPoolCardTRI
               key={farm.ID}
               apr={farm.apr}
               apr2={farm.apr2}
@@ -132,8 +201,8 @@ export default function Earn({
           <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Participating Pools</TYPE.mediumHeader>
         </DataRow>
         <PoolSection>
-          {nonDualRewardPools.map(farm => (
-            <PoolCardTRI
+          {filteredFarms.map(farm => (
+            <MemoizedPoolCardTRI
               key={farm.ID}
               apr={farm.apr}
               apr2={farm.apr2}
@@ -158,7 +227,7 @@ export default function Earn({
         </DataRow>
         <PoolSection>
           {legacyFarmArrsInOrder.map(farm => (
-            <PoolCardTRI
+            <MemoizedPoolCardTRI
               key={farm.ID}
               apr={farm.apr}
               apr2={farm.apr2}
