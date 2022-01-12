@@ -223,6 +223,10 @@ export const ThemedGlobalStyle = createGlobalStyle`
 html {
   color: ${({ theme }) => theme.text1};
   background-color: ${({ theme }) => theme.bg1};
+
+  /* Fix content jumping when scrollbar appears*/
+  width:100vw;
+  overflow-x:hidden;
 }
 
 body {
