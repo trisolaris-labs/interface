@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useCallback } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { isEqual } from 'lodash'
@@ -79,9 +79,10 @@ export default function Earn({
   const filteredFarms = useMemo(() => filterFarms(testFarms, searchQuery), [testFarms, searchQuery, filterUserFarms])
 
   useEffect(() => {
-    if (!isEqual(testFarms, nonDualRewardPools)) {
-      const newFilteredFarms = filterFarms(nonDualRewardPools, searchQuery)
-      setTestFarms(newFilteredFarms)
+    const farmsToCompare = searchQuery.length || filterUserFarms ? farmArrsInOrder : nonDualRewardPools
+
+    if (!isEqual(testFarms, farmsToCompare)) {
+      setTestFarms(farmsToCompare)
     }
   }, [farmArrs])
 
@@ -123,33 +124,39 @@ export default function Earn({
             toggle={() => setFilterUserFarms(!filterUserFarms)}
           />
         </StyledToggleContainer>
-        <DataRow style={{ alignItems: 'baseline' }}>
-          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Dual Rewards Pools</TYPE.mediumHeader>
-        </DataRow>
-        <PoolSection>
-          {dualRewardPools.map(farm => (
-            <MemoizedPoolCardTRI
-              key={farm.ID}
-              apr={farm.apr}
-              apr2={farm.apr2}
-              chefVersion={farm.chefVersion}
-              isPeriodFinished={farm.isPeriodFinished}
-              stakedAmount={farm.stakedAmount}
-              token0={farm.tokens[0]}
-              token1={farm.tokens[1]}
-              totalStakedInUSD={farm.totalStakedInUSD}
-              version={farm.ID}
-              doubleRewards={farm.doubleRewards}
-              inStaging={farm.inStaging}
-              doubleRewardToken={farm.doubleRewardToken}
-            />
-          ))}
-        </PoolSection>
+        {!searchQuery.length && !filterUserFarms && (
+          <>
+            <DataRow style={{ alignItems: 'baseline' }}>
+              <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Dual Rewards Pools</TYPE.mediumHeader>
+            </DataRow>
+            <PoolSection>
+              {dualRewardPools.map(farm => (
+                <MemoizedPoolCardTRI
+                  key={farm.ID}
+                  apr={farm.apr}
+                  apr2={farm.apr2}
+                  chefVersion={farm.chefVersion}
+                  isPeriodFinished={farm.isPeriodFinished}
+                  stakedAmount={farm.stakedAmount}
+                  token0={farm.tokens[0]}
+                  token1={farm.tokens[1]}
+                  totalStakedInUSD={farm.totalStakedInUSD}
+                  version={farm.ID}
+                  doubleRewards={farm.doubleRewards}
+                  inStaging={farm.inStaging}
+                  doubleRewardToken={farm.doubleRewardToken}
+                />
+              ))}
+            </PoolSection>
+          </>
+        )}
       </AutoColumn>
       <AutoColumn gap="lg" style={{ width: '100%' }}>
-        <DataRow style={{ alignItems: 'baseline' }}>
-          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Participating Pools</TYPE.mediumHeader>
-        </DataRow>
+        {!searchQuery.length && !filterUserFarms && (
+          <DataRow style={{ alignItems: 'baseline' }}>
+            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Participating Pools</TYPE.mediumHeader>
+          </DataRow>
+        )}
 
         <PoolSection>
           {filteredFarms.map(farm => (
@@ -196,6 +203,32 @@ export default function Earn({
           ))}
         </PoolSection>
       </AutoColumn>
+      {!searchQuery.length && !filterUserFarms && (
+        <AutoColumn gap="lg" style={{ width: '100%' }}>
+          <DataRow style={{ alignItems: 'baseline' }}>
+            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
+          </DataRow>
+          <PoolSection>
+            {legacyFarmArrsInOrder.map(farm => (
+              <MemoizedPoolCardTRI
+                key={farm.ID}
+                apr={farm.apr}
+                apr2={farm.apr2}
+                chefVersion={farm.chefVersion}
+                isPeriodFinished={farm.isPeriodFinished}
+                stakedAmount={farm.stakedAmount}
+                token0={farm.tokens[0]}
+                token1={farm.tokens[1]}
+                totalStakedInUSD={farm.totalStakedInUSD}
+                version={farm.ID}
+                doubleRewards={farm.doubleRewards}
+                inStaging={farm.inStaging}
+                doubleRewardToken={farm.doubleRewardToken}
+              />
+            ))}
+          </PoolSection>
+        </AutoColumn>
+      )}
     </PageWrapper>
   )
 }
