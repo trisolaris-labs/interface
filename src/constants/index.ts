@@ -358,7 +358,7 @@ export const CHAIN_PARAMS = {
       symbol: 'ETH',
       decimals: 18
     },
-    rpcUrls: ['https://mainnet.aurora.dev/Fon6fPMs5rCdJc4mxX4kiSK1vsKdzc3D8k6UF8aruek'],
+    rpcUrls: ['https://mainnet.aurora.dev'],
     blockExplorerUrls: ['https://explorer.mainnet.aurora.dev/']
   }
 }
