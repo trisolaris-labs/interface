@@ -17,7 +17,8 @@ import {
   updateUserDeadline,
   updateUserExpertMode,
   updateUserSlippageTolerance,
-  toggleURLWarning
+  toggleURLWarning,
+  toggleFilterActiveFarms
 } from './actions'
 
 function serializeToken(token: Token): SerializedToken {
@@ -245,4 +246,13 @@ export function useTrackedTokenPairs(): [Token, Token][] {
 
     return Object.keys(keyed).map(key => keyed[key])
   }, [combinedList])
+}
+
+export function useIsFilterActiveFarms(): boolean {
+  return useSelector((state: AppState) => state.user.filterActiveFarms)
+}
+
+export function useToggleFilterActiveFarms(): () => void {
+  const dispatch = useDispatch()
+  return useCallback(() => dispatch(toggleFilterActiveFarms()), [dispatch])
 }
