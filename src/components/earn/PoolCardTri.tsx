@@ -66,6 +66,7 @@ type Props = {
     token1: Token
     totalStakedInUSD: number
     version: number
+    doubleRewardToken: Token
 }
 
 const Button = styled(ButtonPrimary) < { isStaking: boolean }>`
@@ -97,6 +98,7 @@ export default function PoolCardTRI({
     token1: _token1,
     totalStakedInUSD,
     version,
+    doubleRewardToken
 }: Props) {
     const {currency0, currency1, token0, token1} = getPairRenderOrder(_token0, _token1)
 
@@ -148,7 +150,7 @@ export default function PoolCardTRI({
                     </TYPE.mutedSubHeader>
                     <TYPE.white textAlign="end">
                         {(isDualRewards && doubleRewards
-                            ? `${apr}% TRI + ${`${apr2}%`} AURORA`
+                            ? `${apr}% TRI + ${`${apr2}%`} ${`${doubleRewardToken.symbol}`}`
                             : inStaging
                                 ? `Coming Soon`
                                 : `${apr}%`

@@ -47,6 +47,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
   const stakingContractv2 = useMasterChefV2Contract()
   const chefVersion = stakingInfo.chefVersion
   const doubleRewardsOn = stakingInfo.doubleRewards
+  const doubleRewardToken = stakingInfo.doubleRewardToken
 
   async function onWithdraw() {
     if(stakingInfo.chefVersion == 0) {
@@ -121,7 +122,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               <TYPE.body fontWeight={600} fontSize={36}>
                 {<FormattedCurrencyAmount currencyAmount={stakingInfo?.doubleRewardAmount} />}
               </TYPE.body>
-              <TYPE.body>{"Unclaimed Aurora"}</TYPE.body>
+              <TYPE.body>{"Unclaimed"} {doubleRewardToken.symbol}</TYPE.body>
             </AutoColumn>
           )}
           <TYPE.subHeader style={{ textAlign: 'center' }}>

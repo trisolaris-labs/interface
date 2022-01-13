@@ -49,6 +49,7 @@ export function useFarmsAPI(): StakingTriFarms[] {
             chefVersion: chefVersion,
             doubleRewards: activeFarms[index].doubleRewards,
             inStaging: activeFarms[index].inStaging,
+            doubleRewardToken: activeFarms[index].doubleRewardToken
         }
     });
 

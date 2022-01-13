@@ -127,7 +127,7 @@ export const UST: { [chainId in ChainId]: Token } = {
     ChainId.AURORA,
     '0x5ce9F0B6AFb36135b5ddBF11705cEB65E634A9dC',
     18,
-    'UST',
+    'atUST',
     'Wrapped UST',
   ),
 }
@@ -140,7 +140,7 @@ export const LUNA: { [chainId in ChainId]: Token } = {
     ChainId.AURORA,
     '0xC4bdd27c33ec7daa6fcfd8532ddB524Bf4038096',
     18,
-    'LUNA',
+    'atLUNA',
     'Wrapped LUNA',
   ),
 }

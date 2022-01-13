@@ -123,6 +123,7 @@ export default function Earn({
               version={farm.ID}
               doubleRewards={farm.doubleRewards}
               inStaging={farm.inStaging}
+              doubleRewardToken={farm.doubleRewardToken}
             />
           ))}
         </PoolSection>
@@ -149,6 +150,7 @@ export default function Earn({
               version={farm.ID}
               doubleRewards={farm.doubleRewards}
               inStaging={farm.inStaging}
+              doubleRewardToken={farm.doubleRewardToken}
             />
           ))}
         </PoolSection>
@@ -175,6 +177,7 @@ export default function Earn({
               version={farm.ID}
               doubleRewards={farm.doubleRewards}
               inStaging={farm.inStaging}
+              doubleRewardToken={farm.doubleRewardToken}
             />
           ))}
         </PoolSection>
