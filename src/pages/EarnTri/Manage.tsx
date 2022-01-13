@@ -124,6 +124,7 @@ export default function Manage({
     tokens,
     totalRewardRate,
     totalStakedInUSD,
+    doubleRewardToken
   } = stakingInfo;
   const isDualRewards = chefVersion == 1;
 
@@ -292,7 +293,7 @@ export default function Manage({
               <RowBetween>
                 <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
                 {(isDualRewards && doubleRewards) ? (
-                  <TYPE.black>{t('earnPage.unclaimed')} AURORA</TYPE.black>
+                  <TYPE.black>{t('earnPage.unclaimed')} {doubleRewardToken.symbol}</TYPE.black>
                 ) : null}
               </RowBetween>
               <RowBetween style={{ alignItems: 'baseline' }}>

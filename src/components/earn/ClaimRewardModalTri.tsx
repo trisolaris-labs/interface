@@ -34,6 +34,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
   const [attempting, setAttempting] = useState(false)
   const chefVersion = stakingInfo.chefVersion
   const doubleRewardsOn = stakingInfo.doubleRewards
+  const doubleRewardToken = stakingInfo.doubleRewardToken
 
   function wrappedOnDismiss() {
     setHash(undefined)
@@ -110,7 +111,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
                             <TYPE.body fontWeight={600} fontSize={36}>
                                 {stakingInfo?.doubleRewardAmount?.toSignificant(6)}
                             </TYPE.body>
-                            <TYPE.body>{"Unclaimed Aurora"}</TYPE.body>
+                            <TYPE.body>{"Unclaimed"} {doubleRewardToken.symbol}</TYPE.body>
                         </AutoColumn>
                     )}
                     <TYPE.subHeader style={{ textAlign: 'center' }}>
