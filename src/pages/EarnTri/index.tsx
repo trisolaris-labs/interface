@@ -12,9 +12,11 @@ import PoolCardTRI from '../../components/earn/PoolCardTri'
 import FarmBanner from '../../components/earn/FarmBanner'
 import Toggle from '../../components/Toggle'
 
-import { TYPE, ExternalLink } from '../../theme'
 import { useFarms } from '../../state/stake/apr'
 import { StakingTri } from '../../state/stake/stake-constants'
+import { useIsFilterActiveFarms, useToggleFilterActiveFarms } from '../../state/user/hooks'
+
+import { TYPE, ExternalLink } from '../../theme'
 import { poolIsStaking } from '../../utils/pools'
 
 import { TopSection, PoolSection, DataRow, StyledSearchInput, StyledToggleContainer } from './EarnTri.styles'
@@ -37,14 +39,13 @@ export default function Earn({
   }
 }: RouteComponentProps<{ version: string }>) {
   const { t } = useTranslation()
-
   const farmArrs = useFarms()
+  const toggleActiveFarms = useToggleFilterActiveFarms()
+  const activeFarmsFilter = useIsFilterActiveFarms()
 
   const [searchQuery, setSearchQuery] = useState<string>('')
 
   const farmArrsInOrder = POOLS_ORDER.map(index => farmArrs[index])
-
-  const [filterUserFarms, setFilterUserFarms] = useState<boolean>(false)
 
   const legacyFarmArrsInOrder = LEGACY_POOLS.map(index => farmArrs[index])
 
@@ -65,7 +66,7 @@ export default function Earn({
   // const sortedFarms = useMemo(() => sortFarms(farmArrs, 'iuu'), [farmArrs])
 
   const filterFarms = (farms: StakingTri[], query: string) => {
-    const farmsToFilter = filterUserFarms ? farms.filter(farm => poolIsStaking(farm.stakedAmount)) : farms
+    const farmsToFilter = activeFarmsFilter ? farms.filter(farm => poolIsStaking(farm.stakedAmount)) : farms
     return farmsToFilter.filter(farm =>
       farm.tokens.some(
         ({ symbol, name, address }) =>
@@ -76,10 +77,10 @@ export default function Earn({
     )
   }
 
-  const filteredFarms = useMemo(() => filterFarms(testFarms, searchQuery), [testFarms, searchQuery, filterUserFarms])
+  const filteredFarms = useMemo(() => filterFarms(testFarms, searchQuery), [testFarms, searchQuery, activeFarmsFilter])
 
   useEffect(() => {
-    const farmsToCompare = searchQuery.length || filterUserFarms ? farmArrsInOrder : nonDualRewardPools
+    const farmsToCompare = searchQuery.length || activeFarmsFilter ? farmArrsInOrder : nonDualRewardPools
 
     if (!isEqual(testFarms, farmsToCompare)) {
       setTestFarms(farmsToCompare)
@@ -118,13 +119,9 @@ export default function Earn({
             {`${t('earnPage.filterUserPools')}: `}
           </Text>
 
-          <Toggle
-            id="toggle-user-farms-toggle"
-            isActive={filterUserFarms}
-            toggle={() => setFilterUserFarms(!filterUserFarms)}
-          />
+          <Toggle id="toggle-user-farms-toggle" isActive={activeFarmsFilter} toggle={toggleActiveFarms} />
         </StyledToggleContainer>
-        {!searchQuery.length && !filterUserFarms && (
+        {!searchQuery.length && !activeFarmsFilter && (
           <>
             <DataRow style={{ alignItems: 'baseline' }}>
               <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Dual Rewards Pools</TYPE.mediumHeader>
@@ -152,7 +149,7 @@ export default function Earn({
         )}
       </AutoColumn>
       <AutoColumn gap="lg" style={{ width: '100%' }}>
-        {!searchQuery.length && !filterUserFarms && (
+        {!searchQuery.length && !activeFarmsFilter && (
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Participating Pools</TYPE.mediumHeader>
           </DataRow>
@@ -203,7 +200,7 @@ export default function Earn({
           ))}
         </PoolSection>
       </AutoColumn>
-      {!searchQuery.length && !filterUserFarms && (
+      {!searchQuery.length && !activeFarmsFilter && (
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
