@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { isEqual } from 'lodash'
 import { Text } from 'rebass'
+import { ChevronDown, ChevronUp } from 'react-feather'
 
 import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
@@ -19,12 +20,22 @@ import { useIsFilterActiveFarms, useToggleFilterActiveFarms } from '../../state/
 import { TYPE, ExternalLink } from '../../theme'
 import { poolIsStaking } from '../../utils/pools'
 
-import { TopSection, PoolSection, DataRow, StyledSearchInput, StyledToggleContainer } from './EarnTri.styles'
+import {
+  TopSection,
+  PoolSection,
+  DataRow,
+  StyledSearchInput,
+  StyledFiltersContainer,
+  StyledToggleContainer,
+  StyledSortContainer,
+  StyledSortOption,
+  StyledArrowContainer
+} from './EarnTri.styles'
 
 enum SortingType {
-  totalStakedInWavax = 'totalStakedInWavax',
-  multiplier = 'multiplier',
-  totalApr = 'totalApr'
+  liquidity = 'Liquidity',
+  totalApr = 'Total APR',
+  default = 'Default'
 }
 
 const POOLS_ORDER = [5, 11, 8, 7, 0, 1, 2, 3, 4, 9, 10, 12, 13, 14]
@@ -39,15 +50,40 @@ export default function Earn({
   }
 }: RouteComponentProps<{ version: string }>) {
   const { t } = useTranslation()
-  const farmArrs = useFarms()
+  const allFarmArrs = useFarms()
+  const farmArrs = allFarmArrs.filter(farm => !LEGACY_POOLS.includes(farm.ID))
+  // const farmArrs = useFarms()
+
   const toggleActiveFarms = useToggleFilterActiveFarms()
   const activeFarmsFilter = useIsFilterActiveFarms()
 
   const [searchQuery, setSearchQuery] = useState<string>('')
+  const [sortDescending, setSortDescending] = useState<boolean>(true)
+  const [sortBy, setSortBy] = useState<SortingType>(SortingType.default)
 
-  const farmArrsInOrder = POOLS_ORDER.map(index => farmArrs[index])
+  const getSortedFarms = () => {
+    switch (sortBy) {
+      case SortingType.default:
+        return POOLS_ORDER.map(index => allFarmArrs[index])
+    }
+    switch (sortBy) {
+      case SortingType.liquidity:
+        return sortDescending
+          ? farmArrs.sort((a, b) => (a.totalStakedInUSD < b.totalStakedInUSD ? 1 : -1))
+          : farmArrs.sort((a, b) => (a.totalStakedInUSD > b.totalStakedInUSD ? 1 : -1))
+    }
+    switch (sortBy) {
+      case SortingType.totalApr:
+        return sortDescending
+          ? farmArrs.sort((a, b) => (a.apr + a.apr2 < b.apr + b.apr2 ? 1 : -1))
+          : farmArrs.sort((a, b) => (a.apr + a.apr2 > b.apr + b.apr2 ? 1 : -1))
+    }
+  }
 
-  const legacyFarmArrsInOrder = LEGACY_POOLS.map(index => farmArrs[index])
+  // const farmArrsInOrder = POOLS_ORDER.map(index => farmArrs[index])
+
+  const legacyFarmArrsInOrder = allFarmArrs.filter(farm => LEGACY_POOLS.includes(farm.ID))
+  const farmArrsInOrder = useMemo(() => getSortedFarms(), [sortBy, farmArrs])
 
   const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards)
   const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards)
@@ -59,11 +95,13 @@ export default function Earn({
     setSearchQuery(input)
   }
 
-  // const sortFarms = (farms: StakingTri[], order: string) => {
-  //   return farms
-  // }
-
-  // const sortedFarms = useMemo(() => sortFarms(farmArrs, 'iuu'), [farmArrs])
+  const handleSort = (sortingType: SortingType) => {
+    if (sortingType === sortBy) {
+      setSortDescending(!sortDescending)
+    } else {
+      setSortBy(sortingType)
+    }
+  }
 
   const filterFarms = (farms: StakingTri[], query: string) => {
     const farmsToFilter = activeFarmsFilter ? farms.filter(farm => poolIsStaking(farm.stakedAmount)) : farms
@@ -72,12 +110,17 @@ export default function Earn({
         ({ symbol, name, address }) =>
           symbol?.toUpperCase().includes(query) ||
           name?.toUpperCase().includes(query) ||
-          address?.toUpperCase().includes(query)
+          (query.length > 5 && address?.toUpperCase().includes(query))
       )
     )
   }
 
-  const filteredFarms = useMemo(() => filterFarms(testFarms, searchQuery), [testFarms, searchQuery, activeFarmsFilter])
+  const filteredFarms = useMemo(() => filterFarms(testFarms, searchQuery), [
+    testFarms,
+    searchQuery,
+    activeFarmsFilter,
+    sortBy
+  ])
 
   useEffect(() => {
     const farmsToCompare = searchQuery.length || activeFarmsFilter ? farmArrsInOrder : nonDualRewardPools
@@ -86,6 +129,10 @@ export default function Earn({
       setTestFarms(farmsToCompare)
     }
   }, [farmArrs])
+
+  const renderSortArrow = () => {
+    return sortDescending ? <ChevronDown size={15} /> : <ChevronUp size={15} />
+  }
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -114,13 +161,30 @@ export default function Earn({
 
       <AutoColumn gap="lg" style={{ width: '100%' }}>
         <StyledSearchInput placeholder={t('searchModal.tokenSearchPlaceholder')} onChange={handleInput} />
-        <StyledToggleContainer>
-          <Text fontWeight={400} fontSize={16} marginRight={20}>
-            {`${t('earnPage.filterUserPools')}: `}
-          </Text>
+        <StyledFiltersContainer>
+          <StyledToggleContainer>
+            <Text fontWeight={400} fontSize={16} marginRight={20}>
+              {`${t('earnPage.filterUserPools')}: `}
+            </Text>
 
-          <Toggle id="toggle-user-farms-toggle" isActive={activeFarmsFilter} toggle={toggleActiveFarms} />
-        </StyledToggleContainer>
+            <Toggle id="toggle-user-farms-toggle" isActive={activeFarmsFilter} toggle={toggleActiveFarms} />
+          </StyledToggleContainer>
+          <StyledSortContainer>
+            <Text fontWeight={400} fontSize={16} marginRight={20}>
+              {/* {`${t('earnPage.filterUserPools')}: `} */}
+              Sort by:{' '}
+              <StyledSortOption onClick={() => handleSort(SortingType.liquidity)}>
+                {SortingType.liquidity}
+                <StyledArrowContainer>{sortBy === SortingType.liquidity && renderSortArrow()}</StyledArrowContainer>
+              </StyledSortOption>
+              |{' '}
+              <StyledSortOption onClick={() => handleSort(SortingType.totalApr)}>
+                {SortingType.totalApr}
+                <StyledArrowContainer>{sortBy === SortingType.totalApr && renderSortArrow()}</StyledArrowContainer>
+              </StyledSortOption>
+            </Text>
+          </StyledSortContainer>
+        </StyledFiltersContainer>
         {!searchQuery.length && !activeFarmsFilter && (
           <>
             <DataRow style={{ alignItems: 'baseline' }}>
@@ -206,7 +270,7 @@ export default function Earn({
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
           </DataRow>
           <PoolSection>
-            {legacyFarmArrsInOrder.map(farm => (
+            {legacyFarmArrsInOrder?.map(farm => (
               <MemoizedPoolCardTRI
                 key={farm.ID}
                 apr={farm.apr}
