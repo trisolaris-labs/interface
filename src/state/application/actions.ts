@@ -17,6 +17,13 @@ export type PopupContent =
         auto: boolean
       }
     }
+  | ErrorAlertPopupContent
+
+export type ErrorAlertPopupContent = {
+  errorAlert: {
+    content: string
+  }
+}
 
 export enum ApplicationModal {
   WALLET,

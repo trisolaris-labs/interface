@@ -5,6 +5,8 @@ import { updateBlockNumber } from './actions'
 import { useDispatch } from 'react-redux'
 import useTimeout from '../../hooks/useTimeout';
 import useDebounce from '../../hooks/useDebounce'
+import useInterval from '../../hooks/useInterval'
+import useErrorAlertPoll from '../../hooks/useErrorAlertPoll'
 
 const MAX_WAIT_BEFORE_MANUAL_DISPATCH = 2000;
 
@@ -73,6 +75,8 @@ export default function Updater(): null {
     if (!debouncedState.chainId || !debouncedState.blockNumber || !windowVisible) return
     dispatch(updateBlockNumber({ chainId: debouncedState.chainId, blockNumber: debouncedState.blockNumber }));
   }, [windowVisible, dispatch, debouncedState.blockNumber, debouncedState.chainId])
+
+  useErrorAlertPoll();
 
   return null
 }
