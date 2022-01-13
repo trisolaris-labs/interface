@@ -62,11 +62,11 @@ export function useSingleFarm(version: number): StakingTri {
       console.error('Failed to load staking rewards info');
       return activeFarms[version];
     }
-    console.log(pendingComplexRewards)
+
     const userInfoPool = JSBI.BigInt(userInfo.result?.['amount'] ?? 0)
     const earnedRewardPool = JSBI.BigInt(pendingTri.result?.[0] ?? 0)
     const earnedComplexRewardPool = JSBI.BigInt(pendingComplexRewards.result?.rewardAmounts?.[0] ?? 0)
-    console.log(earnedComplexRewardPool)
+
     const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
     const earnedAmount = new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(earnedRewardPool))
     const earnedComplexAmount = new TokenAmount(AURORA[ChainId.AURORA], JSBI.BigInt(earnedComplexRewardPool))
