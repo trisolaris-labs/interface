@@ -76,7 +76,8 @@
     "withdrawAndClaim": "Çek & Ödülü Talep Et",
     "withdrewPgl": "PGL çekildi!",
     "approve": "Onayla",
-    "poolWeight": "Havuz Ağırlığı"
+    "poolWeight": "Havuz Ağırlığı",
+    "filterUserPools": "Yalnızca havuzlarımı göster"
   },
   "menu": {
     "code": "Kod",
@@ -112,7 +113,7 @@
     "acceptUpdate": "Güncellemeyi kabul et",
     "dismiss": "Yoksay"
   },
-  "positionCard":{
+  "positionCard": {
     "add": "Ekle",
     "remove": "Çıkar",
     "poolShare": "Havuz payınız:",
@@ -148,8 +149,7 @@
     "select": "Seç",
     "manageTokenLists": "Jeton Listelerini Yönet"
   },
-  "settings":
-  {
+  "settings": {
     "areYouSure": "Emin misiniz?",
     "expertInfo": "Uzman modu, işlemi onayla istemini kapatır ve genellikle düşük oranlara ve para kaybına neden olan yüksek slipajlı işlemlere izin verir.",
     "expertWarningCAPS": "BU MODU SADECE NE YAPTIĞINIZI BİLİYORSANIZ KULLANIN.",

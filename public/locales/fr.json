@@ -112,7 +112,7 @@
     "acceptUpdate": "Accepter la mise à jour",
     "dismiss": "Rejeter"
   },
-  "positionCard":{
+  "positionCard": {
     "add": "Ajouter",
     "remove": "Retirer",
     "poolShare": "Votre part de la pool:",
@@ -148,8 +148,7 @@
     "select": "Sélectionner",
     "manageTokenLists": "Gérer les listes de jetons"
   },
-  "settings":
-  {
+  "settings": {
     "areYouSure": "Vous êtes sûr ?",
     "expertInfo": "Le mode expert désactive l'invite de confirmation de la transaction et autorise les transactions à fort slippage qui entraînent souvent de mauvais taux et des pertes de fonds.",
     "expertWarningCAPS": "N'UTILISEZ CE MODE QUE SI VOUS SAVEZ CE QUE VOUS FAITES.",
@@ -319,7 +318,8 @@
     "automagically": "Lorsque vous vous retirez, le contrat réclame automatiquement le PNG en votre nom !",
     "deposit": "Dépôt",
     "depositPglTokens": "Déposer des jetons PGL",
-    "pglTokenAvailable": "Jetons PGL disponibles"
+    "pglTokenAvailable": "Jetons PGL disponibles",
+    "filterUserPools": "Afficher uniquement mes piscines"
   },
   "pool": {
     "liquidityProviderRewards": "Rémunération du fournisseur de liquidités",
