@@ -36,6 +36,8 @@ enum SortingType {
   default = 'Default'
 }
 
+type SearchableTokenProps = { symbol: string | undefined; name: string | undefined; address: string }
+
 const POOLS_ORDER = [5, 11, 8, 7, 0, 1, 2, 3, 4, 9, 10, 12, 13, 14]
 const LEGACY_POOLS = [6]
 
@@ -49,6 +51,7 @@ export default function Earn({
 }: RouteComponentProps<{ version: string }>) {
   const { t } = useTranslation()
   const allFarmArrs = useFarms()
+
   const toggleActiveFarms = useToggleFilterActiveFarms()
   const activeFarmsFilter = useIsFilterActiveFarms()
 
@@ -60,14 +63,10 @@ export default function Earn({
     switch (sortBy) {
       case SortingType.default:
         return POOLS_ORDER.map(index => allFarmArrs[index])
-    }
-    switch (sortBy) {
       case SortingType.liquidity:
         return sortDescending
           ? farmArrs.sort((a, b) => (a.totalStakedInUSD < b.totalStakedInUSD ? 1 : -1))
           : farmArrs.sort((a, b) => (a.totalStakedInUSD > b.totalStakedInUSD ? 1 : -1))
-    }
-    switch (sortBy) {
       case SortingType.totalApr:
         return sortDescending
           ? farmArrs.sort((a, b) => (a.apr + a.apr2 < b.apr + b.apr2 ? 1 : -1))
@@ -97,15 +96,21 @@ export default function Earn({
     }
   }
 
+  const farmTokensIncludesQuery = ({ symbol, name, address }: SearchableTokenProps, query: string) => {
+    return (
+      symbol?.toUpperCase().includes(query) ||
+      name?.toUpperCase().includes(query) ||
+      (query.length > 5 && address?.toUpperCase().includes(query))
+    )
+  }
+
   const filterFarms = (farms: StakingTri[], query: string) => {
     const farmsToFilter = activeFarmsFilter ? farms.filter(farm => isTokenAmountPositive(farm.stakedAmount)) : farms
-    return farmsToFilter.filter(farm =>
-      farm.tokens.some(
-        ({ symbol, name, address }) =>
-          symbol?.toUpperCase().includes(query) ||
-          name?.toUpperCase().includes(query) ||
-          (query.length > 5 && address?.toUpperCase().includes(query))
-      )
+
+    return farmsToFilter.filter(
+      farm =>
+        farm.tokens.some(({ symbol, name, address }) => farmTokensIncludesQuery({ symbol, name, address }, query)) ||
+        (query.length > 5 && farm.lpAddress.toUpperCase().includes(query))
     )
   }
 
@@ -210,31 +215,33 @@ export default function Earn({
           ))}
         </PoolSection>
       </AutoColumn>
-      <AutoColumn gap="lg" style={{ width: '100%' }}>
-        <DataRow style={{ alignItems: 'baseline' }}>
-          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
-        </DataRow>
-        <PoolSection>
-          {legacyFarmArrsInOrder.map(farm => (
-            <MemoizedPoolCardTRI
-              key={farm.ID}
-              apr={farm.apr}
-              apr2={farm.apr2}
-              chefVersion={farm.chefVersion}
-              isLegacy={true}
-              isPeriodFinished={farm.isPeriodFinished}
-              stakedAmount={farm.stakedAmount}
-              token0={farm.tokens[0]}
-              token1={farm.tokens[1]}
-              totalStakedInUSD={farm.totalStakedInUSD}
-              version={farm.ID}
-              doubleRewards={farm.doubleRewards}
-              inStaging={farm.inStaging}
-              doubleRewardToken={farm.doubleRewardToken}
-            />
-          ))}
-        </PoolSection>
-      </AutoColumn>
+      {!searchQuery.length && !activeFarmsFilter && (
+        <AutoColumn gap="lg" style={{ width: '100%' }}>
+          <DataRow style={{ alignItems: 'baseline' }}>
+            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
+          </DataRow>
+          <PoolSection>
+            {legacyFarmArrsInOrder.map(farm => (
+              <MemoizedPoolCardTRI
+                key={farm.ID}
+                apr={farm.apr}
+                apr2={farm.apr2}
+                chefVersion={farm.chefVersion}
+                isLegacy={true}
+                isPeriodFinished={farm.isPeriodFinished}
+                stakedAmount={farm.stakedAmount}
+                token0={farm.tokens[0]}
+                token1={farm.tokens[1]}
+                totalStakedInUSD={farm.totalStakedInUSD}
+                version={farm.ID}
+                doubleRewards={farm.doubleRewards}
+                inStaging={farm.inStaging}
+                doubleRewardToken={farm.doubleRewardToken}
+              />
+            ))}
+          </PoolSection>
+        </AutoColumn>
+      )}
     </PageWrapper>
   )
 }
