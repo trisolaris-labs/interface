@@ -320,7 +320,7 @@
     "deposit": "Deposit",
     "depositPglTokens": "Deposit",
     "pglTokenAvailable": "TLP tokens available",
-    "filterUserPools": "Show my pools only"
+    "filterUserPools": "Show only my pools"
   },
   "pool": {
     "liquidityProviderRewards": "Liquidity provider rewards",

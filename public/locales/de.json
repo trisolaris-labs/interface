@@ -112,7 +112,7 @@
     "acceptUpdate": "Update bestätigen",
     "dismiss": "Abbruch"
   },
-  "positionCard":{
+  "positionCard": {
     "add": "Hinzufügen",
     "remove": "Entfernen",
     "poolShare": "Dein Anteil am Pool:",
@@ -148,8 +148,7 @@
     "select": "auswählen",
     "manageTokenLists": "Tokenlisten verwalten"
   },
-  "settings":
-  {
+  "settings": {
     "areYouSure": "Bist du dir sicher?",
     "expertInfo": "Der Expertenmodus deaktiviert die Aufforderung zur Transaktionsbestätigung und erlaubt Trades mit hoher Slippage, welche oft zu schlechten Tauschraten und unwiderruflich verlorenen Mitteln führen.",
     "expertWarningCAPS": "BENUTZE DIESEN MODUS NUR, WENN DU GENAU WEISST, WAS DU TUST.",
@@ -319,7 +318,8 @@
     "automagically": "Wenn du abbuchst, wird der Smart Contract automagisch PNG für dich beanspruchen!",
     "deposit": "Einzahlen",
     "depositPglTokens": "Zahle PGL-Token ein",
-    "pglTokenAvailable": "PGL-Token verfügbar"
+    "pglTokenAvailable": "PGL-Token verfügbar",
+    "filterUserPools": "Nur meine Pools anzeigen"
   },
   "pool": {
     "liquidityProviderRewards": "Liquiditätsprovider-Vergütungen",

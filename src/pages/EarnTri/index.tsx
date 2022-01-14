@@ -6,8 +6,7 @@ import { Text } from 'rebass'
 import { ChevronDown, ChevronUp } from 'react-feather'
 
 import { AutoColumn } from '../../components/Column'
-import { RowBetween } from '../../components/Row'
-import { CardSection, HighlightCard } from '../../components/earn/styled'
+
 import { PageWrapper } from '../../components/Page'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
 import FarmBanner from '../../components/earn/FarmBanner'
@@ -17,11 +16,10 @@ import { useFarms } from '../../state/stake/apr'
 import { StakingTri } from '../../state/stake/stake-constants'
 import { useIsFilterActiveFarms, useToggleFilterActiveFarms } from '../../state/user/hooks'
 
-import { TYPE, ExternalLink } from '../../theme'
+import { TYPE } from '../../theme'
 import { poolIsStaking } from '../../utils/pools'
 
 import {
-  TopSection,
   PoolSection,
   DataRow,
   StyledSearchInput,
@@ -137,28 +135,6 @@ export default function Earn({
   return (
     <PageWrapper gap="lg" justify="center">
       <MemoizedFarmBanner />
-      <TopSection gap="md">
-        <HighlightCard>
-          <CardSection>
-            <AutoColumn gap="md">
-              <RowBetween>
-                <TYPE.white fontWeight={600}>{t('earnPage.liquidityMining')}</TYPE.white>
-              </RowBetween>
-              <RowBetween>
-                <TYPE.white fontSize={14}>{t('earnPage.depositLiquidity')}</TYPE.white>
-              </RowBetween>{' '}
-              <ExternalLink
-                style={{ color: 'white', textDecoration: 'underline' }}
-                href="https://medium.com/trisolaris-labs"
-                target="_blank"
-              >
-                <TYPE.white fontSize={14}>{t('earnPage.readMoreAboutPng')}</TYPE.white>
-              </ExternalLink>
-            </AutoColumn>
-          </CardSection>
-        </HighlightCard>
-      </TopSection>
-
       <AutoColumn gap="lg" style={{ width: '100%' }}>
         <StyledSearchInput placeholder={t('searchModal.tokenSearchPlaceholder')} onChange={handleInput} />
         <StyledFiltersContainer>
@@ -170,15 +146,14 @@ export default function Earn({
             <Toggle id="toggle-user-farms-toggle" isActive={activeFarmsFilter} toggle={toggleActiveFarms} />
           </StyledToggleContainer>
           <StyledSortContainer>
-            <Text fontWeight={400} fontSize={16} marginRight={20}>
-              {/* {`${t('earnPage.filterUserPools')}: `} */}
+            <Text fontWeight={400} fontSize={16}>
               Sort by:{' '}
               <StyledSortOption onClick={() => handleSort(SortingType.liquidity)}>
                 {SortingType.liquidity}
                 <StyledArrowContainer>{sortBy === SortingType.liquidity && renderSortArrow()}</StyledArrowContainer>
               </StyledSortOption>
-              |{' '}
-              <StyledSortOption onClick={() => handleSort(SortingType.totalApr)}>
+              |
+              <StyledSortOption style={{ marginLeft: '1rem' }} onClick={() => handleSort(SortingType.totalApr)}>
                 {SortingType.totalApr}
                 <StyledArrowContainer>{sortBy === SortingType.totalApr && renderSortArrow()}</StyledArrowContainer>
               </StyledSortOption>
