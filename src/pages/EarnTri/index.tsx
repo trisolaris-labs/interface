@@ -49,15 +49,21 @@ export default function Earn({
 }: RouteComponentProps<{ version: string }>) {
   const { t } = useTranslation()
   const allFarmArrs = useFarms()
-  const farmArrs = allFarmArrs.filter(farm => !LEGACY_POOLS.includes(farm.ID))
-  // const farmArrs = useFarms()
-
   const toggleActiveFarms = useToggleFilterActiveFarms()
   const activeFarmsFilter = useIsFilterActiveFarms()
 
+  const [sortBy, setSortBy] = useState<SortingType>(SortingType.default)
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [sortDescending, setSortDescending] = useState<boolean>(true)
-  const [sortBy, setSortBy] = useState<SortingType>(SortingType.default)
+
+  const farmArrs = allFarmArrs.filter(farm => !LEGACY_POOLS.includes(farm.ID))
+  const farmArrsInOrder = useMemo(() => getSortedFarms(), [sortBy, farmArrs])
+  const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards)
+
+  const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(nonDualRewardPools)
+
+  const legacyFarmArrsInOrder = allFarmArrs.filter(farm => LEGACY_POOLS.includes(farm.ID))
+  const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards)
 
   const getSortedFarms = () => {
     switch (sortBy) {
@@ -77,16 +83,6 @@ export default function Earn({
           : farmArrs.sort((a, b) => (a.apr + a.apr2 > b.apr + b.apr2 ? 1 : -1))
     }
   }
-
-  // const farmArrsInOrder = POOLS_ORDER.map(index => farmArrs[index])
-
-  const legacyFarmArrsInOrder = allFarmArrs.filter(farm => LEGACY_POOLS.includes(farm.ID))
-  const farmArrsInOrder = useMemo(() => getSortedFarms(), [sortBy, farmArrs])
-
-  const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards)
-  const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards)
-
-  const [testFarms, setTestFarms] = useState<StakingTri[]>(nonDualRewardPools)
 
   const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const input = event.target.value.toUpperCase()
@@ -113,8 +109,8 @@ export default function Earn({
     )
   }
 
-  const filteredFarms = useMemo(() => filterFarms(testFarms, searchQuery), [
-    testFarms,
+  const filteredFarms = useMemo(() => filterFarms(currentFarms, searchQuery), [
+    currentFarms,
     searchQuery,
     activeFarmsFilter,
     sortBy
@@ -123,8 +119,8 @@ export default function Earn({
   useEffect(() => {
     const farmsToCompare = searchQuery.length || activeFarmsFilter ? farmArrsInOrder : nonDualRewardPools
 
-    if (!isEqual(testFarms, farmsToCompare)) {
-      setTestFarms(farmsToCompare)
+    if (!isEqual(currentFarms, farmsToCompare)) {
+      setCurrentFarms(farmsToCompare)
     }
   }, [farmArrs])
 
