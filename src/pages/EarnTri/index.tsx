@@ -169,6 +169,7 @@ export default function Earn({
               apr={farm.apr}
               apr2={farm.apr2}
               chefVersion={farm.chefVersion}
+              isLegacy={true}
               isPeriodFinished={farm.isPeriodFinished}
               stakedAmount={farm.stakedAmount}
               token0={farm.tokens[0]}

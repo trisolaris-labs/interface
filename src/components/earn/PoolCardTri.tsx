@@ -60,6 +60,7 @@ type Props = {
     doubleRewards: boolean
     chefVersion: ChefVersions
     inStaging: boolean
+    isLegacy?: boolean
     isPeriodFinished: boolean
     stakedAmount: TokenAmount | null
     token0: Token
@@ -92,6 +93,7 @@ export default function PoolCardTRI({
     chefVersion,
     doubleRewards,
     inStaging,
+    isLegacy,
     isPeriodFinished,
     stakedAmount,
     token0: _token0,
@@ -124,15 +126,21 @@ export default function PoolCardTRI({
                         {currency0.symbol}-{currency1.symbol}
                     </ResponsiveCurrencyLabel>
                 </PairContainer>
-                <Button
-                    disabled={(isStaking || !isPeriodFinished) === false}
-                    isStaking={isStaking}
-                    onClick={() => {
-                        history.push(`/tri/${currencyId(currency0)}/${currencyId(currency1)}/${version}`)
-                    }}
-                >
-                    {isStaking ? t('earn.manage') : t('earn.deposit')}
-                </Button>
+                {isLegacy && !isStaking
+                    ? (
+                        <Button disabled={true} isStaking={isStaking}>{t('earn.deposit')}</Button>
+                    )
+                    : (
+                        <Button
+                            disabled={(isStaking || !isPeriodFinished) === false}
+                            isStaking={isStaking}
+                            onClick={() => {
+                                history.push(`/tri/${currencyId(currency0)}/${currencyId(currency1)}/${version}`)
+                            }}
+                        >
+                            {isStaking ? t('earn.manage') : t('earn.deposit')}
+                        </Button>
+                    )}
             </AutoRow>
 
             <RowBetween>
