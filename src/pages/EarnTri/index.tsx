@@ -239,32 +239,6 @@ export default function Earn({
           ))}
         </PoolSection>
       </AutoColumn>
-      {!searchQuery.length && !activeFarmsFilter && (
-        <AutoColumn gap="lg" style={{ width: '100%' }}>
-          <DataRow style={{ alignItems: 'baseline' }}>
-            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
-          </DataRow>
-          <PoolSection>
-            {legacyFarmArrsInOrder?.map(farm => (
-              <MemoizedPoolCardTRI
-                key={farm.ID}
-                apr={farm.apr}
-                apr2={farm.apr2}
-                chefVersion={farm.chefVersion}
-                isPeriodFinished={farm.isPeriodFinished}
-                stakedAmount={farm.stakedAmount}
-                token0={farm.tokens[0]}
-                token1={farm.tokens[1]}
-                totalStakedInUSD={farm.totalStakedInUSD}
-                version={farm.ID}
-                doubleRewards={farm.doubleRewards}
-                inStaging={farm.inStaging}
-                doubleRewardToken={farm.doubleRewardToken}
-              />
-            ))}
-          </PoolSection>
-        </AutoColumn>
-      )}
     </PageWrapper>
   )
 }
