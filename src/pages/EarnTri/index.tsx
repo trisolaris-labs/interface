@@ -17,7 +17,7 @@ import { StakingTri } from '../../state/stake/stake-constants'
 import { useIsFilterActiveFarms, useToggleFilterActiveFarms } from '../../state/user/hooks'
 
 import { TYPE } from '../../theme'
-import { poolIsStaking } from '../../utils/pools'
+import { isTokenAmountPositive } from '../../utils/pools'
 
 import {
   PoolSection,
@@ -56,15 +56,6 @@ export default function Earn({
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [sortDescending, setSortDescending] = useState<boolean>(true)
 
-  const farmArrs = allFarmArrs.filter(farm => !LEGACY_POOLS.includes(farm.ID))
-  const farmArrsInOrder = useMemo(() => getSortedFarms(), [sortBy, farmArrs])
-  const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards)
-
-  const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(nonDualRewardPools)
-
-  const legacyFarmArrsInOrder = allFarmArrs.filter(farm => LEGACY_POOLS.includes(farm.ID))
-  const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards)
-
   const getSortedFarms = () => {
     switch (sortBy) {
       case SortingType.default:
@@ -84,6 +75,15 @@ export default function Earn({
     }
   }
 
+  const farmArrs = allFarmArrs.filter(farm => !LEGACY_POOLS.includes(farm.ID))
+  const farmArrsInOrder = useMemo(() => getSortedFarms(), [sortBy, farmArrs])
+  const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards)
+
+  const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(nonDualRewardPools)
+
+  const legacyFarmArrsInOrder = allFarmArrs.filter(farm => LEGACY_POOLS.includes(farm.ID))
+  const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards)
+
   const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const input = event.target.value.toUpperCase()
     setSearchQuery(input)
@@ -98,7 +98,7 @@ export default function Earn({
   }
 
   const filterFarms = (farms: StakingTri[], query: string) => {
-    const farmsToFilter = activeFarmsFilter ? farms.filter(farm => poolIsStaking(farm.stakedAmount)) : farms
+    const farmsToFilter = activeFarmsFilter ? farms.filter(farm => isTokenAmountPositive(farm.stakedAmount)) : farms
     return farmsToFilter.filter(farm =>
       farm.tokens.some(
         ({ symbol, name, address }) =>

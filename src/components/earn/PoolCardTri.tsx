@@ -15,7 +15,7 @@ import { useHistory } from 'react-router-dom'
 import { addCommasToNumber } from '../../utils'
 import { lighten } from 'polished'
 import { TokenPairBackgroundColor } from './styled'
-import { getPairRenderOrder, poolIsStaking } from '../../utils/pools'
+import { getPairRenderOrder, isTokenAmountPositive } from '../../utils/pools'
 
 const Wrapper = styled(Card) < { bgColor1: string | null, bgColor2?: string | null, isDoubleRewards: boolean }>`
   border: ${({ isDoubleRewards, theme }) =>
@@ -105,7 +105,7 @@ export default function PoolCardTRI({
     const {currency0, currency1, token0, token1} = getPairRenderOrder(_token0, _token1)
 
     const { t } = useTranslation()
-    const isStaking = poolIsStaking(stakedAmount)
+    const isStaking = isTokenAmountPositive(stakedAmount)
 
     const history = useHistory();
     const isDualRewards = chefVersion == 1

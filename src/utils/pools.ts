@@ -29,6 +29,6 @@ export const getPairRenderOrder = (token0: Token, token1: Token) => {
   return token0.equals(TRI[token0.chainId]) ? token0IsFirst : token1IsFirst
 }
 
-export const poolIsStaking = (stakedAmount: TokenAmount | null) => {
+export const isTokenAmountPositive = (stakedAmount: TokenAmount | null) => {
   return Boolean(stakedAmount?.greaterThan('0') ?? false)
 }
