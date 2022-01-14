@@ -76,8 +76,7 @@
     "withdrawAndClaim": "Çek & Ödülü Talep Et",
     "withdrewPgl": "PGL çekildi!",
     "approve": "Onayla",
-    "poolWeight": "Havuz Ağırlığı",
-    "filterUserPools": "Yalnızca havuzlarımı göster"
+    "poolWeight": "Havuz Ağırlığı"
   },
   "menu": {
     "code": "Kod",
@@ -113,7 +112,7 @@
     "acceptUpdate": "Güncellemeyi kabul et",
     "dismiss": "Yoksay"
   },
-  "positionCard": {
+  "positionCard":{
     "add": "Ekle",
     "remove": "Çıkar",
     "poolShare": "Havuz payınız:",
@@ -149,7 +148,8 @@
     "select": "Seç",
     "manageTokenLists": "Jeton Listelerini Yönet"
   },
-  "settings": {
+  "settings":
+  {
     "areYouSure": "Emin misiniz?",
     "expertInfo": "Uzman modu, işlemi onayla istemini kapatır ve genellikle düşük oranlara ve para kaybına neden olan yüksek slipajlı işlemlere izin verir.",
     "expertWarningCAPS": "BU MODU SADECE NE YAPTIĞINIZI BİLİYORSANIZ KULLANIN.",
@@ -319,7 +319,8 @@
     "automagically": "Bir çekim işlemi yaptığınızda sözleşme otomatik olarak PNG'lerinizi sizin adınıza talep edecektir!",
     "deposit": "Yatır",
     "depositPglTokens": "PGL Tokenı Yatır",
-    "pglTokenAvailable": "Kullanılabilir PNG Tokenı"
+    "pglTokenAvailable": "Kullanılabilir PNG Tokenı",
+    "filterUserPools": "Yalnızca havuzlarımı göster"
   },
   "pool": {
     "liquidityProviderRewards": "Likidite sağlayıcılarına verilen ödüller",

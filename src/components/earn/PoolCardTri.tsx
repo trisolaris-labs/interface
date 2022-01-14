@@ -17,16 +17,22 @@ import { lighten } from 'polished'
 import { TokenPairBackgroundColor } from './styled'
 import { getPairRenderOrder, poolIsStaking } from '../../utils/pools'
 
-const Wrapper = styled(Card)<{ bgColor1: string | null; bgColor2?: string | null; isDoubleRewards: boolean }>`
+const Wrapper = styled(Card) < { bgColor1: string | null, bgColor2?: string | null, isDoubleRewards: boolean }>`
   border: ${({ isDoubleRewards, theme }) =>
-    isDoubleRewards ? `1px solid ${theme.primary1}` : `1px solid ${theme.bg3};`}
+        isDoubleRewards 
+            ? `1px solid ${theme.primary1}` 
+            : `1px solid ${theme.bg3};`
+    };
   border-radius: 10px;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 12px;
   box-shadow: ${({ isDoubleRewards, theme }) =>
-    isDoubleRewards ? `0px 0px 8px 5px ${theme.primary1}` : `0 2px 8px 0 ${theme.bg3}`}
+        isDoubleRewards 
+            ? `0px 0px 8px 5px ${theme.primary1}` 
+            : `0 2px 8px 0 ${theme.bg3}`
+    };
   position: relative;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -36,14 +42,14 @@ const Wrapper = styled(Card)<{ bgColor1: string | null; bgColor2?: string | null
 `
 
 const PairContainer = styled.div`
-  display: flex;
-  align-items: center;
-`
+   display: flex;
+   align-items: center;
+ `
 
 const ResponsiveCurrencyLabel = styled(TYPE.white)`
-  font-size: 20 !important;
-  margin-left: 0.5rem !important;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
+    font-size: 20 !important;
+    margin-left: 0.5rem !important;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
         font-size: 14 !important;
     `};
 `
@@ -64,14 +70,12 @@ type Props = {
   doubleRewardToken: Token
 }
 
-const Button = styled(ButtonPrimary)<{ isStaking: boolean }>`
-    background: ${({ isStaking, theme }) => (isStaking ? theme.black : theme.primary1)}
+const Button = styled(ButtonPrimary) < { isStaking: boolean }>`
+    background: ${({ isStaking, theme }) => isStaking ? theme.black : theme.primary1};
     padding: 8px;
     border-radius: 10px;
     max-width: 80px;
-  ${({ isStaking, theme }) =>
-    isStaking &&
-    `
+  ${({ isStaking, theme }) => isStaking && `
         &:focus, &:hover, &:active {
             background-color: ${lighten(0.12, theme.black)};
         }
@@ -98,18 +102,19 @@ export default function PoolCardTRI({
   version,
   doubleRewardToken
 }: Props) {
-  const { currency0, currency1, token0, token1 } = getPairRenderOrder(_token0, _token1)
+    const {currency0, currency1, token0, token1} = getPairRenderOrder(_token0, _token1)
 
-  const { t } = useTranslation()
-  const isStaking = poolIsStaking(stakedAmount)
-  const history = useHistory()
-  const isDualRewards = chefVersion == 1
+    const { t } = useTranslation()
+    const isStaking = poolIsStaking(stakedAmount)
 
-  // get the color of the token
-  const backgroundColor1 = useColorForToken(token0)
+    const history = useHistory();
+    const isDualRewards = chefVersion == 1
 
-  // Only override `backgroundColor2` if it's a dual rewards pool
-  const backgroundColor2 = useColorForToken(token1, () => isDualRewards)
+    // get the color of the token
+    const backgroundColor1 = useColorForToken(token0)
+
+    // Only override `backgroundColor2` if it's a dual rewards pool
+    const backgroundColor2 = useColorForToken(token1, () => isDualRewards);
 
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
   return (
@@ -139,22 +144,29 @@ export default function PoolCardTRI({
         )}
       </AutoRow>
 
-      <RowBetween>
-        <AutoColumn>
-          <TYPE.mutedSubHeader>{t('earn.totalStaked')}</TYPE.mutedSubHeader>
-          <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
-        </AutoColumn>
-        <AutoColumn>
-          <TYPE.mutedSubHeader textAlign="end">APR</TYPE.mutedSubHeader>
-          <TYPE.white textAlign="end">
-            {isDualRewards && doubleRewards
-              ? `${apr}% TRI + ${`${apr2}%`} ${`${doubleRewardToken.symbol}`}`
-              : inStaging
-              ? `Coming Soon`
-              : `${apr}%`}
-          </TYPE.white>
-        </AutoColumn>
-      </RowBetween>
-    </Wrapper>
-  )
+            <RowBetween>
+                <AutoColumn>
+                    <TYPE.mutedSubHeader>
+                        {t('earn.totalStaked')}
+                    </TYPE.mutedSubHeader>
+                    <TYPE.white>
+                        {`$${totalStakedInUSDFriendly}`}
+                    </TYPE.white>
+                </AutoColumn>
+                <AutoColumn >
+                    <TYPE.mutedSubHeader textAlign="end">
+                        APR
+                    </TYPE.mutedSubHeader>
+                    <TYPE.white textAlign="end">
+                        {(isDualRewards && doubleRewards
+                            ? `${apr}% TRI + ${`${apr2}%`} ${`${doubleRewardToken.symbol}`}`
+                            : inStaging
+                                ? `Coming Soon`
+                                : `${apr}%`
+                        )}
+                    </TYPE.white>
+                </AutoColumn>
+            </RowBetween>
+        </Wrapper>
+    )
 }

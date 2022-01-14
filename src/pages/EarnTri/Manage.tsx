@@ -31,7 +31,7 @@ import CountUp from '../../components/CountUp'
 import useTLP from '../../hooks/useTLP'
 import { getPairRenderOrder } from '../../utils/pools'
 
-const PositionInfo = styled(AutoColumn)<{ dim: any }>`
+const PositionInfo = styled(AutoColumn) <{ dim: any }>`
   position: relative;
   width: 100%;
   opacity: ${({ dim }) => (dim ? 0.6 : 1)};
@@ -49,7 +49,7 @@ const ResponsiveRowBetween = styled(RowBetween)`
   `};
 `
 
-const StyledBottomCard = styled(DataCard)<{ dim: any }>`
+const StyledBottomCard = styled(DataCard) <{ dim: any }>`
   background: ${({ theme }) => theme.bg3};
   opacity: ${({ dim }) => (dim ? 0.4 : 1)};
   padding: 1rem 1.25rem;
@@ -78,9 +78,10 @@ const VoteCard = styled(HighlightCard)`
   // overflow: hidden;
 `
 
-const BackgroundColor = styled.span<{ bgColor1: string | null; bgColor2?: string | null }>`
+const BackgroundColor = styled.span< { bgColor1: string | null, bgColor2?: string | null }>`
    background: ${({ theme, bgColor1, bgColor2 }) =>
-     `linear-gradient(90deg, ${bgColor1 ?? theme.blue1} 0%, ${bgColor2 ?? 'grey'} 90%);`}
+    `linear-gradient(90deg, ${bgColor1 ?? theme.blue1} 0%, ${bgColor2 ?? 'grey'} 90%);`
+  }
    background-size: cover;
    mix-blend-mode: overlay;
    border-radius: 10px;
@@ -102,7 +103,7 @@ const DataRow = styled(RowBetween)`
    `};
 `
 
-const ZERO = JSBI.BigInt(0)
+const ZERO = JSBI.BigInt(0);
 
 export default function Manage({
   match: {
@@ -111,7 +112,7 @@ export default function Manage({
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string; version: string }>) {
   const { account } = useActiveWeb3React()
 
-  const stakingInfo = useSingleFarm(Number(version))
+  const stakingInfo = useSingleFarm(Number(version));
   const {
     chefVersion,
     doubleRewards,
@@ -124,20 +125,20 @@ export default function Manage({
     totalRewardRate,
     totalStakedInUSD,
     doubleRewardToken
-  } = stakingInfo
-  const isDualRewards = chefVersion == 1
+  } = stakingInfo;
+  const isDualRewards = chefVersion == 1;
 
   // get currencies and pair
-  const { currency0, currency1, token0, token1 } = getPairRenderOrder(...tokens)
+  const { currency0, currency1, token0, token1 } = getPairRenderOrder(...tokens);
 
-  const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
-  const totalRewardRateFriendly = addCommasToNumber(totalRewardRate.toString())
+  const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString());
+  const totalRewardRateFriendly = addCommasToNumber(totalRewardRate.toString());
 
   // get the color of the token
   const backgroundColor1 = useColorForToken(token0)
 
   // Only override `backgroundColor2` if it's a dual rewards pool
-  const backgroundColor2 = useColorForToken(token1, () => isDualRewards)
+  const backgroundColor2 = useColorForToken(token1, () => isDualRewards);
   // detect existing unstaked LP position to show add button if none found
   const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakedAmount?.token)
   const showAddLiquidityButton = Boolean(stakingInfo?.stakedAmount?.equalTo('0') && userLiquidityUnstaked?.equalTo('0'))
@@ -153,15 +154,14 @@ export default function Manage({
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
 
-  const lpToken = useTLP({ lpAddress, token0, token1 })
+  const lpToken = useTLP({ lpAddress, token0, token1 });
 
-  const { userLPAmountUSDFormatted } =
-    useUserFarmStatistics({
-      lpToken,
-      userLPStakedAmount: stakedAmount,
-      totalPoolAmountUSD: totalStakedInUSD,
-      chefVersion: chefVersion
-    }) ?? {}
+  const { userLPAmountUSDFormatted } = useUserFarmStatistics({
+    lpToken,
+    userLPStakedAmount: stakedAmount,
+    totalPoolAmountUSD: totalStakedInUSD,
+    chefVersion: chefVersion,
+  }) ?? {};
 
   const poolHandle = `${token0.symbol}-${token1.symbol}`
 
@@ -176,7 +176,7 @@ export default function Manage({
   return (
     <PageWrapper gap="lg" justify="center">
       <RowBetween style={{ gap: '24px' }}>
-        <TYPE.largeHeader>
+        <TYPE.largeHeader >
           {poolHandle} {t('earnPage.liquidityMining')}
         </TYPE.largeHeader>
         <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
@@ -209,7 +209,9 @@ export default function Manage({
                 <TYPE.white fontWeight={600}>{t('earnPage.step1')}</TYPE.white>
               </RowBetween>
               <RowBetween style={{ marginBottom: '1rem' }}>
-                <TYPE.white fontSize={14}>{t('earnPage.pglTokenRequired', { poolHandle })}</TYPE.white>
+                <TYPE.white fontSize={14}>
+                  {t('earnPage.pglTokenRequired', { poolHandle })}
+                </TYPE.white>
               </RowBetween>
               <ButtonPrimary
                 padding="8px"
@@ -254,30 +256,34 @@ export default function Manage({
                 <RowBetween>
                   <TYPE.white fontWeight={600}>{t('earnPage.liquidityDeposits')}</TYPE.white>
                 </RowBetween>
-                <ResponsiveRowBetween style={{ alignItems: 'baseline' }}>
-                  {isDualRewards && inStaging ? (
-                    // If MasterChefV2, only show the TLP Amount (no $ amount)
-                    <>
-                      <AutoColumn gap="md">
-                        <TYPE.white fontSize={36} fontWeight={600}>
-                          {stakedAmount?.toSignificant(6) ?? '-'}
+                <ResponsiveRowBetween style={{alignItems: 'baseline'}}>
+                  {(isDualRewards && inStaging)
+                    ? (
+                      // If MasterChefV2, only show the TLP Amount (no $ amount)
+                      <>
+                        <AutoColumn gap="md">
+                          <TYPE.white fontSize={36} fontWeight={600}>
+                            {stakedAmount?.toSignificant(6) ?? '-'}
+                          </TYPE.white>
+                        </AutoColumn>
+                        <TYPE.white>
+                          TLP {poolHandle}
                         </TYPE.white>
-                      </AutoColumn>
-                      <TYPE.white>TLP {poolHandle}</TYPE.white>
-                    </>
-                  ) : (
-                    // If MasterChefV1, show $ amount as primary text and TLP amount as secondary text
-                    <>
-                      <AutoColumn gap="md">
-                        <TYPE.white fontSize={36} fontWeight={600}>
-                          {userLPAmountUSDFormatted ?? '$0'}
+                      </>
+                    )
+                    : (
+                      // If MasterChefV1, show $ amount as primary text and TLP amount as secondary text
+                      <>
+                        <AutoColumn gap="md">
+                          <TYPE.white fontSize={36} fontWeight={600}>
+                            {userLPAmountUSDFormatted ?? '$0'}
+                          </TYPE.white>
+                        </AutoColumn>
+                        <TYPE.white>
+                          {stakedAmount?.toSignificant(6) ?? '-'} TLP {poolHandle}
                         </TYPE.white>
-                      </AutoColumn>
-                      <TYPE.white>
-                        {stakedAmount?.toSignificant(6) ?? '-'} TLP {poolHandle}
-                      </TYPE.white>
-                    </>
-                  )}
+                      </>
+                    )}
                 </ResponsiveRowBetween>
               </AutoColumn>
             </CardSection>
@@ -286,25 +292,17 @@ export default function Manage({
             <AutoColumn gap="sm">
               <RowBetween>
                 <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
-                {isDualRewards && doubleRewards ? (
-                  <TYPE.black>
-                    {t('earnPage.unclaimed')} {doubleRewardToken.symbol}
-                  </TYPE.black>
+                {(isDualRewards && doubleRewards) ? (
+                  <TYPE.black>{t('earnPage.unclaimed')} {doubleRewardToken.symbol}</TYPE.black>
                 ) : null}
               </RowBetween>
               <RowBetween style={{ alignItems: 'baseline' }}>
                 <TYPE.largeHeader fontSize={36} fontWeight={600}>
-                  <CountUp
-                    enabled={earnedAmount?.greaterThan(ZERO)}
-                    value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
-                  />
+                  <CountUp enabled={earnedAmount?.greaterThan(ZERO)} value={parseFloat(earnedAmount?.toFixed(6) ?? '0')} />
                 </TYPE.largeHeader>
-                {isDualRewards && doubleRewards ? (
+                {(isDualRewards && doubleRewards) ? (
                   <TYPE.largeHeader fontSize={36} fontWeight={600}>
-                    <CountUp
-                      enabled={doubleRewardAmount?.greaterThan(ZERO)}
-                      value={parseFloat(doubleRewardAmount?.toFixed(6) ?? '0')}
-                    />
+                    <CountUp enabled={doubleRewardAmount?.greaterThan(ZERO)} value={parseFloat(doubleRewardAmount?.toFixed(6) ?? '0')} />
                   </TYPE.largeHeader>
                 ) : null}
               </RowBetween>
