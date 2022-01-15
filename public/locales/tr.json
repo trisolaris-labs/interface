@@ -320,7 +320,8 @@
     "deposit": "Yatır",
     "depositPglTokens": "PGL Tokenı Yatır",
     "pglTokenAvailable": "Kullanılabilir PNG Tokenı",
-    "filterUserPools": "Yalnızca havuzlarımı göster"
+    "filterUserPools": "Yalnızca havuzlarımı göster",
+    "farmsSearchPlaceholder": "Çiftlikleri jeton veya adrese göre arayın"
   },
   "pool": {
     "liquidityProviderRewards": "Likidite sağlayıcılarına verilen ödüller",

@@ -137,7 +137,7 @@ export default function Earn({
     <PageWrapper gap="lg" justify="center">
       <MemoizedFarmBanner />
       <AutoColumn gap="lg" style={{ width: '100%' }}>
-        <StyledSearchInput placeholder={t('searchModal.tokenSearchPlaceholder')} onChange={handleInput} />
+        <StyledSearchInput placeholder={t('earnPage.farmsSearchPlaceholder')} onChange={handleInput} />
         <StyledFiltersContainer>
           <StyledToggleContainer>
             <Text fontWeight={400} fontSize={16} marginRight={20}>

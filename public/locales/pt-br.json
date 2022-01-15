@@ -320,7 +320,8 @@
         "deposit": "Deposite",
         "depositPglTokens": "Deposite Tokens PGL",
         "pglTokenAvailable": "Tokens PGL disponíveis",
-        "filterUserPools": "Mostrar somente minhas piscinas"
+        "filterUserPools": "Mostrar somente minhas piscinas",
+        "farmsSearchPlaceholder": "Busca de fazendas por tokens ou endereço"
     },
     "pool": {
         "liquidityProviderRewards": "Recompensas dos provedores de liquidez",

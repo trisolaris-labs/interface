@@ -320,7 +320,8 @@
     "deposit": "Einzahlen",
     "depositPglTokens": "Zahle PGL-Token ein",
     "pglTokenAvailable": "PGL-Token verfügbar",
-    "filterUserPools": "Nur meine Pools anzeigen"
+    "filterUserPools": "Nur meine Pools anzeigen",
+    "farmsSearchPlaceholder": "Suche nach pools nach Token oder Adresse"
   },
   "pool": {
     "liquidityProviderRewards": "Liquiditätsprovider-Vergütungen",
