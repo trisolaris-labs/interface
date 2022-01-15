@@ -31,7 +31,9 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   const pairAddresses = useMemo(
     () =>
       tokens.map(([tokenA, tokenB]) => {
-        return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB, chainId ? chainId : ChainId.AVALANCHE) : undefined
+        return tokenA && tokenB && !tokenA.equals(tokenB)
+          ? Pair.getAddress(tokenA, tokenB, chainId ? chainId : ChainId.AVALANCHE)
+          : undefined
       }),
     [tokens, chainId]
   )
@@ -51,7 +53,11 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
       return [
         PairState.EXISTS,
-        new Pair(new TokenAmount(token0, reserve0.toString()), new TokenAmount(token1, reserve1.toString()), chainId ? chainId : ChainId.AVALANCHE)
+        new Pair(
+          new TokenAmount(token0, reserve0.toString()),
+          new TokenAmount(token1, reserve1.toString()),
+          chainId ? chainId : ChainId.AVALANCHE
+        )
       ]
     })
   }, [results, tokens, chainId])

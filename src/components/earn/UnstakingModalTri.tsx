@@ -16,7 +16,6 @@ import { StakingTri } from '../../state/stake/stake-constants'
 import { parseUnits } from '@ethersproject/units'
 import { CurrencyAmount } from '@trisolaris/sdk'
 
-
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
   padding: 1rem;
@@ -50,37 +49,37 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
   const doubleRewardToken = stakingInfo.doubleRewardToken
 
   async function onWithdraw() {
-    if(stakingInfo.chefVersion == 0) {
+    if (stakingInfo.chefVersion == 0) {
       if (stakingContract && stakingInfo?.stakedAmount) {
-      setAttempting(true)
-      await stakingContract
-        .withdraw(stakingInfo.poolId, stakingInfo.stakedAmount.raw.toString())
-        .then((response: TransactionResponse) => {
-          addTransaction(response, {
-            summary: t('earn.withdrawDepositedLiquidity')
+        setAttempting(true)
+        await stakingContract
+          .withdraw(stakingInfo.poolId, stakingInfo.stakedAmount.raw.toString())
+          .then((response: TransactionResponse) => {
+            addTransaction(response, {
+              summary: t('earn.withdrawDepositedLiquidity')
+            })
+            setHash(response.hash)
           })
-          setHash(response.hash)
-        })
-        .catch((error: any) => {
-          setAttempting(false)
-          console.log(error)
-        })
+          .catch((error: any) => {
+            setAttempting(false)
+            console.log(error)
+          })
       }
     } else {
       if (stakingContractv2 && stakingInfo?.stakedAmount) {
-      setAttempting(true)
-      await stakingContractv2
-        .withdrawAndHarvest(stakingInfo.poolId, stakingInfo.stakedAmount.raw.toString(), account)
-        .then((response: TransactionResponse) => {
-          addTransaction(response, {
-            summary: t('earn.withdrawDepositedLiquidity')
+        setAttempting(true)
+        await stakingContractv2
+          .withdrawAndHarvest(stakingInfo.poolId, stakingInfo.stakedAmount.raw.toString(), account)
+          .then((response: TransactionResponse) => {
+            addTransaction(response, {
+              summary: t('earn.withdrawDepositedLiquidity')
+            })
+            setHash(response.hash)
           })
-          setHash(response.hash)
-        })
-        .catch((error: any) => {
-          setAttempting(false)
-          console.log(error)
-        })
+          .catch((error: any) => {
+            setAttempting(false)
+            console.log(error)
+          })
       }
     }
   }
@@ -117,17 +116,17 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               <TYPE.body>{t('earn.unclaimed')}</TYPE.body>
             </AutoColumn>
           )}
-          {stakingInfo?.doubleRewardAmount && chefVersion==1 && doubleRewardsOn &&(
+          {stakingInfo?.doubleRewardAmount && chefVersion == 1 && doubleRewardsOn && (
             <AutoColumn justify="center" gap="md">
               <TYPE.body fontWeight={600} fontSize={36}>
                 {<FormattedCurrencyAmount currencyAmount={stakingInfo?.doubleRewardAmount} />}
               </TYPE.body>
-              <TYPE.body>{"Unclaimed"} {doubleRewardToken.symbol}</TYPE.body>
+              <TYPE.body>
+                {'Unclaimed'} {doubleRewardToken.symbol}
+              </TYPE.body>
             </AutoColumn>
           )}
-          <TYPE.subHeader style={{ textAlign: 'center' }}>
-            {t('earn.whenYouWithdrawWarning')}
-          </TYPE.subHeader>
+          <TYPE.subHeader style={{ textAlign: 'center' }}>{t('earn.whenYouWithdrawWarning')}</TYPE.subHeader>
           <ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onWithdraw}>
             {error ?? t('earn.withdrawAndClaim')}
           </ButtonError>
@@ -136,10 +135,16 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
       {attempting && !hash && (
         <LoadingView onDismiss={wrappedOndismiss}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.body fontSize={20}>{t('earn.withdrawingPgl', {"amount": stakingInfo?.stakedAmount?.toSignificant(4)})}</TYPE.body>
-            <TYPE.body fontSize={20}>{t('earn.claimingPng', {"amount": stakingInfo?.earnedAmount?.toSignificant(4)})}</TYPE.body>
-            {stakingInfo?.doubleRewardAmount && chefVersion==1 && doubleRewardsOn &&(
-            <TYPE.body fontSize={20}>{t('earn.claimingAurora', {"amount": stakingInfo?.doubleRewardAmount?.toSignificant(4)})}</TYPE.body>
+            <TYPE.body fontSize={20}>
+              {t('earn.withdrawingPgl', { amount: stakingInfo?.stakedAmount?.toSignificant(4) })}
+            </TYPE.body>
+            <TYPE.body fontSize={20}>
+              {t('earn.claimingPng', { amount: stakingInfo?.earnedAmount?.toSignificant(4) })}
+            </TYPE.body>
+            {stakingInfo?.doubleRewardAmount && chefVersion == 1 && doubleRewardsOn && (
+              <TYPE.body fontSize={20}>
+                {t('earn.claimingAurora', { amount: stakingInfo?.doubleRewardAmount?.toSignificant(4) })}
+              </TYPE.body>
             )}
           </AutoColumn>
         </LoadingView>

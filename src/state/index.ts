@@ -25,31 +25,31 @@ const reducer = combineReducers({
   burn,
   multicall,
   lists,
-  wyre,
+  wyre
 })
 
 type State = EmptyObject & {
-  application: ApplicationState;
-  user: UserState;
-  transactions: TransactionState;
-  swap: SwapState;
-  mint: MintState;
-  burn: BurnState;
-  multicall: MulticallState;
-  lists: ListsState;
-  wyre: WyreState;
-} & PersistPartial;
+  application: ApplicationState
+  user: UserState
+  transactions: TransactionState
+  swap: SwapState
+  mint: MintState
+  burn: BurnState
+  multicall: MulticallState
+  lists: ListsState
+  wyre: WyreState
+} & PersistPartial
 
-type StoreType = Store<State, AnyAction>;
+type StoreType = Store<State, AnyAction>
 
-let store: StoreType | undefined;
+let store: StoreType | undefined
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
 
 const persistConfig: any = {
   key: 'root',
   whitelist: PERSISTED_KEYS,
-  storage,
+  storage
 }
 
 const persistedReducer = persistReducer(persistConfig, reducer)
@@ -57,16 +57,16 @@ const persistedReducer = persistReducer(persistConfig, reducer)
 function makeStore(preloadedState: State | undefined = undefined) {
   return configureStore({
     reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
+    middleware: getDefaultMiddleware =>
       getDefaultMiddleware({
         thunk: true,
         immutableCheck: true,
         serializableCheck: {
-          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        },
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+        }
       }),
     devTools: process.env.NODE_ENV === 'development',
-    preloadedState,
+    preloadedState
   })
 }
 
@@ -78,7 +78,7 @@ export const getOrCreateStore = (preloadedState: State | undefined = undefined) 
   if (preloadedState && store) {
     _store = makeStore({
       ...store.getState(),
-      ...preloadedState,
+      ...preloadedState
     })
     // Reset the current store
     store = undefined

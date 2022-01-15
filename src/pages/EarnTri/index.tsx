@@ -23,7 +23,7 @@ const PoolSection = styled.div`
   gap: 20px;
   width: 100%;
   justify-self: center;
-  
+
   ${({ theme }) => theme.mediaWidth.upToSmall`
     grid-template-columns: 1fr;
  `};
@@ -60,7 +60,7 @@ enum SortingType {
   totalApr = 'totalApr'
 }
 
-const POOLS_ORDER = [5, 11, 8, 7, 0, 1, 2, 3, 4, 9, 10, 12, 13, 14];
+const POOLS_ORDER = [5, 11, 8, 7, 0, 1, 2, 3, 4, 9, 10, 12, 13, 14]
 const LEGACY_POOLS = [6]
 
 export default function Earn({
@@ -69,10 +69,10 @@ export default function Earn({
   }
 }: RouteComponentProps<{ version: string }>) {
   const { t } = useTranslation()
-  const farmArrs = useFarms();
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const farmArrsInOrder = POOLS_ORDER.map(index => farmArrs[index]);
-  const legacyFarmArrsInOrder = LEGACY_POOLS.map(index => farmArrs[index]);
+  const farmArrs = useFarms()
+  const [searchQuery, setSearchQuery] = useState<string>('')
+  const farmArrsInOrder = POOLS_ORDER.map(index => farmArrs[index])
+  const legacyFarmArrsInOrder = LEGACY_POOLS.map(index => farmArrs[index])
 
   const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards)
   const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards)
@@ -104,9 +104,7 @@ export default function Earn({
 
       <AutoColumn gap="lg" style={{ width: '100%' }}>
         <DataRow style={{ alignItems: 'baseline' }}>
-          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>
-            Dual Rewards Pools
-          </TYPE.mediumHeader>
+          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Dual Rewards Pools</TYPE.mediumHeader>
         </DataRow>
         <PoolSection>
           {dualRewardPools.map(farm => (
@@ -131,9 +129,7 @@ export default function Earn({
 
       <AutoColumn gap="lg" style={{ width: '100%' }}>
         <DataRow style={{ alignItems: 'baseline' }}>
-          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>
-            Participating Pools
-          </TYPE.mediumHeader>
+          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Participating Pools</TYPE.mediumHeader>
         </DataRow>
         <PoolSection>
           {nonDualRewardPools.map(farm => (
@@ -158,9 +154,7 @@ export default function Earn({
 
       <AutoColumn gap="lg" style={{ width: '100%' }}>
         <DataRow style={{ alignItems: 'baseline' }}>
-          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>
-            Legacy Pools
-          </TYPE.mediumHeader>
+          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
         </DataRow>
         <PoolSection>
           {legacyFarmArrsInOrder.map(farm => (

@@ -1,12 +1,26 @@
 import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
-import { USDC, AAVE, DAI, ZERO_ADDRESS, WNEAR, USDT, WBTC, TRI, AURORA, LUNA, UST, BNB, AVAX, MATIC } from '../../constants'
-import { useMasterChefContract, MASTERCHEF_ADDRESS_V1,MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
+import {
+  USDC,
+  AAVE,
+  DAI,
+  ZERO_ADDRESS,
+  WNEAR,
+  USDT,
+  WBTC,
+  TRI,
+  AURORA,
+  LUNA,
+  UST,
+  BNB,
+  AVAX,
+  MATIC
+} from '../../constants'
+import { useMasterChefContract, MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
-export enum ChefVersions{
-    V1,
-    V2
+export enum ChefVersions {
+  V1,
+  V2
 }
-
 
 export type StakingTri = StakingTriStakedAmounts & StakingTriFarms
 
@@ -78,7 +92,7 @@ const POLYGON_POOLS: StakingTri[] = [
     totalRewardRate: 1,
     rewardRate: dummyAmount,
     apr: 0,
-    apr2:0,
+    apr2: 0,
     chefVersion: ChefVersions.V1,
     doubleRewards: false,
     inStaging: false,
@@ -101,7 +115,7 @@ const POLYGON_POOLS: StakingTri[] = [
     totalRewardRate: 1,
     rewardRate: dummyAmount,
     apr: 0,
-    apr2:0,
+    apr2: 0,
     chefVersion: ChefVersions.V1,
     doubleRewards: false,
     inStaging: false,
@@ -456,7 +470,6 @@ const AURORA_POOLS: StakingTri[] = [
     doubleRewardToken: dummyToken
   }
 ]
-
 
 const NULL_POOLS: StakingTri[] = [
   {

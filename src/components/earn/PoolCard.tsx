@@ -108,7 +108,7 @@ export default function PoolCard({
       : token0
 
   // get the color of the token
-  const backgroundColor = useColorWithDefault('#2172E5', token);
+  const backgroundColor = useColorWithDefault('#2172E5', token)
 
   return (
     <Wrapper showBackground={isStaking} bgColor={backgroundColor}>

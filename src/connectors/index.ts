@@ -32,7 +32,6 @@ export const walletlink = new WalletLinkConnector({
   appLogoUrl: 'https://raw.githubusercontent.com/trisolaris-labs/interface/master/public/favicon.png'
 })
 
-
 export const walletconnect = new WalletConnectConnector({
   rpc: {
     1313161554: NETWORK_URL

@@ -103,13 +103,7 @@ export const XTRI: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'xTRI', 'TriBar Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'xTRI', 'TriBar Token'),
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'xTRI', 'TriBar Token'),
-  [ChainId.AURORA]: new Token(
-    ChainId.AURORA,
-    '0x802119e4e253D5C19aA06A5d567C5a41596D6803',
-    18,
-    'xTRI',
-    'TriBar',
-  ),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x802119e4e253D5C19aA06A5d567C5a41596D6803', 18, 'xTRI', 'TriBar')
 }
 
 export const AURORA: { [chainId in ChainId]: Token } = {
@@ -123,13 +117,7 @@ export const UST: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'UST', 'Wrapped UST'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'UST', 'Wrapped UST'),
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'UST', 'Wrapped UST'),
-  [ChainId.AURORA]: new Token(
-    ChainId.AURORA,
-    '0x5ce9F0B6AFb36135b5ddBF11705cEB65E634A9dC',
-    18,
-    'atUST',
-    'Wrapped UST',
-  ),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x5ce9F0B6AFb36135b5ddBF11705cEB65E634A9dC', 18, 'atUST', 'Wrapped UST')
 }
 
 export const LUNA: { [chainId in ChainId]: Token } = {
@@ -141,8 +129,8 @@ export const LUNA: { [chainId in ChainId]: Token } = {
     '0xC4bdd27c33ec7daa6fcfd8532ddB524Bf4038096',
     18,
     'atLUNA',
-    'Wrapped LUNA',
-  ),
+    'Wrapped LUNA'
+  )
 }
 
 export const USDC: { [chainId in ChainId]: Token } = {
@@ -211,7 +199,6 @@ export const BNB: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x2bF9b864cdc97b08B6D79ad4663e71B8aB65c45c', 18, 'BNB', 'Binance')
 }
 
-
 export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: ZERO_ADDRESS,
   [ChainId.AVALANCHE]: '0x0C58C2041da4CfCcF5818Bbe3b66DBC23B3902d9',
@@ -221,15 +208,9 @@ export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
 
 // This is actually WETH
 function createProperlyNamedWETH() {
-  const {address, decimals, name} = _WETH[ChainId.AURORA];
-  
-  return new Token(
-    ChainId.AURORA,
-    address,
-    decimals,
-    'WETH',
-    name,
-  );
+  const { address, decimals, name } = _WETH[ChainId.AURORA]
+
+  return new Token(ChainId.AURORA, address, decimals, 'WETH', name)
 }
 
 const COMMON_BASES: ChainTokenList = {

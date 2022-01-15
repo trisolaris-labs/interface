@@ -110,6 +110,7 @@
     "eject": "react-scripts eject",
     "serve": "serve build -l 3000",
     "integration-test": "start-server-and-test 'serve build -l 3000' http://localhost:3000 'cypress run'",
+    "format": "prettier --write \"src/**/*.+(js|jsx|ts|tsx|json|css|md)\"",
     "prepare": "husky install"
   },
   "eslintConfig": {

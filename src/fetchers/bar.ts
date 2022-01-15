@@ -1,22 +1,19 @@
-import useSWR from 'swr';
+import useSWR from 'swr'
 
 async function fetcher() {
-    const response = await fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/xtri.json')
+  const response = await fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/xtri.json')
 
-    return response.json();
+  return response.json()
 }
 
 async function getTriBarAPR() {
-    const { apr } = await fetcher() ?? {};
+  const { apr } = (await fetcher()) ?? {}
 
-    return apr;
+  return apr
 }
 
 export function useFetchTriBarAPR() {
-    const { data } = useSWR(
-        ['useTriBarAPR'],
-        getTriBarAPR,
-    );
+  const { data } = useSWR(['useTriBarAPR'], getTriBarAPR)
 
-    return data;
+  return data
 }

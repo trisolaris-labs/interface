@@ -83,18 +83,21 @@ export function FindPoolTabs() {
 
 export function AddRemoveTabs({ adding, creating }: { adding: boolean; creating: boolean }) {
   const { t } = useTranslation()
-  const history = useHistory();
+  const history = useHistory()
   return (
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
-        <HistoryLink to="#" onClick={(e) => {
-          e.preventDefault();
-          if (history.length > 0) {
-            history.goBack();
-          } else {
-            history.push('/pool');
-          }
-        }}>
+        <HistoryLink
+          to="#"
+          onClick={e => {
+            e.preventDefault()
+            if (history.length > 0) {
+              history.goBack()
+            } else {
+              history.push('/pool')
+            }
+          }}
+        >
           <StyledArrowLeft />
         </HistoryLink>
         <ActiveText>
@@ -105,11 +108,7 @@ export function AddRemoveTabs({ adding, creating }: { adding: boolean; creating:
             : t('navigationTabs.removeLiquidity')}
         </ActiveText>
         <QuestionHelper
-          text={
-            adding
-              ? t('navigationTabs.whenYouAddLiquidityInfo')
-              : t('navigationTabs.removingPoolTokensInfo')
-          }
+          text={adding ? t('navigationTabs.whenYouAddLiquidityInfo') : t('navigationTabs.removingPoolTokensInfo')}
         />
       </RowBetween>
     </Tabs>

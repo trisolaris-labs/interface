@@ -19,7 +19,7 @@ import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
 import { useTranslation } from 'react-i18next'
-import { ChainId} from '@trisolaris/sdk'
+import { ChainId } from '@trisolaris/sdk'
 
 const WALLET_TUTORIAL = 'https://metamask.io/faqs'
 
@@ -206,7 +206,6 @@ export default function WalletModal({
       const option = SUPPORTED_WALLETS[key]
       // check for mobile options
       if (isMobile) {
-
         if (!window.web3 && !window.ethereum && option.mobile) {
           return (
             <Option
@@ -312,9 +311,7 @@ export default function WalletModal({
             {error instanceof UnsupportedChainIdError ? (
               <>
                 <h5>{t('Please connect to')}</h5>
-                {isMetamask && (
-                  <ButtonLight onClick={addNetwork}>{t('walletModal.switchNetwork')}</ButtonLight>
-                )}
+                {isMetamask && <ButtonLight onClick={addNetwork}>{t('walletModal.switchNetwork')}</ButtonLight>}
               </>
             ) : (
               t('walletModal.errorConnectingRefresh')

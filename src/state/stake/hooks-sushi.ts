@@ -15,17 +15,16 @@ import MASTERCHEF_V2_ABI from '../../constants/abis/masterchefv2.json'
 import COMPLEX_REWARDER_ABI from '../../constants/abis/complex-rewarder.json'
 import { ChefVersions } from './stake-constants'
 
-
 export type AddressMap = { [chainId: number]: string }
 
 export const MASTERCHEF_ADDRESS_V1: AddressMap = {
   [ChainId.POLYGON]: '0x43A1dD21a5237C6F5eEC94747C28aa3f5C8fa1c7',
-  [ChainId.AURORA]: '0x1f1Ed214bef5E83D8f5d0eB5D7011EB965D0D79B',
+  [ChainId.AURORA]: '0x1f1Ed214bef5E83D8f5d0eB5D7011EB965D0D79B'
 }
 
 export const MASTERCHEF_ADDRESS_V2: AddressMap = {
   [ChainId.POLYGON]: '0x43A1dD21a5237C6F5eEC94747C28aa3f5C8fa1c7',
-  [ChainId.AURORA]: '0x3838956710bcc9D122Dd23863a0549ca8D5675D6',
+  [ChainId.AURORA]: '0x3838956710bcc9D122Dd23863a0549ca8D5675D6'
 }
 
 export enum Chef {
@@ -81,23 +80,25 @@ export function useMasterChefV2Contract(withSignerIfPossible?: boolean): Contrac
   return useContract(chainId && MASTERCHEF_ADDRESS_V2[chainId], MASTERCHEF_V2_ABI, withSignerIfPossible)
 }
 
-export function useMasterChefV2ContractForVersion(chefVersion: ChefVersions, withSignerIfPossible?: boolean): Contract | null {
+export function useMasterChefV2ContractForVersion(
+  chefVersion: ChefVersions,
+  withSignerIfPossible?: boolean
+): Contract | null {
   const { chainId } = useActiveWeb3React()
 
-  const abi = chefVersion === ChefVersions.V1
-    ? MASTERCHEF_ABI
-    : MASTERCHEF_V2_ABI;
+  const abi = chefVersion === ChefVersions.V1 ? MASTERCHEF_ABI : MASTERCHEF_V2_ABI
 
   return useContract(
-    chainId && (chefVersion === ChefVersions.V1
-      ? MASTERCHEF_ADDRESS_V1[chainId]
-      : MASTERCHEF_ADDRESS_V2[chainId]),
+    chainId && (chefVersion === ChefVersions.V1 ? MASTERCHEF_ADDRESS_V1[chainId] : MASTERCHEF_ADDRESS_V2[chainId]),
     abi,
-    withSignerIfPossible,
-  );
+    withSignerIfPossible
+  )
 }
 
-export function useComplexRewarderContract(address: string | undefined, withSignerIfPossible?: boolean): Contract | null {
+export function useComplexRewarderContract(
+  address: string | undefined,
+  withSignerIfPossible?: boolean
+): Contract | null {
   return useContract(address, COMPLEX_REWARDER_ABI, withSignerIfPossible)
 }
 
@@ -162,5 +163,3 @@ export function useInfiniteScroll(items: any[]): [number, Dispatch<number>] {
   useEffect(() => setItemsDisplayed(10), [items.length])
   return [itemsDisplayed, setItemsDisplayed]
 }
-
-

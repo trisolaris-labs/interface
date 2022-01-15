@@ -1,4 +1,14 @@
-import { Currency, CurrencyAmount, CETH, InsufficientInputAmountError, JSBI, Pair, Percent, Price, TokenAmount } from '@trisolaris/sdk'
+import {
+  Currency,
+  CurrencyAmount,
+  CETH,
+  InsufficientInputAmountError,
+  JSBI,
+  Pair,
+  Percent,
+  Price,
+  TokenAmount
+} from '@trisolaris/sdk'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
@@ -124,13 +134,11 @@ export function useDerivedMintInfo(
     if (pair && totalSupply && tokenAmountA && tokenAmountB) {
       try {
         return pair.getLiquidityMinted(totalSupply, tokenAmountA, tokenAmountB)
-      }
-      catch (err) {
+      } catch (err) {
         if (err instanceof InsufficientInputAmountError) {
           insufficientInput = true
           return undefined
-        }
-        else {
+        } else {
           throw err
         }
       }
