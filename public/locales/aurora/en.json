@@ -321,7 +321,8 @@
     "deposit": "Deposit",
     "depositPglTokens": "Deposit",
     "pglTokenAvailable": "TLP tokens available",
-    "filterUserPools": "Show only my pools"
+    "filterUserPools": "Show only my pools",
+    "farmsSearchPlaceholder": "Search farms by token or address"
   },
   "pool": {
     "liquidityProviderRewards": "Liquidity provider rewards",
