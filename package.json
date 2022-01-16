@@ -104,6 +104,7 @@
     "clean": "rm -rf node_modules && yarn install",
     "predeploy": "yarn clean && yarn build",
     "deploy": "gh-pages -d build",
+    "deploy-staging": "gcloud app deploy --project=trisolaris-ad-hoc",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "serve": "serve build -l 3000",
