@@ -7,6 +7,7 @@ import IUniswapV2Router02_ABI from '../constants/abis/polygon/IUniswapV2Router02
 import { ETHERSCAN_PREFIXES } from '../constants/index'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, CETH, ROUTER_ADDRESS } from '@trisolaris/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
+import { getNetworkLibrary } from '../connectors'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -77,7 +78,7 @@ export function getSigner(library: Web3Provider, account: string): JsonRpcSigner
 
 // account is optional
 export function getProviderOrSigner(library: Web3Provider, account?: string): Web3Provider | JsonRpcSigner {
-  return account ? getSigner(library, account) : library
+  return account ? getSigner(library, account) : getNetworkLibrary()
 }
 
 // account is optional
