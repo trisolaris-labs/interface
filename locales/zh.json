@@ -319,7 +319,9 @@
     "automagically": "当您退出时，合约会自动为您申领 PNG!",
     "deposit": "存入",
     "depositPglTokens": "存入 PGL 代币",
-    "pglTokenAvailable": "可用的 PGL 代币"
+    "pglTokenAvailable": "可用的 PGL 代币",
+    "filterUserPools": "仅显示我的泳池",
+    "farmsSearchPlaceholder": "按代号或地址搜索农场"
   },
   "pool": {
     "liquidityProviderRewards": "流动性提供者奖励",
