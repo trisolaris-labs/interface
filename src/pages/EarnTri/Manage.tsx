@@ -29,7 +29,7 @@ import { DarkGreyCard } from '../../components/Card'
 import { addCommasToNumber } from '../../utils'
 import CountUp from '../../components/CountUp'
 import useTLP from '../../hooks/useTLP'
-import getPairRenderOrder from '../../utils/getPairRenderOrder'
+import { getPairRenderOrder } from '../../utils/pools'
 
 const PositionInfo = styled(AutoColumn)<{ dim: any }>`
   position: relative;

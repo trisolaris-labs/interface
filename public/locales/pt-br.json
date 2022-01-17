@@ -319,7 +319,9 @@
         "automagically": "Quando você retirar, o contrato automagicamente irá resgatar PNG em seu nome!",
         "deposit": "Deposite",
         "depositPglTokens": "Deposite Tokens PGL",
-        "pglTokenAvailable": "Tokens PGL disponíveis"
+        "pglTokenAvailable": "Tokens PGL disponíveis",
+        "filterUserPools": "Mostrar somente minhas piscinas",
+        "farmsSearchPlaceholder": "Busca de fazendas por tokens ou endereço"
     },
     "pool": {
         "liquidityProviderRewards": "Recompensas dos provedores de liquidez",

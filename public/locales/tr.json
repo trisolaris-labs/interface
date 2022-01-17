@@ -319,7 +319,9 @@
     "automagically": "Bir çekim işlemi yaptığınızda sözleşme otomatik olarak PNG'lerinizi sizin adınıza talep edecektir!",
     "deposit": "Yatır",
     "depositPglTokens": "PGL Tokenı Yatır",
-    "pglTokenAvailable": "Kullanılabilir PNG Tokenı"
+    "pglTokenAvailable": "Kullanılabilir PNG Tokenı",
+    "filterUserPools": "Yalnızca havuzlarımı göster",
+    "farmsSearchPlaceholder": "Çiftlikleri jeton veya adrese göre arayın"
   },
   "pool": {
     "liquidityProviderRewards": "Likidite sağlayıcılarına verilen ödüller",

@@ -102,7 +102,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           )
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              summary: t('earn.depositLiquidity')
+              summary: t('earn.depositLiquidity'),
             })
             setHash(response.hash)
           })
@@ -142,50 +142,50 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
       { name: 'name', type: 'string' },
       { name: 'version', type: 'string' },
       { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' }
+      { name: 'verifyingContract', type: 'address' },
     ]
     const domain = {
       name: 'Pangolin Liquidity',
       version: '1',
       chainId: chainId,
-      verifyingContract: pairContract.address
+      verifyingContract: pairContract.address,
     }
     const Permit = [
       { name: 'owner', type: 'address' },
       { name: 'spender', type: 'address' },
       { name: 'value', type: 'uint256' },
       { name: 'nonce', type: 'uint256' },
-      { name: 'deadline', type: 'uint256' }
+      { name: 'deadline', type: 'uint256' },
     ]
     const message = {
       owner: account,
       spender: stakingInfo.stakingRewardAddress,
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
-      deadline: deadline.toNumber()
+      deadline: deadline.toNumber(),
     }
     const data = JSON.stringify({
       types: {
         EIP712Domain,
-        Permit
+        Permit,
       },
       domain,
       primaryType: 'Permit',
-      message
+      message,
     })
 
     library
       .send('eth_signTypedData_v4', [account, data])
       .then(splitSignature)
-      .then(signature => {
+      .then((signature) => {
         setSignatureData({
           v: signature.v,
           r: signature.r,
           s: signature.s,
-          deadline: deadline.toNumber()
+          deadline: deadline.toNumber(),
         })
       })
-      .catch(error => {
+      .catch((error) => {
         // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
         if (error?.code !== 4001) {
           approveCallback()
@@ -249,7 +249,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
         <LoadingView onDismiss={wrappedOnDismiss}>
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>{t('earn.depositingLiquidity')}</TYPE.largeHeader>
-            <TYPE.body fontSize={20}>{parsedAmount?.toSignificant(4)} PGL</TYPE.body>
+            <TYPE.body fontSize={20}>{parsedAmount?.toSignificant(4)} TLP</TYPE.body>
           </AutoColumn>
         </LoadingView>
       )}
@@ -258,7 +258,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>{t('earn.transactionSubmitted')}</TYPE.largeHeader>
             <TYPE.body fontSize={20}>
-              {t('earn.deposited')} {parsedAmount?.toSignificant(4)} PGL
+              {t('earn.deposited')} {parsedAmount?.toSignificant(4)} TLP
             </TYPE.body>
           </AutoColumn>
         </SubmittedView>
