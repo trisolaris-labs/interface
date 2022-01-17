@@ -319,7 +319,9 @@
     "automagically": "Lorsque vous vous retirez, le contrat réclame automatiquement le PNG en votre nom !",
     "deposit": "Dépôt",
     "depositPglTokens": "Déposer des jetons PGL",
-    "pglTokenAvailable": "Jetons PGL disponibles"
+    "pglTokenAvailable": "Jetons PGL disponibles",
+    "filterUserPools": "Afficher uniquement mes piscines",
+    "farmsSearchPlaceholder": "Rechercher des fermes par jeton ou par adresse"
   },
   "pool": {
     "liquidityProviderRewards": "Rémunération du fournisseur de liquidités",

@@ -15,18 +15,18 @@ import { useHistory } from 'react-router-dom'
 import { addCommasToNumber } from '../../utils'
 import { lighten } from 'polished'
 import { TokenPairBackgroundColor } from './styled'
-import getPairRenderOrder from '../../utils/getPairRenderOrder'
+import { getPairRenderOrder, isTokenAmountPositive } from '../../utils/pools'
 
 const Wrapper = styled(Card)<{ bgColor1: string | null; bgColor2?: string | null; isDoubleRewards: boolean }>`
   border: ${({ isDoubleRewards, theme }) =>
-    isDoubleRewards ? `1px solid ${theme.primary1}` : `1px solid ${theme.bg3};`}
+    isDoubleRewards ? `1px solid ${theme.primary1}` : `1px solid ${theme.bg3};`};
   border-radius: 10px;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 12px;
   box-shadow: ${({ isDoubleRewards, theme }) =>
-    isDoubleRewards ? `0px 0px 8px 5px ${theme.primary1}` : `0 2px 8px 0 ${theme.bg3}`}
+    isDoubleRewards ? `0px 0px 8px 5px ${theme.primary1}` : `0 2px 8px 0 ${theme.bg3}`};
   position: relative;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -65,10 +65,10 @@ type Props = {
 }
 
 const Button = styled(ButtonPrimary)<{ isStaking: boolean }>`
-    background: ${({ isStaking, theme }) => (isStaking ? theme.black : theme.primary1)}
-    padding: 8px;
-    border-radius: 10px;
-    max-width: 80px;
+  background: ${({ isStaking, theme }) => (isStaking ? theme.black : theme.primary1)};
+  padding: 8px;
+  border-radius: 10px;
+  max-width: 80px;
   ${({ isStaking, theme }) =>
     isStaking &&
     `
@@ -101,7 +101,8 @@ export default function PoolCardTRI({
   const { currency0, currency1, token0, token1 } = getPairRenderOrder(_token0, _token1)
 
   const { t } = useTranslation()
-  const isStaking = Boolean(stakedAmount?.greaterThan('0') ?? false)
+  const isStaking = isTokenAmountPositive(stakedAmount)
+
   const history = useHistory()
   const isDualRewards = chefVersion == 1
 

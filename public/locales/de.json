@@ -319,7 +319,9 @@
     "automagically": "Wenn du abbuchst, wird der Smart Contract automagisch PNG für dich beanspruchen!",
     "deposit": "Einzahlen",
     "depositPglTokens": "Zahle PGL-Token ein",
-    "pglTokenAvailable": "PGL-Token verfügbar"
+    "pglTokenAvailable": "PGL-Token verfügbar",
+    "filterUserPools": "Nur meine Pools anzeigen",
+    "farmsSearchPlaceholder": "Suche nach pools nach Token oder Adresse"
   },
   "pool": {
     "liquidityProviderRewards": "Liquiditätsprovider-Vergütungen",

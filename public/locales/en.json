@@ -321,7 +321,9 @@
     "automagically": "When you withdraw, the contract will automagically claim PNG on your behalf!",
     "deposit": "Deposit",
     "depositPglTokens": "Deposit TLP Tokens",
-    "pglTokenAvailable": "TLP tokens available"
+    "pglTokenAvailable": "TLP tokens available",
+    "filterUserPools": "Show only my pools",
+    "farmsSearchPlaceholder": "Search farms by token or address"
   },
   "pool": {
     "liquidityProviderRewards": "Liquidity provider rewards",
