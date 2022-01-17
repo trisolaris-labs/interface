@@ -115,7 +115,7 @@
     "acceptUpdate": "Accept update",
     "dismiss": "Dismiss"
   },
-  "positionCard":{
+  "positionCard": {
     "add": "Add",
     "remove": "Remove",
     "poolShare": "Your pool share:",
@@ -151,8 +151,7 @@
     "select": "Select",
     "manageTokenLists": "Manage Token Lists"
   },
-  "settings":
-  {
+  "settings": {
     "areYouSure": "Are you sure?",
     "expertInfo": "Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result in bad rates and lost funds.",
     "expertWarningCAPS": "ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.",
@@ -299,7 +298,7 @@
     "claim": "Claim "
   },
   "earnPage": {
-    "liquidityMining": "TriSolaris liquidity mining",
+    "liquidityMining": "Trisolaris liquidity mining",
     "depositLiquidity": "Deposit your Liquidity Provider tokens to receive TRI",
     "readMoreAboutPng": "Read more about TRI",
     "importantUpdate": "IMPORTANT UPDATE",
@@ -312,8 +311,8 @@
     "liquidityMining": "Liquidity Mining",
     "totalStaked": "Total Staked",
     "poolRate": "Pool Rate",
-    "step1": "Step 1. Get Pangolin Liquidity tokens (PGL)",
-    "pglTokenRequired": "PGL tokens are required. Once you've added liquidity to the {{ poolHandle }} pool you can stake your liquidity tokens on this page.",
+    "step1": "Step 1. Get Trisolaris Liquidity tokens (TLP)",
+    "pglTokenRequired": "TLP tokens are required. Once you've added liquidity to the {{ poolHandle }} pool you can stake your liquidity tokens on this page.",
     "addPoolLiquidity": "Add {{ poolHandle }} liquidity",
     "liquidityDeposits": "Your liquidity deposits",
     "unclaimed": "Your unclaimed",
