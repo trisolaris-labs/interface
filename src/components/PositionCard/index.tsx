@@ -50,7 +50,7 @@ interface PositionCardProps {
 }
 
 const ManageButton = styled(ButtonEmpty)`
-  color: ${({theme}) => theme.white};
+  color: ${({ theme }) => theme.white};
 `
 
 export function MinimalPositionCard({ pair, showUnwrapped = false, border }: PositionCardProps) {
@@ -174,7 +174,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
     !!userPoolBalance && !!totalPoolTokens && JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
       ? new Percent(userPoolBalance.raw, totalPoolTokens.raw)
       : undefined
-  const { currency0, currency1, token0, token1 } = getPairRenderOrder(pair?.token0, pair?.token1);
+  const { currency0, currency1, token0, token1 } = getPairRenderOrder(pair?.token0, pair?.token1)
 
   const [token0Deposited, token1Deposited] =
     !!pair &&
@@ -188,9 +188,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
         ]
       : [undefined, undefined]
 
-  
-
-  const backgroundColor1 = useColorWithDefault('#2172E5', token0);
+  const backgroundColor1 = useColorWithDefault('#2172E5', token0)
   const backgroundColor2 = useColorWithDefault('#2172E5', token1)
 
   return (
