@@ -5,11 +5,13 @@ import { updateBlockNumber } from './actions'
 import { useDispatch } from 'react-redux'
 import useTimeout from '../../hooks/useTimeout'
 import useDebounce from '../../hooks/useDebounce'
+import { getNetworkLibrary } from '../../connectors'
 
 const MAX_WAIT_BEFORE_MANUAL_DISPATCH = 2000
 
 export default function Updater(): null {
-  const { library, chainId } = useActiveWeb3React()
+  const networkLibrary = getNetworkLibrary()
+  const { chainId } = useActiveWeb3React()
   const dispatch = useDispatch()
 
   const windowVisible = useIsWindowVisible()
@@ -37,31 +39,31 @@ export default function Updater(): null {
   // and we still don't have a blocknumber after `MAX_WAIT_BEFORE_MANUAL_DISPATCH` seconds
   // Force an update!
   const setDelayTimeout = useCallback(() => {
-    if (!debouncedState.blockNumber && windowVisible && library && chainId && state.blockNumber) {
+    if (!debouncedState.blockNumber && windowVisible && networkLibrary && chainId && state.blockNumber) {
       dispatch(updateBlockNumber({ chainId, blockNumber: state.blockNumber }))
     }
-  }, [library, chainId, debouncedState.blockNumber, windowVisible, state.blockNumber])
+  }, [debouncedState.blockNumber, windowVisible, networkLibrary, chainId, state.blockNumber, dispatch])
   useTimeout(setDelayTimeout, MAX_WAIT_BEFORE_MANUAL_DISPATCH)
 
   // attach/detach listeners
   useEffect(() => {
-    if (!library || !chainId || !windowVisible) {
+    if (!networkLibrary || !chainId || !windowVisible) {
       return undefined
     }
 
     setState({ chainId, blockNumber: null })
 
-    library
+    networkLibrary
       .getBlockNumber()
       .then(blockNumberCallback)
       .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
 
-    library.on('block', blockNumberCallback)
+    networkLibrary.on('block', blockNumberCallback)
 
     return () => {
-      library.removeListener('block', blockNumberCallback)
+      networkLibrary.removeListener('block', blockNumberCallback)
     }
-  }, [dispatch, chainId, library, blockNumberCallback, windowVisible])
+  }, [dispatch, chainId, networkLibrary, blockNumberCallback, windowVisible])
 
   useEffect(() => {
     if (!debouncedState.chainId || !debouncedState.blockNumber || !windowVisible) return
