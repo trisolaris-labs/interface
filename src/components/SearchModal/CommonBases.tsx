@@ -55,10 +55,10 @@ export default function CommonBases({
         >
           <CurrencyLogo currency={CETH} style={{ marginRight: 8 }} />
           {chainId && BASE_CURRENCIES[chainId] ? (
-              <Text fontWeight={500} fontSize={16}>
+            <Text fontWeight={500} fontSize={16}>
               {BASE_CURRENCIES[chainId]}
             </Text>
-            ) : null}
+          ) : null}
         </BaseWrapper>
         {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {
           const selected = selectedCurrency instanceof Token && selectedCurrency.address === token.address

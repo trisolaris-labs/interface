@@ -35,7 +35,7 @@ export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColo
   }
 `
 
-export const CloseIcon = styled(X) <{ onClick: () => void }>`
+export const CloseIcon = styled(X)<{ onClick: () => void }>`
   cursor: pointer;
 `
 
@@ -175,7 +175,7 @@ export function BackArrow({ to }: { to: string }) {
   )
 }
 
-export const CustomLightSpinner = styled(Spinner) <{ size: string }>`
+export const CustomLightSpinner = styled(Spinner)<{ size: string }>`
   height: ${({ size }) => size};
   width: ${({ size }) => size};
 `

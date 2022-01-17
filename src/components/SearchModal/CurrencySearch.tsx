@@ -35,11 +35,11 @@ interface CurrencySearchProps {
 
 const StyledTokenList = styled(Column)`
   flex: 1;
-  background: ${({ theme }) => theme.bg3}
+  background: ${({ theme }) => theme.bg3};
 `
 
 const StyledSearchInput = styled(SearchInput)`
-  background: ${({ theme }) => theme.bg3}
+  background: ${({ theme }) => theme.bg3};
 `
 
 export function CurrencySearch({

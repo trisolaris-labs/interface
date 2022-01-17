@@ -67,45 +67,45 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
     error = error ?? t('earn.enterAmount')
   }
 
-	return (
-		<Modal isOpen={isOpen} onDismiss={wrappedOnDismiss} maxHeight={90}>
-			{!attempting && !hash && (
-				<ContentWrapper gap="lg">
-					<RowBetween>
-						<TYPE.mediumHeader>{t('earn.claim')}</TYPE.mediumHeader>
-						<CloseIcon onClick={wrappedOnDismiss} />
-					</RowBetween>
-					{stakingInfo?.earnedAmount && (
-						<AutoColumn justify="center" gap="md">
-							<TYPE.body fontWeight={600} fontSize={36}>
-								{stakingInfo?.earnedAmount?.toSignificant(6)}
-							</TYPE.body>
-							<TYPE.body>{t('earn.unclaimedPng')}</TYPE.body>
-						</AutoColumn>
-					)}
-					<TYPE.subHeader style={{ textAlign: 'center' }}>
-						{t('earn.liquidityRemainsPool')}
-					</TYPE.subHeader>
-					<ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onClaimReward}>
-						{error ?? t('earn.unclaimedPng')}
-					</ButtonError>
-				</ContentWrapper>
-			)}
-			{attempting && !hash && (
-				<LoadingView onDismiss={wrappedOnDismiss}>
-					<AutoColumn gap="12px" justify={'center'}>
-						<TYPE.body fontSize={20}>{t('earn.claimingPng', {"amount": stakingInfo?.earnedAmount?.toSignificant(6)})}</TYPE.body>
-					</AutoColumn>
-				</LoadingView>
-			)}
-			{hash && (
-				<SubmittedView onDismiss={wrappedOnDismiss} hash={hash}>
-					<AutoColumn gap="12px" justify={'center'}>
-						<TYPE.largeHeader>{t('earn.transactionSubmitted')}</TYPE.largeHeader>
-						<TYPE.body fontSize={20}>{t('earn.claimedPng')}</TYPE.body>
-					</AutoColumn>
-				</SubmittedView>
-			)}
-		</Modal>
-	)
+  return (
+    <Modal isOpen={isOpen} onDismiss={wrappedOnDismiss} maxHeight={90}>
+      {!attempting && !hash && (
+        <ContentWrapper gap="lg">
+          <RowBetween>
+            <TYPE.mediumHeader>{t('earn.claim')}</TYPE.mediumHeader>
+            <CloseIcon onClick={wrappedOnDismiss} />
+          </RowBetween>
+          {stakingInfo?.earnedAmount && (
+            <AutoColumn justify="center" gap="md">
+              <TYPE.body fontWeight={600} fontSize={36}>
+                {stakingInfo?.earnedAmount?.toSignificant(6)}
+              </TYPE.body>
+              <TYPE.body>{t('earn.unclaimedPng')}</TYPE.body>
+            </AutoColumn>
+          )}
+          <TYPE.subHeader style={{ textAlign: 'center' }}>{t('earn.liquidityRemainsPool')}</TYPE.subHeader>
+          <ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onClaimReward}>
+            {error ?? t('earn.unclaimedPng')}
+          </ButtonError>
+        </ContentWrapper>
+      )}
+      {attempting && !hash && (
+        <LoadingView onDismiss={wrappedOnDismiss}>
+          <AutoColumn gap="12px" justify={'center'}>
+            <TYPE.body fontSize={20}>
+              {t('earn.claimingPng', { amount: stakingInfo?.earnedAmount?.toSignificant(6) })}
+            </TYPE.body>
+          </AutoColumn>
+        </LoadingView>
+      )}
+      {hash && (
+        <SubmittedView onDismiss={wrappedOnDismiss} hash={hash}>
+          <AutoColumn gap="12px" justify={'center'}>
+            <TYPE.largeHeader>{t('earn.transactionSubmitted')}</TYPE.largeHeader>
+            <TYPE.body fontSize={20}>{t('earn.claimedPng')}</TYPE.body>
+          </AutoColumn>
+        </SubmittedView>
+      )}
+    </Modal>
+  )
 }

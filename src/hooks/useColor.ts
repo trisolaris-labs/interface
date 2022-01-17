@@ -4,11 +4,11 @@ import Vibrant from 'node-vibrant'
 import { hex } from 'wcag-contrast'
 import { Token } from '@trisolaris/sdk'
 
-const COLOR_MAP = new Map();
+const COLOR_MAP = new Map()
 
 async function getColorFromToken(token: Token): Promise<string | null> {
   if (COLOR_MAP.has(token.address)) {
-    return COLOR_MAP.get(token.address);
+    return COLOR_MAP.get(token.address)
   }
 
   const path = `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${token.address}/logo.png`
@@ -29,16 +29,16 @@ async function getColorFromToken(token: Token): Promise<string | null> {
     })
     .then(color => {
       if (color != null) {
-        COLOR_MAP.set(token.address, color);
+        COLOR_MAP.set(token.address, color)
       }
 
-      return color;
+      return color
     })
     .catch(() => null)
 }
 
 export function useColor(token?: Token) {
-  const [color, setColor] = useState<string | null>(null);
+  const [color, setColor] = useState<string | null>(null)
 
   useLayoutEffect(() => {
     let stale = false
@@ -53,28 +53,28 @@ export function useColor(token?: Token) {
 
     return () => {
       stale = true
-      setColor(null);
+      setColor(null)
     }
   }, [token])
 
-  return color;
+  return color
 }
 
 export function useColorWithDefault(defaultColor: string, token?: Token) {
-  return useColor(token) ?? defaultColor;
+  return useColor(token) ?? defaultColor
 }
 
 // These tokens are mostly grey; Override color to blue
-const GREY_ICON_TOKENS = ['ETH', 'WETH', 'WBTC', 'WNEAR'];
-const FALLBACK_COLOR = '#2172E5';
+const GREY_ICON_TOKENS = ['ETH', 'WETH', 'WBTC', 'WNEAR']
+const FALLBACK_COLOR = '#2172E5'
 // Colors are dynamically chosen based on token logos
 export function useColorForToken(token?: Token, fallbackPredicate?: () => boolean) {
-  const color = useColor(token);
-  const predicateResult = fallbackPredicate?.() ?? true;
+  const color = useColor(token)
+  const predicateResult = fallbackPredicate?.() ?? true
 
   if (predicateResult && GREY_ICON_TOKENS.includes(token?.symbol ?? '')) {
-    return FALLBACK_COLOR;
+    return FALLBACK_COLOR
   }
 
-  return color;
+  return color
 }

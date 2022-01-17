@@ -94,23 +94,23 @@ export function useAirdropContract(): Contract | null {
 }
 
 export function useUSDCWNEARPoolContract(): Contract | null {
-  const contractAddress = findPoolContract(WNEAR[ChainId.AURORA], USDC[ChainId.AURORA])?.lpAddress;
+  const contractAddress = findPoolContract(WNEAR[ChainId.AURORA], USDC[ChainId.AURORA])?.lpAddress
   return useContract(contractAddress, IUniswapV2Pair_ABI)
 }
 
 export function useTRIWNEARPoolContract(): Contract | null {
-  const contractAddress = findPoolContract(WNEAR[ChainId.AURORA], TRI[ChainId.AURORA])?.lpAddress;
+  const contractAddress = findPoolContract(WNEAR[ChainId.AURORA], TRI[ChainId.AURORA])?.lpAddress
   return useContract(contractAddress, IUniswapV2Pair_ABI)
 }
 
 function findPoolContract(tokenA: Token, tokenB: Token) {
-  const pools = STAKING[ChainId.AURORA];
+  const pools = STAKING[ChainId.AURORA]
 
   return pools.find(pool => {
-    const [poolTokenA, poolTokenB] = pool.tokens;
-    const hasTokenA = [poolTokenA.address, poolTokenB.address].includes(tokenA.address);
-    const hasTokenB = [poolTokenA.address, poolTokenB.address].includes(tokenB.address);
+    const [poolTokenA, poolTokenB] = pool.tokens
+    const hasTokenA = [poolTokenA.address, poolTokenB.address].includes(tokenA.address)
+    const hasTokenB = [poolTokenA.address, poolTokenB.address].includes(tokenB.address)
 
-    return (hasTokenA && hasTokenB);
-  });
+    return hasTokenA && hasTokenB
+  })
 }

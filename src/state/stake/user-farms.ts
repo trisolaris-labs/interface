@@ -12,32 +12,31 @@ import { useBlockNumber } from '../application/hooks'
 // gets the staking info from the network for the active chain id
 export function useSingleFarm(version: number): StakingTri {
   const { chainId, account } = useActiveWeb3React()
-  const latestBlock = useBlockNumber();
-  const activeFarms = STAKING[chainId ?? ChainId.AURORA];
-  const { chefVersion, poolId, rewarderAddress } = activeFarms[version];
+  const latestBlock = useBlockNumber()
+  const activeFarms = STAKING[chainId ?? ChainId.AURORA]
+  const { chefVersion, poolId, rewarderAddress } = activeFarms[version]
 
-  const stakingInfoData = useFetchStakingInfoData();
-  const complexRewarderContract = useComplexRewarderContract(rewarderAddress);
+  const stakingInfoData = useFetchStakingInfoData()
+  const complexRewarderContract = useComplexRewarderContract(rewarderAddress)
 
-  const v1args = [poolId.toString(), account?.toString()];
-  const v2args = [poolId.toString(), account?.toString(), '0'];
+  const v1args = [poolId.toString(), account?.toString()]
+  const v2args = [poolId.toString(), account?.toString(), '0']
 
   const contract = useMasterChefV2ContractForVersion(chefVersion)
 
   const pendingTri = useSingleCallResult(contract, 'pendingTri', v1args) //user related
-  const userInfo = useSingleCallResult(contract, 'userInfo', v1args)  //user related
+  const userInfo = useSingleCallResult(contract, 'userInfo', v1args) //user related
   const pendingComplexRewards = useSingleCallResult(
     chefVersion === ChefVersions.V2 ? complexRewarderContract : null,
     'pendingTokens',
-    v2args,
+    v2args
   )
   // get all the info from the staking rewards contracts
-  const tokens = activeFarms.find(({ ID }) => ID === version)?.tokens;
-  const [tokenA, tokenB] = tokens ?? [];
-  const [pairState, pair] = usePair(tokenA, tokenB);
+  const tokens = activeFarms.find(({ ID }) => ID === version)?.tokens
+  const [tokenA, tokenB] = tokens ?? []
+  const [pairState, pair] = usePair(tokenA, tokenB)
 
   const result = useMemo(() => {
-
     // Loading
     if (
       chainId == null ||
@@ -59,8 +58,8 @@ export function useSingleFarm(version: number): StakingTri {
       tokenA == null ||
       tokenB == null
     ) {
-      console.error('Failed to load staking rewards info');
-      return activeFarms[version];
+      console.error('Failed to load staking rewards info')
+      return activeFarms[version]
     }
 
     const userInfoPool = JSBI.BigInt(userInfo.result?.['amount'] ?? 0)
@@ -71,13 +70,7 @@ export function useSingleFarm(version: number): StakingTri {
     const earnedAmount = new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(earnedRewardPool))
     const earnedComplexAmount = new TokenAmount(AURORA[ChainId.AURORA], JSBI.BigInt(earnedComplexRewardPool))
 
-    const {
-      totalStakedInUSD,
-      totalRewardRate,
-      apr,
-      apr2,
-    } = stakingInfoData[version];
-
+    const { totalStakedInUSD, totalRewardRate, apr, apr2 } = stakingInfoData[version]
 
     return {
       ...activeFarms[version],
@@ -92,19 +85,9 @@ export function useSingleFarm(version: number): StakingTri {
       rewardRate: tokenAmount,
       apr: Math.round(apr),
       apr2: Math.round(apr2),
-      chefVersion,
+      chefVersion
     }
-  }, [
-    chainId,
-    userInfo,
-    pendingTri,
-    pendingComplexRewards,
-    pairState,
-    tokens,
-    tokenA,
-    tokenB,
-    latestBlock,
-  ]);
+  }, [chainId, userInfo, pendingTri, pendingComplexRewards, pairState, tokens, tokenA, tokenB, latestBlock])
 
-  return result;
+  return result
 }

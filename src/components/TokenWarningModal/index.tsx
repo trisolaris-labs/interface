@@ -76,7 +76,9 @@ function TokenWarningCard({ token }: TokenWarningCardProps) {
           </TYPE.main>
           {chainId && (
             <ExternalLink style={{ fontWeight: 400 }} href={getEtherscanLink(chainId, token.address, 'token')}>
-              <TYPE.blue title={token.address}>{shortenAddress(token.address)} ({t('tokenWarningModal.viewExplorer')})</TYPE.blue>
+              <TYPE.blue title={token.address}>
+                {shortenAddress(token.address)} ({t('tokenWarningModal.viewExplorer')})
+              </TYPE.blue>
             </ExternalLink>
           )}
         </AutoColumn>
@@ -107,15 +109,9 @@ export default function TokenWarningModal({
             <StyledWarningIcon />
             <TYPE.main color={'red2'}>{t('tokenWarningModal.tokenImported')}</TYPE.main>
           </AutoRow>
-          <TYPE.body color={'red2'}>
-            {t('tokenWarningModal.anyoneCanCreateWarning')}
-          </TYPE.body>
-          <TYPE.body color={'red2'}>
-            {t('tokenWarningModal.loadArbitraryWarning')}
-          </TYPE.body>
-          <TYPE.body color={'red2'}>
-            {t('tokenWarningModal.purchaseArbitraryWarning')}
-          </TYPE.body>
+          <TYPE.body color={'red2'}>{t('tokenWarningModal.anyoneCanCreateWarning')}</TYPE.body>
+          <TYPE.body color={'red2'}>{t('tokenWarningModal.loadArbitraryWarning')}</TYPE.body>
+          <TYPE.body color={'red2'}>{t('tokenWarningModal.purchaseArbitraryWarning')}</TYPE.body>
           {tokens.map(token => {
             return <TokenWarningCard key={token.address} token={token} />
           })}

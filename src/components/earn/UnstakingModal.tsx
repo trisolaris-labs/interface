@@ -92,9 +92,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               <TYPE.body>{t('earn.unclaimedPng')}</TYPE.body>
             </AutoColumn>
           )}
-          <TYPE.subHeader style={{ textAlign: 'center' }}>
-            {t('earn.whenYouWithdrawWarning')}
-          </TYPE.subHeader>
+          <TYPE.subHeader style={{ textAlign: 'center' }}>{t('earn.whenYouWithdrawWarning')}</TYPE.subHeader>
           <ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onWithdraw}>
             {error ?? t('earn.withdrawAndClaim')}
           </ButtonError>
@@ -103,8 +101,12 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
       {attempting && !hash && (
         <LoadingView onDismiss={wrappedOndismiss}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.body fontSize={20}>{t('earn.withdrawingPgl', {"amount": stakingInfo?.stakedAmount?.toSignificant(4)})}</TYPE.body>
-            <TYPE.body fontSize={20}>{t('earn.claimingPng', {"amount": stakingInfo?.earnedAmount?.toSignificant(4)})}</TYPE.body>
+            <TYPE.body fontSize={20}>
+              {t('earn.withdrawingPgl', { amount: stakingInfo?.stakedAmount?.toSignificant(4) })}
+            </TYPE.body>
+            <TYPE.body fontSize={20}>
+              {t('earn.claimingPng', { amount: stakingInfo?.earnedAmount?.toSignificant(4) })}
+            </TYPE.body>
           </AutoColumn>
         </LoadingView>
       )}

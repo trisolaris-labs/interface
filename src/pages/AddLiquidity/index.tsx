@@ -246,7 +246,10 @@ export default function AddLiquidity({
         </RowFlat>
         <Row>
           <Text fontSize="24px">
-            {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol + t('addLiquidity.poolTokens')}
+            {currencies[Field.CURRENCY_A]?.symbol +
+              '/' +
+              currencies[Field.CURRENCY_B]?.symbol +
+              t('addLiquidity.poolTokens')}
           </Text>
         </Row>
         <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
@@ -378,12 +381,12 @@ export default function AddLiquidity({
               showCommonBases
             />
             {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
-                <PriceAndPoolShare 
-                  currencies={currencies}
-                  noLiquidity={noLiquidity}
-                  poolTokenPercentage={poolTokenPercentage}
-                  price={price}
-                />
+              <PriceAndPoolShare
+                currencies={currencies}
+                noLiquidity={noLiquidity}
+                poolTokenPercentage={poolTokenPercentage}
+                price={price}
+              />
             )}
 
             {!account ? (

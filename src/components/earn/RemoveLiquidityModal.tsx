@@ -48,7 +48,12 @@ interface RemoveLiquidityModalProps {
   currencyIdB: string
 }
 
-export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _currencyIdA, currencyIdB: _currencyIdB }: RemoveLiquidityModalProps) {
+export default function RemoveLiquidityModal({
+  isOpen,
+  onDismiss,
+  currencyIdA: _currencyIdA,
+  currencyIdB: _currencyIdB
+}: RemoveLiquidityModalProps) {
   const { account, chainId, library } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
   const { t } = useTranslation()
@@ -62,7 +67,6 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
     currencyB,
     chainId
   ])
-
 
   // toggle wallet when disconnected
   const toggleWalletModal = useWalletModalToggle()
@@ -87,8 +91,8 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
     [Field.LIQUIDITY_PERCENT]: parsedAmounts[Field.LIQUIDITY_PERCENT].equalTo('0')
       ? '0'
       : parsedAmounts[Field.LIQUIDITY_PERCENT].lessThan(new Percent('1', '100'))
-        ? '<1'
-        : parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0),
+      ? '<1'
+      : parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0),
     [Field.LIQUIDITY]:
       independentField === Field.LIQUIDITY ? typedValue : parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? '',
     [Field.CURRENCY_A]:
@@ -110,7 +114,8 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
   )
 
   async function onAttemptToApprove() {
-    if (!pairContract || !pair || !library || !deadline || !chainId || !account) throw new Error(t('earn.missingDependencies'))
+    if (!pairContract || !pair || !library || !deadline || !chainId || !account)
+      throw new Error(t('earn.missingDependencies'))
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
     if (!liquidityAmount) throw new Error(t('earn.missingLiquidityAmount'))
 
@@ -378,7 +383,7 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
         <TYPE.italic fontSize={12} color={theme.text2} textAlign="left" padding={'12px 0 0 0'}>
           {/*TODO: Translate using i18n*/}
           {`Output is estimated. If the price changes by more than ${allowedSlippage /
-          100}% your transaction will revert.`}
+            100}% your transaction will revert.`}
         </TYPE.italic>
       </AutoColumn>
     )
@@ -427,7 +432,6 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
     )
   }
 
-
   // TODO: Translate using i18n
   const pendingText = `Removing ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
     currencyA?.symbol
@@ -443,8 +447,8 @@ export default function RemoveLiquidityModal({ isOpen, onDismiss, currencyIdA: _
   const oneCurrencyIsAVAX = currencyA === CETH || currencyB === CETH
   const oneCurrencyIsWAVAX = Boolean(
     chainId &&
-    ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||
-      (currencyB && currencyEquals(WETH[chainId], currencyB)))
+      ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||
+        (currencyB && currencyEquals(WETH[chainId], currencyB)))
   )
 
   const handleDismissConfirmation = useCallback(() => {

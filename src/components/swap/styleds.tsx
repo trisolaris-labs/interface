@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   position: relative;
 `
 
-export const ChevronWrapper = styled.div<{ clickable: boolean, height: number, width: number, borderRadius?: number }>`
+export const ChevronWrapper = styled.div<{ clickable: boolean; height: number; width: number; borderRadius?: number }>`
   padding: 2px;
   display: flex;
   align-items: center;

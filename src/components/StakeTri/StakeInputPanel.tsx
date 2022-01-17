@@ -25,8 +25,8 @@ const LabelRow = styled.div`
   line-height: 1rem;
   padding: 0.75rem 1rem 0 1rem;
   span:hover {
-  cursor: pointer;
-  color: ${({ theme }) => darken(0.2, theme.text2)};
+    cursor: pointer;
+    color: ${({ theme }) => darken(0.2, theme.text2)};
   }
 `
 
@@ -68,11 +68,11 @@ const StyledBalanceMax = styled.button`
   margin-right: 0.5rem;
   color: ${({ theme }) => theme.primaryText1};
   :hover {
-  border: 1px solid ${({ theme }) => theme.primary1};
+    border: 1px solid ${({ theme }) => theme.primary1};
   }
   :focus {
-  border: 1px solid ${({ theme }) => theme.primary1};
-  outline: none;
+    border: 1px solid ${({ theme }) => theme.primary1};
+    outline: none;
   }
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -96,7 +96,7 @@ export default function StakeInputPanel({
   showMaxButton,
   value,
   onMax,
-  onUserInput,
+  onUserInput
 }: StakeInputPanelProps) {
   const { t } = useTranslation()
 
@@ -118,7 +118,7 @@ export default function StakeInputPanel({
                 style={{ display: 'inline', cursor: 'pointer' }}
               >
                 {!!currency && selectedCurrencyBalance
-                  ? (t('currencyInputPanel.balance')) + selectedCurrencyBalance?.toSignificant(6)
+                  ? t('currencyInputPanel.balance') + selectedCurrencyBalance?.toSignificant(6)
                   : ' -'}
               </TYPE.body>
             ) : null}
@@ -132,22 +132,17 @@ export default function StakeInputPanel({
               onUserInput(val)
             }}
           />
-          {account && currency && showMaxButton
-            ? (
-              <StyledBalanceMax onClick={onMax}>
-                {t('currencyInputPanel.max')}
-              </StyledBalanceMax>
-            )
-            : null
-          }
+          {account && currency && showMaxButton ? (
+            <StyledBalanceMax onClick={onMax}>{t('currencyInputPanel.max')}</StyledBalanceMax>
+          ) : null}
           <div>
             <Aligner>
               <CurrencyLogo currency={currency!} size={'24px'} />
               <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
                 {(currency && currency.symbol && currency.symbol.length > 20
                   ? currency.symbol.slice(0, 4) +
-                  '...' +
-                  currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                    '...' +
+                    currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
                   : currency?.symbol) || t('currencyInputPanel.selectToken')}
               </StyledTokenName>
             </Aligner>

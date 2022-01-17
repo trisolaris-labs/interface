@@ -91,7 +91,12 @@ export function getContract(address: string, ABI: any, library: Web3Provider, ac
 
 // account is optional
 export function getRouterContract(chainId: ChainId, library: Web3Provider, account?: string): Contract {
-  return getContract(chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON], IUniswapV2Router02_ABI, library, account)
+  return getContract(
+    chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON],
+    IUniswapV2Router02_ABI,
+    library,
+    account
+  )
 }
 
 export function escapeRegExp(string: string): string {
@@ -104,5 +109,5 @@ export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currenc
 }
 
 export function addCommasToNumber(string: string): string {
-  return string.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return string.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }

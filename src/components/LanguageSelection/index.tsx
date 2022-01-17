@@ -1,10 +1,10 @@
-import React, {useRef} from 'react'
-import {StyledMenu, MenuFlyout, StyledMenuButton} from '../StyledMenu'
+import React, { useRef } from 'react'
+import { StyledMenu, MenuFlyout, StyledMenuButton } from '../StyledMenu'
 import styled from 'styled-components'
-import {useModalOpen, useToggleModal} from "../../state/application/hooks"
-import {ApplicationModal} from "../../state/application/actions"
-import i18n, {availableLanguages} from '../../i18n'
-import {useOnClickOutside} from "../../hooks/useOnClickOutside";
+import { useModalOpen, useToggleModal } from '../../state/application/hooks'
+import { ApplicationModal } from '../../state/application/actions'
+import i18n, { availableLanguages } from '../../i18n'
+import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 
 const NarrowMenuFlyout = styled(MenuFlyout)`
   min-width: 7.125rem;
@@ -42,23 +42,22 @@ export default function LanguageSelection() {
   return (
     <StyledMenu ref={node as any}>
       <StyledMenuButton onClick={toggle}>
-        <FlagIcon src={`/images/flags/${i18n.language}.svg`}/>
+        <FlagIcon src={`/images/flags/${i18n.language}.svg`} />
       </StyledMenuButton>
       {open && (
         <NarrowMenuFlyout>
           {availableLanguages.map((lang, i) => (
-              <ClickableMenuItem 
-                key={i} 
-                onClick={() => {
-                  i18n.changeLanguage(lang)
-                  toggle()
-                }}
-              >
-                <FlagIcon src={`/images/flags/${lang}.svg`}/> &nbsp;
-                {lang.toUpperCase()}
-              </ClickableMenuItem>
-            )
-          )}
+            <ClickableMenuItem
+              key={i}
+              onClick={() => {
+                i18n.changeLanguage(lang)
+                toggle()
+              }}
+            >
+              <FlagIcon src={`/images/flags/${lang}.svg`} /> &nbsp;
+              {lang.toUpperCase()}
+            </ClickableMenuItem>
+          ))}
         </NarrowMenuFlyout>
       )}
     </StyledMenu>

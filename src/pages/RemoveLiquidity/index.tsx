@@ -219,7 +219,7 @@ export default function RemoveLiquidity({
 
     const currencyBIsETH = currencyB === CETH
     const oneCurrencyIsETH = currencyA === CETH || currencyBIsETH
-    
+
     // TODO: Translate using i18n
     if (!tokenA || !tokenB) throw new Error('could not wrap')
 

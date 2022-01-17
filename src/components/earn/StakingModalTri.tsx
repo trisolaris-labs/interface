@@ -57,7 +57,6 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
     userLiquidityUnstaked
   )
 
-
   // state for pending and submitted txn views
   const addTransaction = useTransactionAdder()
   const [attempting, setAttempting] = useState<boolean>(false)
@@ -74,7 +73,11 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
     new TokenAmount(stakingInfo.tokens[1], '0'),
     chainId ? chainId : ChainId.POLYGON
   )
-  const lpToken = useTLP({lpAddress: stakingInfo.lpAddress, token0: stakingInfo.tokens[0], token1: stakingInfo.tokens[1]});
+  const lpToken = useTLP({
+    lpAddress: stakingInfo.lpAddress,
+    token0: stakingInfo.tokens[0],
+    token1: stakingInfo.tokens[1]
+  })
 
   // approval data for stake
   const deadline = useTransactionDeadline()
@@ -82,13 +85,12 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(parsedAmount, stakingInfo.stakingRewardAddress)
 
-
   const stakingContract = useMasterChefContract()
   const stakingContractv2 = useMasterChefV2Contract()
 
   async function onStake() {
     setAttempting(true)
-    if(stakingInfo.chefVersion == 0) {
+    if (stakingInfo.chefVersion == 0) {
       if (stakingContract && parsedAmount && deadline) {
         await stakingContract
           .deposit(stakingInfo.poolId, parseUnits(typedValue))
@@ -101,11 +103,11 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           .catch((error: any) => {
             setAttempting(false)
             console.log(error)
-          })} 
-       else {
+          })
+      } else {
         setAttempting(false)
         throw new Error(t('earn.attemptingToStakeError'))
-        }
+      }
     } else {
       if (stakingContractv2 && parsedAmount && deadline) {
         await stakingContractv2
@@ -119,11 +121,11 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           .catch((error: any) => {
             setAttempting(false)
             console.log(error)
-          })} 
-       else {
+          })
+      } else {
         setAttempting(false)
         throw new Error(t('earn.attemptingToStakeError'))
-        }
+      }
     }
   }
 

@@ -1,6 +1,17 @@
 import { Version } from '../../hooks/useToggledVersion'
 import { parseUnits } from '@ethersproject/units'
-import { Currency, CurrencyAmount, CETH, JSBI, Token, TokenAmount, Trade, FACTORY_ADDRESS, ChainId, ROUTER_ADDRESS } from '@trisolaris/sdk'
+import {
+  Currency,
+  CurrencyAmount,
+  CETH,
+  JSBI,
+  Token,
+  TokenAmount,
+  Trade,
+  FACTORY_ADDRESS,
+  ChainId,
+  ROUTER_ADDRESS
+} from '@trisolaris/sdk'
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'

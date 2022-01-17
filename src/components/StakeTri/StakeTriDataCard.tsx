@@ -7,13 +7,13 @@ import { CardSection } from '../earn/styled'
 import { DarkGreyCard } from '../Card'
 
 type Props = {
-    children: React.ReactNode,
-    label: string,
+  children: React.ReactNode
+  label: string
 }
 
 export const StyledDataCard = styled(DarkGreyCard)`
-    padding: 0;
-    ${({ theme }) => theme.mediaWidth.upToSmall`
+  padding: 0;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,20 +21,17 @@ export const StyledDataCard = styled(DarkGreyCard)`
    `};
 `
 
-export default function StakeTriDataCard({
-    children,
-    label,
-}: Props) {
-    return (
-        <StyledDataCard>
-            <CardSection>
-                <AutoColumn gap="md">
-                    <AutoRow justify='center'>
-                        <TYPE.black fontWeight={600}>{label}</TYPE.black>
-                    </AutoRow>
-                    {children}
-                </AutoColumn>
-            </CardSection>
-        </StyledDataCard>
-    )
+export default function StakeTriDataCard({ children, label }: Props) {
+  return (
+    <StyledDataCard>
+      <CardSection>
+        <AutoColumn gap="md">
+          <AutoRow justify="center">
+            <TYPE.black fontWeight={600}>{label}</TYPE.black>
+          </AutoRow>
+          {children}
+        </AutoColumn>
+      </CardSection>
+    </StyledDataCard>
+  )
 }

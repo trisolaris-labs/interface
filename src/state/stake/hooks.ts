@@ -1,10 +1,6 @@
 import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WETH, Pair } from '@trisolaris/sdk'
 import { useMemo } from 'react'
-import {
-  USDT,
-  WBTC,
-  PNG
-} from '../../constants'
+import { USDT, WBTC, PNG } from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
@@ -58,7 +54,6 @@ const STAKING: {
     multiplier: 0
   }
 }
-
 
 export const STAKING_V0: Staking[] = Object.values(STAKING).filter(staking => staking.version === 0)
 export const STAKING_V1: Staking[] = Object.values(STAKING).filter(staking => staking.version === 1)
