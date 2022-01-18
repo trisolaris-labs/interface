@@ -199,6 +199,13 @@ export const BNB: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x2bF9b864cdc97b08B6D79ad4663e71B8aB65c45c', 18, 'BNB', 'Binance')
 }
 
+export const FLX: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'FLX', 'Flux Token'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'FLX', 'Flux Token'),
+  [ChainId.POLYGON]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'FLX', 'Flux Token'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xea62791aa682d455614eaa2a12ba3d9a2fd197af', 18, 'FLX', 'Flux Token')
+}
+
 export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: ZERO_ADDRESS,
   [ChainId.AVALANCHE]: '0x0C58C2041da4CfCcF5818Bbe3b66DBC23B3902d9',
