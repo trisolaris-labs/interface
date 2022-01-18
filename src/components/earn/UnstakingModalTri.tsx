@@ -143,7 +143,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
             </TYPE.body>
             {stakingInfo?.doubleRewardAmount && chefVersion == 1 && doubleRewardsOn && (
               <TYPE.body fontSize={20}>
-                {t('earn.claimingAurora', { amount: stakingInfo?.doubleRewardAmount?.toSignificant(4) })}
+                {'Claiming'} {stakingInfo?.doubleRewardAmount?.toSignificant(4)} {doubleRewardToken.symbol}
               </TYPE.body>
             )}
           </AutoColumn>
