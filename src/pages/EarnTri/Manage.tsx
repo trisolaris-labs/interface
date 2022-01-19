@@ -79,18 +79,18 @@ const VoteCard = styled(HighlightCard)`
 `
 
 const BackgroundColor = styled.span<{ bgColor1: string | null; bgColor2?: string | null }>`
-   background: ${({ theme, bgColor1, bgColor2 }) =>
-     `linear-gradient(90deg, ${bgColor1 ?? theme.blue1} 0%, ${bgColor2 ?? 'grey'} 90%);`}
-   background-size: cover;
-   mix-blend-mode: overlay;
-   border-radius: 10px;
-   width: 100%;
-   height: 100%;
-   opacity: 0.5;
-   position: absolute;
-   top: 0;
-   left: 0;
-   user-select: none;
+  background: ${({ theme, bgColor1, bgColor2 }) =>
+    `linear-gradient(90deg, ${bgColor1 ?? theme.blue1} 0%, ${bgColor2 ?? 'grey'} 90%);`};
+  background-size: cover;
+  mix-blend-mode: overlay;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  position: absolute;
+  top: 0;
+  left: 0;
+  user-select: none;
 `
 
 const DataRow = styled(RowBetween)`
@@ -125,6 +125,7 @@ export default function Manage({
     totalStakedInUSD,
     doubleRewardToken
   } = stakingInfo
+
   const isDualRewards = chefVersion == 1
 
   // get currencies and pair

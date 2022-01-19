@@ -12,6 +12,7 @@ export function useTotalStakedInPool(token?: Token, version?: ChefVersions): Tok
     version === ChefVersions.V1 ? MASTERCHEF_ADDRESS_V1[ChainId.AURORA] : MASTERCHEF_ADDRESS_V2[ChainId.AURORA]
 
   const contract = useTokenContract(token?.address, false)
+
   const totalStakedInPool: BigNumber = useSingleCallResult(contract, 'balanceOf', [masterChefAddress])?.result?.[0]
 
   return token && totalStakedInPool ? new TokenAmount(token, totalStakedInPool.toString()) : undefined

@@ -133,6 +133,9 @@ export default function Earn({
     return sortDescending ? <ChevronDown size={15} /> : <ChevronUp size={15} />
   }
 
+  const [userStakedAmount, setUsererStakedAmount] = useState(null)
+  
+
   return (
     <PageWrapper gap="lg" justify="center">
       <MemoizedFarmBanner />
@@ -182,6 +185,7 @@ export default function Earn({
                   doubleRewards={farm.doubleRewards}
                   inStaging={farm.inStaging}
                   doubleRewardToken={farm.doubleRewardToken}
+                  // getTotalStaked={}
                 />
               ))}
             </PoolSection>
