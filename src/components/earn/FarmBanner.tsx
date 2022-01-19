@@ -105,18 +105,13 @@ const DummyComp = ({ farm, updateAmounts }: DummyCompProps) => {
     doubleRewardToken
   } = stakingInfo
 
-  // const newEarnedAmount = isTokenAmountPositive(earnedAmount) ? earnedAmount.toFixed(6) : null
-  // const parsedNewEarnedAmount = newEarnedAmount ? parseFloat(newEarnedAmount) : null
+  const newEarnedAmount = isTokenAmountPositive(earnedAmount) ? earnedAmount.toFixed(6) : null
+  const parsedNewEarnedAmount = newEarnedAmount ? parseFloat(newEarnedAmount) : null
 
   const newAmount = userLPAmountUSD?.toFixed(2)
   const parsedStakedAmount = newAmount ? parseFloat(newAmount) : null
-  if (
-    parsedStakedAmount
-    // &&
-    //  parsedNewEarnedAmount
-  ) {
-    // updateAmounts(farmId, parsedStakedAmount, parsedNewEarnedAmount)
-    updateAmounts(farmId, parsedStakedAmount, 10)
+  if (parsedStakedAmount && parsedNewEarnedAmount) {
+    updateAmounts(farmId, parsedStakedAmount, parsedNewEarnedAmount)
   }
   return null
 }
@@ -148,13 +143,28 @@ export default function FarmBanner() {
   })
 
   const updateAmounts = (id: number, stakedAmount: number, rewards: number) => {
-    if (userFarmsAmount[id].totalStaked !== stakedAmount) {
-      setUserFarmsAmount({ ...userFarmsAmount, [id]: { ...userFarmsAmount[id], totalStaked: stakedAmount } })
+    if (userFarmsAmount[id]) {
+      if (userFarmsAmount[id].totalStaked !== stakedAmount || userFarmsAmount[id].tokens.TRI !== rewards) {
+        setUserFarmsAmount({
+          ...userFarmsAmount,
+          [id]: {
+            ...userFarmsAmount[id],
+            totalStaked: stakedAmount,
+            tokens: { ...userFarmsAmount[id].tokens, TRI: rewards }
+          }
+        })
+      }
+      // if (userRewardsAmount[id] !== stakedAmount) {
+      //   setUserRewardsAmount({ ...userFarmsAmount, [id]: stakedAmount })
+      // }
     }
-    // if (userRewardsAmount[id] !== stakedAmount) {
-    //   setUserRewardsAmount({ ...userFarmsAmount, [id]: stakedAmount })
-    // }
   }
+  // "1": {
+  //     "totalStaked": 2.42,
+  //     "tokens": {
+  //         "TRI": 0
+  //     }
+  // },
 
   useEffect(() => {
     const allFarmsHaveInfo = Object.values(userFarmsAmount).every(farm => farm.totalStaked > 0)
@@ -186,6 +196,7 @@ export default function FarmBanner() {
     [userFarmsAmount]
   )
 
+  console.log(userFarmsAmount)
   const farmTVL = allFarms.reduce((acc, farm) => JSBI.add(acc, JSBI.BigInt(farm.totalStakedInUSD)), ZERO)
   const farmTVLFriendly = JSBI.GE(farmTVL, ZERO) ? `$${addCommasToNumber(farmTVL.toString())}` : '-'
 
