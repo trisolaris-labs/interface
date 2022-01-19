@@ -148,7 +148,7 @@ export default function PoolCardTRI({
         <AutoColumn>
           <TYPE.mutedSubHeader textAlign="end">APR</TYPE.mutedSubHeader>
           <TYPE.white textAlign="end">
-            {isDualRewards && doubleRewards
+            {isDualRewards && doubleRewards && !inStaging
               ? `${apr}% TRI + ${`${apr2}%`} ${`${doubleRewardToken.symbol}`}`
               : inStaging
               ? `Coming Soon`
