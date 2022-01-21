@@ -134,7 +134,6 @@ export default function Earn({
   }
 
   const [userStakedAmount, setUsererStakedAmount] = useState(null)
-  
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -185,7 +184,6 @@ export default function Earn({
                   doubleRewards={farm.doubleRewards}
                   inStaging={farm.inStaging}
                   doubleRewardToken={farm.doubleRewardToken}
-                  // getTotalStaked={}
                 />
               ))}
             </PoolSection>
