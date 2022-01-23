@@ -29,6 +29,7 @@ import {
   StyledSortOption,
   StyledArrowContainer
 } from './EarnTri.styles'
+import { TokenAmount } from '@trisolaris/sdk'
 
 enum SortingType {
   liquidity = 'Liquidity',
@@ -182,6 +183,7 @@ export default function Earn({
                   doubleRewards={farm.doubleRewards}
                   inStaging={farm.inStaging}
                   doubleRewardToken={farm.doubleRewardToken}
+                  isStaking={isTokenAmountPositive(farm.stakedAmount)}
                 />
               ))}
             </PoolSection>
@@ -211,6 +213,7 @@ export default function Earn({
               doubleRewards={farm.doubleRewards}
               inStaging={farm.inStaging}
               doubleRewardToken={farm.doubleRewardToken}
+              isStaking={isTokenAmountPositive(farm.stakedAmount)}
             />
           ))}
         </PoolSection>
@@ -237,6 +240,7 @@ export default function Earn({
                 doubleRewards={farm.doubleRewards}
                 inStaging={farm.inStaging}
                 doubleRewardToken={farm.doubleRewardToken}
+                isStaking={isTokenAmountPositive(farm.stakedAmount)}
               />
             ))}
           </PoolSection>

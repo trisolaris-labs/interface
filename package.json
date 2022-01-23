@@ -55,6 +55,7 @@
     "gh-pages": "^3.2.3",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.11.0",
+    "husky": "^7.0.0",
     "i18next": "^20.3.4",
     "i18next-browser-languagedetector": "^3.0.1",
     "i18next-xhr-backend": "^2.0.1",
@@ -94,8 +95,7 @@
     "swr": "^1.1.0",
     "typescript": "^3.8.3",
     "use-count-up": "^2.2.5",
-    "wcag-contrast": "^3.0.0",
-    "husky": "^7.0.0"
+    "wcag-contrast": "^3.0.0"
   },
   "resolutions": {
     "@walletconnect/web3-provider": "1.1.1-alpha.0"

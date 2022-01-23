@@ -257,6 +257,32 @@ const ButtonErrorStyle = styled(Base)`
   }
 `
 
+export const ButtonGold = styled(Base)`
+  background-color: ${({ theme }) => theme.metallicGold};
+  border: 1px solid ${({ theme }) => theme.gold};
+  padding: 2px;
+  transition: 0.2s;
+
+  &:focus {
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.gold)};
+    background-color: ${({ theme }) => darken(0.05, theme.gold)};
+  }
+  &:hover {
+    box-shadow: 0 2.5px 7px ${({ theme }) => darken(0.05, theme.gold)};
+  }
+  &:active {
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.gold)};
+    background-color: ${({ theme }) => darken(0.1, theme.gold)};
+  }
+  &:disabled {
+    opacity: 50%;
+    cursor: auto;
+    box-shadow: none;
+    background-color: ${({ theme }) => theme.gold};
+    border: 1px solid ${({ theme }) => theme.gold};
+  }
+`
+
 export function ButtonConfirmed({
   confirmed,
   altDisabledStyle,

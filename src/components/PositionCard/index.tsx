@@ -13,7 +13,7 @@ import { TYPE } from '../../theme'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { ButtonPrimary, ButtonEmpty } from '../Button'
-import { TokenPairBackgroundColor } from '../earn/styled'
+import { TokenPairBackgroundColor } from '../earn/PoolCardTri.styles'
 
 import { useColorWithDefault } from '../../hooks/useColor'
 

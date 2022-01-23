@@ -83,6 +83,9 @@ export function colors(darkMode: boolean): Colors {
     yellow1: '#FFE270',
     yellow2: '#F3841E',
     blue1: '#2172E5',
+    gold: '#FFD700',
+    metallicGold: "#D4AF37",
+    
 
     avaxRed: '#e60063'
 
