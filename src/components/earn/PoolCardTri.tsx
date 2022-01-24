@@ -9,7 +9,7 @@ import DoubleCurrencyLogo from '../DoubleLogo'
 import { ButtonGold } from '../Button'
 import { AutoRow, RowBetween } from '../Row'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
-import { ReactComponent as Withdraw } from '../../assets/svg/withdraw.svg'
+import { ReactComponent as ClaimIcon } from '../../assets/svg/claim.svg'
 
 import { ChefVersions } from '../../state/stake/stake-constants'
 import { useSingleFarm } from '../../state/stake/user-farms'
@@ -95,7 +95,7 @@ const DefaultPoolCardtri = ({
           <StyledActionsContainer>
             {enableClaimButton && (
               <ButtonGold padding="8px" borderRadius="8px" onClick={enableModal} width="32px">
-                <Withdraw style={{ height: 30, width: 30 }} />
+                <ClaimIcon style={{ height: 30, width: 30 }} />
               </ButtonGold>
             )}
 

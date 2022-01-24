@@ -84,8 +84,7 @@ export function colors(darkMode: boolean): Colors {
     yellow2: '#F3841E',
     blue1: '#2172E5',
     gold: '#FFD700',
-    metallicGold: "#D4AF37",
-    
+    metallicGold: '#D4AF37',
 
     avaxRed: '#e60063'
 
@@ -227,9 +226,7 @@ html {
   color: ${({ theme }) => theme.text1};
   background-color: ${({ theme }) => theme.bg1};
 
-  /* Fix content jumping when scrollbar appears*/
-  width:100vw;
-  overflow-x:hidden;
+
 }
 
 body {
@@ -241,5 +238,9 @@ body {
       1,
       theme.bg1
     )} 100%)`};
+    
+  /* Fix content jumping when scrollbar appears*/
+  width:100vw;
+  overflow-x:hidden;
 }
 `
