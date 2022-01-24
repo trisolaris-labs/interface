@@ -175,7 +175,6 @@ export default function Earn({
                   apr2={farm.apr2}
                   chefVersion={farm.chefVersion}
                   isPeriodFinished={farm.isPeriodFinished}
-                  stakedAmount={farm.stakedAmount}
                   token0={farm.tokens[0]}
                   token1={farm.tokens[1]}
                   totalStakedInUSD={farm.totalStakedInUSD}
@@ -205,7 +204,6 @@ export default function Earn({
               apr2={farm.apr2}
               chefVersion={farm.chefVersion}
               isPeriodFinished={farm.isPeriodFinished}
-              stakedAmount={farm.stakedAmount}
               token0={farm.tokens[0]}
               token1={farm.tokens[1]}
               totalStakedInUSD={farm.totalStakedInUSD}
@@ -232,7 +230,6 @@ export default function Earn({
                 chefVersion={farm.chefVersion}
                 isLegacy={true}
                 isPeriodFinished={farm.isPeriodFinished}
-                stakedAmount={farm.stakedAmount}
                 token0={farm.tokens[0]}
                 token1={farm.tokens[1]}
                 totalStakedInUSD={farm.totalStakedInUSD}

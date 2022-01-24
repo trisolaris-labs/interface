@@ -16,7 +16,7 @@ import { useSingleFarm } from '../../state/stake/user-farms'
 import { useColorForToken } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
 import { addCommasToNumber } from '../../utils'
-import { getPairRenderOrder, isTokenAmountPositive } from '../../utils/pools'
+import { getPairRenderOrder } from '../../utils/pools'
 
 import {
   Wrapper,
@@ -27,7 +27,7 @@ import {
   Button
 } from './PoolCardTri.styles'
 
-type Props = {
+type PoolCardTriProps = {
   apr: number
   apr2: number
   doubleRewards: boolean
@@ -35,18 +35,17 @@ type Props = {
   inStaging: boolean
   isLegacy?: boolean
   isPeriodFinished: boolean
-  stakedAmount: TokenAmount | null
   token0: Token
   token1: Token
   totalStakedInUSD: number
-  version: number
   doubleRewardToken: Token
   isStaking: boolean
+  version: number
 }
 
 const ZERO = JSBI.BigInt(0)
 
-export default function PoolCardTRI({
+const DefaultPoolCardtri = ({
   apr,
   apr2,
   chefVersion,
@@ -54,19 +53,16 @@ export default function PoolCardTRI({
   inStaging,
   isLegacy,
   isPeriodFinished,
-  stakedAmount,
   token0: _token0,
   token1: _token1,
   totalStakedInUSD,
-  version,
   doubleRewardToken,
-  isStaking
-}: Props) {
+  isStaking,
+  version,
+  enableClaimButton = false,
+  enableModal = () => null
+}: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
   const isDualRewards = chefVersion == 1
-
-  const stakingInfo = useSingleFarm(Number(version))
-console.log(stakingInfo)
-  const { earnedAmount } = stakingInfo
 
   const { currency0, currency1, token0, token1 } = getPairRenderOrder(_token0, _token1)
 
@@ -81,19 +77,8 @@ console.log(stakingInfo)
 
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
 
-  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
-
-
   return (
     <Wrapper bgColor1={backgroundColor1} bgColor2={backgroundColor2} isDoubleRewards={doubleRewards}>
-      {showClaimRewardModal && stakingInfo && (
-        <ClaimRewardModal
-          isOpen={showClaimRewardModal}
-          onDismiss={() => setShowClaimRewardModal(false)}
-          stakingInfo={stakingInfo}
-        />
-      )}
-
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
       <AutoRow justifyContent="space-between">
         <PairContainer>
@@ -108,8 +93,8 @@ console.log(stakingInfo)
           </Button>
         ) : (
           <StyledActionsContainer>
-            {(!earnedAmount == null || !earnedAmount?.equalTo(ZERO)) && (
-              <ButtonGold padding="8px" borderRadius="8px" onClick={() => setShowClaimRewardModal(true)} width="32px">
+            {enableClaimButton && (
+              <ButtonGold padding="8px" borderRadius="8px" onClick={enableModal} width="32px">
                 <Withdraw style={{ height: 30, width: 30 }} />
               </ButtonGold>
             )}
@@ -147,3 +132,34 @@ console.log(stakingInfo)
     </Wrapper>
   )
 }
+
+const StakingPoolCardTRI = (props: PoolCardTriProps) => {
+  const { version } = props
+
+  const stakingInfo = useSingleFarm(Number(version))
+  const { earnedAmount } = stakingInfo
+
+  const amountIsClaimable = !earnedAmount == null || !earnedAmount?.equalTo(ZERO)
+  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
+
+  const enableModal = () => setShowClaimRewardModal(true)
+  return (
+    <>
+      {showClaimRewardModal && stakingInfo && (
+        <ClaimRewardModal
+          isOpen={showClaimRewardModal}
+          onDismiss={() => setShowClaimRewardModal(false)}
+          stakingInfo={stakingInfo}
+        />
+      )}
+      <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+    </>
+  )
+}
+
+const PoolCardTRI = (props: PoolCardTriProps) => {
+  const { isStaking } = props
+  return isStaking ? <StakingPoolCardTRI {...props} /> : <DefaultPoolCardtri {...props}></DefaultPoolCardtri>
+}
+
+export default PoolCardTRI
