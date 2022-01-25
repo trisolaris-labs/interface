@@ -286,7 +286,9 @@ export default function Manage({
           <StyledBottomCard dim={stakedAmount?.equalTo(ZERO)}>
             <AutoColumn gap="sm">
               <RowBetween>
-                <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
+               {!noTriRewards ? (
+                 <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
+                ) : null}
                 {(isDualRewards && doubleRewards) || noTriRewards ? (
                   <TYPE.black>
                     {t('earnPage.unclaimed')} {doubleRewardToken.symbol}
@@ -294,12 +296,14 @@ export default function Manage({
                 ) : null}
               </RowBetween>
               <RowBetween style={{ alignItems: 'baseline' }}>
+              {!noTriRewards ? (
                 <TYPE.largeHeader fontSize={36} fontWeight={600}>
                   <CountUp
                     enabled={earnedAmount?.greaterThan(ZERO)}
                     value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
                   />
                 </TYPE.largeHeader>
+               ) : null}
                 {(isDualRewards && doubleRewards) || noTriRewards ? (
                   <TYPE.largeHeader fontSize={36} fontWeight={600}>
                     <CountUp
