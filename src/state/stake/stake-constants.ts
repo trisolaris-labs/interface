@@ -508,7 +508,7 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V2,
-    doubleRewards: true,
+    doubleRewards: false,
     inStaging: false,
     noTriRewards: true,
     doubleRewardToken: FLX[ChainId.AURORA]

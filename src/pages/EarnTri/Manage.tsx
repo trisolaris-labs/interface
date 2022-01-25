@@ -118,6 +118,7 @@ export default function Manage({
     doubleRewardAmount,
     earnedAmount,
     inStaging,
+    noTriRewards,
     lpAddress,
     stakedAmount,
     tokens,
@@ -286,7 +287,7 @@ export default function Manage({
             <AutoColumn gap="sm">
               <RowBetween>
                 <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
-                {isDualRewards && doubleRewards ? (
+                {(isDualRewards && doubleRewards) || noTriRewards ? (
                   <TYPE.black>
                     {t('earnPage.unclaimed')} {doubleRewardToken.symbol}
                   </TYPE.black>
@@ -299,7 +300,7 @@ export default function Manage({
                     value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
                   />
                 </TYPE.largeHeader>
-                {isDualRewards && doubleRewards ? (
+                {(isDualRewards && doubleRewards) || noTriRewards ? (
                   <TYPE.largeHeader fontSize={36} fontWeight={600}>
                     <CountUp
                       enabled={doubleRewardAmount?.greaterThan(ZERO)}
