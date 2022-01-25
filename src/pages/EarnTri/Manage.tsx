@@ -118,6 +118,7 @@ export default function Manage({
     doubleRewardAmount,
     earnedAmount,
     inStaging,
+    noTriRewards,
     lpAddress,
     stakedAmount,
     tokens,
@@ -285,21 +286,25 @@ export default function Manage({
           <StyledBottomCard dim={stakedAmount?.equalTo(ZERO)}>
             <AutoColumn gap="sm">
               <RowBetween>
-                <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
-                {isDualRewards && doubleRewards ? (
+               {!noTriRewards ? (
+                 <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
+                ) : null}
+                {(isDualRewards && doubleRewards) || noTriRewards ? (
                   <TYPE.black>
                     {t('earnPage.unclaimed')} {doubleRewardToken.symbol}
                   </TYPE.black>
                 ) : null}
               </RowBetween>
               <RowBetween style={{ alignItems: 'baseline' }}>
+              {!noTriRewards ? (
                 <TYPE.largeHeader fontSize={36} fontWeight={600}>
                   <CountUp
                     enabled={earnedAmount?.greaterThan(ZERO)}
                     value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
                   />
                 </TYPE.largeHeader>
-                {isDualRewards && doubleRewards ? (
+               ) : null}
+                {(isDualRewards && doubleRewards) || noTriRewards ? (
                   <TYPE.largeHeader fontSize={36} fontWeight={600}>
                     <CountUp
                       enabled={doubleRewardAmount?.greaterThan(ZERO)}

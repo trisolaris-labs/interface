@@ -54,6 +54,7 @@ type Props = {
   doubleRewards: boolean
   chefVersion: ChefVersions
   inStaging: boolean
+  noTriRewards: boolean
   isLegacy?: boolean
   isPeriodFinished: boolean
   stakedAmount: TokenAmount | null
@@ -89,6 +90,7 @@ export default function PoolCardTRI({
   chefVersion,
   doubleRewards,
   inStaging,
+  noTriRewards,
   isLegacy,
   isPeriodFinished,
   stakedAmount,
@@ -152,6 +154,8 @@ export default function PoolCardTRI({
               ? `${apr}% TRI + ${`${apr2}%`} ${`${doubleRewardToken.symbol}`}`
               : inStaging
               ? `Coming Soon`
+              : noTriRewards
+              ? `${`${apr2}%`} ${`${doubleRewardToken.symbol}`}`
               : `${apr}%`}
           </TYPE.white>
         </AutoColumn>
