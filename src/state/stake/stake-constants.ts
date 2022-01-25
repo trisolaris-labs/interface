@@ -508,9 +508,9 @@ const AURORA_POOLS: StakingTri[] = [
     apr: 0,
     apr2: 0,
     chefVersion: ChefVersions.V2,
-    doubleRewards: false,
+    doubleRewards: true,
     inStaging: false,
-    noTriRewards: true,
+    noTriRewards: false,
     doubleRewardToken: FLX[ChainId.AURORA]
   },
   {
@@ -519,7 +519,7 @@ const AURORA_POOLS: StakingTri[] = [
     tokens: [WNEAR[ChainId.AURORA], MECHA[ChainId.AURORA]],
     stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0xd62f9ec4C4d323A0C111d5e78b77eA33A2AA862f',
-    rewarderAddress: '',
+    rewarderAddress: '0x9847F7e33CCbC0542b05d15c5cf3aE2Ae092C057',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
