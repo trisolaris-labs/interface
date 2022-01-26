@@ -206,6 +206,14 @@ export const FLX: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0xea62791aa682d455614eaa2a12ba3d9a2fd197af', 18, 'FLX', 'Flux Token')
 }
 
+export const MECHA: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'MECHA', 'Mecha'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'MECHA', 'Mecha'),
+  [ChainId.POLYGON]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'MECHA', 'Mecha'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xa33C3B53694419824722C10D99ad7cB16Ea62754', 18, 'MECHA', 'Mecha')
+}
+
+
 export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: ZERO_ADDRESS,
   [ChainId.AVALANCHE]: '0x0C58C2041da4CfCcF5818Bbe3b66DBC23B3902d9',
