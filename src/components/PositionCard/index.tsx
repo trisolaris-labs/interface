@@ -26,6 +26,8 @@ import { Dots } from '../swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { getPairRenderOrder } from '../../utils/pools'
 
+import { BIG_INT_ZERO } from '../../constants'
+
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
 `
@@ -84,7 +86,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
 
   return (
     <>
-      {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, JSBI.BigInt(0)) ? (
+      {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, BIG_INT_ZERO) ? (
         <GreyCard border={border}>
           <AutoColumn gap="12px">
             <FixedHeightRow>

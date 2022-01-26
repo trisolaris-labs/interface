@@ -18,6 +18,8 @@ import { currencyId } from '../../utils/currencyId'
 import { addCommasToNumber } from '../../utils'
 import { getPairRenderOrder } from '../../utils/pools'
 
+import { BIG_INT_ZERO } from '../../constants'
+
 import {
   Wrapper,
   PairContainer,
@@ -43,8 +45,6 @@ type PoolCardTriProps = {
   version: number
 }
 
-const ZERO = JSBI.BigInt(0)
-
 const DefaultPoolCardtri = ({
   apr,
   apr2,
@@ -62,6 +62,7 @@ const DefaultPoolCardtri = ({
   enableClaimButton = false,
   enableModal = () => null
 }: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
+
   const isDualRewards = chefVersion == 1
 
   const { currency0, currency1, token0, token1 } = getPairRenderOrder(_token0, _token1)
@@ -139,7 +140,7 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
   const stakingInfo = useSingleFarm(Number(version))
   const { earnedAmount } = stakingInfo
 
-  const amountIsClaimable = !earnedAmount == null || !earnedAmount?.equalTo(ZERO)
+  const amountIsClaimable = !earnedAmount == null || !earnedAmount?.equalTo(BIG_INT_ZERO)
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
   const enableModal = () => setShowClaimRewardModal(true)
