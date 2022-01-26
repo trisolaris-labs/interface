@@ -9,7 +9,7 @@ import DoubleCurrencyLogo from '../DoubleLogo'
 import { ButtonGold } from '../Button'
 import { AutoRow, RowBetween } from '../Row'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
-import { ReactComponent as ClaimIcon } from '../../assets/svg/claim.svg'
+import { Settings2 } from 'lucide-react'
 
 import { ChefVersions } from '../../state/stake/stake-constants'
 import { useSingleFarm } from '../../state/stake/user-farms'
@@ -62,7 +62,6 @@ const DefaultPoolCardtri = ({
   enableClaimButton = false,
   enableModal = () => null
 }: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
-
   const isDualRewards = chefVersion == 1
 
   const { currency0, currency1, token0, token1 } = getPairRenderOrder(_token0, _token1)
@@ -95,8 +94,8 @@ const DefaultPoolCardtri = ({
         ) : (
           <StyledActionsContainer>
             {enableClaimButton && (
-              <ButtonGold padding="8px" borderRadius="8px" onClick={enableModal} width="32px">
-                <ClaimIcon style={{ height: 30, width: 30 }} />
+              <ButtonGold padding="8px" borderRadius="8px" onClick={enableModal} >
+                Claim
               </ButtonGold>
             )}
 
@@ -140,7 +139,7 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
   const stakingInfo = useSingleFarm(Number(version))
   const { earnedAmount } = stakingInfo
 
-  const amountIsClaimable = !earnedAmount == null || !earnedAmount?.equalTo(BIG_INT_ZERO)
+  const amountIsClaimable = (earnedAmount?.greaterThan(BIG_INT_ZERO) ?? false) === true
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
   const enableModal = () => setShowClaimRewardModal(true)
