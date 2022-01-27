@@ -195,9 +195,15 @@ export default function Manage({
         <PoolData>
           <AutoColumn gap="sm">
             <TYPE.subHeader>{t('earnPage.poolRate')}</TYPE.subHeader>
+             {noTriRewards ? (
             <TYPE.body fontSize={24} fontWeight={500}>
-              {`${totalRewardRateFriendly}` + t('earnPage.pngPerWeek')}
+              Non TRI Pool
             </TYPE.body>
+             ) : 
+             <TYPE.body fontSize={24} fontWeight={500}>
+              {`${totalRewardRateFriendly}` + t('earnPage.triPerWeek')}
+            </TYPE.body>
+             }
           </AutoColumn>
         </PoolData>
       </DataRow>
@@ -340,7 +346,7 @@ export default function Manage({
             </ButtonPrimary>
 
             <ButtonPrimary
-              disabled={earnedAmount == null || earnedAmount?.equalTo(ZERO)}
+              disabled={earnedAmount == null || (earnedAmount?.equalTo(ZERO) && doubleRewardAmount?.equalTo(ZERO))}
               padding="8px"
               borderRadius="8px"
               width="160px"
