@@ -197,7 +197,7 @@ export default function Manage({
             <TYPE.subHeader>{t('earnPage.poolRate')}</TYPE.subHeader>
              {noTriRewards ? (
             <TYPE.body fontSize={24} fontWeight={500}>
-              {'Non TRI Pool'}
+              Non TRI Pool
             </TYPE.body>
              ) : 
              <TYPE.body fontSize={24} fontWeight={500}>
