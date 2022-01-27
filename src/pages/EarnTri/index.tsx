@@ -221,7 +221,7 @@ export default function Earn({
        <AutoColumn gap="lg" style={{ width: '100%' }}>
         {!searchQuery.length && !activeFarmsFilter && (
           <DataRow style={{ alignItems: 'baseline' }}>
-            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Participating Pools</TYPE.mediumHeader>
+            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Ecosystem Pools</TYPE.mediumHeader>
           </DataRow>
         )}
 

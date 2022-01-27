@@ -317,7 +317,7 @@
     "liquidityDeposits": "Your liquidity deposits",
     "unclaimed": "Your unclaimed",
     "claim": "Claim",
-    "pngPerWeek": " TRI / week",
+    "triPerWeek": " TRI / week",
     "automagically": "When you withdraw, the contract will automagically claim PNG on your behalf!",
     "deposit": "Deposit",
     "depositPglTokens": "Deposit TLP Tokens",
