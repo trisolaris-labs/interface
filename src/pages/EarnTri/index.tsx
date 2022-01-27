@@ -221,31 +221,33 @@ export default function Earn({
       </AutoColumn>
       <AutoColumn gap="lg" style={{ width: '100%' }}>
         {!searchQuery.length && !activeFarmsFilter && (
-          <DataRow style={{ alignItems: 'baseline' }}>
-            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Ecosystem Pools</TYPE.mediumHeader>
-          </DataRow>
-        )}
+          <>
+            <DataRow style={{ alignItems: 'baseline' }}>
+              <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Ecosystem Pools</TYPE.mediumHeader>
+            </DataRow>
 
-        <PoolSection>
-          {nonTriFarms.map(farm => (
-            <MemoizedPoolCardTRI
-              key={farm.ID}
-              apr={farm.apr}
-              apr2={farm.apr2}
-              chefVersion={farm.chefVersion}
-              isPeriodFinished={farm.isPeriodFinished}
-              token0={farm.tokens[0]}
-              token1={farm.tokens[1]}
-              totalStakedInUSD={farm.totalStakedInUSD}
-              version={farm.ID}
-              doubleRewards={farm.doubleRewards}
-              inStaging={farm.inStaging}
-              noTriRewards={farm.noTriRewards}
-              doubleRewardToken={farm.doubleRewardToken}
-              isStaking={isTokenAmountPositive(farm.stakedAmount)}
-            />
-          ))}
-        </PoolSection>
+            <PoolSection>
+              {nonTriFarms.map(farm => (
+                <MemoizedPoolCardTRI
+                  key={farm.ID}
+                  apr={farm.apr}
+                  apr2={farm.apr2}
+                  chefVersion={farm.chefVersion}
+                  isPeriodFinished={farm.isPeriodFinished}
+                  token0={farm.tokens[0]}
+                  token1={farm.tokens[1]}
+                  totalStakedInUSD={farm.totalStakedInUSD}
+                  version={farm.ID}
+                  doubleRewards={farm.doubleRewards}
+                  inStaging={farm.inStaging}
+                  noTriRewards={farm.noTriRewards}
+                  doubleRewardToken={farm.doubleRewardToken}
+                  isStaking={isTokenAmountPositive(farm.stakedAmount)}
+                />
+              ))}
+            </PoolSection>
+          </>
+        )}
       </AutoColumn>
       {!searchQuery.length && !activeFarmsFilter && (
         <AutoColumn gap="lg" style={{ width: '100%' }}>
