@@ -15,7 +15,7 @@ import { useSingleFarm } from '../../state/stake/user-farms'
 import { useColorForToken } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
 import { addCommasToNumber } from '../../utils'
-import { getPairRenderOrder } from '../../utils/pools'
+import { getPairRenderOrder, isTokenAmountPositive } from '../../utils/pools'
 
 import { BIG_INT_ZERO } from '../../constants'
 import { Settings2 as ManageIcon } from 'lucide-react'
@@ -150,9 +150,9 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
   const { version } = props
 
   const stakingInfo = useSingleFarm(Number(version))
-  const { earnedAmount } = stakingInfo
+  const { earnedAmount, doubleRewardAmount } = stakingInfo
 
-  const amountIsClaimable = (earnedAmount?.greaterThan(BIG_INT_ZERO) ?? false) === true
+  const amountIsClaimable = isTokenAmountPositive(earnedAmount) || isTokenAmountPositive(doubleRewardAmount)
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
   const enableModal = () => setShowClaimRewardModal(true)
