@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Token, TokenAmount, JSBI } from '@trisolaris/sdk'
+import { Token } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 
@@ -9,7 +9,6 @@ import DoubleCurrencyLogo from '../DoubleLogo'
 import { ButtonGold } from '../Button'
 import { AutoRow, RowBetween } from '../Row'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
-import { Settings2 } from 'lucide-react'
 
 import { ChefVersions } from '../../state/stake/stake-constants'
 import { useSingleFarm } from '../../state/stake/user-farms'
@@ -19,6 +18,7 @@ import { addCommasToNumber } from '../../utils'
 import { getPairRenderOrder } from '../../utils/pools'
 
 import { BIG_INT_ZERO } from '../../constants'
+import { Settings2 as ManageIcon } from 'lucide-react'
 
 import {
   Wrapper,
@@ -77,6 +77,25 @@ const DefaultPoolCardtri = ({
 
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
 
+  function renderManageOrDepositButton() {
+    const sharedProps = {
+      marginLeft: '0.5rem',
+      onClick: () => {
+        history.push(`/tri/${currencyId(currency0)}/${currencyId(currency1)}/${version}`)
+      }
+    }
+
+    return isStaking ? (
+      <Button isStaking={true} {...sharedProps}>
+        <ManageIcon size={20} />
+      </Button>
+    ) : (
+      <Button disabled={isPeriodFinished} isStaking={false} {...sharedProps}>
+        {t('earn.deposit')}
+      </Button>
+    )
+  }
+
   return (
     <Wrapper bgColor1={backgroundColor1} bgColor2={backgroundColor2} isDoubleRewards={doubleRewards}>
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
@@ -94,21 +113,11 @@ const DefaultPoolCardtri = ({
         ) : (
           <StyledActionsContainer>
             {enableClaimButton && (
-              <ButtonGold padding="8px" borderRadius="8px" onClick={enableModal} >
+              <ButtonGold padding="8px" borderRadius="8px" maxWidth="65px" onClick={enableModal}>
                 Claim
               </ButtonGold>
             )}
-
-            <Button
-              disabled={(isStaking || !isPeriodFinished) === false}
-              isStaking={isStaking}
-              onClick={() => {
-                history.push(`/tri/${currencyId(currency0)}/${currencyId(currency1)}/${version}`)
-              }}
-              marginLeft="0.5rem"
-            >
-              {isStaking ? t('earn.manage') : t('earn.deposit')}
-            </Button>
+            {renderManageOrDepositButton()}
           </StyledActionsContainer>
         )}
       </AutoRow>

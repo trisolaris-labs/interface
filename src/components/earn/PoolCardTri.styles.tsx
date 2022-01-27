@@ -44,6 +44,8 @@ export const Button = styled(ButtonPrimary)<{ isStaking: boolean }>`
   ${({ isStaking, theme }) =>
     isStaking &&
     `
+        min-width: fit-content;
+        max-width: fit-content;
         &:focus, &:hover, &:active {
             background-color: ${lighten(0.12, theme.black)};
         }
