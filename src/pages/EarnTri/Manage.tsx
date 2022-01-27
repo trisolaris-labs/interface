@@ -118,6 +118,7 @@ export default function Manage({
     doubleRewardAmount,
     earnedAmount,
     inStaging,
+    noTriRewards,
     lpAddress,
     stakedAmount,
     tokens,
@@ -194,9 +195,15 @@ export default function Manage({
         <PoolData>
           <AutoColumn gap="sm">
             <TYPE.subHeader>{t('earnPage.poolRate')}</TYPE.subHeader>
-            <TYPE.body fontSize={24} fontWeight={500}>
-              {`${totalRewardRateFriendly}` + t('earnPage.pngPerWeek')}
-            </TYPE.body>
+            {noTriRewards ? (
+              <TYPE.body fontSize={24} fontWeight={500}>
+                Non TRI Pool
+              </TYPE.body>
+            ) : (
+              <TYPE.body fontSize={24} fontWeight={500}>
+                {`${totalRewardRateFriendly}` + t('earnPage.triPerWeek')}
+              </TYPE.body>
+            )}
           </AutoColumn>
         </PoolData>
       </DataRow>
@@ -285,21 +292,23 @@ export default function Manage({
           <StyledBottomCard dim={stakedAmount?.equalTo(BIG_INT_ZERO)}>
             <AutoColumn gap="sm">
               <RowBetween>
-                <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
-                {isDualRewards && doubleRewards ? (
+                {!noTriRewards ? <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black> : null}
+                {(isDualRewards && doubleRewards) || noTriRewards ? (
                   <TYPE.black>
                     {t('earnPage.unclaimed')} {doubleRewardToken.symbol}
                   </TYPE.black>
                 ) : null}
               </RowBetween>
               <RowBetween style={{ alignItems: 'baseline' }}>
-                <TYPE.largeHeader fontSize={36} fontWeight={600}>
-                  <CountUp
-                    enabled={earnedAmount?.greaterThan(BIG_INT_ZERO)}
-                    value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
-                  />
-                </TYPE.largeHeader>
-                {isDualRewards && doubleRewards ? (
+                {!noTriRewards ? (
+                  <TYPE.largeHeader fontSize={36} fontWeight={600}>
+                    <CountUp
+                      enabled={earnedAmount?.greaterThan(BIG_INT_ZERO)}
+                      value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
+                    />
+                  </TYPE.largeHeader>
+                ) : null}
+                {(isDualRewards && doubleRewards) || noTriRewards ? (
                   <TYPE.largeHeader fontSize={36} fontWeight={600}>
                     <CountUp
                       enabled={doubleRewardAmount?.greaterThan(BIG_INT_ZERO)}
@@ -335,7 +344,10 @@ export default function Manage({
             </ButtonPrimary>
 
             <ButtonPrimary
-              disabled={earnedAmount == null || earnedAmount?.equalTo(BIG_INT_ZERO)}
+              disabled={
+                earnedAmount == null ||
+                (earnedAmount?.equalTo(BIG_INT_ZERO) && doubleRewardAmount?.equalTo(BIG_INT_ZERO))
+              }
               padding="8px"
               borderRadius="8px"
               width="160px"

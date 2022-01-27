@@ -47,6 +47,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
   const chefVersion = stakingInfo.chefVersion
   const doubleRewardsOn = stakingInfo.doubleRewards
   const doubleRewardToken = stakingInfo.doubleRewardToken
+  const noTriRewards = stakingInfo.noTriRewards
 
   async function onWithdraw() {
     if (stakingInfo.chefVersion == 0) {
@@ -116,7 +117,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               <TYPE.body>{t('earn.unclaimed')}</TYPE.body>
             </AutoColumn>
           )}
-          {stakingInfo?.doubleRewardAmount && chefVersion == 1 && doubleRewardsOn && (
+          {chefVersion == 1 && (doubleRewardsOn || noTriRewards) && (
             <AutoColumn justify="center" gap="md">
               <TYPE.body fontWeight={600} fontSize={36}>
                 {<FormattedCurrencyAmount currencyAmount={stakingInfo?.doubleRewardAmount} />}
@@ -141,7 +142,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
             <TYPE.body fontSize={20}>
               {t('earn.claimingPng', { amount: stakingInfo?.earnedAmount?.toSignificant(4) })}
             </TYPE.body>
-            {stakingInfo?.doubleRewardAmount && chefVersion == 1 && doubleRewardsOn && (
+            {chefVersion == 1 && (doubleRewardsOn || noTriRewards) && (
               <TYPE.body fontSize={20}>
                 {'Claiming'} {stakingInfo?.doubleRewardAmount?.toSignificant(4)} {doubleRewardToken.symbol}
               </TYPE.body>

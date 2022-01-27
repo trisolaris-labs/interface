@@ -39,7 +39,7 @@ enum SortingType {
 
 type SearchableTokenProps = { symbol: string | undefined; name: string | undefined; address: string }
 
-const POOLS_ORDER = [5, 11, 8, 7, 0, 1, 2, 3, 4, 9, 10, 12, 13, 14, 15]
+const POOLS_ORDER = [5, 11, 8, 7, 0, 1, 2, 3, 4, 9, 10, 12, 13, 14, 15, 16]
 const LEGACY_POOLS = [6]
 
 const MemoizedFarmBanner = React.memo(FarmBanner)
@@ -77,12 +77,13 @@ export default function Earn({
 
   const farmArrs = allFarmArrs.filter(farm => !LEGACY_POOLS.includes(farm.ID))
   const farmArrsInOrder = useMemo(() => getSortedFarms(), [sortBy, farmArrs])
-  const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards)
+  const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards && !farm.noTriRewards)
 
   const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(nonDualRewardPools)
 
   const legacyFarmArrsInOrder = allFarmArrs.filter(farm => LEGACY_POOLS.includes(farm.ID))
   const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards)
+  const nonTriFarms = farmArrsInOrder.filter(farm => farm.noTriRewards)
 
   const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const input = event.target.value.toUpperCase()
@@ -181,6 +182,7 @@ export default function Earn({
                   version={farm.ID}
                   doubleRewards={farm.doubleRewards}
                   inStaging={farm.inStaging}
+                  noTriRewards={farm.noTriRewards}
                   doubleRewardToken={farm.doubleRewardToken}
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
                 />
@@ -192,7 +194,7 @@ export default function Earn({
       <AutoColumn gap="lg" style={{ width: '100%' }}>
         {!searchQuery.length && !activeFarmsFilter && (
           <DataRow style={{ alignItems: 'baseline' }}>
-            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Participating Pools</TYPE.mediumHeader>
+            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>TRI Pools</TYPE.mediumHeader>
           </DataRow>
         )}
 
@@ -210,6 +212,35 @@ export default function Earn({
               version={farm.ID}
               doubleRewards={farm.doubleRewards}
               inStaging={farm.inStaging}
+              noTriRewards={farm.noTriRewards}
+              doubleRewardToken={farm.doubleRewardToken}
+              isStaking={isTokenAmountPositive(farm.stakedAmount)}
+            />
+          ))}
+        </PoolSection>
+      </AutoColumn>
+      <AutoColumn gap="lg" style={{ width: '100%' }}>
+        {!searchQuery.length && !activeFarmsFilter && (
+          <DataRow style={{ alignItems: 'baseline' }}>
+            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Ecosystem Pools</TYPE.mediumHeader>
+          </DataRow>
+        )}
+
+        <PoolSection>
+          {nonTriFarms.map(farm => (
+            <MemoizedPoolCardTRI
+              key={farm.ID}
+              apr={farm.apr}
+              apr2={farm.apr2}
+              chefVersion={farm.chefVersion}
+              isPeriodFinished={farm.isPeriodFinished}
+              token0={farm.tokens[0]}
+              token1={farm.tokens[1]}
+              totalStakedInUSD={farm.totalStakedInUSD}
+              version={farm.ID}
+              doubleRewards={farm.doubleRewards}
+              inStaging={farm.inStaging}
+              noTriRewards={farm.noTriRewards}
               doubleRewardToken={farm.doubleRewardToken}
               isStaking={isTokenAmountPositive(farm.stakedAmount)}
             />
@@ -236,6 +267,7 @@ export default function Earn({
                 version={farm.ID}
                 doubleRewards={farm.doubleRewards}
                 inStaging={farm.inStaging}
+                noTriRewards={farm.noTriRewards}
                 doubleRewardToken={farm.doubleRewardToken}
                 isStaking={isTokenAmountPositive(farm.stakedAmount)}
               />

@@ -35,6 +35,7 @@ type PoolCardTriProps = {
   doubleRewards: boolean
   chefVersion: ChefVersions
   inStaging: boolean
+  noTriRewards: boolean
   isLegacy?: boolean
   isPeriodFinished: boolean
   token0: Token
@@ -51,6 +52,7 @@ const DefaultPoolCardtri = ({
   chefVersion,
   doubleRewards,
   inStaging,
+  noTriRewards,
   isLegacy,
   isPeriodFinished,
   token0: _token0,
@@ -134,6 +136,8 @@ const DefaultPoolCardtri = ({
               ? `${apr}% TRI + ${`${apr2}%`} ${`${doubleRewardToken.symbol}`}`
               : inStaging
               ? `Coming Soon`
+              : noTriRewards
+              ? `${`${apr2}%`} ${`${doubleRewardToken.symbol}`}`
               : `${apr}%`}
           </TYPE.white>
         </AutoColumn>

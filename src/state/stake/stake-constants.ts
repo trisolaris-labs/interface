@@ -14,7 +14,8 @@ import {
   BNB,
   AVAX,
   MATIC,
-  FLX
+  FLX,
+  MECHA
 } from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
@@ -52,6 +53,7 @@ export type StakingTriFarms = {
   chefVersion: ChefVersions
   doubleRewards: boolean
   inStaging: boolean
+  noTriRewards: boolean
   doubleRewardToken: Token
 }
 
@@ -97,6 +99,7 @@ const POLYGON_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V1,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   },
   {
@@ -120,6 +123,7 @@ const POLYGON_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V1,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   }
 ]
@@ -146,6 +150,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V1,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   },
   {
@@ -169,6 +174,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V1,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   },
   {
@@ -192,6 +198,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V1,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   },
   {
@@ -215,6 +222,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V1,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   },
   {
@@ -238,6 +246,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V1,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   },
   {
@@ -261,6 +270,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V1,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   },
   {
@@ -284,6 +294,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V1,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   },
   {
@@ -307,6 +318,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V2,
     doubleRewards: true,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: AURORA[ChainId.AURORA]
   },
   {
@@ -330,6 +342,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V2,
     doubleRewards: true,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: AURORA[ChainId.AURORA]
   },
   {
@@ -353,6 +366,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V2,
     doubleRewards: true,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: LUNA[ChainId.AURORA]
   },
   {
@@ -376,6 +390,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V2,
     doubleRewards: true,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: LUNA[ChainId.AURORA]
   },
   {
@@ -399,6 +414,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V2,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   },
   {
@@ -422,6 +438,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V2,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   },
   {
@@ -445,6 +462,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V2,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   },
   {
@@ -468,6 +486,7 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V2,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   },
   {
@@ -491,9 +510,33 @@ const AURORA_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V2,
     doubleRewards: true,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: FLX[ChainId.AURORA]
   },
-
+  {
+    ID: 16,
+    poolId: 9,
+    tokens: [WNEAR[ChainId.AURORA], MECHA[ChainId.AURORA]],
+    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
+    lpAddress: '0xd62f9ec4C4d323A0C111d5e78b77eA33A2AA862f',
+    rewarderAddress: '0x9847F7e33CCbC0542b05d15c5cf3aE2Ae092C057',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    doubleRewardAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: 1,
+    rewardRate: dummyAmount,
+    apr: 0,
+    apr2: 0,
+    chefVersion: ChefVersions.V2,
+    doubleRewards: false,
+    inStaging: true,
+    noTriRewards: true,
+    doubleRewardToken: MECHA[ChainId.AURORA]
+  }
 ]
 
 const NULL_POOLS: StakingTri[] = [
@@ -521,6 +564,7 @@ const NULL_POOLS: StakingTri[] = [
     chefVersion: ChefVersions.V1,
     doubleRewards: false,
     inStaging: false,
+    noTriRewards: false,
     doubleRewardToken: dummyToken
   }
 ]

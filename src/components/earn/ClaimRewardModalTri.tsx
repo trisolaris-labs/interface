@@ -35,6 +35,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
   const chefVersion = stakingInfo.chefVersion
   const doubleRewardsOn = stakingInfo.doubleRewards
   const doubleRewardToken = stakingInfo.doubleRewardToken
+  const noTriRewards = stakingInfo.noTriRewards
 
   function wrappedOnDismiss() {
     setHash(undefined)
@@ -105,7 +106,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
               <TYPE.body>{t('earn.unclaimed')}</TYPE.body>
             </AutoColumn>
           )}
-          {chefVersion == 1 && doubleRewardsOn && (
+          {chefVersion == 1 && (doubleRewardsOn || noTriRewards) && (
             <AutoColumn justify="center" gap="md">
               <TYPE.body fontWeight={600} fontSize={36}>
                 {stakingInfo?.doubleRewardAmount?.toSignificant(6)}
@@ -127,6 +128,11 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
             <TYPE.body fontSize={20}>
               {t('earn.claimingPng', { amount: stakingInfo?.earnedAmount?.toSignificant(6) })}
             </TYPE.body>
+            {chefVersion == 1 && (doubleRewardsOn || noTriRewards) && (
+              <TYPE.body fontSize={20}>
+                {'Claiming'} {stakingInfo?.doubleRewardAmount?.toSignificant(4)} {doubleRewardToken.symbol}
+              </TYPE.body>
+            )}
           </AutoColumn>
         </LoadingView>
       )}
