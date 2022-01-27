@@ -15,6 +15,7 @@ import Toggle from '../../components/Toggle'
 import { useFarms } from '../../state/stake/apr'
 import { StakingTri } from '../../state/stake/stake-constants'
 import { useIsFilterActiveFarms, useToggleFilterActiveFarms } from '../../state/user/hooks'
+import { useMultipleUserFarms } from '../../state/stake/useMultipleUserFarms'
 
 import { TYPE } from '../../theme'
 import { isTokenAmountPositive } from '../../utils/pools'
@@ -29,7 +30,6 @@ import {
   StyledSortOption,
   StyledArrowContainer
 } from './EarnTri.styles'
-import { TokenAmount } from '@trisolaris/sdk'
 
 enum SortingType {
   liquidity = 'Liquidity',
@@ -52,6 +52,8 @@ export default function Earn({
 }: RouteComponentProps<{ version: string }>) {
   const { t } = useTranslation()
   const allFarmArrs = useFarms()
+  const userFarms = allFarmArrs.filter(farm => isTokenAmountPositive(farm.stakedAmount)).map(farm => farm.ID)
+  useMultipleUserFarms(userFarms)
 
   const toggleActiveFarms = useToggleFilterActiveFarms()
   const activeFarmsFilter = useIsFilterActiveFarms()
