@@ -257,6 +257,21 @@ const ButtonErrorStyle = styled(Base)`
   }
 `
 
+export const ButtonGold = styled(Base)`
+  background-color: ${({ theme }) => theme.metallicGold};
+  &:focus {
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.gold)};
+    background-color: ${({ theme }) => darken(0.05, theme.gold)};
+  }
+  &:hover {
+    background-color: ${({ theme }) => darken(0.05, theme.gold)};
+  }
+  &:active {
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.gold)};
+    background-color: ${({ theme }) => darken(0.1, theme.gold)};
+  }
+`
+
 export function ButtonConfirmed({
   confirmed,
   altDisabledStyle,

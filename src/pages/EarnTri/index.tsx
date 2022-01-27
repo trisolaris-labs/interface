@@ -29,6 +29,7 @@ import {
   StyledSortOption,
   StyledArrowContainer
 } from './EarnTri.styles'
+import { TokenAmount } from '@trisolaris/sdk'
 
 enum SortingType {
   liquidity = 'Liquidity',
@@ -175,7 +176,6 @@ export default function Earn({
                   apr2={farm.apr2}
                   chefVersion={farm.chefVersion}
                   isPeriodFinished={farm.isPeriodFinished}
-                  stakedAmount={farm.stakedAmount}
                   token0={farm.tokens[0]}
                   token1={farm.tokens[1]}
                   totalStakedInUSD={farm.totalStakedInUSD}
@@ -184,6 +184,7 @@ export default function Earn({
                   inStaging={farm.inStaging}
                   noTriRewards={farm.noTriRewards}
                   doubleRewardToken={farm.doubleRewardToken}
+                  isStaking={isTokenAmountPositive(farm.stakedAmount)}
                 />
               ))}
             </PoolSection>
@@ -205,7 +206,6 @@ export default function Earn({
               apr2={farm.apr2}
               chefVersion={farm.chefVersion}
               isPeriodFinished={farm.isPeriodFinished}
-              stakedAmount={farm.stakedAmount}
               token0={farm.tokens[0]}
               token1={farm.tokens[1]}
               totalStakedInUSD={farm.totalStakedInUSD}
@@ -214,11 +214,12 @@ export default function Earn({
               inStaging={farm.inStaging}
               noTriRewards={farm.noTriRewards}
               doubleRewardToken={farm.doubleRewardToken}
+              isStaking={isTokenAmountPositive(farm.stakedAmount)}
             />
           ))}
         </PoolSection>
       </AutoColumn>
-       <AutoColumn gap="lg" style={{ width: '100%' }}>
+      <AutoColumn gap="lg" style={{ width: '100%' }}>
         {!searchQuery.length && !activeFarmsFilter && (
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Ecosystem Pools</TYPE.mediumHeader>
@@ -233,7 +234,6 @@ export default function Earn({
               apr2={farm.apr2}
               chefVersion={farm.chefVersion}
               isPeriodFinished={farm.isPeriodFinished}
-              stakedAmount={farm.stakedAmount}
               token0={farm.tokens[0]}
               token1={farm.tokens[1]}
               totalStakedInUSD={farm.totalStakedInUSD}
@@ -242,6 +242,7 @@ export default function Earn({
               inStaging={farm.inStaging}
               noTriRewards={farm.noTriRewards}
               doubleRewardToken={farm.doubleRewardToken}
+              isStaking={isTokenAmountPositive(farm.stakedAmount)}
             />
           ))}
         </PoolSection>
@@ -260,7 +261,6 @@ export default function Earn({
                 chefVersion={farm.chefVersion}
                 isLegacy={true}
                 isPeriodFinished={farm.isPeriodFinished}
-                stakedAmount={farm.stakedAmount}
                 token0={farm.tokens[0]}
                 token1={farm.tokens[1]}
                 totalStakedInUSD={farm.totalStakedInUSD}
@@ -269,6 +269,7 @@ export default function Earn({
                 inStaging={farm.inStaging}
                 noTriRewards={farm.noTriRewards}
                 doubleRewardToken={farm.doubleRewardToken}
+                isStaking={isTokenAmountPositive(farm.stakedAmount)}
               />
             ))}
           </PoolSection>

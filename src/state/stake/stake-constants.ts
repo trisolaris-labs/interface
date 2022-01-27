@@ -536,8 +536,7 @@ const AURORA_POOLS: StakingTri[] = [
     inStaging: true,
     noTriRewards: true,
     doubleRewardToken: MECHA[ChainId.AURORA]
-  },
-
+  }
 ]
 
 const NULL_POOLS: StakingTri[] = [

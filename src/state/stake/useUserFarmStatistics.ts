@@ -3,6 +3,8 @@ import { useTotalStakedInPool } from '../../data/TotalStakedInPool'
 import { ChefVersions } from './stake-constants'
 import { addCommasToNumber } from '../../utils'
 
+import { BIG_INT_ZERO } from '../../constants'
+
 type Props = {
   lpToken?: Token
   userLPStakedAmount?: TokenAmount | null
@@ -18,7 +20,7 @@ export default function useUserFarmStatistics({ lpToken, userLPStakedAmount, tot
     lpToken == null ||
     userLPStakedAmount == null ||
     totalPoolAmountUSD == null ||
-    userLPStakedAmount.equalTo(JSBI.BigInt(0))
+    userLPStakedAmount.equalTo(BIG_INT_ZERO)
   ) {
     return null
   }

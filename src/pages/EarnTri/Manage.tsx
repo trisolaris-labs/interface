@@ -31,6 +31,8 @@ import CountUp from '../../components/CountUp'
 import useTLP from '../../hooks/useTLP'
 import { getPairRenderOrder } from '../../utils/pools'
 
+import { BIG_INT_ZERO } from '../../constants'
+
 const PositionInfo = styled(AutoColumn)<{ dim: any }>`
   position: relative;
   width: 100%;
@@ -102,8 +104,6 @@ const DataRow = styled(RowBetween)`
    `};
 `
 
-const ZERO = JSBI.BigInt(0)
-
 export default function Manage({
   match: {
     params: { currencyIdA, currencyIdB, version }
@@ -149,7 +149,7 @@ export default function Manage({
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
   // fade cards if nothing staked or nothing earned yet
-  const disableTop = !stakedAmount || stakedAmount.equalTo(ZERO)
+  const disableTop = !stakedAmount || stakedAmount.equalTo(BIG_INT_ZERO)
 
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
@@ -195,15 +195,15 @@ export default function Manage({
         <PoolData>
           <AutoColumn gap="sm">
             <TYPE.subHeader>{t('earnPage.poolRate')}</TYPE.subHeader>
-             {noTriRewards ? (
-            <TYPE.body fontSize={24} fontWeight={500}>
-              Non TRI Pool
-            </TYPE.body>
-             ) : 
-             <TYPE.body fontSize={24} fontWeight={500}>
-              {`${totalRewardRateFriendly}` + t('earnPage.triPerWeek')}
-            </TYPE.body>
-             }
+            {noTriRewards ? (
+              <TYPE.body fontSize={24} fontWeight={500}>
+                Non TRI Pool
+              </TYPE.body>
+            ) : (
+              <TYPE.body fontSize={24} fontWeight={500}>
+                {`${totalRewardRateFriendly}` + t('earnPage.triPerWeek')}
+              </TYPE.body>
+            )}
           </AutoColumn>
         </PoolData>
       </DataRow>
@@ -289,12 +289,10 @@ export default function Manage({
               </AutoColumn>
             </CardSection>
           </Wrapper>
-          <StyledBottomCard dim={stakedAmount?.equalTo(ZERO)}>
+          <StyledBottomCard dim={stakedAmount?.equalTo(BIG_INT_ZERO)}>
             <AutoColumn gap="sm">
               <RowBetween>
-               {!noTriRewards ? (
-                 <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
-                ) : null}
+                {!noTriRewards ? <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black> : null}
                 {(isDualRewards && doubleRewards) || noTriRewards ? (
                   <TYPE.black>
                     {t('earnPage.unclaimed')} {doubleRewardToken.symbol}
@@ -302,18 +300,18 @@ export default function Manage({
                 ) : null}
               </RowBetween>
               <RowBetween style={{ alignItems: 'baseline' }}>
-              {!noTriRewards ? (
-                <TYPE.largeHeader fontSize={36} fontWeight={600}>
-                  <CountUp
-                    enabled={earnedAmount?.greaterThan(ZERO)}
-                    value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
-                  />
-                </TYPE.largeHeader>
-               ) : null}
+                {!noTriRewards ? (
+                  <TYPE.largeHeader fontSize={36} fontWeight={600}>
+                    <CountUp
+                      enabled={earnedAmount?.greaterThan(BIG_INT_ZERO)}
+                      value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
+                    />
+                  </TYPE.largeHeader>
+                ) : null}
                 {(isDualRewards && doubleRewards) || noTriRewards ? (
                   <TYPE.largeHeader fontSize={36} fontWeight={600}>
                     <CountUp
-                      enabled={doubleRewardAmount?.greaterThan(ZERO)}
+                      enabled={doubleRewardAmount?.greaterThan(BIG_INT_ZERO)}
                       value={parseFloat(doubleRewardAmount?.toFixed(6) ?? '0')}
                     />
                   </TYPE.largeHeader>
@@ -327,7 +325,7 @@ export default function Manage({
           <DataRow style={{ marginBottom: '1rem' }}>
             <ButtonPrimary
               borderRadius="8px"
-              disabled={userLiquidityUnstaked == null || userLiquidityUnstaked?.equalTo(ZERO)}
+              disabled={userLiquidityUnstaked == null || userLiquidityUnstaked?.equalTo(BIG_INT_ZERO)}
               width="160px"
               padding="8px"
               onClick={handleDepositClick}
@@ -336,7 +334,7 @@ export default function Manage({
             </ButtonPrimary>
 
             <ButtonPrimary
-              disabled={stakedAmount == null || stakedAmount?.equalTo(ZERO)}
+              disabled={stakedAmount == null || stakedAmount?.equalTo(BIG_INT_ZERO)}
               padding="8px"
               borderRadius="8px"
               width="160px"
@@ -346,7 +344,10 @@ export default function Manage({
             </ButtonPrimary>
 
             <ButtonPrimary
-              disabled={earnedAmount == null || (earnedAmount?.equalTo(ZERO) && doubleRewardAmount?.equalTo(ZERO))}
+              disabled={
+                earnedAmount == null ||
+                (earnedAmount?.equalTo(BIG_INT_ZERO) && doubleRewardAmount?.equalTo(BIG_INT_ZERO))
+              }
               padding="8px"
               borderRadius="8px"
               width="160px"
@@ -357,7 +358,7 @@ export default function Manage({
           </DataRow>
         ) : null}
 
-        {userLiquidityUnstaked?.greaterThan(ZERO) ? (
+        {userLiquidityUnstaked?.greaterThan(BIG_INT_ZERO) ? (
           <TYPE.main>
             {userLiquidityUnstaked.toSignificant(6)} {t('earnPage.pglTokenAvailable')}
           </TYPE.main>

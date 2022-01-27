@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { DarkGreyCard, LightCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import Row, { RowBetween } from '../../components/Row'
-import { TRI, XTRI } from '../../constants'
+import { TRI, XTRI, BIG_INT_ZERO } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { tryParseAmount } from '../../state/swap/hooks'
@@ -22,8 +22,6 @@ import { Dots } from '../../components/swap/styleds'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import StakingAPRCard from './StakingAPRCard'
 import { PageWrapper } from '../../components/Page'
-
-const ZERO = JSBI.BigInt(0)
 
 const DataRow = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -128,7 +126,7 @@ export default function StakeTri() {
 
   function renderStakeButton() {
     // If account balance is less than inputted amount
-    const insufficientFunds = (balance?.equalTo(ZERO) ?? false) || parsedAmount?.greaterThan(balance)
+    const insufficientFunds = (balance?.equalTo(BIG_INT_ZERO) ?? false) || parsedAmount?.greaterThan(balance)
     if (insufficientFunds) {
       return (
         <ButtonError error={true} disabled={true}>
@@ -141,7 +139,7 @@ export default function StakeTri() {
       // If user is unstaking, we don't need to check approval status
       (isStaking ? approvalState === ApprovalState.APPROVED : true) &&
       !pendingTx &&
-      parsedAmount?.greaterThan(ZERO) === true
+      parsedAmount?.greaterThan(BIG_INT_ZERO) === true
 
     return (
       <ButtonPrimary disabled={!isValid} onClick={handleStake}>

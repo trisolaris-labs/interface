@@ -1,54 +1,35 @@
-import React from 'react'
-import { AutoColumn } from '../Column'
-import styled from 'styled-components'
+import React, { useState } from 'react'
+import { Token } from '@trisolaris/sdk'
+import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
+
 import { TYPE } from '../../theme'
+import { AutoColumn } from '../Column'
 import DoubleCurrencyLogo from '../DoubleLogo'
-import { Token, TokenAmount } from '@trisolaris/sdk'
-import { ButtonPrimary } from '../Button'
+import { ButtonGold } from '../Button'
 import { AutoRow, RowBetween } from '../Row'
+import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
+
 import { ChefVersions } from '../../state/stake/stake-constants'
+import { useSingleFarm } from '../../state/stake/user-farms'
 import { useColorForToken } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
-import { useTranslation } from 'react-i18next'
-import Card from '../Card'
-import { useHistory } from 'react-router-dom'
 import { addCommasToNumber } from '../../utils'
-import { lighten } from 'polished'
-import { TokenPairBackgroundColor } from './styled'
-import { getPairRenderOrder, isTokenAmountPositive } from '../../utils/pools'
+import { getPairRenderOrder } from '../../utils/pools'
 
-const Wrapper = styled(Card)<{ bgColor1: string | null; bgColor2?: string | null; isDoubleRewards: boolean }>`
-  border: ${({ isDoubleRewards, theme }) =>
-    isDoubleRewards ? `1px solid ${theme.primary1}` : `1px solid ${theme.bg3};`};
-  border-radius: 10px;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 12px;
-  box-shadow: ${({ isDoubleRewards, theme }) =>
-    isDoubleRewards ? `0px 0px 8px 5px ${theme.primary1}` : `0 2px 8px 0 ${theme.bg3}`};
-  position: relative;
+import { BIG_INT_ZERO } from '../../constants'
+import { Settings2 as ManageIcon } from 'lucide-react'
 
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-        grid-template-rows: auto 1fr;
-        padding: .75rem;
-  `};
-`
+import {
+  Wrapper,
+  PairContainer,
+  ResponsiveCurrencyLabel,
+  TokenPairBackgroundColor,
+  StyledActionsContainer,
+  Button
+} from './PoolCardTri.styles'
 
-const PairContainer = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const ResponsiveCurrencyLabel = styled(TYPE.white)`
-  font-size: 20 !important;
-  margin-left: 0.5rem !important;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-        font-size: 14 !important;
-    `};
-`
-
-type Props = {
+type PoolCardTriProps = {
   apr: number
   apr2: number
   doubleRewards: boolean
@@ -57,34 +38,15 @@ type Props = {
   noTriRewards: boolean
   isLegacy?: boolean
   isPeriodFinished: boolean
-  stakedAmount: TokenAmount | null
   token0: Token
   token1: Token
   totalStakedInUSD: number
-  version: number
   doubleRewardToken: Token
+  isStaking: boolean
+  version: number
 }
 
-const Button = styled(ButtonPrimary)<{ isStaking: boolean }>`
-  background: ${({ isStaking, theme }) => (isStaking ? theme.black : theme.primary1)};
-  padding: 8px;
-  border-radius: 10px;
-  max-width: 80px;
-  ${({ isStaking, theme }) =>
-    isStaking &&
-    `
-        &:focus, &:hover, &:active {
-            background-color: ${lighten(0.12, theme.black)};
-        }
-  `}
-
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-        padding: 4px;
-        border-radius: 5px;
-    `};
-`
-
-export default function PoolCardTRI({
+const DefaultPoolCardtri = ({
   apr,
   apr2,
   chefVersion,
@@ -93,28 +55,49 @@ export default function PoolCardTRI({
   noTriRewards,
   isLegacy,
   isPeriodFinished,
-  stakedAmount,
   token0: _token0,
   token1: _token1,
   totalStakedInUSD,
+  doubleRewardToken,
+  isStaking,
   version,
-  doubleRewardToken
-}: Props) {
+  enableClaimButton = false,
+  enableModal = () => null
+}: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
+  const isDualRewards = chefVersion == 1
+
   const { currency0, currency1, token0, token1 } = getPairRenderOrder(_token0, _token1)
 
   const { t } = useTranslation()
-  const isStaking = isTokenAmountPositive(stakedAmount)
-
-  const history = useHistory()
-  const isDualRewards = chefVersion == 1
-
   // get the color of the token
   const backgroundColor1 = useColorForToken(token0)
 
   // Only override `backgroundColor2` if it's a dual rewards pool
   const backgroundColor2 = useColorForToken(token1, () => isDualRewards)
 
+  const history = useHistory()
+
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
+
+  function renderManageOrDepositButton() {
+    const sharedProps = {
+      marginLeft: '0.5rem',
+      onClick: () => {
+        history.push(`/tri/${currencyId(currency0)}/${currencyId(currency1)}/${version}`)
+      }
+    }
+
+    return isStaking ? (
+      <Button isStaking={true} {...sharedProps}>
+        <ManageIcon size={20} />
+      </Button>
+    ) : (
+      <Button disabled={isPeriodFinished} isStaking={false} {...sharedProps}>
+        {t('earn.deposit')}
+      </Button>
+    )
+  }
+
   return (
     <Wrapper bgColor1={backgroundColor1} bgColor2={backgroundColor2} isDoubleRewards={doubleRewards}>
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
@@ -130,15 +113,14 @@ export default function PoolCardTRI({
             {t('earn.deposit')}
           </Button>
         ) : (
-          <Button
-            disabled={(isStaking || !isPeriodFinished) === false}
-            isStaking={isStaking}
-            onClick={() => {
-              history.push(`/tri/${currencyId(currency0)}/${currencyId(currency1)}/${version}`)
-            }}
-          >
-            {isStaking ? t('earn.manage') : t('earn.deposit')}
-          </Button>
+          <StyledActionsContainer>
+            {enableClaimButton && (
+              <ButtonGold padding="8px" borderRadius="8px" maxWidth="65px" onClick={enableModal}>
+                Claim
+              </ButtonGold>
+            )}
+            {renderManageOrDepositButton()}
+          </StyledActionsContainer>
         )}
       </AutoRow>
 
@@ -163,3 +145,34 @@ export default function PoolCardTRI({
     </Wrapper>
   )
 }
+
+const StakingPoolCardTRI = (props: PoolCardTriProps) => {
+  const { version } = props
+
+  const stakingInfo = useSingleFarm(Number(version))
+  const { earnedAmount } = stakingInfo
+
+  const amountIsClaimable = (earnedAmount?.greaterThan(BIG_INT_ZERO) ?? false) === true
+  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
+
+  const enableModal = () => setShowClaimRewardModal(true)
+  return (
+    <>
+      {showClaimRewardModal && stakingInfo && (
+        <ClaimRewardModal
+          isOpen={showClaimRewardModal}
+          onDismiss={() => setShowClaimRewardModal(false)}
+          stakingInfo={stakingInfo}
+        />
+      )}
+      <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+    </>
+  )
+}
+
+const PoolCardTRI = (props: PoolCardTriProps) => {
+  const { isStaking } = props
+  return isStaking ? <StakingPoolCardTRI {...props} /> : <DefaultPoolCardtri {...props}></DefaultPoolCardtri>
+}
+
+export default PoolCardTRI

@@ -127,9 +127,9 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.body fontSize={20}>
               {t('earn.claimingPng', { amount: stakingInfo?.earnedAmount?.toSignificant(6) })}
-            </TYPE.body>            
+            </TYPE.body>
             {chefVersion == 1 && (doubleRewardsOn || noTriRewards) && (
-             <TYPE.body fontSize={20}>
+              <TYPE.body fontSize={20}>
                 {'Claiming'} {stakingInfo?.doubleRewardAmount?.toSignificant(4)} {doubleRewardToken.symbol}
               </TYPE.body>
             )}
