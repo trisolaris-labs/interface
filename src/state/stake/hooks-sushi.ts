@@ -163,3 +163,42 @@ export function useInfiniteScroll(items: any[]): [number, Dispatch<number>] {
   useEffect(() => setItemsDisplayed(10), [items.length])
   return [itemsDisplayed, setItemsDisplayed]
 }
+
+export function getMultipleContracts(
+  addressList: string[],
+  ABI: any,
+  library: Web3Provider,
+  account?: string
+): Contract[] {
+  const invalidAddress = addressList.find(address => !isAddress(address) || address === AddressZero)
+  if (invalidAddress) {
+    throw Error(`Invalid 'address' parameter '${invalidAddress}'.`)
+  }
+  const contracts = addressList.map(address => new Contract(address, ABI, getProviderOrSigner(library, account) as any))
+  return contracts
+}
+
+export function useMultipleContracts(
+  addressList: string[] | undefined,
+  ABI: any,
+  withSignerIfPossible = true
+): Contract[] | null {
+  const { library, account } = useActiveWeb3React()
+
+  return useMemo(() => {
+    if (!addressList || !addressList.length || !ABI || !library) return null
+    try {
+      return getMultipleContracts(addressList, ABI, library, withSignerIfPossible && account ? account : undefined)
+    } catch (error) {
+      console.error('Failed to get contract', error)
+      return null
+    }
+  }, [addressList, ABI, library, withSignerIfPossible, account])
+}
+
+export function useComplexRewarderMultipleContracts(
+  addressList: string[] | undefined,
+  withSignerIfPossible?: boolean
+): Contract[] | null {
+  return useMultipleContracts(addressList, COMPLEX_REWARDER_ABI, withSignerIfPossible)
+}
