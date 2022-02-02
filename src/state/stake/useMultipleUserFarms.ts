@@ -26,36 +26,40 @@ export function useMultipleUserFarms(farmsVersions: number[]): null {
       chefVersion: farm.chefVersion,
       poolId: farm.poolId,
       rewarderAddress: farm.rewarderAddress,
-      v1args: [farm.poolId.toString(), account?.toString()],
-      v2args: [farm.poolId.toString(), account?.toString(), '0']
+      v1args: [farm.poolId.toString(), account?.toString()]
     }))
 
   // for complex rewards
-  const rewarderAddressList = filteredFarms.map(farm => farm.rewarderAddress).filter(address => address)
+  const complexRewarderAddressList = filteredFarms.map(farm => farm.rewarderAddress).filter(address => address)
 
   const contract = useMasterChefV2ContractForVersion(1)
 
-  const complexRewarderContractList = useComplexRewarderMultipleContracts(rewarderAddressList)
+  const complexRewarderContractList = useComplexRewarderMultipleContracts(complexRewarderAddressList)
 
-  // const pendingComplexRewards = useSingleCallResult(
-  //   complexRewarderContractList ? complexRewarderContractList[0] : null,
-  //   'pendingTokens',
-  //   ['1', '0x85BD2E6Ab9D510C9c8a1B4B50B7Ace28528Bb385', '0']
-  // )
+  const complexRewardsContractAdressList =
+    complexRewarderContractList?.map(contract => (complexRewarderContractList ? contract?.address : undefined)) ?? []
 
-  // console.log(complexRewarderContractList)
   const pendingComplexRewardsTest = useMultipleContractSingleData(
-    [complexRewarderContractList ? complexRewarderContractList[0].address : undefined],
+    complexRewardsContractAdressList,
     new Interface(COMPLEX_REWARDER),
     'pendingTokens',
-    ['1', '0x85BD2E6Ab9D510C9c8a1B4B50B7Ace28528Bb385', '0']
+    [0, account?.toString(), '0']
   )
 
-  console.log(pendingComplexRewardsTest)
+  // console.log(pendingComplexRewardsTest)
+  
+  const earnedComplexRewardPool =
+    pendingComplexRewardsTest.length && !pendingComplexRewardsTest.some(data => data?.loading === true)
+      ? pendingComplexRewardsTest.map(farmData => JSBI.BigInt(farmData?.result?.rewardAmounts?.[0] ?? 0))
+      : null
 
-  // const earnedComplexRewardPool = JSBI.BigInt(pendingComplexRewards.result?.rewardAmounts?.[0] ?? 0)
-  // const earnedComplexAmount = new TokenAmount(AURORA[ChainId.AURORA], JSBI.BigInt(earnedComplexRewardPool))
-  // console.log(earnedComplexAmount.currency.symbol, earnedComplexAmount.toFixed(6))
+  const allEarnedComplexTokenAmounts = earnedComplexRewardPool?.map(poolReward =>
+    new TokenAmount(AURORA[ChainId.AURORA], JSBI.BigInt(poolReward)).toFixed(6)
+  )
+
+  // console.log(allEarnedComplexTokenAmounts)
+  // TODO: Replace AURORA token for relevant double reward token on each result 
+
 
   const PendingTriData = useSingleContractMultipleData(
     farmsReady ? contract : null,
@@ -70,6 +74,7 @@ export function useMultipleUserFarms(farmsVersions: number[]): null {
   const allEarnedTriAmounts = earnedRewardPool
     ?.map(poolReward => new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(poolReward)))
     .reduce((a: TokenAmount, b) => a.add(b))
+
 
   return null
 }
