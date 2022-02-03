@@ -2,7 +2,7 @@
 
 import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from '@trisolaris/sdk'
 import { useMemo } from 'react'
-import { DAI } from '../constants'
+import { DAI, BIG_INT_ZERO } from '../constants'
 import { PairState, usePairs } from '../data/Reserves'
 import { useActiveWeb3React } from '../hooks'
 import { wrappedCurrency } from './wrappedCurrency'
@@ -50,7 +50,7 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
     const avaxPairAVAXUSDCValue: JSBI =
       avaxPairAVAXAmount && usdcAvaxPair
         ? usdcAvaxPair.priceOf(WETH[chainId]).quote(avaxPairAVAXAmount).raw
-        : JSBI.BigInt(0)
+        : BIG_INT_ZERO
 
     // all other tokens
     // first try the usdc pair

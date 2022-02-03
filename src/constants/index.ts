@@ -213,7 +213,6 @@ export const MECHA: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0xa33C3B53694419824722C10D99ad7cB16Ea62754', 18, 'MECHA', 'Mecha')
 }
 
-
 export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: ZERO_ADDRESS,
   [ChainId.AVALANCHE]: '0x0C58C2041da4CfCcF5818Bbe3b66DBC23B3902d9',
@@ -401,7 +400,7 @@ export const PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN: Percent = new Percent(JSBI.Bi
 export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(1500), BIPS_BASE) // 15%
 
 // remove the min eth condition
-export const MIN_ETH: JSBI = JSBI.BigInt(0) // 0 ETH
+
 export const BETTER_TRADE_LINK_THRESHOLD = new Percent(JSBI.BigInt(75), JSBI.BigInt(10000))
 
 export const WYRE_API_KEY = process.env.REACT_APP_WYRE_API_KEY ? process.env.REACT_APP_WYRE_API_KEY : ''

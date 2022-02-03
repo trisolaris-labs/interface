@@ -4,7 +4,7 @@ import { useAirdropContract } from '../../hooks/useContract'
 import { calculateGasMargin } from '../../utils'
 import { useTransactionAdder } from '../transactions/hooks'
 import { TokenAmount, JSBI } from '@trisolaris/sdk'
-import { PNG } from './../../constants/index'
+import { PNG, BIG_INT_ZERO } from './../../constants'
 import { useSingleCallResult } from '../multicall/hooks'
 
 export function useAirdropIsClaimingAllowed(): boolean {
@@ -24,7 +24,7 @@ export function useUserHasAvailableClaim(account: string | null | undefined): bo
     account &&
       !withdrawAmountResult.loading &&
       withdrawAmountResult.result != undefined &&
-      !JSBI.equal(JSBI.BigInt(withdrawAmountResult.result?.[0]), JSBI.BigInt(0))
+      !JSBI.equal(JSBI.BigInt(withdrawAmountResult.result?.[0]), BIG_INT_ZERO)
   )
 }
 
@@ -38,7 +38,7 @@ export function useUserUnclaimedAmount(account: string | null | undefined): Toke
   const png = chainId ? PNG[chainId] : undefined
   if (!png) return undefined
   if (!canClaim) {
-    return new TokenAmount(png, JSBI.BigInt(0))
+    return new TokenAmount(png, BIG_INT_ZERO)
   }
   return new TokenAmount(png, JSBI.BigInt(withdrawAmountResult.result?.[0]))
 }

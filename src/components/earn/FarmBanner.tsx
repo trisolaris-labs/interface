@@ -9,7 +9,7 @@ import { useFarms } from '../../state/stake/apr'
 import { addCommasToNumber } from '../../utils'
 import { JSBI } from '@trisolaris/sdk'
 
-const ZERO = JSBI.BigInt(0)
+import { BIG_INT_ZERO } from '../../constants'
 
 const StyledCard = styled(Card)`
   background: ${({ theme }) => `radial-gradient(farthest-corner at 0% 0%, ${theme.primary1} 0%, transparent 70%)`};
@@ -36,8 +36,8 @@ const IconContainer = styled.div`
 `
 
 export default function FarmBanner() {
-  const farmTVL = useFarms().reduce((acc, farm) => JSBI.add(acc, JSBI.BigInt(farm.totalStakedInUSD)), ZERO)
-  const farmTVLFriendly = JSBI.GE(farmTVL, ZERO) ? `$${addCommasToNumber(farmTVL.toString())}` : '-'
+  const farmTVL = useFarms().reduce((acc, farm) => JSBI.add(acc, JSBI.BigInt(farm.totalStakedInUSD)), BIG_INT_ZERO)
+  const farmTVLFriendly = JSBI.GE(farmTVL, BIG_INT_ZERO) ? `$${addCommasToNumber(farmTVL.toString())}` : '-'
 
   return (
     <StyledCard>

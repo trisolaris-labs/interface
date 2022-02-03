@@ -13,7 +13,7 @@ import { TYPE } from '../../theme'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { ButtonPrimary, ButtonEmpty } from '../Button'
-import { TokenPairBackgroundColor } from '../earn/styled'
+import { TokenPairBackgroundColor } from '../earn/PoolCardTri.styles'
 
 import { useColorWithDefault } from '../../hooks/useColor'
 
@@ -25,6 +25,8 @@ import { RowBetween, RowFixed } from '../Row'
 import { Dots } from '../swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { getPairRenderOrder } from '../../utils/pools'
+
+import { BIG_INT_ZERO } from '../../constants'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -84,7 +86,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
 
   return (
     <>
-      {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, JSBI.BigInt(0)) ? (
+      {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, BIG_INT_ZERO) ? (
         <GreyCard border={border}>
           <AutoColumn gap="12px">
             <FixedHeightRow>

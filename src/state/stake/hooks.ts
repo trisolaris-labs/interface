@@ -1,6 +1,6 @@
 import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WETH, Pair } from '@trisolaris/sdk'
 import { useMemo } from 'react'
-import { USDT, WBTC, PNG } from '../../constants'
+import { USDT, WBTC, PNG, BIG_INT_ZERO } from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
@@ -106,8 +106,8 @@ const calculateTotalStakedAmountInAvaxFromPng = function(
   avaxPngPairReserveOfWavax: JSBI,
   reserveInPng: JSBI
 ): TokenAmount {
-  if (JSBI.EQ(amountAvailable, JSBI.BigInt(0))) {
-    return new TokenAmount(WETH[ChainId.AVALANCHE], JSBI.BigInt(0))
+  if (JSBI.EQ(amountAvailable, BIG_INT_ZERO)) {
+    return new TokenAmount(WETH[ChainId.AVALANCHE], BIG_INT_ZERO)
   }
 
   const oneToken = JSBI.BigInt(1000000000000000000)
@@ -144,7 +144,7 @@ const calculateTotalStakedAmountInAvax = function(
       )
     )
   } else {
-    return new TokenAmount(WETH[ChainId.AVALANCHE], JSBI.BigInt(0))
+    return new TokenAmount(WETH[ChainId.AVALANCHE], BIG_INT_ZERO)
   }
 }
 
