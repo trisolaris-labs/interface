@@ -106,7 +106,7 @@ function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): C
   )
 }
 
-interface CallState {
+export interface CallState {
   readonly valid: boolean
   // the result, or undefined if loading or errored/no data
   readonly result: Result | undefined
@@ -178,7 +178,6 @@ export function useSingleContractMultipleData(
         : [],
     [callInputs, contract, fragment]
   )
-
 
   const results = useCallsData(calls, options)
 

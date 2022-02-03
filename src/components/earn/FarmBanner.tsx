@@ -11,6 +11,8 @@ import { JSBI } from '@trisolaris/sdk'
 
 import { BIG_INT_ZERO } from '../../constants'
 
+import { useFarmsPortfolio } from '../../state/stake/useFarmsPortfolio'
+
 const StyledCard = styled(Card)`
   background: ${({ theme }) => `radial-gradient(farthest-corner at 0% 0%, ${theme.primary1} 0%, transparent 70%)`};
   padding-right: 0;
@@ -38,6 +40,8 @@ const IconContainer = styled.div`
 export default function FarmBanner() {
   const farmTVL = useFarms().reduce((acc, farm) => JSBI.add(acc, JSBI.BigInt(farm.totalStakedInUSD)), BIG_INT_ZERO)
   const farmTVLFriendly = JSBI.GE(farmTVL, BIG_INT_ZERO) ? `$${addCommasToNumber(farmTVL.toString())}` : '-'
+
+  const portfolio = useFarmsPortfolio()
 
   return (
     <StyledCard>
