@@ -1,6 +1,5 @@
 import { ChainId, Token } from '@trisolaris/sdk'
 
-// TODO: Maybe unneeded hook and replaced by helper function
 type Props = {
   lpAddress: string
   token0: Token

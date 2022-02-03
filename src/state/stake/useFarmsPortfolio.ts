@@ -1,16 +1,12 @@
-import { ChainId, JSBI, TokenAmount, Token } from '@trisolaris/sdk'
+import { ChainId, JSBI, TokenAmount } from '@trisolaris/sdk'
 import { Interface } from '@ethersproject/abi'
 
 import { useComplexRewarderMultipleContracts, useMasterChefV2ContractForVersion } from './hooks-sushi'
 import { useActiveWeb3React } from '../../hooks'
 import { useMultipleContractSingleData, useSingleContractMultipleData } from '../multicall/hooks'
-import { PairState, usePair } from '../../data/Reserves'
+import { PairState, usePairs } from '../../data/Reserves'
 import { useFetchStakingInfoData } from '../../fetchers/farms'
-import { useTotalStakedInPool } from '../../data/TotalStakedInPool'
-import { useSingleFarm } from '../../state/stake/user-farms'
-import useUserFarmStatistics from '../../state/stake/useUserFarmStatistics'
 
-import getTlpToken from '../../utils/getTlpToken'
 import { addCommasToNumber } from '../../utils'
 
 import COMPLEX_REWARDER from '../../constants/abis/complex-rewarder.json'
@@ -31,7 +27,7 @@ type FarmAmount = {
 type Result = {
   dualRewards: { token: string; amount: string; address: string }[]
   triRewards: TokenAmount
-  triRewardsdFriendly: string
+  triRewardsFriendlyAmount: string
 } | null
 
 export function useFarmsPortfolio(farmIds?: number[]): Result {
@@ -175,16 +171,16 @@ export function useFarmsPortfolio(farmIds?: number[]): Result {
     farmsReady ? v2Farms.map(farm => farm.v1args) : []
   )
 
-  const tokens = activeFarms.find(({ ID }) => ID === v2Farms[1].farmId)?.tokens
-  const [tokenA, tokenB] = tokens ?? []
-  const [pairState, pair] = usePair(tokenA, tokenB)
+  const allUserInfo = [...userInfoV1, ...userInfoV2]
 
-  const lpToken = getTlpToken('0xd1654a7713617d41A8C9530Fb9B948d00e162194', tokenA ?? dummyToken, tokenB ?? dummyToken)
+  console.log(allUserInfo)
 
-  const totalStakedInPool = useTotalStakedInPool(lpToken, ChefVersions.V2)
+  // const tokens = activeFarms.find(({ ID }) => ID === v2Farms[1].farmId)?.tokens
+  const tokens = activeFarms.map(farm => farm.tokens)
+  const pairsResult = usePairs(tokens)
 
   // Loading
-  if (complexRewardsLoading || pendingTriLoading || pairState === PairState.LOADING) return null
+  if (complexRewardsLoading || pendingTriLoading || pairsResult.some(pair => pair[0] === PairState.LOADING)) return null
 
   // Error
   if (
@@ -193,28 +189,45 @@ export function useFarmsPortfolio(farmIds?: number[]): Result {
     callResultError(pendingComplexRewards) ||
     callResultError(pendingTriDataV1) ||
     callResultError(pendingTriDataV2) ||
-    pair == null ||
-    tokenA == null ||
-    tokenB == null ||
-    totalStakedInPool == null ||
-    !stakingInfoData
+    !stakingInfoData ||
+    pairsResult.some(pair => pair[1] === null)
+    // tokenA == null ||
+    // tokenB == null ||
   ) {
     console.error('Failed to load staking rewards info')
     return null
   }
 
-  const { totalStakedInUSD, lpAddress } = stakingInfoData[8]
+  // const v2StakingInfo = stakingInfoData.filter(farm => farm.chefVersion === "v2")
+  // const v2test = v2StakingInfo.map(farmData => {
+  //   const userInfoPool = JSBI.BigInt(userInfoV2[farmData.id].result?.['amount'] ?? 0)
+  //   const totalStakedTokenAmount = new TokenAmount(dummyToken, JSBI.BigInt(farmData.totalStaked))
+  //   const stakedAmount = new TokenAmount(
+  //     pairsResult[farmData.id][1]?.liquidityToken ?? dummyToken,
+  //     JSBI.BigInt(userInfoPool)
+  //   )
+  //   const userLPShare = stakedAmount.divide(totalStakedTokenAmount)
+  //   const userLPAmountUSD = userLPShare?.multiply(JSBI.BigInt(Math.round(farmData.totalStakedInUSD)))
+  //   const userLPAmountUSDFormatted =
+  //     userLPAmountUSD != null ? `$${addCommasToNumber(userLPAmountUSD.toFixed(2))}` : null
+  //   return {
+  //     userLPAmountUSDFormatted
+  //   }
+  // })
 
-  const userInfoPool = JSBI.BigInt(userInfoV2[1].result?.['amount'] ?? 0)
-  const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
+  // console.log(v2test)
 
-  const userLPShare = stakedAmount.divide(totalStakedInPool)
-  const userLPAmountUSD = userLPShare?.multiply(JSBI.BigInt(Math.round(totalStakedInUSD)))
+  const userInfoPool = JSBI.BigInt(allUserInfo[8].result?.['amount'] ?? 0)
+  const stakedAmount = new TokenAmount(pairsResult[8][1]?.liquidityToken ?? dummyToken, JSBI.BigInt(userInfoPool))
+  const totalStakedTokenAmount = new TokenAmount(dummyToken, JSBI.BigInt(stakingInfoData[8].totalStaked))
+  const userLPShare = stakedAmount.divide(totalStakedTokenAmount)
+  const userLPAmountUSD = userLPShare?.multiply(JSBI.BigInt(Math.round(stakingInfoData[8].totalStakedInUSD)))
   const userLPAmountUSDFormatted = userLPAmountUSD != null ? `$${addCommasToNumber(userLPAmountUSD.toFixed(2))}` : null
+  console.log(userLPAmountUSDFormatted)
 
   return {
     dualRewards: complexRewardsFriendlyFarmAmounts,
     triRewards: totalTriAmount,
-    triRewardsdFriendly: totalTriAmount?.toFixed(6)
+    triRewardsFriendlyAmount: totalTriAmount?.toFixed(6)
   }
 }
