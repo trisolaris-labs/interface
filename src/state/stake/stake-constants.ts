@@ -69,7 +69,7 @@ export interface ExternalInfo {
   apr2: number
 }
 
-const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
+export const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
 
 const dummyAmount = new TokenAmount(dummyToken, '0')
 
