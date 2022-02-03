@@ -42,6 +42,7 @@ export default function FarmBanner() {
   const farmTVLFriendly = JSBI.GE(farmTVL, BIG_INT_ZERO) ? `$${addCommasToNumber(farmTVL.toString())}` : '-'
 
   const portfolio = useFarmsPortfolio()
+  // console.log(portfolio)
 
   return (
     <StyledCard>
