@@ -1,4 +1,4 @@
-import { ChainId, JSBI, TokenAmount, Fraction  } from '@trisolaris/sdk'
+import { ChainId, JSBI, TokenAmount, Fraction, Token  } from '@trisolaris/sdk'
 import { Interface } from '@ethersproject/abi'
 
 import { useComplexRewarderMultipleContracts, useMasterChefV2ContractForVersion } from './hooks-sushi'
@@ -19,13 +19,14 @@ import { CallState } from '../../state/multicall/hooks'
 
 type FarmAmount = {
   [id: string]: {
+    token: Token,
     address: string
     amount: TokenAmount
   }
 }
 
 type Result = {
-  dualRewards: { token: string; amount: string; address: string }[]
+  dualRewards: { token: Token, tokenSymbol: string; amount: string; address: string }[]
   triRewards: TokenAmount
   triRewardsFriendlyAmount: string
   userTotalStaked: string
@@ -105,11 +106,12 @@ export function useFarmsPortfolio(farmIds?: number[]): Result {
       ? (complexRewardsFarmAmounts[tokenSymbol].amount = complexRewardsFarmAmounts[tokenSymbol].amount.add(
           tokenReward.amount
         ))
-      : (complexRewardsFarmAmounts[tokenSymbol] = { amount: tokenReward.amount, address: tokenReward.tokenAddr })
+      : (complexRewardsFarmAmounts[tokenSymbol] = { token: tokenReward.token, amount: tokenReward.amount, address: tokenReward.tokenAddr })
   })
 
   const complexRewardsFriendlyFarmAmounts = Object.entries(complexRewardsFarmAmounts).map(([name, value]) => ({
-    token: name,
+    token: value.token,
+    tokenSymbol: name,
     amount: value.amount.toFixed(6),
     address: value.address
   }))
