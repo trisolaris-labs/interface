@@ -13,7 +13,7 @@ import COMPLEX_REWARDER from '../../constants/abis/complex-rewarder.json'
 import { STAKING, ChefVersions } from './stake-constants'
 import { TRI, AURORA } from '../../constants'
 import { dummyToken } from './stake-constants'
-import { BIG_INT_ZERO } from '../../constants'
+import { BIG_INT_ZERO, ZERO_ADDRESS } from '../../constants'
 
 import { CallState } from '../../state/multicall/hooks'
 
@@ -34,7 +34,8 @@ type Result = {
 
 export function useFarmsPortfolio(farmIds?: number[]): Result {
   const farmsReady = farmIds?.length || true
-  const { chainId, account } = useActiveWeb3React()
+  const { chainId, account: userAccount } = useActiveWeb3React()
+  const account = userAccount ?? ZERO_ADDRESS
   const chain = chainId ?? ChainId.AURORA
   const activeFarms = STAKING[chain]
 
@@ -44,7 +45,7 @@ export function useFarmsPortfolio(farmIds?: number[]): Result {
     chefVersion: farm.chefVersion,
     poolId: farm.poolId,
     rewarderAddress: farm.rewarderAddress,
-    v1args: [farm.poolId.toString(), account?.toString()],
+    v1args: [farm.poolId.toString(), account],
     doubleRewardToken: activeFarms[farm.ID].doubleRewardToken
   }))
 
@@ -73,7 +74,7 @@ export function useFarmsPortfolio(farmIds?: number[]): Result {
     complexRewardsContractAdressList,
     new Interface(COMPLEX_REWARDER),
     'pendingTokens',
-    [0, account?.toString(), '0']
+    [0, account, '0']
   )
 
   const complexRewardsLoading = callResultIsLoading(pendingComplexRewards)
