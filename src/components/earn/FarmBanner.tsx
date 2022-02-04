@@ -94,7 +94,7 @@ export default function FarmBanner() {
                       <CurrencyLogo currency={TRI[ChainId.AURORA]} size={'16px'} /> {triRewardsFriendlyAmount}
                     </div>
                     {dualRewards?.map(token => (
-                      <div>
+                      <div key={token.tokenSymbol}>
                         <CurrencyLogo currency={token.token} size={'16px'} /> {token.amount}
                       </div>
                     ))}
@@ -105,7 +105,7 @@ export default function FarmBanner() {
           )}
         </StyledAutoColumn>
         <SpacemanContainer>
-          <img height="360px" src={spacemanOnPlanet} />
+          <img height="360px" src={spacemanOnPlanet} alt="spaceman logo" />
         </SpacemanContainer>
       </AutoRow>
     </StyledCard>
