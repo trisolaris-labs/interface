@@ -6,6 +6,8 @@ import CurrencyLogo from '../../CurrencyLogo'
 
 import { useFarmsPortfolio } from '../../../state/stake/useFarmsPortfolio'
 
+import { isTokenAmountPositive } from '../../../utils/pools'
+
 import { TRI } from '../../../constants'
 import { TYPE } from '../../../theme'
 
@@ -26,10 +28,11 @@ const StyledTokensContainer = styled.div`
 const FarmsPortfolio = () => {
   const { dualRewards, triRewards, triRewardsFriendlyAmount, userTotalStaked } = useFarmsPortfolio() ?? {}
 
+  const hasRewards = isTokenAmountPositive(triRewards) || dualRewards?.some(reward => Number(reward.amount) > 0)
   return (
     <>
       <TYPE.subHeader marginTop="0.3rem">Your staked: {userTotalStaked} </TYPE.subHeader>
-      {triRewards && (
+      {hasRewards && (
         <>
           <TYPE.subHeader marginTop="0.3rem" marginBottom="0.5rem">
             Your Claimable tokens:
@@ -39,11 +42,14 @@ const FarmsPortfolio = () => {
             <div>
               <CurrencyLogo currency={TRI[ChainId.AURORA]} size={'16px'} /> {triRewardsFriendlyAmount}
             </div>
-            {dualRewards?.map(token => (
-              <div key={token.tokenSymbol}>
-                <CurrencyLogo currency={token.token} size={'16px'} /> {token.amount}
-              </div>
-            ))}
+            {dualRewards?.map(
+              token =>
+                Number(token.amount) > 0 && (
+                  <div key={token.tokenSymbol}>
+                    <CurrencyLogo currency={token.token} size={'16px'} /> {token.amount}
+                  </div>
+                )
+            )}
           </StyledTokensContainer>
         </>
       )}
