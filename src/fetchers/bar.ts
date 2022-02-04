@@ -1,9 +1,13 @@
 import useSWR from 'swr'
 
 async function fetcher() {
-  const response = await fetch('https://raw.githubusercontent.com/trisolaris-labs/apr/master/xtri.json')
+  try {
+    const response = await fetch('https://cdn.trisolaris.io/xtri.json')
 
-  return response.json()
+    return response.json()
+  } catch (e) {
+    console.debug('Error loading xtri.json from cdn')
+  }
 }
 
 async function getTriBarAPR() {
