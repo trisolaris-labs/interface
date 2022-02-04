@@ -1,4 +1,4 @@
-import { ChainId, JSBI, TokenAmount, Fraction, Token  } from '@trisolaris/sdk'
+import { ChainId, JSBI, TokenAmount, Fraction, Token } from '@trisolaris/sdk'
 import { Interface } from '@ethersproject/abi'
 
 import { useComplexRewarderMultipleContracts, useMasterChefV2ContractForVersion } from './hooks-sushi'
@@ -19,21 +19,20 @@ import { CallState } from '../../state/multicall/hooks'
 
 type FarmAmount = {
   [id: string]: {
-    token: Token,
+    token: Token
     address: string
     amount: TokenAmount
   }
 }
 
 type Result = {
-  dualRewards: { token: Token, tokenSymbol: string; amount: string; address: string }[]
+  dualRewards: { token: Token; tokenSymbol: string; amount: string; address: string }[]
   triRewards: TokenAmount
   triRewardsFriendlyAmount: string
   userTotalStaked: string
 } | null
 
 export function useFarmsPortfolio(farmIds?: number[]): Result {
- 
   const farmsReady = farmIds?.length || true
   const { chainId, account } = useActiveWeb3React()
   const chain = chainId ?? ChainId.AURORA
@@ -101,12 +100,16 @@ export function useFarmsPortfolio(farmIds?: number[]): Result {
   const complexRewardsFarmAmounts: FarmAmount = {}
 
   complexTokenAmounts?.forEach(tokenReward => {
-    const tokenSymbol = tokenReward.token.symbol ?? 'ZERO'
+    const tokenSymbol = tokenReward.token?.symbol ?? ''
     return complexRewardsFarmAmounts.hasOwnProperty(tokenSymbol)
       ? (complexRewardsFarmAmounts[tokenSymbol].amount = complexRewardsFarmAmounts[tokenSymbol].amount.add(
           tokenReward.amount
         ))
-      : (complexRewardsFarmAmounts[tokenSymbol] = { token: tokenReward.token, amount: tokenReward.amount, address: tokenReward.tokenAddr })
+      : (complexRewardsFarmAmounts[tokenSymbol] = {
+          token: tokenReward.token,
+          amount: tokenReward.amount,
+          address: tokenReward.tokenAddr
+        })
   })
 
   const complexRewardsFriendlyFarmAmounts = Object.entries(complexRewardsFarmAmounts).map(([name, value]) => ({
@@ -132,29 +135,21 @@ export function useFarmsPortfolio(farmIds?: number[]): Result {
     farmsReady ? v2Farms.map(farm => farm.v1args) : []
   )
 
-  const pendingTriLoading = callResultIsLoading(pendingTriDataV1) || callResultIsLoading(pendingTriDataV2)
+  const allPendingTri = [...pendingTriDataV1, ...pendingTriDataV2]
 
-  const earnedTriRewardPoolV1 = pendingTriDataV1.length
-    ? pendingTriDataV1.map(farmData => JSBI.BigInt(farmData?.result?.[0] ?? 0))
+  const pendingTriLoading = callResultIsLoading(allPendingTri)
+
+  const earnedTriRewardPools = allPendingTri.length
+    ? allPendingTri.map(farmData => JSBI.BigInt(farmData?.result?.[0] ?? 0))
     : []
 
-  const earnedTriRewardPoolV2 = pendingTriDataV2.length
-    ? pendingTriDataV2.map(farmData => JSBI.BigInt(farmData?.result?.[0] ?? 0))
-    : []
-
-  const allEarnedTriAmountsV1 = earnedTriRewardPoolV1.length
-    ? earnedTriRewardPoolV1
+  const allEarnedTriAmounts = earnedTriRewardPools.length
+    ? earnedTriRewardPools
         .map(poolReward => new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(poolReward)))
         .reduce((a: TokenAmount, b) => a.add(b))
     : new TokenAmount(dummyToken, JSBI.BigInt(BIG_INT_ZERO))
 
-  const allEarnedTriAmountsV2 = earnedTriRewardPoolV2.length
-    ? earnedTriRewardPoolV2
-        .map(poolReward => new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(poolReward)))
-        .reduce((a: TokenAmount, b) => a.add(b))
-    : new TokenAmount(dummyToken, JSBI.BigInt(BIG_INT_ZERO))
-
-  const totalTriAmount = allEarnedTriAmountsV1.add(allEarnedTriAmountsV2)
+  const totalTriAmount = allEarnedTriAmounts
 
   const stakingInfoData = useFetchStakingInfoData()
 
