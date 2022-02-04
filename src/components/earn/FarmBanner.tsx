@@ -49,16 +49,9 @@ export default function FarmBanner() {
 
   const { dualRewards, triRewards, triRewardsFriendlyAmount, userTotalStaked } = useFarmsPortfolio() ?? {}
 
-  const result = useFarmsPortfolio() 
-
-  console.log(result)
-
   const { getTriPrice } = useTriPrice()
 
   const triPrice = getTriPrice()
-  const allTriRewardsUsd = useMemo(() => {
-    return triPrice ? triRewards?.multiply(triPrice) : 0
-  }, [triPrice, triRewards])
 
   return (
     <StyledCard>
@@ -68,14 +61,12 @@ export default function FarmBanner() {
           <TYPE.subHeader marginTop="1rem">TVL: {farmTVLFriendly}</TYPE.subHeader>
           {account && (
             <>
-              <TYPE.subHeader marginTop="1rem">Your total staked amount: {userTotalStaked} </TYPE.subHeader>
-              <TYPE.subHeader marginTop="1rem">
-                Your TRI rewards in USD: ${allTriRewardsUsd?.toFixed(2)}{' '}
-              </TYPE.subHeader>
+              <TYPE.subHeader marginTop="0.3rem">Your staked: {userTotalStaked} </TYPE.subHeader>
+
               {triRewards && (
                 <>
-                  <TYPE.subHeader marginTop="1rem">Your Claimable tokens:</TYPE.subHeader>
-                  <TYPE.subHeader marginTop="1rem">
+                  <TYPE.subHeader marginTop="0.3rem">Your Claimable tokens:</TYPE.subHeader>
+                  <TYPE.subHeader marginTop="0.rem">
                     TRI: {triRewardsFriendlyAmount} {dualRewards?.map(token => `${token.token}: ${token.amount}  `)}
                   </TYPE.subHeader>
                 </>

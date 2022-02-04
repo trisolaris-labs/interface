@@ -1,4 +1,4 @@
-import { ChainId, JSBI, TokenAmount, Fraction } from '@trisolaris/sdk'
+import { ChainId, JSBI, TokenAmount, Fraction  } from '@trisolaris/sdk'
 import { Interface } from '@ethersproject/abi'
 
 import { useComplexRewarderMultipleContracts, useMasterChefV2ContractForVersion } from './hooks-sushi'
@@ -32,6 +32,7 @@ type Result = {
 } | null
 
 export function useFarmsPortfolio(farmIds?: number[]): Result {
+ 
   const farmsReady = farmIds?.length || true
   const { chainId, account } = useActiveWeb3React()
   const chain = chainId ?? ChainId.AURORA
