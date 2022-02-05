@@ -31,11 +31,11 @@ const FarmsPortfolio = () => {
   const hasRewards = isTokenAmountPositive(triRewards) || dualRewards?.some(reward => Number(reward.amount) > 0)
   return (
     <>
-      <TYPE.subHeader marginTop="0.3rem">Your staked: {userTotalStaked} </TYPE.subHeader>
+      <TYPE.subHeader marginTop="0.3rem">Staked: {userTotalStaked} </TYPE.subHeader>
       {hasRewards && (
         <>
           <TYPE.subHeader marginTop="0.3rem" marginBottom="0.5rem">
-            Your Claimable tokens:
+            Claimable tokens:
           </TYPE.subHeader>
 
           <StyledTokensContainer>

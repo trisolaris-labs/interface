@@ -170,12 +170,7 @@ export function getMultipleContracts(
   library: Web3Provider,
   account?: string
 ): Contract[] {
-  const invalidAddress = addressList.find(address => !isAddress(address) || address === AddressZero)
-  if (invalidAddress) {
-    throw Error(`Invalid 'address' parameter '${invalidAddress}'.`)
-  }
-  const contracts = addressList.map(address => new Contract(address, ABI, getProviderOrSigner(library, account) as any))
-  return contracts
+  return addressList.map(address => getContract(address, ABI, library, account))
 }
 
 export function useMultipleContracts(

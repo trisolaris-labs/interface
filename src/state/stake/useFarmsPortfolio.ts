@@ -30,9 +30,9 @@ type Result = {
   triRewards: TokenAmount
   triRewardsFriendlyAmount: string
   userTotalStaked: string
-} | null
+}
 
-export function useFarmsPortfolio(farmIds?: number[]): Result {
+export function useFarmsPortfolio(farmIds?: number[]): Result | null {
   const farmsReady = farmIds?.length || true
   const { chainId, account: userAccount } = useActiveWeb3React()
   const account = userAccount ?? ZERO_ADDRESS
@@ -100,28 +100,24 @@ export function useFarmsPortfolio(farmIds?: number[]): Result {
 
   const complexRewardsFarmAmounts: FarmAmount = {}
 
-  complexTokenAmounts?.forEach(tokenReward => {
-    const tokenSymbol = tokenReward.token?.symbol ?? ''
-    return complexRewardsFarmAmounts.hasOwnProperty(tokenSymbol)
-      ? (complexRewardsFarmAmounts[tokenSymbol].amount = complexRewardsFarmAmounts[tokenSymbol].amount.add(
-          tokenReward.amount
-        ))
-      : (complexRewardsFarmAmounts[tokenSymbol] = {
-          token: tokenReward.token,
-          amount: tokenReward.amount,
-          address: tokenReward.tokenAddr
-        })
+  complexTokenAmounts?.forEach(({ token, amount, tokenAddr }) => {
+    const tokenSymbol = token?.symbol ?? ''
+    if (complexRewardsFarmAmounts.hasOwnProperty(tokenSymbol)) {
+      complexRewardsFarmAmounts[tokenSymbol].amount = complexRewardsFarmAmounts[tokenSymbol].amount.add(amount)
+    } else {
+      complexRewardsFarmAmounts[tokenSymbol] = { amount, address: tokenAddr, token }
+    }
   })
 
-  const complexRewardsFriendlyFarmAmounts = Object.entries(complexRewardsFarmAmounts).map(([name, value]) => ({
-    token: value.token,
-    tokenSymbol: name,
-    amount: value.amount.toFixed(6),
-    address: value.address
-  }))
+  const complexRewardsFriendlyFarmAmounts = Object.entries(complexRewardsFarmAmounts).map(
+    ([name, { amount, address, token }]) => ({
+      token,
+      tokenSymbol: name,
+      amount: amount.toFixed(6),
+      address
+    })
+  )
 
-  //
-  //
   // Tri rewards
 
   const pendingTriDataV1 = useSingleContractMultipleData(
@@ -147,10 +143,8 @@ export function useFarmsPortfolio(farmIds?: number[]): Result {
   const allEarnedTriAmounts = earnedTriRewardPools.length
     ? earnedTriRewardPools
         .map(poolReward => new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(poolReward)))
-        .reduce((a: TokenAmount, b) => a.add(b))
+        .reduce((a: TokenAmount, b) => a.add(b), new TokenAmount(TRI[ChainId.AURORA], BIG_INT_ZERO))
     : new TokenAmount(dummyToken, JSBI.BigInt(BIG_INT_ZERO))
-
-  const totalTriAmount = allEarnedTriAmounts
 
   const stakingInfoData = useFetchStakingInfoData()
 
@@ -171,7 +165,9 @@ export function useFarmsPortfolio(farmIds?: number[]): Result {
   const pairsResult = usePairs(tokens)
 
   // Loading
-  if (complexRewardsLoading || pendingTriLoading || pairsResult.some(pair => pair[0] === PairState.LOADING)) return null
+  if (complexRewardsLoading || pendingTriLoading || pairsResult.some(pair => pair[0] === PairState.LOADING)) {
+    return null
+  }
 
   // Error
   if (
@@ -188,7 +184,10 @@ export function useFarmsPortfolio(farmIds?: number[]): Result {
   }
 
   const totalStaked = activeFarms.map((_, index) => {
-    const { totalStakedInUSD, totalStaked } = stakingInfoData?.[index] ?? {}
+    if (stakingInfoData?.[index] === null) {
+      return BIG_INT_ZERO
+    }
+    const { totalStakedInUSD, totalStaked } = stakingInfoData?.[index]
 
     const userInfoPool = JSBI.BigInt(allUserInfo[index].result?.['amount'] ?? 0)
     const totalStakedTokenAmount = new TokenAmount(dummyToken, JSBI.BigInt(totalStaked))
@@ -199,14 +198,13 @@ export function useFarmsPortfolio(farmIds?: number[]): Result {
     return userLPAmountUSD
   })
 
-  const totalUserStakedUSD = totalStaked.reduce((acum: Fraction, cur) => acum.add(cur), new Fraction(JSBI.BigInt(0)))
-  const totalUserStakedUSDFormatted =
-    totalUserStakedUSD != null ? `$${addCommasToNumber(totalUserStakedUSD.toFixed(2))}` : '$0'
+  const totalUserStakedUSD = totalStaked.reduce((acum: Fraction, cur) => acum.add(cur), new Fraction(BIG_INT_ZERO))
+  const totalUserStakedUSDFormatted = `$${addCommasToNumber(totalUserStakedUSD?.toFixed(2) ?? '0')}`
 
   return {
     dualRewards: complexRewardsFriendlyFarmAmounts,
-    triRewards: totalTriAmount,
-    triRewardsFriendlyAmount: totalTriAmount?.toFixed(6),
+    triRewards: allEarnedTriAmounts,
+    triRewardsFriendlyAmount: allEarnedTriAmounts?.toFixed(6),
     userTotalStaked: totalUserStakedUSDFormatted
   }
 }
