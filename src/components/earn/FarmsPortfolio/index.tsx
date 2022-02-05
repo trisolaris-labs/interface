@@ -13,13 +13,18 @@ import { TYPE } from '../../../theme'
 
 const StyledTokensContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 2.5px 0px;
   grid-template-areas:
     '. .'
     '. .'
     '. .'
     '. .';
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        grid-template-columns: 1fr 1fr 1FR;
+  `};
+
   ${({ theme }) => theme.mediaWidth.upToXxxSmall`
         grid-template-columns: 1fr 1fr ;
   `};
