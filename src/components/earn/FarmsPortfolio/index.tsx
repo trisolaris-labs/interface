@@ -26,12 +26,12 @@ const StyledTokensContainer = styled.div`
 `
 
 const CurrencyContainer = styled.div`
-  display: flex;
   align-items: center;
+  display: flex;
 `
 
 const StyledRewardAmount = styled.span`
-  font-size: 14px;
+  font-size: 15px;
 `
 
 const FarmsPortfolio = () => {
