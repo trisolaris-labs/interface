@@ -14,7 +14,7 @@ import { TYPE } from '../../../theme'
 const StyledTokensContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 0px 0px;
+  gap: 2.5px 0px;
   grid-template-areas:
     '. .'
     '. .'
@@ -23,6 +23,15 @@ const StyledTokensContainer = styled.div`
   ${({ theme }) => theme.mediaWidth.upToXxxSmall`
         grid-template-columns: 1fr 1fr ;
   `};
+`
+
+const CurrencyContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const StyledRewardAmount = styled.span`
+  font-size: 14px;
 `
 
 const FarmsPortfolio = () => {
@@ -39,15 +48,17 @@ const FarmsPortfolio = () => {
           </TYPE.subHeader>
 
           <StyledTokensContainer>
-            <div>
-              <CurrencyLogo currency={TRI[ChainId.AURORA]} size={'16px'} /> {triRewardsFriendlyAmount}
-            </div>
+            <CurrencyContainer>
+              <CurrencyLogo currency={TRI[ChainId.AURORA]} size={'16px'} style={{ marginRight: '5px' }} />{' '}
+              <StyledRewardAmount> {triRewardsFriendlyAmount}</StyledRewardAmount>
+            </CurrencyContainer>
             {dualRewards?.map(
               token =>
                 Number(token.amount) > 0 && (
-                  <div key={token.tokenSymbol}>
-                    <CurrencyLogo currency={token.token} size={'16px'} /> {token.amount}
-                  </div>
+                  <CurrencyContainer key={token.tokenSymbol}>
+                    <CurrencyLogo currency={token.token} size={'16px'} style={{ marginRight: '5px' }} />{' '}
+                    <StyledRewardAmount>{token.amount}</StyledRewardAmount>
+                  </CurrencyContainer>
                 )
             )}
           </StyledTokensContainer>
