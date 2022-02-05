@@ -49,7 +49,7 @@ const SpacemanContainer = styled.div`
 const StyledAutoColumn = styled(AutoColumn)`
   padding-top: 1rem;
   flex: 1;
-  max-width: 60%;
+  max-width: 80%;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
         max-width: 100%;
   `};
