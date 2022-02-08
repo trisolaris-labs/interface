@@ -15,6 +15,7 @@ import { addCommasToNumber } from '../../../utils'
 
 import { TYPE } from '../../../theme'
 import { BIG_INT_ZERO } from '../../../constants'
+import ErrorBoundary from '../../ErrorBoundary'
 
 const StyledCard = styled(Card)`
   background: ${({ theme }) => `radial-gradient(farthest-corner at 0% 0%, ${theme.primary1} 0%, transparent 70%)`};
@@ -67,7 +68,7 @@ export default function FarmBanner() {
         <StyledAutoColumn>
           <TYPE.largeHeader>Farm</TYPE.largeHeader>
           <TYPE.subHeader marginTop="1rem">TVL: {farmTVLFriendly}</TYPE.subHeader>
-          {account && <FarmsPortfolio />}
+          <ErrorBoundary fallback={<div />}>{account && <FarmsPortfolio />}</ErrorBoundary>
         </StyledAutoColumn>
         <SpacemanContainer>
           <img height="360px" src={spacemanOnPlanet} alt="spaceman logo" />
