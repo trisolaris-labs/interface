@@ -184,7 +184,7 @@ export function useFarmsPortfolio(farmIds?: number[]): Result | null {
   }
 
   const totalStaked = activeFarms.map((_, index) => {
-    if (!stakingInfoData?.[index] || stakingInfoData?.[index]?.totalStaked === 0) {
+    if (!stakingInfoData[index] || stakingInfoData[index].totalStaked === 0) {
       return new Fraction(BIG_INT_ZERO)
     }
 
