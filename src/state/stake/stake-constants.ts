@@ -15,7 +15,8 @@ import {
   AVAX,
   MATIC,
   FLX,
-  MECHA
+  MECHA,
+  SOLACE
 } from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
@@ -536,6 +537,30 @@ const AURORA_POOLS: StakingTri[] = [
     inStaging: false,
     noTriRewards: true,
     doubleRewardToken: MECHA[ChainId.AURORA]
+  },
+  {
+    ID: 17,
+    poolId: 10,
+    tokens: [WNEAR[ChainId.AURORA], SOLACE[ChainId.AURORA]],
+    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
+    lpAddress: '0xdDAdf88b007B95fEb42DDbd110034C9a8e9746F2',
+    rewarderAddress: '0xbbE41F699B0fB747cd4bA21067F6b27e0698Bc30',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    doubleRewardAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: 1,
+    rewardRate: dummyAmount,
+    apr: 0,
+    apr2: 0,
+    chefVersion: ChefVersions.V2,
+    doubleRewards: false,
+    inStaging: true,
+    noTriRewards: true,
+    doubleRewardToken: SOLACE[ChainId.AURORA]
   }
 ]
 
