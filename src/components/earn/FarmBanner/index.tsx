@@ -67,7 +67,7 @@ export default function FarmBanner() {
         <StyledAutoColumn>
           <TYPE.largeHeader>Farm</TYPE.largeHeader>
           <TYPE.subHeader marginTop="1rem">TVL: {farmTVLFriendly}</TYPE.subHeader>
-          {/* {account && <FarmsPortfolio />} */}
+          {account && <FarmsPortfolio />}
         </StyledAutoColumn>
         <SpacemanContainer>
           <img height="360px" src={spacemanOnPlanet} alt="spaceman logo" />
