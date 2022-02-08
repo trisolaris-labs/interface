@@ -184,9 +184,10 @@ export function useFarmsPortfolio(farmIds?: number[]): Result | null {
   }
 
   const totalStaked = activeFarms.map((_, index) => {
-    if (stakingInfoData?.[index] == null) {
-      return BIG_INT_ZERO
+    if (!stakingInfoData?.[index] || stakingInfoData?.[index]?.totalStaked === 0) {
+      return new Fraction(BIG_INT_ZERO)
     }
+
     const { totalStakedInUSD, totalStaked } = stakingInfoData?.[index]
 
     const userInfoPool = JSBI.BigInt(allUserInfo[index].result?.['amount'] ?? 0)
