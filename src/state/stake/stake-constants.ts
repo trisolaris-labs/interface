@@ -16,7 +16,10 @@ import {
   MATIC,
   FLX,
   MECHA,
-  SOLACE
+  SOLACE,
+  STNEAR,
+  XTRI,
+  META
 } from '../../constants'
 import { useMasterChefContract, MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
@@ -558,9 +561,57 @@ const AURORA_POOLS: StakingTri[] = [
     apr2: 0,
     chefVersion: ChefVersions.V2,
     doubleRewards: false,
-    inStaging: true,
+    inStaging: false,
     noTriRewards: true,
     doubleRewardToken: SOLACE[ChainId.AURORA]
+  },
+  {
+    ID: 18,
+    poolId: 11,
+    tokens: [XTRI[ChainId.AURORA], STNEAR[ChainId.AURORA]],
+    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
+    lpAddress: '0x5913f644A10d98c79F2e0b609988640187256373',
+    rewarderAddress: '',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    doubleRewardAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: 1,
+    rewardRate: dummyAmount,
+    apr: 0,
+    apr2: 0,
+    chefVersion: ChefVersions.V2,
+    doubleRewards: true,
+    inStaging: true,
+    noTriRewards: false,
+    doubleRewardToken: META[ChainId.AURORA]
+  },
+  {
+    ID: 19,
+    poolId: 12,
+    tokens: [WNEAR[ChainId.AURORA], STNEAR[ChainId.AURORA]],
+    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
+    lpAddress: '0x47924Ae4968832984F4091EEC537dfF5c38948a4',
+    rewarderAddress: '',
+    isPeriodFinished: false,
+    stakedAmount: dummyAmount,
+    earnedAmount: dummyAmount,
+    doubleRewardAmount: dummyAmount,
+    totalStakedAmount: dummyAmount,
+    totalStakedInUSD: 0,
+    allocPoint: 1,
+    totalRewardRate: 1,
+    rewardRate: dummyAmount,
+    apr: 0,
+    apr2: 0,
+    chefVersion: ChefVersions.V2,
+    doubleRewards: true,
+    inStaging: true,
+    noTriRewards: false,
+    doubleRewardToken: META[ChainId.AURORA]
   }
 ]
 

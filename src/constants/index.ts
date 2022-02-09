@@ -106,6 +106,7 @@ export const XTRI: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x802119e4e253D5C19aA06A5d567C5a41596D6803', 18, 'xTRI', 'TriBar')
 }
 
+
 export const AURORA: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'AURORA', 'Aurora'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'AURORA', 'Aurora'),
@@ -225,6 +226,20 @@ export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.AVALANCHE]: '0x0C58C2041da4CfCcF5818Bbe3b66DBC23B3902d9',
   [ChainId.POLYGON]: ZERO_ADDRESS,
   [ChainId.AURORA]: ZERO_ADDRESS
+}
+
+export const STNEAR: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'stNEAR', 'Staked Near'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'stNEAR', 'Staked Near'),
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'stNEAR', 'Staked Near'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x07f9f7f963c5cd2bbffd30ccfb964be114332e30', 24, 'stNEAR', 'Staked Near')
+}
+
+export const META: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'META', 'Meta Pool'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'META', 'Meta Pool'),
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'META', 'Meta Pool'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xc21ff01229e982d7c8b8691163b0a3cb8f357453', 24, 'META', 'Meta Pool')
 }
 
 // This is actually WETH
