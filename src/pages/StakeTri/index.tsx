@@ -320,27 +320,10 @@ export default function StakeTri() {
               </MaxButton>
             </RowBetween>
 
-            {/* <RowBetween>
-                <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '25')} width="20%">
-                  25%
-                </MaxButton>
-                <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '50')} width="20%">
-                  50%
-                </MaxButton>
-                <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '75')} width="20%">
-                  75%
-                </MaxButton>
-                <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')} width="20%"> */}
-            {/*TODO: Translate using i18n entry from removeLiquidity object*/}
-            {/* {t('currencyInputPanel.max')}
-                </MaxButton>
-              </RowBetween>
-            </> * */}
-
             <StakeInputPanel
               value={testAmount.toFixed(5)}
               onUserInput={setInput}
-              showMaxButton={!atMaxAmountInput}
+              showMaxButton={false}
               currency={isStaking ? TRI[chainId] : XTRI[chainId]}
               id="stake-currency-input"
               onMax={handleClickMax}
