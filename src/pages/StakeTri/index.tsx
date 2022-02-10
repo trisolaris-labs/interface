@@ -1,27 +1,38 @@
-import { ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
+import { ChainId, CurrencyAmount, Percent, TokenAmount } from '@trisolaris/sdk'
+import { Text } from 'rebass'
+import { useTranslation } from 'react-i18next'
+
+import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
+import CurrencyLogo from '../../components/CurrencyLogo'
+import StakeTriDataCard from '../../components/StakeTri/StakeTriDataCard'
 import { DarkGreyCard, LightCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import Row, { RowBetween } from '../../components/Row'
-import { TRI, XTRI, BIG_INT_ZERO } from '../../constants'
+import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
+import { Dots } from '../../components/swap/styleds'
+import Slider from '../../components/Slider'
+
+import StakingAPRCard from './StakingAPRCard'
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { tryParseAmount } from '../../state/swap/hooks'
-import { TYPE } from '../../theme'
-import { ClickableText } from '../Pool/styleds'
 import { useTokenBalance } from '../../state/wallet/hooks'
-import { DataCard, CardBGImage, CardNoise, CardSection, HighlightCard } from '../../components/earn/styled'
-import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
-import CurrencyLogo from '../../components/CurrencyLogo'
 import { useTriBar, useTriBarStats } from '../../state/stakeTri/hooks'
-import StakeTriDataCard from '../../components/StakeTri/StakeTriDataCard'
-import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import { Dots } from '../../components/swap/styleds'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import StakingAPRCard from './StakingAPRCard'
+
 import { PageWrapper } from '../../components/Page'
+
+import { maxAmountSpend } from '../../utils/maxAmountSpend'
+import useDebouncedChangeHandler from '../../utils/useDebouncedChangeHandler'
+import { wrappedCurrency } from '../../utils/wrappedCurrency'
+
+import { TRI, XTRI, BIG_INT_ZERO } from '../../constants'
+import { TYPE } from '../../theme'
+import { ClickableText, MaxButton } from '../Pool/styleds'
+import { CardSection, HighlightCard } from '../../components/earn/styled'
+import { dummyToken } from '../../state/stake/stake-constants'
 
 const DataRow = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -51,7 +62,11 @@ enum StakeState {
 
 const INPUT_CHAR_LIMIT = 18
 
+const dummyAmount = new TokenAmount(dummyToken, '0')
+
 export default function StakeTri() {
+  const { t } = useTranslation()
+
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
   const { chainId: _chainId, account } = useActiveWeb3React()
@@ -68,8 +83,27 @@ export default function StakeTri() {
   const triBalance = useTokenBalance(account ?? undefined, TRI[chainId])!
   const xTriBalance = useTokenBalance(account ?? undefined, XTRI[chainId])!
 
-  const balance = isStaking ? triBalance : xTriBalance
-  const parsedAmount = usingBalance ? balance : tryParseAmount(input, balance?.currency)
+  // const balance = isStaking ? triBalance : xTriBalance
+  const tempBalance = isStaking ? triBalance : xTriBalance
+  const balance = tempBalance ?? dummyAmount
+  // const parsedAmount = usingBalance ? balance : tryParseAmount(input, balance?.currency)
+
+  //////
+  const [percentage, setPercentage] = useState<number>(0)
+
+  const handleSliderChange = (e: number) => {
+    setPercentage(e)
+  }
+
+  const percent = new Percent(percentage.toFixed(0), '100')
+
+  const testToken = balance ? wrappedCurrency(balance.currency, chainId)! : dummyToken
+
+  const testAmount = balance ? new TokenAmount(testToken, percent.multiply(balance.raw).quotient) : dummyAmount
+  //////
+
+  const parsedAmount = testAmount
+  console.log(parsedAmount)
 
   const [approvalState, handleApproval] = useApproveCallback(parsedAmount, XTRI[chainId].address)
 
@@ -92,7 +126,8 @@ export default function StakeTri() {
   }
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(balance)
-  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
+  // const atMaxAmountInput = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
+  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmount.equalTo(maxAmountInput))
 
   const handleClickMax = useCallback(() => {
     if (maxAmountInput) {
@@ -126,7 +161,8 @@ export default function StakeTri() {
 
   function renderStakeButton() {
     // If account balance is less than inputted amount
-    const insufficientFunds = (balance?.equalTo(BIG_INT_ZERO) ?? false) || parsedAmount?.greaterThan(balance)
+    // const insufficientFunds = (balance?.equalTo(BIG_INT_ZERO) ?? false) || parsedAmount?.greaterThan(balance)
+    const insufficientFunds = (balance?.equalTo(BIG_INT_ZERO) ?? false) || parsedAmount.greaterThan(balance)
     if (insufficientFunds) {
       return (
         <ButtonError error={true} disabled={true}>
@@ -139,7 +175,8 @@ export default function StakeTri() {
       // If user is unstaking, we don't need to check approval status
       (isStaking ? approvalState === ApprovalState.APPROVED : true) &&
       !pendingTx &&
-      parsedAmount?.greaterThan(BIG_INT_ZERO) === true
+      // parsedAmount?.greaterThan(BIG_INT_ZERO) === true
+      parsedAmount.greaterThan(BIG_INT_ZERO) === true
 
     return (
       <ButtonPrimary disabled={!isValid} onClick={handleStake}>
@@ -168,6 +205,20 @@ export default function StakeTri() {
 
   const { totalTriStaked } = useTriBarStats()
   const totalTriStakedFormatted = totalTriStaked?.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
+  // const percentToRemove = new Percent(input, '100')
+
+  // useEffect(() => {
+  //   // console.log(percentage)
+  //   // console.log(new Percent(percentage.toFixed(0), '100'))
+  //   const percent = new Percent(percentage.toFixed(0), '100')
+
+  //   const testToken = balance ? wrappedCurrency(balance.currency, chainId)! : dummyToken
+
+  //   const dummyAmount = new TokenAmount(dummyToken, '0')
+  //   const test = balance ? new TokenAmount(testToken, percent.multiply(balance.raw).quotient) : dummyAmount
+  //   console.log(test.toFixed(6))
+  // }, [percentage])
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -244,8 +295,50 @@ export default function StakeTri() {
                 </RowBetween>
               </AutoColumn>
             </RowBetween>
+
+            <Row style={{ alignItems: 'flex-end', justifyContent: 'center' }}>
+              <Text fontSize={72} fontWeight={500}>
+                {percentage.toFixed(0)}%
+              </Text>
+            </Row>
+
+            <Slider value={percentage} onChange={handleSliderChange} />
+
+            <RowBetween style={{ justifyContent: 'space-evenly' }}>
+              <MaxButton onClick={() => setPercentage(25)} width="20%">
+                25%
+              </MaxButton>
+              <MaxButton onClick={() => setPercentage(50)} width="20%">
+                50%
+              </MaxButton>
+              <MaxButton onClick={() => setPercentage(75)} width="20%">
+                75%
+              </MaxButton>
+              <MaxButton onClick={() => setPercentage(100)} width="20%">
+                {/*TODO: Translate using i18n entry from removeLiquidity object*/}
+                {t('currencyInputPanel.max')}
+              </MaxButton>
+            </RowBetween>
+
+            {/* <RowBetween>
+                <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '25')} width="20%">
+                  25%
+                </MaxButton>
+                <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '50')} width="20%">
+                  50%
+                </MaxButton>
+                <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '75')} width="20%">
+                  75%
+                </MaxButton>
+                <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')} width="20%"> */}
+            {/*TODO: Translate using i18n entry from removeLiquidity object*/}
+            {/* {t('currencyInputPanel.max')}
+                </MaxButton>
+              </RowBetween>
+            </> * */}
+
             <StakeInputPanel
-              value={input!}
+              value={testAmount.toFixed(5)}
               onUserInput={setInput}
               showMaxButton={!atMaxAmountInput}
               currency={isStaking ? TRI[chainId] : XTRI[chainId]}
