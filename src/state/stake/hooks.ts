@@ -1,6 +1,7 @@
 import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WETH, Pair } from '@trisolaris/sdk'
 import { useMemo } from 'react'
-import { USDT, WBTC, PNG, BIG_INT_ZERO } from '../../constants'
+import { BIG_INT_ZERO } from '../../constants'
+import { USDT, WBTC } from '../../constants/tokens'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'

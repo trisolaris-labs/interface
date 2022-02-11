@@ -8,7 +8,7 @@ import { useFarmsPortfolio } from '../../../state/stake/useFarmsPortfolio'
 
 import { isTokenAmountPositive } from '../../../utils/pools'
 
-import { TRI } from '../../../constants'
+import { TRI } from '../../../constants/tokens'
 import { TYPE } from '../../../theme'
 
 const StyledTokensContainer = styled.div`

@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 import { ChainId } from '@trisolaris/sdk'
-import { TRI } from '../../constants'
+import { TRI } from '../../constants/tokens'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleTriPriceModal } from '../../state/application/hooks'
 import Modal from '../Modal'

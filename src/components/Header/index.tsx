@@ -21,7 +21,7 @@ import { useToggleTriPriceModal } from '../../state/application/hooks'
 import TriPriceModal from '../TriPriceModal'
 import { ChainId } from '@trisolaris/sdk'
 import { getTokenLogoURL } from '../CurrencyLogo'
-import { TRI } from '../../constants'
+import { TRI } from '../../constants/tokens'
 
 const HeaderFrame = styled.div`
   display: grid;

@@ -1,5 +1,5 @@
 import { ChainId, JSBI, TokenAmount } from '@trisolaris/sdk'
-import { TRI, AURORA } from '../../constants'
+import { TRI, AURORA } from '../../constants/tokens'
 import { useComplexRewarderContract, useMasterChefV2ContractForVersion } from './hooks-sushi'
 import { STAKING, StakingTri, tokenAmount, ChefVersions } from './stake-constants'
 import { useSingleCallResult } from '../../state/multicall/hooks'

@@ -1,5 +1,5 @@
 import { Token, CETH } from '@trisolaris/sdk'
-import { TRI } from '../constants'
+import { TRI } from '../constants/tokens'
 import { unwrappedToken } from './wrappedCurrency'
 
 export default function getPairRenderOrder(token0: Token, token1: Token) {

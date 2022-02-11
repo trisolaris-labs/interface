@@ -1,10 +1,10 @@
 import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
 import _ from 'lodash'
+import { ZERO_ADDRESS } from '../../constants'
 import {
   USDC,
   AAVE,
   DAI,
-  ZERO_ADDRESS,
   WNEAR,
   USDT,
   WBTC,
@@ -21,7 +21,7 @@ import {
   STNEAR,
   XTRI,
   META
-} from '../../constants'
+} from '../../constants/tokens'
 import { useMasterChefContract, MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
 export enum ChefVersions {

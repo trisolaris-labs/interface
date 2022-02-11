@@ -4,8 +4,9 @@ import { useAirdropContract } from '../../hooks/useContract'
 import { calculateGasMargin } from '../../utils'
 import { useTransactionAdder } from '../transactions/hooks'
 import { TokenAmount, JSBI } from '@trisolaris/sdk'
-import { PNG, BIG_INT_ZERO } from './../../constants'
+import { BIG_INT_ZERO } from './../../constants'
 import { useSingleCallResult } from '../multicall/hooks'
+import { PNG } from '../../constants/tokens'
 
 export function useAirdropIsClaimingAllowed(): boolean {
   const airdropContract = useAirdropContract()
