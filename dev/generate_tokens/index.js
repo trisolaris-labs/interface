@@ -17,7 +17,17 @@ async function init() {
 
   const mergedTokenMap = createMergedTokenMap(allTokens)
 
-  const imports = "import { ChainId, Token } from '@trisolaris/sdk'"
+  const generatedFileWarningMessage =
+    '/**********************************************************************************************' +
+    '\n * THIS FILE IS GENERATED' +
+    '\n *' +
+    '\n * DO NOT MODIFY THIS FILE MANUALLY -- IT WILL BE OVERWRITTEN' +
+    '\n *' +
+    '\n * THIS FILE UPDATES BASED ON THE `master` BRANCH OF https://github.com/trisolaris-labs/tokens/' +
+    '\n * RUN `yarn generate-tokens` TO UPDATE THIS FILE' +
+    '\n **********************************************************************************************/'
+
+  const imports = "\n\nimport { ChainId, Token } from '@trisolaris/sdk'"
 
   const tokens = _.map(mergedTokenMap, (tokenObj, symbol) => {
     const token =
@@ -53,7 +63,7 @@ async function init() {
     return token
   })
 
-  await createTokenFile(`${imports}\n\n${tokens.join('')}`)
+  await createTokenFile(generatedFileWarningMessage + imports + tokens.join(''))
 }
 
 async function createTokenFile(contents) {

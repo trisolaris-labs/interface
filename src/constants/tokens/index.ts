@@ -1,3 +1,12 @@
+/**********************************************************************************************
+ * THIS FILE IS GENERATED
+ *
+ * DO NOT MODIFY THIS FILE MANUALLY -- IT WILL BE OVERWRITTEN
+ *
+ * THIS FILE UPDATES BASED ON THE `master` BRANCH OF https://github.com/trisolaris-labs/tokens/
+ * RUN `yarn generate-tokens` TO UPDATE THIS FILE
+ **********************************************************************************************/
+
 import { ChainId, Token } from '@trisolaris/sdk'
 
 export const PNG: { [chainId in ChainId]: Token } = {
