@@ -88,11 +88,12 @@ export default function StakeTri() {
   const balance = tempBalance ?? dummyAmount
   // const parsedAmount = usingBalance ? balance : tryParseAmount(input, balance?.currency)
 
-  //////
   const [percentage, setPercentage] = useState<number>(0)
 
+  const [debouncedPercentage, setDebouncedPercentage] = useDebouncedChangeHandler(percentage, setPercentage)
+
   const handleSliderChange = (e: number) => {
-    setPercentage(e)
+    setDebouncedPercentage(e)
   }
 
   const percent = new Percent(percentage.toFixed(0), '100')
@@ -100,10 +101,8 @@ export default function StakeTri() {
   const testToken = balance ? wrappedCurrency(balance.currency, chainId)! : dummyToken
 
   const testAmount = balance ? new TokenAmount(testToken, percent.multiply(balance.raw).quotient) : dummyAmount
-  //////
 
   const parsedAmount = testAmount
-  console.log(parsedAmount)
 
   const [approvalState, handleApproval] = useApproveCallback(parsedAmount, XTRI[chainId].address)
 
@@ -302,7 +301,7 @@ export default function StakeTri() {
               </Text>
             </Row>
 
-            <Slider value={percentage} onChange={handleSliderChange} />
+            <Slider value={debouncedPercentage} onChange={handleSliderChange} />
 
             <RowBetween style={{ justifyContent: 'space-evenly' }}>
               <MaxButton onClick={() => setPercentage(25)} width="20%">
