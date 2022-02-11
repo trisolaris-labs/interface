@@ -88,6 +88,8 @@ interface StakeInputPanelProps {
   value: string
   onUserInput: (value: string) => void
   onMax?: () => void
+  onFocus?: () => void
+  onBlur?: () => void
 }
 
 export default function StakeInputPanel({
@@ -96,7 +98,9 @@ export default function StakeInputPanel({
   showMaxButton,
   value,
   onMax,
-  onUserInput
+  onUserInput,
+  onFocus,
+  onBlur
 }: StakeInputPanelProps) {
   const { t } = useTranslation()
 
@@ -110,13 +114,7 @@ export default function StakeInputPanel({
         <LabelRow>
           <RowBetween>
             {account ? (
-              <TYPE.body
-                onClick={onMax}
-                color={theme.text2}
-                fontWeight={500}
-                fontSize={14}
-                style={{ display: 'inline', cursor: 'pointer' }}
-              >
+              <TYPE.body color={theme.text2} fontWeight={500} fontSize={14} style={{ display: 'inline' }}>
                 {!!currency && selectedCurrencyBalance
                   ? t('currencyInputPanel.balance') + selectedCurrencyBalance?.toSignificant(6)
                   : ' -'}
@@ -131,6 +129,8 @@ export default function StakeInputPanel({
             onUserInput={val => {
               onUserInput(val)
             }}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
           {account && currency && showMaxButton ? (
             <StyledBalanceMax onClick={onMax}>{t('currencyInputPanel.max')}</StyledBalanceMax>

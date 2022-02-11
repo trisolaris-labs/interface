@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
-import { ChainId, CurrencyAmount, Percent, TokenAmount } from '@trisolaris/sdk'
+import { ChainId, CurrencyAmount, Percent, TokenAmount, JSBI } from '@trisolaris/sdk'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
 
@@ -74,8 +74,10 @@ export default function StakeTri() {
 
   const [stakeState, setStakeState] = useState<StakeState>(StakeState.stakeTRI)
   const [input, _setInput] = useState<string>('')
-  const [usingBalance, setUsingBalance] = useState(false)
+  const [usingBalance, setUsingBalance] = useState(true)
   const [pendingTx, setPendingTx] = useState(false)
+  const [inputFocused, setInputFocused] = useState(false)
+
   const { enter, leave } = useTriBar()
 
   const isStaking = stakeState === StakeState.stakeTRI
@@ -92,19 +94,66 @@ export default function StakeTri() {
 
   const [debouncedPercentage, setDebouncedPercentage] = useDebouncedChangeHandler(percentage, setPercentage)
 
-  const handleSliderChange = (e: number) => {
-    setDebouncedPercentage(e)
+  const handleSliderAndButtonsChange = (value: number, debounced: boolean = false) => {
+    if (!usingBalance) {
+      setUsingBalance(true)
+    }
+    if (debounced) {
+      setDebouncedPercentage(value)
+    } else {
+      setPercentage(value)
+    }
   }
 
   const percent = new Percent(percentage.toFixed(0), '100')
 
   const testToken = balance ? wrappedCurrency(balance.currency, chainId)! : dummyToken
 
-  const testAmount = balance ? new TokenAmount(testToken, percent.multiply(balance.raw).quotient) : dummyAmount
+  const getParsedAmount = () => {
+    if (!usingBalance) {
+      // console.log('changing parsedAmount, input:', input)
+      const tryParse = tryParseAmount(input, balance?.currency) ?? dummyAmount
+      // console.log(tryParse.toFixed(2))
+      return tryParse
+    }
+    return balance ? new TokenAmount(testToken, percent.multiply(balance.raw).quotient) : dummyAmount
+  }
 
-  const parsedAmount = testAmount
-
+  const parsedAmount = getParsedAmount()
   const [approvalState, handleApproval] = useApproveCallback(parsedAmount, XTRI[chainId].address)
+
+  function setInput(v: string) {
+    // Allows user to paste in long balances
+    const value = v.slice(0, INPUT_CHAR_LIMIT)
+
+    setUsingBalance(false)
+    _setInput(value)
+  }
+
+  const handleFocus = () => setInputFocused(true)
+  const handleBlur = () => {
+    setInputFocused(false)
+  }
+
+  useEffect(() => {
+    if (inputFocused) {
+      const amount = tryParseAmount(input, balance?.currency) ?? dummyAmount
+      if (balance && JSBI.greaterThan(balance.raw, amount.raw)) {
+        const testPercent = new Percent(amount.raw, balance?.raw)
+        setDebouncedPercentage(Number(testPercent.toFixed(0)))
+      } else {
+        setDebouncedPercentage(0)
+      }
+    }
+  }, [input])
+
+  useEffect(() => {
+    if (!inputFocused) {
+      // setInput(parsedAmount.toExact())
+      // setInput(parsedAmount.toFixed(2))
+      _setInput(parsedAmount.toExact())
+    }
+  }, [percentage])
 
   // Reset input when toggling staking/unstaking
   function handleStakeTRI() {
@@ -114,14 +163,6 @@ export default function StakeTri() {
   function handleUnstakeXTRI() {
     setStakeState(StakeState.unstakeXTRI)
     setInput('')
-  }
-
-  function setInput(v: string) {
-    // Allows user to paste in long balances
-    const value = v.slice(0, INPUT_CHAR_LIMIT)
-
-    setUsingBalance(false)
-    _setInput(value)
   }
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(balance)
@@ -195,6 +236,7 @@ export default function StakeTri() {
       }
 
       setInput('')
+      setPercentage(0)
     } catch (e) {
       console.error(`Error ${isStaking ? 'Staking' : 'Unstaking'}: `, e)
     } finally {
@@ -301,31 +343,34 @@ export default function StakeTri() {
               </Text>
             </Row>
 
-            <Slider value={debouncedPercentage} onChange={handleSliderChange} />
+            <Slider value={debouncedPercentage} onChange={e => handleSliderAndButtonsChange(e, true)} />
 
             <RowBetween style={{ justifyContent: 'space-evenly' }}>
-              <MaxButton onClick={() => setPercentage(25)} width="20%">
+              <MaxButton onClick={() => handleSliderAndButtonsChange(25)} width="20%">
                 25%
               </MaxButton>
-              <MaxButton onClick={() => setPercentage(50)} width="20%">
+              <MaxButton onClick={() => handleSliderAndButtonsChange(50)} width="20%">
                 50%
               </MaxButton>
-              <MaxButton onClick={() => setPercentage(75)} width="20%">
+              <MaxButton onClick={() => handleSliderAndButtonsChange(75)} width="20%">
                 75%
               </MaxButton>
-              <MaxButton onClick={() => setPercentage(100)} width="20%">
+              <MaxButton onClick={() => handleSliderAndButtonsChange(100)} width="20%">
                 {/*TODO: Translate using i18n entry from removeLiquidity object*/}
                 {t('currencyInputPanel.max')}
               </MaxButton>
             </RowBetween>
 
             <StakeInputPanel
-              value={testAmount.toFixed(5)}
+              // value={percentage > 0 ? parsedAmount.toFixed(INPUT_CHAR_LIMIT) : parsedAmount.toFixed(1)}
+              value={!usingBalance ? input : parsedAmount.toFixed(5)}
               onUserInput={setInput}
               showMaxButton={false}
               currency={isStaking ? TRI[chainId] : XTRI[chainId]}
               id="stake-currency-input"
               onMax={handleClickMax}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
             />
           </AutoColumn>
           <div style={{ marginTop: '1rem' }}>
