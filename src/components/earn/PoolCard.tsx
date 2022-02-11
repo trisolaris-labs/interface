@@ -11,7 +11,7 @@ import { useColorWithDefault } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
 import { Break, CardNoise, CardBGImage } from './styled'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
-import { PNG } from '../../constants'
+import { PNG } from '../../constants/tokens'
 import { useTranslation } from 'react-i18next'
 
 const StatContainer = styled.div`

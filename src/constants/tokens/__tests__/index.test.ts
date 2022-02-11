@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import * as TOKENS from '../../'
+import * as TOKENS from '../../tokens'
 
 const  {
   PNG,

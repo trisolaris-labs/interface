@@ -1,13 +1,9 @@
-import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WETH, Pair } from '@trisolaris/sdk'
-import { useMemo } from 'react'
-import { USDT, WBTC, PNG, BIG_INT_ZERO } from '../../constants'
-import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
-import { PairState, usePair, usePairs } from '../../data/Reserves'
+import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WETH } from '@trisolaris/sdk'
+import { BIG_INT_ZERO } from '../../constants'
+import { USDT, WBTC } from '../../constants/tokens'
 import { useActiveWeb3React } from '../../hooks'
-import { NEVER_RELOAD, useMultipleContractSingleData } from '../multicall/hooks'
 import { tryParseAmount } from '../swap/hooks'
 import { useTranslation } from 'react-i18next'
-import ERC20_INTERFACE from '../../constants/abis/erc20'
 
 export interface Staking {
   tokens: [Token, Token]

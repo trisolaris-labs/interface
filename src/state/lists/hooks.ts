@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { AppState } from '../index'
 import { AEB_TOKENLIST } from '../../constants/lists'
 import { WETH } from '@trisolaris/sdk'
-import { PNG } from '../../constants'
+import { PNG } from '../../constants/tokens'
 
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {

@@ -18,8 +18,9 @@ import WETH_ABI from '../constants/abis/polygon/weth.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
-import { AIRDROP_ADDRESS, BRIDGE_MIGRATOR_ADDRESS, TRI, USDC, WNEAR } from '../constants'
-import { GOVERNANCE_ADDRESS, PNG } from '../constants'
+import { AIRDROP_ADDRESS, BRIDGE_MIGRATOR_ADDRESS } from '../constants'
+import { PNG, TRI, USDC, WNEAR } from '../constants/tokens'
+import { GOVERNANCE_ADDRESS } from '../constants'
 import { STAKING } from '../state/stake/stake-constants'
 
 // returns null on errors
