@@ -1,4 +1,5 @@
 import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
+import _ from 'lodash'
 import {
   USDC,
   AAVE,
@@ -81,6 +82,62 @@ export const rewardsPerSecond = JSBI.BigInt('10000000000000000000')
 export const totalAllocPoints = JSBI.BigInt('5')
 export const tokenAmount = new TokenAmount(dummyToken, '99')
 
+const NULL_POOL: StakingTri = {
+  ID: 0,
+  poolId: 0,
+  tokens: [
+    new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'ZERO'),
+    new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
+  ],
+  stakingRewardAddress: ZERO_ADDRESS,
+  lpAddress: ZERO_ADDRESS,
+  rewarderAddress: '',
+  isPeriodFinished: false,
+  stakedAmount: dummyAmount,
+  earnedAmount: dummyAmount,
+  doubleRewardAmount: dummyAmount,
+  totalStakedAmount: dummyAmount,
+  totalStakedInUSD: 0,
+  allocPoint: 0,
+  totalRewardRate: 1,
+  rewardRate: dummyAmount,
+  apr: 0,
+  apr2: 0,
+  chefVersion: ChefVersions.V1,
+  doubleRewards: false,
+  inStaging: false,
+  noTriRewards: false,
+  doubleRewardToken: dummyToken
+}
+const NULL_POOLS = [NULL_POOL]
+
+type TCreateMCPool = Omit<Partial<StakingTri>, 'stakingRewardAddress' | 'chefVersion'>
+
+/**
+ * Creates a MasterChefV1 pool
+ * Only set properties that are different than the `NULL_POOL`
+ * @param poolData
+ * @returns StakingTri
+ */
+function createMCV1Pool(poolData: TCreateMCPool): StakingTri {
+  return _.defaultsDeep(poolData, NULL_POOL, {
+    stakingRewardAddress: MASTERCHEF_ADDRESS_V1[ChainId.AURORA],
+    chefVersion: ChefVersions.V1
+  })
+}
+/**
+ * Creates a MasterChefV2 pool
+ * Only set properties that are different than the `NULL_POOL`
+ * @param poolData
+ * @returns StakingTri
+ */
+function createMCV2Pool(poolData: TCreateMCPool): StakingTri {
+  return _.defaultsDeep(poolData, NULL_POOL, {
+    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
+    chefVersion: ChefVersions.V2
+  })
+}
+
 const POLYGON_POOLS: StakingTri[] = [
   {
     ID: 0,
@@ -133,516 +190,174 @@ const POLYGON_POOLS: StakingTri[] = [
 ]
 
 const AURORA_POOLS: StakingTri[] = [
-  {
+  createMCV1Pool({
     ID: 0,
     poolId: 0,
     tokens: [WETH[ChainId.AURORA], WNEAR[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V1[ChainId.AURORA],
     lpAddress: '0x63da4DB6Ef4e7C62168aB03982399F9588fCd198',
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
-    allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V1,
-    doubleRewards: false,
-    inStaging: false,
-    noTriRewards: false,
-    doubleRewardToken: dummyToken
-  },
-  {
+    allocPoint: 1
+  }),
+  createMCV1Pool({
     ID: 1,
     poolId: 1,
     tokens: [WNEAR[ChainId.AURORA], USDC[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V1[ChainId.AURORA],
     lpAddress: '0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0',
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
-    allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V1,
-    doubleRewards: false,
-    inStaging: false,
-    noTriRewards: false,
-    doubleRewardToken: dummyToken
-  },
-  {
+    allocPoint: 1
+  }),
+  createMCV1Pool({
     ID: 2,
     poolId: 2,
     tokens: [WNEAR[ChainId.AURORA], USDT[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V1[ChainId.AURORA],
     lpAddress: '0x03B666f3488a7992b2385B12dF7f35156d7b29cD',
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
-    allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V1,
-    doubleRewards: false,
-    inStaging: false,
-    noTriRewards: false,
-    doubleRewardToken: dummyToken
-  },
-  {
+    allocPoint: 1
+  }),
+  createMCV1Pool({
     ID: 3,
     poolId: 3,
     tokens: [USDT[ChainId.AURORA], USDC[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V1[ChainId.AURORA],
     lpAddress: '0x2fe064B6c7D274082aa5d2624709bC9AE7D16C77',
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
-    allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V1,
-    doubleRewards: false,
-    inStaging: false,
-    noTriRewards: false,
-    doubleRewardToken: dummyToken
-  },
-  {
+    allocPoint: 1
+  }),
+  createMCV1Pool({
     ID: 4,
     poolId: 4,
     tokens: [WNEAR[ChainId.AURORA], WBTC[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V1[ChainId.AURORA],
     lpAddress: '0xbc8A244e8fb683ec1Fd6f88F3cc6E565082174Eb',
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
-    allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V1,
-    doubleRewards: false,
-    inStaging: false,
-    noTriRewards: false,
-    doubleRewardToken: dummyToken
-  },
-  {
+    allocPoint: 1
+  }),
+  createMCV1Pool({
     ID: 5,
     poolId: 5,
     tokens: [TRI[ChainId.AURORA], WNEAR[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V1[ChainId.AURORA],
     lpAddress: '0x84b123875F0F36B966d0B6Ca14b31121bd9676AD',
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
-    allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V1,
-    doubleRewards: false,
-    inStaging: false,
-    noTriRewards: false,
-    doubleRewardToken: dummyToken
-  },
-  {
+    allocPoint: 1
+  }),
+  createMCV1Pool({
     ID: 6,
     poolId: 6,
     tokens: [AURORA[ChainId.AURORA], WETH[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V1[ChainId.AURORA],
     lpAddress: '0x5eeC60F348cB1D661E4A5122CF4638c7DB7A886e',
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
-    allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V1,
-    doubleRewards: false,
-    inStaging: false,
-    noTriRewards: false,
-    doubleRewardToken: dummyToken
-  },
-  {
+    allocPoint: 1
+  }),
+  createMCV2Pool({
     ID: 7,
     poolId: 0,
     tokens: [AURORA[ChainId.AURORA], WETH[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0x5eeC60F348cB1D661E4A5122CF4638c7DB7A886e',
     rewarderAddress: '0x94669d7a170bfe62FAc297061663e0B48C63B9B5',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
     allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V2,
     doubleRewards: true,
-    inStaging: false,
-    noTriRewards: false,
     doubleRewardToken: AURORA[ChainId.AURORA]
-  },
-  {
+  }),
+  createMCV2Pool({
     ID: 8,
     poolId: 1,
     tokens: [TRI[ChainId.AURORA], AURORA[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0xd1654a7713617d41A8C9530Fb9B948d00e162194',
     rewarderAddress: '0x78EdEeFdF8c3ad827228d07018578E89Cf159Df1',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
     allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V2,
     doubleRewards: true,
-    inStaging: false,
-    noTriRewards: false,
     doubleRewardToken: AURORA[ChainId.AURORA]
-  },
-  {
+  }),
+  createMCV2Pool({
     ID: 9,
     poolId: 2,
     tokens: [WNEAR[ChainId.AURORA], LUNA[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0xdF8CbF89ad9b7dAFdd3e37acEc539eEcC8c47914',
     rewarderAddress: '0x89F6628927fdFA2592E016Ba5B14389a4b08D681',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
     allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V2,
     doubleRewards: true,
-    inStaging: false,
-    noTriRewards: false,
     doubleRewardToken: LUNA[ChainId.AURORA]
-  },
-  {
+  }),
+  createMCV2Pool({
     ID: 10,
     poolId: 3,
     tokens: [WNEAR[ChainId.AURORA], UST[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0xa9eded3E339b9cd92bB6DEF5c5379d678131fF90',
     rewarderAddress: '0x17d1597ec86fD6aecbfE0F32Ab2F2aD9c37E6750',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
     allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V2,
     doubleRewards: true,
-    inStaging: false,
-    noTriRewards: false,
     doubleRewardToken: LUNA[ChainId.AURORA]
-  },
-  {
+  }),
+  createMCV2Pool({
     ID: 11,
     poolId: 4,
     tokens: [TRI[ChainId.AURORA], USDT[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0x61C9E05d1Cdb1b70856c7a2c53fA9c220830633c',
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
-    allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V2,
-    doubleRewards: false,
-    inStaging: false,
-    noTriRewards: false,
-    doubleRewardToken: dummyToken
-  },
-  {
+    allocPoint: 1
+  }),
+  createMCV2Pool({
     ID: 12,
     poolId: 5,
     tokens: [WNEAR[ChainId.AURORA], AVAX[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0x6443532841a5279cb04420E61Cf855cBEb70dc8C',
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
-    allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V2,
-    doubleRewards: false,
-    inStaging: false,
-    noTriRewards: false,
-    doubleRewardToken: dummyToken
-  },
-  {
+    allocPoint: 1
+  }),
+  createMCV2Pool({
     ID: 13,
     poolId: 6,
     tokens: [WNEAR[ChainId.AURORA], BNB[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0x7be4a49AA41B34db70e539d4Ae43c7fBDf839DfA',
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
-    allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V2,
-    doubleRewards: false,
-    inStaging: false,
-    noTriRewards: false,
-    doubleRewardToken: dummyToken
-  },
-  {
+    allocPoint: 1
+  }),
+  createMCV2Pool({
     ID: 14,
     poolId: 7,
     tokens: [WNEAR[ChainId.AURORA], MATIC[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0x3dC236Ea01459F57EFc737A12BA3Bb5F3BFfD071',
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
-    allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V2,
-    doubleRewards: false,
-    inStaging: false,
-    noTriRewards: false,
-    doubleRewardToken: dummyToken
-  },
-  {
+    allocPoint: 1
+  }),
+  createMCV2Pool({
     ID: 15,
     poolId: 8,
     tokens: [WNEAR[ChainId.AURORA], FLX[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0x48887cEEA1b8AD328d5254BeF774Be91B90FaA09',
     rewarderAddress: '0x42b950FB4dd822ef04C4388450726EFbF1C3CF63',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
     allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V2,
     doubleRewards: true,
-    inStaging: false,
-    noTriRewards: false,
     doubleRewardToken: FLX[ChainId.AURORA]
-  },
-  {
+  }),
+  createMCV2Pool({
     ID: 16,
     poolId: 9,
     tokens: [WNEAR[ChainId.AURORA], MECHA[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0xd62f9ec4C4d323A0C111d5e78b77eA33A2AA862f',
     rewarderAddress: '0x9847F7e33CCbC0542b05d15c5cf3aE2Ae092C057',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
     allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V2,
-    doubleRewards: false,
-    inStaging: false,
     noTriRewards: true,
     doubleRewardToken: MECHA[ChainId.AURORA]
-  },
-  {
+  }),
+  createMCV2Pool({
     ID: 17,
     poolId: 10,
     tokens: [WNEAR[ChainId.AURORA], SOLACE[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0xdDAdf88b007B95fEb42DDbd110034C9a8e9746F2',
     rewarderAddress: '0xbbE41F699B0fB747cd4bA21067F6b27e0698Bc30',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
     allocPoint: 1,
     totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V2,
-    doubleRewards: false,
-    inStaging: false,
     noTriRewards: true,
     doubleRewardToken: SOLACE[ChainId.AURORA]
-  },
-  {
+  }),
+  createMCV2Pool({
     ID: 18,
     poolId: 11,
     tokens: [XTRI[ChainId.AURORA], STNEAR[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0x5913f644A10d98c79F2e0b609988640187256373',
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
     allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V2,
     doubleRewards: true,
     inStaging: true,
-    noTriRewards: false,
     doubleRewardToken: META[ChainId.AURORA]
-  },
-  {
+  }),
+  createMCV2Pool({
     ID: 19,
     poolId: 12,
     tokens: [WNEAR[ChainId.AURORA], STNEAR[ChainId.AURORA]],
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0x47924Ae4968832984F4091EEC537dfF5c38948a4',
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
     allocPoint: 1,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V2,
     doubleRewards: true,
     inStaging: true,
-    noTriRewards: false,
     doubleRewardToken: META[ChainId.AURORA]
-  }
-]
-
-const NULL_POOLS: StakingTri[] = [
-  {
-    ID: 0,
-    poolId: 0,
-    tokens: [
-      new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'ZERO'),
-      new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
-    ],
-    stakingRewardAddress: ZERO_ADDRESS,
-    lpAddress: ZERO_ADDRESS,
-    rewarderAddress: '',
-    isPeriodFinished: false,
-    stakedAmount: dummyAmount,
-    earnedAmount: dummyAmount,
-    doubleRewardAmount: dummyAmount,
-    totalStakedAmount: dummyAmount,
-    totalStakedInUSD: 0,
-    allocPoint: 0,
-    totalRewardRate: 1,
-    rewardRate: dummyAmount,
-    apr: 0,
-    apr2: 0,
-    chefVersion: ChefVersions.V1,
-    doubleRewards: false,
-    inStaging: false,
-    noTriRewards: false,
-    doubleRewardToken: dummyToken
-  }
+  })
 ]
 
 export const STAKING: {

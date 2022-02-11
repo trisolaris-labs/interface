@@ -3,6 +3,7 @@ import { shade } from 'polished'
 import Vibrant from 'node-vibrant'
 import { hex } from 'wcag-contrast'
 import { Token } from '@trisolaris/sdk'
+import { getTokenLogoURL } from '../components/CurrencyLogo'
 
 const COLOR_MAP = new Map()
 
@@ -11,7 +12,7 @@ async function getColorFromToken(token: Token): Promise<string | null> {
     return COLOR_MAP.get(token.address)
   }
 
-  const path = `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${token.address}/logo.png`
+  const path = getTokenLogoURL(token.address)
 
   return Vibrant.from(path)
     .getPalette()

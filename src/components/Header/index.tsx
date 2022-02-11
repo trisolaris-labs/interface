@@ -19,6 +19,9 @@ import Web3Status from '../Web3Status'
 import useTriPrice from '../../hooks/useTriPrice'
 import { useToggleTriPriceModal } from '../../state/application/hooks'
 import TriPriceModal from '../TriPriceModal'
+import { ChainId } from '@trisolaris/sdk'
+import { getTokenLogoURL } from '../CurrencyLogo'
+import { TRI } from '../../constants'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -303,11 +306,7 @@ export default function Header() {
               }}
             >
               <IconWrapper size={16}>
-                <img
-                  src={
-                    'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/0xFa94348467f64D5A457F75F8bc40495D33c65aBB/logo.png'
-                  }
-                />
+                <img src={getTokenLogoURL(TRI[ChainId.AURORA].address)} />
               </IconWrapper>
               <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
                 {triPriceFriendly != null ? `$${triPriceFriendly}` : '-'}
