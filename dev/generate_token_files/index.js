@@ -19,47 +19,48 @@ async function init() {
 
   const mergedTokenMap = createMergedTokenMap(allTokens)
 
-  const files = _.map(mergedTokenMap, (tokenObj, symbol) => {
-    let file = `import { ChainId, Token } from '@trisolaris/sdk'\n\n`
+  const imports = "import { ChainId, Token } from '@trisolaris/sdk'"
 
-    file += `export const ${symbol}: { [chainId in ChainId]: Token } = {`
-    file += `${_.map(tokenObj, (token, chainID) => {
-      let chainEnumString = null
+  const tokens = _.map(mergedTokenMap, (tokenObj, symbol) => {
+    const token =
+      `\n\nexport const ${symbol}: { [chainId in ChainId]: Token } = {` +
+      `${_.map(tokenObj, (token, chainID) => {
+        let chainEnumString = null
 
-      switch (Number(chainID)) {
-        case ChainId.FUJI: {
-          chainEnumString = 'ChainId.FUJI'
-          break
+        switch (Number(chainID)) {
+          case ChainId.FUJI: {
+            chainEnumString = 'ChainId.FUJI'
+            break
+          }
+          case ChainId.AVALANCHE: {
+            chainEnumString = 'ChainId.AVALANCHE'
+            break
+          }
+          case ChainId.POLYGON: {
+            chainEnumString = 'ChainId.POLYGON'
+            break
+          }
+          case ChainId.AURORA: {
+            chainEnumString = 'ChainId.AURORA'
+            break
+          }
+          default:
+            throw new Error('ChainID not found: ' + chainID)
         }
-        case ChainId.AVALANCHE: {
-          chainEnumString = 'ChainId.AVALANCHE'
-          break
-        }
-        case ChainId.POLYGON: {
-          chainEnumString = 'ChainId.POLYGON'
-          break
-        }
-        case ChainId.AURORA: {
-          chainEnumString = 'ChainId.AURORA'
-          break
-        }
-        default:
-          throw new Error('ChainID not found: ' + chainID)
-      }
 
-      return `\n  [${chainEnumString}]: new Token(${chainEnumString}, '${token.address}', ${token.decimals}, '${token.symbol}', '${token.name}'),`
-    }).join('')}\n`
-    file += '}'
+        return `\n  [${chainEnumString}]: new Token(${chainEnumString}, '${token.address}', ${token.decimals}, '${token.symbol}', '${token.name}'),`
+      }).join('')}` +
+      '\n}'
 
-    return { file, symbol }
+    return token
   })
 
-  await Promise.all(files.map(createTokenFile))
+  await createTokenFile(`${imports}\n\n${tokens.join('')}`)
 }
 
-async function createTokenFile({ file, symbol }) {
+async function createTokenFile(contents) {
   return new Promise((resolve, reject) =>
-    writeFile(`${TOKENS_FOLDER_PATH}/${symbol}.ts`, file, err => (err ? reject(err) : resolve()))
+    writeFile(`${TOKENS_FOLDER_PATH}/index.ts`, contents, err => (err ? reject(err) : resolve()))
   )
 }
 
