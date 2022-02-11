@@ -9,8 +9,6 @@ const { createXChainToken } = require('./utils')
 const TOKENS_FOLDER_PATH = path.join(__dirname, '../../src/constants/tokens')
 const TOKEN_SUBMODULE_TOKENLISTS_PATH = path.join(__dirname, '../../tokens/lists')
 
-console.log(TOKEN_SUBMODULE_TOKENLISTS_PATH)
-
 // This kicks it all off
 init()
 

@@ -114,8 +114,8 @@
     "format": "prettier --write \"src/**/*.+(js|jsx|ts|tsx|json|css|md)\"",
     "prepare": "husky install",
     "update-submodules": "git submodule update --remote",
-    "generate-token-files": "node dev/generate_token_files/index.js",
-    "build-tokens": "yarn update-submodules && yarn generate-token-files"
+    "generate-tokens": "node dev/generate_tokens/index.js",
+    "build-tokens": "yarn update-submodules && yarn generate-tokens"
   },
   "eslintConfig": {
     "extends": "react-app",
