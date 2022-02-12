@@ -144,7 +144,7 @@ export default function TriPriceModal() {
             </AutoRow>
             <CirculatingSupplyMarketCap totalTRI={totalTRI} triPrice={getTriPrice()} />
             <AutoRow align="center" justify="space-around" padding="1rem 0 0 0">
-              <Link href="https://explorer.mainnet.aurora.dev/token/0xFa94348467f64D5A457F75F8bc40495D33c65aBB">
+              <Link href="https://aurorascan.dev/token/0xFa94348467f64D5A457F75F8bc40495D33c65aBB">
                 Contract
               </Link>
               <Link href="https://dexscreener.com/aurora/0x84b123875f0f36b966d0b6ca14b31121bd9676ad">DEX Screener</Link>
