@@ -95,7 +95,7 @@ export function useFarmsPortfolio(farmIds?: number[]): Result | null {
   const complexTokenAmounts = earnedComplexRewardPool?.map(pool => ({
     token: pool.rewardToken,
     tokenAddr: pool.rewardToken.address,
-    amount: new TokenAmount(AURORA[ChainId.AURORA], JSBI.BigInt(pool.rewardAmount))
+    amount: new TokenAmount(pool.rewardToken, JSBI.BigInt(pool.rewardAmount))
   }))
 
   const complexRewardsFarmAmounts: FarmAmount = {}
