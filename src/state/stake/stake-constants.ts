@@ -571,7 +571,7 @@ const AURORA_POOLS: StakingTri[] = [
     tokens: [XTRI[ChainId.AURORA], STNEAR[ChainId.AURORA]],
     stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0x5913f644A10d98c79F2e0b609988640187256373',
-    rewarderAddress: '',
+    rewarderAddress: '0x7B9e31BbEdbfdc99e3CC8b879b9a3B1e379Ce530',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
@@ -585,7 +585,7 @@ const AURORA_POOLS: StakingTri[] = [
     apr2: 0,
     chefVersion: ChefVersions.V2,
     doubleRewards: true,
-    inStaging: true,
+    inStaging: false,
     noTriRewards: false,
     doubleRewardToken: META[ChainId.AURORA]
   },
@@ -595,7 +595,7 @@ const AURORA_POOLS: StakingTri[] = [
     tokens: [WNEAR[ChainId.AURORA], STNEAR[ChainId.AURORA]],
     stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     lpAddress: '0x47924Ae4968832984F4091EEC537dfF5c38948a4',
-    rewarderAddress: '',
+    rewarderAddress: '0xf267212F1D8888e0eD20BbB0c7C87A089cDe6E88',
     isPeriodFinished: false,
     stakedAmount: dummyAmount,
     earnedAmount: dummyAmount,
@@ -609,7 +609,7 @@ const AURORA_POOLS: StakingTri[] = [
     apr2: 0,
     chefVersion: ChefVersions.V2,
     doubleRewards: true,
-    inStaging: true,
+    inStaging: false,
     noTriRewards: false,
     doubleRewardToken: META[ChainId.AURORA]
   }
