@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import styled from 'styled-components'
 import { ChainId, CurrencyAmount, Percent, TokenAmount, JSBI } from '@trisolaris/sdk'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
@@ -7,12 +6,12 @@ import { useTranslation } from 'react-i18next'
 import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import StakeTriDataCard from '../../components/StakeTri/StakeTriDataCard'
-import { DarkGreyCard, LightCard } from '../../components/Card'
+import Slider from '../../components/Slider'
+import { DarkGreyCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import Row, { RowBetween } from '../../components/Row'
 import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
 import { Dots } from '../../components/swap/styleds'
-import Slider from '../../components/Slider'
 
 import StakingAPRCard from './StakingAPRCard'
 import { useActiveWeb3React } from '../../hooks'
@@ -30,30 +29,11 @@ import { wrappedCurrency } from '../../utils/wrappedCurrency'
 
 import { TRI, XTRI, BIG_INT_ZERO } from '../../constants'
 import { TYPE } from '../../theme'
-import { ClickableText, MaxButton } from '../Pool/styleds'
+import { MaxButton } from '../Pool/styleds'
 import { CardSection, HighlightCard } from '../../components/earn/styled'
 import { dummyToken } from '../../state/stake/stake-constants'
 
-const DataRow = styled(RowBetween)`
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-   flex-direction: column;
-   margin: 15px;
- `};
-`
-
-const TopSection = styled(AutoColumn)`
-  max-width: 720px;
-  width: 100%;
-`
-
-const StakeClickableText = styled(ClickableText)<{ selected: boolean }>`
-  color: ${({ selected, theme }) => (selected ? theme.primary1 : theme.bg5)};
-  font-weight: ${({ selected }) => (selected ? 500 : 400)};
-`
-
-const LargeHeaderWhite = styled(TYPE.largeHeader)`
-  color: white;
-`
+import { DataRow, TopSection, StakeClickableText, LargeHeaderWhite } from './StakeTri.styles'
 
 enum StakeState {
   stakeTRI = 'stakeTRI',
@@ -66,61 +46,44 @@ const dummyAmount = new TokenAmount(dummyToken, '0')
 
 export default function StakeTri() {
   const { t } = useTranslation()
-
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
-
   const { chainId: _chainId, account } = useActiveWeb3React()
+  const { enter, leave } = useTriBar()
+  const { totalTriStaked } = useTriBarStats()
+
   const chainId = _chainId ? _chainId! : ChainId.AURORA
+  const triBalance = useTokenBalance(account ?? undefined, TRI[chainId])!
+  const xTriBalance = useTokenBalance(account ?? undefined, XTRI[chainId])!
+  const totalTriStakedFormatted = totalTriStaked?.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
   const [stakeState, setStakeState] = useState<StakeState>(StakeState.stakeTRI)
   const [input, _setInput] = useState<string>('')
   const [usingBalance, setUsingBalance] = useState(true)
   const [pendingTx, setPendingTx] = useState(false)
   const [inputFocused, setInputFocused] = useState(false)
-
-  const { enter, leave } = useTriBar()
-
-  const isStaking = stakeState === StakeState.stakeTRI
-
-  const triBalance = useTokenBalance(account ?? undefined, TRI[chainId])!
-  const xTriBalance = useTokenBalance(account ?? undefined, XTRI[chainId])!
-
-  // const balance = isStaking ? triBalance : xTriBalance
-  const tempBalance = isStaking ? triBalance : xTriBalance
-  const balance = tempBalance ?? dummyAmount
-  // const parsedAmount = usingBalance ? balance : tryParseAmount(input, balance?.currency)
-
   const [percentage, setPercentage] = useState<number>(0)
-
   const [debouncedPercentage, setDebouncedPercentage] = useDebouncedChangeHandler(percentage, setPercentage)
-
-  const handleSliderAndButtonsChange = (value: number, debounced: boolean = false) => {
-    if (!usingBalance) {
-      setUsingBalance(true)
-    }
-    if (debounced) {
-      setDebouncedPercentage(value)
-    } else {
-      setPercentage(value)
-    }
-  }
 
   const percent = new Percent(percentage.toFixed(0), '100')
 
-  const testToken = balance ? wrappedCurrency(balance.currency, chainId)! : dummyToken
+  const isStaking = stakeState === StakeState.stakeTRI
+  const balance = isStaking ? triBalance : xTriBalance
+  const parsedBalance = balance ?? dummyAmount
+
+  const balanceToken = wrappedCurrency(parsedBalance.currency, chainId) ?? dummyToken
 
   const getParsedAmount = () => {
     if (!usingBalance) {
-      // console.log('changing parsedAmount, input:', input)
-      const tryParse = tryParseAmount(input, balance?.currency) ?? dummyAmount
-      // console.log(tryParse.toFixed(2))
-      return tryParse
+      return tryParseAmount(input, parsedBalance.currency) ?? dummyAmount
     }
-    return balance ? new TokenAmount(testToken, percent.multiply(balance.raw).quotient) : dummyAmount
+    return new TokenAmount(balanceToken, percent.multiply(parsedBalance.raw).quotient)
   }
 
   const parsedAmount = getParsedAmount()
-  const [approvalState, handleApproval] = useApproveCallback(parsedAmount, XTRI[chainId].address)
+  const [approvalState, handleApproval] = useApproveCallback(
+    parsedAmount.equalTo(dummyAmount) ? undefined : parsedAmount,
+    XTRI[chainId].address
+  )
 
   function setInput(v: string) {
     // Allows user to paste in long balances
@@ -135,11 +98,53 @@ export default function StakeTri() {
     setInputFocused(false)
   }
 
+  // Reset input when toggling staking/unstaking
+  function handleStakeTRI() {
+    setStakeState(StakeState.stakeTRI)
+    setInput('')
+    setPercentage(0)
+  }
+  function handleUnstakeXTRI() {
+    setStakeState(StakeState.unstakeXTRI)
+    setInput('')
+    setPercentage(0)
+  }
+
+  async function handleStake() {
+    try {
+      setPendingTx(true)
+
+      if (isStaking) {
+        await enter(parsedAmount)
+      } else {
+        await leave(parsedAmount)
+      }
+
+      setInput('')
+      setPercentage(0)
+    } catch (e) {
+      console.error(`Error ${isStaking ? 'Staking' : 'Unstaking'}: `, e)
+    } finally {
+      setPendingTx(false)
+    }
+  }
+
+  const handleSliderAndButtonsChange = (value: number, debounced: boolean = false) => {
+    if (!usingBalance) {
+      setUsingBalance(true)
+    }
+    if (debounced) {
+      setDebouncedPercentage(value)
+    } else {
+      setPercentage(value)
+    }
+  }
+
   useEffect(() => {
     if (inputFocused) {
-      const amount = tryParseAmount(input, balance?.currency) ?? dummyAmount
-      if (balance && JSBI.greaterThan(balance.raw, amount.raw)) {
-        const testPercent = new Percent(amount.raw, balance?.raw)
+      const amount = tryParseAmount(input, parsedBalance?.currency) ?? dummyAmount
+      if (parsedBalance && JSBI.greaterThan(parsedBalance.raw, amount.raw)) {
+        const testPercent = new Percent(amount.raw, parsedBalance?.raw)
         setDebouncedPercentage(Number(testPercent.toFixed(0)))
       } else {
         setDebouncedPercentage(0)
@@ -149,32 +154,33 @@ export default function StakeTri() {
 
   useEffect(() => {
     if (!inputFocused) {
-      // setInput(parsedAmount.toExact())
-      // setInput(parsedAmount.toFixed(2))
       _setInput(parsedAmount.toExact())
     }
   }, [percentage])
 
-  // Reset input when toggling staking/unstaking
-  function handleStakeTRI() {
-    setStakeState(StakeState.stakeTRI)
-    setInput('')
-  }
-  function handleUnstakeXTRI() {
-    setStakeState(StakeState.unstakeXTRI)
-    setInput('')
-  }
-
-  const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(balance)
-  // const atMaxAmountInput = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
-  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmount.equalTo(maxAmountInput))
-
-  const handleClickMax = useCallback(() => {
-    if (maxAmountInput) {
-      setInput(maxAmountInput.toExact())
-      setUsingBalance(true)
+  function renderStakeButton() {
+    // If account balance is less than inputted amount
+    const insufficientFunds = (parsedBalance.equalTo(BIG_INT_ZERO) ?? false) || parsedAmount.greaterThan(parsedBalance)
+    if (insufficientFunds) {
+      return (
+        <ButtonError error={true} disabled={true}>
+          Insufficient Balance
+        </ButtonError>
+      )
     }
-  }, [maxAmountInput, setInput])
+
+    const isValid =
+      // If user is unstaking, we don't need to check approval status
+      (isStaking ? approvalState === ApprovalState.APPROVED : true) &&
+      !pendingTx &&
+      parsedAmount.greaterThan(BIG_INT_ZERO) === true
+
+    return (
+      <ButtonPrimary disabled={!isValid} onClick={handleStake}>
+        {isStaking ? 'Stake' : 'Unstake'}
+      </ButtonPrimary>
+    )
+  }
 
   function renderApproveButton() {
     if (!isStaking) {
@@ -198,68 +204,6 @@ export default function StakeTri() {
       </ButtonConfirmed>
     )
   }
-
-  function renderStakeButton() {
-    // If account balance is less than inputted amount
-    // const insufficientFunds = (balance?.equalTo(BIG_INT_ZERO) ?? false) || parsedAmount?.greaterThan(balance)
-    const insufficientFunds = (balance?.equalTo(BIG_INT_ZERO) ?? false) || parsedAmount.greaterThan(balance)
-    if (insufficientFunds) {
-      return (
-        <ButtonError error={true} disabled={true}>
-          Insufficient Balance
-        </ButtonError>
-      )
-    }
-
-    const isValid =
-      // If user is unstaking, we don't need to check approval status
-      (isStaking ? approvalState === ApprovalState.APPROVED : true) &&
-      !pendingTx &&
-      // parsedAmount?.greaterThan(BIG_INT_ZERO) === true
-      parsedAmount.greaterThan(BIG_INT_ZERO) === true
-
-    return (
-      <ButtonPrimary disabled={!isValid} onClick={handleStake}>
-        {isStaking ? 'Stake' : 'Unstake'}
-      </ButtonPrimary>
-    )
-  }
-
-  async function handleStake() {
-    try {
-      setPendingTx(true)
-
-      if (isStaking) {
-        await enter(parsedAmount)
-      } else {
-        await leave(parsedAmount)
-      }
-
-      setInput('')
-      setPercentage(0)
-    } catch (e) {
-      console.error(`Error ${isStaking ? 'Staking' : 'Unstaking'}: `, e)
-    } finally {
-      setPendingTx(false)
-    }
-  }
-
-  const { totalTriStaked } = useTriBarStats()
-  const totalTriStakedFormatted = totalTriStaked?.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-
-  // const percentToRemove = new Percent(input, '100')
-
-  // useEffect(() => {
-  //   // console.log(percentage)
-  //   // console.log(new Percent(percentage.toFixed(0), '100'))
-  //   const percent = new Percent(percentage.toFixed(0), '100')
-
-  //   const testToken = balance ? wrappedCurrency(balance.currency, chainId)! : dummyToken
-
-  //   const dummyAmount = new TokenAmount(dummyToken, '0')
-  //   const test = balance ? new TokenAmount(testToken, percent.multiply(balance.raw).quotient) : dummyAmount
-  //   console.log(test.toFixed(6))
-  // }, [percentage])
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -356,19 +300,16 @@ export default function StakeTri() {
                 75%
               </MaxButton>
               <MaxButton onClick={() => handleSliderAndButtonsChange(100)} width="20%">
-                {/*TODO: Translate using i18n entry from removeLiquidity object*/}
                 {t('currencyInputPanel.max')}
               </MaxButton>
             </RowBetween>
 
             <StakeInputPanel
-              // value={percentage > 0 ? parsedAmount.toFixed(INPUT_CHAR_LIMIT) : parsedAmount.toFixed(1)}
               value={!usingBalance ? input : parsedAmount.toFixed(5)}
               onUserInput={setInput}
               showMaxButton={false}
               currency={isStaking ? TRI[chainId] : XTRI[chainId]}
               id="stake-currency-input"
-              onMax={handleClickMax}
               onFocus={handleFocus}
               onBlur={handleBlur}
             />
