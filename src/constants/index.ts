@@ -242,6 +242,21 @@ export const META: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0xc21ff01229e982d7c8b8691163b0a3cb8f357453', 24, 'META', 'Meta Pool')
 }
 
+export const GBA: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'GBA', 'Golden Banana'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'GBA', 'Golden Banana'),
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'GBA', 'Golden Bananal'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xc2ac78FFdDf39e5cD6D83bbD70c1D67517C467eF', 18, 'GBA', 'Golden Bananal')
+}
+
+export const XNL: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'XNL', 'Chronicle'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'XNL', 'Chronicle'),
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, ZERO_ADDRESS, 18, 'XNL', 'Chronicle'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x7cA1C28663b76CFDe424A9494555B94846205585', 18, 'XNL', 'Chronicle')
+}
+
+
 // This is actually WETH
 function createProperlyNamedWETH() {
   const { address, decimals, name } = _WETH[ChainId.AURORA]
