@@ -35,6 +35,7 @@ import CurrencyInputPanel from '../CurrencyInputPanel'
 import { Dots } from '../swap/styleds'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import DoubleCurrencyLogo from '../DoubleLogo'
+import BalanceButtonValueEnum from '../BalanceButton/BalanceButtonValueEnum'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -102,6 +103,7 @@ export default function RemoveLiquidityModal({
   }
 
   const atMaxAmount = parsedAmounts[Field.LIQUIDITY_PERCENT]?.equalTo(new Percent('1'))
+  const atHalfAmount = parsedAmounts[Field.LIQUIDITY_PERCENT]?.equalTo(new Percent('1', '2'))
 
   // pair contract
   const pairContract: Contract | null = usePairContract(pair?.liquidityToken?.address)
@@ -597,10 +599,11 @@ export default function RemoveLiquidityModal({
               <CurrencyInputPanel
                 value={formattedAmounts[Field.LIQUIDITY]}
                 onUserInput={onLiquidityInput}
-                onMax={() => {
-                  onUserInput(Field.LIQUIDITY_PERCENT, '100')
+                onClickBalanceButton={value => {
+                  onUserInput(Field.LIQUIDITY_PERCENT, value === BalanceButtonValueEnum.MAX ? '100' : '50')
                 }}
-                showMaxButton={!atMaxAmount}
+                disableHalfButton={atHalfAmount}
+                disableMaxButton={atMaxAmount}
                 disableCurrencySelect
                 currency={pair?.liquidityToken}
                 pair={pair}
@@ -613,8 +616,11 @@ export default function RemoveLiquidityModal({
                 hideBalance={true}
                 value={formattedAmounts[Field.CURRENCY_A]}
                 onUserInput={onCurrencyAInput}
-                onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
-                showMaxButton={!atMaxAmount}
+                onClickBalanceButton={value =>
+                  onUserInput(Field.LIQUIDITY_PERCENT, value === BalanceButtonValueEnum.MAX ? '100' : '50')
+                }
+                disableHalfButton={atHalfAmount}
+                disableMaxButton={atMaxAmount}
                 currency={currencyA}
                 label={t('removeLiquidity.output')}
                 id="remove-liquidity-tokena"
@@ -626,8 +632,11 @@ export default function RemoveLiquidityModal({
                 hideBalance={true}
                 value={formattedAmounts[Field.CURRENCY_B]}
                 onUserInput={onCurrencyBInput}
-                onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
-                showMaxButton={!atMaxAmount}
+                onClickBalanceButton={value =>
+                  onUserInput(Field.LIQUIDITY_PERCENT, value === BalanceButtonValueEnum.MAX ? '100' : '50')
+                }
+                disableHalfButton={atHalfAmount}
+                disableMaxButton={atMaxAmount}
                 currency={currencyB}
                 label={t('removeLiquidity.output')}
                 id="remove-liquidity-tokenb"

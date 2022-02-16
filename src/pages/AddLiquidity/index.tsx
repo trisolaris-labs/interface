@@ -29,7 +29,12 @@ import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../s
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks'
 import { TYPE } from '../../theme'
-import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../utils'
+import {
+  calculateGasMargin,
+  calculateSlippageAmount,
+  divideCurrencyAmountByNumber,
+  getRouterContract
+} from '../../utils'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import AppBody from '../AppBody'
@@ -41,6 +46,7 @@ import { ChainId } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { CardSection } from '../../components/earn/styled'
 import PriceAndPoolShare from './PriceAndPoolShare'
+import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 
 export default function AddLiquidity({
   match: {
@@ -109,11 +115,20 @@ export default function AddLiquidity({
     {}
   )
 
-  const atMaxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+  const atMaxAmounts: { [field in Field]?: boolean } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
     (accumulator, field) => {
       return {
         ...accumulator,
         [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0')
+      }
+    },
+    {}
+  )
+  const atHalfAmounts: { [field in Field]?: boolean } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+    (accumulator, field) => {
+      return {
+        ...accumulator,
+        [field]: maxAmounts[field]?.divide('2')?.equalTo(parsedAmounts[field] ?? '0')
       }
     },
     {}
@@ -356,11 +371,18 @@ export default function AddLiquidity({
             <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_A]}
               onUserInput={onFieldAInput}
-              onMax={() => {
-                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+              onClickBalanceButton={value => {
+                const amount = maxAmounts[Field.CURRENCY_A]
+                onFieldAInput(
+                  (value === BalanceButtonValueEnum.MAX
+                    ? amount
+                    : divideCurrencyAmountByNumber(amount, 2)
+                  )?.toExact() ?? ''
+                )
               }}
+              disableHalfButton={atHalfAmounts[Field.CURRENCY_A]}
+              disableMaxButton={atMaxAmounts[Field.CURRENCY_A]}
               onCurrencySelect={handleCurrencyASelect}
-              showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
               currency={currencies[Field.CURRENCY_A]}
               id="add-liquidity-input-tokena"
               showCommonBases
@@ -372,10 +394,17 @@ export default function AddLiquidity({
               value={formattedAmounts[Field.CURRENCY_B]}
               onUserInput={onFieldBInput}
               onCurrencySelect={handleCurrencyBSelect}
-              onMax={() => {
-                onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
+              onClickBalanceButton={value => {
+                const amount = maxAmounts[Field.CURRENCY_B]
+                onFieldBInput(
+                  (value === BalanceButtonValueEnum.MAX
+                    ? amount
+                    : divideCurrencyAmountByNumber(amount, 2)
+                  )?.toExact() ?? ''
+                )
               }}
-              showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
+              disableHalfButton={atHalfAmounts[Field.CURRENCY_B]}
+              disableMaxButton={atMaxAmounts[Field.CURRENCY_B]}
               currency={currencies[Field.CURRENCY_B]}
               id="add-liquidity-input-tokenb"
               showCommonBases

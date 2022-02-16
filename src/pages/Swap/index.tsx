@@ -48,6 +48,8 @@ import { useTranslation } from 'react-i18next'
 import { useIsSelectedAEBToken } from '../../state/lists/hooks'
 import { DeprecatedWarning } from '../../components/Warning'
 import Settings from '../../components/Settings'
+import { divideCurrencyAmountByNumber } from '../../utils'
+import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 
 const BottomText = styled.span`
   margin-top: 8px;
@@ -237,6 +239,7 @@ export default function Swap() {
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
+  const atHalfAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput.divide('2')))
 
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
@@ -312,9 +315,19 @@ export default function Swap() {
     [onCurrencySelection]
   )
 
-  const handleMaxInput = useCallback(() => {
-    maxAmountInput && onUserInput(Field.INPUT, maxAmountInput.toExact())
-  }, [maxAmountInput, onUserInput])
+  const handleMaxInput = useCallback(
+    value => {
+      maxAmountInput &&
+        onUserInput(
+          Field.INPUT,
+          (value === BalanceButtonValueEnum.MAX
+            ? maxAmountInput
+            : divideCurrencyAmountByNumber(maxAmountInput, 2)
+          )?.toExact() ?? ''
+        )
+    },
+    [maxAmountInput, onUserInput]
+  )
 
   const handleOutputSelect = useCallback(outputCurrency => onCurrencySelection(Field.OUTPUT, outputCurrency), [
     onCurrencySelection
@@ -370,10 +383,11 @@ export default function Swap() {
                       : t('swapPage.from')
                   }
                   value={formattedAmounts[Field.INPUT]}
-                  showMaxButton={!atMaxAmountInput}
+                  disableHalfButton={atHalfAmountInput}
+                  disableMaxButton={atMaxAmountInput}
                   currency={currencies[Field.INPUT]}
                   onUserInput={handleTypeInput}
-                  onMax={handleMaxInput}
+                  onClickBalanceButton={handleMaxInput}
                   onCurrencySelect={handleInputSelect}
                   otherCurrency={currencies[Field.OUTPUT]}
                   id="swap-currency-input"
@@ -405,7 +419,6 @@ export default function Swap() {
                       ? t('swapPage.toEstimated')
                       : t('swapPage.to')
                   }
-                  showMaxButton={false}
                   currency={currencies[Field.OUTPUT]}
                   onCurrencySelect={handleOutputSelect}
                   otherCurrency={currencies[Field.INPUT]}

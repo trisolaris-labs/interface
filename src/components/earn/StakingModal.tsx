@@ -102,7 +102,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           )
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              summary: t('earn.depositLiquidity'),
+              summary: t('earn.depositLiquidity')
             })
             setHash(response.hash)
           })
@@ -126,9 +126,13 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   // used for max input button
   const maxAmountInput = maxAmountSpend(userLiquidityUnstaked)
   const atMaxAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
-  const handleMax = useCallback(() => {
-    maxAmountInput && onUserInput(maxAmountInput.toExact())
-  }, [maxAmountInput, onUserInput])
+  const atHalfAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput.divide('2')))
+  const handleMax = useCallback(
+    value => {
+      maxAmountInput && onUserInput(value === 'MAX' ? maxAmountInput.toExact() : maxAmountInput.divide('2').toString())
+    },
+    [maxAmountInput, onUserInput]
+  )
 
   async function onAttemptToApprove() {
     if (!pairContract || !library || !deadline) throw new Error(t('earn.missingDependencies'))
@@ -142,50 +146,50 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
       { name: 'name', type: 'string' },
       { name: 'version', type: 'string' },
       { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' },
+      { name: 'verifyingContract', type: 'address' }
     ]
     const domain = {
       name: 'Pangolin Liquidity',
       version: '1',
       chainId: chainId,
-      verifyingContract: pairContract.address,
+      verifyingContract: pairContract.address
     }
     const Permit = [
       { name: 'owner', type: 'address' },
       { name: 'spender', type: 'address' },
       { name: 'value', type: 'uint256' },
       { name: 'nonce', type: 'uint256' },
-      { name: 'deadline', type: 'uint256' },
+      { name: 'deadline', type: 'uint256' }
     ]
     const message = {
       owner: account,
       spender: stakingInfo.stakingRewardAddress,
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
-      deadline: deadline.toNumber(),
+      deadline: deadline.toNumber()
     }
     const data = JSON.stringify({
       types: {
         EIP712Domain,
-        Permit,
+        Permit
       },
       domain,
       primaryType: 'Permit',
-      message,
+      message
     })
 
     library
       .send('eth_signTypedData_v4', [account, data])
       .then(splitSignature)
-      .then((signature) => {
+      .then(signature => {
         setSignatureData({
           v: signature.v,
           r: signature.r,
           s: signature.s,
-          deadline: deadline.toNumber(),
+          deadline: deadline.toNumber()
         })
       })
-      .catch((error) => {
+      .catch(error => {
         // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
         if (error?.code !== 4001) {
           approveCallback()
@@ -204,8 +208,9 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           <CurrencyInputPanel
             value={typedValue}
             onUserInput={onUserInput}
-            onMax={handleMax}
-            showMaxButton={!atMaxAmount}
+            onClickBalanceButton={handleMax}
+            disableHalfButton={atHalfAmount}
+            disableMaxButton={atMaxAmount}
             currency={stakingInfo.stakedAmount.token}
             pair={dummyPair}
             label={''}

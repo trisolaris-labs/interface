@@ -112,3 +112,12 @@ export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currenc
 export function addCommasToNumber(string: string): string {
   return string.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
+
+// Divides CurrencyAmount by a non-JSBI number
+export function divideCurrencyAmountByNumber(numerator: CurrencyAmount | undefined, denominator: number) {
+  if (numerator == null) {
+    return null
+  }
+
+  return CurrencyAmount.ether(JSBI.divide(numerator.raw, JSBI.BigInt(denominator)))
+}

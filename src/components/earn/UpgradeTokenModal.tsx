@@ -89,9 +89,13 @@ export default function UpgradeTokenModal({
   // used for max input button
   const maxAmountInput = maxAmountSpend(aebTokenBalance)
   const atMaxAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
-  const handleMax = useCallback(() => {
-    maxAmountInput && onUserInput(maxAmountInput.toExact())
-  }, [maxAmountInput, onUserInput])
+  const atHalfAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput.divide('2')))
+  const handleMax = useCallback(
+    value => {
+      maxAmountInput && onUserInput(value === 'MAX' ? maxAmountInput.toExact() : maxAmountInput.divide('2').toString())
+    },
+    [maxAmountInput, onUserInput]
+  )
 
   async function onAttemptToApprove() {
     if (!bridgeTokenContract || !library) throw new Error(t('earn.missingDependencies'))
@@ -118,8 +122,9 @@ export default function UpgradeTokenModal({
           <CurrencyInputPanel
             value={typedValue}
             onUserInput={onUserInput}
-            onMax={handleMax}
-            showMaxButton={!atMaxAmount}
+            onClickBalanceButton={handleMax}
+            disableHalfButton={atHalfAmount}
+            disableMaxButton={atMaxAmount}
             currency={aebTokenBalance?.token}
             label={''}
             disableCurrencySelect={true}

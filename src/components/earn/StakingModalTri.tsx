@@ -24,6 +24,8 @@ import { LoadingView, SubmittedView } from '../ModalViews'
 import { useTranslation } from 'react-i18next'
 import { parseUnits } from '@ethersproject/units'
 import useTLP from '../../hooks/useTLP'
+import BalanceButtonValueEnum from '../BalanceButton/BalanceButtonValueEnum'
+import { divideCurrencyAmountByNumber } from '../../utils'
 
 const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
   display: flex;
@@ -138,9 +140,19 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   // used for max input button
   const maxAmountInput = maxAmountSpend(userLiquidityUnstaked)
   const atMaxAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
-  const handleMax = useCallback(() => {
-    maxAmountInput && onUserInput(maxAmountInput.toExact())
-  }, [maxAmountInput, onUserInput])
+  const atHalfAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput.divide('2')))
+  const handleMax = useCallback(
+    value => {
+      maxAmountInput &&
+        onUserInput(
+          (value === BalanceButtonValueEnum.MAX
+            ? maxAmountInput
+            : divideCurrencyAmountByNumber(maxAmountInput, 2)
+          )?.toExact() ?? ''
+        )
+    },
+    [maxAmountInput, onUserInput]
+  )
 
   return (
     <Modal isOpen={isOpen} onDismiss={wrappedOnDismiss} maxHeight={90}>
@@ -153,8 +165,9 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           <CurrencyInputPanel
             value={typedValue}
             onUserInput={onUserInput}
-            onMax={handleMax}
-            showMaxButton={!atMaxAmount}
+            onClickBalanceButton={handleMax}
+            disableHalfButton={atHalfAmount}
+            disableMaxButton={atMaxAmount}
             currency={lpToken}
             pair={dummyPair}
             label={''}

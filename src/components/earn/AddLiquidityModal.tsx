@@ -13,9 +13,14 @@ import { useCurrency } from '../../hooks/Tokens'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks'
 import { Field } from '../../state/mint/actions'
-import { CETH, ChainId, Currency, TokenAmount, ROUTER_ADDRESS } from '@trisolaris/sdk'
+import { CETH, ChainId, Currency, TokenAmount, ROUTER_ADDRESS, CurrencyAmount } from '@trisolaris/sdk'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
-import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../utils'
+import {
+  calculateGasMargin,
+  calculateSlippageAmount,
+  divideCurrencyAmountByNumber,
+  getRouterContract
+} from '../../utils'
 import { BigNumber } from '@ethersproject/bignumber'
 import ReactGA from 'react-ga'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
@@ -32,8 +37,8 @@ import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { ConfirmAddModalBottom } from '../../pages/AddLiquidity/ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PairState } from '../../data/Reserves'
-import { PoolPriceBar } from '../../pages/AddLiquidity/PoolPriceBar'
 import PriceAndPoolShare from '../../pages/AddLiquidity/PriceAndPoolShare'
+import BalanceButtonValueEnum from '../BalanceButton/BalanceButtonValueEnum'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -111,11 +116,20 @@ export default function AddLiquidityModal({
     {}
   )
 
-  const atMaxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+  const atMaxAmounts: { [field in Field]?: boolean } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
     (accumulator, field) => {
       return {
         ...accumulator,
         [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0')
+      }
+    },
+    {}
+  )
+  const atHalfAmounts: { [field in Field]?: boolean } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+    (accumulator, field) => {
+      return {
+        ...accumulator,
+        [field]: maxAmounts[field]?.divide('2')?.equalTo(parsedAmounts[field] ?? '0')
       }
     },
     {}
@@ -348,11 +362,16 @@ export default function AddLiquidityModal({
           <CurrencyInputPanel
             value={formattedAmounts[Field.CURRENCY_A]}
             onUserInput={onFieldAInput}
-            onMax={() => {
-              onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+            onClickBalanceButton={value => {
+              const amount = maxAmounts[Field.CURRENCY_A]
+              onFieldAInput(
+                (value === BalanceButtonValueEnum.MAX ? amount : divideCurrencyAmountByNumber(amount, 2))?.toExact() ??
+                  ''
+              )
             }}
+            disableHalfButton={atHalfAmounts[Field.CURRENCY_A]}
+            disableMaxButton={atMaxAmounts[Field.CURRENCY_A]}
             onCurrencySelect={handleCurrencyASelect}
-            showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
             currency={currencies[Field.CURRENCY_A]}
             id="add-liquidity-input-tokena"
             showCommonBases
@@ -364,10 +383,15 @@ export default function AddLiquidityModal({
             value={formattedAmounts[Field.CURRENCY_B]}
             onUserInput={onFieldBInput}
             onCurrencySelect={handleCurrencyBSelect}
-            onMax={() => {
-              onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
+            onClickBalanceButton={value => {
+              const amount = maxAmounts[Field.CURRENCY_B]
+              onFieldBInput(
+                (value === BalanceButtonValueEnum.MAX ? amount : divideCurrencyAmountByNumber(amount, 2))?.toExact() ??
+                  ''
+              )
             }}
-            showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
+            disableHalfButton={atHalfAmounts[Field.CURRENCY_B]}
+            disableMaxButton={atMaxAmounts[Field.CURRENCY_B]}
             currency={currencies[Field.CURRENCY_B]}
             id="add-liquidity-input-tokenb"
             showCommonBases
