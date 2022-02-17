@@ -10,22 +10,17 @@ import ProgressCircles from '../ProgressSteps'
 import CurrencyInputPanel from '../CurrencyInputPanel'
 import { TokenAmount, Pair, ChainId } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { usePairContract, useStakingContract } from '../../hooks/useContract'
 import { useMasterChefContract, useMasterChefV2Contract } from '../../state/stake/hooks-sushi'
 import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
-import { splitSignature } from 'ethers/lib/utils'
 import { useDerivedStakeInfo } from '../../state/stake/hooks'
 import { StakingTri } from '../../state/stake/stake-constants'
-import { wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
 import { useTranslation } from 'react-i18next'
 import { parseUnits } from '@ethersproject/units'
 import useTLP from '../../hooks/useTLP'
-import BalanceButtonValueEnum from '../BalanceButton/BalanceButtonValueEnum'
-import { divideCurrencyAmountByNumber } from '../../utils'
+import useCurrencyInputPanel from '../CurrencyInputPanel/useCurrencyInputPanel'
 
 const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
   display: flex;
@@ -138,20 +133,19 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   }, [])
 
   // used for max input button
-  const maxAmountInput = maxAmountSpend(userLiquidityUnstaked)
-  const atMaxAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
-  const atHalfAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput.divide('2')))
+  const { getMaxInputAmount } = useCurrencyInputPanel()
+
+  const { atHalfAmount, atMaxAmount, getClickedAmount } = getMaxInputAmount({
+    amount: userLiquidityUnstaked,
+    parsedAmount
+  })
+
   const handleMax = useCallback(
     value => {
-      maxAmountInput &&
-        onUserInput(
-          (value === BalanceButtonValueEnum.MAX
-            ? maxAmountInput
-            : divideCurrencyAmountByNumber(maxAmountInput, 2)
-          )?.toExact() ?? ''
-        )
+      const amount = getClickedAmount(value)
+      onUserInput(amount)
     },
-    [maxAmountInput, onUserInput]
+    [getClickedAmount, onUserInput]
   )
 
   return (

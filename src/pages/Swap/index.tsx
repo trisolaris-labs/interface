@@ -50,6 +50,7 @@ import { DeprecatedWarning } from '../../components/Warning'
 import Settings from '../../components/Settings'
 import { divideCurrencyAmountByNumber } from '../../utils'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
+import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 
 const BottomText = styled.span`
   margin-top: 8px;
@@ -237,9 +238,11 @@ export default function Swap() {
     }
   }, [approval, approvalSubmitted])
 
-  const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
-  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
-  const atHalfAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput.divide('2')))
+  const { getMaxInputAmount } = useCurrencyInputPanel()
+  const { atMaxAmount: atMaxAmountInput, atHalfAmount: atHalfAmountInput, getClickedAmount } = getMaxInputAmount({
+    amount: currencyBalances[Field.INPUT],
+    parsedAmount: parsedAmounts[Field.INPUT]
+  })
 
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
@@ -317,16 +320,10 @@ export default function Swap() {
 
   const handleMaxInput = useCallback(
     value => {
-      maxAmountInput &&
-        onUserInput(
-          Field.INPUT,
-          (value === BalanceButtonValueEnum.MAX
-            ? maxAmountInput
-            : divideCurrencyAmountByNumber(maxAmountInput, 2)
-          )?.toExact() ?? ''
-        )
+      const amount = getClickedAmount(value)
+      onUserInput(Field.INPUT, amount)
     },
-    [maxAmountInput, onUserInput]
+    [getClickedAmount, onUserInput]
   )
 
   const handleOutputSelect = useCallback(outputCurrency => onCurrencySelection(Field.OUTPUT, outputCurrency), [

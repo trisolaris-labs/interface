@@ -20,6 +20,8 @@ import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
 import { useTranslation } from 'react-i18next'
 import { BRIDGE_MIGRATOR_ADDRESS } from '../../constants'
+import { divideCurrencyAmountByNumber } from '../../utils'
+import useCurrencyInputPanel from '../CurrencyInputPanel/useCurrencyInputPanel'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -126,14 +128,19 @@ export default function BridgeMigratorModal({
   }, [])
 
   // used for max input button
-  const maxAmountInput = maxAmountSpend(userLiquidityUnstaked)
-  const atMaxAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
-  const atHalfAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput.divide('2')))
+  const { getMaxInputAmount } = useCurrencyInputPanel()
+
+  const { atHalfAmount, atMaxAmount, getClickedAmount } = getMaxInputAmount({
+    amount: userLiquidityUnstaked,
+    parsedAmount
+  })
+
   const handleMax = useCallback(
     value => {
-      maxAmountInput && onUserInput(value === 'HALF' ? maxAmountInput.divide('2').toString() : maxAmountInput.toExact())
+      const amount = getClickedAmount(value)
+      onUserInput(amount)
     },
-    [maxAmountInput, onUserInput]
+    [getClickedAmount, onUserInput]
   )
 
   async function onAttemptToApprove() {

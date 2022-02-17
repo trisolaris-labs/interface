@@ -10,7 +10,6 @@ import ProgressCircles from '../ProgressSteps'
 import CurrencyInputPanel from '../CurrencyInputPanel'
 import { TokenAmount, Pair, ChainId } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { usePairContract, useStakingContract } from '../../hooks/useContract'
 import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
 import { splitSignature } from 'ethers/lib/utils'
@@ -20,6 +19,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
 import { useTranslation } from 'react-i18next'
+import useCurrencyInputPanel from '../CurrencyInputPanel/useCurrencyInputPanel'
 
 const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
   display: flex;
@@ -124,14 +124,19 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   }, [])
 
   // used for max input button
-  const maxAmountInput = maxAmountSpend(userLiquidityUnstaked)
-  const atMaxAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
-  const atHalfAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput.divide('2')))
+  const { getMaxInputAmount } = useCurrencyInputPanel()
+
+  const { atHalfAmount, atMaxAmount, getClickedAmount } = getMaxInputAmount({
+    amount: userLiquidityUnstaked,
+    parsedAmount
+  })
+
   const handleMax = useCallback(
     value => {
-      maxAmountInput && onUserInput(value === 'MAX' ? maxAmountInput.toExact() : maxAmountInput.divide('2').toString())
+      const amount = getClickedAmount(value)
+      onUserInput(amount)
     },
-    [maxAmountInput, onUserInput]
+    [getClickedAmount, onUserInput]
   )
 
   async function onAttemptToApprove() {

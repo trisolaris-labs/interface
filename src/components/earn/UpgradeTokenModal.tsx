@@ -9,7 +9,6 @@ import ProgressCircles from '../ProgressSteps'
 import CurrencyInputPanel from '../CurrencyInputPanel'
 import { CurrencyAmount, TokenAmount } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { useBridgeTokenContract } from '../../hooks/useContract'
 import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
 import { TransactionResponse } from '@ethersproject/providers'
@@ -17,6 +16,7 @@ import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
 import { useTranslation } from 'react-i18next'
 import { tryParseAmount } from '../../state/swap/hooks'
+import useCurrencyInputPanel from '../CurrencyInputPanel/useCurrencyInputPanel'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -87,14 +87,19 @@ export default function UpgradeTokenModal({
   }, [])
 
   // used for max input button
-  const maxAmountInput = maxAmountSpend(aebTokenBalance)
-  const atMaxAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
-  const atHalfAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput.divide('2')))
+  const { getMaxInputAmount } = useCurrencyInputPanel()
+
+  const { atHalfAmount, atMaxAmount, getClickedAmount } = getMaxInputAmount({
+    amount: aebTokenBalance,
+    parsedAmount
+  })
+
   const handleMax = useCallback(
     value => {
-      maxAmountInput && onUserInput(value === 'MAX' ? maxAmountInput.toExact() : maxAmountInput.divide('2').toString())
+      const amount = getClickedAmount(value)
+      onUserInput(amount)
     },
-    [maxAmountInput, onUserInput]
+    [getClickedAmount, onUserInput]
   )
 
   async function onAttemptToApprove() {

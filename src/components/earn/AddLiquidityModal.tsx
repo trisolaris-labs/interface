@@ -13,7 +13,7 @@ import { useCurrency } from '../../hooks/Tokens'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks'
 import { Field } from '../../state/mint/actions'
-import { CETH, ChainId, Currency, TokenAmount, ROUTER_ADDRESS, CurrencyAmount } from '@trisolaris/sdk'
+import { CETH, ChainId, Currency, ROUTER_ADDRESS } from '@trisolaris/sdk'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import {
   calculateGasMargin,
@@ -33,12 +33,12 @@ import { Dots } from '../swap/styleds'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { ConfirmAddModalBottom } from '../../pages/AddLiquidity/ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PairState } from '../../data/Reserves'
 import PriceAndPoolShare from '../../pages/AddLiquidity/PriceAndPoolShare'
 import BalanceButtonValueEnum from '../BalanceButton/BalanceButtonValueEnum'
+import useCurrencyInputPanel from '../CurrencyInputPanel/useCurrencyInputPanel'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -105,35 +105,8 @@ export default function AddLiquidityModal({
     [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? ''
   }
 
-  // get the max amounts user can add
-  const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmountSpend(currencyBalances[field])
-      }
-    },
-    {}
-  )
-
-  const atMaxAmounts: { [field in Field]?: boolean } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0')
-      }
-    },
-    {}
-  )
-  const atHalfAmounts: { [field in Field]?: boolean } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmounts[field]?.divide('2')?.equalTo(parsedAmounts[field] ?? '0')
-      }
-    },
-    {}
-  )
+  const { getMaxAmounts } = useCurrencyInputPanel()
+  const { maxAmounts, atMaxAmounts, atHalfAmounts } = getMaxAmounts({ currencyBalances, parsedAmounts })
 
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
