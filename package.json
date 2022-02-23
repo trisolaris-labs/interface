@@ -98,6 +98,7 @@
     "start-server-and-test": "^1.11.0",
     "styled-components": "^4.2.0",
     "swr": "^1.1.0",
+    "ts-jest": "24.3.0",
     "typescript": "^3.8.3",
     "use-count-up": "^2.2.5",
     "wcag-contrast": "^3.0.0"
