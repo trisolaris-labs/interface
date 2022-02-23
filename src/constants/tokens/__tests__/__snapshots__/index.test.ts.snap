@@ -1,0 +1,771 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`constants/index.ts Base Tokens 1`] = `
+Object {
+  "PNG": Object {
+    "1313161554": Token {
+      "address": "0x0b20972B45ffB8e5d4D37AF4024E1bf0b03f15ae",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Ethereum",
+      "symbol": "WETH",
+    },
+    "137": Token {
+      "address": "0x831753DD7087CaC61aB5644b308642cc1c33Dc13",
+      "chainId": 137,
+      "decimals": 18,
+      "name": "Quick",
+      "symbol": "QUICK",
+    },
+    "43113": Token {
+      "address": "0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Pangolin",
+      "symbol": "PNG",
+    },
+    "43114": Token {
+      "address": "0x60781C2586D68229fde47564546784ab3fACA982",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Pangolin",
+      "symbol": "PNG",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 2`] = `
+Object {
+  "USDT": Object {
+    "1313161554": Token {
+      "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
+      "chainId": 1313161554,
+      "decimals": 6,
+      "name": "Tether USD",
+      "symbol": "USDT",
+    },
+    "137": Token {
+      "address": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+      "chainId": 137,
+      "decimals": 6,
+      "name": "Tether USD",
+      "symbol": "USDT",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 6,
+      "name": "Tether USD",
+      "symbol": "USDT",
+    },
+    "43114": Token {
+      "address": "0xde3A24028580884448a5397872046a019649b084",
+      "chainId": 43114,
+      "decimals": 6,
+      "name": "Tether USD",
+      "symbol": "USDT",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 3`] = `
+Object {
+  "WBTC": Object {
+    "1313161554": Token {
+      "address": "0xF4eB217Ba2454613b15dBdea6e5f22276410e89e",
+      "chainId": 1313161554,
+      "decimals": 8,
+      "name": "Wrapped Bitcoin",
+      "symbol": "WBTC",
+    },
+    "137": Token {
+      "address": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
+      "chainId": 137,
+      "decimals": 8,
+      "name": "Wrapped Bitcoin",
+      "symbol": "WBTC",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 8,
+      "name": "Wrapped Bitcoin",
+      "symbol": "WBTC",
+    },
+    "43114": Token {
+      "address": "0x408D4cD0ADb7ceBd1F1A1C33A0Ba2098E1295bAB",
+      "chainId": 43114,
+      "decimals": 8,
+      "name": "Wrapped Bitcoin",
+      "symbol": "WBTC",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 4`] = `
+Object {
+  "DAI": Object {
+    "1313161554": Token {
+      "address": "0xe3520349F477A5F6EB06107066048508498A291b",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Dai Stablecoin",
+      "symbol": "DAI",
+    },
+    "137": Token {
+      "address": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+      "chainId": 137,
+      "decimals": 18,
+      "name": "Dai Stablecoin",
+      "symbol": "DAI",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Dai Stablecoin",
+      "symbol": "DAI",
+    },
+    "43114": Token {
+      "address": "0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Dai Stablecoin",
+      "symbol": "DAI",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 5`] = `
+Object {
+  "TRI": Object {
+    "1313161554": Token {
+      "address": "0xFa94348467f64D5A457F75F8bc40495D33c65aBB",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Trisolaris Token",
+      "symbol": "TRI",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 137,
+      "decimals": 18,
+      "name": "Trisolaris Token",
+      "symbol": "TRI",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Trisolaris Token",
+      "symbol": "TRI",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Trisolaris Token",
+      "symbol": "TRI",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 6`] = `
+Object {
+  "XTRI": Object {
+    "1313161554": Token {
+      "address": "0x802119e4e253D5C19aA06A5d567C5a41596D6803",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "TriBar",
+      "symbol": "xTRI",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 137,
+      "decimals": 18,
+      "name": "TriBar Token",
+      "symbol": "xTRI",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "TriBar Token",
+      "symbol": "xTRI",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "TriBar Token",
+      "symbol": "xTRI",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 7`] = `
+Object {
+  "AURORA": Object {
+    "1313161554": Token {
+      "address": "0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Aurora",
+      "symbol": "AURORA",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 137,
+      "decimals": 18,
+      "name": "Aurora",
+      "symbol": "AURORA",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Aurora",
+      "symbol": "AURORA",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Aurora",
+      "symbol": "AURORA",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 8`] = `
+Object {
+  "UST": Object {
+    "1313161554": Token {
+      "address": "0x5ce9F0B6AFb36135b5ddBF11705cEB65E634A9dC",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Wrapped UST",
+      "symbol": "atUST",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 137,
+      "decimals": 18,
+      "name": "Wrapped UST",
+      "symbol": "UST",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Wrapped UST",
+      "symbol": "UST",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Wrapped UST",
+      "symbol": "UST",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 9`] = `
+Object {
+  "LUNA": Object {
+    "1313161554": Token {
+      "address": "0xC4bdd27c33ec7daa6fcfd8532ddB524Bf4038096",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Wrapped LUNA",
+      "symbol": "atLUNA",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 137,
+      "decimals": 18,
+      "name": "Wrapped LUNA",
+      "symbol": "LUNA",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Wrapped LUNA",
+      "symbol": "LUNA",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Wrapped LUNA",
+      "symbol": "LUNA",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 10`] = `
+Object {
+  "USDC": Object {
+    "1313161554": Token {
+      "address": "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802",
+      "chainId": 1313161554,
+      "decimals": 6,
+      "name": "USDC Stablecoin",
+      "symbol": "USDC",
+    },
+    "137": Token {
+      "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+      "chainId": 137,
+      "decimals": 6,
+      "name": "USDC Stablecoin",
+      "symbol": "USDC",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 6,
+      "name": "USDC Stablecoin",
+      "symbol": "USDC",
+    },
+    "43114": Token {
+      "address": "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+      "chainId": 43114,
+      "decimals": 6,
+      "name": "USDC Stablecoin",
+      "symbol": "USDC",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 11`] = `
+Object {
+  "AAVE": Object {
+    "1313161554": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "AAVE TOken",
+      "symbol": "AAVE",
+    },
+    "137": Token {
+      "address": "0xD6DF932A45C0f255f85145f286eA0b292B21C90B",
+      "chainId": 137,
+      "decimals": 18,
+      "name": "AAVE Token",
+      "symbol": "AAVE",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "AAVE TOken",
+      "symbol": "AAVE",
+    },
+    "43114": Token {
+      "address": "0x63a72806098Bd3D9520cC43356dD78afe5D386D9",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "AAVE Token",
+      "symbol": "AAVE",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 12`] = `
+Object {
+  "WNEAR": Object {
+    "1313161554": Token {
+      "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
+      "chainId": 1313161554,
+      "decimals": 24,
+      "name": "WNEAR Token",
+      "symbol": "WNEAR",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "WNEAR Token",
+      "symbol": "WNEAR",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "WNEAR Token",
+      "symbol": "WNEAR",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "WNEAR Token",
+      "symbol": "WNEAR",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 13`] = `
+Object {
+  "AVAX": Object {
+    "1313161554": Token {
+      "address": "0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Avalanche",
+      "symbol": "AVAX",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Avalanche",
+      "symbol": "AVAX",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Avalanche",
+      "symbol": "AVAX",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Avalanche",
+      "symbol": "AVAX",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 14`] = `
+Object {
+  "MATIC": Object {
+    "1313161554": Token {
+      "address": "0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Polygon",
+      "symbol": "MATIC",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Polygon",
+      "symbol": "MATIC",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Polygon",
+      "symbol": "MATIC",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Polygon",
+      "symbol": "MATIC",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 15`] = `
+Object {
+  "BNB": Object {
+    "1313161554": Token {
+      "address": "0x2bF9b864cdc97b08B6D79ad4663e71B8aB65c45c",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Binance",
+      "symbol": "BNB",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Binance",
+      "symbol": "BNB",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Binance",
+      "symbol": "BNB",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Binance",
+      "symbol": "BNB",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 16`] = `
+Object {
+  "FLX": Object {
+    "1313161554": Token {
+      "address": "0xea62791aa682d455614eaA2A12Ba3d9A2fD197af",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Flux Token",
+      "symbol": "FLX",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Flux Token",
+      "symbol": "FLX",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Flux Token",
+      "symbol": "FLX",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Flux Token",
+      "symbol": "FLX",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 17`] = `
+Object {
+  "MECHA": Object {
+    "1313161554": Token {
+      "address": "0xa33C3B53694419824722C10D99ad7cB16Ea62754",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Mecha",
+      "symbol": "MECHA",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Mecha",
+      "symbol": "MECHA",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Mecha",
+      "symbol": "MECHA",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Mecha",
+      "symbol": "MECHA",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 18`] = `
+Object {
+  "SOLACE": Object {
+    "1313161554": Token {
+      "address": "0x501acE9c35E60f03A2af4d484f49F9B1EFde9f40",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Solace",
+      "symbol": "SOLACE",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Solace",
+      "symbol": "SOLACE",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Solace",
+      "symbol": "SOLACE",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Solace",
+      "symbol": "SOLACE",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 19`] = `
+Object {
+  "STNEAR": Object {
+    "1313161554": Token {
+      "address": "0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30",
+      "chainId": 1313161554,
+      "decimals": 24,
+      "name": "Staked Near",
+      "symbol": "stNEAR",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 137,
+      "decimals": 18,
+      "name": "Staked Near",
+      "symbol": "stNEAR",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Staked Near",
+      "symbol": "stNEAR",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Staked Near",
+      "symbol": "stNEAR",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 20`] = `
+Object {
+  "META": Object {
+    "1313161554": Token {
+      "address": "0xc21Ff01229e982d7c8b8691163B0A3Cb8F357453",
+      "chainId": 1313161554,
+      "decimals": 24,
+      "name": "Meta Pool",
+      "symbol": "META",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 137,
+      "decimals": 18,
+      "name": "Meta Pool",
+      "symbol": "META",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Meta Pool",
+      "symbol": "META",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Meta Pool",
+      "symbol": "META",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 21`] = `
+Object {
+  "GBA": Object {
+    "1313161554": Token {
+      "address": "0xc2ac78FFdDf39e5cD6D83bbD70c1D67517C467eF",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Golden Bananal",
+      "symbol": "GBA",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 137,
+      "decimals": 18,
+      "name": "Golden Bananal",
+      "symbol": "GBA",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Golden Banana",
+      "symbol": "GBA",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Golden Banana",
+      "symbol": "GBA",
+    },
+  },
+}
+`;
+
+exports[`constants/index.ts Base Tokens 22`] = `
+Object {
+  "XNL": Object {
+    "1313161554": Token {
+      "address": "0x7cA1C28663b76CFDe424A9494555B94846205585",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "Chronicle",
+      "symbol": "XNL",
+    },
+    "137": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 137,
+      "decimals": 18,
+      "name": "Chronicle",
+      "symbol": "XNL",
+    },
+    "43113": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43113,
+      "decimals": 18,
+      "name": "Chronicle",
+      "symbol": "XNL",
+    },
+    "43114": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 43114,
+      "decimals": 18,
+      "name": "Chronicle",
+      "symbol": "XNL",
+    },
+  },
+}
+`;
