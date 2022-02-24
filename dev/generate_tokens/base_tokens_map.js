@@ -94,10 +94,6 @@ module.exports = {
     )
   },
 
-  XTRI: {
-    [ChainId.AURORA]: new Token(ChainId.AURORA, '0x802119e4e253D5C19aA06A5d567C5a41596D6803', 18, 'xTRI', 'TriBar')
-  },
-
   AURORA: {
     [ChainId.AURORA]: new Token(ChainId.AURORA, '0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79', 18, 'AURORA', 'Aurora')
   },
@@ -128,22 +124,9 @@ module.exports = {
       '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664',
       6,
       'USDC',
-      'USDC Stablecoin'
+      'USD Coin'
     ),
-    [ChainId.POLYGON]: new Token(
-      ChainId.POLYGON,
-      '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-      6,
-      'USDC',
-      'USDC Stablecoin'
-    ),
-    [ChainId.AURORA]: new Token(
-      ChainId.AURORA,
-      '0xB12BFcA5A55806AaF64E99521918A4bf0fC40802',
-      6,
-      'USDC',
-      'USDC Stablecoin'
-    )
+    [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 6, 'USDC', 'USD Coin')
   },
 
   AAVE: {
@@ -168,33 +151,13 @@ module.exports = {
       ChainId.AURORA,
       '0xc42c30ac6cc15fac9bd938618bcaa1a1fae8501d',
       24,
-      'WNEAR',
+      'wNEAR',
       'WNEAR Token'
     )
   },
 
-  AVAX: {
-    [ChainId.AURORA]: new Token(ChainId.AURORA, '0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844', 18, 'AVAX', 'Avalanche')
-  },
-
-  MATIC: {
-    [ChainId.AURORA]: new Token(ChainId.AURORA, '0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8', 18, 'MATIC', 'Polygon')
-  },
-
-  BNB: {
-    [ChainId.AURORA]: new Token(ChainId.AURORA, '0x2bF9b864cdc97b08B6D79ad4663e71B8aB65c45c', 18, 'BNB', 'Binance')
-  },
-
-  FLX: {
-    [ChainId.AURORA]: new Token(ChainId.AURORA, '0xea62791aa682d455614eaa2a12ba3d9a2fd197af', 18, 'FLX', 'Flux Token')
-  },
-
   MECHA: {
     [ChainId.AURORA]: new Token(ChainId.AURORA, '0xa33C3B53694419824722C10D99ad7cB16Ea62754', 18, 'MECHA', 'Mecha')
-  },
-
-  SOLACE: {
-    [ChainId.AURORA]: new Token(ChainId.AURORA, '0x501acE9c35E60f03A2af4d484f49F9B1EFde9f40', 18, 'SOLACE', 'Solace')
   },
 
   STNEAR: {
@@ -203,7 +166,7 @@ module.exports = {
       '0x07f9f7f963c5cd2bbffd30ccfb964be114332e30',
       24,
       'stNEAR',
-      'Staked Near'
+      'Staked NEAR'
     )
   },
 
@@ -217,7 +180,7 @@ module.exports = {
       '0xc2ac78FFdDf39e5cD6D83bbD70c1D67517C467eF',
       18,
       'GBA',
-      'Golden Bananal'
+      'Golden Banana'
     )
   },
 
