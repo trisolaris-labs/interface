@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+/**
+ * This file is used to override the token data imported from the Tokens repo (https://github.com/trisolaris-labs/tokens)
+ *
+ * The items in the exported object take precedence over the tokens imported from the Tokens repo.
+ */
+
 const { ChainId, Token } = require('@trisolaris/sdk')
 
-const { createXChainToken, ZERO_ADDRESS } = require('./utils')
+const { ZERO_ADDRESS } = require('./utils')
 
 module.exports = {
   PNG: {
