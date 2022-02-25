@@ -315,6 +315,32 @@ export const STNEAR: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30', 24, 'stNEAR', 'Staked NEAR')
 }
 
+export const POLAR: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'POLAR', 'Polar'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'POLAR', 'Polar'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'POLAR', 'Polar'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86', 18, 'POLAR', 'Polar')
+}
+
+export const SPOLAR: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(
+    ChainId.POLYGON,
+    '0x0000000000000000000000000000000000000000',
+    18,
+    'SPOLAR',
+    'Polar Share'
+  ),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'SPOLAR', 'Polar Share'),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0x0000000000000000000000000000000000000000',
+    18,
+    'SPOLAR',
+    'Polar Share'
+  ),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729', 18, 'SPOLAR', 'Polar Share')
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),
