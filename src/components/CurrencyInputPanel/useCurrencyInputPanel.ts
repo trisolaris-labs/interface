@@ -9,7 +9,6 @@ type Props = {
   parsedAmounts: { [field in Field]?: CurrencyAmount }
 }
 
-// export function useCurrencyInputPanel({ currencyBalances, parsedAmounts }: Props) {
 export default function useCurrencyInputPanel() {
   const getMaxAmounts = function getMaxAmounts({ currencyBalances, parsedAmounts }: Props) {
     const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
