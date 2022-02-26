@@ -124,3 +124,7 @@ export function divideCurrencyAmountByNumber(numerator: CurrencyAmount | undefin
 
   return CurrencyAmount.fromRawAmount(currency, divisionResult)
 }
+
+export function setIntersection<T>(set1: Set<T>, set2: Set<T>): Set<T> {
+  return new Set([...set1].filter(item => set2.has(item)))
+}
