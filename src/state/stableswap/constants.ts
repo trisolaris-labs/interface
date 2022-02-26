@@ -1,5 +1,5 @@
 import { ChainId, Token } from '@trisolaris/sdk'
-import { USDC, USDT } from '../../constants'
+import { USDC, USDT } from '../../constants/tokens'
 
 const AURORA_STABLESWAP_TOKENS: Token[] = [USDC, USDT].map(token => token[ChainId.AURORA])
 

@@ -6,7 +6,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useContract } from '../stake/hooks-sushi'
 import { Contract } from '@ethersproject/contracts'
 import { abi as TRIBAR_ABI } from '../../constants/abis/TriBar.json'
-import { TRI, XTRI } from '../../constants'
+import { TRI, XTRI } from '../../constants/tokens'
 import { useTotalSupply } from '../../data/TotalSupply'
 import { useTokenBalance } from '../wallet/hooks'
 

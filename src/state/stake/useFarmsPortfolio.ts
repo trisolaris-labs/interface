@@ -11,7 +11,7 @@ import { addCommasToNumber } from '../../utils'
 
 import COMPLEX_REWARDER from '../../constants/abis/complex-rewarder.json'
 import { STAKING, ChefVersions } from './stake-constants'
-import { TRI, AURORA } from '../../constants'
+import { TRI } from '../../constants/tokens'
 import { dummyToken } from './stake-constants'
 import { BIG_INT_ZERO, ZERO_ADDRESS } from '../../constants'
 

@@ -1,5 +1,5 @@
 import { ChainId, JSBI, TokenAmount } from '@trisolaris/sdk'
-import { TRI } from '../../constants'
+import { TRI } from '../../constants/tokens'
 import { useComplexRewarderContract, useMasterChefV2ContractForVersion } from './hooks-sushi'
 import { STAKING, StakingTri, tokenAmount, ChefVersions } from './stake-constants'
 import { useSingleCallResult } from '../../state/multicall/hooks'
@@ -67,7 +67,10 @@ export function useSingleFarm(version: number): StakingTri {
 
     const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
     const earnedAmount = new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(earnedRewardPool))
-    const earnedComplexAmount = new TokenAmount(activeFarms[version].doubleRewardToken, JSBI.BigInt(earnedComplexRewardPool))
+    const earnedComplexAmount = new TokenAmount(
+      activeFarms[version].doubleRewardToken,
+      JSBI.BigInt(earnedComplexRewardPool)
+    )
 
     const { totalStakedInUSD, totalRewardRate, apr, apr2 } = stakingInfoData[version]
 
