@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { useMemo } from 'react'
 import { useSelectedTokenList } from '../state/lists/hooks'
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
-import { STABLESWAP_TOKENS } from '../state/stableswap/constants'
+import { STABLESWAP_POOLS } from '../state/stableswap/constants'
 import { useUserAddedTokens } from '../state/user/hooks'
 import { isAddress } from '../utils'
 
@@ -45,7 +45,14 @@ export function useStableSwapTokens(): TokensMap {
       return {}
     }
 
-    const validStablesSet = STABLESWAP_TOKENS[chainId].reduce((acc, token) => acc.add(token.address), new Set())
+    const validStablesSet = _.transform(
+      STABLESWAP_POOLS,
+      (acc, pool) => {
+        pool.poolTokens.forEach(token => acc.add(token.address))
+        return acc
+      },
+      new Set()
+    )
     const validStableTokens = _.filter(allTokens[chainId], token => validStablesSet.has(token.address))
 
     return validStableTokens

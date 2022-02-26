@@ -112,3 +112,7 @@ export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currenc
 export function addCommasToNumber(string: string): string {
   return string.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
+
+export function setIntersection<T>(set1: Set<T>, set2: Set<T>): Set<T> {
+  return new Set([...set1].filter(item => set2.has(item)))
+}
