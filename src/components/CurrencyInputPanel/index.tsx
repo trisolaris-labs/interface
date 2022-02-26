@@ -106,6 +106,7 @@ interface CurrencyInputPanelProps {
   id: string
   showCommonBases?: boolean
   customBalanceText?: string
+  isStableSwap?: boolean
 }
 
 export default function CurrencyInputPanel({
@@ -124,7 +125,8 @@ export default function CurrencyInputPanel({
   otherCurrency,
   id,
   showCommonBases,
-  customBalanceText
+  customBalanceText,
+  isStableSwap = false
 }: CurrencyInputPanelProps & BalanceButtonProps) {
   const { t } = useTranslation()
 
@@ -223,6 +225,7 @@ export default function CurrencyInputPanel({
           selectedCurrency={currency}
           otherSelectedCurrency={otherCurrency}
           showCommonBases={showCommonBases}
+          isStableSwap={isStableSwap}
         />
       )}
     </InputPanel>
