@@ -1,15 +1,19 @@
 import { parseBytes32String } from '@ethersproject/strings'
 import { Currency, CETH, Token, currencyEquals } from '@trisolaris/sdk'
+import _ from 'lodash'
 import { useMemo } from 'react'
 import { useSelectedTokenList } from '../state/lists/hooks'
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
+import { STABLESWAP_TOKENS } from '../state/stableswap/constants'
 import { useUserAddedTokens } from '../state/user/hooks'
 import { isAddress } from '../utils'
 
 import { useActiveWeb3React } from './index'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 
-export function useAllTokens(): { [address: string]: Token } {
+type TokensMap = { [address: string]: Token }
+
+export function useAllTokens(): TokensMap {
   const { chainId } = useActiveWeb3React()
   const userAddedTokens = useUserAddedTokens()
   const allTokens = useSelectedTokenList()
@@ -19,7 +23,7 @@ export function useAllTokens(): { [address: string]: Token } {
     return (
       userAddedTokens
         // reduce into all ALL_TOKENS filtered by the current chain
-        .reduce<{ [address: string]: Token }>(
+        .reduce<TokensMap>(
           (tokenMap, token) => {
             tokenMap[token.address] = token
             return tokenMap
@@ -30,6 +34,22 @@ export function useAllTokens(): { [address: string]: Token } {
         )
     )
   }, [chainId, userAddedTokens, allTokens])
+}
+
+export function useStableSwapTokens(): TokensMap {
+  const { chainId } = useActiveWeb3React()
+  const allTokens = useSelectedTokenList()
+
+  return useMemo(() => {
+    if (!chainId) {
+      return {}
+    }
+
+    const validStablesSet = STABLESWAP_TOKENS[chainId].reduce((acc, token) => acc.add(token.address), new Set())
+    const validStableTokens = _.filter(allTokens[chainId], token => validStablesSet.has(token.address))
+
+    return validStableTokens
+  }, [chainId, allTokens])
 }
 
 // Check if currency is included in custom list from user storage
