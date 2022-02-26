@@ -1,7 +1,7 @@
-import { ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
+import { ChainId } from '@trisolaris/sdk'
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { DarkGreyCard, LightCard } from '../../components/Card'
+import { DarkGreyCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import Row, { RowBetween } from '../../components/Row'
 import { BIG_INT_ZERO } from '../../constants'
@@ -12,7 +12,7 @@ import { tryParseAmount } from '../../state/swap/hooks'
 import { TYPE } from '../../theme'
 import { ClickableText } from '../Pool/styleds'
 import { useTokenBalance } from '../../state/wallet/hooks'
-import { DataCard, CardBGImage, CardNoise, CardSection, HighlightCard } from '../../components/earn/styled'
+import { CardSection, HighlightCard } from '../../components/earn/styled'
 import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { useTriBar, useTriBarStats } from '../../state/stakeTri/hooks'
@@ -20,9 +20,11 @@ import StakeTriDataCard from '../../components/StakeTri/StakeTriDataCard'
 import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Dots } from '../../components/swap/styleds'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import StakingAPRCard from './StakingAPRCard'
 import { PageWrapper } from '../../components/Page'
+
+import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
+import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 
 const DataRow = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -60,7 +62,6 @@ export default function StakeTri() {
 
   const [stakeState, setStakeState] = useState<StakeState>(StakeState.stakeTRI)
   const [input, _setInput] = useState<string>('')
-  const [usingBalance, setUsingBalance] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
   const { enter, leave } = useTriBar()
 
@@ -70,7 +71,7 @@ export default function StakeTri() {
   const xTriBalance = useTokenBalance(account ?? undefined, XTRI[chainId])!
 
   const balance = isStaking ? triBalance : xTriBalance
-  const parsedAmount = usingBalance ? balance : tryParseAmount(input, balance?.currency)
+  const parsedAmount = tryParseAmount(input, balance?.currency)
 
   const [approvalState, handleApproval] = useApproveCallback(parsedAmount, XTRI[chainId].address)
 
@@ -87,18 +88,28 @@ export default function StakeTri() {
   function setInput(v: string) {
     // Allows user to paste in long balances
     const value = v.slice(0, INPUT_CHAR_LIMIT)
-
-    setUsingBalance(false)
     _setInput(value)
   }
 
-  const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(balance)
-  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
+  const { getMaxInputAmount } = useCurrencyInputPanel()
+  const {
+    atMaxAmount: atMaxAmountInput,
+    atHalfAmount: atHalfAmountInput,
+    maxAmountInput,
+    getClickedAmount
+  } = getMaxInputAmount({
+    amount: balance,
+    parsedAmount: parsedAmount
+  })
+
+  const handleBalanceClick = (value: BalanceButtonValueEnum) => {
+    const amount = getClickedAmount(value)
+    _setInput(amount)
+  }
 
   const handleClickMax = useCallback(() => {
     if (maxAmountInput) {
       setInput(maxAmountInput.toExact())
-      setUsingBalance(true)
     }
   }, [maxAmountInput, setInput])
 
@@ -245,13 +256,16 @@ export default function StakeTri() {
                 </RowBetween>
               </AutoColumn>
             </RowBetween>
+
             <StakeInputPanel
               value={input!}
               onUserInput={setInput}
-              showMaxButton={!atMaxAmountInput}
               currency={isStaking ? TRI[chainId] : XTRI[chainId]}
               id="stake-currency-input"
-              onMax={handleClickMax}
+              onMax={() => handleBalanceClick(BalanceButtonValueEnum.MAX)}
+              onClickBalanceButton={handleBalanceClick}
+              disableMaxButton={atMaxAmountInput}
+              disableHalfButton={atHalfAmountInput}
             />
           </AutoColumn>
           <div style={{ marginTop: '1rem' }}>

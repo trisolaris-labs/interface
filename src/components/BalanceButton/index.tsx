@@ -9,9 +9,16 @@ export type Props = {
   disableHalfButton?: boolean
   disableMaxButton?: boolean
   onClickBalanceButton?: (value: BalanceButtonValueEnum) => void
+  height?: number
 }
 
-export default function BalanceButton({ disableHalfButton, disableMaxButton, onClickBalanceButton }: Props) {
+export default function BalanceButton({
+  disableHalfButton,
+  disableMaxButton,
+  onClickBalanceButton,
+  height,
+  ...rest
+}: Props) {
   const { t } = useTranslation()
 
   if (onClickBalanceButton == null) {
@@ -19,16 +26,18 @@ export default function BalanceButton({ disableHalfButton, disableMaxButton, onC
   }
 
   return (
-    <RowFlat style={{ marginLeft: '4px' }}>
+    <RowFlat style={{ marginLeft: '4px'}} {...rest}>
       <StyledBalanceLeftButton
         disabled={disableHalfButton}
         onClick={() => onClickBalanceButton(BalanceButtonValueEnum.HALF)}
+        height={height ?? 16}
       >
         <TYPE.small>50%</TYPE.small>
       </StyledBalanceLeftButton>
       <StyledBalanceRightButton
         disabled={disableMaxButton}
         onClick={() => onClickBalanceButton(BalanceButtonValueEnum.MAX)}
+        height={height ?? 16}
       >
         <TYPE.small>{t('currencyInputPanel.max')}</TYPE.small>
       </StyledBalanceRightButton>

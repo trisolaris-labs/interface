@@ -2,16 +2,12 @@ import styled from 'styled-components'
 import { ButtonSecondary } from '../Button'
 
 const StyledBalanceButton = styled(ButtonSecondary)`
-  height: 16px;
   background-color: ${({ theme }) => theme.primary5};
   border: 1px solid ${({ theme }) => theme.primary5};
   border-radius: 0.5rem;
-  width: unset;
   padding: 4px 4px;
-
   font-weight: 500;
   cursor: pointer;
-  margin-right: 0.5rem;
   color: ${({ theme }) => theme.primaryText1};
   :hover {
     border: 1px solid ${({ theme }) => theme.primary1};
@@ -21,9 +17,6 @@ const StyledBalanceButton = styled(ButtonSecondary)`
     outline: none;
   }
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    margin-right: 0.5rem;
-  `};
 `
 
 export const StyledBalanceLeftButton = styled(StyledBalanceButton)`
