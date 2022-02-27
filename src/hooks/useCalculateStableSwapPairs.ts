@@ -1,5 +1,4 @@
-import { Token } from '@trisolaris/sdk'
-import _ from 'lodash'
+import { JSBI, Token } from '@trisolaris/sdk'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useActiveWeb3React } from '.'
@@ -23,7 +22,8 @@ type TokenToPoolsMap = {
 }
 
 type TokenToSwapDataMap = { [symbol: string]: SwapData[] }
-export function useCalculateSwapPairs(): (token?: Token) => SwapData[] {
+
+export default function useCalculateSwapPairs(): (token?: Token) => SwapData[] {
   const [pairCache, setPairCache] = useState<TokenToSwapDataMap>({})
   const poolsStatuses = useStableSwapPoolsStatuses()
   const { chainId } = useActiveWeb3React()
@@ -35,7 +35,7 @@ export function useCalculateSwapPairs(): (token?: Token) => SwapData[] {
         const aTVL = poolsStatuses[a.name]?.tvl
         const bTVL = poolsStatuses[b.name]?.tvl
         if (aTVL && bTVL) {
-          return aTVL.gt(bTVL) ? -1 : 1
+          return JSBI.greaterThan(aTVL, bTVL) ? -1 : 1
         }
         return aTVL ? -1 : 1
       })
@@ -68,8 +68,7 @@ export function useCalculateSwapPairs(): (token?: Token) => SwapData[] {
         STABLESWAP_POOLS,
         poolsSortedByTVL,
         tokenToPoolsMapSorted,
-        token,
-        false // @nocommit Disallow virtual swap
+        token
       )
       setPairCache(prevState => (token?.symbol == null ? prevState : { ...prevState, [token.symbol]: swapPairs }))
 
@@ -115,8 +114,7 @@ function getTradingPairsForToken(
   poolsMap: StableSwapPoolsMap,
   poolsSortedByTVL: StableSwapPool[],
   tokenToPoolsMap: TokenToPoolsMap,
-  originToken: Token,
-  allowVirtualSwap: boolean
+  originToken: Token
 ): SwapData[] {
   const allTokens = Object.values(tokensMap).filter(({ symbol }) => symbol && tokenToPoolsMap[symbol])
   const originTokenPoolsSet = new Set(
@@ -149,8 +147,6 @@ function getTradingPairsForToken(
         to: buildSwapSideData(token, tradePool),
         route: [originToken.symbol, token.symbol]
       }
-    } else if (!allowVirtualSwap) {
-      // fall through to default "invalid" swapData
     }
 
     // use this swap only if we haven't already calculated a better swap for the pair
@@ -163,8 +159,4 @@ function getTradingPairsForToken(
   })
 
   return Object.values(tokenToSwapDataMap)
-}
-
-export const __test__ = {
-  getTradingPairsForToken
 }
