@@ -29,13 +29,13 @@ import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
-import { Field, replaceSwapState } from '../../state/swap/actions'
+import { Field, replaceStableSwapState } from '../../state/stableswap/actions'
 import {
   useDefaultsFromURLSearch,
   useDerivedSwapInfo,
-  useSwapActionHandlers,
-  useSwapState
-} from '../../state/swap/hooks'
+  useStableSwapActionHandlers,
+  useStableSwapState
+} from '../../state/stableswap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import { LinkStyledButton, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -142,7 +142,7 @@ export default function StableSwap() {
   const [allowedSlippage] = useUserSlippageTolerance()
 
   // swap state
-  const { independentField, typedValue, recipient } = useSwapState()
+  const { independentField, typedValue, recipient } = useStableSwapState()
   const {
     v1Trade,
     v2Trade,
@@ -178,7 +178,7 @@ export default function StableSwap() {
         [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
       }
 
-  const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
+  const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useStableSwapActionHandlers()
   const isValid = !swapInputError
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
 
@@ -239,6 +239,7 @@ export default function StableSwap() {
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
+  // @nocommit @TODO Update swap logic here
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
 
@@ -255,17 +256,6 @@ export default function StableSwap() {
     swapCallback()
       .then(hash => {
         setSwapState({ attemptingTxn: false, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: hash })
-
-        ReactGA.event({
-          category: 'Swap',
-          action:
-            recipient === null
-              ? 'Swap w/o Send'
-              : (recipientAddress ?? recipient) === account
-              ? 'Swap w/o Send + recipient'
-              : 'Swap w/ Send',
-          label: [trade?.inputAmount?.currency?.symbol, trade?.outputAmount?.currency?.symbol, Version.v2].join('/')
-        })
       })
       .catch(error => {
         setSwapState({
@@ -276,7 +266,7 @@ export default function StableSwap() {
           txHash: undefined
         })
       })
-  }, [tradeToConfirm, account, priceImpactWithoutFee, recipient, recipientAddress, showConfirm, swapCallback, trade])
+  }, [tradeToConfirm, priceImpactWithoutFee, showConfirm, swapCallback])
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -324,16 +314,15 @@ export default function StableSwap() {
   // @nocommit This is hacky.  Replace this with new redux state
   const dispatch = useDispatch()
   useEffect(() => {
-    if (currencies[Field.INPUT] == null || currencies[Field.INPUT] === CETH)
-      dispatch(
-        replaceSwapState({
-          typedValue: '0',
-          field: Field.INPUT,
-          inputCurrencyId: USDT[ChainId.AURORA].address,
-          recipient: null
-        })
-      )
-  }, [currencies, dispatch])
+    dispatch(
+      replaceStableSwapState({
+        typedValue: '0',
+        field: Field.INPUT,
+        inputCurrencyId: USDT[ChainId.AURORA].address,
+        recipient: null
+      })
+    )
+  }, [dispatch])
 
   return (
     <>
