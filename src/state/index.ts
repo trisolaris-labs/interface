@@ -3,6 +3,7 @@ import { AnyAction, combineReducers, EmptyObject, Store } from '@reduxjs/toolkit
 import application, { ApplicationState } from './application/reducer'
 import user, { UserState } from './user/reducer'
 import transactions, { TransactionState } from './transactions/reducer'
+import stableswap, { StableSwapState } from './stableswap/reducer'
 import swap, { SwapState } from './swap/reducer'
 import mint, { MintState } from './mint/reducer'
 import lists, { ListsState } from './lists/reducer'
@@ -20,6 +21,7 @@ const reducer = combineReducers({
   application,
   user,
   transactions,
+  stableswap,
   swap,
   mint,
   burn,
@@ -32,6 +34,7 @@ type State = EmptyObject & {
   application: ApplicationState
   user: UserState
   transactions: TransactionState
+  stableswap: StableSwapState
   swap: SwapState
   mint: MintState
   burn: BurnState

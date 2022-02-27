@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { USDC, USDT } from '../../constants/tokens'
 import { dummyToken } from '../stake/stake-constants'
 
-export enum SWAP_TYPES {
+export enum STABLE_SWAP_TYPES {
   DIRECT = 'swapDirect', // route length 2
   INVALID = 'invalid'
 }
