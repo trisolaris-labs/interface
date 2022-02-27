@@ -1,86 +1,88 @@
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 
-import { AppState } from '../state'
-import { BigNumber } from '@ethersproject/bignumber'
-import { Contract } from 'ethcall'
-import LPTOKEN_UNGUARDED_ABI from '../constants/abis/lpTokenUnguarded.json'
-import { LpTokenUnguarded } from '../../types/ethers-contracts/LpTokenUnguarded'
-import { MulticallContract } from '../types/ethcall'
-import SWAP_FLASH_LOAN_ABI from '../constants/abis/swapFlashLoan.json'
-import { SwapFlashLoan } from '../../types/ethers-contracts/SwapFlashLoan'
-import { getMulticallProvider } from '../utils'
-import { parseUnits } from '@ethersproject/units'
+import SWAP_FLASH_LOAN_ABI from '../constants/abis/stableswap/swapFlashLoan.json'
 import { useActiveWeb3React } from '.'
-import { useSelector } from 'react-redux'
-import { StableSwapPoolTypes, STABLESWAP_POOLS } from '../state/stableswap/constants'
+import { StableSwapPoolName, StableSwapPoolTypes, STABLESWAP_POOLS } from '../state/stableswap/constants'
+import { useMultipleContractSingleData } from '../state/multicall/hooks'
+import { Interface } from '@ethersproject/abi'
+import { JSBI } from '@trisolaris/sdk'
+import { TEN, TWO } from '@trisolaris/sdk/dist/constants'
 
-type PoolStatuses = {
-  [poolName in PoolName]?: {
-    tvl: BigNumber
+type StableSwapPoolStatuses = {
+  [poolName in StableSwapPoolName]?: {
+    tvl: JSBI
     isPaused: boolean
   }
 }
-export default function usePoolStatuses(): PoolStatuses {
-  const { chainId, library } = useActiveWeb3React()
-  const { tokenPricesUSD } = useSelector((state: AppState) => state.application)
-  const [poolStatuses, setPoolStatuses] = useState<PoolStatuses>({})
 
-  useEffect(() => {
-    if (
-      Object.keys(poolStatuses).length > 0 && // only run once
-      tokenPricesUSD?.BTC &&
-      tokenPricesUSD?.ETH
-    )
-      return
-    async function fetchStatuses() {
-      if (!library || !chainId) return
-      const ethcallProvider = await getMulticallProvider(library, chainId)
+// @nocommit Temporary shim for `tokenPricesUSD`
+const tokenPricesUSD = {
+  BTC: 39161.26,
+  ETH: 2785.34,
+  WETH: 2785.34,
+  VETH2: 1132.4079685542372,
+  KEEP: 0.621089,
+  ALCX: 130.67,
+  USDC: 1.003,
+  alUSD: 0.997912,
+  FEI: 0.999411,
+  LUSD: 1.012,
+  alETH: 2785.34
+}
+export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
+  const { chainId } = useActiveWeb3React()
 
-      const pools = Object.values(STABLESWAP_POOLS).filter(({ addresses }) => addresses[chainId])
-      const supplyCalls = pools
-        .map(p => {
-          return new Contract(p.lpToken[chainId], LPTOKEN_UNGUARDED_ABI) as MulticallContract<LpTokenUnguarded>
-        })
-        .map(c => c.totalSupply())
-      const pausedCalls = pools
-        .map(p => {
-          return new Contract(
-            p.metaSwapAddresses?.[chainId] || p.addresses[chainId],
-            SWAP_FLASH_LOAN_ABI
-          ) as MulticallContract<SwapFlashLoan>
-        })
-        .map(c => c.paused())
-      try {
-        const tvls = await ethcallProvider.all(supplyCalls, {})
-        const pausedStatuses = await ethcallProvider.all(pausedCalls, {})
-        const tvlsUSD = pools.map((pool, i) => {
-          const tvlAmount = tvls[i]
-          let tokenValue = 0
-          if (pool.type === StableSwapPoolTypes.BTC) {
-            tokenValue = tokenPricesUSD?.BTC || 0
-          } else if (pool.type === StableSwapPoolTypes.ETH) {
-            tokenValue = tokenPricesUSD?.ETH || 0
-          } else {
-            tokenValue = 1 // USD
-          }
-          return parseUnits(tokenValue.toFixed(2), 2)
-            .mul(tvlAmount)
-            .div(BigNumber.from(10).pow(2)) //1e18
-        })
-        setPoolStatuses(() => {
-          return pools.reduce(
-            (acc, pool, i) => ({
-              ...acc,
-              [pool.name]: { tvl: tvlsUSD[i], isPaused: pausedStatuses[i] }
-            }),
-            {}
-          )
-        })
-      } catch (err) {
-        console.log('Error on fetchStatuses', err)
+  //   const { tokenPricesUSD } = useSelector((state: AppState) => state.application)
+  const [poolStatuses, setPoolStatuses] = useState<StableSwapPoolStatuses>({})
+
+  const stableSwapPools = Object.values(STABLESWAP_POOLS).filter(({ addresses }) =>
+    chainId != null ? addresses[chainId] : null
+  )
+
+  const stableSwapPoolLPTokens: string[] = chainId == null ? [] : stableSwapPools.map(({ lpToken }) => lpToken[chainId])
+
+  const tvls = useMultipleContractSingleData(
+    stableSwapPoolLPTokens,
+    new Interface(SWAP_FLASH_LOAN_ABI),
+    'totalSupply'
+  )?.map(({ result: amount }) => JSBI.BigInt(amount ?? '0'))
+
+  const pausedStatuses = useMultipleContractSingleData(
+    stableSwapPoolLPTokens,
+    new Interface(SWAP_FLASH_LOAN_ABI),
+    'paused'
+  )?.map(({ result: isPaused }) => Boolean(isPaused ?? false))
+
+  const tvlsUSD = useMemo(() => {
+    return stableSwapPools.map((pool, i) => {
+      const tvlAmount = tvls[i]
+      let tokenValue = 0
+
+      switch (pool.type) {
+        case StableSwapPoolTypes.BTC:
+          tokenValue = tokenPricesUSD?.BTC ?? 0
+          break
+        case StableSwapPoolTypes.ETH:
+          tokenValue = tokenPricesUSD?.ETH ?? 0
+          break
+        default:
+          tokenValue = 1 // USD
       }
-    }
-    void fetchStatuses()
-  }, [chainId, library, tokenPricesUSD, poolStatuses])
+
+      return JSBI.divide(
+        JSBI.multiply(JSBI.BigInt(tokenValue), JSBI.BigInt(tvlAmount)),
+        JSBI.exponentiate(TEN, TWO) // 1e18
+      )
+    })
+  }, [stableSwapPools, tvls])
+
+  setPoolStatuses(() => {
+    return stableSwapPools.reduce((acc, pool, i) => {
+      acc[pool.name] = { tvl: tvlsUSD[i], isPaused: pausedStatuses[i] }
+
+      return acc
+    }, {} as StableSwapPoolStatuses)
+  })
+
   return poolStatuses
 }
