@@ -13,6 +13,7 @@ import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useTranslation } from 'react-i18next'
+import { StableSwapSearchProps } from '../SearchModal/CurrencySearch'
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -130,7 +131,6 @@ interface CurrencyInputPanelProps {
   id: string
   showCommonBases?: boolean
   customBalanceText?: string
-  isStableSwap?: boolean
 }
 
 export default function CurrencyInputPanel({
@@ -149,8 +149,8 @@ export default function CurrencyInputPanel({
   id,
   showCommonBases,
   customBalanceText,
-  isStableSwap = false
-}: CurrencyInputPanelProps) {
+  ...stableSwapProps
+}: CurrencyInputPanelProps & StableSwapSearchProps) {
   const { t } = useTranslation()
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -243,7 +243,7 @@ export default function CurrencyInputPanel({
           selectedCurrency={currency}
           otherSelectedCurrency={otherCurrency}
           showCommonBases={showCommonBases}
-          isStableSwap={isStableSwap}
+          {...stableSwapProps}
         />
       )}
     </InputPanel>

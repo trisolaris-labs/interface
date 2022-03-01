@@ -33,7 +33,7 @@ import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/applica
 import { Field, replaceStableSwapState } from '../../state/stableswap/actions'
 import {
   useDefaultsFromURLSearch,
-  useDerivedSwapInfo,
+  useDerivedStableSwapInfo,
   useStableSwapActionHandlers,
   useStableSwapState
 } from '../../state/stableswap/hooks'
@@ -50,6 +50,8 @@ import { useIsSelectedAEBToken } from '../../state/lists/hooks'
 import { DeprecatedWarning } from '../../components/Warning'
 import Settings from '../../components/Settings'
 import { useDispatch } from 'react-redux'
+import { useCalculateStableSwapPairs } from '../../hooks/useCalculateStableSwapPairs'
+import { wrappedCurrency } from '../../utils/wrappedCurrency'
 
 const BottomText = styled.span`
   margin-top: 8px;
@@ -129,7 +131,7 @@ export default function StableSwap() {
     setDismissTokenWarning(true)
   }, [])
 
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -141,6 +143,7 @@ export default function StableSwap() {
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
+  const calculateStableSwapPairs = useCalculateStableSwapPairs()
 
   // swap state
   const { independentField, typedValue, recipient } = useStableSwapState()
@@ -151,7 +154,7 @@ export default function StableSwap() {
     parsedAmount,
     currencies,
     inputError: swapInputError
-  } = useDerivedSwapInfo()
+  } = useDerivedStableSwapInfo()
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
     currencies[Field.OUTPUT],
@@ -341,19 +344,19 @@ export default function StableSwap() {
           <AppBody>
             {/* <SwapPoolTabs active={'swap'} /> */}
             <Wrapper id="swap-page">
-              {/* <ConfirmSwapModal
-            isOpen={showConfirm}
-            trade={trade}
-            originalTrade={tradeToConfirm}
-            onAcceptChanges={handleAcceptChanges}
-            attemptingTxn={attemptingTxn}
-            txHash={txHash}
-            recipient={recipient}
-            allowedSlippage={allowedSlippage}
-            onConfirm={handleSwap}
-            swapErrorMessage={swapErrorMessage}
-            onDismiss={handleConfirmDismiss}
-          /> */}
+              <ConfirmSwapModal
+                isOpen={showConfirm}
+                trade={trade}
+                originalTrade={tradeToConfirm}
+                onAcceptChanges={handleAcceptChanges}
+                attemptingTxn={attemptingTxn}
+                txHash={txHash}
+                recipient={recipient}
+                allowedSlippage={allowedSlippage}
+                onConfirm={handleSwap}
+                swapErrorMessage={swapErrorMessage}
+                onDismiss={handleConfirmDismiss}
+              />
               <AutoColumn gap={'md'}>
                 <HeadingContainer>
                   <TYPE.largeHeader>StableSwap</TYPE.largeHeader>
@@ -374,7 +377,8 @@ export default function StableSwap() {
                   onCurrencySelect={handleInputSelect}
                   otherCurrency={currencies[Field.OUTPUT]}
                   id="swap-currency-input"
-                  isStableSwap
+                  isStableSwap={true}
+                  stableSwapInputField={Field.INPUT}
                 />
                 <AutoColumn justify="space-between">
                   <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
@@ -408,7 +412,8 @@ export default function StableSwap() {
                   onCurrencySelect={handleOutputSelect}
                   otherCurrency={currencies[Field.INPUT]}
                   id="swap-currency-output"
-                  isStableSwap
+                  isStableSwap={true}
+                  stableSwapInputField={Field.OUTPUT}
                 />
 
                 {recipient !== null && !showWrap ? (
