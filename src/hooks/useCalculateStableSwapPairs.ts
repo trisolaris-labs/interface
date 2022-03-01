@@ -23,7 +23,8 @@ type TokenToPoolsMap = {
 
 type TokenToSwapDataMap = { [symbol: string]: StableSwapData[] }
 
-export default function useCalculateSwapPairs(): (token?: Token) => StableSwapData[] {
+// export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData[] {
+export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData[] {
   const [pairCache, setPairCache] = useState<TokenToSwapDataMap>({})
   const poolsStatuses = useStableSwapPoolsStatuses()
   const { chainId } = useActiveWeb3React()
@@ -82,15 +83,14 @@ function buildSwapSideData(token: Token): SwapSide
 function buildSwapSideData(token: Token, pool: StableSwapPool): Required<SwapSide>
 function buildSwapSideData(token: Token, pool?: StableSwapPool): Required<SwapSide> | SwapSide {
   return {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    symbol: token.symbol!,
+    address: token.address,
     poolName: pool?.name,
     tokenIndex: pool?.poolTokens.findIndex(t => t === token)
   }
 }
 
 export type SwapSide = {
-  symbol: string
+  address: string
   poolName?: StableSwapPoolName
   tokenIndex?: number
 }
@@ -116,14 +116,14 @@ function getTradingPairsForToken(
   tokenToPoolsMap: TokenToPoolsMap,
   originToken: Token
 ): StableSwapData[] {
-  const allTokens = Object.values(tokensMap).filter(({ symbol }) => symbol && tokenToPoolsMap[symbol])
+  const allTokens = Object.values(tokensMap).filter(({ address }) => address && tokenToPoolsMap[address])
   const originTokenPoolsSet = new Set(
-    originToken.symbol == null ? [] : tokenToPoolsMap[originToken.symbol].map(poolName => poolsMap[poolName])
+    originToken.address == null ? [] : (tokenToPoolsMap[originToken.address] ?? []).map(poolName => poolsMap[poolName])
   )
-  const tokenToSwapDataMap: { [symbol: string]: StableSwapData } = {} // object is used for deduping
+  const tokenToSwapDataMap: { [address: string]: StableSwapData } = {} // object is used for deduping
 
   allTokens.forEach(token => {
-    if (token.symbol == null || originToken.symbol == null) {
+    if (token.address == null || originToken.address == null) {
       return
     }
 
@@ -134,10 +134,10 @@ function getTradingPairsForToken(
       type: STABLE_SWAP_TYPES.INVALID,
       route: []
     }
-    const tokenPoolsSet = new Set(tokenToPoolsMap[token.symbol].map(poolName => poolsMap[poolName]))
+    const tokenPoolsSet = new Set(tokenToPoolsMap[token.address].map(poolName => poolsMap[poolName]))
     const sharedPoolsSet = setIntersection(originTokenPoolsSet, tokenPoolsSet)
 
-    if (originToken === token) {
+    if (originToken.address === token.address) {
       // fall through to default "invalid" swapData
     } else if (sharedPoolsSet.size > 0) {
       const tradePool = [...sharedPoolsSet][0]
@@ -145,16 +145,16 @@ function getTradingPairsForToken(
         type: STABLE_SWAP_TYPES.DIRECT,
         from: buildSwapSideData(originToken, tradePool),
         to: buildSwapSideData(token, tradePool),
-        route: [originToken.symbol, token.symbol]
+        route: [originToken.address, token.address]
       }
     }
 
     // use this swap only if we haven't already calculated a better swap for the pair
-    const existingTokenSwapData: StableSwapData | undefined = tokenToSwapDataMap[token.symbol]
+    const existingTokenSwapData: StableSwapData | undefined = tokenToSwapDataMap[token.address]
     const existingSwapIdx = SWAP_TYPES_ORDERED_ASC.indexOf(existingTokenSwapData?.type)
     const newSwapIdx = SWAP_TYPES_ORDERED_ASC.indexOf(swapData.type)
     if (!existingTokenSwapData || newSwapIdx > existingSwapIdx) {
-      tokenToSwapDataMap[token.symbol] = swapData
+      tokenToSwapDataMap[token.address] = swapData
     }
   })
 

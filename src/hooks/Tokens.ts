@@ -1,14 +1,18 @@
 import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, CETH, Token, currencyEquals } from '@trisolaris/sdk'
+import { Currency, CETH, Token, currencyEquals, ChainId } from '@trisolaris/sdk'
 import _ from 'lodash'
 import { useMemo } from 'react'
 import { useSelectedTokenList } from '../state/lists/hooks'
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
-import { STABLESWAP_POOLS } from '../state/stableswap/constants'
+import { Field } from '../state/stableswap/actions'
+import { STABLESWAP_POOLS, STABLE_SWAP_TYPES } from '../state/stableswap/constants'
+import { useDerivedStableSwapInfo } from '../state/stableswap/hooks'
 import { useUserAddedTokens } from '../state/user/hooks'
 import { isAddress } from '../utils'
+import { wrappedCurrency } from '../utils/wrappedCurrency'
 
 import { useActiveWeb3React } from './index'
+import { useCalculateStableSwapPairs } from './useCalculateStableSwapPairs'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 
 type TokensMap = { [address: string]: Token }
@@ -36,7 +40,7 @@ export function useAllTokens(): TokensMap {
   }, [chainId, userAddedTokens, allTokens])
 }
 
-export function useStableSwapTokens(): TokensMap {
+export function useAllStableSwapTokens(): TokensMap {
   const { chainId } = useActiveWeb3React()
   const allTokens = useSelectedTokenList()
 
@@ -57,6 +61,29 @@ export function useStableSwapTokens(): TokensMap {
 
     return validStableTokens
   }, [chainId, allTokens])
+}
+
+export function useAllValidStableSwapOutputTokens(): TokensMap {
+  const { chainId } = useActiveWeb3React()
+  const allTokens = useSelectedTokenList()
+  const calculateStableSwapPairs = useCalculateStableSwapPairs()
+  const { currencies } = useDerivedStableSwapInfo()
+
+  return useMemo(() => {
+    if (!chainId) {
+      return {}
+    }
+
+    const inputToken = wrappedCurrency(currencies[Field.INPUT], chainId)
+    const outputTokens = calculateStableSwapPairs(inputToken)
+    const outputTokensSet = new Set(
+      outputTokens.filter(item => item.type !== STABLE_SWAP_TYPES.INVALID).map(token => token.to.address)
+    )
+
+    const validStableTokens = _.filter(allTokens[chainId], token => outputTokensSet.has(token.address))
+
+    return validStableTokens
+  }, [chainId, currencies, calculateStableSwapPairs, allTokens])
 }
 
 // Check if currency is included in custom list from user storage

@@ -67,10 +67,10 @@ function buildPids(pids: Partial<Record<ChainId, number>>): Record<ChainId, numb
 export const STABLESWAP_POOLS: StableSwapPoolsMap = {
   [StableSwapPoolName.USDC_USDT]: {
     name: StableSwapPoolName.USDC_USDT,
-    lpToken: buildAddresses({ [ChainId.AURORA]: dummyToken.address }),
+    lpToken: buildAddresses({ [ChainId.AURORA]: '0xA601723619a6D1d275cDaa32524f695c21e5E54C' }),
     poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
     addresses: buildAddresses({
-      [ChainId.AURORA]: '0x4f6A43Ad7cba042606dECaCA730d4CE0A57ac62e' // @nocommit this isn't real
+      [ChainId.AURORA]: '0x72ff47B0Df5F8EBD93e4fA4600b89Db693066aa4'
     }),
     type: StableSwapPoolTypes.USD,
     route: 'usd',

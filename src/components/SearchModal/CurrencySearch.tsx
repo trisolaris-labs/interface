@@ -6,7 +6,7 @@ import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
-import { useAllTokens, useStableSwapTokens, useToken } from '../../hooks/Tokens'
+import { useAllTokens, useAllStableSwapTokens, useToken, useAllValidStableSwapOutputTokens } from '../../hooks/Tokens'
 import { useSelectedListInfo } from '../../state/lists/hooks'
 import { CloseIcon, LinkStyledButton, TYPE } from '../../theme'
 import { isAddress } from '../../utils'
@@ -22,6 +22,8 @@ import SortButton from './SortButton'
 import { useTokenComparator } from './sorting'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { Field } from '../../state/stableswap/actions'
+import { useCalculateStableSwapPairs } from '../../hooks/useCalculateStableSwapPairs'
 
 interface CurrencySearchProps {
   isOpen: boolean
@@ -31,8 +33,20 @@ interface CurrencySearchProps {
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
   onChangeList: () => void
-  isStableSwap?: boolean
+  // isStableSwap?: boolean
 }
+// interface StableSwapSearchProps {
+//   stableSwapInputField: Field
+// }
+export type StableSwapSearchProps =
+  | {
+      isStableSwap?: true
+      stableSwapInputField?: Field
+    }
+  | {
+      isStableSwap?: false | null
+      stableSwapInputField?: null
+    }
 
 const StyledTokenList = styled(Column)`
   flex: 1;
@@ -51,8 +65,9 @@ export function CurrencySearch({
   onDismiss,
   isOpen,
   onChangeList,
-  isStableSwap = false
-}: CurrencySearchProps) {
+  isStableSwap = false,
+  stableSwapInputField
+}: CurrencySearchProps & StableSwapSearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
@@ -61,8 +76,24 @@ export function CurrencySearch({
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
   const allTokens = useAllTokens()
-  const stableswapTokens = useStableSwapTokens()
-  const tokens = isStableSwap ? stableswapTokens : allTokens
+  const allStableSwapTokens = useAllStableSwapTokens()
+  const allValidStableSwapOutputTokens = useAllValidStableSwapOutputTokens()
+
+  const tokens = useMemo(() => {
+    if (isStableSwap === true && stableSwapInputField != null) {
+      // If stableswapping, input should show all available token options
+      if (stableSwapInputField === Field.INPUT) {
+        return allStableSwapTokens
+      }
+
+      // If stableswapping, output should show all valid token options for a given stable input
+      if (stableSwapInputField === Field.OUTPUT) {
+        return allValidStableSwapOutputTokens
+      }
+    }
+
+    return allTokens
+  }, [allStableSwapTokens, allTokens, allValidStableSwapOutputTokens, isStableSwap, stableSwapInputField])
 
   // if they input an address, use it
   const isAddressSearch = isAddress(searchQuery)

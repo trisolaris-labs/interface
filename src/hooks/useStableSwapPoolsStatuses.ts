@@ -1,12 +1,12 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import SWAP_FLASH_LOAN_ABI from '../constants/abis/stableswap/swapFlashLoan.json'
+import LPTOKEN_UNGUARDED_ABI from '../constants/abis/stableswap/lpTokenUnguarded.json'
 import { useActiveWeb3React } from '.'
 import { StableSwapPoolName, StableSwapPoolTypes, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { Interface } from '@ethersproject/abi'
 import { JSBI } from '@trisolaris/sdk'
-import { TEN, TWO } from '@trisolaris/sdk/dist/constants'
 
 type StableSwapPoolStatuses = {
   [poolName in StableSwapPoolName]?: {
@@ -32,23 +32,26 @@ const tokenPricesUSD = {
 export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
   const { chainId } = useActiveWeb3React()
 
-  //   const { tokenPricesUSD } = useSelector((state: AppState) => state.application)
-  const [poolStatuses, setPoolStatuses] = useState<StableSwapPoolStatuses>({})
-
-  const stableSwapPools = Object.values(STABLESWAP_POOLS).filter(({ addresses }) =>
-    chainId != null ? addresses[chainId] : null
+  const stableSwapPools = useMemo(
+    () => Object.values(STABLESWAP_POOLS).filter(({ addresses }) => (chainId != null ? addresses[chainId] : null)),
+    [chainId]
   )
 
   const stableSwapPoolLPTokens: string[] = chainId == null ? [] : stableSwapPools.map(({ lpToken }) => lpToken[chainId])
+  const swapAddresses: string[] =
+    chainId == null
+      ? []
+      : stableSwapPools.map(({ metaSwapAddresses, addresses }) => metaSwapAddresses?.[chainId] ?? addresses?.[chainId])
 
   const tvls = useMultipleContractSingleData(
     stableSwapPoolLPTokens,
-    new Interface(SWAP_FLASH_LOAN_ABI),
+    new Interface(LPTOKEN_UNGUARDED_ABI),
     'totalSupply'
   )?.map(({ result: amount }) => JSBI.BigInt(amount ?? '0'))
 
+  // const pausedStatuses = [false]
   const pausedStatuses = useMultipleContractSingleData(
-    stableSwapPoolLPTokens,
+    swapAddresses,
     new Interface(SWAP_FLASH_LOAN_ABI),
     'paused'
   )?.map(({ result: isPaused }) => Boolean(isPaused ?? false))
@@ -71,18 +74,18 @@ export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
 
       return JSBI.divide(
         JSBI.multiply(JSBI.BigInt(tokenValue), JSBI.BigInt(tvlAmount)),
-        JSBI.exponentiate(TEN, TWO) // 1e18
+        JSBI.exponentiate(JSBI.BigInt('10'), JSBI.BigInt('2')) // 1e18
       )
     })
   }, [stableSwapPools, tvls])
 
-  setPoolStatuses(() => {
-    return stableSwapPools.reduce((acc, pool, i) => {
-      acc[pool.name] = { tvl: tvlsUSD[i], isPaused: pausedStatuses[i] }
+  return useMemo(
+    () =>
+      stableSwapPools.reduce((acc, pool, i) => {
+        acc[pool.name] = { tvl: tvlsUSD[i], isPaused: pausedStatuses[i] }
 
-      return acc
-    }, {} as StableSwapPoolStatuses)
-  })
-
-  return poolStatuses
+        return acc
+      }, {} as StableSwapPoolStatuses),
+    [pausedStatuses, stableSwapPools, tvlsUSD]
+  )
 }
