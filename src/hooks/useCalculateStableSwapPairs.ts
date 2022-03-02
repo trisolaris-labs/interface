@@ -1,5 +1,5 @@
 import { JSBI, Token } from '@trisolaris/sdk'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useActiveWeb3React } from '.'
 import {
@@ -18,14 +18,12 @@ import useStableSwapPoolsStatuses from './useStableSwapPoolsStatuses'
 const SWAP_TYPES_ORDERED_ASC = [STABLE_SWAP_TYPES.INVALID, STABLE_SWAP_TYPES.DIRECT]
 
 type TokenToPoolsMap = {
-  [tokenSymbol: string]: StableSwapPoolName[]
+  [tokenAddress: string]: StableSwapPoolName[]
 }
 
-type TokenToSwapDataMap = { [symbol: string]: StableSwapData[] }
+type TokenToSwapDataMap = { [address: string]: StableSwapData[] }
 
-// export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData[] {
 export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData[] {
-  const [pairCache, setPairCache] = useState<TokenToSwapDataMap>({})
   const poolsStatuses = useStableSwapPoolsStatuses()
   const { chainId } = useActiveWeb3React()
   const [poolsSortedByTVL, tokenToPoolsMapSorted] = useMemo(() => {
@@ -43,27 +41,20 @@ export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData
     const tokenToPools = sortedPools.reduce((acc, { name: poolName }) => {
       const pool = STABLESWAP_POOLS[poolName]
       pool.poolTokens.forEach(token => {
-        if (token?.symbol != null) {
-          acc[token.symbol] = (acc[token.symbol] || []).concat(poolName)
-        }
+        acc[token.address] = (acc[token.address] || []).concat(poolName)
       })
       return acc
     }, {} as TokenToPoolsMap)
+
     return [sortedPools, tokenToPools]
   }, [poolsStatuses, chainId])
 
-  useEffect(() => {
-    // @dev clear cache when moving chains
-    setPairCache({})
-  }, [chainId])
-
   return useCallback(
     function calculateSwapPairs(token?: Token): StableSwapData[] {
-      if (token?.symbol == null) {
+      if (token == null) {
         return []
       }
-      const cacheHit = pairCache[token.symbol]
-      if (cacheHit) return cacheHit
+
       const swapPairs = getTradingPairsForToken(
         TOKENS_MAP,
         STABLESWAP_POOLS,
@@ -71,11 +62,10 @@ export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData
         tokenToPoolsMapSorted,
         token
       )
-      setPairCache(prevState => (token?.symbol == null ? prevState : { ...prevState, [token.symbol]: swapPairs }))
 
       return swapPairs
     },
-    [poolsSortedByTVL, tokenToPoolsMapSorted, pairCache]
+    [poolsSortedByTVL, tokenToPoolsMapSorted]
   )
 }
 
@@ -85,7 +75,7 @@ function buildSwapSideData(token: Token, pool?: StableSwapPool): Required<SwapSi
   return {
     address: token.address,
     poolName: pool?.name,
-    tokenIndex: pool?.poolTokens.findIndex(t => t === token)
+    tokenIndex: pool?.poolTokens.findIndex(t => t.address === token.address)
   }
 }
 

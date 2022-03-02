@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
 import SWAP_FLASH_LOAN_ABI from '../constants/abis/stableswap/swapFlashLoan.json'
 import LPTOKEN_UNGUARDED_ABI from '../constants/abis/stableswap/lpTokenUnguarded.json'
@@ -7,6 +7,7 @@ import { StableSwapPoolName, StableSwapPoolTypes, STABLESWAP_POOLS } from '../st
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { Interface } from '@ethersproject/abi'
 import { JSBI } from '@trisolaris/sdk'
+import { BIG_INT_ZERO } from '../constants'
 
 type StableSwapPoolStatuses = {
   [poolName in StableSwapPoolName]?: {
@@ -43,18 +44,19 @@ export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
       ? []
       : stableSwapPools.map(({ metaSwapAddresses, addresses }) => metaSwapAddresses?.[chainId] ?? addresses?.[chainId])
 
+  const FALLBACK_TVL = BIG_INT_ZERO
   const tvls = useMultipleContractSingleData(
     stableSwapPoolLPTokens,
     new Interface(LPTOKEN_UNGUARDED_ABI),
     'totalSupply'
-  )?.map(({ result: amount }) => JSBI.BigInt(amount ?? '0'))
+  )?.map(({ result }) => result?.[0] ?? FALLBACK_TVL)
 
-  // const pausedStatuses = [false]
+  const FALLBACK_PAUSE_STATUS = true // Show pools as paused if they're still loading
   const pausedStatuses = useMultipleContractSingleData(
     swapAddresses,
     new Interface(SWAP_FLASH_LOAN_ABI),
     'paused'
-  )?.map(({ result: isPaused }) => Boolean(isPaused ?? false))
+  )?.map(({ result }) => result?.[0] ?? FALLBACK_PAUSE_STATUS)
 
   const tvlsUSD = useMemo(() => {
     return stableSwapPools.map((pool, i) => {
