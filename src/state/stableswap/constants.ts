@@ -1,7 +1,14 @@
 import { ChainId, Token } from '@trisolaris/sdk'
 import _ from 'lodash'
 import { USDC, USDT } from '../../constants/tokens'
-import { dummyToken } from '../stake/stake-constants'
+
+export function isLegacySwapABIPool(poolName: string): boolean {
+  return new Set(['dummy value']).has(poolName)
+}
+
+export function isMetaPool(poolName = ''): boolean {
+  return new Set(['dummy value']).has(poolName)
+}
 
 export enum STABLE_SWAP_TYPES {
   DIRECT = 'swapDirect', // route length 2
@@ -9,7 +16,7 @@ export enum STABLE_SWAP_TYPES {
 }
 
 export enum StableSwapPoolName {
-  USDC_USDT
+  USDC_USDT = 'USDC_USDT'
 }
 
 export enum StableSwapPoolTypes {
@@ -53,12 +60,20 @@ export type StableSwapTokenToPoolsMap = {
 function buildAddresses(addresses: Partial<Record<ChainId, string>>): Record<ChainId, string> {
   return Object.keys(ChainId).reduce((acc, id) => {
     const numId = Number(id) as ChainId
+    if (isNaN(numId)) {
+      return acc
+    }
+
     return { ...acc, [numId]: addresses?.[numId] ?? '' }
   }, {}) as Record<ChainId, string>
 }
 function buildPids(pids: Partial<Record<ChainId, number>>): Record<ChainId, number | null> {
   return Object.keys(ChainId).reduce((acc, id) => {
     const numId = Number(id) as ChainId
+    if (isNaN(numId)) {
+      return acc
+    }
+
     const pid = pids[numId] ?? null
     return { ...acc, [numId]: pid }
   }, {}) as Record<ChainId, number | null>

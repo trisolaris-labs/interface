@@ -1,8 +1,19 @@
 import { Version } from '../../hooks/useToggledVersion'
 import { parseUnits } from '@ethersproject/units'
-import { ChainId, Currency, CurrencyAmount, JSBI, Token, TokenAmount, Trade } from '@trisolaris/sdk'
+import {
+  ChainId,
+  Currency,
+  CurrencyAmount,
+  Fraction,
+  JSBI,
+  Price,
+  Route,
+  Token,
+  TokenAmount,
+  Trade
+} from '@trisolaris/sdk'
 import { ParsedQs } from 'qs'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
@@ -10,7 +21,7 @@ import { useTradeExactIn, useTradeExactOut } from '../../hooks/Trades'
 import useParsedQueryString from '../../hooks/useParsedQueryString'
 import { isAddress } from '../../utils'
 import { AppDispatch, AppState } from '../index'
-import { useCurrencyBalances } from '../wallet/hooks'
+import { useCurrencyBalances, useTokenBalance } from '../wallet/hooks'
 import { Field, replaceStableSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
 import { StableSwapState } from './reducer'
 import useToggledVersion from '../../hooks/useToggledVersion'
@@ -18,6 +29,14 @@ import { useUserSlippageTolerance } from '../user/hooks'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useTranslation } from 'react-i18next'
 import { USDC } from '../../constants/tokens'
+import { BIG_INT_ZERO } from '../../constants'
+import { wrappedCurrency } from '../../utils/wrappedCurrency'
+import { StableSwapData, useCalculateStableSwapPairs } from '../../hooks/useCalculateStableSwapPairs'
+import { useStableSwapContract } from '../../hooks/useContract'
+import { useSingleCallResult } from '../multicall/hooks'
+import { STABLE_SWAP_TYPES } from './constants'
+import _ from 'lodash'
+import { Contract } from 'ethers'
 
 export function useStableSwapState(): AppState['stableswap'] {
   return useSelector<AppState, AppState['stableswap']>(state => state.stableswap)
@@ -100,19 +119,26 @@ function involvesAddress(trade: Trade, checksummedAddress: string): boolean {
   )
 }
 
+export type StableSwapTrade = {
+  contract: Contract
+  executionPrice: Price
+  inputAmount: CurrencyAmount
+  stableSwapData: StableSwapData
+  outputAmount: CurrencyAmount
+}
+
 // from the current swap inputs, compute the best trade and return it.
+// @TODO Combine this with useDerivedSwapInfo to find user best rate between stable and non-stable
 export function useDerivedStableSwapInfo(): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
-  v2Trade: Trade | undefined
   inputError?: string
-  v1Trade: Trade | undefined
+  //   stableSwapTrade: Trade | undefined
+  stableSwapTrade: StableSwapTrade | undefined
 } {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-
-  const toggledVersion = useToggledVersion()
 
   const {
     independentField,
@@ -132,13 +158,7 @@ export function useDerivedStableSwapInfo(): {
     outputCurrency ?? undefined
   ])
 
-  const isExactIn: boolean = independentField === Field.INPUT
-  const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
-
-  const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
-  const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
-
-  const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
+  const parsedAmount = tryParseAmount(typedValue, inputCurrency ?? undefined)
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -150,8 +170,46 @@ export function useDerivedStableSwapInfo(): {
     [Field.OUTPUT]: outputCurrency ?? undefined
   }
 
-  // get link to trade on v1, if a better rate exists
-  const v1Trade = undefined
+  const inputToken = wrappedCurrency(currencies?.[Field.INPUT], chainId)
+  const outputToken = wrappedCurrency(currencies?.[Field.OUTPUT], chainId)
+  const calculateStableSwapPairs = useCalculateStableSwapPairs()
+  // const outputTokens = calculateStableSwapPairs(inputToken)
+  // console.log('outputTokens: ', outputTokens)
+  //   const selectedStableSwapPool = useSelectedStableSwapPool()
+
+  //   const selectedStableSwapPool = useStableSwapSelectedOutputPool(inputToken, outputToken)
+  //   console.log('selectedStableSwapPool: ', selectedStableSwapPool)
+  const selectedStableSwapPool = useMemo(() => {
+    if (chainId == null || inputToken == null || outputToken == null) {
+      return
+    }
+
+    const outputTokens = calculateStableSwapPairs(inputToken)
+
+    return _(outputTokens).find(
+      stableSwapData =>
+        stableSwapData.from.address === inputToken.address &&
+        stableSwapData.to.address === outputToken.address &&
+        stableSwapData.type !== STABLE_SWAP_TYPES.INVALID
+    )
+  }, [calculateStableSwapPairs, chainId, inputToken, outputToken])
+
+  //   console.log('selectedStableSwapPool: ', selectedStableSwapPool)
+
+  const stableSwapContract = useStableSwapContract(selectedStableSwapPool?.to?.poolName, true)
+
+  const calculateSwapResponse = useSingleCallResult(stableSwapContract, 'calculateSwap', [
+    // 0,
+    // 1,
+    selectedStableSwapPool?.from.tokenIndex ?? 0,
+    selectedStableSwapPool?.to.tokenIndex ?? 0,
+    parsedAmount?.raw.toString()
+    // '0'
+  ])
+
+  const amountToReceive = calculateSwapResponse.result
+
+  const amountIn = useTokenBalance(account ?? undefined, inputToken)
 
   let inputError: string | undefined
   if (!account) {
@@ -169,45 +227,70 @@ export function useDerivedStableSwapInfo(): {
   const formattedTo = isAddress(to)
   if (!to || !formattedTo) {
     inputError = inputError ?? t('swapHooks.enterRecipient')
-  } else {
-    if (
-      (bestTradeExactIn && involvesAddress(bestTradeExactIn, formattedTo)) ||
-      (bestTradeExactOut && involvesAddress(bestTradeExactOut, formattedTo))
-    ) {
-      inputError = inputError ?? t('swapHooks.invalidRecipient')
-    }
   }
 
   const [allowedSlippage] = useUserSlippageTolerance()
 
-  const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
-
-  const slippageAdjustedAmountsV1 =
-    v1Trade && allowedSlippage && computeSlippageAdjustedAmounts(v1Trade, allowedSlippage)
-
   // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [
-    currencyBalances[Field.INPUT],
-    toggledVersion === Version.v1
-      ? slippageAdjustedAmountsV1
-        ? slippageAdjustedAmountsV1[Field.INPUT]
-        : null
-      : slippageAdjustedAmounts
-      ? slippageAdjustedAmounts[Field.INPUT]
-      : null
-  ]
+  // const slippageAdjustedAmounts =
+  //   v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
+  // const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], slippageAdjustedAmounts]
 
-  if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    inputError = t('swapHooks.insufficient') + amountIn.currency.symbol + t('swapHooks.balance')
+  //   const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
+
+  //   const slippageAdjustedAmountsV1 =
+  //     v1Trade && allowedSlippage && computeSlippageAdjustedAmounts(v1Trade, allowedSlippage)
+
+  //   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
+  //     inputError = t('swapHooks.insufficient') + amountIn.currency.symbol + t('swapHooks.balance')
+  //   }
+
+  // Stableswap Trade Calculation
+  // const calculateSwapAmount = useCallback(
+  //   // debounce(async (formStateArg: FormState) => {
+  //   async () => {
+  const amountToGive = currencyBalances[Field.INPUT]
+  const tokenFrom = currencies[Field.INPUT]
+  const tokenTo = currencies[Field.OUTPUT]
+  // let amountMediumSynth = Zero
+  if (amountToGive == null || amountIn == null || amountToGive.greaterThan(amountIn ?? BIG_INT_ZERO)) {
+    inputError = t('swapHooks.insufficient') + (amountIn?.currency.symbol ?? '') + t('swapHooks.balance')
+  }
+
+  // @TODO - add price impact: See src/pages/Swap.tsx#L305
+  let tradeData
+
+  if (
+    stableSwapContract != null &&
+    amountToGive != null &&
+    selectedStableSwapPool != null &&
+    tokenTo != null &&
+    tokenFrom != null &&
+    amountToReceive != null
+  ) {
+    const amountToReceiveJSBI = JSBI.BigInt(amountToReceive)
+    const amountOutLessSlippage = new Fraction(JSBI.BigInt(1))
+      .add(JSBI.BigInt(allowedSlippage))
+      .invert()
+      .multiply(amountToReceiveJSBI).quotient
+    const executionPrice = new Price(tokenFrom, tokenTo, amountToReceiveJSBI, amountOutLessSlippage)
+
+    tradeData = {
+      contract: stableSwapContract,
+      executionPrice,
+      inputAmount: amountToGive,
+      stableSwapData: selectedStableSwapPool,
+      outputAmount: CurrencyAmount.fromRawAmount(tokenTo, amountToReceiveJSBI)
+    }
   }
 
   return {
     currencies,
     currencyBalances,
     parsedAmount,
-    v2Trade: v2Trade ?? undefined,
     inputError,
-    v1Trade
+    stableSwapTrade: tradeData
+    // stableSwapTrade: undefined
   }
 }
 
@@ -295,4 +378,46 @@ export function useDefaultsFromURLSearch():
   }, [dispatch, chainId])
 
   return result
+}
+
+export function useStableSwapSelectedOutputPoolWrapped(): (
+  inputCurrency: Currency | undefined,
+  outputCurrency: Currency | undefined
+) => StableSwapData | undefined {
+  const calculateStableSwapPairs = useCalculateStableSwapPairs()
+  const { chainId } = useActiveWeb3React()
+
+  return useCallback(
+    (inputCurrency: Currency | undefined, outputCurrency: Currency | undefined) => {
+      const inputToken = wrappedCurrency(inputCurrency, chainId)
+      const outputToken = wrappedCurrency(outputCurrency, chainId)
+
+      if (chainId == null || inputToken == null || outputToken == null) {
+        return
+      }
+
+      const outputTokens = calculateStableSwapPairs(inputToken)
+
+      return _(outputTokens).find(
+        stableSwapData =>
+          stableSwapData.from.address === inputToken.address &&
+          stableSwapData.to.address === outputToken.address &&
+          stableSwapData.type !== STABLE_SWAP_TYPES.INVALID
+      )
+    },
+    [calculateStableSwapPairs, chainId]
+  )
+}
+
+export function useStableSwapSelectedOutputPool(
+  inputCurrency: Currency | undefined,
+  outputCurrency: Currency | undefined
+): StableSwapData | undefined {
+  const stableSwapSelectedOutputPool = useStableSwapSelectedOutputPoolWrapped()
+
+  return useMemo(() => stableSwapSelectedOutputPool(inputCurrency, outputCurrency), [
+    inputCurrency,
+    outputCurrency,
+    stableSwapSelectedOutputPool
+  ])
 }

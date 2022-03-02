@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 // import { StableSwapData } from '../../hooks/useCalculateStableSwapPairs'
 import { Field, replaceStableSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
+import { StableSwapPoolName } from './constants'
 // import { STABLE_SWAP_TYPES } from './constants'
 
 export interface StableSwapState {
@@ -11,6 +12,7 @@ export interface StableSwapState {
   }
   readonly [Field.OUTPUT]: {
     readonly currencyId: string | undefined
+    readonly poolName?: StableSwapPoolName
   }
   // the typed recipient address or ENS name, or null if swap should go to sender
   readonly recipient: string | null
@@ -71,7 +73,7 @@ export default createReducer<StableSwapState>(initialState, builder =>
         }
       }
     )
-    .addCase(selectCurrency, (state, { payload: { currencyId, field } }) => {
+    .addCase(selectCurrency, (state, { payload: { currencyId, field, poolName } }) => {
       const otherField = field === Field.INPUT ? Field.OUTPUT : Field.INPUT
       if (currencyId === state[otherField].currencyId) {
         // the case where we have to swap the order
@@ -79,13 +81,15 @@ export default createReducer<StableSwapState>(initialState, builder =>
           ...state,
           independentField: state.independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT,
           [field]: { currencyId: currencyId },
-          [otherField]: { currencyId: state[field].currencyId }
+          [otherField]: { currencyId: state[field].currencyId },
+          poolName
         }
       } else {
         // the normal case
         return {
           ...state,
-          [field]: { currencyId: currencyId }
+          [field]: { currencyId: currencyId },
+          poolName
         }
       }
     })
