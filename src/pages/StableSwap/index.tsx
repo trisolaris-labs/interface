@@ -234,6 +234,8 @@ export default function StableSwap() {
   )
   const noRoute = false
 
+  // console.log('stableSwapTrade: ', stableSwapTrade)
+
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallback(
     stableSwapTrade?.inputAmount,
@@ -259,6 +261,9 @@ export default function StableSwap() {
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useStableSwapCallback(stableSwapTrade, allowedSlippage)
 
+  // console.log('swapCallback: ', swapCallback)
+  // console.log('swapCallbackError: ', swapCallbackError)
+
   // const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 
   const handleSwap = useCallback(() => {
@@ -268,12 +273,14 @@ export default function StableSwap() {
     if (!swapCallback) {
       return
     }
-    setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
+    // setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
     swapCallback()
       .then(hash => {
+        console.log('handleswap hash: ', hash)
         setSwapState({ attemptingTxn: false, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: hash })
       })
       .catch(error => {
+        console.log('handleswap error: ', error)
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
@@ -300,6 +307,8 @@ export default function StableSwap() {
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
     !(priceImpactSeverity > 3 && !isExpertMode)
+
+  // console.log('approval: ', approval)
 
   // const handleConfirmDismiss = useCallback(() => {
   //   setSwapState({ showConfirm: false, tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
@@ -459,11 +468,11 @@ export default function StableSwap() {
                           <Text fontWeight={500} fontSize={14} color={theme.text2}>
                             {t('swapPage.price')}
                           </Text>
-                          <TradePrice
+                          {/* <TradePrice
                             price={trade?.executionPrice}
                             showInverted={showInverted}
                             setShowInverted={setShowInverted}
-                          />
+                          /> */}
                         </RowBetween>
                       )}
                       {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (

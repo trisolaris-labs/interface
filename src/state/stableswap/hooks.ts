@@ -127,6 +127,38 @@ export type StableSwapTrade = {
   outputAmount: CurrencyAmount
 }
 
+export function useSelectedStableSwapPool() {
+  const { chainId } = useActiveWeb3React()
+  const {
+    [Field.INPUT]: { currencyId: inputCurrencyId },
+    [Field.OUTPUT]: { currencyId: outputCurrencyId }
+  } = useStableSwapState()
+
+  const inputCurrency = useCurrency(inputCurrencyId)
+  const outputCurrency = useCurrency(outputCurrencyId)
+  const calculateStableSwapPairs = useCalculateStableSwapPairs()
+
+  const inputToken = wrappedCurrency(inputCurrency ?? undefined, chainId)
+  const outputToken = wrappedCurrency(outputCurrency ?? undefined, chainId)
+
+  const selectedStableSwapPool = useMemo(() => {
+    if (chainId == null || inputToken == null || outputToken == null) {
+      return
+    }
+
+    const outputTokens = calculateStableSwapPairs(inputToken)
+
+    return _(outputTokens).find(
+      stableSwapData =>
+        stableSwapData.from.address === inputToken.address &&
+        stableSwapData.to.address === outputToken.address &&
+        stableSwapData.type !== STABLE_SWAP_TYPES.INVALID
+    )
+  }, [calculateStableSwapPairs, chainId, inputToken, outputToken])
+
+  return selectedStableSwapPool
+}
+
 // from the current swap inputs, compute the best trade and return it.
 // @TODO Combine this with useDerivedSwapInfo to find user best rate between stable and non-stable
 export function useDerivedStableSwapInfo(): {
@@ -141,7 +173,6 @@ export function useDerivedStableSwapInfo(): {
   const { t } = useTranslation()
 
   const {
-    independentField,
     typedValue,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
@@ -173,41 +204,32 @@ export function useDerivedStableSwapInfo(): {
   const inputToken = wrappedCurrency(currencies?.[Field.INPUT], chainId)
   const outputToken = wrappedCurrency(currencies?.[Field.OUTPUT], chainId)
   const calculateStableSwapPairs = useCalculateStableSwapPairs()
-  // const outputTokens = calculateStableSwapPairs(inputToken)
-  // console.log('outputTokens: ', outputTokens)
-  //   const selectedStableSwapPool = useSelectedStableSwapPool()
+  //   const selectedStableSwapPool = useMemo(() => {
+  //     if (chainId == null || inputToken == null || outputToken == null) {
+  //       return
+  //     }
 
-  //   const selectedStableSwapPool = useStableSwapSelectedOutputPool(inputToken, outputToken)
-  //   console.log('selectedStableSwapPool: ', selectedStableSwapPool)
-  const selectedStableSwapPool = useMemo(() => {
-    if (chainId == null || inputToken == null || outputToken == null) {
-      return
-    }
+  //     const outputTokens = calculateStableSwapPairs(inputToken)
 
-    const outputTokens = calculateStableSwapPairs(inputToken)
+  //     return _(outputTokens).find(
+  //       stableSwapData =>
+  //         stableSwapData.from.address === inputToken.address &&
+  //         stableSwapData.to.address === outputToken.address &&
+  //         stableSwapData.type !== STABLE_SWAP_TYPES.INVALID
+  //     )
+  //   }, [calculateStableSwapPairs, chainId, inputToken, outputToken])
 
-    return _(outputTokens).find(
-      stableSwapData =>
-        stableSwapData.from.address === inputToken.address &&
-        stableSwapData.to.address === outputToken.address &&
-        stableSwapData.type !== STABLE_SWAP_TYPES.INVALID
-    )
-  }, [calculateStableSwapPairs, chainId, inputToken, outputToken])
-
-  //   console.log('selectedStableSwapPool: ', selectedStableSwapPool)
+  const selectedStableSwapPool = useSelectedStableSwapPool()
 
   const stableSwapContract = useStableSwapContract(selectedStableSwapPool?.to?.poolName, true)
 
   const calculateSwapResponse = useSingleCallResult(stableSwapContract, 'calculateSwap', [
-    // 0,
-    // 1,
     selectedStableSwapPool?.from.tokenIndex ?? 0,
     selectedStableSwapPool?.to.tokenIndex ?? 0,
     parsedAmount?.raw.toString()
-    // '0'
   ])
 
-  const amountToReceive = calculateSwapResponse.result
+  const amountToReceive = calculateSwapResponse?.result?.[0] ?? BIG_INT_ZERO
 
   const amountIn = useTokenBalance(account ?? undefined, inputToken)
 
@@ -231,28 +253,10 @@ export function useDerivedStableSwapInfo(): {
 
   const [allowedSlippage] = useUserSlippageTolerance()
 
-  // compare input balance to max input based on version
-  // const slippageAdjustedAmounts =
-  //   v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
-  // const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], slippageAdjustedAmounts]
-
-  //   const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
-
-  //   const slippageAdjustedAmountsV1 =
-  //     v1Trade && allowedSlippage && computeSlippageAdjustedAmounts(v1Trade, allowedSlippage)
-
-  //   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-  //     inputError = t('swapHooks.insufficient') + amountIn.currency.symbol + t('swapHooks.balance')
-  //   }
-
-  // Stableswap Trade Calculation
-  // const calculateSwapAmount = useCallback(
-  //   // debounce(async (formStateArg: FormState) => {
-  //   async () => {
-  const amountToGive = currencyBalances[Field.INPUT]
+  const amountToGive = parsedAmount
   const tokenFrom = currencies[Field.INPUT]
   const tokenTo = currencies[Field.OUTPUT]
-  // let amountMediumSynth = Zero
+
   if (amountToGive == null || amountIn == null || amountToGive.greaterThan(amountIn ?? BIG_INT_ZERO)) {
     inputError = t('swapHooks.insufficient') + (amountIn?.currency.symbol ?? '') + t('swapHooks.balance')
   }
@@ -273,7 +277,10 @@ export function useDerivedStableSwapInfo(): {
       .add(JSBI.BigInt(allowedSlippage))
       .invert()
       .multiply(amountToReceiveJSBI).quotient
-    const executionPrice = new Price(tokenFrom, tokenTo, amountToReceiveJSBI, amountOutLessSlippage)
+
+    const executionPrice = JSBI.LE(amountOutLessSlippage, BIG_INT_ZERO)
+      ? new Price(tokenFrom, tokenTo, JSBI.BigInt(1), BIG_INT_ZERO)
+      : new Price(tokenFrom, tokenTo, amountToReceiveJSBI, amountOutLessSlippage)
 
     tradeData = {
       contract: stableSwapContract,
@@ -290,7 +297,6 @@ export function useDerivedStableSwapInfo(): {
     parsedAmount,
     inputError,
     stableSwapTrade: tradeData
-    // stableSwapTrade: undefined
   }
 }
 
