@@ -10,7 +10,8 @@ import { useActiveWeb3React } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './useENS'
 import { Version } from './useToggledVersion'
-import { StableSwapTrade } from '../state/stableswap/hooks'
+import { StableSwapTrade, useSelectedStableSwapPool } from '../state/stableswap/hooks'
+import { useStableSwapContract } from './useContract'
 
 export enum StableSwapCallbackState {
   INVALID,
@@ -53,6 +54,9 @@ function useStableSwapCallArguments(
   //   const recipient = recipientAddressOrName === null ? account : recipientAddress
   let deadline = useTransactionDeadline()
 
+  const selectedStableSwapPool = useSelectedStableSwapPool()
+  const stableSwapContract = useStableSwapContract(selectedStableSwapPool?.to?.poolName, true)
+
   const currentTime = BigNumber.from(new Date().getTime())
   if (deadline && deadline < currentTime.add(10)) {
     deadline = currentTime.add(10)
@@ -73,31 +77,37 @@ function useStableSwapCallArguments(
     )
       return []
 
-    const contract: Contract | null = getRouterContract(chainId, library, account)
+    const contract: Contract | null = stableSwapContract
     if (!contract) {
       return []
     }
 
     // const slippage = new Fraction(JSBI.BigInt(1)).add(JSBI.BigInt(allowedSlippage)).multiply(trade.inputAmount)
-    const amountOutLessSlippage = new Fraction(JSBI.BigInt(1))
-      .add(JSBI.BigInt(allowedSlippage))
-      .invert()
-      .multiply(trade.outputAmount)
+    // const amountOutLessSlippage = new Fraction(JSBI.BigInt(1))
+    //   .add(JSBI.BigInt(allowedSlippage))
+    //   .invert()
+    //   .multiply(trade.outputAmount)
 
     const swapMethods: any[] = []
 
-    swapMethods.push(
-      'swap',
+    const args = [
       trade.stableSwapData.from.tokenIndex,
       trade.stableSwapData.to.tokenIndex,
-      trade.inputAmount.toExact(),
-      amountOutLessSlippage,
-      deadline
-    )
+      trade.inputAmount.raw.toString(),
+      trade.outputAmount.raw.toString(),
+      deadline.toNumber()
+    ]
+
+    console.log('args: ', args)
+
+    swapMethods.push({
+      methodName: 'swap',
+      args
+    })
 
     return swapMethods.map((parameters: any) => ({ parameters, contract }))
     //   }, [account, allowedSlippage, chainId, deadline, library, recipient, trade])
-  }, [account, allowedSlippage, chainId, deadline, library, trade])
+  }, [account, chainId, deadline, library, stableSwapContract, trade])
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
