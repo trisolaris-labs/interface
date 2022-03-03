@@ -40,6 +40,7 @@ export function useAllTokens(): TokensMap {
   }, [chainId, userAddedTokens, allTokens])
 }
 
+// Returns map of all tokens that are part of stable swap LP pools
 export function useAllStableSwapTokens(): TokensMap {
   const { chainId } = useActiveWeb3React()
   const allTokens = useSelectedTokenList()
@@ -63,6 +64,8 @@ export function useAllStableSwapTokens(): TokensMap {
   }, [chainId, allTokens])
 }
 
+// When an input stable token is selected, returns a list of all valid output stables
+// When multiple pools for the same token are available, the highest TVL pool is chosen
 export function useAllValidStableSwapOutputTokens(): TokensMap {
   const { chainId } = useActiveWeb3React()
   const allTokens = useSelectedTokenList()

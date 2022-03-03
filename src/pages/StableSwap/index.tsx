@@ -1,80 +1,45 @@
-import { CETH, ChainId, Currency, CurrencyAmount, JSBI, Token, Trade } from '@trisolaris/sdk'
+import { ChainId, CurrencyAmount, Token, Trade } from '@trisolaris/sdk'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ChevronDown } from 'react-feather'
-import ReactGA from 'react-ga'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonError, ButtonLight, ButtonPrimary, ButtonConfirmed } from '../../components/Button'
 import Card, { GreyCard } from '../../components/Card'
 import Column, { AutoColumn } from '../../components/Column'
-import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { AutoRow, RowBetween } from '../../components/Row'
-import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
-import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
-import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
 import { ChevronWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../components/swap/styleds'
-import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import spacemenAndPlanets from '../../assets/svg/spacemen_and_planets.svg'
 
 import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO } from '../../constants'
-import { USDT } from '../../constants/tokens'
+import { USDC, USDT } from '../../constants/tokens'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
-import { ApprovalState, useApproveCallback, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
-import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
-import { Field, replaceStableSwapState } from '../../state/stableswap/actions'
+import { Field } from '../../state/stableswap/actions'
 import {
   useDefaultsFromURLSearch,
   useDerivedStableSwapInfo,
   useStableSwapActionHandlers,
-  useStableSwapSelectedOutputPoolWrapped,
   useStableSwapState
 } from '../../state/stableswap/hooks'
-import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
+import { useUserSlippageTolerance } from '../../state/user/hooks'
 import { LinkStyledButton, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import AppBody from '../AppBody'
 import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
-import useENS from '../../hooks/useENS'
 import { useTranslation } from 'react-i18next'
-import { useIsSelectedAEBToken } from '../../state/lists/hooks'
-import { DeprecatedWarning } from '../../components/Warning'
 import Settings from '../../components/Settings'
-import { useDispatch } from 'react-redux'
-import { useCalculateStableSwapPairs } from '../../hooks/useCalculateStableSwapPairs'
-import { wrappedCurrency } from '../../utils/wrappedCurrency'
-import { useDerivedSwapInfo } from '../../state/swap/hooks'
 
-const BottomText = styled.span`
-  margin-top: 8px;
-  font-size: 18px;
-`
-
-const VeloxLink = styled.a`
-  color: #f25c23;
-  text-decoration: none;
-`
-
-const MarginswapLink = styled.a`
-  color: #f25c23;
-  text-decoration: none;
-`
-
-const WarningWrapper = styled.div`
-  max-width: 420px;
-  width: 100%;
-  margin: 0 0 2rem 0;
-`
+const NATIVE_USDC = USDC[ChainId.AURORA]
+const NATIVE_USDT = USDT[ChainId.AURORA]
 
 const Root = styled.div`
   width: 100%;
@@ -126,14 +91,17 @@ export default function StableSwap() {
   ]
   const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
   const urlLoadedTokens: Token[] = useMemo(
-    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
+    () =>
+      [loadedInputCurrency, loadedOutputCurrency]?.filter(
+        (c): c is Token => c instanceof Token && ![NATIVE_USDC.address, NATIVE_USDT.address].includes(c.address)
+      ) ?? [],
     [loadedInputCurrency, loadedOutputCurrency]
   )
   const handleConfirmTokenWarning = useCallback(() => {
     setDismissTokenWarning(true)
   }, [])
 
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -146,39 +114,18 @@ export default function StableSwap() {
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
 
-  const getSelectedStableSwapPool = useStableSwapSelectedOutputPoolWrapped()
-
   // swap state
   const { independentField, typedValue, recipient } = useStableSwapState()
-  // const { v1Trade, v2Trade, inputError: swapInputError } = useDerivedSwapInfo()
-  const {
-    currencyBalances,
-    parsedAmount,
-    currencies,
-    inputError: stableSwapInputError,
-    // inputError,
-    stableSwapTrade
-  } = useDerivedStableSwapInfo()
+  const { currencyBalances, parsedAmount, currencies, inputError, stableSwapTrade } = useDerivedStableSwapInfo()
 
-  // const inputError = swapInputError ?? stableSwapInputError
-  const inputError = null
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
     currencies[Field.OUTPUT],
     typedValue
   )
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
-  const { address: recipientAddress } = useENS(recipient)
-  // const toggledVersion = useToggledVersion()
-  // const tradesByVersion = {
-  //   [Version.v1]: v1Trade,
-  //   [Version.v2]: v2Trade
-  // }
 
   const trade = showWrap ? undefined : stableSwapTrade
-  // const defaultTrade = showWrap ? undefined : tradesByVersion[DEFAULT_VERSION]
-
-  const betterTradeLinkVersion: Version | undefined = undefined
 
   const parsedAmounts = showWrap
     ? {
@@ -208,7 +155,7 @@ export default function StableSwap() {
   )
 
   // modal and loading
-  const [{ showConfirm, tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
+  const [{ showConfirm, tradeToConfirm, swapErrorMessage }, setSwapState] = useState<{
     showConfirm: boolean
     tradeToConfirm: Trade | undefined
     attemptingTxn: boolean
@@ -234,8 +181,6 @@ export default function StableSwap() {
   )
   const noRoute = false
 
-  // console.log('stableSwapTrade: ', stableSwapTrade)
-
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallback(
     stableSwapTrade?.inputAmount,
@@ -255,24 +200,17 @@ export default function StableSwap() {
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
-  // console.log('stableSwapTrade: ', stableSwapTrade)
-
-  // @nocommit @TODO Update swap logic here
-  // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useStableSwapCallback(stableSwapTrade, allowedSlippage)
 
-  // console.log('swapCallback: ', swapCallback)
-  // console.log('swapCallbackError: ', swapCallbackError)
-
-  // const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
-
   const handleSwap = useCallback(() => {
+    // @nocommit Should we add this?
     // if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
     //   return
     // }
     if (!swapCallback) {
       return
     }
+    // @nocommit add this if we want to show the warning modal
     // setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
     swapCallback()
       .then(hash => {
@@ -291,9 +229,6 @@ export default function StableSwap() {
       })
   }, [tradeToConfirm, showConfirm, swapCallback])
 
-  // errors
-  const [showInverted, setShowInverted] = useState<boolean>(false)
-
   // warnings on slippage
   // @nocommit Add This
   // const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
@@ -308,8 +243,7 @@ export default function StableSwap() {
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
     !(priceImpactSeverity > 3 && !isExpertMode)
 
-  // console.log('approval: ', approval)
-
+  // @nocommit add this later
   // const handleConfirmDismiss = useCallback(() => {
   //   setSwapState({ showConfirm: false, tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
   //   // if there was a tx hash, we want to clear the input
@@ -318,6 +252,7 @@ export default function StableSwap() {
   //   }
   // }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash])
 
+  // @nocommit will this occur?
   // const handleAcceptChanges = useCallback(() => {
   //   setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn, showConfirm })
   // }, [attemptingTxn, showConfirm, swapErrorMessage, trade, txHash])
@@ -334,29 +269,22 @@ export default function StableSwap() {
     maxAmountInput && onUserInput(Field.INPUT, maxAmountInput.toExact())
   }, [maxAmountInput, onUserInput])
 
-  const handleOutputSelect = useCallback(
-    (outputCurrency: Currency) => {
-      // console.log('inside handleOutputSelect: ', outputCurrency)
-      return onCurrencySelection(Field.OUTPUT, outputCurrency)
-    },
-    [onCurrencySelection]
-  )
-  // const handleOutputSelect = useCallback(outputCurrency => onCurrencySelection(Field.OUTPUT, outputCurrency), [
-  //   onCurrencySelection
-  // ])
+  const handleOutputSelect = useCallback(outputCurrency => onCurrencySelection(Field.OUTPUT, outputCurrency), [
+    onCurrencySelection
+  ])
 
   // @nocommit This is hacky.  Replace this with new redux state
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(
-      replaceStableSwapState({
-        typedValue: '0',
-        field: Field.INPUT,
-        inputCurrencyId: USDT[ChainId.AURORA].address,
-        recipient: null
-      })
-    )
-  }, [dispatch])
+  // const dispatch = useDispatch()
+  // useEffect(() => {
+  //   dispatch(
+  //     replaceStableSwapState({
+  //       typedValue: '0',
+  //       field: Field.INPUT,
+  //       inputCurrencyId: USDT[ChainId.AURORA].address,
+  //       recipient: null
+  //     })
+  //   )
+  // }, [dispatch])
 
   return (
     <>

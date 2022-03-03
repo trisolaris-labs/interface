@@ -1,34 +1,18 @@
-import { Version } from '../../hooks/useToggledVersion'
 import { parseUnits } from '@ethersproject/units'
-import {
-  ChainId,
-  Currency,
-  CurrencyAmount,
-  Fraction,
-  JSBI,
-  Price,
-  Route,
-  Token,
-  TokenAmount,
-  Trade
-} from '@trisolaris/sdk'
+import { ChainId, Currency, CurrencyAmount, Fraction, JSBI, Price, Token, TokenAmount, Trade } from '@trisolaris/sdk'
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
-import { useTradeExactIn, useTradeExactOut } from '../../hooks/Trades'
 import useParsedQueryString from '../../hooks/useParsedQueryString'
 import { isAddress } from '../../utils'
 import { AppDispatch, AppState } from '../index'
 import { useCurrencyBalances, useTokenBalance } from '../wallet/hooks'
 import { Field, replaceStableSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
 import { StableSwapState } from './reducer'
-import useToggledVersion from '../../hooks/useToggledVersion'
 import { useUserSlippageTolerance } from '../user/hooks'
-import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useTranslation } from 'react-i18next'
-import { USDC } from '../../constants/tokens'
 import { BIG_INT_ZERO } from '../../constants'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { StableSwapData, useCalculateStableSwapPairs } from '../../hooks/useCalculateStableSwapPairs'
@@ -37,6 +21,17 @@ import { useSingleCallResult } from '../multicall/hooks'
 import { STABLE_SWAP_TYPES } from './constants'
 import _ from 'lodash'
 import { Contract } from 'ethers'
+import { USDC } from '../../constants/tokens'
+
+const NATIVE_USDC = USDC[ChainId.AURORA]
+
+export type StableSwapTrade = {
+  contract: Contract
+  executionPrice: Price
+  inputAmount: CurrencyAmount
+  stableSwapData: StableSwapData
+  outputAmount: CurrencyAmount
+}
 
 export function useStableSwapState(): AppState['stableswap'] {
   return useSelector<AppState, AppState['stableswap']>(state => state.stableswap)
@@ -107,26 +102,6 @@ export function tryParseAmount(value?: string, currency?: Currency): CurrencyAmo
   return undefined
 }
 
-/**
- * Returns true if any of the pairs or tokens in a trade have the given checksummed address
- * @param trade to check for the given address
- * @param checksummedAddress address to check in the pairs and tokens
- */
-function involvesAddress(trade: Trade, checksummedAddress: string): boolean {
-  return (
-    trade.route.path.some(token => token.address === checksummedAddress) ||
-    trade.route.pairs.some(pair => pair.liquidityToken.address === checksummedAddress)
-  )
-}
-
-export type StableSwapTrade = {
-  contract: Contract
-  executionPrice: Price
-  inputAmount: CurrencyAmount
-  stableSwapData: StableSwapData
-  outputAmount: CurrencyAmount
-}
-
 export function useSelectedStableSwapPool() {
   const { chainId } = useActiveWeb3React()
   const {
@@ -160,13 +135,11 @@ export function useSelectedStableSwapPool() {
 }
 
 // from the current swap inputs, compute the best trade and return it.
-// @TODO Combine this with useDerivedSwapInfo to find user best rate between stable and non-stable
 export function useDerivedStableSwapInfo(): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
   inputError?: string
-  //   stableSwapTrade: Trade | undefined
   stableSwapTrade: StableSwapTrade | undefined
 } {
   const { account, chainId } = useActiveWeb3React()
@@ -202,27 +175,8 @@ export function useDerivedStableSwapInfo(): {
   }
 
   const inputToken = wrappedCurrency(currencies?.[Field.INPUT], chainId)
-  const outputToken = wrappedCurrency(currencies?.[Field.OUTPUT], chainId)
-  const calculateStableSwapPairs = useCalculateStableSwapPairs()
-  //   const selectedStableSwapPool = useMemo(() => {
-  //     if (chainId == null || inputToken == null || outputToken == null) {
-  //       return
-  //     }
-
-  //     const outputTokens = calculateStableSwapPairs(inputToken)
-
-  //     return _(outputTokens).find(
-  //       stableSwapData =>
-  //         stableSwapData.from.address === inputToken.address &&
-  //         stableSwapData.to.address === outputToken.address &&
-  //         stableSwapData.type !== STABLE_SWAP_TYPES.INVALID
-  //     )
-  //   }, [calculateStableSwapPairs, chainId, inputToken, outputToken])
-
   const selectedStableSwapPool = useSelectedStableSwapPool()
-
   const stableSwapContract = useStableSwapContract(selectedStableSwapPool?.to?.poolName, true)
-
   const calculateSwapResponse = useSingleCallResult(stableSwapContract, 'calculateSwap', [
     selectedStableSwapPool?.from.tokenIndex ?? 0,
     selectedStableSwapPool?.to.tokenIndex ?? 0,
@@ -230,35 +184,34 @@ export function useDerivedStableSwapInfo(): {
   ])
 
   const amountToReceive = calculateSwapResponse?.result?.[0] ?? BIG_INT_ZERO
-
   const amountIn = useTokenBalance(account ?? undefined, inputToken)
-
-  let inputError: string | undefined
-  if (!account) {
-    inputError = t('swapHooks.connectWallet')
-  }
-
-  if (!parsedAmount) {
-    inputError = inputError ?? t('swapHooks.enterAmount')
-  }
-
-  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    inputError = inputError ?? t('swapHooks.selectToken')
-  }
-
-  const formattedTo = isAddress(to)
-  if (!to || !formattedTo) {
-    inputError = inputError ?? t('swapHooks.enterRecipient')
-  }
-
   const [allowedSlippage] = useUserSlippageTolerance()
-
-  const amountToGive = parsedAmount
   const tokenFrom = currencies[Field.INPUT]
   const tokenTo = currencies[Field.OUTPUT]
 
-  if (amountToGive == null || amountIn == null || amountToGive.greaterThan(amountIn ?? BIG_INT_ZERO)) {
-    inputError = t('swapHooks.insufficient') + (amountIn?.currency.symbol ?? '') + t('swapHooks.balance')
+  let inputError: string | undefined
+
+  switch (true) {
+    case !account: {
+      inputError = t('swapHooks.connectWallet')
+      break
+    }
+    case !parsedAmount: {
+      inputError = inputError ?? t('swapHooks.enterAmount')
+      break
+    }
+    case !currencies[Field.INPUT] || !currencies[Field.OUTPUT]: {
+      inputError = inputError ?? t('swapHooks.selectToken')
+      break
+    }
+    case !to || !isAddress(to): {
+      inputError = inputError ?? t('swapHooks.enterRecipient')
+      break
+    }
+    case parsedAmount == null || amountIn == null || parsedAmount.greaterThan(amountIn ?? BIG_INT_ZERO): {
+      inputError = t('swapHooks.insufficient') + (amountIn?.currency.symbol ?? '') + t('swapHooks.balance')
+      break
+    }
   }
 
   // @TODO - add price impact: See src/pages/Swap.tsx#L305
@@ -266,7 +219,7 @@ export function useDerivedStableSwapInfo(): {
 
   if (
     stableSwapContract != null &&
-    amountToGive != null &&
+    parsedAmount != null &&
     selectedStableSwapPool != null &&
     tokenTo != null &&
     tokenFrom != null &&
@@ -285,7 +238,7 @@ export function useDerivedStableSwapInfo(): {
     tradeData = {
       contract: stableSwapContract,
       executionPrice,
-      inputAmount: amountToGive,
+      inputAmount: parsedAmount,
       stableSwapData: selectedStableSwapPool,
       outputAmount: CurrencyAmount.fromRawAmount(tokenTo, amountToReceiveJSBI)
     }
@@ -304,9 +257,9 @@ function parseCurrencyFromURLParameter(urlParam: any): string {
   if (typeof urlParam === 'string') {
     const valid = isAddress(urlParam)
     if (valid) return valid
-    if (valid === false) return 'ETH'
+    if (valid === false) return NATIVE_USDC.address ?? ''
   }
-  return 'ETH' ?? ''
+  return NATIVE_USDC.address ?? ''
 }
 
 function parseTokenAmountURLParameter(urlParam: any): string {
@@ -368,6 +321,7 @@ export function useDefaultsFromURLSearch():
   useEffect(() => {
     if (!chainId) return
     const parsed = queryParametersToSwapState(parsedQs)
+    console.log('parsed: ', parsed)
 
     dispatch(
       replaceStableSwapState({

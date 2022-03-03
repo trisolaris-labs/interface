@@ -23,62 +23,6 @@ type TokenToPoolsMap = {
 
 type TokenToSwapDataMap = { [address: string]: StableSwapData[] }
 
-export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData[] {
-  const poolsStatuses = useStableSwapPoolsStatuses()
-  const { chainId } = useActiveWeb3React()
-  const [poolsSortedByTVL, tokenToPoolsMapSorted] = useMemo(() => {
-    const sortedPools = Object.values(STABLESWAP_POOLS)
-      .filter(pool => (chainId ? pool.addresses[chainId] : false)) // filter by pools available in the chain
-      .filter(pool => !poolsStatuses[pool.name]?.isPaused) // paused pools can't swap
-      .sort((a, b) => {
-        const aTVL = poolsStatuses[a.name]?.tvl
-        const bTVL = poolsStatuses[b.name]?.tvl
-        if (aTVL && bTVL) {
-          return JSBI.greaterThan(aTVL, bTVL) ? -1 : 1
-        }
-        return aTVL ? -1 : 1
-      })
-    const tokenToPools = sortedPools.reduce((acc, { name: poolName }) => {
-      const pool = STABLESWAP_POOLS[poolName]
-      pool.poolTokens.forEach(token => {
-        acc[token.address] = (acc[token.address] || []).concat(poolName)
-      })
-      return acc
-    }, {} as TokenToPoolsMap)
-
-    return [sortedPools, tokenToPools]
-  }, [poolsStatuses, chainId])
-
-  return useCallback(
-    function calculateSwapPairs(token?: Token): StableSwapData[] {
-      if (token == null) {
-        return []
-      }
-
-      const swapPairs = getTradingPairsForToken(
-        TOKENS_MAP,
-        STABLESWAP_POOLS,
-        poolsSortedByTVL,
-        tokenToPoolsMapSorted,
-        token
-      )
-
-      return swapPairs
-    },
-    [poolsSortedByTVL, tokenToPoolsMapSorted]
-  )
-}
-
-function buildSwapSideData(token: Token): SwapSide
-function buildSwapSideData(token: Token, pool: StableSwapPool): Required<SwapSide>
-function buildSwapSideData(token: Token, pool?: StableSwapPool): Required<SwapSide> | SwapSide {
-  return {
-    address: token.address,
-    poolName: pool?.name,
-    tokenIndex: pool?.poolTokens.findIndex(t => t.address === token.address)
-  }
-}
-
 export type SwapSide = {
   address: string
   poolName?: StableSwapPoolName
@@ -99,10 +43,59 @@ export type StableSwapData =
       route: string[]
     }
 
+export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData[] {
+  const poolsStatuses = useStableSwapPoolsStatuses()
+  const { chainId } = useActiveWeb3React()
+  const tokenToPoolsMapSorted = useMemo(() => {
+    const sortedPools = Object.values(STABLESWAP_POOLS)
+      .filter(pool => (chainId ? pool.addresses[chainId] : false)) // filter by pools available in the chain
+      .filter(pool => !poolsStatuses[pool.name]?.isPaused) // paused pools can't swap
+      .sort((a, b) => {
+        const aTVL = poolsStatuses[a.name]?.tvl
+        const bTVL = poolsStatuses[b.name]?.tvl
+        if (aTVL && bTVL) {
+          return JSBI.greaterThan(aTVL, bTVL) ? -1 : 1
+        }
+        return aTVL ? -1 : 1
+      })
+    const tokenToPools = sortedPools.reduce((acc, { name: poolName }) => {
+      const pool = STABLESWAP_POOLS[poolName]
+      pool.poolTokens.forEach(token => {
+        acc[token.address] = (acc[token.address] || []).concat(poolName)
+      })
+      return acc
+    }, {} as TokenToPoolsMap)
+
+    return tokenToPools
+  }, [poolsStatuses, chainId])
+
+  return useCallback(
+    function calculateSwapPairs(token?: Token): StableSwapData[] {
+      if (token == null) {
+        return []
+      }
+
+      const swapPairs = getTradingPairsForToken(TOKENS_MAP, STABLESWAP_POOLS, tokenToPoolsMapSorted, token)
+
+      return swapPairs
+    },
+    [tokenToPoolsMapSorted]
+  )
+}
+
+function buildSwapSideData(token: Token): SwapSide
+function buildSwapSideData(token: Token, pool: StableSwapPool): Required<SwapSide>
+function buildSwapSideData(token: Token, pool?: StableSwapPool): Required<SwapSide> | SwapSide {
+  return {
+    address: token.address,
+    poolName: pool?.name,
+    tokenIndex: pool?.poolTokens.findIndex(t => t.address === token.address)
+  }
+}
+
 function getTradingPairsForToken(
   tokensMap: StableSwapTokensMap,
   poolsMap: StableSwapPoolsMap,
-  poolsSortedByTVL: StableSwapPool[],
   tokenToPoolsMap: TokenToPoolsMap,
   originToken: Token
 ): StableSwapData[] {

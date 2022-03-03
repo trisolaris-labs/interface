@@ -23,8 +23,6 @@ import { useTokenComparator } from './sorting'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { Field } from '../../state/stableswap/actions'
-import { useCalculateStableSwapPairs } from '../../hooks/useCalculateStableSwapPairs'
-
 interface CurrencySearchProps {
   isOpen: boolean
   onDismiss: () => void
@@ -33,11 +31,8 @@ interface CurrencySearchProps {
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
   onChangeList: () => void
-  // isStableSwap?: boolean
 }
-// interface StableSwapSearchProps {
-//   stableSwapInputField: Field
-// }
+
 export type StableSwapSearchProps =
   | {
       isStableSwap?: true
