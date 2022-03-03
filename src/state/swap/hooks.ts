@@ -117,28 +117,31 @@ function involvesAddress(trade: Trade, checksummedAddress: string): boolean {
   )
 }
 
-// from the current swap inputs, compute the best trade and return it.
-export function useDerivedSwapInfo(): {
-  isStableSwap: boolean
+// By default, from the current swap inputs, compute the best trade and return it. Optionally, receives a custom SwapState
+export function useDerivedSwapInfo(
+  customSwap?: SwapState
+): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
   v2Trade: Trade | undefined
   inputError?: string
   v1Trade: Trade | undefined
+  isStableSwap: boolean
 } {
   const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
 
   const toggledVersion = useToggledVersion()
 
+  const swapData = customSwap ?? useSwapState()
   const {
     independentField,
     typedValue,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     recipient
-  } = useSwapState()
+  } = swapData
 
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
