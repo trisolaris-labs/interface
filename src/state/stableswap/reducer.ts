@@ -1,8 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
-// import { StableSwapData } from '../../hooks/useCalculateStableSwapPairs'
 import { Field, replaceStableSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
 import { StableSwapPoolName } from './constants'
-// import { STABLE_SWAP_TYPES } from './constants'
 
 export interface StableSwapState {
   readonly independentField: Field
@@ -17,31 +15,6 @@ export interface StableSwapState {
   // the typed recipient address or ENS name, or null if swap should go to sender
   readonly recipient: string | null
 }
-
-// @nocommit stableswap form state
-// type FormState = {
-//   error: null | string
-//   from: {
-//     value: string
-//     valueUSD: BigNumber
-//     symbol: string
-//     poolName?: string
-//     tokenIndex?: number
-//   }
-//   to: {
-//     value: BigNumber
-//     valueUSD: BigNumber
-//     valueSynth: BigNumber
-//     symbol: string
-//     poolName?: string
-//     tokenIndex?: number
-//   }
-//   priceImpact: BigNumber
-//   exchangeRate: BigNumber
-//   route: string[]
-//   swapType: STABLE_SWAP_TYPES
-//   currentSwapPairs: StableSwapData[]
-// }
 
 const initialState: StableSwapState = {
   independentField: Field.INPUT,
@@ -73,7 +46,7 @@ export default createReducer<StableSwapState>(initialState, builder =>
         }
       }
     )
-    .addCase(selectCurrency, (state, { payload: { currencyId, field, poolName } }) => {
+    .addCase(selectCurrency, (state, { payload: { currencyId, field } }) => {
       const otherField = field === Field.INPUT ? Field.OUTPUT : Field.INPUT
       if (currencyId === state[otherField].currencyId) {
         // the case where we have to swap the order
@@ -81,15 +54,13 @@ export default createReducer<StableSwapState>(initialState, builder =>
           ...state,
           independentField: state.independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT,
           [field]: { currencyId: currencyId },
-          [otherField]: { currencyId: state[field].currencyId },
-          poolName
+          [otherField]: { currencyId: state[field].currencyId }
         }
       } else {
         // the normal case
         return {
           ...state,
-          [field]: { currencyId: currencyId },
-          poolName
+          [field]: { currencyId: currencyId }
         }
       }
     })

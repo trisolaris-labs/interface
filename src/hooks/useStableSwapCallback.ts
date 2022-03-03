@@ -1,15 +1,13 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { Fraction, JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@trisolaris/sdk'
+import { SwapParameters } from '@trisolaris/sdk'
 import { useMemo } from 'react'
-import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
+import { INITIAL_ALLOWED_SLIPPAGE } from '../constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
-import { calculateGasMargin, getRouterContract, isAddress, shortenAddress } from '../utils'
+import { calculateGasMargin } from '../utils'
 import isZero from '../utils/isZero'
 import { useActiveWeb3React } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
-import useENS from './useENS'
-import { Version } from './useToggledVersion'
 import { StableSwapTrade, useSelectedStableSwapPool } from '../state/stableswap/hooks'
 import { useStableSwapContract } from './useContract'
 
@@ -43,15 +41,9 @@ type EstimatedStableSwapCall = SuccessfulCall | FailedCall
  * @param recipientAddressOrName
  */
 function useStableSwapCallArguments(
-  // @nocommit UPDATE THIS TO SUPPORT STABLE SWAPS!
   trade: StableSwapTrade | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE // in bips
-  //   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): StableSwapCall[] {
-  const { account, chainId, library } = useActiveWeb3React()
-
-  //   const { address: recipientAddress } = useENS(recipientAddressOrName)
-  //   const recipient = recipientAddressOrName === null ? account : recipientAddress
   let deadline = useTransactionDeadline()
 
   const selectedStableSwapPool = useSelectedStableSwapPool()
@@ -63,30 +55,14 @@ function useStableSwapCallArguments(
   }
 
   return useMemo(() => {
-    const tradeVersion = Version.v2
-    if (
-      !trade ||
-      !trade.stableSwapData ||
-      !trade.inputAmount ||
-      !trade.outputAmount ||
-      !library ||
-      !account ||
-      !tradeVersion ||
-      !chainId ||
-      !deadline
-    )
+    if (!trade?.stableSwapData || !trade?.inputAmount || !trade?.outputAmount || !deadline) {
       return []
+    }
 
     const contract: Contract | null = stableSwapContract
     if (!contract) {
       return []
     }
-
-    // const slippage = new Fraction(JSBI.BigInt(1)).add(JSBI.BigInt(allowedSlippage)).multiply(trade.inputAmount)
-    // const amountOutLessSlippage = new Fraction(JSBI.BigInt(1))
-    //   .add(JSBI.BigInt(allowedSlippage))
-    //   .invert()
-    //   .multiply(trade.outputAmount)
 
     const swapMethods: any[] = []
 
@@ -98,16 +74,13 @@ function useStableSwapCallArguments(
       deadline.toNumber()
     ]
 
-    console.log('args: ', args)
-
     swapMethods.push({
       methodName: 'swap',
       args
     })
 
     return swapMethods.map((parameters: any) => ({ parameters, contract }))
-    //   }, [account, allowedSlippage, chainId, deadline, library, recipient, trade])
-  }, [account, chainId, deadline, library, stableSwapContract, trade])
+  }, [deadline, stableSwapContract, trade])
 }
 
 // returns a function that will execute a swap, if the parameters are all valid

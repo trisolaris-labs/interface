@@ -6,8 +6,10 @@ import { useActiveWeb3React } from '.'
 import { StableSwapPoolName, StableSwapPoolTypes, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { Interface } from '@ethersproject/abi'
-import { JSBI } from '@trisolaris/sdk'
+import { ChainId, JSBI, WETH } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../constants'
+import useUSDCPrice from '../utils/useUSDCPrice'
+import { WBTC } from '../constants/tokens'
 
 type StableSwapPoolStatuses = {
   [poolName in StableSwapPoolName]?: {
@@ -16,20 +18,6 @@ type StableSwapPoolStatuses = {
   }
 }
 
-// @nocommit Temporary shim for `tokenPricesUSD`
-const tokenPricesUSD = {
-  BTC: 39161.26,
-  ETH: 2785.34,
-  WETH: 2785.34,
-  VETH2: 1132.4079685542372,
-  KEEP: 0.621089,
-  ALCX: 130.67,
-  USDC: 1.003,
-  alUSD: 0.997912,
-  FEI: 0.999411,
-  LUSD: 1.012,
-  alETH: 2785.34
-}
 export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
   const { chainId } = useActiveWeb3React()
 
@@ -58,6 +46,9 @@ export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
     'paused'
   )?.map(({ result }) => result?.[0] ?? FALLBACK_PAUSE_STATUS)
 
+  const btcPrice = useUSDCPrice(WBTC[chainId ?? ChainId.AURORA])
+  const ethPrice = useUSDCPrice(WETH[chainId ?? ChainId.AURORA])
+
   const tvlsUSD = useMemo(() => {
     return stableSwapPools.map((pool, i) => {
       const tvlAmount = tvls[i]
@@ -65,10 +56,10 @@ export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
 
       switch (pool.type) {
         case StableSwapPoolTypes.BTC:
-          tokenValue = tokenPricesUSD?.BTC ?? 0
+          tokenValue = JSBI.toNumber(JSBI.BigInt(btcPrice ?? 0))
           break
         case StableSwapPoolTypes.ETH:
-          tokenValue = tokenPricesUSD?.ETH ?? 0
+          tokenValue = JSBI.toNumber(JSBI.BigInt(ethPrice ?? 0))
           break
         default:
           tokenValue = 1 // USD
@@ -79,7 +70,7 @@ export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
         JSBI.exponentiate(JSBI.BigInt('10'), JSBI.BigInt('2')) // 1e18
       )
     })
-  }, [stableSwapPools, tvls])
+  }, [btcPrice, ethPrice, stableSwapPools, tvls])
 
   return useMemo(
     () =>

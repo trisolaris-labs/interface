@@ -105,11 +105,6 @@ export const TOKENS_MAP = _.transform(
       }
     })
 
-    // @nocommit we don't need LP tokens here, right?
-    // if (pool?.lpToken?.symbol != null) {
-    //   acc[pool.lpToken.symbol] = pool.lpToken
-    // }
-
     return acc
   },
   {} as StableSwapTokensMap
