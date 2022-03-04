@@ -119,5 +119,8 @@ export function divideCurrencyAmountByNumber(numerator: CurrencyAmount | undefin
     return null
   }
 
-  return CurrencyAmount.ether(JSBI.divide(numerator.raw, JSBI.BigInt(denominator)))
+  const currency = numerator.currency
+  const divisionResult = JSBI.divide(numerator.raw, JSBI.BigInt(denominator))
+
+  return CurrencyAmount.fromRawAmount(currency, divisionResult)
 }

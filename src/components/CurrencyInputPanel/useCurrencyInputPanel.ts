@@ -62,7 +62,7 @@ export default function useCurrencyInputPanel() {
       let amount
       if (maxAmountInput != null) {
         amount =
-          value === BalanceButtonValueEnum.HALF ? divideCurrencyAmountByNumber(maxAmountInput, 2) : maxAmountInput
+          value === BalanceButtonValueEnum.HALF ? halfMaxAmountInput : maxAmountInput
       }
 
       return amount?.toExact() ?? '0'
