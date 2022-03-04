@@ -50,4 +50,5 @@ export const StyledTokenName = styled.span<{ active?: boolean }>`
 
 export const StyledBalanceButton = styled(BalanceButton)`
   width: 78px;
+  height: 24px;
 `

@@ -56,7 +56,7 @@ export default function useCurrencyInputPanel() {
 
     const halfMaxAmountInput = divideCurrencyAmountByNumber(maxAmountInput, 2)
     const atHalfAmount =
-      maxAmountInput != null && halfMaxAmountInput != null ? parsedAmount?.equalTo(halfMaxAmountInput) : false
+      halfMaxAmountInput != null ? parsedAmount?.equalTo(halfMaxAmountInput) : false
 
     const getClickedAmount = (value: BalanceButtonValueEnum) => {
       let amount

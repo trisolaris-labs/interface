@@ -1,5 +1,7 @@
 import styled from 'styled-components'
+
 import { ButtonSecondary } from '../Button'
+import { RowFlat } from '../Row'
 
 const StyledBalanceButton = styled(ButtonSecondary)`
   background-color: ${({ theme }) => theme.primary5};
@@ -9,6 +11,8 @@ const StyledBalanceButton = styled(ButtonSecondary)`
   font-weight: 500;
   cursor: pointer;
   color: ${({ theme }) => theme.primaryText1};
+  height: 100%;
+
   :hover {
     border: 1px solid ${({ theme }) => theme.primary1};
   }
@@ -16,7 +20,6 @@ const StyledBalanceButton = styled(ButtonSecondary)`
     border: 1px solid ${({ theme }) => theme.primary1};
     outline: none;
   }
-
 `
 
 export const StyledBalanceLeftButton = styled(StyledBalanceButton)`
@@ -26,9 +29,15 @@ export const StyledBalanceLeftButton = styled(StyledBalanceButton)`
   border-bottom-left-radius: 0.5rem;
   margin-right: 0.1rem;
 `
+
 export const StyledBalanceRightButton = styled(StyledBalanceButton)`
   border-top-left-radius: unset;
   border-top-right-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
   border-bottom-left-radius: unset;
+`
+
+export const StyledRowFlat = styled(RowFlat)`
+  margin-left: 4px;
+  height: 16px;
 `

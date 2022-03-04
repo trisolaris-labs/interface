@@ -71,7 +71,6 @@ export default function StakeInputPanel({
                 disableHalfButton={disableHalfButton}
                 disableMaxButton={disableMaxButton}
                 onClickBalanceButton={onClickBalanceButton}
-                height={24}
               />
             ) : null}
           </RowBetween>
