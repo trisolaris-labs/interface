@@ -28,6 +28,8 @@ import useToggledVersion from '../../hooks/useToggledVersion'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useTranslation } from 'react-i18next'
+import { find } from 'lodash'
+import * as STABLE_POOLS from '../../constants/stable_pools'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap)
@@ -117,6 +119,7 @@ function involvesAddress(trade: Trade, checksummedAddress: string): boolean {
 
 // from the current swap inputs, compute the best trade and return it.
 export function useDerivedSwapInfo(): {
+  isStableSwap: boolean
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
@@ -124,7 +127,7 @@ export function useDerivedSwapInfo(): {
   inputError?: string
   v1Trade: Trade | undefined
 } {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
 
   const toggledVersion = useToggledVersion()
@@ -164,6 +167,17 @@ export function useDerivedSwapInfo(): {
     [Field.INPUT]: inputCurrency ?? undefined,
     [Field.OUTPUT]: outputCurrency ?? undefined
   }
+
+  const isStableSwap = find(STABLE_POOLS, tokens => {
+    const stableTokens = tokens[chainId ?? 1313161554]
+
+    return (
+      Boolean(stableTokens.find(stableToken => stableToken?.symbol === currencies[Field.INPUT]?.symbol)) &&
+      Boolean(stableTokens.find(stableToken => stableToken?.symbol === currencies[Field.OUTPUT]?.symbol))
+    )
+  })
+    ? true
+    : false
 
   // get link to trade on v1, if a better rate exists
   const v1Trade = undefined
@@ -218,6 +232,7 @@ export function useDerivedSwapInfo(): {
   }
 
   return {
+    isStableSwap,
     currencies,
     currencyBalances,
     parsedAmount,
