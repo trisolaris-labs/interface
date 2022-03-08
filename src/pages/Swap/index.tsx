@@ -143,6 +143,7 @@ export default function Swap() {
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
   const {
+    isStableSwap,
     v1Trade,
     v2Trade,
     currencyBalances,
@@ -239,11 +240,17 @@ export default function Swap() {
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   // the callback to execute the swap
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
+    trade,
+    allowedSlippage,
+    recipient
+    // TODO: if (isStableSwap) { ... }
+  )
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 
   const handleSwap = useCallback(() => {
+    // TODO: if (isStableSwap) { ... }
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
       return
     }
@@ -560,7 +567,7 @@ export default function Swap() {
               </BottomGrouping>
             </Wrapper>
           </AppBody>
-          <AdvancedSwapDetailsDropdown trade={trade} />
+          <AdvancedSwapDetailsDropdown trade={trade} isStableSwap={isStableSwap} />
         </SwapContainer>
       </Root>
     </>
