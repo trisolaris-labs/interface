@@ -79,25 +79,32 @@ function buildPids(pids: Partial<Record<ChainId, number>>): Record<ChainId, numb
   }, {}) as Record<ChainId, number | null>
 }
 
-export const STABLESWAP_POOLS: StableSwapPoolsMap = {
-  [StableSwapPoolName.USDC_USDT]: {
-    name: StableSwapPoolName.USDC_USDT,
-    lpToken: buildAddresses({ [ChainId.AURORA]: '0xA601723619a6D1d275cDaa32524f695c21e5E54C' }),
-    poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
-    addresses: buildAddresses({
-      [ChainId.AURORA]: '0x72ff47B0Df5F8EBD93e4fA4600b89Db693066aa4'
-    }),
-    type: StableSwapPoolTypes.USD,
-    route: 'usd',
-    underlyingPoolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
-    underlyingPool: StableSwapPoolName.USDC_USDT,
-    isOutdated: false,
-    rewardPids: buildPids({})
+export type StableSwapPools = {
+  // NOTE - chain id index is AURORA from the enum, are we really gonna deploy this crosschain though
+  [ChainId.AURORA]: { [name in StableSwapPoolName]: StableSwapPool }
+}
+
+export const STABLESWAP_POOLS: StableSwapPools = {
+  [ChainId.AURORA]: {
+    [StableSwapPoolName.USDC_USDT]: {
+      name: StableSwapPoolName.USDC_USDT,
+      lpToken: buildAddresses({ [ChainId.AURORA]: '0xA601723619a6D1d275cDaa32524f695c21e5E54C' }),
+      poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
+      addresses: buildAddresses({
+        [ChainId.AURORA]: '0x72ff47B0Df5F8EBD93e4fA4600b89Db693066aa4'
+      }),
+      type: StableSwapPoolTypes.USD,
+      route: 'usd',
+      underlyingPoolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
+      underlyingPool: StableSwapPoolName.USDC_USDT,
+      isOutdated: false,
+      rewardPids: buildPids({})
+    }
   }
 }
 
 export const TOKENS_MAP = _.transform(
-  STABLESWAP_POOLS,
+  STABLESWAP_POOLS[ChainId.AURORA],
   (acc, pool) => {
     pool.poolTokens.forEach(token => {
       if (token?.symbol != null) {

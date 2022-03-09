@@ -29,7 +29,7 @@ import { useUserSlippageTolerance } from '../user/hooks'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useTranslation } from 'react-i18next'
 import { find } from 'lodash'
-import * as STABLE_POOLS from '../../constants/stable_pools'
+import { STABLESWAP_POOLS } from '../stableswap/constants'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap)
@@ -173,17 +173,15 @@ export function useDerivedSwapInfo(): {
 
   const isStableSwap = useMemo(
     () =>
-      find(STABLE_POOLS, tokens => {
-        const stableTokens = tokens[chainId ?? 1313161554]
-
+      find(STABLESWAP_POOLS[ChainId.AURORA], pool => {
         return (
-          Boolean(stableTokens.find(stableToken => stableToken?.symbol === currencies[Field.INPUT]?.symbol)) &&
-          Boolean(stableTokens.find(stableToken => stableToken?.symbol === currencies[Field.OUTPUT]?.symbol))
+          Boolean(pool.poolTokens?.find(stableToken => stableToken?.symbol === currencies[Field.INPUT]?.symbol)) &&
+          Boolean(pool.poolTokens?.find(stableToken => stableToken?.symbol === currencies[Field.OUTPUT]?.symbol))
         )
       })
         ? true
         : false,
-    [chainId, currencies]
+    [currencies]
   )
 
   // get link to trade on v1, if a better rate exists
