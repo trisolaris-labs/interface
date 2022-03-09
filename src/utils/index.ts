@@ -116,3 +116,15 @@ export function addCommasToNumber(string: string): string {
 export function setIntersection<T>(set1: Set<T>, set2: Set<T>): Set<T> {
   return new Set([...set1].filter(item => set2.has(item)))
 }
+
+// Divides CurrencyAmount by a non-JSBI number
+export function divideCurrencyAmountByNumber(numerator: CurrencyAmount | undefined, denominator: number) {
+  if (numerator == null) {
+    return null
+  }
+
+  const currency = numerator.currency
+  const divisionResult = JSBI.divide(numerator.raw, JSBI.BigInt(denominator))
+
+  return CurrencyAmount.fromRawAmount(currency, divisionResult)
+}

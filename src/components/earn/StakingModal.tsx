@@ -10,7 +10,6 @@ import ProgressCircles from '../ProgressSteps'
 import CurrencyInputPanel from '../CurrencyInputPanel'
 import { TokenAmount, Pair, ChainId } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { usePairContract, useStakingContract } from '../../hooks/useContract'
 import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
 import { splitSignature } from 'ethers/lib/utils'
@@ -20,6 +19,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
 import { useTranslation } from 'react-i18next'
+import useCurrencyInputPanel from '../CurrencyInputPanel/useCurrencyInputPanel'
 
 const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
   display: flex;
@@ -102,7 +102,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           )
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              summary: t('earn.depositLiquidity'),
+              summary: t('earn.depositLiquidity')
             })
             setHash(response.hash)
           })
@@ -124,11 +124,20 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   }, [])
 
   // used for max input button
-  const maxAmountInput = maxAmountSpend(userLiquidityUnstaked)
-  const atMaxAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
-  const handleMax = useCallback(() => {
-    maxAmountInput && onUserInput(maxAmountInput.toExact())
-  }, [maxAmountInput, onUserInput])
+  const { getMaxInputAmount } = useCurrencyInputPanel()
+
+  const { atHalfAmount, atMaxAmount, getClickedAmount } = getMaxInputAmount({
+    amount: userLiquidityUnstaked,
+    parsedAmount
+  })
+
+  const handleMax = useCallback(
+    value => {
+      const amount = getClickedAmount(value)
+      onUserInput(amount)
+    },
+    [getClickedAmount, onUserInput]
+  )
 
   async function onAttemptToApprove() {
     if (!pairContract || !library || !deadline) throw new Error(t('earn.missingDependencies'))
@@ -142,50 +151,50 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
       { name: 'name', type: 'string' },
       { name: 'version', type: 'string' },
       { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' },
+      { name: 'verifyingContract', type: 'address' }
     ]
     const domain = {
       name: 'Pangolin Liquidity',
       version: '1',
       chainId: chainId,
-      verifyingContract: pairContract.address,
+      verifyingContract: pairContract.address
     }
     const Permit = [
       { name: 'owner', type: 'address' },
       { name: 'spender', type: 'address' },
       { name: 'value', type: 'uint256' },
       { name: 'nonce', type: 'uint256' },
-      { name: 'deadline', type: 'uint256' },
+      { name: 'deadline', type: 'uint256' }
     ]
     const message = {
       owner: account,
       spender: stakingInfo.stakingRewardAddress,
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
-      deadline: deadline.toNumber(),
+      deadline: deadline.toNumber()
     }
     const data = JSON.stringify({
       types: {
         EIP712Domain,
-        Permit,
+        Permit
       },
       domain,
       primaryType: 'Permit',
-      message,
+      message
     })
 
     library
       .send('eth_signTypedData_v4', [account, data])
       .then(splitSignature)
-      .then((signature) => {
+      .then(signature => {
         setSignatureData({
           v: signature.v,
           r: signature.r,
           s: signature.s,
-          deadline: deadline.toNumber(),
+          deadline: deadline.toNumber()
         })
       })
-      .catch((error) => {
+      .catch(error => {
         // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
         if (error?.code !== 4001) {
           approveCallback()
@@ -204,8 +213,9 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           <CurrencyInputPanel
             value={typedValue}
             onUserInput={onUserInput}
-            onMax={handleMax}
-            showMaxButton={!atMaxAmount}
+            onClickBalanceButton={handleMax}
+            disableHalfButton={atHalfAmount}
+            disableMaxButton={atMaxAmount}
             currency={stakingInfo.stakedAmount.token}
             pair={dummyPair}
             label={''}

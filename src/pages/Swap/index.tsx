@@ -1,9 +1,11 @@
-import { CurrencyAmount, JSBI, Token, Trade } from '@trisolaris/sdk'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { ChevronDown } from 'react-feather'
 import ReactGA from 'react-ga'
+import { ThemeContext } from 'styled-components'
+import { Token, Trade } from '@trisolaris/sdk'
+import { ChevronDown } from 'react-feather'
 import { Text } from 'rebass'
-import styled, { ThemeContext } from 'styled-components'
+import { useTranslation } from 'react-i18next'
+
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonError, ButtonLight, ButtonPrimary, ButtonConfirmed } from '../../components/Button'
 import Card, { GreyCard } from '../../components/Card'
@@ -20,8 +22,11 @@ import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import spacemenAndPlanets from '../../assets/svg/spacemen_and_planets.svg'
+import { DeprecatedWarning } from '../../components/Warning'
+import Settings from '../../components/Settings'
+import AppBody from '../AppBody'
+import Loader from '../../components/Loader'
 
-import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
@@ -29,7 +34,7 @@ import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
-import { Field } from '../../state/swap/actions'
+import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import {
   useDefaultsFromURLSearch,
   useDerivedSwapInfo,
@@ -37,77 +42,17 @@ import {
   useSwapState
 } from '../../state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
-import { LinkStyledButton, TYPE } from '../../theme'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
-import AppBody from '../AppBody'
-import { ClickableText } from '../Pool/styleds'
-import Loader from '../../components/Loader'
 import useENS from '../../hooks/useENS'
-import { useTranslation } from 'react-i18next'
 import { useIsSelectedAEBToken } from '../../state/lists/hooks'
-import { DeprecatedWarning } from '../../components/Warning'
-import Settings from '../../components/Settings'
 
-const BottomText = styled.span`
-  margin-top: 8px;
-  font-size: 18px;
-`
+import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 
-const VeloxLink = styled.a`
-  color: #f25c23;
-  text-decoration: none;
-`
+import { Field } from '../../state/swap/actions'
+import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO } from '../../constants'
 
-const MarginswapLink = styled.a`
-  color: #f25c23;
-  text-decoration: none;
-`
-
-const WarningWrapper = styled.div`
-  max-width: 420px;
-  width: 100%;
-  margin: 0 0 2rem 0;
-`
-
-const Root = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 80vh;
-`
-
-const SwapContainer = styled.div`
-  display: flex;
-  flex: 1 1 420px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  max-width: 420px;
-  height: 100%;
-`
-
-const IconContainer = styled.div`
-  margin-right: 10em;
-
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-      display: none;
-  `};
-  ${({ theme }) => theme.mediaWidth.upToLarge`
-        & > * {
-            height: 400px;
-        }
-  `};
-`
-
-const HeadingContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
+import { ClickableText } from '../Pool/styleds'
+import { LinkStyledButton, TYPE } from '../../theme'
+import { WarningWrapper, Root, SwapContainer, IconContainer, HeadingContainer } from './Swap.styles'
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -151,6 +96,7 @@ export default function Swap() {
     currencies,
     inputError: swapInputError
   } = useDerivedSwapInfo()
+
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
     currencies[Field.OUTPUT],
@@ -236,8 +182,11 @@ export default function Swap() {
     }
   }, [approval, approvalSubmitted])
 
-  const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
-  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
+  const { getMaxInputAmount } = useCurrencyInputPanel()
+  const { atMaxAmount: atMaxAmountInput, atHalfAmount: atHalfAmountInput, getClickedAmount } = getMaxInputAmount({
+    amount: currencyBalances[Field.INPUT],
+    parsedAmount: parsedAmounts[Field.INPUT]
+  })
 
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
@@ -319,9 +268,13 @@ export default function Swap() {
     [onCurrencySelection]
   )
 
-  const handleMaxInput = useCallback(() => {
-    maxAmountInput && onUserInput(Field.INPUT, maxAmountInput.toExact())
-  }, [maxAmountInput, onUserInput])
+  const handleMaxInput = useCallback(
+    value => {
+      const amount = getClickedAmount(value)
+      onUserInput(Field.INPUT, amount)
+    },
+    [getClickedAmount, onUserInput]
+  )
 
   const handleOutputSelect = useCallback(outputCurrency => onCurrencySelection(Field.OUTPUT, outputCurrency), [
     onCurrencySelection
@@ -377,10 +330,11 @@ export default function Swap() {
                       : t('swapPage.from')
                   }
                   value={formattedAmounts[Field.INPUT]}
-                  showMaxButton={!atMaxAmountInput}
+                  disableHalfButton={atHalfAmountInput}
+                  disableMaxButton={atMaxAmountInput}
                   currency={currencies[Field.INPUT]}
                   onUserInput={handleTypeInput}
-                  onMax={handleMaxInput}
+                  onClickBalanceButton={handleMaxInput}
                   onCurrencySelect={handleInputSelect}
                   otherCurrency={currencies[Field.OUTPUT]}
                   id="swap-currency-input"
@@ -412,7 +366,6 @@ export default function Swap() {
                       ? t('swapPage.toEstimated')
                       : t('swapPage.to')
                   }
-                  showMaxButton={false}
                   currency={currencies[Field.OUTPUT]}
                   onCurrencySelect={handleOutputSelect}
                   otherCurrency={currencies[Field.INPUT]}

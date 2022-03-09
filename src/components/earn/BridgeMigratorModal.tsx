@@ -20,6 +20,8 @@ import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
 import { useTranslation } from 'react-i18next'
 import { BRIDGE_MIGRATOR_ADDRESS } from '../../constants'
+import { divideCurrencyAmountByNumber } from '../../utils'
+import useCurrencyInputPanel from '../CurrencyInputPanel/useCurrencyInputPanel'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -39,7 +41,7 @@ export default function BridgeMigratorModal({
   onDismiss,
   pairFrom,
   pairTo,
-  userLiquidityUnstaked,
+  userLiquidityUnstaked
 }: BridgeMigratorModalProps) {
   const { account, chainId, library } = useActiveWeb3React()
 
@@ -82,7 +84,7 @@ export default function BridgeMigratorModal({
           )
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              summary: 'Migrate liquidity',
+              summary: 'Migrate liquidity'
             })
             setHash(response.hash)
           })
@@ -104,7 +106,7 @@ export default function BridgeMigratorModal({
           )
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              summary: 'Migrate liquidity',
+              summary: 'Migrate liquidity'
             })
             setHash(response.hash)
           })
@@ -126,11 +128,20 @@ export default function BridgeMigratorModal({
   }, [])
 
   // used for max input button
-  const maxAmountInput = maxAmountSpend(userLiquidityUnstaked)
-  const atMaxAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
-  const handleMax = useCallback(() => {
-    maxAmountInput && onUserInput(maxAmountInput.toExact())
-  }, [maxAmountInput, onUserInput])
+  const { getMaxInputAmount } = useCurrencyInputPanel()
+
+  const { atHalfAmount, atMaxAmount, getClickedAmount } = getMaxInputAmount({
+    amount: userLiquidityUnstaked,
+    parsedAmount
+  })
+
+  const handleMax = useCallback(
+    value => {
+      const amount = getClickedAmount(value)
+      onUserInput(amount)
+    },
+    [getClickedAmount, onUserInput]
+  )
 
   async function onAttemptToApprove() {
     if (!pairContract || !library || !deadline) throw new Error(t('earn.missingDependencies'))
@@ -144,50 +155,50 @@ export default function BridgeMigratorModal({
       { name: 'name', type: 'string' },
       { name: 'version', type: 'string' },
       { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' },
+      { name: 'verifyingContract', type: 'address' }
     ]
     const domain = {
       name: 'Pangolin Liquidity',
       version: '1',
       chainId: chainId,
-      verifyingContract: pairContract.address,
+      verifyingContract: pairContract.address
     }
     const Permit = [
       { name: 'owner', type: 'address' },
       { name: 'spender', type: 'address' },
       { name: 'value', type: 'uint256' },
       { name: 'nonce', type: 'uint256' },
-      { name: 'deadline', type: 'uint256' },
+      { name: 'deadline', type: 'uint256' }
     ]
     const message = {
       owner: account,
       spender: BRIDGE_MIGRATOR_ADDRESS,
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
-      deadline: deadline.toNumber(),
+      deadline: deadline.toNumber()
     }
     const data = JSON.stringify({
       types: {
         EIP712Domain,
-        Permit,
+        Permit
       },
       domain,
       primaryType: 'Permit',
-      message,
+      message
     })
 
     library
       .send('eth_signTypedData_v4', [account, data])
       .then(splitSignature)
-      .then((signature) => {
+      .then(signature => {
         setSignatureData({
           v: signature.v,
           r: signature.r,
           s: signature.s,
-          deadline: deadline.toNumber(),
+          deadline: deadline.toNumber()
         })
       })
-      .catch((error) => {
+      .catch(error => {
         // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
         // if (error?.code !== 4001) {
         //   approveCallback()
@@ -207,8 +218,9 @@ export default function BridgeMigratorModal({
           <CurrencyInputPanel
             value={typedValue}
             onUserInput={onUserInput}
-            onMax={handleMax}
-            showMaxButton={!atMaxAmount}
+            onClickBalanceButton={handleMax}
+            disableHalfButton={atHalfAmount}
+            disableMaxButton={atMaxAmount}
             currency={pairFrom.liquidityToken}
             pair={pairFrom}
             label={''}
