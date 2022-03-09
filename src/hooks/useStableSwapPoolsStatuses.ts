@@ -22,7 +22,10 @@ export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
   const { chainId } = useActiveWeb3React()
 
   const stableSwapPools = useMemo(
-    () => Object.values(STABLESWAP_POOLS).filter(({ addresses }) => (chainId != null ? addresses[chainId] : null)),
+    () =>
+      Object.values(STABLESWAP_POOLS[ChainId.AURORA]).filter(({ addresses }) =>
+        chainId != null ? addresses[chainId] : null
+      ),
     [chainId]
   )
 
