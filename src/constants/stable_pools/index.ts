@@ -1,8 +1,5 @@
 /**********************************************************************************************
  * THIS FILE IS MANUALLY UPDATED
- *
- * THIS FILE UPDATES BASED ON THE `master` BRANCH OF https://github.com/trisolaris-labs/tokens/
- * RUN `yarn build-tokens` TO UPDATE THIS FILE
  **********************************************************************************************/
 
 import { ChainId, Token } from '@trisolaris/sdk'
