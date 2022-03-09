@@ -51,7 +51,7 @@ export function useAllStableSwapTokens(): TokensMap {
     }
 
     const validStablesSet = _.transform(
-      STABLESWAP_POOLS,
+      STABLESWAP_POOLS[ChainId.AURORA],
       (acc, pool) => {
         pool.poolTokens.forEach(token => acc.add(token.address))
         return acc

@@ -150,7 +150,7 @@ function useStableSwapPool(pool: StableSwapPool | null, withSignerIfPossible = t
 export function useStableSwapContract(poolName?: StableSwapPoolName, withSignerIfPossible = true): Contract | null {
   const { chainId, library } = useActiveWeb3React()
 
-  const pool = poolName == null ? null : STABLESWAP_POOLS[poolName]
+  const pool = poolName == null ? null : STABLESWAP_POOLS[ChainId.AURORA][poolName]
   const legacyStableSwapABIPool = useLegacyStableSwapABIPool(pool, withSignerIfPossible)
   const metaPool = useStableSwapMetaPool(pool, withSignerIfPossible)
   const stableSwapPool = useStableSwapPool(pool, withSignerIfPossible)
