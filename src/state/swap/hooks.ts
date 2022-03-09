@@ -13,7 +13,7 @@ import {
   ROUTER_ADDRESS
 } from '@trisolaris/sdk'
 import { ParsedQs } from 'qs'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
@@ -163,21 +163,28 @@ export function useDerivedSwapInfo(): {
     [Field.OUTPUT]: relevantTokenBalances[1]
   }
 
-  const currencies: { [field in Field]?: Currency } = {
-    [Field.INPUT]: inputCurrency ?? undefined,
-    [Field.OUTPUT]: outputCurrency ?? undefined
-  }
+  const currencies: { [field in Field]?: Currency } = useMemo(
+    () => ({
+      [Field.INPUT]: inputCurrency ?? undefined,
+      [Field.OUTPUT]: outputCurrency ?? undefined
+    }),
+    [inputCurrency, outputCurrency]
+  )
 
-  const isStableSwap = find(STABLE_POOLS, tokens => {
-    const stableTokens = tokens[chainId ?? 1313161554]
+  const isStableSwap = useMemo(
+    () =>
+      find(STABLE_POOLS, tokens => {
+        const stableTokens = tokens[chainId ?? 1313161554]
 
-    return (
-      Boolean(stableTokens.find(stableToken => stableToken?.symbol === currencies[Field.INPUT]?.symbol)) &&
-      Boolean(stableTokens.find(stableToken => stableToken?.symbol === currencies[Field.OUTPUT]?.symbol))
-    )
-  })
-    ? true
-    : false
+        return (
+          Boolean(stableTokens.find(stableToken => stableToken?.symbol === currencies[Field.INPUT]?.symbol)) &&
+          Boolean(stableTokens.find(stableToken => stableToken?.symbol === currencies[Field.OUTPUT]?.symbol))
+        )
+      })
+        ? true
+        : false,
+    [chainId, currencies]
+  )
 
   // get link to trade on v1, if a better rate exists
   const v1Trade = undefined
