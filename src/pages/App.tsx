@@ -25,6 +25,7 @@ import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redir
 import Swap from './Swap'
 import StableSwap from './StableSwap'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
+import { ENABLE_STABLESWAP } from '../constants'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -77,7 +78,7 @@ export default function App() {
           <Polling />
           <Web3ReactManager>
             <Switch>
-              <Route exact strict path="/stableswap" component={StableSwap} />
+              {ENABLE_STABLESWAP ? <Route exact strict path="/stableswap" component={StableSwap} /> : null}
               <Route exact strict path="/swap" component={Swap} />
               <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
               <Route exact strict path="/send" component={RedirectPathToSwapOnly} />

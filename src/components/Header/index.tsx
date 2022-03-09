@@ -19,6 +19,7 @@ import Web3Status from '../Web3Status'
 import useTriPrice from '../../hooks/useTriPrice'
 import { useToggleTriPriceModal } from '../../state/application/hooks'
 import TriPriceModal from '../TriPriceModal'
+import { ENABLE_STABLESWAP } from '../../constants'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -267,9 +268,11 @@ export default function Header() {
           <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
             {t('header.swap')}
           </StyledNavLink>
-          <StyledNavLink id={`stableswap-nav-link`} to={'/stableswap'}>
-            StableSwap
-          </StyledNavLink>
+          {ENABLE_STABLESWAP ? (
+            <StyledNavLink id={`stableswap-nav-link`} to={'/stableswap'}>
+              StableSwap
+            </StyledNavLink>
+          ) : null}
           <StyledNavLink
             id={`pool-nav-link`}
             to={'/pool'}
