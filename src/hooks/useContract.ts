@@ -127,24 +127,15 @@ function findPoolContract(tokenA: Token, tokenB: Token) {
 }
 
 function useLegacyStableSwapABIPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  const poolAddress = pool?.addresses?.[chainId ?? ChainId.AURORA]
-
-  return useContract(poolAddress, STABLE_SWAP_FLASH_LOAN_ABI, withSignerIfPossible)
+  return useContract(pool?.address, STABLE_SWAP_FLASH_LOAN_ABI, withSignerIfPossible)
 }
 
 function useStableSwapMetaPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  const poolAddress = pool?.addresses?.[chainId ?? ChainId.AURORA]
-
-  return useContract(poolAddress, STABLE_SWAP_META_SWAP_DEPOSIT_ABI, withSignerIfPossible)
+  return useContract(pool?.address, STABLE_SWAP_META_SWAP_DEPOSIT_ABI, withSignerIfPossible)
 }
 
 function useStableSwapPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  const poolAddress = pool?.addresses?.[chainId ?? ChainId.AURORA]
-
-  return useContract(poolAddress, STABLE_SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI, withSignerIfPossible)
+  return useContract(pool?.address, STABLE_SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI, withSignerIfPossible)
 }
 
 export function useStableSwapContract(poolName?: StableSwapPoolName, withSignerIfPossible = true): Contract | null {
@@ -160,8 +151,9 @@ export function useStableSwapContract(poolName?: StableSwapPoolName, withSignerI
       return null
     }
 
-    const poolAddress = pool.addresses[chainId]
-    if (!poolAddress) return null
+    if (pool?.address == null) {
+      return null
+    }
 
     if (isLegacySwapABIPool(pool.name)) {
       return legacyStableSwapABIPool

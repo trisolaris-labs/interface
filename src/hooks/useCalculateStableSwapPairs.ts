@@ -48,7 +48,6 @@ export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData
   const { chainId } = useActiveWeb3React()
   const tokenToPoolsMapSorted = useMemo(() => {
     const sortedPools = Object.values(STABLESWAP_POOLS[ChainId.AURORA])
-      .filter(pool => (chainId ? pool.addresses[chainId] : false)) // filter by pools available in the chain
       .filter(pool => !poolsStatuses[pool.name]?.isPaused) // paused pools can't swap
       .sort((a, b) => {
         const aTVL = poolsStatuses[a.name]?.tvl
@@ -67,7 +66,7 @@ export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData
     }, {} as TokenToPoolsMap)
 
     return tokenToPools
-  }, [poolsStatuses, chainId])
+  }, [poolsStatuses])
 
   return useCallback(
     function calculateSwapPairs(token?: Token): StableSwapData[] {
