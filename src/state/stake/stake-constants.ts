@@ -380,6 +380,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: true,
+    doubleRewards: true,
     doubleRewardToken: WNEAR[ChainId.AURORA]
   })
 
