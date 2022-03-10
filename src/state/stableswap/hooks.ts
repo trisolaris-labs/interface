@@ -321,7 +321,6 @@ export function useDefaultsFromURLSearch():
   useEffect(() => {
     if (!chainId) return
     const parsed = queryParametersToSwapState(parsedQs)
-    console.log('parsed: ', parsed)
 
     dispatch(
       replaceStableSwapState({

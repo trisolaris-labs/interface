@@ -41,6 +41,7 @@ import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
 import { useTranslation } from 'react-i18next'
 import Settings from '../../components/Settings'
+import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 
 const NATIVE_USDC = USDC[ChainId.AURORA]
 const NATIVE_USDT = USDT[ChainId.AURORA]
@@ -201,8 +202,11 @@ export default function StableSwap() {
     }
   }, [approval, approvalSubmitted])
 
-  const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
-  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
+  const { getMaxInputAmount } = useCurrencyInputPanel()
+  const { atMaxAmount: atMaxAmountInput, atHalfAmount: atHalfAmountInput, getClickedAmount } = getMaxInputAmount({
+    amount: currencyBalances[Field.INPUT],
+    parsedAmount: parsedAmounts[Field.INPUT]
+  })
 
   const { callback: swapCallback, error: swapCallbackError } = useStableSwapCallback(stableSwapTrade, allowedSlippage)
 
@@ -269,9 +273,13 @@ export default function StableSwap() {
     [onCurrencySelection]
   )
 
-  const handleMaxInput = useCallback(() => {
-    maxAmountInput && onUserInput(Field.INPUT, maxAmountInput.toExact())
-  }, [maxAmountInput, onUserInput])
+  const handleMaxInput = useCallback(
+    value => {
+      const amount = getClickedAmount(value)
+      onUserInput(Field.INPUT, amount)
+    },
+    [getClickedAmount, onUserInput]
+  )
 
   const handleOutputSelect = useCallback(outputCurrency => onCurrencySelection(Field.OUTPUT, outputCurrency), [
     onCurrencySelection
@@ -332,10 +340,11 @@ export default function StableSwap() {
                       : t('swapPage.from')
                   }
                   value={formattedAmounts[Field.INPUT]}
-                  showMaxButton={!atMaxAmountInput}
+                  disableHalfButton={atHalfAmountInput}
+                  disableMaxButton={atMaxAmountInput}
                   currency={currencies[Field.INPUT]}
                   onUserInput={handleTypeInput}
-                  onMax={handleMaxInput}
+                  onClickBalanceButton={handleMaxInput}
                   onCurrencySelect={handleInputSelect}
                   otherCurrency={currencies[Field.OUTPUT]}
                   id="swap-currency-input"
@@ -369,7 +378,6 @@ export default function StableSwap() {
                       ? t('swapPage.toEstimated')
                       : t('swapPage.to')
                   }
-                  showMaxButton={false}
                   currency={currencies[Field.OUTPUT]}
                   onCurrencySelect={handleOutputSelect}
                   otherCurrency={currencies[Field.INPUT]}
