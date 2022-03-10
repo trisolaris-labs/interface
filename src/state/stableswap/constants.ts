@@ -28,21 +28,21 @@ export enum StableSwapPoolTypes {
 
 export type StableSwapPool = {
   name: StableSwapPoolName
-  lpToken: { [chainId in ChainId]: string }
+  lpToken: Token
   poolTokens: Token[]
 
   // Used for Deposits
   // Links to SwapFlashLoan.sol
-  addresses: { [chainId in ChainId]: string }
+  address: string
   type: StableSwapPoolTypes
   route: string
 
   // Used for Swaps
-  metaSwapAddresses?: { [chainId in ChainId]: string }
+  metaSwapAddresses?: string
   underlyingPoolTokens?: Token[]
   underlyingPool?: StableSwapPoolName
   isOutdated?: boolean // pool can be outdated but not have a migration target
-  rewardPids: { [chainId in ChainId]: number | null }
+  rewardPids: number | null
 }
 
 export type StableSwapPoolsMap = {
@@ -57,28 +57,6 @@ export type StableSwapTokenToPoolsMap = {
   [tokenSymbol: string]: string[]
 }
 
-function buildAddresses(addresses: Partial<Record<ChainId, string>>): Record<ChainId, string> {
-  return Object.keys(ChainId).reduce((acc, id) => {
-    const numId = Number(id) as ChainId
-    if (isNaN(numId)) {
-      return acc
-    }
-
-    return { ...acc, [numId]: addresses?.[numId] ?? '' }
-  }, {}) as Record<ChainId, string>
-}
-function buildPids(pids: Partial<Record<ChainId, number>>): Record<ChainId, number | null> {
-  return Object.keys(ChainId).reduce((acc, id) => {
-    const numId = Number(id) as ChainId
-    if (isNaN(numId)) {
-      return acc
-    }
-
-    const pid = pids[numId] ?? null
-    return { ...acc, [numId]: pid }
-  }, {}) as Record<ChainId, number | null>
-}
-
 export type StableSwapPools = {
   // NOTE - chain id index is AURORA from the enum, are we really gonna deploy this crosschain though
   [ChainId.AURORA]: { [name in StableSwapPoolName]: StableSwapPool }
@@ -88,17 +66,22 @@ export const STABLESWAP_POOLS: StableSwapPools = {
   [ChainId.AURORA]: {
     [StableSwapPoolName.USDC_USDT]: {
       name: StableSwapPoolName.USDC_USDT,
-      lpToken: buildAddresses({ [ChainId.AURORA]: '0xA601723619a6D1d275cDaa32524f695c21e5E54C' }),
+      // @TODO Move the prod version of this token to the Tokens repo
+      lpToken: new Token(
+        ChainId.AURORA,
+        '0xA601723619a6D1d275cDaa32524f695c21e5E54C',
+        18,
+        'triTestUSD',
+        'TEST Trisolaris USDT/USDC'
+      ),
       poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
-      addresses: buildAddresses({
-        [ChainId.AURORA]: '0x72ff47B0Df5F8EBD93e4fA4600b89Db693066aa4'
-      }),
+      address: '0x72ff47B0Df5F8EBD93e4fA4600b89Db693066aa4',
       type: StableSwapPoolTypes.USD,
       route: 'usd',
       underlyingPoolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
       underlyingPool: StableSwapPoolName.USDC_USDT,
       isOutdated: false,
-      rewardPids: buildPids({})
+      rewardPids: null
     }
   }
 }

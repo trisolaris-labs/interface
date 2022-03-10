@@ -19,21 +19,16 @@ type StableSwapPoolStatuses = {
 }
 
 export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
-  const { chainId } = useActiveWeb3React()
+  const { chainId = ChainId.AURORA } = useActiveWeb3React()
 
   const stableSwapPools = useMemo(
-    () =>
-      Object.values(STABLESWAP_POOLS[ChainId.AURORA]).filter(({ addresses }) =>
-        chainId != null ? addresses[chainId] : null
-      ),
-    [chainId]
+    () => Object.values(STABLESWAP_POOLS[ChainId.AURORA]).filter(({ address }) => address),
+    []
   )
 
-  const stableSwapPoolLPTokens: string[] = chainId == null ? [] : stableSwapPools.map(({ lpToken }) => lpToken[chainId])
+  const stableSwapPoolLPTokens: string[] = chainId == null ? [] : stableSwapPools.map(({ lpToken }) => lpToken.address)
   const swapAddresses: string[] =
-    chainId == null
-      ? []
-      : stableSwapPools.map(({ metaSwapAddresses, addresses }) => metaSwapAddresses?.[chainId] ?? addresses?.[chainId])
+    chainId == null ? [] : stableSwapPools.map(({ metaSwapAddresses, address }) => metaSwapAddresses ?? address)
 
   const FALLBACK_TVL = BIG_INT_ZERO
   const tvls = useMultipleContractSingleData(
