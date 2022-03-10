@@ -378,9 +378,8 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x6277f94a69Df5df0Bc58b25917B9ECEFBf1b846A',
     rewarderAddress: '0x170431D69544a1BC97855C6564E8460d39508844',
     allocPoint: 1,
-    noTriRewards: true,
-    doubleRewardToken: WNEAR[ChainId.AURORA],
-    inStaging: true
+    noTriRewards: false,
+    doubleRewardToken: WNEAR[ChainId.AURORA]
   })
 
 ]
