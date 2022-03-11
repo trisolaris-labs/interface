@@ -5,7 +5,7 @@ import { ChevronDown, ChevronUp } from 'react-feather'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
-import { ButtonEmpty } from '../Button'
+import { ButtonEmpty, ButtonPrimary } from '../Button'
 import { TokenPairBackgroundColor } from '../earn/PoolCardTri.styles'
 
 import { useColorWithDefault } from '../../hooks/useColor'
@@ -13,12 +13,13 @@ import { useColorWithDefault } from '../../hooks/useColor'
 import Card, { LightCard } from '../Card'
 import { AutoColumn } from '../Column'
 import DoubleCurrencyLogo from '../DoubleLogo'
-import { RowBetween, RowFixed } from '../Row'
+import { AutoRow, RowBetween, RowFixed } from '../Row'
 import { useTranslation } from 'react-i18next'
 
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import TripleCurrencyLogo from '../TripleCurrencyLogo'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
+import { BIG_INT_ZERO } from '../../constants'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -35,6 +36,14 @@ const StyledPositionCard = styled(LightCard)<{ bgColor: any }>`
   border: none;
   position: relative;
   overflow: hidden;
+`
+
+const ButtonRow = styled(AutoRow)`
+  gap: 8px;
+  justify-content: space-evenly;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    width: 100%;
+  `};
 `
 
 interface PositionCardProps {
@@ -176,6 +185,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   const backgroundColor3 = useColorWithDefault('#2172E5', token2)
 
   const [stablePoolData, userData] = useStablePoolsData(poolName)
+  const hasLPTokenBalance = userData?.lpTokenBalance?.greaterThan(BIG_INT_ZERO) ?? false
 
   if (process.env.NODE_ENV !== 'production') {
     console.log('src/components/StablePositionCard/index.tsx: ', { stablePoolData, userData })
@@ -239,6 +249,15 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
             <li>Admin Fee: {stablePoolData.adminFee?.toString()}%</li>
           </ul>
         }
+
+        <AutoColumn gap="8px">
+          <ButtonRow>
+            <ButtonPrimary width="45%">Add</ButtonPrimary>
+            <ButtonPrimary disabled={!hasLPTokenBalance} width="45%">
+              Remove
+            </ButtonPrimary>
+          </ButtonRow>
+        </AutoColumn>
 
         {/* @TODO Leaving this for reference, may not be needed */}
         {/* {showMore && (
