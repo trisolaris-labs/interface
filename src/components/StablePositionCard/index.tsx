@@ -20,6 +20,7 @@ import { StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/con
 import TripleCurrencyLogo from '../TripleCurrencyLogo'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { BIG_INT_ZERO } from '../../constants'
+import { useHistory } from 'react-router-dom'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -173,6 +174,10 @@ const ManageButton = styled(ButtonEmpty)`
 export default function FullStablePositionCard({ poolName, border }: StablePositionCardProps) {
   const { t } = useTranslation()
   const [showMore, setShowMore] = useState(false)
+  const {
+    location: { pathname },
+    push
+  } = useHistory()
 
   const { name, poolTokens } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
 
@@ -186,6 +191,13 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
 
   const [stablePoolData, userData] = useStablePoolsData(poolName)
   const hasLPTokenBalance = userData?.lpTokenBalance?.greaterThan(BIG_INT_ZERO) ?? false
+
+  function handleAddLiquidity() {
+    push(`${pathname}/add/${name}`)
+  }
+  function handleRemoveLiquidity() {
+    push(`${pathname}/remove/${name}`)
+  }
 
   if (process.env.NODE_ENV !== 'production') {
     console.log('src/components/StablePositionCard/index.tsx: ', { stablePoolData, userData })
@@ -252,8 +264,10 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
 
         <AutoColumn gap="8px">
           <ButtonRow>
-            <ButtonPrimary width="45%">Add</ButtonPrimary>
-            <ButtonPrimary disabled={!hasLPTokenBalance} width="45%">
+            <ButtonPrimary width="45%" onClick={handleAddLiquidity}>
+              Add
+            </ButtonPrimary>
+            <ButtonPrimary disabled={!hasLPTokenBalance} width="45%" onClick={handleRemoveLiquidity}>
               Remove
             </ButtonPrimary>
           </ButtonRow>
