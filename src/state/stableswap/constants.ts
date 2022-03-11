@@ -1,6 +1,6 @@
-import { ChainId, Token } from '@trisolaris/sdk'
+import { ChainId, Token, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
-import { USDC, USDT } from '../../constants/tokens'
+import { USDC, USDT, WBTC } from '../../constants/tokens'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
@@ -24,6 +24,18 @@ export enum StableSwapPoolTypes {
   ETH,
   USD,
   OTHER
+}
+
+export function getTokenForStablePoolType(poolType: StableSwapPoolTypes): Token | null {
+  if (poolType === StableSwapPoolTypes.BTC) {
+    return WBTC[ChainId.AURORA]
+  } else if (poolType === StableSwapPoolTypes.ETH) {
+    return WETH[ChainId.AURORA]
+  } else if (poolType === StableSwapPoolTypes.USD) {
+    return USDC[ChainId.AURORA]
+  } else {
+    return null
+  }
 }
 
 export type StableSwapPool = {
