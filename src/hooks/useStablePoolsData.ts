@@ -146,13 +146,10 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
   const poolTokens = effectivePoolTokens.map((token, i) => ({
     token,
     percent: new Percent(
-      tokenBalances[i],
+      JSBI.multiply(tokenBalances[i], JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(5))),
       JSBI.equal(totalLpTokenBalance.raw, BIG_INT_ZERO) ? JSBI.BigInt(1) : totalLpTokenBalance.raw
     ),
-    value: JSBI.divide(
-      tokenBalances[i],
-      JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(effectivePoolTokens[i].decimals))
-    )
+    value: tokenBalances[i]
   }))
 
   const userPoolTokens = effectivePoolTokens.map((token, i) => ({
