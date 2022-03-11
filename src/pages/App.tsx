@@ -25,6 +25,7 @@ import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redir
 import Swap from './Swap'
 import StableSwap from './StableSwap'
 import StableSwapPool from './StableSwapPool'
+import StableSwapPoolAddLiquidity from './StableSwapPoolAddLiquidity'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 import { ENABLE_STABLESWAP } from '../constants'
 
@@ -87,6 +88,14 @@ export default function App() {
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/pool" component={Pool} />
               {ENABLE_STABLESWAP ? <Route exact strict path="/stableswap-pool" component={StableSwapPool} /> : null}
+              {ENABLE_STABLESWAP ? (
+                <Route
+                  exact
+                  strict
+                  path="/stableswap-pool/add/:stableSwapPoolName"
+                  component={StableSwapPoolAddLiquidity}
+                />
+              ) : null}
               <Route exact strict path="/farm/:version" component={EarnTri} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
               <Route exact strict path="/stake" component={StakeTri} />
