@@ -286,6 +286,17 @@ export default function Header() {
           >
             {t('header.pool')}
           </StyledNavLink>
+          {ENABLE_STABLESWAP ? (
+            <StyledNavLink
+              id={`stableswap-pool-nav-link`}
+              to={'/stableswap-pool'}
+              isActive={(match, { pathname }) =>
+                Boolean(match) || pathname.startsWith('/add') || pathname.startsWith('/remove')
+              }
+            >
+              StableSwap Pool
+            </StyledNavLink>
+          ) : null}
           <StyledNavLink id={`xtri-nav-link`} to={'/stake'} isActive={Boolean}>
             {t('header.stake')}
           </StyledNavLink>
