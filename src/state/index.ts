@@ -16,12 +16,14 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, pers
 
 import storage from 'redux-persist/lib/storage'
 import { PersistPartial } from 'redux-persist/lib/persistReducer'
+import stableswapAddLiquidity, { StableSwapAddLiquidityState } from './stableswap-add-liquidity/reducer'
 
 const reducer = combineReducers({
   application,
   user,
   transactions,
   stableswap,
+  stableswapAddLiquidity,
   swap,
   mint,
   burn,
@@ -35,6 +37,7 @@ type State = EmptyObject & {
   user: UserState
   transactions: TransactionState
   stableswap: StableSwapState
+  stableswapAddLiquidity: StableSwapAddLiquidityState
   swap: SwapState
   mint: MintState
   burn: BurnState
