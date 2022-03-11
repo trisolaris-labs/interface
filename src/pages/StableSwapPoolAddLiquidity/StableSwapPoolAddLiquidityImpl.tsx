@@ -36,7 +36,7 @@ import {
   getRouterContract
 } from '../../utils'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { wrappedCurrency } from '../../utils/wrappedCurrency'
+import { unwrappedToken, wrappedCurrency } from '../../utils/wrappedCurrency'
 import AppBody from '../AppBody'
 import { Dots, Wrapper } from '../Pool/styleds'
 // import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
@@ -56,405 +56,409 @@ type Props = {
 }
 
 export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: Props) {
-  return <div>StableSwapPool Add Liquidity {stableSwapPoolName}</div>
-  //   const { account, chainId, library } = useActiveWeb3React()
-  //   const theme = useContext(ThemeContext)
+  const { account, chainId, library } = useActiveWeb3React()
+  const theme = useContext(ThemeContext)
+  const history = useHistory()
+  const { t } = useTranslation()
 
-  //   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  //   const stableSwapPoolName = maybeStableSwapPoolName!
-  //   const [poolData] = useStablePoolsData(stableSwapPoolName)
-  //   const [token0, token1, token2] = poolData.tokens
+  const [poolData] = useStablePoolsData(stableSwapPoolName)
+  const [token0, token1, token2] = poolData.tokens
+  const [currency0, currency1, currency2] = poolData.tokens.map(({ token }) => unwrappedToken(token))
 
-  //   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
+  const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
-  //   const expertMode = useIsExpertMode()
+  const expertMode = useIsExpertMode()
 
-  //   // mint state
-  //   const { independentField, typedValue, otherTypedValue } = useMintState()
-  //   const {
-  //     dependentField,
-  //     currencies,
-  //     pair,
-  //     pairState,
-  //     currencyBalances,
-  //     parsedAmounts,
-  //     price,
-  //     noLiquidity,
-  //     liquidityMinted,
-  //     poolTokenPercentage,
-  //     error
-  //   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
-  //   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
+  // mint state
+  const { independentField, typedValue, otherTypedValue } = useMintState()
+  const {
+    dependentField,
+    currencies,
+    pair,
+    pairState,
+    currencyBalances,
+    parsedAmounts,
+    price,
+    noLiquidity,
+    liquidityMinted,
+    poolTokenPercentage,
+    error
+  } = useDerivedMintInfo(currency0 ?? undefined, currency1 ?? undefined)
+  const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
 
-  //   const isValid = !error
-  //   // modal and loading
-  //   const [showConfirm, setShowConfirm] = useState<boolean>(false)
-  //   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
+  const isValid = !error
+  // modal and loading
+  const [showConfirm, setShowConfirm] = useState<boolean>(false)
+  const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
-  //   // txn values
-  //   const deadline = useTransactionDeadline() // custom from users settings
-  //   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
-  //   const [txHash, setTxHash] = useState<string>('')
+  // txn values
+  const deadline = useTransactionDeadline() // custom from users settings
+  const [allowedSlippage] = useUserSlippageTolerance() // custom from users
+  const [txHash, setTxHash] = useState<string>('')
 
-  //   // get formatted amounts
-  //   const formattedAmounts = {
-  //     [independentField]: typedValue,
-  //     [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? ''
-  //   }
+  // get formatted amounts
+  const formattedAmounts = {
+    [independentField]: typedValue,
+    [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? ''
+  }
 
-  //   // get the max amounts user can add
-  //   const { getMaxAmounts } = useCurrencyInputPanel()
-  //   const { maxAmounts, atMaxAmounts, atHalfAmounts } = getMaxAmounts({ currencyBalances, parsedAmounts })
+  // get the max amounts user can add
+  const { getMaxAmounts } = useCurrencyInputPanel()
+  const { maxAmounts, atMaxAmounts, atHalfAmounts } = getMaxAmounts({ currencyBalances, parsedAmounts })
 
-  //   // check whether the user has approved the router on the tokens
-  //   const [approvalA, approveACallback] = useApproveCallback(
-  //     parsedAmounts[Field.CURRENCY_A],
+  // check whether the user has approved the router on the tokens
+  const [approval0, approveACallback] = useApproveCallback(
+    parsedAmounts[Field.CURRENCY_A],
+    // parsedAmounts[Field.CURRENCY_0],
+    chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON]
+  )
+  const [approval1, approve1Callback] = useApproveCallback(
+    parsedAmounts[Field.CURRENCY_B],
+    // parsedAmounts[Field.CURRENCY_1],
+    chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON]
+  )
+  //   const [approval2, approve2Callback] = useApproveCallback(
+  //     parsedAmounts[Field.CURRENCY_2],
   //     chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON]
   //   )
-  //   const [approvalB, approveBCallback] = useApproveCallback(
-  //     parsedAmounts[Field.CURRENCY_B],
-  //     chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON]
-  //   )
-  //   const [approvalB, approveBCallback] = useApproveCallback(
-  //     parsedAmounts[Field.CURRENCY_B],
-  //     chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON]
-  //   )
 
-  //   const addTransaction = useTransactionAdder()
+  const addTransaction = useTransactionAdder()
 
-  //   async function onAdd() {
-  //     if (!chainId || !library || !account) return
-  //     const router = getRouterContract(chainId, library, account)
+  async function onAdd() {
+    if (!chainId || !library || !account) return
+    const router = getRouterContract(chainId, library, account)
 
-  //     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
-  //     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
-  //       return
-  //     }
+    const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
+    if (!parsedAmountA || !parsedAmountB || !currency0 || !currency1 || !deadline) {
+      return
+    }
 
-  //     const amountsMin = {
-  //       [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? 0 : allowedSlippage)[0],
-  //       [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0]
-  //     }
+    const amountsMin = {
+      [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? 0 : allowedSlippage)[0],
+      [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0]
+    }
 
-  //     let estimate,
-  //       method: (...args: any) => Promise<TransactionResponse>,
-  //       args: Array<string | string[] | number>,
-  //       value: BigNumber | null
-  //     if (currencyA === CETH || currencyB === CETH) {
-  //       const tokenBIsETH = currencyB === CETH
-  //       estimate = router.estimateGas.addLiquidityETH
-  //       method = router.addLiquidityETH
-  //       args = [
-  //         wrappedCurrency(tokenBIsETH ? currencyA : currencyB, chainId)?.address ?? '', // token
-  //         (tokenBIsETH ? parsedAmountA : parsedAmountB).raw.toString(), // token desired
-  //         amountsMin[tokenBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
-  //         amountsMin[tokenBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
-  //         account,
-  //         deadline.toHexString()
-  //       ]
-  //       value = BigNumber.from((tokenBIsETH ? parsedAmountB : parsedAmountA).raw.toString())
-  //     } else {
-  //       estimate = router.estimateGas.addLiquidity
-  //       method = router.addLiquidity
-  //       args = [
-  //         wrappedCurrency(currencyA, chainId)?.address ?? '',
-  //         wrappedCurrency(currencyB, chainId)?.address ?? '',
-  //         parsedAmountA.raw.toString(),
-  //         parsedAmountB.raw.toString(),
-  //         amountsMin[Field.CURRENCY_A].toString(),
-  //         amountsMin[Field.CURRENCY_B].toString(),
-  //         account,
-  //         deadline.toHexString()
-  //       ]
-  //       value = null
-  //     }
+    let estimate,
+      method: (...args: any) => Promise<TransactionResponse>,
+      args: Array<string | string[] | number>,
+      value: BigNumber | null
+    if (currency0 === CETH || currency1 === CETH) {
+      const tokenBIsETH = currency1 === CETH
+      estimate = router.estimateGas.addLiquidityETH
+      method = router.addLiquidityETH
+      args = [
+        wrappedCurrency(tokenBIsETH ? currency0 : currency1, chainId)?.address ?? '', // token
+        (tokenBIsETH ? parsedAmountA : parsedAmountB).raw.toString(), // token desired
+        amountsMin[tokenBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
+        amountsMin[tokenBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
+        account,
+        deadline.toHexString()
+      ]
+      value = BigNumber.from((tokenBIsETH ? parsedAmountB : parsedAmountA).raw.toString())
+    } else {
+      estimate = router.estimateGas.addLiquidity
+      method = router.addLiquidity
+      args = [
+        wrappedCurrency(currency0, chainId)?.address ?? '',
+        wrappedCurrency(currency1, chainId)?.address ?? '',
+        parsedAmountA.raw.toString(),
+        parsedAmountB.raw.toString(),
+        amountsMin[Field.CURRENCY_A].toString(),
+        amountsMin[Field.CURRENCY_B].toString(),
+        account,
+        deadline.toHexString()
+      ]
+      value = null
+    }
 
-  //     setAttemptingTxn(true)
-  //     await estimate(...args, value ? { value } : {})
-  //       .then(estimatedGasLimit =>
-  //         method(...args, {
-  //           ...(value ? { value } : {}),
-  //           gasLimit: calculateGasMargin(estimatedGasLimit)
-  //         }).then(response => {
-  //           setAttemptingTxn(false)
+    setAttemptingTxn(true)
+    await estimate(...args, value ? { value } : {})
+      .then(estimatedGasLimit =>
+        method(...args, {
+          ...(value ? { value } : {}),
+          gasLimit: calculateGasMargin(estimatedGasLimit)
+        }).then(response => {
+          setAttemptingTxn(false)
 
-  //           addTransaction(response, {
-  //             summary:
-  //               'Add ' +
-  //               parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
-  //               ' ' +
-  //               currencies[Field.CURRENCY_A]?.symbol +
-  //               ' and ' +
-  //               parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
-  //               ' ' +
-  //               currencies[Field.CURRENCY_B]?.symbol
-  //           })
+          addTransaction(response, {
+            summary:
+              'Add ' +
+              parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
+              ' ' +
+              currencies[Field.CURRENCY_A]?.symbol +
+              ' and ' +
+              parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
+              ' ' +
+              currencies[Field.CURRENCY_B]?.symbol
+          })
 
-  //           setTxHash(response.hash)
+          setTxHash(response.hash)
 
-  //           ReactGA.event({
-  //             category: 'Liquidity',
-  //             action: 'Add',
-  //             label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/')
-  //           })
-  //         })
-  //       )
-  //       .catch(error => {
-  //         setAttemptingTxn(false)
-  //         // we only care if the error is something _other_ than the user rejected the tx
-  //         if (error?.code !== 4001) {
-  //           console.error(error)
-  //         }
-  //       })
-  //   }
+          ReactGA.event({
+            category: 'Liquidity',
+            action: 'Add',
+            label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/')
+          })
+        })
+      )
+      .catch(error => {
+        setAttemptingTxn(false)
+        // we only care if the error is something _other_ than the user rejected the tx
+        if (error?.code !== 4001) {
+          console.error(error)
+        }
+      })
+  }
 
-  //   const modalHeader = () => {
-  //     return noLiquidity ? (
-  //       <AutoColumn gap="20px">
-  //         <LightCard mt="20px" borderRadius="20px">
-  //           <RowFlat>
-  //             <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
-  //               {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol}
-  //             </Text>
-  //             <DoubleCurrencyLogo
-  //               currency0={currencies[Field.CURRENCY_A]}
-  //               currency1={currencies[Field.CURRENCY_B]}
-  //               size={30}
-  //             />
-  //           </RowFlat>
-  //         </LightCard>
-  //       </AutoColumn>
-  //     ) : (
-  //       <AutoColumn gap="20px">
-  //         <RowFlat style={{ marginTop: '20px' }}>
-  //           <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
-  //             {liquidityMinted?.toSignificant(6)}
-  //           </Text>
-  //           <DoubleCurrencyLogo
-  //             currency0={currencies[Field.CURRENCY_A]}
-  //             currency1={currencies[Field.CURRENCY_B]}
-  //             size={30}
-  //           />
-  //         </RowFlat>
-  //         <Row>
-  //           <Text fontSize="24px">
-  //             {currencies[Field.CURRENCY_A]?.symbol +
-  //               '/' +
-  //               currencies[Field.CURRENCY_B]?.symbol +
-  //               t('addLiquidity.poolTokens')}
-  //           </Text>
-  //         </Row>
-  //         <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
-  //           {t('addLiquidity.outputEstimated', { allowedSlippage: allowedSlippage / 100 })}
-  //         </TYPE.italic>
-  //       </AutoColumn>
+  const modalHeader = () => {
+    return noLiquidity ? (
+      <AutoColumn gap="20px">
+        <LightCard mt="20px" borderRadius="20px">
+          <RowFlat>
+            <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
+              {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol}
+            </Text>
+            <DoubleCurrencyLogo
+              currency0={currencies[Field.CURRENCY_A]}
+              currency1={currencies[Field.CURRENCY_B]}
+              size={30}
+            />
+          </RowFlat>
+        </LightCard>
+      </AutoColumn>
+    ) : (
+      <AutoColumn gap="20px">
+        <RowFlat style={{ marginTop: '20px' }}>
+          <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
+            {liquidityMinted?.toSignificant(6)}
+          </Text>
+          <DoubleCurrencyLogo
+            currency0={currencies[Field.CURRENCY_A]}
+            currency1={currencies[Field.CURRENCY_B]}
+            size={30}
+          />
+        </RowFlat>
+        <Row>
+          <Text fontSize="24px">
+            {currencies[Field.CURRENCY_A]?.symbol +
+              '/' +
+              currencies[Field.CURRENCY_B]?.symbol +
+              t('addLiquidity.poolTokens')}
+          </Text>
+        </Row>
+        <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
+          {t('addLiquidity.outputEstimated', { allowedSlippage: allowedSlippage / 100 })}
+        </TYPE.italic>
+      </AutoColumn>
+    )
+  }
+
+  //   const modalBottom = () => {
+  //     return (
+  //       <ConfirmAddModalBottom
+  //         price={price}
+  //         currencies={currencies}
+  //         parsedAmounts={parsedAmounts}
+  //         noLiquidity={noLiquidity}
+  //         onAdd={onAdd}
+  //         poolTokenPercentage={poolTokenPercentage}
+  //       />
   //     )
   //   }
 
-  //   //   const modalBottom = () => {
-  //   //     return (
-  //   //       <ConfirmAddModalBottom
-  //   //         price={price}
-  //   //         currencies={currencies}
-  //   //         parsedAmounts={parsedAmounts}
-  //   //         noLiquidity={noLiquidity}
-  //   //         onAdd={onAdd}
-  //   //         poolTokenPercentage={poolTokenPercentage}
-  //   //       />
-  //   //     )
-  //   //   }
+  const pendingText = `Supplying ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
+    currencies[Field.CURRENCY_A]?.symbol
+  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencies[Field.CURRENCY_B]?.symbol}`
 
-  //   const pendingText = `Supplying ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
-  //     currencies[Field.CURRENCY_A]?.symbol
-  //   } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencies[Field.CURRENCY_B]?.symbol}`
+  const handleCurrencyASelect = useCallback(
+    (currency0: Currency) => {
+      //   const newCurrencyIdA = currencyId(currency0)
+      //   if (newCurrencyIdA === currencyIdB) {
+      //     history.push(`/add/${currencyIdB}/${currencyIdA}`)
+      //   } else {
+      //     history.push(`/add/${newCurrencyIdA}/${currencyIdB}`)
+      //   }
+    },
+    // [currencyIdB, history, currencyIdA]
+    []
+  )
+  const handleCurrencyBSelect = useCallback(
+    (currency1: Currency) => {
+      //   const newCurrencyIdB = currencyId(currency1)
+      //   if (currencyIdA === newCurrencyIdB) {
+      //     if (currencyIdB) {
+      //       history.push(`/add/${currencyIdB}/${newCurrencyIdB}`)
+      //     } else {
+      //       history.push(`/add/${newCurrencyIdB}`)
+      //     }
+      //   } else {
+      //     history.push(`/add/${currencyIdA ? currencyIdA : 'ETH'}/${newCurrencyIdB}`)
+      //   }
+    },
+    // [currencyIdA, history, currencyIdB]
+    []
+  )
 
-  //   const handleCurrencyASelect = useCallback(
-  //     (currencyA: Currency) => {
-  //       const newCurrencyIdA = currencyId(currencyA)
-  //       if (newCurrencyIdA === currencyIdB) {
-  //         history.push(`/add/${currencyIdB}/${currencyIdA}`)
-  //       } else {
-  //         history.push(`/add/${newCurrencyIdA}/${currencyIdB}`)
-  //       }
-  //     },
-  //     [currencyIdB, history, currencyIdA]
-  //   )
-  //   const handleCurrencyBSelect = useCallback(
-  //     (currencyB: Currency) => {
-  //       const newCurrencyIdB = currencyId(currencyB)
-  //       if (currencyIdA === newCurrencyIdB) {
-  //         if (currencyIdB) {
-  //           history.push(`/add/${currencyIdB}/${newCurrencyIdB}`)
-  //         } else {
-  //           history.push(`/add/${newCurrencyIdB}`)
-  //         }
-  //       } else {
-  //         history.push(`/add/${currencyIdA ? currencyIdA : 'ETH'}/${newCurrencyIdB}`)
-  //       }
-  //     },
-  //     [currencyIdA, history, currencyIdB]
-  //   )
+  const handleDismissConfirmation = useCallback(() => {
+    setShowConfirm(false)
+    // if there was a tx hash, we want to clear the input
+    if (txHash) {
+      onFieldAInput('')
+    }
+    setTxHash('')
+  }, [onFieldAInput, txHash])
 
-  //   const handleDismissConfirmation = useCallback(() => {
-  //     setShowConfirm(false)
-  //     // if there was a tx hash, we want to clear the input
-  //     if (txHash) {
-  //       onFieldAInput('')
-  //     }
-  //     setTxHash('')
-  //   }, [onFieldAInput, txHash])
+  const isCreate = history.location.pathname.includes('/create')
 
-  //   const isCreate = history.location.pathname.includes('/create')
+  return (
+    <>
+      <AppBody>
+        <AddRemoveTabs creating={isCreate} adding={true} />
+        <Wrapper>
+          {/* <TransactionConfirmationModal
+              isOpen={showConfirm}
+              onDismiss={handleDismissConfirmation}
+              attemptingTxn={attemptingTxn}
+              hash={txHash}
+              content={() => (
+                <ConfirmationModalContent
+                  title={noLiquidity ? t('addLiquidity.creatingPool') : t('addLiquidity.willReceive')}
+                  onDismiss={handleDismissConfirmation}
+                  topContent={modalHeader}
+                  bottomContent={modalBottom}
+                />
+              )}
+              pendingText={pendingText}
+            /> */}
+          <AutoColumn gap="20px">
+            {noLiquidity ||
+              (isCreate && (
+                <ColumnCenter>
+                  <BlueCard>
+                    <AutoColumn gap="10px">
+                      <TYPE.link fontWeight={600} color={'primaryText1'}>
+                        {t('addLiquidity.firstLP')}
+                      </TYPE.link>
+                      <TYPE.link fontWeight={400} color={'primaryText1'}>
+                        {t('addLiquidity.ratioTokens')}
+                      </TYPE.link>
+                      <TYPE.link fontWeight={400} color={'primaryText1'}>
+                        {t('addLiquidity.happyRate')}
+                      </TYPE.link>
+                    </AutoColumn>
+                  </BlueCard>
+                </ColumnCenter>
+              ))}
+            <CurrencyInputPanel
+              value={formattedAmounts[Field.CURRENCY_A]}
+              onUserInput={onFieldAInput}
+              onClickBalanceButton={value => {
+                const amount = maxAmounts[Field.CURRENCY_A]
+                onFieldAInput(
+                  (value === BalanceButtonValueEnum.MAX
+                    ? amount
+                    : divideCurrencyAmountByNumber(amount, 2)
+                  )?.toExact() ?? ''
+                )
+              }}
+              disableHalfButton={atHalfAmounts[Field.CURRENCY_A]}
+              disableMaxButton={atMaxAmounts[Field.CURRENCY_A]}
+              onCurrencySelect={handleCurrencyASelect}
+              currency={currencies[Field.CURRENCY_A]}
+              id="add-liquidity-input-tokena"
+              showCommonBases
+            />
+            <ColumnCenter>
+              <Plus size="16" color={theme.text2} />
+            </ColumnCenter>
+            <CurrencyInputPanel
+              value={formattedAmounts[Field.CURRENCY_B]}
+              onUserInput={onFieldBInput}
+              onCurrencySelect={handleCurrencyBSelect}
+              onClickBalanceButton={value => {
+                const amount = maxAmounts[Field.CURRENCY_B]
+                onFieldBInput(
+                  (value === BalanceButtonValueEnum.MAX
+                    ? amount
+                    : divideCurrencyAmountByNumber(amount, 2)
+                  )?.toExact() ?? ''
+                )
+              }}
+              disableHalfButton={atHalfAmounts[Field.CURRENCY_B]}
+              disableMaxButton={atMaxAmounts[Field.CURRENCY_B]}
+              currency={currencies[Field.CURRENCY_B]}
+              id="add-liquidity-input-tokenb"
+              showCommonBases
+            />
+            {/* {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
+                <PriceAndPoolShare
+                  currencies={currencies}
+                  noLiquidity={noLiquidity}
+                  poolTokenPercentage={poolTokenPercentage}
+                  price={price}
+                />
+              )} */}
 
-  //   return (
-  //     <>
-  //       <AppBody>
-  //         <AddRemoveTabs creating={isCreate} adding={true} />
-  //         <Wrapper>
-  //           {/* <TransactionConfirmationModal
-  //               isOpen={showConfirm}
-  //               onDismiss={handleDismissConfirmation}
-  //               attemptingTxn={attemptingTxn}
-  //               hash={txHash}
-  //               content={() => (
-  //                 <ConfirmationModalContent
-  //                   title={noLiquidity ? t('addLiquidity.creatingPool') : t('addLiquidity.willReceive')}
-  //                   onDismiss={handleDismissConfirmation}
-  //                   topContent={modalHeader}
-  //                   bottomContent={modalBottom}
-  //                 />
-  //               )}
-  //               pendingText={pendingText}
-  //             /> */}
-  //           <AutoColumn gap="20px">
-  //             {noLiquidity ||
-  //               (isCreate && (
-  //                 <ColumnCenter>
-  //                   <BlueCard>
-  //                     <AutoColumn gap="10px">
-  //                       <TYPE.link fontWeight={600} color={'primaryText1'}>
-  //                         {t('addLiquidity.firstLP')}
-  //                       </TYPE.link>
-  //                       <TYPE.link fontWeight={400} color={'primaryText1'}>
-  //                         {t('addLiquidity.ratioTokens')}
-  //                       </TYPE.link>
-  //                       <TYPE.link fontWeight={400} color={'primaryText1'}>
-  //                         {t('addLiquidity.happyRate')}
-  //                       </TYPE.link>
-  //                     </AutoColumn>
-  //                   </BlueCard>
-  //                 </ColumnCenter>
-  //               ))}
-  //             <CurrencyInputPanel
-  //               value={formattedAmounts[Field.CURRENCY_A]}
-  //               onUserInput={onFieldAInput}
-  //               onClickBalanceButton={value => {
-  //                 const amount = maxAmounts[Field.CURRENCY_A]
-  //                 onFieldAInput(
-  //                   (value === BalanceButtonValueEnum.MAX
-  //                     ? amount
-  //                     : divideCurrencyAmountByNumber(amount, 2)
-  //                   )?.toExact() ?? ''
-  //                 )
-  //               }}
-  //               disableHalfButton={atHalfAmounts[Field.CURRENCY_A]}
-  //               disableMaxButton={atMaxAmounts[Field.CURRENCY_A]}
-  //               onCurrencySelect={handleCurrencyASelect}
-  //               currency={currencies[Field.CURRENCY_A]}
-  //               id="add-liquidity-input-tokena"
-  //               showCommonBases
-  //             />
-  //             <ColumnCenter>
-  //               <Plus size="16" color={theme.text2} />
-  //             </ColumnCenter>
-  //             <CurrencyInputPanel
-  //               value={formattedAmounts[Field.CURRENCY_B]}
-  //               onUserInput={onFieldBInput}
-  //               onCurrencySelect={handleCurrencyBSelect}
-  //               onClickBalanceButton={value => {
-  //                 const amount = maxAmounts[Field.CURRENCY_B]
-  //                 onFieldBInput(
-  //                   (value === BalanceButtonValueEnum.MAX
-  //                     ? amount
-  //                     : divideCurrencyAmountByNumber(amount, 2)
-  //                   )?.toExact() ?? ''
-  //                 )
-  //               }}
-  //               disableHalfButton={atHalfAmounts[Field.CURRENCY_B]}
-  //               disableMaxButton={atMaxAmounts[Field.CURRENCY_B]}
-  //               currency={currencies[Field.CURRENCY_B]}
-  //               id="add-liquidity-input-tokenb"
-  //               showCommonBases
-  //             />
-  //             {/* {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
-  //                 <PriceAndPoolShare
-  //                   currencies={currencies}
-  //                   noLiquidity={noLiquidity}
-  //                   poolTokenPercentage={poolTokenPercentage}
-  //                   price={price}
-  //                 />
-  //               )} */}
+            {!account ? (
+              <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
+            ) : (
+              <AutoColumn gap={'md'}>
+                {(approval0 === ApprovalState.NOT_APPROVED ||
+                  approval0 === ApprovalState.PENDING ||
+                  approval1 === ApprovalState.NOT_APPROVED ||
+                  approval1 === ApprovalState.PENDING) &&
+                  isValid && (
+                    <RowBetween>
+                      {approval0 !== ApprovalState.APPROVED && (
+                        <ButtonPrimary
+                          onClick={approveACallback}
+                          disabled={approval0 === ApprovalState.PENDING}
+                          width={approval1 !== ApprovalState.APPROVED ? '48%' : '100%'}
+                        >
+                          {approval0 === ApprovalState.PENDING ? (
+                            <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
+                          ) : (
+                            t('addLiquidity.approve') + currencies[Field.CURRENCY_A]?.symbol
+                          )}
+                        </ButtonPrimary>
+                      )}
+                      {approval1 !== ApprovalState.APPROVED && (
+                        <ButtonPrimary
+                          onClick={approve1Callback}
+                          disabled={approval1 === ApprovalState.PENDING}
+                          width={approval0 !== ApprovalState.APPROVED ? '48%' : '100%'}
+                        >
+                          {approval1 === ApprovalState.PENDING ? (
+                            <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
+                          ) : (
+                            t('addLiquidity.approve') + currencies[Field.CURRENCY_B]?.symbol
+                          )}
+                        </ButtonPrimary>
+                      )}
+                    </RowBetween>
+                  )}
+                <ButtonError
+                  onClick={() => {
+                    expertMode ? onAdd() : setShowConfirm(true)
+                  }}
+                  disabled={!isValid || approval0 !== ApprovalState.APPROVED || approval1 !== ApprovalState.APPROVED}
+                  error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
+                >
+                  <Text fontSize={20} fontWeight={500}>
+                    {error ?? t('addLiquidity.supply')}
+                  </Text>
+                </ButtonError>
+              </AutoColumn>
+            )}
+          </AutoColumn>
+        </Wrapper>
+      </AppBody>
 
-  //             {!account ? (
-  //               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
-  //             ) : (
-  //               <AutoColumn gap={'md'}>
-  //                 {(approvalA === ApprovalState.NOT_APPROVED ||
-  //                   approvalA === ApprovalState.PENDING ||
-  //                   approvalB === ApprovalState.NOT_APPROVED ||
-  //                   approvalB === ApprovalState.PENDING) &&
-  //                   isValid && (
-  //                     <RowBetween>
-  //                       {approvalA !== ApprovalState.APPROVED && (
-  //                         <ButtonPrimary
-  //                           onClick={approveACallback}
-  //                           disabled={approvalA === ApprovalState.PENDING}
-  //                           width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
-  //                         >
-  //                           {approvalA === ApprovalState.PENDING ? (
-  //                             <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
-  //                           ) : (
-  //                             t('addLiquidity.approve') + currencies[Field.CURRENCY_A]?.symbol
-  //                           )}
-  //                         </ButtonPrimary>
-  //                       )}
-  //                       {approvalB !== ApprovalState.APPROVED && (
-  //                         <ButtonPrimary
-  //                           onClick={approveBCallback}
-  //                           disabled={approvalB === ApprovalState.PENDING}
-  //                           width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
-  //                         >
-  //                           {approvalB === ApprovalState.PENDING ? (
-  //                             <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
-  //                           ) : (
-  //                             t('addLiquidity.approve') + currencies[Field.CURRENCY_B]?.symbol
-  //                           )}
-  //                         </ButtonPrimary>
-  //                       )}
-  //                     </RowBetween>
-  //                   )}
-  //                 <ButtonError
-  //                   onClick={() => {
-  //                     expertMode ? onAdd() : setShowConfirm(true)
-  //                   }}
-  //                   disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
-  //                   error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
-  //                 >
-  //                   <Text fontSize={20} fontWeight={500}>
-  //                     {error ?? t('addLiquidity.supply')}
-  //                   </Text>
-  //                 </ButtonError>
-  //               </AutoColumn>
-  //             )}
-  //           </AutoColumn>
-  //         </Wrapper>
-  //       </AppBody>
-
-  //       {pair && !noLiquidity && pairState !== PairState.INVALID ? (
-  //         <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
-  //           <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />
-  //         </AutoColumn>
-  //       ) : null}
-  //     </>
-  //   )
+      {/* {pair && !noLiquidity && pairState !== PairState.INVALID ? (
+        <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
+          <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />
+        </AutoColumn>
+      ) : null} */}
+    </>
+  )
 }
