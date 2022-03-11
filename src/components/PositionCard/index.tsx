@@ -58,16 +58,16 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const backgroundColor1 = useColorWithDefault('#2172E5', token0)
   const backgroundColor2 = useColorWithDefault('#2172E5', token1)
 
-  // const token0Price = useGetTokenPrice(token0.address)
-  // const token1Price = useGetTokenPrice(token1.address)
+  const token0Price = useGetTokenPrice(token0)
+  const token1Price = useGetTokenPrice(token1)
 
-  // const token0Deposits =
-  //   token0Deposited?.multiply(token0Price?.adjusted ?? JSBI.BigInt(1)) ?? new Fraction(BIG_INT_ZERO)
-  // const token1Deposits =
-  //   token1Deposited?.multiply(token1Price?.adjusted ?? JSBI.BigInt(1)) ?? new Fraction(BIG_INT_ZERO)
+  const token0Deposits =
+    token0Deposited?.multiply(token0Price?.adjusted ?? JSBI.BigInt(1)) ?? new Fraction(BIG_INT_ZERO)
+  const token1Deposits =
+    token1Deposited?.multiply(token1Price?.adjusted ?? JSBI.BigInt(1)) ?? new Fraction(BIG_INT_ZERO)
 
-  // const totalDeposits = token0Deposits.add(token1Deposits)
-
+  const totalDeposits = token0Deposits.add(token1Deposits)
+  // const totalDeposits = token0Deposits.multiply(JSBI.BigInt(2))
 
   return (
     <StyledPositionCard border={border} bgColor={backgroundColor1}>
@@ -123,7 +123,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                 Your deposits
               </Text>
               <Text fontSize={16} fontWeight={500}>
-                {/* {totalDeposits.greaterThan(BIG_INT_ZERO) ? `$${totalDeposits.toSignificant(6)}` : '-'} */}
+                {totalDeposits.greaterThan(BIG_INT_ZERO) ? `$${totalDeposits.toSignificant(6)}` : '-'}
               </Text>
             </FixedHeightRow>
 

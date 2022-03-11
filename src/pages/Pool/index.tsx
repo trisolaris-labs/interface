@@ -22,6 +22,8 @@ import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/
 import { useTranslation } from 'react-i18next'
 import { PageWrapper } from '../../components/Page'
 
+import { STAKING as definedPools } from '../../state/stake/stake-constants'
+
 const VoteCard = styled(DataCard)`
   background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
   overflow: hidden;
@@ -74,12 +76,16 @@ export default function Pool() {
   const { account, chainId } = useActiveWeb3React()
 
   // fetch the user's balances of all tracked V2 LP tokens
-  const trackedTokenPairs = useTrackedTokenPairs()
+  const definedPoolsPairs = definedPools[chainId ?? ChainId.AURORA]
+    .map(pool => pool.tokens)
+
+  // TODO: Add saved user pools to trackedTokenPairs
+  const trackedTokenPairs = definedPoolsPairs
   const { t } = useTranslation()
   const tokenPairsWithLiquidityTokens = useMemo(
     () =>
       trackedTokenPairs.map(tokens => ({
-        liquidityToken: toV2LiquidityToken(tokens, chainId ? chainId : ChainId.AVALANCHE),
+        liquidityToken: toV2LiquidityToken(tokens, chainId ? chainId : ChainId.AURORA),
         tokens
       })),
     [trackedTokenPairs, chainId]
@@ -159,7 +165,7 @@ export default function Pool() {
           <AutoColumn justify={'center'} gap="md">
             <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
               {hasV1Liquidity ? t('pool.uniswapV1Found') : t('pool.noSeePoolJoined')}{' '}
-              <StyledInternalLink id="import-pool-link" to={hasV1Liquidity ? '/migrate/v1' : '/find'}>
+              <StyledInternalLink id="import- -link" to={hasV1Liquidity ? '/migrate/v1' : '/find'}>
                 {hasV1Liquidity ? t('pool.migrateNow') : t('pool.importIt')}
               </StyledInternalLink>
             </Text>
