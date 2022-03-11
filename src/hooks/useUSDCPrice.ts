@@ -3,7 +3,7 @@
 import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from '@trisolaris/sdk'
 import { useMemo } from 'react'
 import { BIG_INT_ZERO } from '../constants'
-import { USDC as usdcDef } from '../constants/tokens'
+import { USDC as usdcDef, USDT as usdtDef } from '../constants/tokens'
 import { PairState, usePairs } from '../data/Reserves'
 import { useActiveWeb3React } from '.'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
@@ -15,8 +15,9 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 export default function useUSDCPrice(currency?: Currency): Price | undefined {
   const { chainId } = useActiveWeb3React()
   const wrapped = wrappedCurrency(currency, chainId)
-  
+
   const USDC = chainId ? usdcDef[chainId] : usdcDef[ChainId.AURORA]
+  const USDT = chainId ? usdtDef[chainId] : usdtDef[ChainId.AURORA]
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
@@ -29,16 +30,19 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
     ],
     [chainId, currency, wrapped, USDC]
   )
-  const [[avaxPairState, avaxPair], [usdcPairState, usdcPair], [usdcAvaxPairState, usdcAvaxPair]] = usePairs(tokenPairs)
+  const [[currencyEthState, currencyEth], [usdcPairState, usdcPair], [usdcEthPairState, usdcEthPair]] = usePairs(
+    tokenPairs
+  )
 
   return useMemo(() => {
     if (!currency || !wrapped || !chainId) {
       return undefined
     }
-    // handle wavax/avax
+    // handle weth/eth
     if (wrapped.equals(WETH[chainId])) {
       if (usdcPair) {
         const price = usdcPair.priceOf(WETH[chainId])
+
         return new Price(currency, USDC, price.denominator, price.numerator)
       } else {
         return undefined
@@ -49,34 +53,44 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
       return new Price(USDC, USDC, '1', '1')
     }
 
-    const avaxPairAVAXAmount = avaxPair?.reserveOf(WETH[chainId])
-    const avaxPairAVAXUSDCValue: JSBI =
-      avaxPairAVAXAmount && usdcAvaxPair
-        ? usdcAvaxPair.priceOf(WETH[chainId]).quote(avaxPairAVAXAmount).raw
+    // handle usdt
+    if (wrapped.equals(USDT)) {
+      return new Price(USDT, USDT, '1', '1')
+    }
+
+
+    const currencyEthPairWETHAmount = currencyEth?.reserveOf(WETH[chainId])
+    const currencyEthPairWETHUSDCValue: JSBI =
+      currencyEthPairWETHAmount && usdcEthPair
+        ? usdcEthPair.priceOf(WETH[chainId]).quote(currencyEthPairWETHAmount).raw
         : BIG_INT_ZERO
 
     // all other tokens
     // first try the usdc pair
-    if (usdcPairState === PairState.EXISTS && usdcPair && usdcPair.reserveOf(USDC).greaterThan(avaxPairAVAXUSDCValue)) {
+    if (
+      usdcPairState === PairState.EXISTS &&
+      usdcPair &&
+      usdcPair.reserveOf(USDC).greaterThan(currencyEthPairWETHUSDCValue)
+    ) {
       const price = usdcPair.priceOf(wrapped)
       return new Price(currency, USDC, price.denominator, price.numerator)
     }
-    if (avaxPairState === PairState.EXISTS && avaxPair && usdcAvaxPairState === PairState.EXISTS && usdcAvaxPair) {
-      if (usdcAvaxPair.reserveOf(USDC).greaterThan('0') && avaxPair.reserveOf(WETH[chainId]).greaterThan('0')) {
-        const avaxUsdcPrice = usdcAvaxPair.priceOf(USDC)
-        const currencyAvaxPrice = avaxPair.priceOf(WETH[chainId])
-        const usdcPrice = avaxUsdcPrice.multiply(currencyAvaxPrice).invert()
-        return new Price(currency, USDC, usdcPrice.denominator, usdcPrice.numerator)
+    if (currencyEthState === PairState.EXISTS && currencyEth && usdcEthPairState === PairState.EXISTS && usdcEthPair) {
+      if (usdcEthPair.reserveOf(USDC).greaterThan('0') && currencyEth.reserveOf(WETH[chainId]).greaterThan('0')) {
+        const usdcPriceInEth = usdcEthPair.priceOf(USDC)
+        const ethPriceInCurrency = currencyEth.priceOf(WETH[chainId])
+        const currencyUsdcPrice = usdcPriceInEth.multiply(ethPriceInCurrency).invert()
+        return new Price(currency, USDC, currencyUsdcPrice.denominator, currencyUsdcPrice.numerator)
       }
     }
     return undefined
   }, [
     chainId,
     currency,
-    avaxPair,
-    avaxPairState,
-    usdcAvaxPair,
-    usdcAvaxPairState,
+    currencyEth,
+    currencyEthState,
+    usdcEthPair,
+    usdcEthPairState,
     usdcPair,
     usdcPairState,
     wrapped,
