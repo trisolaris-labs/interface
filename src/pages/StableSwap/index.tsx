@@ -1,4 +1,4 @@
-import { ChainId, CurrencyAmount, Token, Trade } from '@trisolaris/sdk'
+import { ChainId, CurrencyAmount, JSBI, Percent, Token, Trade } from '@trisolaris/sdk'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ChevronDown } from 'react-feather'
 import { Text } from 'rebass'
@@ -38,6 +38,8 @@ import Loader from '../../components/Loader'
 import { useTranslation } from 'react-i18next'
 import Settings from '../../components/Settings'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
+import { warningSeverity } from '../../utils/prices'
+import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
 
 const NATIVE_USDC = USDC[ChainId.AURORA]
 const NATIVE_USDT = USDT[ChainId.AURORA]
@@ -117,7 +119,17 @@ export default function StableSwap() {
 
   // swap state
   const { independentField, typedValue, recipient } = useStableSwapState()
-  const { currencyBalances, parsedAmount, currencies, inputError, stableSwapTrade } = useDerivedStableSwapInfo()
+  const {
+    priceImpact,
+    currencyBalances,
+    parsedAmount,
+    currencies,
+    inputError,
+    stableSwapTrade
+  } = useDerivedStableSwapInfo()
+
+  // TODO: NOTE - Unsure if numerator and denominator are correct for price impact calculation as it is ported over
+  const priceImpactWithoutFee = useMemo(() => new Percent(priceImpact, JSBI.BigInt(18)), [priceImpact])
 
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
@@ -207,10 +219,9 @@ export default function StableSwap() {
   const { callback: swapCallback, error: swapCallbackError } = useStableSwapCallback(stableSwapTrade, allowedSlippage)
 
   const handleSwap = useCallback(() => {
-    // @nocommit Should we add this?
-    // if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
-    //   return
-    // }
+    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
+      return
+    }
     if (!swapCallback) {
       return
     }
@@ -231,12 +242,10 @@ export default function StableSwap() {
           txHash: undefined
         })
       })
-  }, [tradeToConfirm, showConfirm, swapCallback])
+  }, [tradeToConfirm, showConfirm, swapCallback, priceImpactWithoutFee])
 
   // warnings on slippage
-  // @nocommit Add This
-  // const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
-  const priceImpactSeverity = 0
+  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
