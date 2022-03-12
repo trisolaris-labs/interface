@@ -129,7 +129,17 @@ export default function StableSwap() {
   } = useDerivedStableSwapInfo()
 
   // TODO: NOTE - Unsure if numerator and denominator are correct for price impact calculation as it is ported over
-  const priceImpactWithoutFee = useMemo(() => new Percent(priceImpact, JSBI.BigInt(18)), [priceImpact])
+  const priceImpactWithoutFee = useMemo(
+    // multiply price impact by negative one for porting
+    // priceImpact is supposed to be 18 decimals formatted, so we use that as the numerator
+    // for the denominator, we use 100 * 18 decimals?
+    () =>
+      new Percent(
+        JSBI.lessThan(priceImpact, JSBI.BigInt(0)) ? JSBI.multiply(priceImpact, JSBI.BigInt(-1)) : priceImpact,
+        JSBI.multiply(JSBI.BigInt(100), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+      ),
+    [priceImpact]
+  )
 
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
@@ -246,6 +256,7 @@ export default function StableSwap() {
 
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
+  // console.log({ priceImpactWithoutFee, priceImpact: priceImpact?.toString(), priceImpactSeverity })
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
