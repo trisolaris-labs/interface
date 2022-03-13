@@ -111,7 +111,7 @@ export default function Pool() {
           <AutoColumn justify={'center'} gap="md">
             <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
               {hasV1Liquidity ? t('pool.uniswapV1Found') : t('pool.noSeePoolJoined')}{' '}
-              <StyledInternalLink id="import- -link" to={hasV1Liquidity ? '/migrate/v1' : '/find'}>
+              <StyledInternalLink id="import-pool-link" to={hasV1Liquidity ? '/migrate/v1' : '/find'}>
                 {hasV1Liquidity ? t('pool.migrateNow') : t('pool.importIt')}
               </StyledInternalLink>
             </Text>
