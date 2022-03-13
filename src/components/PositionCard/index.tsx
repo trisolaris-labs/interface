@@ -59,15 +59,12 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const backgroundColor2 = useColorWithDefault('#2172E5', token1)
 
   const token0Price = useGetTokenPrice(token0)
-  const token1Price = useGetTokenPrice(token1)
 
   const token0Deposits =
     token0Deposited?.multiply(token0Price?.adjusted ?? JSBI.BigInt(1)) ?? new Fraction(BIG_INT_ZERO)
-  const token1Deposits =
-    token1Deposited?.multiply(token1Price?.adjusted ?? JSBI.BigInt(1)) ?? new Fraction(BIG_INT_ZERO)
 
-  const totalDeposits = token0Deposits.add(token1Deposits)
-  // const totalDeposits = token0Deposits.multiply(JSBI.BigInt(2))
+  // For normal two pair balanced pools, we just multiply the deposits by two and save-up on calls.
+  const totalDeposits = token0Deposits.multiply(JSBI.BigInt(2))
 
   return (
     <StyledPositionCard border={border} bgColor={backgroundColor1}>

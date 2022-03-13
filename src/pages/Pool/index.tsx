@@ -81,6 +81,7 @@ export default function Pool() {
 
   // TODO: Add saved user pools to trackedTokenPairs
   const trackedTokenPairs = definedPoolsPairs
+
   const { t } = useTranslation()
   const tokenPairsWithLiquidityTokens = useMemo(
     () =>
