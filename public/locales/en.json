@@ -317,7 +317,7 @@
     "liquidityDeposits": "Your liquidity deposits",
     "unclaimed": "Your unclaimed",
     "claim": "Claim",
-    "triPerWeek": " TRI / week",
+    "pngPerWeek": " TRI / week",
     "automagically": "When you withdraw, the contract will automagically claim PNG on your behalf!",
     "deposit": "Deposit",
     "depositPglTokens": "Deposit TLP Tokens",
@@ -352,7 +352,8 @@
     "addLiquidity": "Add liquidity.",
     "createPool": "Create pool.",
     "invalidPair": "Invalid pair.",
-    "loading": "Loading"
+    "loading": "Loading",
+    "importPool": "Import this pool"
   },
   "removeLiquidity": {
     "youWillReceive": "You will receive",

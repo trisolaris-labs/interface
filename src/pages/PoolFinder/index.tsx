@@ -134,7 +134,7 @@ export default function PoolFinder() {
               {t('poolFinder.poolFound')}
             </Text>
             <StyledInternalLink to={`/pool`}>
-              <Text textAlign="center">{t('poolFinder.managePool')}</Text>
+              <Text textAlign="center">{t('poolFinder.importPool')}</Text>
             </StyledInternalLink>
           </ColumnCenter>
         )}

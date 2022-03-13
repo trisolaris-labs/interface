@@ -350,7 +350,8 @@
     "addLiquidity": "Likidite ekle.",
     "createPool": "Havuz oluştur.",
     "invalidPair": "Geçersiz işlem çifti.",
-    "loading": "Yükleniyor"
+    "loading": "Yükleniyor",
+    "importPool": "bu havuzu içe aktar."
   },
   "removeLiquidity": {
     "youWillReceive": "Şu kadar teslim alacaksınız: ",

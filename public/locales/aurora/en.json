@@ -113,7 +113,7 @@
     "acceptUpdate": "Accept update",
     "dismiss": "Dismiss"
   },
-  "positionCard": {
+  "positionCard":{
     "add": "Add",
     "remove": "Remove",
     "poolShare": "Your pool share:",
@@ -149,7 +149,8 @@
     "select": "Select",
     "manageTokenLists": "Manage Token Lists"
   },
-  "settings": {
+  "settings":
+  {
     "areYouSure": "Are you sure?",
     "expertInfo": "Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result in bad rates and lost funds.",
     "expertWarningCAPS": "ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.",
@@ -315,7 +316,7 @@
     "liquidityDeposits": "Your liquidity deposits",
     "unclaimed": "Your unclaimed",
     "claim": "Claim",
-    "triPerWeek": " TRI / week",
+    "pngPerWeek": " TRI / week",
     "automagically": "When you withdraw, the contract will automagically claim PNG on your behalf!",
     "deposit": "Deposit",
     "depositPglTokens": "Deposit",
@@ -350,7 +351,8 @@
     "addLiquidity": "Add liquidity.",
     "createPool": "Create pool.",
     "invalidPair": "Invalid pair.",
-    "loading": "Loading"
+    "loading": "Loading",
+    "importPool": "Import this pool"
   },
   "removeLiquidity": {
     "youWillReceive": "You will receive",

@@ -16,32 +16,18 @@ import { PageWrapper } from '../../components/Page'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { usePairs } from '../../data/Reserves'
-import { toV2LiquidityToken } from '../../state/user/hooks'
+import { useTrackedTokenPairs, toV2LiquidityToken } from '../../state/user/hooks'
 
-import { STAKING as definedPools } from '../../state/stake/stake-constants'
-
-import {
-  Wrapper,
-  ClickableText,
-  MaxButton,
-  TitleRow,
-  ButtonRow,
-  ResponsiveButtonPrimary,
-  ResponsiveButtonSecondary,
-  EmptyProposals
-} from './styleds'
+import { TitleRow, ButtonRow, ResponsiveButtonPrimary, ResponsiveButtonSecondary, EmptyProposals } from './styleds'
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
+  const { t } = useTranslation()
+
   const { account, chainId } = useActiveWeb3React()
 
-  // fetch the user's balances of all tracked V2 LP tokens
-  const definedPoolsPairs = definedPools[chainId ?? ChainId.AURORA].map(pool => pool.tokens)
+  const trackedTokenPairs = useTrackedTokenPairs()
 
-  // TODO: Add saved user pools to trackedTokenPairs
-  const trackedTokenPairs = definedPoolsPairs
-
-  const { t } = useTranslation()
   const tokenPairsWithLiquidityTokens = useMemo(
     () =>
       trackedTokenPairs.map(tokens => ({

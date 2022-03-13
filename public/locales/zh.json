@@ -350,7 +350,8 @@
     "addLiquidity": "增加流动性",
     "createPool": "创建資金池",
     "invalidPair": "无效的交易对.",
-    "loading": "加载中"
+    "loading": "加载中",
+    "importPool": "输入这个池子"
   },
   "removeLiquidity": {
     "youWillReceive": "您将获得",
