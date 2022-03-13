@@ -1,83 +1,42 @@
 import React, { useContext, useMemo } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import { Pair } from '@trisolaris/sdk'
+import { Pair, ChainId } from '@trisolaris/sdk'
 import { Link } from 'react-router-dom'
-import { SwapPoolTabs } from '../../components/NavigationTabs'
-
-import FullPositionCard from '../../components/PositionCard'
-import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
-import { StyledInternalLink, TYPE, HideSmall, ExternalLink } from '../../theme'
 import { Text } from 'rebass'
-import Card from '../../components/Card'
-import { RowBetween, RowFixed } from '../../components/Row'
-import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
-import { AutoColumn } from '../../components/Column'
+import { useTranslation } from 'react-i18next'
 
+import { SwapPoolTabs } from '../../components/NavigationTabs'
+import FullPositionCard from '../../components/PositionCard'
+import Card from '../../components/Card'
+import { AutoColumn } from '../../components/Column'
+import { StyledInternalLink, TYPE, HideSmall } from '../../theme'
+import { Dots } from '../../components/swap/styleds'
+import { PageWrapper } from '../../components/Page'
+
+import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { usePairs } from '../../data/Reserves'
-import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
-import { Dots } from '../../components/swap/styleds'
-import { ChainId } from '@trisolaris/sdk'
-import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
-import { useTranslation } from 'react-i18next'
-import { PageWrapper } from '../../components/Page'
+import { toV2LiquidityToken } from '../../state/user/hooks'
 
 import { STAKING as definedPools } from '../../state/stake/stake-constants'
 
-const VoteCard = styled(DataCard)`
-  background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
-  overflow: hidden;
-`
-
-const TitleRow = styled(RowBetween)`
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    flex-wrap: wrap;
-    gap: 12px;
-    width: 100%;
-    flex-direction: column-reverse;
-  `};
-`
-
-const ButtonRow = styled(RowFixed)`
-  gap: 8px;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    width: 100%;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-  `};
-`
-
-const ResponsiveButtonPrimary = styled(ButtonPrimary)`
-  width: fit-content;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    width: 48%;
-  `};
-`
-
-const ResponsiveButtonSecondary = styled(ButtonSecondary)`
-  width: fit-content;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    width: 48%;
-  `};
-`
-
-const EmptyProposals = styled.div`
-  border: 1px solid ${({ theme }) => theme.bg3};
-  padding: 16px 12px;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
+import {
+  Wrapper,
+  ClickableText,
+  MaxButton,
+  TitleRow,
+  ButtonRow,
+  ResponsiveButtonPrimary,
+  ResponsiveButtonSecondary,
+  EmptyProposals
+} from './styleds'
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
   const { account, chainId } = useActiveWeb3React()
 
   // fetch the user's balances of all tracked V2 LP tokens
-  const definedPoolsPairs = definedPools[chainId ?? ChainId.AURORA]
-    .map(pool => pool.tokens)
+  const definedPoolsPairs = definedPools[chainId ?? ChainId.AURORA].map(pool => pool.tokens)
 
   // TODO: Add saved user pools to trackedTokenPairs
   const trackedTokenPairs = definedPoolsPairs
