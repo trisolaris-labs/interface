@@ -60,10 +60,6 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...COMMON_BASES
 }
 
-export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
-  [ChainId.AVALANCHE]: []
-}
-
 export interface WalletInfo {
   connector?: AbstractConnector
   name: string

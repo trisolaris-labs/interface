@@ -349,7 +349,8 @@
     "addLiquidity": "Añadir liquidez.",
     "createPool": "Crear pool.",
     "invalidPair": "Pareja no válida.",
-    "loading": "Cargando"
+    "loading": "Cargando",
+    "importPool": "Importar esta pool"
   },
   "removeLiquidity": {
     "youWillReceive": "Recivirá",
