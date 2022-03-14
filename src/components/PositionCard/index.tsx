@@ -117,7 +117,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             </FixedHeightRow>
             <FixedHeightRow>
               <Text fontSize={16} fontWeight={500}>
-                Your deposits
+                {`${t('positionCard.yourDeposits')}:`}
               </Text>
               <Text fontSize={16} fontWeight={500}>
                 {totalDeposits.greaterThan(BIG_INT_ZERO) ? `$${totalDeposits.toSignificant(6)}` : '-'}

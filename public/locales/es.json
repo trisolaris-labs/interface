@@ -121,7 +121,8 @@
     "manage": "Gestionar",
     "loading": "Cargando",
     "yourPosition": "Tu posición",
-    "byAddingLiquidityInfo": "Añadiendo liquidez ganará el 0.3% de todos los intercambios en la pareja de forma proporcional a su parte de la Pool.\n Las tasas se añaden a la Pool, se acumulan en tiempo real y pueden ser reclamadas retirando su liquidez."
+    "byAddingLiquidityInfo": "Añadiendo liquidez ganará el 0.3% de todos los intercambios en la pareja de forma proporcional a su parte de la Pool.\n Las tasas se añaden a la Pool, se acumulan en tiempo real y pueden ser reclamadas retirando su liquidez.",
+    "yourDeposits": "Tus depósitos"
   },
   "searchModal": {
     "commonBases": "Bases comunes",

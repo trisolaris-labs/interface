@@ -121,7 +121,8 @@
         "manage": "Gerenciar",
         "loading": "Carregando",
         "yourPosition": "Sua posição",
-        "byAddingLiquidityInfo": "Ao adicionar liquidez, você ganhará 0,3% de todas as trocas sobre este par, proporcional à sua parte do pool. \n Taxas são adicionadas ao pool, acumulando em tempo real e podem ser reivindicadas retirando sua liquidez."
+        "byAddingLiquidityInfo": "Ao adicionar liquidez, você ganhará 0,3% de todas as trocas sobre este par, proporcional à sua parte do pool. \n Taxas são adicionadas ao pool, acumulando em tempo real e podem ser reivindicadas retirando sua liquidez.",
+        "yourDeposits": "Seus depósitos"
     },
     "searchModal": {
         "commonBases": "Bases comuns",

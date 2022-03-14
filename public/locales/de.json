@@ -121,7 +121,8 @@
     "manage": "Verwalten",
     "loading": "Lädt",
     "yourPosition": "Deine Position",
-    "byAddingLiquidityInfo": "Durch das Bereitstellen von Liquidität verdienst du 0,3% an allen Trades auf diesem Paar, proportional zu deinem Anteil am Pool. \n Gebühren werden dem Pool hinzugefügt, fallen in Echtzeit an und können beansprucht werden, indem die Liquidität abgebucht wird."
+    "byAddingLiquidityInfo": "Durch das Bereitstellen von Liquidität verdienst du 0,3% an allen Trades auf diesem Paar, proportional zu deinem Anteil am Pool. \n Gebühren werden dem Pool hinzugefügt, fallen in Echtzeit an und können beansprucht werden, indem die Liquidität abgebucht wird.",
+    "yourDeposits": "Ihre Einlagen"
   },
   "searchModal": {
     "commonBases": "Übliche Basis-Token",
