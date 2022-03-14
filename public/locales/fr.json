@@ -121,7 +121,8 @@
     "manage": "Gérer",
     "loading": "Chargement",
     "yourPosition": "Votre position",
-    "byAddingLiquidityInfo": "En ajoutant de la liquidité, vous gagnerez 0,3 % de toutes les transactions sur cette paire, proportionnellement à votre part de la pool.\n Les frais sont ajoutés au pool, s'accumulent en temps réel et peuvent être réclamés en retirant votre liquidité."
+    "byAddingLiquidityInfo": "En ajoutant de la liquidité, vous gagnerez 0,3 % de toutes les transactions sur cette paire, proportionnellement à votre part de la pool.\n Les frais sont ajoutés au pool, s'accumulent en temps réel et peuvent être réclamés en retirant votre liquidité.",
+    "yourDeposits": "Vos dépôts"
   },
   "searchModal": {
     "commonBases": "Bases communes",
