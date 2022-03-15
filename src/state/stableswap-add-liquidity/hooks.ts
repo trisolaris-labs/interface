@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 
 import { StableSwapPoolName } from '../stableswap/constants'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
-import { useStableSwapContract, useStableSwapLPTokenContract } from '../../hooks/useContract'
+import { useStableSwapContract } from '../../hooks/useContract'
 import { BIG_INT_ZERO } from '../../constants'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { basisPointsToPercent } from '../../utils'
@@ -164,7 +164,6 @@ export function useStableSwapAddLiquidityCallback(
 ): { callback: () => Promise<string> } {
   const { account } = useActiveWeb3React()
   const stableSwapContract = useStableSwapContract(stableSwapPoolName)
-  const lpTokenContract = useStableSwapLPTokenContract(stableSwapPoolName)
   const { currencies, parsedAmounts, hasThirdCurrency, totalLPTokenSuppply } = useDerivedStableSwapAddLiquidityInfo(
     stableSwapPoolName
   )
