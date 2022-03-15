@@ -6,5 +6,5 @@ export enum Field {
   CURRENCY_2 = 'CURRENCY_2'
 }
 
-export const typeInput = createAction<{ field: Field; typedValue: string }>('stableswap-add-liquidity/typeInputMint')
+export const typeInput = createAction<{ field: Field; typedValue: string }>('stableswap-add-liquidity/typeInput')
 export const resetAddLiquidityState = createAction<void>('stableswap-add-liquidity/resetAddLiquidityState')

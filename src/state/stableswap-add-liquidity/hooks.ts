@@ -1,59 +1,53 @@
-import {
-  Currency,
-  CurrencyAmount,
-  CETH,
-  InsufficientInputAmountError,
-  JSBI,
-  Pair,
-  Percent,
-  Price,
-  TokenAmount
-} from '@trisolaris/sdk'
+import { Currency, CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
 import { useTotalSupply } from '../../data/TotalSupply'
 
 import { useActiveWeb3React } from '../../hooks'
-import { wrappedCurrency, wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
+import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
 import { useTranslation } from 'react-i18next'
 
+import { StableSwapPoolName } from '../stableswap/constants'
+import useStablePoolsData from '../../hooks/useStablePoolsData'
+import { useStableSwapContract, useStableSwapLPTokenContract } from '../../hooks/useContract'
 import { BIG_INT_ZERO } from '../../constants'
+import { useUserSlippageTolerance } from '../user/hooks'
+import { basisPointsToPercent } from '../../utils'
+import { BigNumber } from 'ethers'
+import useTransactionDeadline from '../../hooks/useTransactionDeadline'
+import { useTransactionAdder } from '../transactions/hooks'
 
 export function useStableSwapAddLiquidityState(): AppState['stableswapAddLiquidity'] {
   return useSelector<AppState, AppState['stableswapAddLiquidity']>(state => state.stableswapAddLiquidity)
 }
 
 export function useDerivedStableSwapAddLiquidityInfo(
-  currency0: Currency | undefined,
-  currency1: Currency | undefined,
-  currency2: Currency | undefined
+  stableSwapPoolName: StableSwapPoolName
 ): {
-  dependentField: Field
   currencies: { [field in Field]?: Currency }
-  pair?: Pair | null // @TODO Update this
-  pairState: PairState // @TODO Update this
-  currency1alances: { [field in Field]?: CurrencyAmount }
+  currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmounts: { [field in Field]?: CurrencyAmount }
-  price?: Price
-  liquidityMinted?: TokenAmount
-  poolTokenPercentage?: Percent
   error?: string
+  hasThirdCurrency: boolean
+  totalLPTokenSuppply: TokenAmount | undefined
 } {
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
-  const { independentField, typedValue, otherTypedValue } = useStableSwapAddLiquidityState()
+  const {
+    [Field.CURRENCY_0]: typedValue0,
+    [Field.CURRENCY_1]: typedValue1,
+    [Field.CURRENCY_2]: typedValue2
+  } = useStableSwapAddLiquidityState()
 
-  // @TODO Do I need this>
-  const dependentField = independentField === Field.CURRENCY_0 ? Field.CURRENCY_1 : Field.CURRENCY_0
-
-  // error handling
-  let insufficientInput = false
+  const [poolData] = useStablePoolsData(stableSwapPoolName)
+  const [currency0, currency1, currency2] = poolData.tokens.map(({ token }) => unwrappedToken(token))
+  const hasThirdCurrency = currency2 != null
 
   // tokens
   const currencies: { [field in Field]?: Currency } = useMemo(
@@ -67,119 +61,68 @@ export function useDerivedStableSwapAddLiquidityInfo(
 
   // pair
   const [pairState, pair] = usePair(currencies[Field.CURRENCY_0], currencies[Field.CURRENCY_1])
-  const totalSupply = useTotalSupply(pair?.liquidityToken)
+  const totalLPTokenSuppply = useTotalSupply(pair?.liquidityToken)
 
   // balances
   const balances = useCurrencyBalances(account ?? undefined, [
     currencies[Field.CURRENCY_0],
-    currencies[Field.CURRENCY_1]
+    currencies[Field.CURRENCY_1],
+    currencies[Field.CURRENCY_2]
   ])
-  const currency1alances: { [field in Field]?: CurrencyAmount } = {
+  const currencyBalances: { [field in Field]?: CurrencyAmount } = {
     [Field.CURRENCY_0]: balances[0],
-    [Field.CURRENCY_1]: balances[1]
+    [Field.CURRENCY_1]: balances[1],
+    [Field.CURRENCY_2]: balances[2]
   }
 
-  // amounts
-  const independentAmount: CurrencyAmount | undefined = tryParseAmount(typedValue, currencies[independentField])
-  const dependentAmount: CurrencyAmount | undefined = useMemo(() => {
-    if (independentAmount) {
-      // we wrap the currencies just to get the price in terms of the other token
-      const wrappedIndependentAmount = wrappedCurrencyAmount(independentAmount, chainId)
-      const [tokenA, tokenB] = [wrappedCurrency(currency0, chainId), wrappedCurrency(currency1, chainId)]
-      if (tokenA && tokenB && wrappedIndependentAmount && pair) {
-        const dependentCurrency = dependentField === Field.CURRENCY_1 ? currency1 : currency0
-        const dependentTokenAmount =
-          dependentField === Field.CURRENCY_1
-            ? pair.priceOf(tokenA).quote(wrappedIndependentAmount)
-            : pair.priceOf(tokenB).quote(wrappedIndependentAmount)
-        return dependentCurrency === CETH ? CurrencyAmount.ether(dependentTokenAmount.raw) : dependentTokenAmount
-      }
-      return undefined
-    } else {
-      return undefined
-    }
-  }, [dependentField, independentAmount, currency0, chainId, currency1, pair])
   const parsedAmounts: { [field in Field]: CurrencyAmount | undefined } = {
-    [Field.CURRENCY_0]: independentField === Field.CURRENCY_0 ? independentAmount : dependentAmount,
-    [Field.CURRENCY_1]: independentField === Field.CURRENCY_0 ? dependentAmount : independentAmount,
-    [Field.CURRENCY_2]: independentField === Field.CURRENCY_0 ? dependentAmount : independentAmount
+    [Field.CURRENCY_0]: tryParseAmount(typedValue0, currencies[Field.CURRENCY_0]),
+    [Field.CURRENCY_1]: tryParseAmount(typedValue1, currencies[Field.CURRENCY_1]),
+    [Field.CURRENCY_2]: tryParseAmount(typedValue2, currencies[Field.CURRENCY_2])
   }
-
-  const price = useMemo(() => {
-    const wrappedCurrency0 = wrappedCurrency(currency0, chainId)
-    return pair && wrappedCurrency0 ? pair.priceOf(wrappedCurrency0) : undefined
-  }, [chainId, currency0, pair])
-
-  // liquidity minted
-  const liquidityMinted = useMemo(() => {
-    const { [Field.CURRENCY_0]: currency0Amount, [Field.CURRENCY_1]: currency1Amount } = parsedAmounts
-    const [tokenAmountA, tokenAmountB] = [
-      wrappedCurrencyAmount(currency0Amount, chainId),
-      wrappedCurrencyAmount(currency1Amount, chainId)
-    ]
-    insufficientInput = false
-    if (pair && totalSupply && tokenAmountA && tokenAmountB) {
-      try {
-        return pair.getLiquidityMinted(totalSupply, tokenAmountA, tokenAmountB)
-      } catch (err) {
-        if (err instanceof InsufficientInputAmountError) {
-          insufficientInput = true
-          return undefined
-        } else {
-          throw err
-        }
-      }
-    } else {
-      return undefined
-    }
-  }, [parsedAmounts, chainId, pair, totalSupply])
-
-  const poolTokenPercentage = useMemo(() => {
-    if (liquidityMinted && totalSupply) {
-      return new Percent(liquidityMinted.raw, totalSupply.add(liquidityMinted).raw)
-    } else {
-      return undefined
-    }
-  }, [liquidityMinted, totalSupply])
 
   let error: string | undefined
   if (!account) {
     error = t('mintHooks.connectWallet')
   }
 
-  if (insufficientInput) {
-    error = t('mintHooks.insufficientInputAmount')
-  }
-
   if (pairState === PairState.INVALID) {
     error = error ?? t('mintHooks.invalidPair')
   }
 
-  if (!parsedAmounts[Field.CURRENCY_0] || !parsedAmounts[Field.CURRENCY_1]) {
+  if (
+    !parsedAmounts[Field.CURRENCY_0] &&
+    !parsedAmounts[Field.CURRENCY_1] &&
+    (hasThirdCurrency ? !parsedAmounts[Field.CURRENCY_2] : false)
+  ) {
     error = error ?? t('mintHooks.enterAmount')
   }
 
-  const { [Field.CURRENCY_0]: currency0Amount, [Field.CURRENCY_1]: currency1Amount } = parsedAmounts
+  const {
+    [Field.CURRENCY_0]: currency0Amount,
+    [Field.CURRENCY_1]: currency1Amount,
+    [Field.CURRENCY_2]: currency2Amount
+  } = parsedAmounts
 
-  if (currency0Amount && currency1alances?.[Field.CURRENCY_0]?.lessThan(currency0Amount)) {
+  if (currency0Amount && currencyBalances?.[Field.CURRENCY_0]?.lessThan(currency0Amount)) {
     error = t('mintHooks.insufficient') + currencies[Field.CURRENCY_0]?.symbol + t('mintHooks.balance')
   }
 
-  if (currency1Amount && currency1alances?.[Field.CURRENCY_1]?.lessThan(currency1Amount)) {
+  if (currency1Amount && currencyBalances?.[Field.CURRENCY_1]?.lessThan(currency1Amount)) {
     error = t('mintHooks.insufficient') + currencies[Field.CURRENCY_1]?.symbol + t('mintHooks.balance')
   }
 
+  if (hasThirdCurrency && currency2Amount && currencyBalances?.[Field.CURRENCY_2]?.lessThan(currency2Amount)) {
+    error = t('mintHooks.insufficient') + currencies[Field.CURRENCY_2]?.symbol + t('mintHooks.balance')
+  }
+
   return {
-    dependentField,
     currencies,
-    pair,
-    pairState,
-    currency1alances,
+    currencyBalances,
     parsedAmounts,
-    price,
-    liquidityMinted,
-    poolTokenPercentage,
-    error
+    error,
+    hasThirdCurrency,
+    totalLPTokenSuppply
   }
 }
 
@@ -214,4 +157,77 @@ export function useStableSwapAddLiquidityActionHandlers(): {
     onField1Input,
     onField2Input
   }
+}
+
+export function useStableSwapAddLiquidityCallback(
+  stableSwapPoolName: StableSwapPoolName
+): { callback: () => Promise<string> } {
+  const { account } = useActiveWeb3React()
+  const stableSwapContract = useStableSwapContract(stableSwapPoolName)
+  const lpTokenContract = useStableSwapLPTokenContract(stableSwapPoolName)
+  const { currencies, parsedAmounts, hasThirdCurrency, totalLPTokenSuppply } = useDerivedStableSwapAddLiquidityInfo(
+    stableSwapPoolName
+  )
+  // get custom setting values for user
+  const [allowedSlippage] = useUserSlippageTolerance()
+  const slippageAsPercent = basisPointsToPercent(allowedSlippage)
+  const addTransaction = useTransactionAdder()
+  let deadline = useTransactionDeadline()
+
+  const currentTime = BigNumber.from(new Date().getTime())
+  if (deadline && deadline < currentTime.add(10)) {
+    deadline = currentTime.add(10)
+  }
+
+  const callback = useCallback(async () => {
+    const currencyAmounts = [parsedAmounts[Field.CURRENCY_0], parsedAmounts[Field.CURRENCY_1]]
+    if (hasThirdCurrency) {
+      currencyAmounts.push(parsedAmounts[Field.CURRENCY_2])
+    }
+
+    const formattedCurrencyAmounts = currencyAmounts.map(item => item?.raw?.toString() ?? '0')
+    const isFirstTransaction = JSBI.equal(totalLPTokenSuppply?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
+    const minToMint = isFirstTransaction
+      ? BIG_INT_ZERO.toString()
+      : (
+          await stableSwapContract?.calculateTokenAmount(
+            formattedCurrencyAmounts,
+            true // deposit boolean
+          )
+        )?.toNumber()
+
+    const transactionArguments = [formattedCurrencyAmounts, minToMint, deadline?.toNumber()]
+
+    // @TODO Subtract slippage from `minToMint`
+    const transaction = await stableSwapContract?.addLiquidity(...transactionArguments, {
+      from: account
+    })
+
+    await transaction?.wait()
+
+    const summary = ([Field.CURRENCY_0, Field.CURRENCY_1, Field.CURRENCY_2] as Field[]).reduce((acc, key: Field) => {
+      if (parsedAmounts[key] != null && currencies[key] != null) {
+        acc.push(`${parsedAmounts[key]?.toSignificant(3)} ${currencies[key]?.symbol}`)
+      }
+
+      return acc
+    }, [] as string[])
+
+    addTransaction(transaction, {
+      summary: `Add ${summary.join(', ')}`
+    })
+
+    return transaction
+  }, [
+    account,
+    addTransaction,
+    currencies,
+    deadline,
+    hasThirdCurrency,
+    parsedAmounts,
+    stableSwapContract,
+    totalLPTokenSuppply?.raw
+  ])
+
+  return { callback }
 }

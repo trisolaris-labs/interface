@@ -2,15 +2,15 @@ import { createReducer } from '@reduxjs/toolkit'
 import { Field, resetAddLiquidityState, typeInput } from './actions'
 
 export interface StableSwapAddLiquidityState {
-  readonly independentField: Field
-  readonly typedValue: string
-  readonly otherTypedValue: string // for the case when there's no liquidity
+  readonly [Field.CURRENCY_0]: string
+  readonly [Field.CURRENCY_1]: string
+  readonly [Field.CURRENCY_2]: string
 }
 
 const initialState: StableSwapAddLiquidityState = {
-  independentField: Field.CURRENCY_0,
-  typedValue: '',
-  otherTypedValue: ''
+  [Field.CURRENCY_0]: '',
+  [Field.CURRENCY_1]: '',
+  [Field.CURRENCY_2]: ''
 }
 
 export default createReducer<StableSwapAddLiquidityState>(initialState, builder =>
@@ -19,9 +19,7 @@ export default createReducer<StableSwapAddLiquidityState>(initialState, builder 
     .addCase(typeInput, (state, { payload: { field, typedValue } }) => {
       return {
         ...state,
-        independentField: field,
-        typedValue,
-        otherTypedValue: ''
+        [field]: typedValue
       }
     })
 )
