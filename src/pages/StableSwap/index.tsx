@@ -31,7 +31,7 @@ import {
   useStableSwapActionHandlers,
   useStableSwapState
 } from '../../state/stableswap/hooks'
-import { useUserSlippageTolerance } from '../../state/user/hooks'
+import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import { LinkStyledButton, TYPE } from '../../theme'
 import AppBody from '../AppBody'
 import { ClickableText } from '../Pool/styleds'
@@ -113,7 +113,7 @@ export default function StableSwap() {
 
   // for expert mode
   const toggleSettings = useToggleSettingsMenu()
-  const isExpertMode = false // @nocommit No expert mode
+  const isExpertMode = useExpertModeManager()
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
