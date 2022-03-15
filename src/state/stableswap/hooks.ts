@@ -1,5 +1,5 @@
 import { parseUnits } from '@ethersproject/units'
-import { ChainId, Currency, CurrencyAmount, Fraction, JSBI, Price, Token, TokenAmount, Trade } from '@trisolaris/sdk'
+import { ChainId, Currency, CurrencyAmount, Fraction, JSBI, Price, Token, TokenAmount } from '@trisolaris/sdk'
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -33,7 +33,7 @@ export type StableSwapTrade = {
   outputAmount: CurrencyAmount
 }
 
-export function isHighPriceImpact(priceImpact: JSBI): boolean {
+export function isStableSwapHighPriceImpact(priceImpact: JSBI): boolean {
   // assumes that priceImpact has 18d precision
   // const negOne = BigNumber.from(10)
   //   .pow(18 - 2)
