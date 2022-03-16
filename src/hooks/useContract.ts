@@ -13,6 +13,7 @@ import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
 import STABLE_SWAP_FLASH_LOAN_ABI from '../constants/abis/stableswap/swapFlashLoan.json'
 import STABLE_SWAP_META_SWAP_DEPOSIT_ABI from '../constants/abis/stableswap/metaSwapDeposit.json'
 import STABLE_SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from '../constants/abis/stableswap/swapFlashLoanNoWithdrawFee.json'
+import STABLE_SWAP_LP_TOKEN_UNGUARDED_ABI from '../constants/abis/stableswap/lpTokenUnguarded.json'
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
 import ERC20_ABI from '../constants/abis/erc20.json'
 import BRIDGE_TOKEN_ABI from '../constants/abis/bridge-token.json'
@@ -165,4 +166,13 @@ export function useStableSwapContract(poolName?: StableSwapPoolName, withSignerI
 
     return stableSwapPool
   }, [pool, library, chainId, legacyStableSwapABIPool, metaPool, stableSwapPool])
+}
+
+export function useStableSwapLPTokenContract(
+  poolName: StableSwapPoolName,
+  withSignerIfPossible = true
+): Contract | null {
+  const { lpToken } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
+
+  return useContract(lpToken.address, STABLE_SWAP_LP_TOKEN_UNGUARDED_ABI, withSignerIfPossible)
 }
