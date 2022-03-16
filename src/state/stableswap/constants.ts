@@ -86,7 +86,9 @@ export const STABLESWAP_POOLS: StableSwapPools = {
         'triTestUSD',
         'TEST Trisolaris USDT/USDC'
       ),
-      poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
+      // *** NOTE *** - For future reference, this order of the pool tokens must be equivalent to the LP token name order
+      // Also to verify, please query the swap contract for the individual stable token indexes
+      poolTokens: [USDT[ChainId.AURORA], USDC[ChainId.AURORA]],
       address: '0x72ff47B0Df5F8EBD93e4fA4600b89Db693066aa4',
       type: StableSwapPoolTypes.USD,
       route: 'usd',
