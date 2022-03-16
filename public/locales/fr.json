@@ -115,13 +115,14 @@
   "positionCard":{
     "add": "Ajouter",
     "remove": "Retirer",
-    "poolShare": "Votre part de la pool:",
+    "poolShare": "Part de la pool",
     "pooled": "Mis en commun",
-    "poolTokens": "Les jetons de votre pool:",
+    "poolTokens": "jetons mis en commun",
     "manage": "Gérer",
     "loading": "Chargement",
     "yourPosition": "Votre position",
-    "byAddingLiquidityInfo": "En ajoutant de la liquidité, vous gagnerez 0,3 % de toutes les transactions sur cette paire, proportionnellement à votre part de la pool.\n Les frais sont ajoutés au pool, s'accumulent en temps réel et peuvent être réclamés en retirant votre liquidité."
+    "byAddingLiquidityInfo": "En ajoutant de la liquidité, vous gagnerez 0,3 % de toutes les transactions sur cette paire, proportionnellement à votre part de la pool.\n Les frais sont ajoutés au pool, s'accumulent en temps réel et peuvent être réclamés en retirant votre liquidité.",
+    "yourDeposits": "Montant du dépôt"
   },
   "searchModal": {
     "commonBases": "Bases communes",
@@ -350,7 +351,8 @@
     "addLiquidity": "Ajouter de la liquidité.",
     "createPool": "Créer une pool.",
     "invalidPair": "Paire non valide.",
-    "loading": "Chargement"
+    "loading": "Chargement",
+    "importPool": "Importer ce pool"
   },
   "removeLiquidity": {
     "youWillReceive": "Vous recevrez",
