@@ -256,7 +256,8 @@ export default function StableSwap() {
 
   // warnings on slippage
   const priceImpactSeverity = isStableSwapHighPriceImpact(priceImpact)
-  const showPriceImpactError = (priceImpactSeverity && !isExpertMode)
+  const isPriceImpactSevere = priceImpactSeverity === true
+  const showPriceImpactError = isPriceImpactSevere && !isExpertMode
   // console.log({
   //   priceImpactWithoutFee,
   //   priceImpact: priceImpact?.toString(),
@@ -270,7 +271,7 @@ export default function StableSwap() {
     (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
-    !(priceImpactSeverity === true && !isExpertMode)
+    !showPriceImpactError
 
   // @nocommit add this later
   const handleConfirmDismiss = useCallback(() => {
@@ -318,6 +319,22 @@ export default function StableSwap() {
   //     })
   //   )
   // }, [dispatch])
+
+  const handleSwapError = () => {
+    return () => {
+      if (isExpertMode) {
+        handleSwap()
+      } else {
+        setSwapState({
+          tradeToConfirm: trade,
+          attemptingTxn: false,
+          swapErrorMessage: undefined,
+          showConfirm: true,
+          txHash: undefined
+        })
+      }
+    }
+  }
 
   return (
     <>
@@ -486,60 +503,32 @@ export default function StableSwap() {
                       )}
                     </ButtonConfirmed>
                     <ButtonError
-                      onClick={() => {
-                        if (isExpertMode) {
-                          handleSwap()
-                        } else {
-                          setSwapState({
-                            tradeToConfirm: trade,
-                            attemptingTxn: false,
-                            swapErrorMessage: undefined,
-                            showConfirm: true,
-                            txHash: undefined
-                          })
-                        }
-                      }}
+                      onClick={() => handleSwapError()}
                       width="48%"
                       id="swap-button"
-                      disabled={
-                        !isValid ||
-                        approval !== ApprovalState.APPROVED ||
-                        (priceImpactSeverity === true && !isExpertMode)
-                      }
-                      error={isValid && priceImpactSeverity === true}
+                      disabled={!isValid || approval !== ApprovalState.APPROVED || showPriceImpactError}
+                      error={isValid && isPriceImpactSevere}
                     >
                       <Text fontSize={16} fontWeight={500}>
-                        {priceImpactSeverity === true && !isExpertMode
+                        {showPriceImpactError
                           ? t('swapPage.priceImpactHigh')
-                          : t('swapPage.swap') + `${priceImpactSeverity === true ? t('swapPage.anyway') : ''}`}
+                          : t('swapPage.swap') + `${isPriceImpactSevere ? t('swapPage.anyway') : ''}`}
                       </Text>
                     </ButtonError>
                   </RowBetween>
                 ) : (
                   <ButtonError
-                    onClick={() => {
-                      if (isExpertMode) {
-                        handleSwap()
-                      } else {
-                        setSwapState({
-                          tradeToConfirm: trade,
-                          attemptingTxn: false,
-                          swapErrorMessage: undefined,
-                          showConfirm: true,
-                          txHash: undefined
-                        })
-                      }
-                    }}
+                    onClick={() => handleSwapError()}
                     id="swap-button"
-                    disabled={!isValid || (priceImpactSeverity === true && !isExpertMode) || !!swapCallbackError}
-                    error={isValid && priceImpactSeverity === true && !swapCallbackError}
+                    disabled={!isValid || showPriceImpactError || !!swapCallbackError}
+                    error={isValid && isPriceImpactSevere && !swapCallbackError}
                   >
                     <Text fontSize={20} fontWeight={500}>
                       {inputError
                         ? inputError
-                        : priceImpactSeverity === true && !isExpertMode
+                        : showPriceImpactError
                         ? t('swapPage.priceImpactHigh')
-                        : t('swapPage.swap') + `${priceImpactSeverity === true ? t('swapPage.anyway') : ''}`}
+                        : t('swapPage.swap') + `${isPriceImpactSevere ? t('swapPage.anyway') : ''}`}
                     </Text>
                   </ButtonError>
                 )}
