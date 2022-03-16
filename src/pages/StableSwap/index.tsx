@@ -256,6 +256,7 @@ export default function StableSwap() {
 
   // warnings on slippage
   const priceImpactSeverity = isStableSwapHighPriceImpact(priceImpact)
+  const showPriceImpactError = (priceImpactSeverity && !isExpertMode)
   // console.log({
   //   priceImpactWithoutFee,
   //   priceImpact: priceImpact?.toString(),
