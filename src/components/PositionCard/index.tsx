@@ -109,18 +109,10 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
           <AutoColumn gap="8px">
             <FixedHeightRow>
               <Text fontSize={16} fontWeight={500}>
-                {t('positionCard.poolTokens')}
+                {`${t('positionCard.poolTokens')}:`}
               </Text>
               <Text fontSize={16} fontWeight={500}>
                 {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
-              </Text>
-            </FixedHeightRow>
-            <FixedHeightRow>
-              <Text fontSize={16} fontWeight={500}>
-                {`${t('positionCard.yourDeposits')}:`}
-              </Text>
-              <Text fontSize={16} fontWeight={500}>
-                {totalDeposits.greaterThan(BIG_INT_ZERO) ? `$${totalDeposits.toSignificant(6)}` : '-'}
               </Text>
             </FixedHeightRow>
 
@@ -162,7 +154,16 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
 
             <FixedHeightRow>
               <Text fontSize={16} fontWeight={500}>
-                {t('positionCard.poolShare')}
+                {`${t('positionCard.yourDeposits')}:`}
+              </Text>
+              <Text fontSize={16} fontWeight={500}>
+                {totalDeposits.greaterThan(BIG_INT_ZERO) ? `$${totalDeposits.toSignificant(2)}` : '-'}
+              </Text>
+            </FixedHeightRow>
+
+            <FixedHeightRow>
+              <Text fontSize={16} fontWeight={500}>
+                {`${t('positionCard.poolShare')}:`}
               </Text>
               <Text fontSize={16} fontWeight={500}>
                 {poolTokenPercentage ? poolTokenPercentage.toFixed(2) + '%' : '-'}
