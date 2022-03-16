@@ -118,14 +118,14 @@
   "positionCard": {
     "add": "Add",
     "remove": "Remove",
-    "poolShare": "Your pool share:",
+    "poolShare": "Pool Share",
     "pooled": "Pooled",
-    "poolTokens": "Your pool tokens:",
+    "poolTokens": "Pool Tokens",
     "manage": "Manage",
     "loading": "Loading",
     "yourPosition": "Your position",
     "byAddingLiquidityInfo": "By adding liquidity you'll earn 0.3% of all trades on this pair proportional to your share of the pool.\n Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
-    "yourDeposits": "Your deposits"
+    "yourDeposits": "Deposited Amount"
   },
   "searchModal": {
     "commonBases": "Common bases",
