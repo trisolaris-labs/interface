@@ -58,7 +58,6 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
       return new Price(USDT, USDT, '1', '1')
     }
 
-
     const currencyEthPairWETHAmount = currencyEth?.reserveOf(WETH[chainId])
     const currencyEthPairWETHUSDCValue: JSBI =
       currencyEthPairWETHAmount && usdcEthPair
@@ -67,11 +66,7 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
 
     // all other tokens
     // first try the usdc pair
-    if (
-      usdcPairState === PairState.EXISTS &&
-      usdcPair &&
-      usdcPair.reserveOf(USDC).greaterThan(currencyEthPairWETHUSDCValue)
-    ) {
+    if (usdcPairState === PairState.EXISTS && usdcPair?.reserveOf(USDC).greaterThan(currencyEthPairWETHUSDCValue)) {
       const price = usdcPair.priceOf(wrapped)
       return new Price(currency, USDC, price.denominator, price.numerator)
     }
