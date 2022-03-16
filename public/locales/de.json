@@ -115,14 +115,14 @@
   "positionCard":{
     "add": "Hinzufügen",
     "remove": "Entfernen",
-    "poolShare": "Dein Anteil am Pool:",
-    "pooled": "gepoolt",
-    "poolTokens": "Deine Pool-Token:",
+    "poolShare": "Anteil am Pool",
+    "pooled": "Gepoolt",
+    "poolTokens": "Pool-Token",
     "manage": "Verwalten",
     "loading": "Lädt",
     "yourPosition": "Deine Position",
     "byAddingLiquidityInfo": "Durch das Bereitstellen von Liquidität verdienst du 0,3% an allen Trades auf diesem Paar, proportional zu deinem Anteil am Pool. \n Gebühren werden dem Pool hinzugefügt, fallen in Echtzeit an und können beansprucht werden, indem die Liquidität abgebucht wird.",
-    "yourDeposits": "Ihre Einlagen"
+    "yourDeposits": "Eingezahlter Betrag"
   },
   "searchModal": {
     "commonBases": "Übliche Basis-Token",

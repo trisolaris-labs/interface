@@ -115,14 +115,14 @@
   "positionCard":{
     "add": "Ekle",
     "remove": "Çıkar",
-    "poolShare": "Havuz payınız:",
+    "poolShare": "Havuz payı",
     "pooled": "Havuzda",
-    "poolTokens": "Havuz tokenlarınız:",
+    "poolTokens": "Havuz jetonları",
     "manage": "Yönet",
     "loading": "Yükleniyor",
     "yourPosition": "Pozisyonunuz",
     "byAddingLiquidityInfo": "Likidite ekleyerek, havuzdaki payınızla orantılı olarak bu çiftteki tüm işlemlerin %0.3'ünü kazanacaksınız.\n Ücretler havuza eklenir, gerçek zamanlı olarak birikir ve likiditenizi çekerek talep edilebilir.",
-    "yourDeposits": "Mevduatlarınız"
+    "yourDeposits": "Yatırılan miktar"
   },
   "searchModal": {
     "commonBases": "Ortak bazlar",
