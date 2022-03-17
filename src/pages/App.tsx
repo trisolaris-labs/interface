@@ -26,6 +26,7 @@ import Swap from './Swap'
 import StableSwap from './StableSwap'
 import StableSwapPool from './StableSwapPool'
 import StableSwapPoolAddLiquidity from './StableSwapPoolAddLiquidity'
+import StableSwapPoolRemoveLiquidity from './StableSwapPoolRemoveLiquidity'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 import { ENABLE_STABLESWAP } from '../constants'
 
@@ -80,21 +81,29 @@ export default function App() {
           <Polling />
           <Web3ReactManager>
             <Switch>
-              {ENABLE_STABLESWAP ? <Route exact strict path="/stableswap" component={StableSwap} /> : null}
               <Route exact strict path="/swap" component={Swap} />
               <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
               <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
               <Route exact strict path="/buy" component={Buy} />
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/pool" component={Pool} />
-              {ENABLE_STABLESWAP ? <Route exact strict path="/stableswap-pool" component={StableSwapPool} /> : null}
               {ENABLE_STABLESWAP ? (
-                <Route
-                  exact
-                  strict
-                  path="/stableswap-pool/add/:stableSwapPoolName"
-                  component={StableSwapPoolAddLiquidity}
-                />
+                <>
+                  <Route exact strict path="/stableswap" component={StableSwap} />
+                  <Route exact strict path="/stableswap-pool" component={StableSwapPool} />
+                  <Route
+                    exact
+                    strict
+                    path="/stableswap-pool/add/:stableSwapPoolName"
+                    component={StableSwapPoolAddLiquidity}
+                  />
+                  <Route
+                    exact
+                    strict
+                    path="/stableswap-pool/remove/:stableSwapPoolName"
+                    component={StableSwapPoolRemoveLiquidity}
+                  />
+                </>
               ) : null}
               <Route exact strict path="/farm/:version" component={EarnTri} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
