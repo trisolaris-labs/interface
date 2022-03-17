@@ -6,7 +6,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } 
 import { useTranslation } from 'react-i18next'
 import styled, { ThemeContext } from 'styled-components'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
-import { ButtonLight, ButtonGray, ButtonSecondary } from '../../components/Button'
+import { ButtonLight, ButtonGray, ButtonSecondary, ButtonConfirmed, ButtonPrimary } from '../../components/Button'
 import { DarkGreyCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
@@ -19,16 +19,19 @@ import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
 import { BIG_INT_ZERO } from '../../constants'
 import { TRI, XTRI } from '../../constants/tokens'
 import { useActiveWeb3React } from '../../hooks'
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useStableSwapContract } from '../../hooks/useContract'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import useStableSwapEstimateRemoveLiquidity from '../../hooks/useStableSwapEstimateRemoveLiquidity'
+import useStableSwapRemoveLiquidity from '../../hooks/useStableSwapRemoveLiquidity'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useSingleCallResult } from '../../state/multicall/hooks'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import { tryParseAmount } from '../../state/stableswap/hooks'
+import { useTransactionAdder } from '../../state/transactions/hooks'
 import { TYPE } from '../../theme'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
-import { ClickableText } from '../Pool/styleds'
+import { ClickableText, Dots } from '../Pool/styleds'
 import StableSwapRemoveLiquidityInputPanel from './StableSwapRemoveLiquidityInputPanel'
 import { StyledTokenName } from './StableSwapRemoveLiquidityInputPanel.styles'
 import StableSwapRemoveLiquidityTokenSelector from './StableSwapRemoveLiquidityTokenSelector'
@@ -86,6 +89,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const { account } = useActiveWeb3React()
 
   const parsedAmount = tryParseAmount(input, currency)
+  const rawParsedAmountRef = useRef(parsedAmount?.raw)
 
   const [estimatedAmounts, estimateRemovedLiquidityTokenAmounts] = useStableSwapEstimateRemoveLiquidity({
     amount: parsedAmount,
@@ -94,11 +98,12 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   })
 
   useEffect(() => {
-    if (withdrawTokenIndexRef.current !== withdrawTokenIndex) {
+    if (withdrawTokenIndexRef.current !== withdrawTokenIndex || rawParsedAmountRef.current !== parsedAmount?.raw) {
       withdrawTokenIndexRef.current = withdrawTokenIndex
+      rawParsedAmountRef.current = parsedAmount?.raw
       void estimateRemovedLiquidityTokenAmounts()
     }
-  }, [estimateRemovedLiquidityTokenAmounts, withdrawTokenIndex])
+  }, [estimateRemovedLiquidityTokenAmounts, withdrawTokenIndex, parsedAmount?.raw])
 
   const { getMaxInputAmount } = useCurrencyInputPanel()
   const { atMaxAmount: atMaxAmountInput, atHalfAmount: atHalfAmountInput, getClickedAmount } = getMaxInputAmount({
@@ -115,6 +120,32 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const handleBalanceClick = (value: BalanceButtonValueEnum) => {
     const amount = getClickedAmount(value)
     _setInput(amount)
+  }
+
+  const [approvalState, handleApproval] = useApproveCallback(parsedAmount, pool.lpToken.address)
+  const handleRemoveLiquidity = useStableSwapRemoveLiquidity({
+    amount: parsedAmount,
+    withdrawTokenIndex,
+    stableSwapPoolName
+  })
+
+  function renderApproveButton() {
+    return (
+      <ButtonConfirmed
+        mr="0.5rem"
+        onClick={handleApproval}
+        confirmed={approvalState === ApprovalState.APPROVED}
+        disabled={approvalState !== ApprovalState.NOT_APPROVED}
+      >
+        {approvalState === ApprovalState.PENDING ? (
+          <Dots>Approving</Dots>
+        ) : approvalState === ApprovalState.APPROVED ? (
+          'Approved'
+        ) : (
+          'Approve'
+        )}
+      </ButtonConfirmed>
+    )
   }
 
   return (
@@ -174,8 +205,19 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
             {account == null ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : (
-              <RowBetween>{/* {renderApproveButton()}
-                {renderStakeButton()} */}</RowBetween>
+              <RowBetween>
+                {renderApproveButton()}
+                <ButtonPrimary
+                  disabled={
+                    approvalState !== ApprovalState.APPROVED ||
+                    parsedAmount == null ||
+                    JSBI.equal(parsedAmount.raw, BIG_INT_ZERO)
+                  }
+                  onClick={handleRemoveLiquidity}
+                >
+                  Remove Liquidity
+                </ButtonPrimary>
+              </RowBetween>
             )}
           </div>
         </DarkGreyCard>
