@@ -116,9 +116,10 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
     _setInput(amount)
   }
 
-  const [approvalState, handleApproval] = useApproveCallback(parsedAmount, pool.lpToken.address)
+  const [approvalState, handleApproval] = useApproveCallback(parsedAmount, pool.address)
   const handleRemoveLiquidity = useStableSwapRemoveLiquidity({
     amount: parsedAmount,
+    estimatedAmounts,
     withdrawTokenIndex,
     stableSwapPoolName
   })
