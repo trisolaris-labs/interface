@@ -89,21 +89,23 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const { account } = useActiveWeb3React()
 
   const parsedAmount = tryParseAmount(input, currency)
-  const rawParsedAmountRef = useRef(parsedAmount?.raw)
+  const parsedAmountString = parsedAmount?.raw?.toString() ?? null
+  const rawParsedAmountRef = useRef(parsedAmountString)
 
-  const [estimatedAmounts, estimateRemovedLiquidityTokenAmounts] = useStableSwapEstimateRemoveLiquidity({
+  const [estimatedAmounts, estimateRemovedLiquidityTokenAmounts, error] = useStableSwapEstimateRemoveLiquidity({
     amount: parsedAmount,
     stableSwapPoolName,
     withdrawTokenIndex
   })
 
   useEffect(() => {
-    if (withdrawTokenIndexRef.current !== withdrawTokenIndex || rawParsedAmountRef.current !== parsedAmount?.raw) {
+    if (withdrawTokenIndexRef.current !== withdrawTokenIndex || rawParsedAmountRef.current !== parsedAmountString) {
       withdrawTokenIndexRef.current = withdrawTokenIndex
-      rawParsedAmountRef.current = parsedAmount?.raw
+      rawParsedAmountRef.current = parsedAmountString
+
       void estimateRemovedLiquidityTokenAmounts()
     }
-  }, [estimateRemovedLiquidityTokenAmounts, withdrawTokenIndex, parsedAmount?.raw])
+  }, [estimateRemovedLiquidityTokenAmounts, withdrawTokenIndex, parsedAmountString, error])
 
   const { getMaxInputAmount } = useCurrencyInputPanel()
   const { atMaxAmount: atMaxAmountInput, atHalfAmount: atHalfAmountInput, getClickedAmount } = getMaxInputAmount({
@@ -165,6 +167,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                 />
               </AutoColumn>
             </RowBetween>
+            {error ? <RowBetween>{error?.reason}</RowBetween> : null}
             <StableSwapRemoveLiquidityInputPanel
               id="stable-swap-remove-liquidity"
               value={input}
