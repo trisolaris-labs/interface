@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import ReactGA from 'react-ga'
 import { ThemeContext } from 'styled-components'
-import { Token, Trade } from '@trisolaris/sdk'
+import { JSBI, Percent, Token, Trade } from '@trisolaris/sdk'
 import { ChevronDown } from 'react-feather'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
@@ -53,7 +53,7 @@ import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO } from '../../constants'
 import { ClickableText } from '../Pool/styleds'
 import { LinkStyledButton, TYPE } from '../../theme'
 import { WarningWrapper, Root, SwapContainer, IconContainer, HeadingContainer } from './Swap.styles'
-import { useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
+import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
 
 export default function Swap() {
@@ -221,10 +221,24 @@ export default function Swap() {
 
   const swapCallbackError = isRoutedViaStableSwap ? stableswapCallbackError : defaultswapCallbackError
 
-  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+  const { priceImpactWithoutFee: defaultPriceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+  const stableswapPriceImpactWithoutFee = useMemo(
+    // multiply price impact by negative one for porting
+    // priceImpact is supposed to be 18 decimals formatted, so we use that as the numerator
+    // for the denominator, we use 100 * 18 decimals?
+    () =>
+      new Percent(
+        JSBI.lessThan(stableswapPriceImpact, JSBI.BigInt(0))
+          ? JSBI.multiply(stableswapPriceImpact, JSBI.BigInt(-1))
+          : stableswapPriceImpact,
+        JSBI.multiply(JSBI.BigInt(100), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+      ),
+    [stableswapPriceImpact]
+  )
+
+  const priceImpactWithoutFee = isRoutedViaStableSwap ? stableswapPriceImpactWithoutFee : defaultPriceImpactWithoutFee
 
   const handleSwap = useCallback(() => {
-    // TODO: if (isStableSwap) { ... }
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
       return
     }
@@ -273,11 +287,12 @@ export default function Swap() {
   ])
 
   // errors
-  const [showInverted, setShowInverted] = useState<boolean>(false)
+  // const [showInverted, setShowInverted] = useState<boolean>(false)
 
   // warnings on slippage
-  // TODO: if (isStableSwap) { ... }
-  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
+  const defaultswapPriceImpactSeverity = warningSeverity(priceImpactWithoutFee)
+  const stableswapPriceImpactSeverity = isStableSwapHighPriceImpact(stableswapPriceImpact)
+  const isStableSwapPriceImpactSevere = stableswapPriceImpactSeverity === true
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
@@ -286,7 +301,7 @@ export default function Swap() {
     (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
-    !(priceImpactSeverity > 3 && !isExpertMode)
+    !(!isExpertMode && (isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 3))
 
   const handleConfirmDismiss = useCallback(() => {
     setSwapState({ showConfirm: false, tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
@@ -434,11 +449,12 @@ export default function Swap() {
                           <Text fontWeight={500} fontSize={14} color={theme.text2}>
                             {t('swapPage.price')}
                           </Text>
-                          <TradePrice
+                          {/* TODO: use execution price? */}
+                          {/* <TradePrice
                             price={trade?.executionPrice}
                             showInverted={showInverted}
                             setShowInverted={setShowInverted}
-                          />
+                          /> */}
                         </RowBetween>
                       )}
                       {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
@@ -507,14 +523,24 @@ export default function Swap() {
                       width="48%"
                       id="swap-button"
                       disabled={
-                        !isValid || approval !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)
+                        !isValid ||
+                        approval !== ApprovalState.APPROVED ||
+                        (!isExpertMode &&
+                          (isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 3))
                       }
-                      error={isValid && priceImpactSeverity > 2}
+                      error={isValid && defaultswapPriceImpactSeverity > 2}
                     >
                       <Text fontSize={16} fontWeight={500}>
-                        {priceImpactSeverity > 3 && !isExpertMode
+                        {defaultswapPriceImpactSeverity > 3 && !isExpertMode
                           ? t('swapPage.priceImpactHigh')
-                          : t('swapPage.swap') + `${priceImpactSeverity > 2 ? t('swapPage.anyway') : ''}`}
+                          : t('swapPage.swap') +
+                            `${
+                              isRoutedViaStableSwap
+                                ? isStableSwapPriceImpactSevere
+                                : defaultswapPriceImpactSeverity > 2
+                                ? t('swapPage.anyway')
+                                : ''
+                            }`}
                       </Text>
                     </ButtonError>
                   </RowBetween>
@@ -534,15 +560,31 @@ export default function Swap() {
                       }
                     }}
                     id="swap-button"
-                    disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
-                    error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
+                    disabled={
+                      !isValid ||
+                      (!isExpertMode &&
+                        (isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 3)) ||
+                      !!swapCallbackError
+                    }
+                    error={
+                      isValid &&
+                      (isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 2) &&
+                      !swapCallbackError
+                    }
                   >
                     <Text fontSize={20} fontWeight={500}>
                       {swapInputError
                         ? swapInputError
-                        : priceImpactSeverity > 3 && !isExpertMode
+                        : defaultswapPriceImpactSeverity > 3 && !isExpertMode
                         ? t('swapPage.priceImpactHigh')
-                        : t('swapPage.swap') + `${priceImpactSeverity > 2 ? t('swapPage.anyway') : ''}`}
+                        : t('swapPage.swap') +
+                          `${
+                            (isRoutedViaStableSwap
+                            ? isStableSwapPriceImpactSevere
+                            : defaultswapPriceImpactSeverity > 2)
+                              ? t('swapPage.anyway')
+                              : ''
+                          }`}
                     </Text>
                   </ButtonError>
                 )}
