@@ -54,6 +54,7 @@ import { ClickableText } from '../Pool/styleds'
 import { LinkStyledButton, TYPE } from '../../theme'
 import { WarningWrapper, Root, SwapContainer, IconContainer, HeadingContainer } from './Swap.styles'
 import { useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
+import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -95,7 +96,7 @@ export default function Swap() {
     currencyBalances,
     parsedAmount,
     currencies,
-    inputError: swapInputError
+    inputError: defaultswapInputError
   } = useDerivedSwapInfo()
   const {
     priceImpact: stableswapPriceImpact,
@@ -138,8 +139,6 @@ export default function Swap() {
     useMemo(() => {
       const swapOutputRaw = parsedAmounts?.OUTPUT?.raw
       if (swapOutputRaw) {
-        console.log(parsedAmounts?.OUTPUT?.raw?.toString())
-        console.log(stableSwapTrade?.outputAmount?.raw?.toString())
         if (isStableSwap) {
           return stableSwapTrade?.outputAmount?.greaterThan(swapOutputRaw)
         }
@@ -148,6 +147,7 @@ export default function Swap() {
       return false
     }, [isStableSwap, , stableSwapTrade, parsedAmounts]) ?? false
 
+  const swapInputError = isRoutedViaStableSwap ? stableswapInputError : defaultswapInputError
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
   const isValid = !swapInputError
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
@@ -213,12 +213,13 @@ export default function Swap() {
   })
 
   // the callback to execute the swap
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
-    trade,
-    allowedSlippage,
-    recipient
-    // TODO: if (isStableSwap) { ... }
+  const { callback: swapCallback, error: defaultswapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
+  const { callback: stableswapCallback, error: stableswapCallbackError } = useStableSwapCallback(
+    stableSwapTrade,
+    allowedSlippage
   )
+
+  const swapCallbackError = isRoutedViaStableSwap ? stableswapCallbackError : defaultswapCallbackError
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 
@@ -227,11 +228,14 @@ export default function Swap() {
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
       return
     }
-    if (!swapCallback) {
+    if (!swapCallback || !stableswapCallback) {
       return
     }
+
     setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
-    swapCallback()
+    const swapOrStableSwapCallback = isRoutedViaStableSwap ? stableswapCallback : swapCallback
+
+    swapOrStableSwapCallback()
       .then(hash => {
         setSwapState({ attemptingTxn: false, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: hash })
 
@@ -255,18 +259,30 @@ export default function Swap() {
           txHash: undefined
         })
       })
-  }, [tradeToConfirm, account, priceImpactWithoutFee, recipient, recipientAddress, showConfirm, swapCallback, trade])
+  }, [
+    tradeToConfirm,
+    account,
+    priceImpactWithoutFee,
+    recipient,
+    recipientAddress,
+    showConfirm,
+    swapCallback,
+    trade,
+    isRoutedViaStableSwap,
+    stableswapCallback
+  ])
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
 
   // warnings on slippage
+  // TODO: if (isStableSwap) { ... }
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
   const showApproveFlow =
-    !swapInputError &&
+    !defaultswapInputError &&
     (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
