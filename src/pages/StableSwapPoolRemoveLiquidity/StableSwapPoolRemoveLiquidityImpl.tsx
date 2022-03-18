@@ -1,37 +1,29 @@
-import { BigintIsh, ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
-import { BigNumber } from 'ethers'
+import { ChainId, JSBI } from '@trisolaris/sdk'
 import _ from 'lodash'
 import { darken } from 'polished'
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import styled, { ThemeContext } from 'styled-components'
+import React, { useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
-import { ButtonLight, ButtonGray, ButtonSecondary, ButtonConfirmed, ButtonPrimary } from '../../components/Button'
+import { ButtonLight, ButtonConfirmed, ButtonError } from '../../components/Button'
 import { DarkGreyCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import NumericalInput from '../../components/NumericalInput'
 import { PageWrapper } from '../../components/Page'
-import input from '../../components/PurchaseForm/input'
 import { RowBetween } from '../../components/Row'
-import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
 import { BIG_INT_ZERO } from '../../constants'
-import { TRI, XTRI } from '../../constants/tokens'
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
-import { useStableSwapContract } from '../../hooks/useContract'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import useStableSwapEstimateRemoveLiquidity from '../../hooks/useStableSwapEstimateRemoveLiquidity'
 import useStableSwapRemoveLiquidity from '../../hooks/useStableSwapRemoveLiquidity'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import { useSingleCallResult } from '../../state/multicall/hooks'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import { tryParseAmount } from '../../state/stableswap/hooks'
-import { useTransactionAdder } from '../../state/transactions/hooks'
 import { TYPE } from '../../theme'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
-import { ClickableText, Dots } from '../Pool/styleds'
+import { Dots } from '../Pool/styleds'
 import StableSwapRemoveLiquidityInputPanel from './StableSwapRemoveLiquidityInputPanel'
 import { StyledTokenName } from './StableSwapRemoveLiquidityInputPanel.styles'
 import StableSwapRemoveLiquidityTokenSelector from './StableSwapRemoveLiquidityTokenSelector'
@@ -167,7 +159,6 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                 />
               </AutoColumn>
             </RowBetween>
-            {error ? <RowBetween>{error?.reason}</RowBetween> : null}
             <StableSwapRemoveLiquidityInputPanel
               id="stable-swap-remove-liquidity"
               value={input}
@@ -210,7 +201,8 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
             ) : (
               <RowBetween>
                 {renderApproveButton()}
-                <ButtonPrimary
+                <ButtonError
+                  error={error != null}
                   disabled={
                     approvalState !== ApprovalState.APPROVED ||
                     parsedAmount == null ||
@@ -218,8 +210,8 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                   }
                   onClick={handleRemoveLiquidity}
                 >
-                  Remove Liquidity
-                </ButtonPrimary>
+                  {error != null ? error.reason : 'Remove Liquidity'}
+                </ButtonError>
               </RowBetween>
             )}
           </div>
