@@ -117,7 +117,6 @@ function involvesAddress(trade: Trade, checksummedAddress: string): boolean {
   )
 }
 
-// from the current swap inputs, compute the best trade and return it.
 export function useDerivedSwapInfo(): {
   isStableSwap: boolean
   currencies: { [field in Field]?: Currency }
@@ -132,13 +131,14 @@ export function useDerivedSwapInfo(): {
 
   const toggledVersion = useToggledVersion()
 
+  const swapData = customSwap ?? useSwapState()
   const {
     independentField,
     typedValue,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     recipient
-  } = useSwapState()
+  } = swapData
 
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)

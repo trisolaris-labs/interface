@@ -1,6 +1,9 @@
 import { Text } from 'rebass'
 import styled from 'styled-components'
 
+import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
+import { RowBetween, RowFixed } from '../../components/Row'
+
 export const Wrapper = styled.div`
   position: relative;
 `
@@ -53,4 +56,46 @@ export const Dots = styled.span`
       content: '...';
     }
   }
+`
+
+export const TitleRow = styled(RowBetween)`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 100%;
+    flex-direction: column-reverse;
+  `};
+`
+
+export const ButtonRow = styled(RowFixed)`
+  gap: 8px;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    width: 100%;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  `};
+`
+
+export const ResponsiveButtonPrimary = styled(ButtonPrimary)`
+  width: fit-content;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    width: 48%;
+  `};
+`
+
+export const ResponsiveButtonSecondary = styled(ButtonSecondary)`
+  width: fit-content;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    width: 48%;
+  `};
+`
+
+export const EmptyProposals = styled.div`
+  border: 1px solid ${({ theme }) => theme.bg3};
+  padding: 16px 12px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
