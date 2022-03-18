@@ -186,15 +186,15 @@ export function useStableSwapAddLiquidityCallback(
 
     const formattedCurrencyAmounts = currencyAmounts.map(item => item?.raw?.toString() ?? '0')
     const isFirstTransaction = JSBI.equal(totalLPTokenSuppply?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
-    const minToMint = isFirstTransaction
-      ? BIG_INT_ZERO.toString()
-      : (
-          await stableSwapContract?.calculateTokenAmount(
-            formattedCurrencyAmounts,
-            true // deposit boolean
-          )
-        )?.toNumber()
 
+    // @TODO Fix this calculation
+    // const minToMint = isFirstTransaction
+    //   ? BIG_INT_ZERO.toString()
+    //   : await stableSwapContract?.calculateTokenAmount(
+    //       formattedCurrencyAmounts,
+    //       true // deposit boolean
+    //     )
+    const minToMint = '0'
     const transactionArguments = [formattedCurrencyAmounts, minToMint, deadline?.toNumber()]
 
     // @TODO Subtract slippage from `minToMint`
