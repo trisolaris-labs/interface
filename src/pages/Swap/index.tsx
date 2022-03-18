@@ -53,6 +53,7 @@ import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO } from '../../constants'
 import { ClickableText } from '../Pool/styleds'
 import { LinkStyledButton, TYPE } from '../../theme'
 import { WarningWrapper, Root, SwapContainer, IconContainer, HeadingContainer } from './Swap.styles'
+import { useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -96,6 +97,11 @@ export default function Swap() {
     currencies,
     inputError: swapInputError
   } = useDerivedSwapInfo()
+  const {
+    priceImpact: stableswapPriceImpact,
+    inputError: stableswapInputError,
+    stableSwapTrade
+  } = useDerivedStableSwapInfo()
 
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
@@ -114,15 +120,33 @@ export default function Swap() {
 
   const betterTradeLinkVersion: Version | undefined = undefined
 
-  const parsedAmounts = showWrap
-    ? {
-        [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount
+  const parsedAmounts = useMemo(
+    () =>
+      showWrap
+        ? {
+            [Field.INPUT]: parsedAmount,
+            [Field.OUTPUT]: parsedAmount
+          }
+        : {
+            [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+            [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
+          },
+    [parsedAmount, independentField, showWrap, trade]
+  )
+
+  const isRoutedViaStableSwap: boolean =
+    useMemo(() => {
+      const swapOutputRaw = parsedAmounts?.OUTPUT?.raw
+      if (swapOutputRaw) {
+        console.log(parsedAmounts?.OUTPUT?.raw?.toString())
+        console.log(stableSwapTrade?.outputAmount?.raw?.toString())
+        if (isStableSwap) {
+          return stableSwapTrade?.outputAmount?.greaterThan(swapOutputRaw)
+        }
+        return false
       }
-    : {
-        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
-      }
+      return false
+    }, [isStableSwap, , stableSwapTrade, parsedAmounts]) ?? false
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
   const isValid = !swapInputError
@@ -520,7 +544,7 @@ export default function Swap() {
               </BottomGrouping>
             </Wrapper>
           </AppBody>
-          <AdvancedSwapDetailsDropdown trade={trade} isStableSwap={isStableSwap} />
+          <AdvancedSwapDetailsDropdown trade={trade} isRoutedViaStableSwap={isRoutedViaStableSwap} />
         </SwapContainer>
       </Root>
     </>

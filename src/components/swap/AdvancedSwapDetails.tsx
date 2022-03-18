@@ -16,11 +16,11 @@ import { useTranslation } from 'react-i18next'
 function TradeSummary({
   trade,
   allowedSlippage,
-  isStableSwap
+  isRoutedViaStableSwap
 }: {
   trade: Trade
   allowedSlippage: number
-  isStableSwap: boolean
+  isRoutedViaStableSwap: boolean
 }) {
   const theme = useContext(ThemeContext)
   const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
@@ -77,7 +77,7 @@ function TradeSummary({
             </TYPE.black>
           </RowFixed>
           <TYPE.black fontSize={14} color={theme.text1}>
-            {isStableSwap ? 'Stable AMM' : 'Default AMM'}
+            {isRoutedViaStableSwap ? 'Stable AMM' : 'Default AMM'}
           </TYPE.black>
         </RowBetween>
       </AutoColumn>
@@ -87,10 +87,10 @@ function TradeSummary({
 
 export interface AdvancedSwapDetailsProps {
   trade?: Trade
-  isStableSwap: boolean
+  isRoutedViaStableSwap: boolean
 }
 
-export function AdvancedSwapDetails({ trade, isStableSwap }: AdvancedSwapDetailsProps) {
+export function AdvancedSwapDetails({ trade, isRoutedViaStableSwap }: AdvancedSwapDetailsProps) {
   const theme = useContext(ThemeContext)
 
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -102,7 +102,7 @@ export function AdvancedSwapDetails({ trade, isStableSwap }: AdvancedSwapDetails
     <AutoColumn gap="md">
       {trade && (
         <>
-          <TradeSummary isStableSwap={isStableSwap} trade={trade} allowedSlippage={allowedSlippage} />
+          <TradeSummary isRoutedViaStableSwap={isRoutedViaStableSwap} trade={trade} allowedSlippage={allowedSlippage} />
           {showRoute && (
             <>
               <SectionBreak />

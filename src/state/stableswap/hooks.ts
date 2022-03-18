@@ -86,7 +86,7 @@ export function calculatePriceImpact(
 }
 
 export function useStableSwapState(): AppState['stableswap'] {
-  return useSelector<AppState, AppState['stableswap']>(state => state.stableswap)
+  return useSelector<AppState, AppState['swap']>(state => state.swap)
 }
 
 export function useStableSwapActionHandlers(): {
