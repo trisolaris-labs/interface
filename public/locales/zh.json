@@ -115,13 +115,14 @@
   "positionCard":{
     "add": "添加",
     "remove": "移除",
-    "poolShare": "您池中的份额:",
+    "poolShare": "游泳池份额",
     "pooled": "汇集",
-    "poolTokens": "您池中的代币:",
+    "poolTokens": "游泳池份额",
     "manage": "管理",
     "loading": "加载中",
     "yourPosition": "您的部位",
-    "byAddingLiquidityInfo": "通过增加流动性，您将获得该货币对所有交易的 0.3%，与您在池中的份额成比例。\n 交易手续费随时累积并添加到池中，可以透过提取您的流动性来收成收益。"
+    "byAddingLiquidityInfo": "通过增加流动性，您将获得该货币对所有交易的 0.3%，与您在池中的份额成比例。\n 交易手续费随时累积并添加到池中，可以透过提取您的流动性来收成收益。",
+    "yourDeposits": "存款金额"
   },
   "searchModal": {
     "commonBases": "共同底层",
@@ -350,7 +351,8 @@
     "addLiquidity": "增加流动性",
     "createPool": "创建資金池",
     "invalidPair": "无效的交易对.",
-    "loading": "加载中"
+    "loading": "加载中",
+    "importPool": "输入这个池子"
   },
   "removeLiquidity": {
     "youWillReceive": "您将获得",

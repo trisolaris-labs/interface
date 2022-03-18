@@ -1,4 +1,4 @@
-import { ChainId, CurrencyAmount, Token, Trade } from '@trisolaris/sdk'
+import { ChainId, JSBI, Percent, Token, Trade } from '@trisolaris/sdk'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ChevronDown } from 'react-feather'
 import { Text } from 'rebass'
@@ -24,20 +24,23 @@ import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/stableswap/actions'
 import {
+  isStableSwapHighPriceImpact,
+  StableSwapTrade,
   useDefaultsFromURLSearch,
   useDerivedStableSwapInfo,
   useStableSwapActionHandlers,
   useStableSwapState
 } from '../../state/stableswap/hooks'
-import { useUserSlippageTolerance } from '../../state/user/hooks'
+import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import { LinkStyledButton, TYPE } from '../../theme'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import AppBody from '../AppBody'
 import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
 import { useTranslation } from 'react-i18next'
 import Settings from '../../components/Settings'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
+import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
+import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
 
 const NATIVE_USDC = USDC[ChainId.AURORA]
 const NATIVE_USDT = USDT[ChainId.AURORA]
@@ -110,14 +113,34 @@ export default function StableSwap() {
 
   // for expert mode
   const toggleSettings = useToggleSettingsMenu()
-  const isExpertMode = false // @nocommit No expert mode
+  const isExpertMode = useExpertModeManager()
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
 
   // swap state
   const { independentField, typedValue, recipient } = useStableSwapState()
-  const { currencyBalances, parsedAmount, currencies, inputError, stableSwapTrade } = useDerivedStableSwapInfo()
+  const {
+    priceImpact,
+    currencyBalances,
+    parsedAmount,
+    currencies,
+    inputError,
+    stableSwapTrade
+  } = useDerivedStableSwapInfo()
+
+  // TODO: NOTE - Unsure if numerator and denominator are correct for price impact calculation as it is ported over
+  const priceImpactWithoutFee = useMemo(
+    // multiply price impact by negative one for porting
+    // priceImpact is supposed to be 18 decimals formatted, so we use that as the numerator
+    // for the denominator, we use 100 * 18 decimals?
+    () =>
+      new Percent(
+        JSBI.lessThan(priceImpact, JSBI.BigInt(0)) ? JSBI.multiply(priceImpact, JSBI.BigInt(-1)) : priceImpact,
+        JSBI.multiply(JSBI.BigInt(100), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+      ),
+    [priceImpact]
+  )
 
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
@@ -156,9 +179,9 @@ export default function StableSwap() {
   )
 
   // modal and loading
-  const [{ showConfirm, tradeToConfirm, swapErrorMessage }, setSwapState] = useState<{
+  const [{ showConfirm, tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     showConfirm: boolean
-    tradeToConfirm: Trade | undefined
+    tradeToConfirm: StableSwapTrade | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined
@@ -207,15 +230,13 @@ export default function StableSwap() {
   const { callback: swapCallback, error: swapCallbackError } = useStableSwapCallback(stableSwapTrade, allowedSlippage)
 
   const handleSwap = useCallback(() => {
-    // @nocommit Should we add this?
-    // if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
-    //   return
-    // }
+    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
+      return
+    }
     if (!swapCallback) {
       return
     }
-    // @nocommit add this if we want to show the warning modal
-    // setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
+    setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
     swapCallback()
       .then(hash => {
         console.log('handleswap hash: ', hash)
@@ -231,12 +252,17 @@ export default function StableSwap() {
           txHash: undefined
         })
       })
-  }, [tradeToConfirm, showConfirm, swapCallback])
+  }, [tradeToConfirm, showConfirm, swapCallback, priceImpactWithoutFee])
 
   // warnings on slippage
-  // @nocommit Add This
-  // const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
-  const priceImpactSeverity = 0
+  const priceImpactSeverity = isStableSwapHighPriceImpact(priceImpact)
+  const isPriceImpactSevere = priceImpactSeverity === true
+  const showPriceImpactError = isPriceImpactSevere && !isExpertMode
+  // console.log({
+  //   priceImpactWithoutFee,
+  //   priceImpact: priceImpact?.toString(),
+  //   priceImpactSeverity
+  // })
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
@@ -245,21 +271,21 @@ export default function StableSwap() {
     (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
-    !(priceImpactSeverity > 3 && !isExpertMode)
+    !showPriceImpactError
 
   // @nocommit add this later
-  // const handleConfirmDismiss = useCallback(() => {
-  //   setSwapState({ showConfirm: false, tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
-  //   // if there was a tx hash, we want to clear the input
-  //   if (txHash) {
-  //     onUserInput(Field.INPUT, '')
-  //   }
-  // }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash])
+  const handleConfirmDismiss = useCallback(() => {
+    setSwapState({ showConfirm: false, tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
+    // if there was a tx hash, we want to clear the input
+    if (txHash) {
+      onUserInput(Field.INPUT, '')
+    }
+  }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash])
 
   // @nocommit will this occur?
-  // const handleAcceptChanges = useCallback(() => {
-  //   setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn, showConfirm })
-  // }, [attemptingTxn, showConfirm, swapErrorMessage, trade, txHash])
+  const handleAcceptChanges = useCallback(() => {
+    setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn, showConfirm })
+  }, [attemptingTxn, showConfirm, swapErrorMessage, trade, txHash])
 
   const handleInputSelect = useCallback(
     inputCurrency => {
@@ -294,6 +320,22 @@ export default function StableSwap() {
   //   )
   // }, [dispatch])
 
+  const handleSwapError = () => {
+    return () => {
+      if (isExpertMode) {
+        handleSwap()
+      } else {
+        setSwapState({
+          tradeToConfirm: trade,
+          attemptingTxn: false,
+          swapErrorMessage: undefined,
+          showConfirm: true,
+          txHash: undefined
+        })
+      }
+    }
+  }
+
   return (
     <>
       <TokenWarningModal
@@ -310,10 +352,10 @@ export default function StableSwap() {
           <AppBody>
             {/* <SwapPoolTabs active={'swap'} /> */}
             <Wrapper id="swap-page">
-              {/* <ConfirmSwapModal
+              <ConfirmSwapModal
                 isOpen={showConfirm}
-                trade={trade}
-                originalTrade={tradeToConfirm}
+                trade={trade as Trade | undefined}
+                originalTrade={tradeToConfirm as Trade | undefined}
                 onAcceptChanges={handleAcceptChanges}
                 attemptingTxn={attemptingTxn}
                 txHash={txHash}
@@ -322,7 +364,7 @@ export default function StableSwap() {
                 onConfirm={handleSwap}
                 swapErrorMessage={swapErrorMessage}
                 onDismiss={handleConfirmDismiss}
-              /> */}
+              />
               <AutoColumn gap={'md'}>
                 <HeadingContainer>
                   <TYPE.largeHeader>StableSwap</TYPE.largeHeader>
@@ -461,60 +503,32 @@ export default function StableSwap() {
                       )}
                     </ButtonConfirmed>
                     <ButtonError
-                      onClick={() => {
-                        // @nocommit -- this removes the confirmation modal
-                        // if (isExpertMode) {
-                        handleSwap()
-                        // } else {
-                        //   setSwapState({
-                        //     tradeToConfirm: trade,
-                        //     attemptingTxn: false,
-                        //     swapErrorMessage: undefined,
-                        //     showConfirm: true,
-                        //     txHash: undefined
-                        //   })
-                        // }
-                      }}
+                      onClick={() => handleSwapError()}
                       width="48%"
                       id="swap-button"
-                      disabled={
-                        !isValid || approval !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)
-                      }
-                      error={isValid && priceImpactSeverity > 2}
+                      disabled={!isValid || approval !== ApprovalState.APPROVED || showPriceImpactError}
+                      error={isValid && isPriceImpactSevere}
                     >
                       <Text fontSize={16} fontWeight={500}>
-                        {priceImpactSeverity > 3 && !isExpertMode
+                        {showPriceImpactError
                           ? t('swapPage.priceImpactHigh')
-                          : t('swapPage.swap') + `${priceImpactSeverity > 2 ? t('swapPage.anyway') : ''}`}
+                          : t('swapPage.swap') + `${isPriceImpactSevere ? t('swapPage.anyway') : ''}`}
                       </Text>
                     </ButtonError>
                   </RowBetween>
                 ) : (
                   <ButtonError
-                    onClick={() => {
-                      // @nocommit -- this removes the confirmation modal
-                      // if (isExpertMode) {
-                      handleSwap()
-                      // } else {
-                      //   setSwapState({
-                      //     tradeToConfirm: trade,
-                      //     attemptingTxn: false,
-                      //     swapErrorMessage: undefined,
-                      //     showConfirm: true,
-                      //     txHash: undefined
-                      //   })
-                      // }
-                    }}
+                    onClick={() => handleSwapError()}
                     id="swap-button"
-                    disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
-                    error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
+                    disabled={!isValid || showPriceImpactError || !!swapCallbackError}
+                    error={isValid && isPriceImpactSevere && !swapCallbackError}
                   >
                     <Text fontSize={20} fontWeight={500}>
                       {inputError
                         ? inputError
-                        : priceImpactSeverity > 3 && !isExpertMode
+                        : showPriceImpactError
                         ? t('swapPage.priceImpactHigh')
-                        : t('swapPage.swap') + `${priceImpactSeverity > 2 ? t('swapPage.anyway') : ''}`}
+                        : t('swapPage.swap') + `${isPriceImpactSevere ? t('swapPage.anyway') : ''}`}
                     </Text>
                   </ButtonError>
                 )}

@@ -1,5 +1,5 @@
 import { parseUnits } from '@ethersproject/units'
-import { ChainId, Currency, CurrencyAmount, Fraction, JSBI, Price, Token, TokenAmount, Trade } from '@trisolaris/sdk'
+import { ChainId, Currency, CurrencyAmount, Fraction, JSBI, Price, Token, TokenAmount } from '@trisolaris/sdk'
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -31,6 +31,58 @@ export type StableSwapTrade = {
   inputAmount: CurrencyAmount
   stableSwapData: StableSwapData
   outputAmount: CurrencyAmount
+}
+
+export function isStableSwapHighPriceImpact(priceImpact: JSBI): boolean {
+  // assumes that priceImpact has 18d precision
+  // const negOne = BigNumber.from(10)
+  //   .pow(18 - 2)
+  //   .mul(-1)
+  const negOne = JSBI.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18 - 2)), JSBI.BigInt(-1))
+
+  // return priceImpact.lte(negOne)
+  return JSBI.LE(priceImpact, negOne)
+}
+
+export function calculatePriceImpact(
+  tokenInputAmount: JSBI, // assumed to be 18d precision
+  tokenOutputAmount: JSBI,
+  virtualPrice = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)),
+  isWithdraw = false
+): JSBI {
+  // We want to multiply the lpTokenAmount by virtual price
+  // Deposits: (VP * output) / input - 1
+  // Swaps: (1 * output) / input - 1
+  // Withdraws: output / (input * VP) - 1
+
+  /* if (tokenInputAmount.lte(0)) return Zero */
+  if (JSBI.LE(tokenInputAmount, 0)) {
+    return JSBI.BigInt(0)
+  }
+
+  return isWithdraw
+    ? /*
+          tokenOutputAmount
+            .mul(BigNumber.from(10).pow(36))
+            .div(tokenInputAmount.mul(virtualPrice))
+            .sub(BigNumber.from(10).pow(18))
+        */
+      JSBI.subtract(
+        JSBI.divide(
+          JSBI.multiply(tokenOutputAmount, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(36))),
+          JSBI.multiply(tokenInputAmount, virtualPrice)
+        ),
+        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+      )
+    : /*  virtualPrice
+        .mul(tokenOutputAmount)
+        .div(tokenInputAmount)
+        .sub(BigNumber.from(10).pow(18))
+      */
+      JSBI.subtract(
+        JSBI.divide(JSBI.multiply(virtualPrice, tokenOutputAmount), tokenInputAmount),
+        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+      )
 }
 
 export function useStableSwapState(): AppState['stableswap'] {
@@ -136,6 +188,7 @@ export function useSelectedStableSwapPool() {
 
 // from the current swap inputs, compute the best trade and return it.
 export function useDerivedStableSwapInfo(): {
+  priceImpact: JSBI
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
@@ -214,7 +267,6 @@ export function useDerivedStableSwapInfo(): {
     }
   }
 
-  // @TODO - add price impact: See src/pages/Swap.tsx#L305
   let tradeData
 
   if (
@@ -244,7 +296,13 @@ export function useDerivedStableSwapInfo(): {
     }
   }
 
+  const priceImpact = calculatePriceImpact(
+    tradeData?.inputAmount.raw ?? JSBI.BigInt(0),
+    tradeData?.outputAmount.raw ?? JSBI.BigInt(0)
+  )
+
   return {
+    priceImpact,
     currencies,
     currencyBalances,
     parsedAmount,

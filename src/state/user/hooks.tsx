@@ -1,12 +1,8 @@
 import { ChainId, Pair, Token } from '@trisolaris/sdk'
-import flatMap from 'lodash.flatmap'
 import { useCallback, useMemo } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from '../../constants'
 
 import { useActiveWeb3React } from '../../hooks'
-import { useAllTokens } from '../../hooks/Tokens'
-import { AppDispatch, AppState } from '../index'
 import {
   addSerializedPair,
   addSerializedToken,
@@ -20,6 +16,9 @@ import {
   toggleURLWarning,
   toggleFilterActiveFarms
 } from './actions'
+
+import { AppDispatch, AppState } from '../index'
+import { STAKING as trisolarisDefinedPools } from '../../state/stake/stake-constants'
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -185,35 +184,11 @@ export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token], chainId: Ch
  */
 export function useTrackedTokenPairs(): [Token, Token][] {
   const { chainId } = useActiveWeb3React()
-  const tokens = useAllTokens()
 
   // pinned pairs
-  const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
-
-  // pairs for every token against every base
-  const generatedPairs: [Token, Token][] = useMemo(
-    () =>
-      chainId
-        ? flatMap(Object.keys(tokens), tokenAddress => {
-            const token = tokens[tokenAddress]
-            // for each token on the current chain,
-            return (
-              // loop though all bases on the current chain
-              (BASES_TO_TRACK_LIQUIDITY_FOR[chainId] ?? [])
-                // to construct pairs of the given token with each base
-                .map(base => {
-                  if (base.address === token.address) {
-                    return null
-                  } else {
-                    return [base, token]
-                  }
-                })
-                .filter((p): p is [Token, Token] => p !== null)
-            )
-          })
-        : [],
-    [tokens, chainId]
-  )
+  const pinnedPairs = useMemo(() => (chainId ? trisolarisDefinedPools[chainId].map(pool => pool.tokens) ?? [] : []), [
+    chainId
+  ])
 
   // pairs saved by users
   const savedSerializedPairs = useSelector<AppState, AppState['user']['pairs']>(({ user: { pairs } }) => pairs)
@@ -228,11 +203,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
     })
   }, [savedSerializedPairs, chainId])
 
-  const combinedList = useMemo(() => userPairs.concat(generatedPairs).concat(pinnedPairs), [
-    generatedPairs,
-    pinnedPairs,
-    userPairs
-  ])
+  const combinedList = useMemo(() => userPairs.concat(pinnedPairs), [pinnedPairs, userPairs])
 
   return useMemo(() => {
     // dedupes pairs of tokens in the combined list

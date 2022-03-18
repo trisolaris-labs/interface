@@ -6,7 +6,7 @@ import { ButtonDropdownLight } from '../../components/Button'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { FindPoolTabs } from '../../components/NavigationTabs'
-import { MinimalPositionCard } from '../../components/PositionCard'
+import MinimalPositionCard from '../../components/PositionCard'
 import Row from '../../components/Row'
 import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal'
 import { PairState, usePair } from '../../data/Reserves'
@@ -134,7 +134,7 @@ export default function PoolFinder() {
               {t('poolFinder.poolFound')}
             </Text>
             <StyledInternalLink to={`/pool`}>
-              <Text textAlign="center">{t('poolFinder.managePool')}</Text>
+              <Text textAlign="center">{t('poolFinder.importPool')}</Text>
             </StyledInternalLink>
           </ColumnCenter>
         )}

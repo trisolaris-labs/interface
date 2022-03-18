@@ -60,10 +60,6 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...COMMON_BASES
 }
 
-export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
-  [ChainId.AVALANCHE]: []
-}
-
 export interface WalletInfo {
   connector?: AbstractConnector
   name: string
@@ -213,4 +209,5 @@ export const WYRE_API_URL = 'https://api.sendwyre.com'
 export const WYRE_QUOTE_API_ENDPOINT = '/v3/orders/quote/partner'
 export const WYRE_RESERVE_API_ENDPOINT = '/v3/orders/reserve'
 export const WYRE_CALLBACK_URL = 'https://app.pangolin.exchange/'
-export const ENABLE_STABLESWAP: boolean = process.env.REACT_APP_ENABLE_STABLESWAP === 'true'
+export const ENABLE_STABLESWAP: boolean =
+  process.env.NODE_ENV === 'development' || process.env.REACT_APP_ENABLE_STABLESWAP === 'true'
