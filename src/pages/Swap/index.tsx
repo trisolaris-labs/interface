@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import ReactGA from 'react-ga'
 import { ThemeContext } from 'styled-components'
 import { JSBI, Percent, Token, Trade } from '@trisolaris/sdk'
@@ -29,7 +29,7 @@ import Loader from '../../components/Loader'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
-import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
+import { ApprovalState, useApproveCallback, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
@@ -94,14 +94,15 @@ export default function Swap() {
     v1Trade,
     v2Trade,
     currencyBalances,
-    parsedAmount,
+    parsedAmount: defaultswapParsedAmount,
     currencies,
     inputError: defaultswapInputError
   } = useDerivedSwapInfo()
   const {
     priceImpact: stableswapPriceImpact,
     inputError: stableswapInputError,
-    stableSwapTrade
+    parsedAmount: stableswapParsedAmount,
+    stableswapTrade
   } = useDerivedStableSwapInfo()
 
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
@@ -121,31 +122,46 @@ export default function Swap() {
 
   const betterTradeLinkVersion: Version | undefined = undefined
 
-  const parsedAmounts = useMemo(
+  let parsedAmounts = useMemo(
     () =>
       showWrap
         ? {
-            [Field.INPUT]: parsedAmount,
-            [Field.OUTPUT]: parsedAmount
+            [Field.INPUT]: defaultswapParsedAmount,
+            [Field.OUTPUT]: defaultswapParsedAmount
           }
         : {
-            [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-            [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
+            [Field.INPUT]: independentField === Field.INPUT ? defaultswapParsedAmount : trade?.inputAmount,
+            [Field.OUTPUT]: independentField === Field.OUTPUT ? defaultswapParsedAmount : trade?.outputAmount
           },
-    [parsedAmount, independentField, showWrap, trade]
+    [defaultswapParsedAmount, independentField, showWrap, trade]
   )
 
   const isRoutedViaStableSwap: boolean =
     useMemo(() => {
-      const swapOutputRaw = parsedAmounts?.OUTPUT?.raw
-      if (swapOutputRaw) {
-        if (isStableSwap) {
-          return stableSwapTrade?.outputAmount?.greaterThan(swapOutputRaw)
+      if (isStableSwap) {
+        const swapOutputRaw = parsedAmounts?.OUTPUT?.raw
+        if (swapOutputRaw) {
+          console.log(swapOutputRaw?.toString())
+          console.log(stableswapTrade?.outputAmount?.raw?.toString())
+          return JSBI.greaterThan(stableswapTrade?.outputAmount?.raw ?? JSBI.BigInt(0), swapOutputRaw)
         }
         return false
       }
       return false
-    }, [isStableSwap, , stableSwapTrade, parsedAmounts]) ?? false
+    }, [isStableSwap, stableswapTrade, parsedAmounts]) ?? false
+
+  // Use stableswap quotes for parsed amounts if they are better than the default amm's
+  if (isRoutedViaStableSwap) {
+    parsedAmounts = showWrap
+      ? {
+          [Field.INPUT]: stableswapParsedAmount,
+          [Field.OUTPUT]: stableswapParsedAmount
+        }
+      : {
+          [Field.INPUT]: independentField === Field.INPUT ? stableswapParsedAmount : stableswapTrade?.inputAmount,
+          [Field.OUTPUT]: independentField === Field.OUTPUT ? stableswapParsedAmount : stableswapTrade?.outputAmount
+        }
+  }
 
   const swapInputError = isRoutedViaStableSwap ? stableswapInputError : defaultswapInputError
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
@@ -194,7 +210,23 @@ export default function Swap() {
   const noRoute = !route
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
+  const [defaultswapApproval, defaultswapApproveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
+  const [stableswapApproval, stableswapApproveCallback] = useApproveCallback(
+    stableswapTrade?.inputAmount,
+    stableswapTrade?.contract?.address
+  )
+
+  const [approval, approveCallback] = useMemo(() => {
+    return isRoutedViaStableSwap
+      ? [stableswapApproval, stableswapApproveCallback]
+      : [defaultswapApproval, defaultswapApproveCallback]
+  }, [
+    isRoutedViaStableSwap,
+    defaultswapApproval,
+    defaultswapApproveCallback,
+    stableswapApproval,
+    stableswapApproveCallback
+  ])
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
@@ -215,31 +247,25 @@ export default function Swap() {
   // the callback to execute the swap
   const { callback: swapCallback, error: defaultswapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
   const { callback: stableswapCallback, error: stableswapCallbackError } = useStableSwapCallback(
-    stableSwapTrade,
+    stableswapTrade,
     allowedSlippage
   )
 
   const swapCallbackError = isRoutedViaStableSwap ? stableswapCallbackError : defaultswapCallbackError
 
-  const { priceImpactWithoutFee: defaultPriceImpactWithoutFee } = computeTradePriceBreakdown(trade)
-  const stableswapPriceImpactWithoutFee = useMemo(
+  const { priceImpactWithoutFee: defaultswapPriceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+  const stableswapPriceImpactWithoutFee = useMemo(() => {
     // multiply price impact by negative one for porting
     // priceImpact is supposed to be 18 decimals formatted, so we use that as the numerator
     // for the denominator, we use 100 * 18 decimals?
-    () =>
-      new Percent(
-        JSBI.lessThan(stableswapPriceImpact, JSBI.BigInt(0))
-          ? JSBI.multiply(stableswapPriceImpact, JSBI.BigInt(-1))
-          : stableswapPriceImpact,
-        JSBI.multiply(JSBI.BigInt(100), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
-      ),
-    [stableswapPriceImpact]
-  )
-
-  const priceImpactWithoutFee = isRoutedViaStableSwap ? stableswapPriceImpactWithoutFee : defaultPriceImpactWithoutFee
+    return new Percent(
+      JSBI.multiply(JSBI.BigInt(-1), stableswapPriceImpact),
+      JSBI.multiply(JSBI.BigInt(100), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+    )
+  }, [stableswapPriceImpact])
 
   const handleSwap = useCallback(() => {
-    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
+    if (defaultswapPriceImpactWithoutFee && !confirmPriceImpactWithoutFee(defaultswapPriceImpactWithoutFee)) {
       return
     }
     if (!swapCallback || !stableswapCallback) {
@@ -276,23 +302,22 @@ export default function Swap() {
   }, [
     tradeToConfirm,
     account,
-    priceImpactWithoutFee,
     recipient,
     recipientAddress,
     showConfirm,
     swapCallback,
     trade,
     isRoutedViaStableSwap,
-    stableswapCallback
+    stableswapCallback,
+    defaultswapPriceImpactWithoutFee
   ])
 
   // errors
   // const [showInverted, setShowInverted] = useState<boolean>(false)
 
   // warnings on slippage
-  const defaultswapPriceImpactSeverity = warningSeverity(priceImpactWithoutFee)
-  const stableswapPriceImpactSeverity = isStableSwapHighPriceImpact(stableswapPriceImpact)
-  const isStableSwapPriceImpactSevere = stableswapPriceImpactSeverity === true
+  const defaultswapPriceImpactSeverity = warningSeverity(defaultswapPriceImpactWithoutFee)
+  const isStableSwapPriceImpactSevere = isStableSwapHighPriceImpact(stableswapPriceImpact)
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
@@ -531,7 +556,8 @@ export default function Swap() {
                       error={isValid && defaultswapPriceImpactSeverity > 2}
                     >
                       <Text fontSize={16} fontWeight={500}>
-                        {defaultswapPriceImpactSeverity > 3 && !isExpertMode
+                        {!isExpertMode &&
+                        (isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 3)
                           ? t('swapPage.priceImpactHigh')
                           : t('swapPage.swap') +
                             `${
@@ -575,7 +601,8 @@ export default function Swap() {
                     <Text fontSize={20} fontWeight={500}>
                       {swapInputError
                         ? swapInputError
-                        : defaultswapPriceImpactSeverity > 3 && !isExpertMode
+                        : !isExpertMode &&
+                          (isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 3)
                         ? t('swapPage.priceImpactHigh')
                         : t('swapPage.swap') +
                           `${
@@ -602,7 +629,12 @@ export default function Swap() {
               </BottomGrouping>
             </Wrapper>
           </AppBody>
-          <AdvancedSwapDetailsDropdown trade={trade} isRoutedViaStableSwap={isRoutedViaStableSwap} />
+          <AdvancedSwapDetailsDropdown
+            trade={trade}
+            isRoutedViaStableSwap={isRoutedViaStableSwap}
+            stableswapPriceImpactWithoutFee={stableswapPriceImpactWithoutFee}
+            isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
+          />
         </SwapContainer>
       </Root>
     </>

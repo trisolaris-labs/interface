@@ -1,4 +1,4 @@
-import { Trade, TradeType } from '@trisolaris/sdk'
+import { Percent, Trade, TradeType } from '@trisolaris/sdk'
 import React, { useContext } from 'react'
 import { ThemeContext } from 'styled-components'
 import { Field } from '../../state/swap/actions'
@@ -6,21 +6,25 @@ import { useUserSlippageTolerance } from '../../state/user/hooks'
 import { TYPE } from '../../theme'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from '../../utils/prices'
 import { AutoColumn } from '../Column'
-import QuestionHelper from '../QuestionHelper'
 import { RowBetween, RowFixed } from '../Row'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { SectionBreak } from './styleds'
 import SwapRoute from './SwapRoute'
 import { useTranslation } from 'react-i18next'
+import { StableSwapTrade } from '../../state/stableswap/hooks'
 
 function TradeSummary({
   trade,
+  stableswapPriceImpactWithoutFee,
   allowedSlippage,
-  isRoutedViaStableSwap
+  isRoutedViaStableSwap,
+  isStableSwapPriceImpactSevere
 }: {
   trade: Trade
+  stableswapPriceImpactWithoutFee: Percent
   allowedSlippage: number
   isRoutedViaStableSwap: boolean
+  isStableSwapPriceImpactSevere: boolean
 }) {
   const theme = useContext(ThemeContext)
   const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
@@ -55,20 +59,26 @@ function TradeSummary({
             </TYPE.black>
             {/* <QuestionHelper text={t('swap.priceImpactHelper')} /> */}
           </RowFixed>
-          <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
+          <FormattedPriceImpact
+            isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
+            priceImpact={isRoutedViaStableSwap ? stableswapPriceImpactWithoutFee : priceImpactWithoutFee}
+            isRoutedViaStableSwap={isRoutedViaStableSwap}
+          />
         </RowBetween>
 
-        <RowBetween>
-          <RowFixed>
-            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              {t('swap.liquidityProviderFee')}
+        {!isRoutedViaStableSwap && (
+          <RowBetween>
+            <RowFixed>
+              <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+                {t('swap.liquidityProviderFee')}
+              </TYPE.black>
+              {/* <QuestionHelper text={t('swap.liquidityProviderHelper')} /> */}
+            </RowFixed>
+            <TYPE.black fontSize={14} color={theme.text1}>
+              {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.currency.symbol}` : '-'}
             </TYPE.black>
-            {/* <QuestionHelper text={t('swap.liquidityProviderHelper')} /> */}
-          </RowFixed>
-          <TYPE.black fontSize={14} color={theme.text1}>
-            {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.currency.symbol}` : '-'}
-          </TYPE.black>
-        </RowBetween>
+          </RowBetween>
+        )}
 
         <RowBetween>
           <RowFixed>
@@ -87,22 +97,35 @@ function TradeSummary({
 
 export interface AdvancedSwapDetailsProps {
   trade?: Trade
+  stableswapPriceImpactWithoutFee: Percent
   isRoutedViaStableSwap: boolean
+  isStableSwapPriceImpactSevere: boolean
 }
 
-export function AdvancedSwapDetails({ trade, isRoutedViaStableSwap }: AdvancedSwapDetailsProps) {
+export function AdvancedSwapDetails({
+  trade,
+  isRoutedViaStableSwap,
+  stableswapPriceImpactWithoutFee,
+  isStableSwapPriceImpactSevere
+}: AdvancedSwapDetailsProps) {
   const theme = useContext(ThemeContext)
 
   const [allowedSlippage] = useUserSlippageTolerance()
 
-  const showRoute = Boolean(trade && trade.route.path.length > 2)
+  const showRoute = !isRoutedViaStableSwap && Boolean(trade && trade.route.path.length > 2)
   const { t } = useTranslation()
 
   return (
     <AutoColumn gap="md">
       {trade && (
         <>
-          <TradeSummary isRoutedViaStableSwap={isRoutedViaStableSwap} trade={trade} allowedSlippage={allowedSlippage} />
+          <TradeSummary
+            isRoutedViaStableSwap={isRoutedViaStableSwap}
+            trade={trade}
+            stableswapPriceImpactWithoutFee={stableswapPriceImpactWithoutFee}
+            allowedSlippage={allowedSlippage}
+            isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
+          />
           {showRoute && (
             <>
               <SectionBreak />
