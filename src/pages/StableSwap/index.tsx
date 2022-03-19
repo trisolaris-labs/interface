@@ -126,7 +126,7 @@ export default function StableSwap() {
     parsedAmount,
     currencies,
     inputError,
-    stableSwapTrade
+    stableswapTrade: stableSwapTrade
   } = useDerivedStableSwapInfo()
 
   // TODO: NOTE - Unsure if numerator and denominator are correct for price impact calculation as it is ported over

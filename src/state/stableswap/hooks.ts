@@ -193,7 +193,7 @@ export function useDerivedStableSwapInfo(): {
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
   inputError?: string
-  stableSwapTrade: StableSwapTrade | undefined
+  stableswapTrade: StableSwapTrade | undefined
 } {
   const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
@@ -307,7 +307,7 @@ export function useDerivedStableSwapInfo(): {
     currencyBalances,
     parsedAmount,
     inputError,
-    stableSwapTrade: tradeData
+    stableswapTrade: tradeData
   }
 }
 
