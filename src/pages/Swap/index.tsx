@@ -141,8 +141,8 @@ export default function Swap() {
       if (isStableSwap) {
         const swapOutputRaw = parsedAmounts?.OUTPUT?.raw
         if (swapOutputRaw) {
-          console.log(swapOutputRaw?.toString())
-          console.log(stableswapTrade?.outputAmount?.raw?.toString())
+          // console.log(swapOutputRaw?.toString())
+          // console.log(stableswapTrade?.outputAmount?.raw?.toString())
           return JSBI.greaterThan(stableswapTrade?.outputAmount?.raw ?? JSBI.BigInt(0), swapOutputRaw)
         }
         return false
@@ -533,7 +533,7 @@ export default function Swap() {
                     </ButtonConfirmed>
                     <ButtonError
                       onClick={() => {
-                        if (isExpertMode) {
+                        if (isExpertMode || isRoutedViaStableSwap) {
                           handleSwap()
                         } else {
                           setSwapState({
@@ -573,7 +573,7 @@ export default function Swap() {
                 ) : (
                   <ButtonError
                     onClick={() => {
-                      if (isExpertMode) {
+                      if (isExpertMode || isRoutedViaStableSwap) {
                         handleSwap()
                       } else {
                         setSwapState({
