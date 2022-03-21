@@ -117,7 +117,9 @@ function involvesAddress(trade: Trade, checksummedAddress: string): boolean {
   )
 }
 
-export function useDerivedSwapInfo(): {
+export function useDerivedSwapInfo(
+  customSwap?: SwapState
+): {
   isStableSwap: boolean
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
@@ -126,7 +128,7 @@ export function useDerivedSwapInfo(): {
   inputError?: string
   v1Trade: Trade | undefined
 } {
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
   const toggledVersion = useToggledVersion()

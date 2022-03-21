@@ -8,8 +8,8 @@ import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { Interface } from '@ethersproject/abi'
 import { ChainId, JSBI, WETH } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../constants'
-import useUSDCPrice from '../utils/useUSDCPrice'
 import { WBTC } from '../constants/tokens'
+import useUSDCPrice from './useUSDCPrice'
 
 type StableSwapPoolStatuses = {
   [poolName in StableSwapPoolName]?: {
