@@ -48,7 +48,6 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  */
 export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
   [ChainId.AVALANCHE]: {},
-  // [ChainId.AURORA]: {["0x25e801Eb75859Ba4052C4ac4233ceC0264eaDF8c"] :[LUNA[ChainId.AURORA]]},
 }
 
 // used for display in the default list when adding liquidity
