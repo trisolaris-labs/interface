@@ -13,6 +13,7 @@ import { ButtonSecondary } from '../Button'
 import { RedCard } from '../Card'
 import Menu from '../Menu'
 import BridgesMenu from '../BridgesMenu'
+import GovernanceMenu from '../GovernanceMenu'
 
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
@@ -291,6 +292,7 @@ export default function Header() {
             {t('header.farm')}
           </StyledNavLink>
           <BridgesMenu />
+          <GovernanceMenu />
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
