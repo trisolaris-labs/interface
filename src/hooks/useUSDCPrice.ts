@@ -89,6 +89,7 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
     usdcPair,
     usdcPairState,
     wrapped,
-    USDC
+    USDC,
+    USDT
   ])
 }

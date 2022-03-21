@@ -129,7 +129,7 @@ export function useDerivedSwapInfo(
   v1Trade: Trade | undefined
   isStableSwap: boolean
 } {
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
   const toggledVersion = useToggledVersion()

@@ -13,13 +13,8 @@ import { ChevronWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../.
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import spacemenAndPlanets from '../../assets/svg/spacemen_and_planets.svg'
-
-<<<<<<< HEAD
-import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO, USDT } from '../../constants'
-=======
 import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO } from '../../constants'
 import { USDC, USDT } from '../../constants/tokens'
->>>>>>> 2bf3af6ab (cleanup)
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'

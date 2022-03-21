@@ -55,8 +55,7 @@ export default function CirculatingSupplyMarketCap({ totalTRI, triPrice }: Props
 
   const circulating = useMemo(() => (isLoading ? null : JSBI.subtract(JSBI.BigInt(totalTRI!.toFixed(0)), LOCKED_TRI)), [
     isLoading,
-    totalTRI,
-    LOCKED_TRI
+    totalTRI
   ])
 
   const marketCap = useMemo(() => (isLoading ? null : new Fraction(circulating!, '1').multiply(triPrice!).toFixed(0)), [

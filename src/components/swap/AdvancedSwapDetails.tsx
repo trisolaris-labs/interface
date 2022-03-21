@@ -11,7 +11,6 @@ import FormattedPriceImpact from './FormattedPriceImpact'
 import { SectionBreak } from './styleds'
 import SwapRoute from './SwapRoute'
 import { useTranslation } from 'react-i18next'
-import { StableSwapTrade } from '../../state/stableswap/hooks'
 
 function TradeSummary({
   trade,
