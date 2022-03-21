@@ -113,7 +113,7 @@ export default function StableSwap() {
 
   // for expert mode
   const toggleSettings = useToggleSettingsMenu()
-  const isExpertMode = useExpertModeManager()
+  const [isExpertMode] = useExpertModeManager()
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -401,11 +401,11 @@ export default function StableSwap() {
                         color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.primary1 : theme.text2}
                       />
                     </ChevronWrapper>
-                    {recipient === null && !showWrap && isExpertMode ? (
+                    {/* {recipient === null && !showWrap && isExpertMode ? (
                       <LinkStyledButton id="add-recipient-button" onClick={() => onChangeRecipient('')}>
                         {t('swapPage.addSend')}
                       </LinkStyledButton>
-                    ) : null}
+                    ) : null} */}
                   </AutoRow>
                 </AutoColumn>
                 <CurrencyInputPanel
