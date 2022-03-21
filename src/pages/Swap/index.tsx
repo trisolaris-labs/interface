@@ -48,7 +48,7 @@ import { useIsSelectedAEBToken } from '../../state/lists/hooks'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 
 import { Field } from '../../state/swap/actions'
-import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO } from '../../constants'
+import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO, ENABLE_STABLESWAP } from '../../constants'
 
 import { ClickableText } from '../Pool/styleds'
 import { LinkStyledButton, TYPE } from '../../theme'
@@ -138,6 +138,7 @@ export default function Swap() {
 
   const isRoutedViaStableSwap: boolean =
     useMemo(() => {
+      if (ENABLE_STABLESWAP === false) return false
       if (isStableSwap) {
         const swapOutputRaw = parsedAmounts?.OUTPUT?.raw
         if (swapOutputRaw) {
