@@ -92,6 +92,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
       address: '0x72ff47B0Df5F8EBD93e4fA4600b89Db693066aa4',
       type: StableSwapPoolTypes.USD,
       route: 'usd',
+      underlyingPoolTokens: [USDT[ChainId.AURORA], USDC[ChainId.AURORA]],
       underlyingPool: StableSwapPoolName.USDC_USDT,
       isOutdated: false,
       rewardPids: null
