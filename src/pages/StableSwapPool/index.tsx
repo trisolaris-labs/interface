@@ -1,14 +1,11 @@
 import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import { Link } from 'react-router-dom'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 
 import FullStablePositionCard from '../../components/StablePositionCard'
 import { TYPE, HideSmall } from '../../theme'
-import { Text } from 'rebass'
 import Card from '../../components/Card'
-import { RowBetween, RowFixed } from '../../components/Row'
-import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
+import { RowBetween } from '../../components/Row'
 import { AutoColumn } from '../../components/Column'
 
 import { useActiveWeb3React } from '../../hooks'
@@ -24,29 +21,6 @@ const TitleRow = styled(RowBetween)`
     gap: 12px;
     width: 100%;
     flex-direction: column-reverse;
-  `};
-`
-
-const ButtonRow = styled(RowFixed)`
-  gap: 8px;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    width: 100%;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-  `};
-`
-
-const ResponsiveButtonPrimary = styled(ButtonPrimary)`
-  width: fit-content;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    width: 48%;
-  `};
-`
-
-const ResponsiveButtonSecondary = styled(ButtonSecondary)`
-  width: fit-content;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    width: 48%;
   `};
 `
 
@@ -67,16 +41,6 @@ export default function Pool() {
                 {t('pool.yourLiquidity')}
               </TYPE.mediumHeader>
             </HideSmall>
-            <ButtonRow>
-              <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/create/ETH">
-                {t('pool.createPair')}
-              </ResponsiveButtonSecondary>
-              <ResponsiveButtonPrimary id="join-pool-button" as={Link} padding="6px 8px" to="/add/ETH">
-                <Text fontWeight={500} fontSize={16}>
-                  {t('pool.addLiquidity')}
-                </Text>
-              </ResponsiveButtonPrimary>
-            </ButtonRow>
           </TitleRow>
 
           {account ? (
