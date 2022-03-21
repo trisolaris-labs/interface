@@ -87,7 +87,19 @@ export default function App() {
               <Route exact strict path="/buy" component={Buy} />
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/pool" component={Pool} />
-              {ENABLE_STABLESWAP ? (
+              <Route exact strict path="/farm/:version" component={EarnTri} />
+              <Route exact strict path="/create" component={RedirectToAddLiquidity} />
+              <Route exact strict path="/stake" component={StakeTri} />
+              <Route exact path="/add" component={AddLiquidity} />
+              <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+              <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+              <Route exact path="/create" component={AddLiquidity} />
+              <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+              <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+              <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
+              <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+              <Route exact strict path="/tri/:currencyIdA/:currencyIdB/:version" component={Manage} />
+              {ENABLE_STABLESWAP && (
                 <>
                   <Route exact strict path="/stableswap" component={StableSwap} />
                   <Route exact strict path="/stableswap-pool" component={StableSwapPool} />
@@ -104,19 +116,7 @@ export default function App() {
                     component={StableSwapPoolRemoveLiquidity}
                   />
                 </>
-              ) : null}
-              <Route exact strict path="/farm/:version" component={EarnTri} />
-              <Route exact strict path="/create" component={RedirectToAddLiquidity} />
-              <Route exact strict path="/stake" component={StakeTri} />
-              <Route exact path="/add" component={AddLiquidity} />
-              <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              <Route exact path="/create" component={AddLiquidity} />
-              <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
-              <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
-              <Route exact strict path="/tri/:currencyIdA/:currencyIdB/:version" component={Manage} />
+              )}
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>
