@@ -64,7 +64,6 @@ export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData
       })
       return acc
     }, {} as TokenToPoolsMap)
-
     return tokenToPools
   }, [poolsStatuses])
 
