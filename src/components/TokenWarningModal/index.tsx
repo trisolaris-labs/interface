@@ -12,7 +12,7 @@ import { AutoRow, RowBetween } from '../Row'
 import { AutoColumn } from '../Column'
 import { AlertTriangle } from 'react-feather'
 import { ButtonError } from '../Button'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 const Wrapper = styled.div<{ error: boolean }>`
   background: ${({ theme }) => transparentize(0.6, theme.bg3)};
@@ -107,11 +107,11 @@ export default function TokenWarningModal({
         <AutoColumn gap="lg">
           <AutoRow gap="6px">
             <StyledWarningIcon />
-            <TYPE.main color={'red2'}>{t('tokenWarningModal.tokenImported')}</TYPE.main>
+            <TYPE.main color={'red2'}>{<Trans i18nKey="tokenWarningModal.tokenImported" />}</TYPE.main>
           </AutoRow>
-          <TYPE.body color={'red2'}>{t('tokenWarningModal.anyoneCanCreateWarning')}</TYPE.body>
-          <TYPE.body color={'red2'}>{t('tokenWarningModal.loadArbitraryWarning')}</TYPE.body>
-          <TYPE.body color={'red2'}>{t('tokenWarningModal.purchaseArbitraryWarning')}</TYPE.body>
+          <TYPE.body color={'red2'}>{<Trans i18nKey="tokenWarningModal.anyoneCanCreateWarning" />}</TYPE.body>
+          <TYPE.body color={'red2'}>{<Trans i18nKey="tokenWarningModal.loadArbitraryWarning" />}</TYPE.body>
+          <TYPE.body color={'red2'}>{<Trans i18nKey="tokenWarningModal.purchaseArbitraryWarning" />}</TYPE.body>
           {tokens.map(token => {
             return <TokenWarningCard key={token.address} token={token} />
           })}

@@ -191,7 +191,7 @@
   },
   "tokenWarningModal": {
     "tokenImported": "Token importado",
-    "anyoneCanCreateWarning": "Cualquiera puede crear un token ERC-20 en Avalanche con <em>cualquier</em> nombre, incluso creaer versiones falsas de tokens ya existentes y tokens que dicen representar a proyectos que no tienen un token.",
+    "anyoneCanCreateWarning": "Cualquiera puede crear un token ERC-20 en Avalanche con <i>cualquier</i> nombre, incluso creaer versiones falsas de tokens ya existentes y tokens que dicen representar a proyectos que no tienen un token.",
     "loadArbitraryWarning": "Esta interfaz puede cargar tokens arbitrariamente por su dirección. Por favor tenga suma precaución y haga su propiar investigación al interactuar con tokens ERC-20 de forma arbitraria.",
     "purchaseArbitraryWarning": "Si compras un token arbitrario, <strong>puede que no pueda venderlo devuelta.</strong>",
     "understand": "Lo entiendo",
