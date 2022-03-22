@@ -1,12 +1,11 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { ThemeContext } from 'styled-components'
-import { ChainId, Currency } from '@trisolaris/sdk'
+import { ChainId } from '@trisolaris/sdk'
 
 import { RowBetween } from '../../components/Row'
 import { Input as NumericalInput } from '../../components/NumericalInput'
 import { Props as BalanceButtonProps } from '../../components/BalanceButton'
 
-import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { useTranslation } from 'react-i18next'
 
@@ -20,14 +19,11 @@ import {
   Container,
   StyledTokenName,
   StyledBalanceButton
-} from './StableSwapRemoveLiquidityInputPanel.styles'
+} from './StableSwapPoolRemoveLiquidity.styles'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import CurrencyLogo from '../../components/CurrencyLogo'
-import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
-import { tryParseAmount } from '../../state/stableswap/hooks'
-import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 
 type Props = {
   id: string
@@ -49,7 +45,7 @@ export default function StableSwapRemoveLiquidityInputPanel({
   onClickBalanceButton
 }: Props & BalanceButtonProps) {
   const { t } = useTranslation()
-  const [poolData, userShareData] = useStablePoolsData(stableSwapPoolName)
+  const [_poolData, userShareData] = useStablePoolsData(stableSwapPoolName)
   const currency = unwrappedToken(STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName].lpToken)
 
   const { account } = useActiveWeb3React()

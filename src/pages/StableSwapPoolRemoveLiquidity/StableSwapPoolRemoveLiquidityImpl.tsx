@@ -1,15 +1,10 @@
 import { ChainId, JSBI } from '@trisolaris/sdk'
-import _ from 'lodash'
-import { darken } from 'polished'
 import React, { useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { ButtonLight, ButtonConfirmed, ButtonError } from '../../components/Button'
 import { DarkGreyCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
-import CurrencyLogo from '../../components/CurrencyLogo'
-import NumericalInput from '../../components/NumericalInput'
 import { PageWrapper } from '../../components/Page'
 import { RowBetween } from '../../components/Row'
 import { BIG_INT_ZERO } from '../../constants'
@@ -24,42 +19,9 @@ import { tryParseAmount } from '../../state/stableswap/hooks'
 import { TYPE } from '../../theme'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { Dots } from '../Pool/styleds'
+import StableSwapRemoveCurrencyRow from './StableSwapRemoveLiquidityCurrencyRow'
 import StableSwapRemoveLiquidityInputPanel from './StableSwapRemoveLiquidityInputPanel'
-import { StyledTokenName } from './StableSwapRemoveLiquidityInputPanel.styles'
 import StableSwapRemoveLiquidityTokenSelector from './StableSwapRemoveLiquidityTokenSelector'
-
-const InputRow = styled.div<{ selected: boolean }>`
-  ${({ theme }) => theme.flexRowNoWrap}
-  align-items: center;
-  padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
-`
-
-const CurrencySelect = styled.button<{ selected: boolean }>`
-  align-items: center;
-  height: 2.2rem;
-  font-size: 20px;
-  font-weight: 500;
-  background-color: ${({ selected, theme }) => (selected ? theme.bg3 : theme.primary1)};
-  color: ${({ selected, theme }) => (selected ? theme.text1 : theme.white)};
-  border-radius: 12px;
-  box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
-  outline: none;
-  cursor: pointer;
-  user-select: none;
-  border: none;
-  padding: 0 0.5rem;
-
-  :focus,
-  :hover {
-    background-color: ${({ selected, theme }) => (selected ? theme.bg3 : darken(0.05, theme.primary1))};
-  }
-`
-
-const Aligner = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -174,25 +136,11 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
             {estimatedAmounts.map((currencyAmount, i) => {
               const { currency } = currencyAmount
               return (
-                <InputRow key={currency.name ?? i} selected={false}>
-                  <NumericalInput
-                    className="token-amount-input"
-                    value={currencyAmount.toExact()}
-                    onUserInput={_.identity}
-                  />
-                  <CurrencySelect selected={!!currency} className="open-currency-select-button">
-                    <Aligner>
-                      <CurrencyLogo currency={currency} size={'24px'} />
-                      <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                        {currency && currency.symbol && currency.symbol.length > 20
-                          ? currency.symbol.slice(0, 4) +
-                            '...' +
-                            currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                          : currency?.symbol}
-                      </StyledTokenName>
-                    </Aligner>
-                  </CurrencySelect>
-                </InputRow>
+                <StableSwapRemoveCurrencyRow
+                  currency={currency}
+                  key={currency.symbol}
+                  value={currencyAmount.toExact()}
+                />
               )
             })}
           </AutoColumn>
