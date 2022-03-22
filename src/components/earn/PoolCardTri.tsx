@@ -28,7 +28,6 @@ import {
   StyledActionsContainer,
   Button,
   StyledExternalLink,
-  StyledHeading
 } from './PoolCardTri.styles'
 
 type PoolCardTriProps = {
@@ -109,7 +108,7 @@ const DefaultPoolCardtri = ({
       <AutoRow justifyContent="space-between">
         <PairContainer>
           {(token0 === stNearToken || token1 === stNearToken) && (
-            <StyledHeading>Get stNEAR <StyledExternalLink href="https://metapool.app/">Here</StyledExternalLink></StyledHeading>
+            <StyledExternalLink href="https://metapool.app/">Get stNEAR</StyledExternalLink>
           )}
           <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
           <ResponsiveCurrencyLabel>

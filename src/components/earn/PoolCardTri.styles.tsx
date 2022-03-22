@@ -79,23 +79,22 @@ export const TokenPairBackgroundColor = styled.span<{ bgColor1: string | null; b
 
 export const StyledExternalLink = styled(ExternalLink)`
   z-index: 1;
-  text-decoration: none;
+  text-decoration: underline;
   color: ${({ theme }) => theme.text2};
-  font-weight: 700;
+  font-weight: 400;
   font-size: 0.75rem;
+  margin: 0;
+  position: absolute;
+  top: 7px;
+  left: 70px;
+
   :hover,
   :focus {
     text-decoration: none;
     color: ${({ theme }) => darken(0.1, theme.text1)};
   }
-`
 
-export const StyledHeading = styled.span`
-  margin: 0;
-  color: ${({ theme }) => theme.text2};
-  position: absolute;
-  top: 7px;
-  left: 70px;
-  font-size: 0.75rem;
-  font-weight: 500;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+  left:60px;
+`};
 `
