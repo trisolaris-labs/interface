@@ -1,9 +1,10 @@
 import styled from 'styled-components'
-import { lighten } from 'polished'
+import { lighten, darken } from 'polished'
 
 import { TYPE } from '../../theme'
 import Card from '../Card'
 import { ButtonPrimary } from '../Button'
+import { ExternalLink } from '../../theme'
 
 export const Wrapper = styled(Card)<{ bgColor1: string | null; bgColor2?: string | null; isDoubleRewards: boolean }>`
   border: ${({ isDoubleRewards, theme }) =>
@@ -19,7 +20,7 @@ export const Wrapper = styled(Card)<{ bgColor1: string | null; bgColor2?: string
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
       grid-template-rows: auto 1fr;
-      padding: .75rem;
+      padding: 1.1rem .75rem;
 `};
 `
 
@@ -74,4 +75,27 @@ export const TokenPairBackgroundColor = styled.span<{ bgColor1: string | null; b
   top: 0;
   left: 0;
   user-select: none;
+`
+
+export const StyledExternalLink = styled(ExternalLink)`
+  z-index: 1;
+  text-decoration: none;
+  color: ${({ theme }) => theme.text2};
+  font-weight: 700;
+  font-size: 0.75rem;
+  :hover,
+  :focus {
+    text-decoration: none;
+    color: ${({ theme }) => darken(0.1, theme.text1)};
+  }
+`
+
+export const StyledHeading = styled.span`
+  margin: 0;
+  color: ${({ theme }) => theme.text2};
+  position: absolute;
+  top: 7px;
+  left: 70px;
+  font-size: 0.75rem;
+  font-weight: 500;
 `
