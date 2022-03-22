@@ -310,9 +310,6 @@ export default function Swap() {
     defaultswapPriceImpactWithoutFee
   ])
 
-  // errors
-  // const [showInverted, setShowInverted] = useState<boolean>(false)
-
   // warnings on slippage
   const defaultswapPriceImpactSeverity = warningSeverity(defaultswapPriceImpactWithoutFee)
   const isStableSwapPriceImpactSevere = isStableSwapHighPriceImpact(stableswapPriceImpact)
@@ -384,7 +381,7 @@ export default function Swap() {
             <Wrapper id="swap-page">
               <ConfirmSwapModal
                 isOpen={showConfirm}
-                trade={trade}
+                trade={isRoutedViaStableSwap ? trade : trade}
                 originalTrade={tradeToConfirm}
                 onAcceptChanges={handleAcceptChanges}
                 attemptingTxn={attemptingTxn}
@@ -531,7 +528,7 @@ export default function Swap() {
                     </ButtonConfirmed>
                     <ButtonError
                       onClick={() => {
-                        if (isExpertMode || isRoutedViaStableSwap) {
+                        if (isExpertMode) {
                           handleSwap()
                         } else {
                           setSwapState({
@@ -571,7 +568,7 @@ export default function Swap() {
                 ) : (
                   <ButtonError
                     onClick={() => {
-                      if (isExpertMode || isRoutedViaStableSwap) {
+                      if (isExpertMode) {
                         handleSwap()
                       } else {
                         setSwapState({
