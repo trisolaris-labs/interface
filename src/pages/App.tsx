@@ -67,6 +67,14 @@ const Marginer = styled.div`
 `
 
 export default function App() {
+  const STABLESWAP_ROUTES = ENABLE_STABLESWAP ? (
+    <>
+      <Route exact strict path="/pool/stable" component={StableSwapPool} />
+      <Route exact strict path="/pool/stable/add/:stableSwapPoolName" component={StableSwapPoolAddLiquidity} />
+      <Route exact strict path="/pool/stable/remove/:stableSwapPoolName" component={StableSwapPoolRemoveLiquidity} />
+    </>
+  ) : null
+
   return (
     <Suspense fallback={null}>
       <Route component={GoogleAnalyticsReporter} />
@@ -99,24 +107,7 @@ export default function App() {
               <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
               <Route exact strict path="/tri/:currencyIdA/:currencyIdB/:version" component={Manage} />
-              {ENABLE_STABLESWAP && (
-                <>
-                  <Route exact strict path="/stableswap" component={StableSwap} />
-                  <Route exact strict path="/stableswap-pool" component={StableSwapPool} />
-                  <Route
-                    exact
-                    strict
-                    path="/stableswap-pool/add/:stableSwapPoolName"
-                    component={StableSwapPoolAddLiquidity}
-                  />
-                  <Route
-                    exact
-                    strict
-                    path="/stableswap-pool/remove/:stableSwapPoolName"
-                    component={StableSwapPoolRemoveLiquidity}
-                  />
-                </>
-              )}
+              {STABLESWAP_ROUTES}
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>

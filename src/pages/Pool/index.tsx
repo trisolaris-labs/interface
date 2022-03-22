@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react'
-import styled, { ThemeContext } from 'styled-components'
+import { ThemeContext } from 'styled-components'
 import { Pair, ChainId } from '@trisolaris/sdk'
 import { Link } from 'react-router-dom'
 import { Text } from 'rebass'
@@ -19,7 +19,6 @@ import { usePairs } from '../../data/Reserves'
 import { useTrackedTokenPairs, toV2LiquidityToken } from '../../state/user/hooks'
 
 import { TitleRow, ButtonRow, ResponsiveButtonPrimary, ResponsiveButtonSecondary, EmptyProposals } from './styleds'
-import Toggle from '../../components/Toggle'
 import { ENABLE_STABLESWAP } from '../../constants'
 
 export default function Pool() {
@@ -62,7 +61,7 @@ export default function Pool() {
   const hasV1Liquidity = undefined
   return (
     <PageWrapper>
-      {ENABLE_STABLESWAP ? <PoolTabs active="pool" /> : null}
+      {ENABLE_STABLESWAP ? <PoolTabs active="/pool" /> : null}
 
       <AutoColumn gap="lg" justify="center">
         <AutoColumn gap="lg" style={{ width: '100%' }}>

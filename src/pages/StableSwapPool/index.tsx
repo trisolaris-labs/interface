@@ -32,7 +32,7 @@ export default function Pool() {
 
   return (
     <PageWrapper>
-      <PoolTabs active="stableswap-pool" />
+      <PoolTabs active="/pool/stable" />
       <AutoColumn gap="lg" justify="center">
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
