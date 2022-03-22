@@ -18,7 +18,7 @@ interface TokenShareType {
 }
 
 const BIG_NUMBERS = {
-  '10e18': JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+  '10e18': JSBI.BigInt(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
 }
 
 export type Partners = 'keep' | 'sharedStake' | 'alchemix'
@@ -32,7 +32,7 @@ export interface StablePoolDataType {
   tokens: TokenShareType[]
   totalLocked: TokenAmount | null
   utilization: JSBI | null
-  virtualPrice: string | null
+  virtualPrice: Fraction | null
   volume: JSBI | null
   triPerDay: JSBI | null
   isPaused: boolean
@@ -97,8 +97,8 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
   const swapFee = swapStorage?.result?.swapFee?.[0] ?? BIG_INT_ZERO
   const rawVirtualPrice = useSingleCallResult(swapContract, 'getVirtualPrice')?.result?.[0] ?? BIG_INT_ZERO
   const virtualPrice = JSBI.equal(BIG_INT_ZERO, JSBI.BigInt(rawVirtualPrice))
-    ? BIG_NUMBERS['10e18'].toString()
-    : new Fraction(JSBI.BigInt(rawVirtualPrice), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))).toSignificant(18)
+    ? null
+    : new Fraction(JSBI.BigInt(rawVirtualPrice), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
 
   const aParameter: JSBI = useSingleCallResult(swapContract, 'getA')?.result?.[0] ?? BIG_INT_ZERO
   const isPaused: boolean = useSingleCallResult(swapContract, 'paused')?.result?.[0] ?? false
@@ -147,7 +147,7 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
     token,
     percent: new Percent(
       tokenBalances[i],
-      JSBI.equal(totalLpTokenBalance.raw, BIG_INT_ZERO) ? JSBI.BigInt(1) : totalLpTokenBalance.raw
+      JSBI.equal(tokenBalancesSum, BIG_INT_ZERO) ? JSBI.BigInt(1) : tokenBalancesSum
     ),
     value: JSBI.divide(
       tokenBalances[i],

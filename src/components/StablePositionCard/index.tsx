@@ -21,6 +21,8 @@ import TripleCurrencyLogo from '../TripleCurrencyLogo'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { BIG_INT_ZERO } from '../../constants'
 import { useHistory } from 'react-router-dom'
+import _ from 'lodash'
+import CurrencyLogo from '../CurrencyLogo'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -173,7 +175,6 @@ const ManageButton = styled(ButtonEmpty)`
 
 export default function FullStablePositionCard({ poolName, border }: StablePositionCardProps) {
   const { t } = useTranslation()
-  const [showMore, setShowMore] = useState(false)
   const {
     location: { pathname },
     push
@@ -199,9 +200,30 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
     push(`${pathname}/remove/${name}`)
   }
 
-  if (process.env.NODE_ENV !== 'production') {
-    console.log('src/components/StablePositionCard/index.tsx: ', { stablePoolData, userData })
-  }
+  const formattedPoolTokenData = stablePoolData.tokens.map(({ token, percent, value }) => ({
+    label: token.name,
+    token,
+    value: `${value.toString()} (${percent.toFixed(2)}%)`
+  }))
+
+  const formattedPoolData = [
+    {
+      label: 'Virtual Price',
+      value: stablePoolData.virtualPrice == null ? '-' : `$${stablePoolData.virtualPrice?.toFixed(6)}`
+    },
+    {
+      label: 'Amplification coefficient',
+      value: stablePoolData.aParameter?.toString() ?? '-'
+    },
+    {
+      label: 'Swap Fee',
+      value: stablePoolData.swapFee == null ? '-' : `${stablePoolData.swapFee?.toString()}%`
+    },
+    {
+      label: 'Admin Fee',
+      value: stablePoolData.adminFee == null ? '-' : `${stablePoolData.adminFee?.toString()}%`
+    }
+  ]
 
   return (
     <StyledPositionCard border={border} bgColor={backgroundColor1}>
@@ -225,42 +247,55 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
             </Text>
           </RowFixed>
 
-          <RowFixed gap="8px">
-            <ManageButton
-              padding="6px 8px"
-              borderRadius="12px"
-              width="fit-content"
-              onClick={() => setShowMore(!showMore)}
-            >
-              {showMore ? (
-                <>
-                  {' '}
-                  {t('positionCard.manage')}
-                  <ChevronUp size="20" style={{ marginLeft: '10px' }} />
-                </>
-              ) : (
-                <>
-                  {t('positionCard.manage')}
-                  <ChevronDown size="20" style={{ marginLeft: '10px' }} />
-                </>
-              )}
-            </ManageButton>
-          </RowFixed>
+          {stablePoolData?.lpToken != null ? (
+            <RowFixed gap="8px">
+              <div>
+                {`${userData?.lpTokenBalance.toFixed(6) ?? 0} ${stablePoolData.lpToken?.name}`}
+                <CurrencyLogo
+                  size="20px"
+                  style={{ marginLeft: '8px' }}
+                  currency={unwrappedToken(stablePoolData.lpToken)}
+                />
+              </div>
+            </RowFixed>
+          ) : null}
         </FixedHeightRow>
-        {/* {showMore && ( */}
-        {
-          <ul>
-            {stablePoolData.tokens.map(tokenData => (
-              <li key={tokenData.token.name}>
-                {tokenData.token.name}: {tokenData.value.toString()} ({tokenData.percent.toFixed(18)}%)
-              </li>
-            ))}
-            <li>Virtual Price: ${stablePoolData.virtualPrice}</li>
-            <li>Amplification coefficient: {stablePoolData.aParameter?.toString()}</li>
-            <li>Swap Fee: {stablePoolData.swapFee?.toString()}%</li>
-            <li>Admin Fee: {stablePoolData.adminFee?.toString()}%</li>
-          </ul>
-        }
+
+        {formattedPoolData.slice(0, 1).map(({ label, value }) => (
+          <FixedHeightRow key={label}>
+            <Text fontSize={16} fontWeight={500}>
+              {label}:
+            </Text>
+            <Text fontSize={16} fontWeight={500}>
+              {value}
+            </Text>
+          </FixedHeightRow>
+        ))}
+
+        <AutoColumn gap="8px">
+          {formattedPoolTokenData.map(({ label, token, value }) => (
+            <FixedHeightRow key={label}>
+              <div>
+                <CurrencyLogo size="20px" style={{ marginRight: '8px' }} currency={unwrappedToken(token)} />
+                {label}
+              </div>
+              <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
+                {value}
+              </Text>
+            </FixedHeightRow>
+          ))}
+
+          {formattedPoolData.slice(1).map(({ label, value }) => (
+            <FixedHeightRow key={label}>
+              <Text fontSize={16} fontWeight={500}>
+                {label}:
+              </Text>
+              <Text fontSize={16} fontWeight={500}>
+                {value}
+              </Text>
+            </FixedHeightRow>
+          ))}
+        </AutoColumn>
 
         <AutoColumn gap="8px">
           <ButtonRow>
@@ -272,83 +307,6 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
             </ButtonPrimary>
           </ButtonRow>
         </AutoColumn>
-
-        {/* @TODO Leaving this for reference, may not be needed */}
-        {/* {showMore && (
-          <AutoColumn gap="8px">
-            <FixedHeightRow>
-              <Text fontSize={16} fontWeight={500}>
-                {t('positionCard.poolTokens')}
-              </Text>
-              <Text fontSize={16} fontWeight={500}>
-                {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
-              </Text>
-            </FixedHeightRow>
-            <FixedHeightRow>
-              <RowFixed>
-                <Text fontSize={16} fontWeight={500}>
-                  {t('positionCard.pooled')} {currency0.symbol}:
-                </Text>
-              </RowFixed>
-              {token0Deposited ? (
-                <RowFixed>
-                  <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                    {token0Deposited?.toSignificant(6)}
-                  </Text>
-                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency0} />
-                </RowFixed>
-              ) : (
-                '-'
-              )}
-            </FixedHeightRow>
-
-            <FixedHeightRow>
-              <RowFixed>
-                <Text fontSize={16} fontWeight={500}>
-                  {t('positionCard.pooled')} {currency1.symbol}:
-                </Text>
-              </RowFixed>
-              {token1Deposited ? (
-                <RowFixed>
-                  <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                    {token1Deposited?.toSignificant(6)}
-                  </Text>
-                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency1} />
-                </RowFixed>
-              ) : (
-                '-'
-              )}
-            </FixedHeightRow>
-
-            <FixedHeightRow>
-              <Text fontSize={16} fontWeight={500}>
-                {t('positionCard.poolShare')}
-              </Text>
-              <Text fontSize={16} fontWeight={500}>
-                {poolTokenPercentage ? poolTokenPercentage.toFixed(2) + '%' : '-'}
-              </Text>
-            </FixedHeightRow>
-
-            <RowBetween marginTop="10px">
-              <ButtonPrimary
-                padding="8px"
-                as={Link}
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
-                width="48%"
-              >
-                {t('positionCard.add')}
-              </ButtonPrimary>
-              <ButtonPrimary
-                padding="8px"
-                as={Link}
-                width="48%"
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
-              >
-                {t('positionCard.remove')}
-              </ButtonPrimary>
-            </RowBetween>
-          </AutoColumn>
-        )} */}
       </AutoColumn>
     </StyledPositionCard>
   )
