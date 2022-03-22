@@ -6,8 +6,6 @@ import LogoDark from '../../assets/svg/planets.svg'
 import Menu from '../Menu'
 import TriPriceModal from '../TriPriceModal'
 import Web3Status from '../Web3Status'
-import BridgesMenu from '../BridgesMenu'
-import GovernanceMenu from '../GovernanceMenu'
 
 import { useActiveWeb3React } from '../../hooks'
 
@@ -30,6 +28,8 @@ import {
   IconWrapper,
   StyledHomeNavLink,
   HomeContainer,
+  StyledBridgesMenu,
+  StyledGovernanceMenu
 } from './Header.styles'
 
 export default function Header() {
@@ -80,8 +80,8 @@ export default function Header() {
           >
             {t('header.farm')}
           </StyledNavLink>
-          <BridgesMenu />
-          <GovernanceMenu />
+          <StyledBridgesMenu />
+          <StyledGovernanceMenu />
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>

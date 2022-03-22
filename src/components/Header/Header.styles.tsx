@@ -1,9 +1,27 @@
 import { NavLink } from 'react-router-dom'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { darken } from 'polished'
 
 import { ButtonSecondary } from '../Button'
 import Row, { RowFixed } from '../Row'
+import BridgesMenu from '../BridgesMenu'
+import GovernanceMenu from '../GovernanceMenu'
+
+const responsiveTextAndMargin = css`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+margin: 0 5px;
+font-size: 0.925rem;
+`};
+
+  ${({ theme }) => theme.mediaWidth.upToXxSmall`
+margin: 0 4px;
+font-size: 0.85rem;
+`};
+
+  ${({ theme }) => theme.mediaWidth.upToXxxSmall`
+font-size: 0.75rem;
+`};
+`
 
 export const HeaderFrame = styled.div`
   display: grid;
@@ -88,11 +106,6 @@ export const HeaderLinks = styled(Row)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
   padding: 1rem 0;
   justify-content: center;
-  font-size: 0.85rem;
-`}
-
-  ${({ theme }) => theme.mediaWidth.upToXxSmall`
-font-size: 0.8rem;
 `}
 `
 
@@ -182,16 +195,7 @@ export const StyledNavLink = styled(NavLink).attrs({
   :focus {
     color: ${({ theme }) => darken(0.1, theme.text1)};
   }
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  margin: 0 5px;
-  font-size: 0.85rem;
-`}
-
-  ${({ theme }) => theme.mediaWidth.upToXxSmall`
-  margin: 0 4px;
-  font-size: 0.8rem;
-`}
+  ${responsiveTextAndMargin};
 `
 
 export const IconWrapper = styled.div<{ size?: number }>`
@@ -218,4 +222,12 @@ export const HomeContainer = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
   margin-right:0;
 `};
+`
+
+export const StyledBridgesMenu = styled(BridgesMenu)`
+  ${responsiveTextAndMargin};
+`
+
+export const StyledGovernanceMenu = styled(GovernanceMenu)`
+  ${responsiveTextAndMargin};
 `
