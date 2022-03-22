@@ -57,7 +57,19 @@ export const MenuButton = styled(ButtonDropdown)`
     color: ${({ theme }) => darken(0.1, theme.text1)};
     box-shadow: none;
   }
-  margin: 0px 4px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  svg{
+    width:1.25rem;
+  }
+`}
+
+  ${({ theme }) => theme.mediaWidth.upToXxSmall`
+  margin: 0px 2px;
+  svg{
+    width:1rem;
+  }
+`}
 `
 
 export const StyledArrow = styled.span`
