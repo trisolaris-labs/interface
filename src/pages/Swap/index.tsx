@@ -269,14 +269,11 @@ export default function Swap() {
     if (defaultswapPriceImpactWithoutFee && !confirmPriceImpactWithoutFee(defaultswapPriceImpactWithoutFee)) {
       return
     }
-    if (!swapCallback || !stableswapCallback) {
-      return
-    }
 
     setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
     const swapOrStableSwapCallback = isRoutedViaStableSwap ? stableswapCallback : swapCallback
 
-    swapOrStableSwapCallback()
+    swapOrStableSwapCallback?.()
       .then(hash => {
         setSwapState({ attemptingTxn: false, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: hash })
 
