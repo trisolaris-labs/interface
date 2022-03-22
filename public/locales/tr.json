@@ -112,7 +112,7 @@
     "acceptUpdate": "Güncellemeyi kabul et",
     "dismiss": "Yoksay"
   },
-  "positionCard":{
+  "positionCard": {
     "add": "Ekle",
     "remove": "Çıkar",
     "poolShare": "Havuz payı",
@@ -149,8 +149,7 @@
     "select": "Seç",
     "manageTokenLists": "Jeton Listelerini Yönet"
   },
-  "settings":
-  {
+  "settings": {
     "areYouSure": "Emin misiniz?",
     "expertInfo": "Uzman modu, işlemi onayla istemini kapatır ve genellikle düşük oranlara ve para kaybına neden olan yüksek slipajlı işlemlere izin verir.",
     "expertWarningCAPS": "BU MODU SADECE NE YAPTIĞINIZI BİLİYORSANIZ KULLANIN.",
@@ -192,7 +191,7 @@
   },
   "tokenWarningModal": {
     "tokenImported": "Token dışarıdan eklendi",
-    "anyoneCanCreateWarning": "Mevcut tokenların sahte versiyonlarını veya bir tokena sahip olmayan projeleri temsil ettiğini iddia eden tokenları oluşturmak da dahil olmak üzere, herkes Avalanche üzerinde <em>herhangi bir</em> adla bir ERC-20 token oluşturabilir.",
+    "anyoneCanCreateWarning": "Mevcut tokenların sahte versiyonlarını veya bir tokena sahip olmayan projeleri temsil ettiğini iddia eden tokenları oluşturmak da dahil olmak üzere, herkes Avalanche üzerinde <i>herhangi bir</i> adla bir ERC-20 token oluşturabilir.",
     "loadArbitraryWarning": "Bu arayüze, token adresini bildiğiz sürece rastgele tokenlar yüklenebilmektedir. Lütfen ekstra dikkatli olun ve rastgele ERC-20 tokenlarıyla etkileşim kurarken araştırmanızı yapın.",
     "purchaseArbitraryWarning": "Eğer rastgele bir token alırsanız, <strong>geri satamayabilirsiniz.</strong>",
     "understand": "Anladım",

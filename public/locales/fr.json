@@ -112,7 +112,7 @@
     "acceptUpdate": "Accepter la mise à jour",
     "dismiss": "Rejeter"
   },
-  "positionCard":{
+  "positionCard": {
     "add": "Ajouter",
     "remove": "Retirer",
     "poolShare": "Part de la pool",
@@ -149,8 +149,7 @@
     "select": "Sélectionner",
     "manageTokenLists": "Gérer les listes de jetons"
   },
-  "settings":
-  {
+  "settings": {
     "areYouSure": "Vous êtes sûr ?",
     "expertInfo": "Le mode expert désactive l'invite de confirmation de la transaction et autorise les transactions à fort slippage qui entraînent souvent de mauvais taux et des pertes de fonds.",
     "expertWarningCAPS": "N'UTILISEZ CE MODE QUE SI VOUS SAVEZ CE QUE VOUS FAITES.",
@@ -192,7 +191,7 @@
   },
   "tokenWarningModal": {
     "tokenImported": "Jeton importé",
-    "anyoneCanCreateWarning": "N'importe qui peut créer un jeton ERC-20 sur Avalanche avec <em>any</em> nom, y compris créer de fausses versions de jetons existants et des jetons qui prétendent représenter des projets qui n'ont pas de jeton.",
+    "anyoneCanCreateWarning": "N'importe qui peut créer un jeton ERC-20 sur Avalanche avec <i>any</i> nom, y compris créer de fausses versions de jetons existants et des jetons qui prétendent représenter des projets qui n'ont pas de jeton.",
     "loadArbitraryWarning": "Cette interface peut charger des jetons arbitraires par des adresses de jetons. Veuillez prendre des précautions supplémentaires et faire des recherches lorsque vous interagissez avec des jetons ERC-20 arbitraires.",
     "purchaseArbitraryWarning": "Si vous achetez un jeton arbitraire, <strong>vous ne pourrez peut-être pas le revendre.</strong>",
     "understand": "Je comprends",
