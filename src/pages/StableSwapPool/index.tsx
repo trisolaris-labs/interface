@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import { SwapPoolTabs } from '../../components/NavigationTabs'
+import { PoolTabs } from '../../components/NavigationTabs'
 
 import FullStablePositionCard from '../../components/StablePositionCard'
 import { TYPE, HideSmall } from '../../theme'
@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { PageWrapper } from '../../components/Page'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import _ from 'lodash'
+import Toggle from '../../components/Toggle'
 
 const TitleRow = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -31,8 +32,7 @@ export default function Pool() {
 
   return (
     <PageWrapper>
-      <SwapPoolTabs active={'pool'} />
-
+      <PoolTabs active="stableswap-pool" />
       <AutoColumn gap="lg" justify="center">
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
