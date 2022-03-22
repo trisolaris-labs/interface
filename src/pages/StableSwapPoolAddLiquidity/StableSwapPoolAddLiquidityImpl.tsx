@@ -32,6 +32,7 @@ import { useTranslation } from 'react-i18next'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/constants'
+import { divideCurrencyAmountByNumber } from '../../utils'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -52,7 +53,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     [Field.CURRENCY_1]: typedValue1,
     [Field.CURRENCY_2]: typedValue2
   } = useStableSwapAddLiquidityState()
-  const { currencies, parsedAmounts, error, hasThirdCurrency } = useDerivedStableSwapAddLiquidityInfo(
+  const { currencies, currencyBalances, parsedAmounts, error, hasThirdCurrency } = useDerivedStableSwapAddLiquidityInfo(
     stableSwapPoolName
   )
   const { address } = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
@@ -69,8 +70,8 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
 
   // @TODO Update this to support generic `Field` values
   // get the max amounts user can add
-  //   const { getMaxAmounts } = useCurrencyInputPanel()
-  //   const { maxAmounts, atMaxAmounts, atHalfAmounts } = getMaxAmounts({ currencyBalances, parsedAmounts })
+  const { getMaxAmounts } = useCurrencyInputPanel()
+  const { maxAmounts, atMaxAmounts, atHalfAmounts } = getMaxAmounts({ currencyBalances, parsedAmounts })
 
   // check whether the user has approved the router on the tokens
   const [approval0, approve0Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_0], address)
@@ -181,19 +182,19 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               disableCurrencySelect
               value={typedValue0}
               onUserInput={onField0Input}
-              //   onClickBalanceButton={value => {
-              //     const amount = maxAmounts[Field.CURRENCY_0]
-              //     onFieldAInput(
-              //       (value === BalanceButtonValueEnum.MAX
-              //         ? amount
-              //         : divideCurrencyAmountByNumber(amount, 2)
-              //       )?.toExact() ?? ''
-              //     )
-              //   }}
-              //   disableHalfButton={atHalfAmounts[Field.CURRENCY_0]}
-              //   disableMaxButton={atMaxAmounts[Field.CURRENCY_0]}
+              onClickBalanceButton={value => {
+                const amount = maxAmounts[Field.CURRENCY_0]
+                onField0Input(
+                  (value === BalanceButtonValueEnum.MAX
+                    ? amount
+                    : divideCurrencyAmountByNumber(amount, 2)
+                  )?.toExact() ?? ''
+                )
+              }}
+              disableHalfButton={atHalfAmounts[Field.CURRENCY_0]}
+              disableMaxButton={atMaxAmounts[Field.CURRENCY_0]}
               currency={currencies[Field.CURRENCY_0]}
-              id="add-liquidity-input-tokena"
+              id="add-liquidity-input-token0"
               showCommonBases
             />
             <ColumnCenter>
@@ -203,19 +204,19 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               disableCurrencySelect
               value={typedValue1}
               onUserInput={onField1Input}
-              //   onClickBalanceButton={value => {
-              //     const amount = maxAmounts[Field.CURRENCY_1]
-              //     onFieldBInput(
-              //       (value === BalanceButtonValueEnum.MAX
-              //         ? amount
-              //         : divideCurrencyAmountByNumber(amount, 2)
-              //       )?.toExact() ?? ''
-              //     )
-              //   }}
-              //   disableHalfButton={atHalfAmounts[Field.CURRENCY_1]}
-              //   disableMaxButton={atMaxAmounts[Field.CURRENCY_1]}
+              onClickBalanceButton={value => {
+                const amount = maxAmounts[Field.CURRENCY_1]
+                onField1Input(
+                  (value === BalanceButtonValueEnum.MAX
+                    ? amount
+                    : divideCurrencyAmountByNumber(amount, 2)
+                  )?.toExact() ?? ''
+                )
+              }}
+              disableHalfButton={atHalfAmounts[Field.CURRENCY_1]}
+              disableMaxButton={atMaxAmounts[Field.CURRENCY_1]}
               currency={currencies[Field.CURRENCY_1]}
-              id="add-liquidity-input-tokenb"
+              id="add-liquidity-input-token1"
               showCommonBases
             />
             {hasThirdCurrency ? (
@@ -227,19 +228,19 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                   disableCurrencySelect
                   value={typedValue2}
                   onUserInput={onField2Input}
-                  //   onClickBalanceButton={value => {
-                  //     const amount = maxAmounts[Field.CURRENCY_1]
-                  //     onFieldBInput(
-                  //       (value === BalanceButtonValueEnum.MAX
-                  //         ? amount
-                  //         : divideCurrencyAmountByNumber(amount, 2)
-                  //       )?.toExact() ?? ''
-                  //     )
-                  //   }}
-                  //   disableHalfButton={atHalfAmounts[Field.CURRENCY_1]}
-                  //   disableMaxButton={atMaxAmounts[Field.CURRENCY_1]}
+                  onClickBalanceButton={value => {
+                    const amount = maxAmounts[Field.CURRENCY_2]
+                    onField2Input(
+                      (value === BalanceButtonValueEnum.MAX
+                        ? amount
+                        : divideCurrencyAmountByNumber(amount, 2)
+                      )?.toExact() ?? ''
+                    )
+                  }}
+                  disableHalfButton={atHalfAmounts[Field.CURRENCY_2]}
+                  disableMaxButton={atMaxAmounts[Field.CURRENCY_2]}
                   currency={currencies[Field.CURRENCY_2]}
-                  id="add-liquidity-input-tokenc"
+                  id="add-liquidity-input-token2"
                   showCommonBases
                 />
               </>
