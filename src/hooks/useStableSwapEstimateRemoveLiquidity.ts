@@ -36,11 +36,15 @@ export default function useStableSwapEstimateRemoveLiquidity({
 
   const subtractSlippageFromValue = useCallback(
     (value: BigInt) => {
-      const amount = JSBI.BigInt(value)
-      const slippageAmount = subtractSlippageFromJSBI(amount, userSlippageTolerance)
-      return JSBI.subtract(amount, slippageAmount)
+      return JSBI.BigInt(value)
+
+      // @TODO This logic needs to be fixed
+      // const amount = JSBI.BigInt(value)
+      // const slippageAmount = subtractSlippageFromJSBI(amount, userSlippageTolerance)
+      // return JSBI.subtract(amount, slippageAmount)
     },
-    [userSlippageTolerance]
+    // [userSlippageTolerance]
+    []
   )
 
   const estimateRemovingOneToken = useCallback(

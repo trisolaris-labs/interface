@@ -81,7 +81,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
       // @TODO Move the prod version of this token to the Tokens repo
       lpToken: new Token(
         ChainId.AURORA,
-        '0xA601723619a6D1d275cDaa32524f695c21e5E54C',
+        '0x60B0D79e54a3D0eDE7D6372e348735cfA2b9E568',
         18,
         'triTestUSD',
         'TEST Trisolaris USDT/USDC'
@@ -89,7 +89,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
       // *** NOTE *** - For future reference, this order of the pool tokens must be equivalent to the LP token name order
       // Also to verify, please query the swap contract for the individual stable token indexes
       poolTokens: [USDT[ChainId.AURORA], USDC[ChainId.AURORA]],
-      address: '0x72ff47B0Df5F8EBD93e4fA4600b89Db693066aa4',
+      address: '0x07383Dea8ee803F79A9e7f8a1afeBbe6D3Eb425b',
       type: StableSwapPoolTypes.USD,
       route: 'usd',
       underlyingPoolTokens: [USDT[ChainId.AURORA], USDC[ChainId.AURORA]],
