@@ -7,6 +7,7 @@ import TransactionConfirmationModal, {
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
 import { useTranslation } from 'react-i18next'
+import { StableSwapTrade } from '../../state/stableswap/hooks'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
@@ -34,7 +35,9 @@ export default function ConfirmSwapModal({
   swapErrorMessage,
   isOpen,
   attemptingTxn,
-  txHash
+  txHash,
+  isStableSwap,
+  stableSwapTrade
 }: {
   isOpen: boolean
   trade: Trade | undefined
@@ -47,6 +50,8 @@ export default function ConfirmSwapModal({
   onConfirm: () => void
   swapErrorMessage: string | undefined
   onDismiss: () => void
+  isStableSwap: boolean
+  stableSwapTrade: StableSwapTrade | undefined
 }) {
   const showAcceptChanges = useMemo(
     () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
@@ -62,6 +67,8 @@ export default function ConfirmSwapModal({
         recipient={recipient}
         showAcceptChanges={showAcceptChanges}
         onAcceptChanges={onAcceptChanges}
+        isStableSwap={isStableSwap}
+        stableSwapTrade={stableSwapTrade}
       />
     ) : null
   }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade])

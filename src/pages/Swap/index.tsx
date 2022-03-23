@@ -381,7 +381,7 @@ export default function Swap() {
             <Wrapper id="swap-page">
               <ConfirmSwapModal
                 isOpen={showConfirm}
-                trade={isRoutedViaStableSwap ? trade : trade}
+                trade={trade}
                 originalTrade={tradeToConfirm}
                 onAcceptChanges={handleAcceptChanges}
                 attemptingTxn={attemptingTxn}
@@ -391,6 +391,8 @@ export default function Swap() {
                 onConfirm={handleSwap}
                 swapErrorMessage={swapErrorMessage}
                 onDismiss={handleConfirmDismiss}
+                isStableSwap={isRoutedViaStableSwap}
+                stableSwapTrade={stableswapTrade}
               />
               <AutoColumn gap={'md'}>
                 <HeadingContainer>
