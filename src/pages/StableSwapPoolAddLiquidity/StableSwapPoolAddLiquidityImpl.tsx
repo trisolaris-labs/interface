@@ -1,15 +1,13 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
-import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
+import { ButtonError, ButtonLight } from '../../components/Button'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { RowBetween } from '../../components/Row'
 
 import { useActiveWeb3React } from '../../hooks'
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/stableswap-add-liquidity/actions'
 import {
@@ -18,21 +16,14 @@ import {
   useStableSwapAddLiquidityCallback,
   useStableSwapAddLiquidityState
 } from '../../state/stableswap-add-liquidity/hooks'
-
-import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks'
-import { TYPE } from '../../theme'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import AppBody from '../AppBody'
-import { Dots, Wrapper } from '../Pool/styleds'
-// import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
-// import { PoolPriceBar } from './PoolPriceBar'
-import { ChainId } from '@trisolaris/sdk'
+import { Wrapper } from '../Pool/styleds'
 import { useTranslation } from 'react-i18next'
-// import PriceAndPoolShare from './PriceAndPoolShare'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
-import { StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/constants'
+import { StableSwapPoolName } from '../../state/stableswap/constants'
 import { divideCurrencyAmountByNumber } from '../../utils'
+import StableSwapPoolAddLiquidityApprovalsRow from './StableSwapPoolAddLiquidityApprovalsRow'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -45,7 +36,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
-  const expertMode = useIsExpertMode()
+  // const expertMode = useIsExpertMode()
 
   // mint state
   const {
@@ -56,7 +47,6 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   const { currencies, currencyBalances, parsedAmounts, error, hasThirdCurrency } = useDerivedStableSwapAddLiquidityInfo(
     stableSwapPoolName
   )
-  const { address } = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
 
   const { onField0Input, onField1Input, onField2Input } = useStableSwapAddLiquidityActionHandlers()
 
@@ -68,29 +58,18 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   // txn values
   const { callback: addLiquidityCallback } = useStableSwapAddLiquidityCallback(stableSwapPoolName)
 
-  // @TODO Update this to support generic `Field` values
   // get the max amounts user can add
   const { getMaxAmounts } = useCurrencyInputPanel()
   const { maxAmounts, atMaxAmounts, atHalfAmounts } = getMaxAmounts({ currencyBalances, parsedAmounts })
-
-  // check whether the user has approved the router on the tokens
-  const [approval0, approve0Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_0], address)
-  const [approval1, approve1Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_1], address)
-  const [approval2, approve2Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_2], address)
-
-  //   useStableSwapLP
 
   async function onAdd() {
     if (!chainId || !library || !account) {
       return
     }
 
-    // Is this needed for ETH pools?
-    const value = null
-
     setAttemptingTxn(true)
     addLiquidityCallback()
-      .then((response: any) => {
+      .then((_response: any) => {
         setAttemptingTxn(false)
 
         ReactGA.event({
@@ -107,71 +86,6 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
         }
       })
   }
-
-  const approvalsRow = useMemo(() => {
-    const currencyApprovalsData = [
-      {
-        approval: approval0,
-        symbol: currencies[Field.CURRENCY_0]?.symbol,
-        onClick: approve0Callback
-      },
-      {
-        approval: approval1,
-        symbol: currencies[Field.CURRENCY_1]?.symbol,
-        onClick: approve1Callback
-      }
-    ]
-
-    if (hasThirdCurrency) {
-      currencyApprovalsData.push({
-        approval: approval2,
-        symbol: currencies[Field.CURRENCY_2]?.symbol,
-        onClick: approve2Callback
-      })
-    }
-
-    const hasUnapprovedTokens = currencyApprovalsData.some(({ approval }) =>
-      [ApprovalState.NOT_APPROVED, ApprovalState.PENDING].includes(approval)
-    )
-
-    if (!hasUnapprovedTokens || !isValid) {
-      return null
-    }
-
-    const width = `${Math.floor(100 / currencyApprovalsData.length) - 2}%`
-
-    return (
-      <RowBetween>
-        {currencyApprovalsData.map(({ approval, symbol, onClick }, i) => {
-          return (
-            <ButtonPrimary
-              key={symbol ?? i}
-              onClick={onClick}
-              disabled={[ApprovalState.PENDING, ApprovalState.APPROVED].includes(approval)}
-              width={width}
-            >
-              {approval === ApprovalState.PENDING ? <Dots>Approving {symbol}</Dots> : null}
-              {approval === ApprovalState.APPROVED ? <span>Approved {symbol}</span> : null}
-              {approval === ApprovalState.NOT_APPROVED
-                ? t('addLiquidity.approve') + currencies[Field.CURRENCY_0]?.symbol
-                : null}
-            </ButtonPrimary>
-          )
-        })}
-      </RowBetween>
-    )
-  }, [
-    approval0,
-    approval1,
-    approval2,
-    approve0Callback,
-    approve1Callback,
-    approve2Callback,
-    currencies,
-    hasThirdCurrency,
-    isValid,
-    t
-  ])
 
   return (
     <>
@@ -249,7 +163,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
             ) : (
               <AutoColumn gap={'md'}>
-                {approvalsRow ?? (
+                <StableSwapPoolAddLiquidityApprovalsRow stableSwapPoolName={stableSwapPoolName}>
                   <ButtonError
                     onClick={() => {
                       //   expertMode ? onAdd() : setShowConfirm(true)
@@ -262,7 +176,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                       {error ?? t('addLiquidity.supply')}
                     </Text>
                   </ButtonError>
-                )}
+                </StableSwapPoolAddLiquidityApprovalsRow>
               </AutoColumn>
             )}
           </AutoColumn>
