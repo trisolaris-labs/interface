@@ -108,7 +108,7 @@ const DefaultPoolCardtri = ({
       <AutoRow justifyContent="space-between">
         <PairContainer>
           {(token0 === stNearToken || token1 === stNearToken) && (
-            <StyledExternalLink href="https://metapool.app/">Get stNEAR ↗</StyledExternalLink>
+            <StyledExternalLink href="https://metapool.app/dapp/mainnet/metapool-aurora/">Get stNEAR ↗</StyledExternalLink>
           )}
           <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
           <ResponsiveCurrencyLabel>
