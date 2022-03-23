@@ -156,6 +156,13 @@ export const AUSDO: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x293074789b247cab05357b08052468B5d7A23c5a', 8, 'aUSDO', 'aUSDO'),
 }
 
+export const BBT: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'BBT', 'BlueBit Token'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'BBT', 'BlueBit Token'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BBT', 'BlueBit Token'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4148d2Ce7816F0AE378d98b40eB3A7211E1fcF0D', 18, 'BBT', 'BlueBit Token'),
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),
