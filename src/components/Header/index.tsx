@@ -63,7 +63,12 @@ export default function Header() {
         <HeaderControls>
           <HeaderElement>
             <TRIWrapper active={true}>
-              <TRIButton>
+              <TRIButton
+                onClick={e => {
+                  e.currentTarget.blur()
+                  toggleTriPriceModal()
+                }}
+              >
                 <IconWrapper size={16}>
                   <img
                     src={
