@@ -8,6 +8,7 @@ import BridgesMenu from '../BridgesMenu'
 import GovernanceMenu from '../GovernanceMenu'
 
 const responsiveTextAndMargin = css`
+margin: 0 12px;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
 margin: 0 5px;
 font-size: 0.925rem;
@@ -182,7 +183,6 @@ export const StyledNavLink = styled(NavLink).attrs({
   color: ${({ theme }) => theme.text2};
   font-size: 1rem;
   width: fit-content;
-  margin: 0 12px;
   font-weight: 500;
 
   &.${activeClassName} {
