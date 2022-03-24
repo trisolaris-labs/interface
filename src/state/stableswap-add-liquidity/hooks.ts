@@ -17,10 +17,10 @@ import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { useStableSwapContract } from '../../hooks/useContract'
 import { BIG_INT_ZERO } from '../../constants'
 import { useUserSlippageTolerance } from '../user/hooks'
-import { basisPointsToPercent } from '../../utils'
 import { BigNumber } from 'ethers'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import { useTransactionAdder } from '../transactions/hooks'
+import { computeSlippageAdjustedMinAmount } from '../../utils/prices'
 
 export function useStableSwapAddLiquidityState(): AppState['stableswapAddLiquidity'] {
   return useSelector<AppState, AppState['stableswapAddLiquidity']>(state => state.stableswapAddLiquidity)
@@ -169,7 +169,6 @@ export function useStableSwapAddLiquidityCallback(
   )
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
-  const slippageAsPercent = basisPointsToPercent(allowedSlippage)
   const addTransaction = useTransactionAdder()
   let deadline = useTransactionDeadline()
 
@@ -178,6 +177,24 @@ export function useStableSwapAddLiquidityCallback(
     deadline = currentTime.add(10)
   }
 
+  const getMinToMint = useCallback(
+    async (formattedCurrencyAmounts: string[]) => {
+      const isFirstTransaction = JSBI.equal(totalLPTokenSuppply?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
+      if (isFirstTransaction) {
+        return BIG_INT_ZERO
+      }
+
+      const minToMint = await stableSwapContract?.calculateTokenAmount(
+        formattedCurrencyAmounts,
+        true // deposit boolean
+      )
+
+      const minToMintLessSlippage = computeSlippageAdjustedMinAmount(JSBI.BigInt(minToMint), allowedSlippage)
+      return minToMintLessSlippage.toString()
+    },
+    [allowedSlippage, stableSwapContract, totalLPTokenSuppply?.raw]
+  )
+
   const callback = useCallback(async () => {
     const currencyAmounts = [parsedAmounts[Field.CURRENCY_0], parsedAmounts[Field.CURRENCY_1]]
     if (hasThirdCurrency) {
@@ -185,19 +202,9 @@ export function useStableSwapAddLiquidityCallback(
     }
 
     const formattedCurrencyAmounts = currencyAmounts.map(item => item?.raw?.toString() ?? '0')
-    const isFirstTransaction = JSBI.equal(totalLPTokenSuppply?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
+    const minToMint = await getMinToMint(formattedCurrencyAmounts)
 
-    // @TODO Fix this calculation
-    // const minToMint = isFirstTransaction
-    //   ? BIG_INT_ZERO.toString()
-    //   : await stableSwapContract?.calculateTokenAmount(
-    //       formattedCurrencyAmounts,
-    //       true // deposit boolean
-    //     )
-    const minToMint = '0'
     const transactionArguments = [formattedCurrencyAmounts, minToMint, deadline?.toNumber()]
-
-    // @TODO Subtract slippage from `minToMint`
     const transaction = await stableSwapContract?.addLiquidity(...transactionArguments, {
       from: account
     })
@@ -217,16 +224,7 @@ export function useStableSwapAddLiquidityCallback(
     })
 
     return transaction
-  }, [
-    account,
-    addTransaction,
-    currencies,
-    deadline,
-    hasThirdCurrency,
-    parsedAmounts,
-    stableSwapContract,
-    totalLPTokenSuppply?.raw
-  ])
+  }, [account, addTransaction, currencies, deadline, getMinToMint, hasThirdCurrency, parsedAmounts, stableSwapContract])
 
   return { callback }
 }
