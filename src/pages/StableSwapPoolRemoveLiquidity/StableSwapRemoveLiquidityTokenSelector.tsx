@@ -6,6 +6,7 @@ import { RowBetween } from '../../components/Row'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { StableSwapPoolName } from '../../state/stableswap/constants'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
+import Settings from '../../components/Settings'
 
 const CurrencySymbol = styled('span')`
   margin-left: 4px;
@@ -61,6 +62,7 @@ export default function StableSwapRemoveLiquidityTokenSelector({
           </Button>
         )
       })}
+      <Settings />
     </RowBetween>
   )
 }
