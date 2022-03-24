@@ -1,4 +1,4 @@
-import { BLOCKED_PRICE_IMPACT_NON_EXPERT } from '../constants'
+import { BIG_INT_ZERO, BLOCKED_PRICE_IMPACT_NON_EXPERT } from '../constants'
 import { CurrencyAmount, Fraction, JSBI, Percent, TokenAmount, Trade } from '@trisolaris/sdk'
 import { ALLOWED_PRICE_IMPACT_HIGH, ALLOWED_PRICE_IMPACT_LOW, ALLOWED_PRICE_IMPACT_MEDIUM } from '../constants'
 import { Field } from '../state/swap/actions'
@@ -55,6 +55,10 @@ export function computeSlippageAdjustedAmounts(
 }
 
 export function computeSlippageAdjustedMinAmount(value: JSBI, allowedSlippage: number) {
+  if (JSBI.equal(value, BIG_INT_ZERO)) {
+    return BIG_INT_ZERO
+  }
+
   return JSBI.divide(JSBI.multiply(value, JSBI.BigInt(10000 - allowedSlippage)), JSBI.BigInt(10000))
 }
 
