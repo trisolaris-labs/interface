@@ -3,6 +3,8 @@ import { BigNumber } from 'ethers'
 import { useCallback } from 'react'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
+import { useUserSlippageTolerance } from '../state/user/hooks'
+import { computeSlippageAdjustedMinAmount } from '../utils/prices'
 import { unwrappedToken } from '../utils/wrappedCurrency'
 import { useStableSwapContract } from './useContract'
 import useTransactionDeadline from './useTransactionDeadline'
@@ -24,6 +26,10 @@ export default function useStableSwapRemoveLiquidity({
   const swapContract = useStableSwapContract(stableSwapPoolName)
   const amountString = amount?.raw.toString()
 
+  const [userSlippageTolerance] = useUserSlippageTolerance()
+  const estimatedMinAmounts = estimatedAmounts.map(({ raw: amount }) =>
+    computeSlippageAdjustedMinAmount(amount, userSlippageTolerance).toString()
+  )
   const addTransaction = useTransactionAdder()
   let deadline = useTransactionDeadline()
   const currentTime = BigNumber.from(new Date().getTime())
@@ -41,15 +47,11 @@ export default function useStableSwapRemoveLiquidity({
       transaction = await swapContract?.removeLiquidityOneToken(
         amountString,
         withdrawTokenIndex,
-        estimatedAmounts[withdrawTokenIndex].raw.toString(),
+        estimatedMinAmounts[withdrawTokenIndex],
         deadline?.toNumber()
       )
     } else {
-      transaction = await swapContract?.removeLiquidity(
-        amountString,
-        estimatedAmounts.map(v => v.raw.toString()),
-        deadline?.toNumber()
-      )
+      transaction = await swapContract?.removeLiquidity(amountString, estimatedMinAmounts, deadline?.toNumber())
     }
 
     await transaction.wait()
@@ -61,7 +63,7 @@ export default function useStableSwapRemoveLiquidity({
     })
 
     return transaction
-  }, [addTransaction, amountString, deadline, estimatedAmounts, pool.lpToken, swapContract, withdrawTokenIndex])
+  }, [addTransaction, amountString, deadline, estimatedMinAmounts, pool.lpToken, swapContract, withdrawTokenIndex])
 
   return removeLiquidity
 }

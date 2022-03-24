@@ -14,7 +14,6 @@ import { useTranslation } from 'react-i18next'
 import { PageWrapper } from '../../components/Page'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import _ from 'lodash'
-import Toggle from '../../components/Toggle'
 
 const TitleRow = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToSmall`

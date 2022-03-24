@@ -54,6 +54,10 @@ export function computeSlippageAdjustedAmounts(
   }
 }
 
+export function computeSlippageAdjustedMinAmount(value: JSBI, allowedSlippage: number) {
+  return JSBI.divide(JSBI.multiply(value, JSBI.BigInt(10000 - allowedSlippage)), JSBI.BigInt(10000))
+}
+
 export function warningSeverity(priceImpact: Percent | undefined): 0 | 1 | 2 | 3 | 4 {
   if (!priceImpact?.lessThan(BLOCKED_PRICE_IMPACT_NON_EXPERT)) return 4
   if (!priceImpact?.lessThan(ALLOWED_PRICE_IMPACT_HIGH)) return 3
