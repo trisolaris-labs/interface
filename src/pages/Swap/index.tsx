@@ -142,8 +142,6 @@ export default function Swap() {
       if (isStableSwap) {
         const swapOutputRaw = parsedAmounts?.OUTPUT?.raw
         if (swapOutputRaw) {
-          // console.log(swapOutputRaw?.toString())
-          // console.log(stableswapTrade?.outputAmount?.raw?.toString())
           return JSBI.greaterThan(stableswapTrade?.outputAmount?.raw ?? JSBI.BigInt(0), swapOutputRaw)
         }
         return false
@@ -310,9 +308,14 @@ export default function Swap() {
     defaultswapPriceImpactWithoutFee
   ])
 
+  const isAEBToken = useIsSelectedAEBToken()
+
   // warnings on slippage
   const defaultswapPriceImpactSeverity = warningSeverity(defaultswapPriceImpactWithoutFee)
   const isStableSwapPriceImpactSevere = isStableSwapHighPriceImpact(stableswapPriceImpact)
+
+  const onlyExpertTrade = isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 3
+  const highImpactTrade = isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 2
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
@@ -321,7 +324,7 @@ export default function Swap() {
     (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
-    !(!isExpertMode && (isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 3))
+    !(!isExpertMode && onlyExpertTrade)
 
   const handleConfirmDismiss = useCallback(() => {
     setSwapState({ showConfirm: false, tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
@@ -355,7 +358,12 @@ export default function Swap() {
     onCurrencySelection
   ])
 
-  const isAEBToken = useIsSelectedAEBToken()
+  const renderSwapText = () => {
+    if (!isExpertMode && onlyExpertTrade) {
+      return t('swapPage.priceImpactHigh')
+    }
+    return highImpactTrade ? `${t('swapPage.swap')} ${t('swapPage.anyway')}` : t('swapPage.swap')
+  }
 
   return (
     <>
@@ -546,26 +554,11 @@ export default function Swap() {
                       }}
                       width="48%"
                       id="swap-button"
-                      disabled={
-                        !isValid ||
-                        approval !== ApprovalState.APPROVED ||
-                        (!isExpertMode &&
-                          (isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 3))
-                      }
+                      disabled={!isValid || approval !== ApprovalState.APPROVED || (!isExpertMode && onlyExpertTrade)}
                       error={isValid && defaultswapPriceImpactSeverity > 2}
                     >
                       <Text fontSize={16} fontWeight={500}>
-                        {!isExpertMode &&
-                        (isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 3)
-                          ? t('swapPage.priceImpactHigh')
-                          : t('swapPage.swap') +
-                            `${
-                              isRoutedViaStableSwap
-                                ? isStableSwapPriceImpactSevere
-                                : defaultswapPriceImpactSeverity > 2
-                                ? t('swapPage.anyway')
-                                : ''
-                            }`}
+                        {renderSwapText()}
                       </Text>
                     </ButtonError>
                   </RowBetween>
@@ -585,32 +578,11 @@ export default function Swap() {
                       }
                     }}
                     id="swap-button"
-                    disabled={
-                      !isValid ||
-                      (!isExpertMode &&
-                        (isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 3)) ||
-                      !!swapCallbackError
-                    }
-                    error={
-                      isValid &&
-                      (isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 2) &&
-                      !swapCallbackError
-                    }
+                    disabled={!isValid || (!isExpertMode && onlyExpertTrade) || !!swapCallbackError}
+                    error={isValid && highImpactTrade && !swapCallbackError}
                   >
                     <Text fontSize={20} fontWeight={500}>
-                      {swapInputError
-                        ? swapInputError
-                        : !isExpertMode &&
-                          (isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 3)
-                        ? t('swapPage.priceImpactHigh')
-                        : t('swapPage.swap') +
-                          `${
-                            (isRoutedViaStableSwap
-                            ? isStableSwapPriceImpactSevere
-                            : defaultswapPriceImpactSeverity > 2)
-                              ? t('swapPage.anyway')
-                              : ''
-                          }`}
+                      {swapInputError ? swapInputError : renderSwapText()}
                     </Text>
                   </ButtonError>
                 )}
