@@ -22,6 +22,7 @@ import { STABLE_SWAP_TYPES } from './constants'
 import _ from 'lodash'
 import { Contract } from 'ethers'
 import { USDC } from '../../constants/tokens'
+import { computeSlippageAdjustedMinAmount } from '../../utils/prices'
 
 const NATIVE_USDC = USDC[ChainId.AURORA]
 
@@ -31,6 +32,7 @@ export type StableSwapTrade = {
   inputAmount: CurrencyAmount
   stableSwapData: StableSwapData
   outputAmount: CurrencyAmount
+  outputAmountLessSlippage: CurrencyAmount
 }
 
 export function isStableSwapHighPriceImpact(priceImpact: JSBI): boolean {
@@ -283,21 +285,19 @@ export function useDerivedStableSwapInfo(): {
     amountToReceive != null
   ) {
     const amountToReceiveJSBI = JSBI.BigInt(amountToReceive)
-    const amountOutLessSlippage = new Fraction(JSBI.BigInt(1))
-      .add(JSBI.BigInt(allowedSlippage))
-      .invert()
-      .multiply(amountToReceiveJSBI).quotient
+    const amountOutLessSlippageNew = computeSlippageAdjustedMinAmount(amountToReceiveJSBI, allowedSlippage)
 
-    const executionPrice = JSBI.LE(amountOutLessSlippage, BIG_INT_ZERO)
+    const executionPrice = JSBI.LE(amountOutLessSlippageNew, BIG_INT_ZERO)
       ? new Price(tokenFrom, tokenTo, JSBI.BigInt(1), BIG_INT_ZERO)
-      : new Price(tokenFrom, tokenTo, amountToReceiveJSBI, amountOutLessSlippage)
+      : new Price(tokenFrom, tokenTo, amountToReceiveJSBI, amountOutLessSlippageNew)
 
     tradeData = {
       contract: stableSwapContract,
       executionPrice,
       inputAmount: parsedAmount,
       stableSwapData: selectedStableSwapPool,
-      outputAmount: CurrencyAmount.fromRawAmount(tokenTo, amountToReceiveJSBI)
+      outputAmount: CurrencyAmount.fromRawAmount(tokenTo, amountToReceiveJSBI),
+      outputAmountLessSlippage: CurrencyAmount.fromRawAmount(tokenTo, amountOutLessSlippageNew)
     }
   }
 
