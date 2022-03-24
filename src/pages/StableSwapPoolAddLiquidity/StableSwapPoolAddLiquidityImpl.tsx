@@ -24,6 +24,9 @@ import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurren
 import { StableSwapPoolName } from '../../state/stableswap/constants'
 import { divideCurrencyAmountByNumber } from '../../utils'
 import StableSwapPoolAddLiquidityApprovalsRow from './StableSwapPoolAddLiquidityApprovalsRow'
+import { TYPE } from '../../theme'
+import Settings from '../../components/Settings'
+import { HeadingContainer } from '../Swap/Swap.styles'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -92,6 +95,10 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
       <AppBody>
         <Wrapper>
           <AutoColumn gap="20px">
+            <HeadingContainer>
+              <TYPE.mediumHeader>Add Liquidity to {stableSwapPoolName}</TYPE.mediumHeader>
+              <Settings />
+            </HeadingContainer>
             <CurrencyInputPanel
               disableCurrencySelect
               value={typedValue0}
