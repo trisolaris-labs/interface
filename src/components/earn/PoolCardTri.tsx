@@ -18,17 +18,15 @@ import { currencyId } from '../../utils/currencyId'
 import { addCommasToNumber } from '../../utils'
 import { getPairRenderOrder, isTokenAmountPositive } from '../../utils/pools'
 
-import { STNEAR } from '../../constants/tokens'
-
 import {
   Wrapper,
   PairContainer,
   ResponsiveCurrencyLabel,
   TokenPairBackgroundColor,
   StyledActionsContainer,
-  Button,
-  StyledExternalLink,
+  Button
 } from './PoolCardTri.styles'
+import GetTokenLink from './FarmsPortfolio/GetTokenLink'
 
 type PoolCardTriProps = {
   apr: number
@@ -46,8 +44,6 @@ type PoolCardTriProps = {
   isStaking: boolean
   version: number
 }
-
-const stNearToken = STNEAR[ChainId.AURORA]
 
 const DefaultPoolCardtri = ({
   apr,
@@ -107,9 +103,7 @@ const DefaultPoolCardtri = ({
 
       <AutoRow justifyContent="space-between">
         <PairContainer>
-          {(token0 === stNearToken || token1 === stNearToken) && (
-            <StyledExternalLink href="https://metapool.app/dapp/mainnet/metapool-aurora/">Get stNEAR ↗</StyledExternalLink>
-          )}
+          <GetTokenLink tokens={[token0, token1]} />
           <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
           <ResponsiveCurrencyLabel>
             {currency0.symbol}-{currency1.symbol}
