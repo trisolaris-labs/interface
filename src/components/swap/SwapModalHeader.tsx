@@ -105,32 +105,24 @@ export default function SwapModalHeader({
         </SwapShowAcceptChanges>
       ) : null}
       <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
-        {trade.tradeType === TradeType.EXACT_INPUT || isStableSwap ? (
+        {trade.tradeType === TradeType.EXACT_INPUT ? (
           <TYPE.italic textAlign="left" style={{ width: '100%' }}>
             {t('swap.outputEstimated')}
-            {isStableSwap ? (
-              <b>
-                {stableSwapTrade?.outputAmount?.toSignificant(6)} {stableSwapTrade?.outputAmount.currency.symbol}
-              </b>
-            ) : (
+            {
               <b>
                 {slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(6)} {trade.outputAmount.currency.symbol}
               </b>
-            )}
+            }
             {t('swap.transactionRevert')}
           </TYPE.italic>
         ) : (
           <TYPE.italic textAlign="left" style={{ width: '100%' }}>
             {t('swap.inputEstimated')}
-            {isStableSwap ? (
-              <b>
-                {stableSwapTrade?.outputAmount?.toSignificant(6)} {stableSwapTrade?.outputAmount.currency.symbol}
-              </b>
-            ) : (
+            {
               <b>
                 {slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)} {trade.inputAmount.currency.symbol}
               </b>
-            )}
+            }
             {t('swap.transactionRevert')}
           </TYPE.italic>
         )}

@@ -391,8 +391,10 @@ export default function Swap() {
                 onConfirm={handleSwap}
                 swapErrorMessage={swapErrorMessage}
                 onDismiss={handleConfirmDismiss}
-                isStableSwap={isRoutedViaStableSwap}
                 stableSwapTrade={stableswapTrade}
+                isRoutedViaStableSwap={isRoutedViaStableSwap}
+                stableswapPriceImpactWithoutFee={stableswapPriceImpactWithoutFee}
+                isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
               />
               <AutoColumn gap={'md'}>
                 <HeadingContainer>
