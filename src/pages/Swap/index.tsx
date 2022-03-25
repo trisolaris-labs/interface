@@ -399,7 +399,6 @@ export default function Swap() {
                 onConfirm={handleSwap}
                 swapErrorMessage={swapErrorMessage}
                 onDismiss={handleConfirmDismiss}
-                stableSwapTrade={stableswapTrade}
                 isRoutedViaStableSwap={isRoutedViaStableSwap}
                 stableswapPriceImpactWithoutFee={stableswapPriceImpactWithoutFee}
                 isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}

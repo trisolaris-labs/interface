@@ -7,7 +7,8 @@ import TransactionConfirmationModal, {
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
 import { useTranslation } from 'react-i18next'
-import { StableSwapTrade } from '../../state/stableswap/hooks'
+
+import { useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
@@ -36,7 +37,6 @@ export default function ConfirmSwapModal({
   isOpen,
   attemptingTxn,
   txHash,
-  stableSwapTrade,
   stableswapPriceImpactWithoutFee,
   isRoutedViaStableSwap,
   isStableSwapPriceImpactSevere
@@ -52,7 +52,7 @@ export default function ConfirmSwapModal({
   onConfirm: () => void
   swapErrorMessage: string | undefined
   onDismiss: () => void
-  stableSwapTrade: StableSwapTrade | undefined
+
   stableswapPriceImpactWithoutFee: Percent
   isRoutedViaStableSwap: boolean
   isStableSwapPriceImpactSevere: boolean
@@ -63,6 +63,8 @@ export default function ConfirmSwapModal({
   )
   const { t } = useTranslation()
 
+  const { stableswapTrade } = useDerivedStableSwapInfo()
+
   const modalHeader = useCallback(() => {
     return trade ? (
       <SwapModalHeader
@@ -71,8 +73,8 @@ export default function ConfirmSwapModal({
         recipient={recipient}
         showAcceptChanges={showAcceptChanges}
         onAcceptChanges={onAcceptChanges}
-        isStableSwap={isRoutedViaStableSwap}
-        stableSwapTrade={stableSwapTrade}
+        isRoutedViaStableSwap={isRoutedViaStableSwap}
+        stableSwapTrade={stableswapTrade}
       />
     ) : null
   }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade])
@@ -88,12 +90,12 @@ export default function ConfirmSwapModal({
         isRoutedViaStableSwap={isRoutedViaStableSwap}
         stableswapPriceImpactWithoutFee={stableswapPriceImpactWithoutFee}
         isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
-        stableSwapTrade={stableSwapTrade}
+        stableSwapTrade={stableswapTrade}
       />
     ) : null
   }, [allowedSlippage, onConfirm, showAcceptChanges, swapErrorMessage, trade])
 
-  const currentTrade = isRoutedViaStableSwap ? stableSwapTrade : trade
+  const currentTrade = isRoutedViaStableSwap ? stableswapTrade : trade
   // text to show while loading
   const pendingText = `Swapping ${currentTrade?.inputAmount?.toSignificant(6)} ${
     currentTrade?.inputAmount?.currency?.symbol

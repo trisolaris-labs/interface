@@ -22,7 +22,7 @@ export default function SwapModalHeader({
   recipient,
   showAcceptChanges,
   onAcceptChanges,
-  isStableSwap,
+  isRoutedViaStableSwap,
   stableSwapTrade
 }: {
   trade: Trade
@@ -30,7 +30,7 @@ export default function SwapModalHeader({
   recipient: string | null
   showAcceptChanges: boolean
   onAcceptChanges: () => void
-  isStableSwap: boolean
+  isRoutedViaStableSwap: boolean
   stableSwapTrade: StableSwapTrade | undefined
 }) {
   const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
@@ -53,12 +53,12 @@ export default function SwapModalHeader({
             fontWeight={500}
             color={showAcceptChanges && trade.tradeType === TradeType.EXACT_OUTPUT ? theme.primary1 : ''}
           >
-            {isStableSwap ? stableSwapTrade?.inputAmount.toSignificant(6) : trade.inputAmount.toSignificant(6)}
+            {isRoutedViaStableSwap ? stableSwapTrade?.inputAmount.toSignificant(6) : trade.inputAmount.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
         <RowFixed gap={'0px'}>
           <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
-            {isStableSwap ? stableSwapTrade?.inputAmount.currency.symbol : trade.inputAmount.currency.symbol}
+            {isRoutedViaStableSwap ? stableSwapTrade?.inputAmount.currency.symbol : trade.inputAmount.currency.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -79,12 +79,14 @@ export default function SwapModalHeader({
                 : ''
             }
           >
-            {isStableSwap ? stableSwapTrade?.outputAmount.toSignificant(6) : trade.outputAmount.toSignificant(6)}
+            {isRoutedViaStableSwap
+              ? stableSwapTrade?.outputAmount.toSignificant(6)
+              : trade.outputAmount.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
         <RowFixed gap={'0px'}>
           <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
-            {isStableSwap ? stableSwapTrade?.outputAmount.currency.symbol : trade.outputAmount.currency.symbol}
+            {isRoutedViaStableSwap ? stableSwapTrade?.outputAmount.currency.symbol : trade.outputAmount.currency.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -105,12 +107,17 @@ export default function SwapModalHeader({
         </SwapShowAcceptChanges>
       ) : null}
       <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
-        {trade.tradeType === TradeType.EXACT_INPUT ? (
+        {isRoutedViaStableSwap || trade.tradeType === TradeType.EXACT_INPUT ? (
           <TYPE.italic textAlign="left" style={{ width: '100%' }}>
             {t('swap.outputEstimated')}
             {
               <b>
-                {slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(6)} {trade.outputAmount.currency.symbol}
+                {isRoutedViaStableSwap
+                  ? stableSwapTrade?.outputAmountLessSlippage.toSignificant(6)
+                  : slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(6)}{' '}
+                {isRoutedViaStableSwap
+                  ? stableSwapTrade?.outputAmount.currency.symbol
+                  : trade.outputAmount.currency.symbol}
               </b>
             }
             {t('swap.transactionRevert')}

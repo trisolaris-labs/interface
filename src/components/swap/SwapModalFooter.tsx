@@ -80,18 +80,24 @@ export default function SwapModalFooter({
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              {trade.tradeType === TradeType.EXACT_INPUT ? t('swap.minimumReceived') : t('swap.maximumSold')}
+              {trade.tradeType === TradeType.EXACT_INPUT || isRoutedViaStableSwap
+                ? t('swap.minimumReceived')
+                : t('swap.maximumSold')}
             </TYPE.black>
             <QuestionHelper text={t('swap.transactionRevertHelper')} />
           </RowFixed>
           <RowFixed>
             <TYPE.black fontSize={14}>
-              {trade.tradeType === TradeType.EXACT_INPUT
+              {isRoutedViaStableSwap
+                ? stableSwapTrade?.outputAmountLessSlippage.toSignificant(4)
+                : trade.tradeType === TradeType.EXACT_INPUT
                 ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4) ?? '-'
                 : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4) ?? '-'}
             </TYPE.black>
             <TYPE.black fontSize={14} marginLeft={'4px'}>
-              {trade.tradeType === TradeType.EXACT_INPUT
+              {isRoutedViaStableSwap
+                ? stableSwapTrade?.outputAmount.currency.symbol
+                : trade.tradeType === TradeType.EXACT_INPUT
                 ? trade.outputAmount.currency.symbol
                 : trade.inputAmount.currency.symbol}
             </TYPE.black>
