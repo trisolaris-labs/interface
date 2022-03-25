@@ -11,7 +11,8 @@ import FormattedPriceImpact from './FormattedPriceImpact'
 import { SectionBreak } from './styleds'
 import SwapRoute from './SwapRoute'
 import { useTranslation } from 'react-i18next'
-import { StableSwapTrade } from '../../state/stableswap/hooks'
+
+import { useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 
 function TradeSummary({
   trade,
@@ -29,8 +30,17 @@ function TradeSummary({
   const theme = useContext(ThemeContext)
   const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
   const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
+  const { stableswapTrade } = useDerivedStableSwapInfo()
   const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
   const { t } = useTranslation()
+
+  const receivedAmountEstimate = isRoutedViaStableSwap
+    ? `${stableswapTrade?.outputAmountLessSlippage.toSignificant(4)} ${
+        stableswapTrade?.outputAmountLessSlippage.currency.symbol
+      }` ?? '-'
+    : isExactIn
+    ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade.outputAmount.currency.symbol}` ?? '-'
+    : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${trade.inputAmount.currency.symbol}` ?? '-'
 
   return (
     <>
@@ -44,11 +54,7 @@ function TradeSummary({
           </RowFixed>
           <RowFixed>
             <TYPE.black color={theme.text1} fontSize={14}>
-              {isExactIn
-                ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade.outputAmount.currency.symbol}` ??
-                  '-'
-                : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${trade.inputAmount.currency.symbol}` ??
-                  '-'}
+              {receivedAmountEstimate}
             </TYPE.black>
           </RowFixed>
         </RowBetween>

@@ -1,4 +1,4 @@
-import { currencyEquals, Trade } from '@trisolaris/sdk'
+import { currencyEquals, Trade, Percent } from '@trisolaris/sdk'
 import React, { useCallback, useMemo } from 'react'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
@@ -7,6 +7,8 @@ import TransactionConfirmationModal, {
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
 import { useTranslation } from 'react-i18next'
+
+import { useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
@@ -34,7 +36,10 @@ export default function ConfirmSwapModal({
   swapErrorMessage,
   isOpen,
   attemptingTxn,
-  txHash
+  txHash,
+  stableswapPriceImpactWithoutFee,
+  isRoutedViaStableSwap,
+  isStableSwapPriceImpactSevere
 }: {
   isOpen: boolean
   trade: Trade | undefined
@@ -47,12 +52,18 @@ export default function ConfirmSwapModal({
   onConfirm: () => void
   swapErrorMessage: string | undefined
   onDismiss: () => void
+
+  stableswapPriceImpactWithoutFee: Percent
+  isRoutedViaStableSwap: boolean
+  isStableSwapPriceImpactSevere: boolean
 }) {
   const showAcceptChanges = useMemo(
     () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
     [originalTrade, trade]
   )
   const { t } = useTranslation()
+
+  const { stableswapTrade } = useDerivedStableSwapInfo()
 
   const modalHeader = useCallback(() => {
     return trade ? (
@@ -62,6 +73,8 @@ export default function ConfirmSwapModal({
         recipient={recipient}
         showAcceptChanges={showAcceptChanges}
         onAcceptChanges={onAcceptChanges}
+        isRoutedViaStableSwap={isRoutedViaStableSwap}
+        stableSwapTrade={stableswapTrade}
       />
     ) : null
   }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade])
@@ -74,14 +87,19 @@ export default function ConfirmSwapModal({
         disabledConfirm={showAcceptChanges}
         swapErrorMessage={swapErrorMessage}
         allowedSlippage={allowedSlippage}
+        isRoutedViaStableSwap={isRoutedViaStableSwap}
+        stableswapPriceImpactWithoutFee={stableswapPriceImpactWithoutFee}
+        isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
+        stableSwapTrade={stableswapTrade}
       />
     ) : null
   }, [allowedSlippage, onConfirm, showAcceptChanges, swapErrorMessage, trade])
 
+  const currentTrade = isRoutedViaStableSwap ? stableswapTrade : trade
   // text to show while loading
-  const pendingText = `Swapping ${trade?.inputAmount?.toSignificant(6)} ${
-    trade?.inputAmount?.currency?.symbol
-  } for ${trade?.outputAmount?.toSignificant(6)} ${trade?.outputAmount?.currency?.symbol}`
+  const pendingText = `Swapping ${currentTrade?.inputAmount?.toSignificant(6)} ${
+    currentTrade?.inputAmount?.currency?.symbol
+  } for ${currentTrade?.outputAmount?.toSignificant(6)} ${currentTrade?.outputAmount?.currency?.symbol}`
 
   const confirmationContent = useCallback(
     () =>
