@@ -581,7 +581,7 @@ export default function Swap() {
                     error={isValid && highImpactTrade && !swapCallbackError}
                   >
                     <Text fontSize={20} fontWeight={500}>
-                      {swapInputError ? swapInputError : renderSwapText()}
+                      {swapInputError || renderSwapText()}
                     </Text>
                   </ButtonError>
                 )}
