@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import ReactGA from 'react-ga'
 import { ThemeContext } from 'styled-components'
-import { Token, Trade } from '@trisolaris/sdk'
+import { Token, Trade, ChainId} from '@trisolaris/sdk'
 import { ChevronDown } from 'react-feather'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
@@ -49,6 +49,7 @@ import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 
 import { Field } from '../../state/swap/actions'
 import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO } from '../../constants'
+import { AURORA } from '../../constants/tokens'
 
 import { ClickableText } from '../Pool/styleds'
 import { LinkStyledButton, TYPE } from '../../theme'
@@ -65,7 +66,11 @@ export default function Swap() {
   ]
   const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
   const urlLoadedTokens: Token[] = useMemo(
-    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
+    () =>
+      [loadedInputCurrency, loadedOutputCurrency]
+        ?.filter((c): c is Token => c instanceof Token)
+        .filter(token => token.address !== AURORA[ChainId.AURORA].address) ?? [],
+
     [loadedInputCurrency, loadedOutputCurrency]
   )
   const handleConfirmTokenWarning = useCallback(() => {
