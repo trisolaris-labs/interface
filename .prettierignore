@@ -14,7 +14,7 @@ src/assets/*
 
 
 node_modules
-cypress
+# cypress
 yarn.lock
 
 # from .gitignore
