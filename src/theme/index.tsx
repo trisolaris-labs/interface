@@ -55,6 +55,7 @@ export function colors(darkMode: boolean): Colors {
     bg3: '#1C1F26', // swap token background
     bg4: '#565A69',
     bg5: '#6C7284',
+    bg6: '#77838f80',
 
     //specialty colors
     modalBG: '#12141A',

@@ -1,7 +1,6 @@
 import { ChainId, Pair } from '@trisolaris/sdk'
 import { darken } from 'polished'
-import React, { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import React from 'react'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
@@ -23,6 +22,8 @@ import { BIG_INT_ZERO } from '../../constants'
 import { useHistory } from 'react-router-dom'
 import _ from 'lodash'
 import CurrencyLogo from '../CurrencyLogo'
+
+import ContractAddress from '../ContractAddress'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -180,7 +181,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
     push
   } = useHistory()
 
-  const { name, poolTokens } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
+  const { name, poolTokens, address: poolAddress } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
 
   const [token0, token1, token2] = poolTokens
   const [currency0, currency1, currency2] = poolTokens.map(token => unwrappedToken(token))
@@ -224,6 +225,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
       value: stablePoolData.adminFee == null ? '-' : `${stablePoolData.adminFee?.toString()}%`
     }
   ]
+
 
   return (
     <StyledPositionCard border={border} bgColor={backgroundColor1}>
@@ -272,18 +274,31 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
           </FixedHeightRow>
         ))}
 
+        <FixedHeightRow>
+          <div>Pool Address:</div>
+          <ContractAddress address={poolAddress} />
+        </FixedHeightRow>
+
         <AutoColumn gap="8px">
-          {formattedPoolTokenData.map(({ label, token, value }) => (
-            <FixedHeightRow key={label}>
-              <div>
-                <CurrencyLogo size="20px" style={{ marginRight: '8px' }} currency={unwrappedToken(token)} />
-                {label}
-              </div>
-              <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                {value}
-              </Text>
-            </FixedHeightRow>
-          ))}
+          <AutoColumn gap="8px" style={{ margin: '10px 0' }}>
+            {formattedPoolTokenData.map(({ label, token, value }) => (
+              <React.Fragment key={label}>
+                <FixedHeightRow>
+                  <div>
+                    <CurrencyLogo size="20px" style={{ marginRight: '8px' }} currency={unwrappedToken(token)} />
+                    {label}
+                  </div>
+                  <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
+                    {value}
+                  </Text>
+                </FixedHeightRow>
+                <FixedHeightRow>
+                  <div>Address:</div>
+                  <ContractAddress token={token} />
+                </FixedHeightRow>
+              </React.Fragment>
+            ))}
+          </AutoColumn>
 
           {formattedPoolData.slice(1).map(({ label, value }) => (
             <FixedHeightRow key={label}>
