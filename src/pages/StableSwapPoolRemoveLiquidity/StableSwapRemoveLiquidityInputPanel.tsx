@@ -58,6 +58,7 @@ export default function StableSwapRemoveLiquidityInputPanel({
           <RowBetween>
             {account ? (
               <TYPE.body
+                id={'remove-liquidity-balance'}
                 onClick={onMax}
                 color={theme.text2}
                 fontWeight={500}

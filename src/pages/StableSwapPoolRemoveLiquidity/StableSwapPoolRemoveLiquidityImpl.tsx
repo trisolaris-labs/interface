@@ -89,6 +89,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   function renderApproveButton() {
     return (
       <ButtonConfirmed
+        id="remove-liquidity-approve-button"
         mr="0.5rem"
         onClick={handleApproval}
         confirmed={approvalState === ApprovalState.APPROVED}
@@ -123,7 +124,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
               </AutoColumn>
             </RowBetween>
             <StableSwapRemoveLiquidityInputPanel
-              id="stable-swap-remove-liquidity"
+              id="stableswap-remove-liquidity"
               value={input}
               onUserInput={setInput}
               stableSwapPoolName={stableSwapPoolName}
@@ -137,6 +138,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
               const { currency } = currencyAmount
               return (
                 <StableSwapRemoveCurrencyRow
+                  index={i}
                   currency={currency}
                   key={currency.symbol}
                   value={currencyAmount.toExact()}
@@ -151,6 +153,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
               <RowBetween>
                 {renderApproveButton()}
                 <ButtonError
+                  id={'stableswap-remove-liquidity-button'}
                   error={error != null}
                   disabled={
                     approvalState !== ApprovalState.APPROVED ||

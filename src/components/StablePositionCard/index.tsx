@@ -299,11 +299,11 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
 
         <AutoColumn gap="8px">
           <ButtonRow>
-            <ButtonPrimary id="stableswap-add-liquidity" width="45%" onClick={handleAddLiquidity}>
+            <ButtonPrimary id="stableswap-add-liquidity-button" width="45%" onClick={handleAddLiquidity}>
               Add
             </ButtonPrimary>
             <ButtonPrimary
-              id="stableswap-remove-liquidity"
+              id="stableswap-remove-liquidity-button"
               disabled={!hasLPTokenBalance}
               width="45%"
               onClick={handleRemoveLiquidity}
