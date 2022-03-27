@@ -32,7 +32,7 @@ describe('Swap', () => {
       .should('have.value', '0.0')
   })
 
-  it('cannot swap ETH for USDC due to insufficient balance', () => {
+  it('cannot default swap ETH for USDC due to insufficient balance', () => {
     cy.get('#swap-currency-output .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdc')
     cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').should('be.visible')
@@ -40,10 +40,67 @@ describe('Swap', () => {
     cy.get('#swap-currency-input .token-amount-input').should('be.visible')
     cy.get('#swap-currency-input .token-amount-input').type('0.001', { force: true, delay: 200 })
     cy.get('#swap-currency-output .token-amount-input').should('not.equal', '')
+    cy.get('#swap-routed-via').should('contain', 'Default AMM')
     cy.get('#swap-button').should('contain', 'Insufficient ETH balance')
   })
 
-  it.skip('can swap ETH for USDC', () => {
+  // NOTE - Depends on stableswap liquidity and quotes hence skipped
+  it.skip('cannot default swap USDT for USDC due to insufficient balance', () => {
+    cy.get('#swap-currency-input .open-currency-select-button').click()
+    cy.get('#token-search-input').type('usdt')
+    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').should('be.visible')
+    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').click({ force: true })
+
+    cy.get('#swap-currency-output .open-currency-select-button').click()
+    cy.get('#token-search-input').type('usdc')
+    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').should('be.visible')
+    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').click({ force: true })
+
+    cy.get('#swap-currency-input .token-amount-input').should('be.visible')
+    cy.get('#swap-currency-input .token-amount-input').type('5000', { force: true, delay: 200 })
+    cy.get('#swap-currency-output .token-amount-input').should('not.equal', '')
+    cy.get('#swap-routed-via').should('contain', 'Default AMM')
+    cy.get('#swap-button').should('contain', 'Insufficient USDT balance')
+  })
+
+  it('cannot stable swap USDT for USDC due to insufficient balance', () => {
+    cy.get('#swap-currency-input .open-currency-select-button').click()
+    cy.get('#token-search-input').type('usdt')
+    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').should('be.visible')
+    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').click({ force: true })
+
+    cy.get('#swap-currency-output .open-currency-select-button').click()
+    cy.get('#token-search-input').type('usdc')
+    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').should('be.visible')
+    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').click({ force: true })
+
+    cy.get('#swap-currency-input .token-amount-input').should('be.visible')
+    cy.get('#swap-currency-input .token-amount-input').type('0.05', { force: true, delay: 200 })
+    cy.get('#swap-currency-output .token-amount-input').should('not.equal', '')
+    cy.get('#swap-routed-via').should('contain', 'Stable AMM')
+    cy.get('#swap-button').should('contain', 'Insufficient USDT balance')
+  })
+
+  it('cannot stable swap USDC for USDT due to insufficient balance', () => {
+    cy.get('#swap-currency-input .open-currency-select-button').click()
+    cy.get('#token-search-input').type('usdc')
+    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').should('be.visible')
+    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').click({ force: true })
+
+    cy.get('#swap-currency-output .open-currency-select-button').click()
+    cy.get('#token-search-input').type('usdt')
+    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').should('be.visible')
+    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').click({ force: true })
+
+    cy.get('#swap-currency-input .token-amount-input').should('be.visible')
+    cy.get('#swap-currency-input .token-amount-input').type('0.05', { force: true, delay: 200 })
+    cy.get('#swap-currency-output .token-amount-input').should('not.equal', '')
+    cy.get('#swap-routed-via').should('contain', 'Stable AMM')
+    cy.get('#swap-button').should('contain', 'Insufficient USDC balance')
+  })
+
+  // NOTE - depends on private key balance
+  it.skip('can default swap ETH for USDC', () => {
     cy.get('#swap-currency-output .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdc')
     cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').should('be.visible')
@@ -51,6 +108,28 @@ describe('Swap', () => {
     cy.get('#swap-currency-input .token-amount-input').should('be.visible')
     cy.get('#swap-currency-input .token-amount-input').type('0.001', { force: true, delay: 200 })
     cy.get('#swap-currency-output .token-amount-input').should('not.equal', '')
+    cy.get('#swap-routed-via').should('contain', 'Default AMM')
+    cy.get('#swap-button').click()
+    cy.get('#confirm-swap-or-send').should('contain', 'Confirm Swap')
+  })
+
+  // NOTE - depends on private key balance
+  it.skip('can stable swap USDT for USDC', () => {
+    cy.get('#swap-currency-input .open-currency-select-button').click()
+    cy.get('#token-search-input').type('usdt')
+    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').should('be.visible')
+    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').click({ force: true })
+
+    cy.get('#swap-currency-output .open-currency-select-button').click()
+    cy.get('#token-search-input').type('usdc')
+    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').should('be.visible')
+    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').click({ force: true })
+
+    cy.get('#swap-currency-input .token-amount-input').should('be.visible')
+    cy.get('#swap-currency-input .token-amount-input').type('0.05', { force: true, delay: 200 })
+    cy.get('#swap-currency-output .token-amount-input').should('not.equal', '')
+    cy.get('#swap-routed-via').should('contain', 'Stable AMM')
+
     cy.get('#swap-button').click()
     cy.get('#confirm-swap-or-send').should('contain', 'Confirm Swap')
   })
