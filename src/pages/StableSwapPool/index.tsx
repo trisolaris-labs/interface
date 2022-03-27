@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { PoolTabs } from '../../components/NavigationTabs'
 
-import FullStablePositionCard from '../../components/StablePositionCard'
+import FullStablePositionCard from '../../components/PositionCard/StablePositionCard'
 import { TYPE, HideSmall } from '../../theme'
 import Card from '../../components/Card'
 import { RowBetween } from '../../components/Row'
