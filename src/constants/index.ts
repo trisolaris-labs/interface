@@ -1,7 +1,7 @@
 import { ChainId, JSBI, Percent, Token, WETH as _WETH } from '@trisolaris/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { injected, walletlink, walletconnect } from '../connectors'
-import { DAI, TRI, USDT, WNEAR, LUNA } from './tokens'
+import { DAI, TRI, USDT, WNEAR, LUNA, AURORA, POLAR, SPOLAR, LUNAR } from './tokens'
 
 export const GAS_PRICE = 250
 
@@ -34,7 +34,13 @@ const COMMON_BASES: ChainTokenList = {
   [ChainId.FUJI]: [DAI[ChainId.FUJI], USDT[ChainId.FUJI]],
   [ChainId.AVALANCHE]: [DAI[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
   [ChainId.POLYGON]: [DAI[ChainId.POLYGON], USDT[ChainId.POLYGON]],
-  [ChainId.AURORA]: [WNEAR[ChainId.AURORA], USDT[ChainId.AURORA], createProperlyNamedWETH(), TRI[ChainId.AURORA],LUNA[ChainId.AURORA]]
+  [ChainId.AURORA]: [
+    WNEAR[ChainId.AURORA],
+    USDT[ChainId.AURORA],
+    createProperlyNamedWETH(),
+    TRI[ChainId.AURORA],
+    LUNA[ChainId.AURORA]
+  ]
 }
 
 // used to construct intermediary pairs for trading
@@ -47,7 +53,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  * tokens.
  */
 export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-  [ChainId.AVALANCHE]: {},
+  [ChainId.AVALANCHE]: {}
 }
 
 // used for display in the default list when adding liquidity
@@ -210,3 +216,9 @@ export const WYRE_QUOTE_API_ENDPOINT = '/v3/orders/quote/partner'
 export const WYRE_RESERVE_API_ENDPOINT = '/v3/orders/reserve'
 export const WYRE_CALLBACK_URL = 'https://app.pangolin.exchange/'
 export const ENABLE_STABLESWAP: boolean = process.env.REACT_APP_ENABLE_STABLESWAP === 'true'
+
+export const TOKEN_WARNING_MODAL_ALLOWLIST = new Set(
+  [AURORA[ChainId.AURORA], POLAR[ChainId.AURORA], SPOLAR[ChainId.AURORA], LUNAR[ChainId.AURORA]].map(({ address }) =>
+    address.toLowerCase()
+  )
+)
