@@ -1,5 +1,5 @@
 import { ChainId, JSBI } from '@trisolaris/sdk'
-import React, { useEffect, useRef, useState, useContext } from 'react'
+import React, { useEffect, useRef, useState, useContext, useCallback } from 'react'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { ButtonLight, ButtonConfirmed, ButtonError } from '../../components/Button'
 import CaptionWithIcon from '../../components/CaptionWithIcon'
@@ -32,6 +32,8 @@ import CurrencyLogo from '../../components/CurrencyLogo'
 import { Plus } from 'lucide-react'
 import { ThemeContext } from 'styled-components'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
+import DoubleCurrencyLogo from '../../components/DoubleLogo'
+import { ButtonPrimary } from '../../components/Button'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -90,7 +92,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const [userSlippageTolerance] = useUserSlippageTolerance()
 
   const [approvalState, handleApproval] = useApproveCallback(parsedAmount, pool.address)
-  const handleRemoveLiquidity = useStableSwapRemoveLiquidity({
+  const { removeLiquidity: handleRemoveLiquidity, attemptingTxn, txHash, setTxHash } = useStableSwapRemoveLiquidity({
     amount: parsedAmount,
     estimatedAmounts,
     withdrawTokenIndex,
@@ -123,7 +125,6 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
 
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
-  const [attemptingTxn, setAttemptingTxn] = useState(false) // clicked confirm
 
   function modalHeader() {
     return (
@@ -132,7 +133,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
           const { currency } = currencyAmount
           const numTokens = arr.length
           return currencyAmount.greaterThan(BIG_INT_ZERO) ? (
-            <>
+            <React.Fragment key={currency.symbol}>
               <RowBetween align="flex-end" key={currency.symbol}>
                 <Text fontSize={24} fontWeight={500}>
                   {currencyAmount.toSignificant(6)}
@@ -149,7 +150,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                   <Plus size="16" color={theme.text2} />
                 </RowFixed>
               )}
-            </>
+            </React.Fragment>
           ) : null
         })}
 
@@ -162,29 +163,85 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
     )
   }
 
+  function modalBottom() {
+    const poolTokens = estimatedAmounts.map(amount => amount.currency.symbol)
+    return (
+      <>
+        <RowBetween>
+          <Text color={theme.text2} fontWeight={500} fontSize={16}>
+            {/*TODO: Translate using i18n*/}
+            {`TLP ${poolTokens} Burned`}
+          </Text>
+          <RowFixed>
+            <DoubleCurrencyLogo
+              currency0={estimatedAmounts[0].currency}
+              currency1={estimatedAmounts[1].currency}
+              margin={true}
+            />
+            <Text fontWeight={500} fontSize={16}>
+              {parsedAmount?.toSignificant(6)}
+            </Text>
+          </RowFixed>
+        </RowBetween>
+        {
+          /* 
+        //TODO: Check if applies for stableswap
+        {pair && (
+          <>
+            <RowBetween>
+              <Text color={theme.text2} fontWeight={500} fontSize={16}>
+                {t('removeLiquidity.price')}
+              </Text>
+              <Text fontWeight={500} fontSize={16} color={theme.text1}>
+                1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
+              </Text>
+            </RowBetween>
+            <RowBetween>
+              <div />
+              <Text fontWeight={500} fontSize={16} color={theme.text1}>
+                1 {currencyB?.symbol} = {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
+              </Text>
+            </RowBetween>
+          </>
+        )} */
+          <ButtonPrimary disabled={approvalState === ApprovalState.NOT_APPROVED} onClick={handleRemoveLiquidity}>
+            <Text fontWeight={500} fontSize={20}>
+              Confirm
+            </Text>
+          </ButtonPrimary>
+        }
+      </>
+    )
+  }
+
+  const pendingText = `Removing ${estimatedAmounts.map(
+    amount => `${amount.toSignificant(6)} ${amount.currency.symbol}`
+  )}`
+
+  const handleDismissConfirmation = useCallback(() => {
+    setShowConfirm(false)
+    if (txHash) {
+      setInput('0')
+    }
+    setTxHash('')
+  }, [setInput, txHash])
+
   return (
     <PageWrapper gap="lg" justify="center">
       <TransactionConfirmationModal
         isOpen={showConfirm}
-        onDismiss={
-          // handleDismissConfirmation
-          () => null
-        }
+        onDismiss={handleDismissConfirmation}
         attemptingTxn={attemptingTxn}
-        hash={''}
+        hash={txHash ? txHash : ''}
         content={() => (
           <ConfirmationModalContent
             title={t('removeLiquidity.youWillReceive')}
-            // onDismiss={handleDismissConfirmation}
-            onDismiss={() => setShowConfirm(false)}
+            onDismiss={handleDismissConfirmation}
             topContent={modalHeader}
-            bottomContent={modalHeader}
+            bottomContent={modalBottom}
           />
         )}
-        pendingText={
-          'asd'
-          // pendingText
-        }
+        pendingText={pendingText}
       />
       <AutoColumn style={{ width: '100%' }}>
         <DarkGreyCard>
@@ -239,7 +296,6 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                     parsedAmount == null ||
                     JSBI.equal(parsedAmount.raw, BIG_INT_ZERO)
                   }
-                  // onClick={handleRemoveLiquidity}
                   onClick={() => {
                     setShowConfirm(true)
                   }}
