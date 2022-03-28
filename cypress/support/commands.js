@@ -65,7 +65,7 @@ Cypress.Commands.overwrite('visit', (original, url, options) => {
     onBeforeLoad(win) {
       options && options.onBeforeLoad && options.onBeforeLoad(win)
       win.localStorage.clear()
-      const provider = new JsonRpcBatchProvider('https://mainnet.aurora.dev', {
+      const provider = new JsonRpcBatchProvider(Cypress.env('PROVIDER_HOST'), {
         name: 'aurora',
         chainId: Number(Cypress.env('NETWORK_ID'))
       })

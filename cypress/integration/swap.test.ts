@@ -1,3 +1,6 @@
+import { ChainId } from '@trisolaris/sdk'
+import { USDC, USDT } from '../../src/constants/tokens'
+
 describe('Swap', () => {
   beforeEach(() => {
     cy.visit('/swap')
@@ -35,8 +38,8 @@ describe('Swap', () => {
   it('cannot default swap ETH for USDC due to insufficient balance', () => {
     cy.get('#swap-currency-output .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdc')
-    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').should('be.visible')
-    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').click({ force: true })
+    cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).should('be.visible')
+    cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).click({ force: true })
     cy.get('#swap-currency-input .token-amount-input').should('be.visible')
     cy.get('#swap-currency-input .token-amount-input').type('0.001', { force: true, delay: 200 })
     cy.get('#swap-currency-output .token-amount-input').should('not.equal', '')
@@ -48,13 +51,13 @@ describe('Swap', () => {
   it.skip('cannot default swap USDT for USDC due to insufficient balance', () => {
     cy.get('#swap-currency-input .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdt')
-    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').should('be.visible')
-    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').click({ force: true })
+    cy.get(`.token-item-${USDT[ChainId.AURORA].address}`).should('be.visible')
+    cy.get(`.token-item-${USDT[ChainId.AURORA].address}`).click({ force: true })
 
     cy.get('#swap-currency-output .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdc')
-    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').should('be.visible')
-    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').click({ force: true })
+    cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).should('be.visible')
+    cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).click({ force: true })
 
     cy.get('#swap-currency-input .token-amount-input').should('be.visible')
     cy.get('#swap-currency-input .token-amount-input').type('5000', { force: true, delay: 200 })
@@ -66,13 +69,13 @@ describe('Swap', () => {
   it('cannot stable swap USDT for USDC due to insufficient balance', () => {
     cy.get('#swap-currency-input .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdt')
-    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').should('be.visible')
-    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').click({ force: true })
+    cy.get(`.token-item-${USDT[ChainId.AURORA].address}`).should('be.visible')
+    cy.get(`.token-item-${USDT[ChainId.AURORA].address}`).click({ force: true })
 
     cy.get('#swap-currency-output .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdc')
-    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').should('be.visible')
-    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').click({ force: true })
+    cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).should('be.visible')
+    cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).click({ force: true })
 
     cy.get('#swap-currency-input .token-amount-input').should('be.visible')
     cy.get('#swap-currency-input .token-amount-input').type('0.05', { force: true, delay: 200 })
@@ -84,13 +87,13 @@ describe('Swap', () => {
   it('cannot stable swap USDC for USDT due to insufficient balance', () => {
     cy.get('#swap-currency-input .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdc')
-    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').should('be.visible')
-    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').click({ force: true })
+    cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).should('be.visible')
+    cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).click({ force: true })
 
     cy.get('#swap-currency-output .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdt')
-    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').should('be.visible')
-    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').click({ force: true })
+    cy.get(`.token-item-${USDT[ChainId.AURORA].address}`).should('be.visible')
+    cy.get(`.token-item-${USDT[ChainId.AURORA].address}`).click({ force: true })
 
     cy.get('#swap-currency-input .token-amount-input').should('be.visible')
     cy.get('#swap-currency-input .token-amount-input').type('0.05', { force: true, delay: 200 })
@@ -103,8 +106,8 @@ describe('Swap', () => {
   it.skip('can default swap ETH for USDC', () => {
     cy.get('#swap-currency-output .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdc')
-    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').should('be.visible')
-    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').click({ force: true })
+    cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).should('be.visible')
+    cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).click({ force: true })
     cy.get('#swap-currency-input .token-amount-input').should('be.visible')
     cy.get('#swap-currency-input .token-amount-input').type('0.001', { force: true, delay: 200 })
     cy.get('#swap-currency-output .token-amount-input').should('not.equal', '')
@@ -117,13 +120,13 @@ describe('Swap', () => {
   it.skip('can stable swap USDT for USDC', () => {
     cy.get('#swap-currency-input .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdt')
-    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').should('be.visible')
-    cy.get('.token-item-0x4988a896b1227218e4A686fdE5EabdcAbd91571f').click({ force: true })
+    cy.get(`.token-item-${USDT[ChainId.AURORA].address}`).should('be.visible')
+    cy.get(`.token-item-${USDT[ChainId.AURORA].address}`).click({ force: true })
 
     cy.get('#swap-currency-output .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdc')
-    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').should('be.visible')
-    cy.get('.token-item-0xB12BFcA5A55806AaF64E99521918A4bf0fC40802').click({ force: true })
+    cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).should('be.visible')
+    cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).click({ force: true })
 
     cy.get('#swap-currency-input .token-amount-input').should('be.visible')
     cy.get('#swap-currency-input .token-amount-input').type('0.05', { force: true, delay: 200 })

@@ -16,7 +16,7 @@ export enum STABLE_SWAP_TYPES {
 }
 
 export enum StableSwapPoolName {
-  USDT_USDC = 'USDT_USDC'
+  USDC_USDT = 'USDC_USDT'
 }
 
 export enum StableSwapPoolTypes {
@@ -76,8 +76,8 @@ export type StableSwapPools = {
 
 export const STABLESWAP_POOLS: StableSwapPools = {
   [ChainId.AURORA]: {
-    [StableSwapPoolName.USDT_USDC]: {
-      name: StableSwapPoolName.USDT_USDC,
+    [StableSwapPoolName.USDC_USDT]: {
+      name: StableSwapPoolName.USDC_USDT,
       // @TODO Move the prod version of this token to the Tokens repo
       lpToken: new Token(
         ChainId.AURORA,
@@ -92,13 +92,8 @@ export const STABLESWAP_POOLS: StableSwapPools = {
       address: '0x13e7a001EC72AB30D66E2f386f677e25dCFF5F59',
       type: StableSwapPoolTypes.USD,
       route: 'usd',
-<<<<<<< HEAD
       underlyingPoolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
       underlyingPool: StableSwapPoolName.USDC_USDT,
-=======
-      underlyingPoolTokens: [USDT[ChainId.AURORA], USDC[ChainId.AURORA]],
-      underlyingPool: StableSwapPoolName.USDT_USDC,
->>>>>>> 09974edf6 (test(cypress/integration/add-liquidity.test.ts, src/state/stableswap/constants.ts): add stableswap add liquidity tests and correct the pool name token order)
       isOutdated: false,
       rewardPids: null
     }
