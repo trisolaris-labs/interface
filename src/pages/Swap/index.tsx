@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import ReactGA from 'react-ga'
 import { ThemeContext } from 'styled-components'
-import { Token, Trade, ChainId} from '@trisolaris/sdk'
+import { Token, Trade } from '@trisolaris/sdk'
 import { ChevronDown } from 'react-feather'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
@@ -48,8 +48,7 @@ import { useIsSelectedAEBToken } from '../../state/lists/hooks'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 
 import { Field } from '../../state/swap/actions'
-import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO } from '../../constants'
-import { AURORA } from '../../constants/tokens'
+import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO, TOKEN_WARNING_MODAL_ALLOWLIST } from '../../constants'
 
 import { ClickableText } from '../Pool/styleds'
 import { LinkStyledButton, TYPE } from '../../theme'
@@ -69,7 +68,7 @@ export default function Swap() {
     () =>
       [loadedInputCurrency, loadedOutputCurrency]
         ?.filter((c): c is Token => c instanceof Token)
-        .filter(token => token.address !== AURORA[ChainId.AURORA].address) ?? [],
+        .filter(token => !TOKEN_WARNING_MODAL_ALLOWLIST.has(token.address.toLowerCase())) ?? [],
 
     [loadedInputCurrency, loadedOutputCurrency]
   )
