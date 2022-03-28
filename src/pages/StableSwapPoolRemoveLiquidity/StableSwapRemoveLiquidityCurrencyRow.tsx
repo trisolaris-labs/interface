@@ -11,13 +11,14 @@ import _ from 'lodash'
 type Props = {
   currency: Currency
   value: string
+  index: number
 }
 
-export default function StableSwapRemoveCurrencyRow({ currency, value }: Props) {
+export default function StableSwapRemoveCurrencyRow({ currency, value, index }: Props) {
   const { t } = useTranslation()
 
   return (
-    <InputPanel>
+    <InputPanel id={`remove-liquidity-input-token${['a', 'b', 'c'][index]}`}>
       <Container>
         <InputRow selected={true}>
           <NumericalInput className="token-amount-input" value={value} onUserInput={_.identity} />

@@ -94,7 +94,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     <>
       <AppBody>
         <Wrapper>
-          <AutoColumn gap="20px">
+          <AutoColumn id="stableswap-add-liquidity" gap="20px">
             <HeadingContainer>
               <AutoRow>
                 <TYPE.mediumHeader>Add Liquidity to {stableSwapPoolName}</TYPE.mediumHeader>
@@ -118,7 +118,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               disableHalfButton={atHalfAmounts[Field.CURRENCY_0]}
               disableMaxButton={atMaxAmounts[Field.CURRENCY_0]}
               currency={currencies[Field.CURRENCY_0]}
-              id="add-liquidity-input-token0"
+              id="add-liquidity-input-tokena"
               showCommonBases
             />
             <CurrencyInputPanel
@@ -137,7 +137,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               disableHalfButton={atHalfAmounts[Field.CURRENCY_1]}
               disableMaxButton={atMaxAmounts[Field.CURRENCY_1]}
               currency={currencies[Field.CURRENCY_1]}
-              id="add-liquidity-input-token1"
+              id="add-liquidity-input-tokenb"
               showCommonBases
             />
             {hasThirdCurrency ? (
@@ -167,6 +167,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               <AutoColumn gap={'md'}>
                 <StableSwapPoolAddLiquidityApprovalsRow stableSwapPoolName={stableSwapPoolName}>
                   <ButtonError
+                    id={'add-liquidity-supply-button'}
                     onClick={() => {
                       //   expertMode ? onAdd() : setShowConfirm(true)
                       onAdd()

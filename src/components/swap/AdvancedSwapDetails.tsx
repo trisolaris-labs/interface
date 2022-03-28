@@ -92,7 +92,7 @@ function TradeSummary({
               {t('swap.routedViaAmmType')}
             </TYPE.black>
           </RowFixed>
-          <TYPE.black fontSize={14} color={theme.text1}>
+          <TYPE.black id={'swap-routed-via'} fontSize={14} color={theme.text1}>
             {isRoutedViaStableSwap ? 'Stable AMM' : 'Default AMM'}
           </TYPE.black>
         </RowBetween>

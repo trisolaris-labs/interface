@@ -151,6 +151,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
 
           <RowFixed gap="8px">
             <ManageButton
+              id="stableswap-manage-button"
               padding="6px 8px"
               borderRadius="12px"
               width="fit-content"
@@ -227,10 +228,15 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
             </AutoColumn>
             <AutoColumn gap="8px" style={{ marginTop: '10px' }}>
               <ButtonRow>
-                <ButtonPrimary width="45%" onClick={handleAddLiquidity}>
+                <ButtonPrimary id="stableswap-add-liquidity-button" width="45%" onClick={handleAddLiquidity}>
                   Add
                 </ButtonPrimary>
-                <ButtonPrimary disabled={!hasLPTokenBalance} width="45%" onClick={handleRemoveLiquidity}>
+                <ButtonPrimary
+                  id="stableswap-remove-liquidity-button"
+                  disabled={!hasLPTokenBalance}
+                  width="45%"
+                  onClick={handleRemoveLiquidity}
+                >
                   Remove
                 </ButtonPrimary>
               </ButtonRow>
