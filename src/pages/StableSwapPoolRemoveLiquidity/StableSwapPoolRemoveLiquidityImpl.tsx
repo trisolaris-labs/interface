@@ -1,5 +1,5 @@
 import { ChainId, JSBI } from '@trisolaris/sdk'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useContext } from 'react'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { ButtonLight, ButtonConfirmed, ButtonError } from '../../components/Button'
 import CaptionWithIcon from '../../components/CaptionWithIcon'
@@ -23,6 +23,15 @@ import { Dots } from '../Pool/styleds'
 import StableSwapRemoveCurrencyRow from './StableSwapRemoveLiquidityCurrencyRow'
 import StableSwapRemoveLiquidityInputPanel from './StableSwapRemoveLiquidityInputPanel'
 import StableSwapRemoveLiquidityTokenSelector from './StableSwapRemoveLiquidityTokenSelector'
+
+import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
+import { useTranslation } from 'react-i18next'
+import { Text } from 'rebass'
+import { RowFixed } from '../../components/Row'
+import CurrencyLogo from '../../components/CurrencyLogo'
+import { Plus } from 'lucide-react'
+import { ThemeContext } from 'styled-components'
+import { useUserSlippageTolerance } from '../../state/user/hooks'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -78,13 +87,15 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
     const amount = getClickedAmount(value)
     _setInput(amount)
   }
+  const [userSlippageTolerance] = useUserSlippageTolerance()
 
   const [approvalState, handleApproval] = useApproveCallback(parsedAmount, pool.address)
   const handleRemoveLiquidity = useStableSwapRemoveLiquidity({
     amount: parsedAmount,
     estimatedAmounts,
     withdrawTokenIndex,
-    stableSwapPoolName
+    stableSwapPoolName,
+    userSlippageTolerance
   })
 
   function renderApproveButton() {
@@ -107,8 +118,74 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
     )
   }
 
+  const theme = useContext(ThemeContext)
+  const { t } = useTranslation()
+
+  // modal and loading
+  const [showConfirm, setShowConfirm] = useState<boolean>(false)
+  const [attemptingTxn, setAttemptingTxn] = useState(false) // clicked confirm
+
+  function modalHeader() {
+    return (
+      <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
+        {estimatedAmounts.map((currencyAmount, index, arr) => {
+          const { currency } = currencyAmount
+          const numTokens = arr.length
+          return currencyAmount.greaterThan(BIG_INT_ZERO) ? (
+            <>
+              <RowBetween align="flex-end" key={currency.symbol}>
+                <Text fontSize={24} fontWeight={500}>
+                  {currencyAmount.toSignificant(6)}
+                </Text>
+                <RowFixed gap="4px">
+                  <CurrencyLogo currency={currency} size={'24px'} />
+                  <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+                    {currency.symbol}
+                  </Text>
+                </RowFixed>
+              </RowBetween>
+              {index + 1 < numTokens && (
+                <RowFixed>
+                  <Plus size="16" color={theme.text2} />
+                </RowFixed>
+              )}
+            </>
+          ) : null
+        })}
+
+        <TYPE.italic fontSize={12} color={theme.text2} textAlign="left" padding={'12px 0 0 0'}>
+          {/*TODO: Translate using i18n*/}
+          {`Output is estimated. If the price changes by more than ${userSlippageTolerance /
+            100}% your transaction will revert.`}
+        </TYPE.italic>
+      </AutoColumn>
+    )
+  }
+
   return (
     <PageWrapper gap="lg" justify="center">
+      <TransactionConfirmationModal
+        isOpen={showConfirm}
+        onDismiss={
+          // handleDismissConfirmation
+          () => null
+        }
+        attemptingTxn={attemptingTxn}
+        hash={''}
+        content={() => (
+          <ConfirmationModalContent
+            title={t('removeLiquidity.youWillReceive')}
+            // onDismiss={handleDismissConfirmation}
+            onDismiss={() => setShowConfirm(false)}
+            topContent={modalHeader}
+            bottomContent={modalHeader}
+          />
+        )}
+        pendingText={
+          'asd'
+          // pendingText
+        }
+      />
       <AutoColumn style={{ width: '100%' }}>
         <DarkGreyCard>
           <AutoColumn gap="20px">
@@ -162,7 +239,10 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                     parsedAmount == null ||
                     JSBI.equal(parsedAmount.raw, BIG_INT_ZERO)
                   }
-                  onClick={handleRemoveLiquidity}
+                  // onClick={handleRemoveLiquidity}
+                  onClick={() => {
+                    setShowConfirm(true)
+                  }}
                 >
                   {error != null ? error.reason : 'Remove Liquidity'}
                 </ButtonError>

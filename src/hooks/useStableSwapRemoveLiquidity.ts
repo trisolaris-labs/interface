@@ -3,7 +3,6 @@ import { BigNumber } from 'ethers'
 import { useCallback } from 'react'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
-import { useUserSlippageTolerance } from '../state/user/hooks'
 import { computeSlippageAdjustedMinAmount } from '../utils/prices'
 import { unwrappedToken } from '../utils/wrappedCurrency'
 import { useStableSwapContract } from './useContract'
@@ -14,19 +13,20 @@ type Props = {
   estimatedAmounts: CurrencyAmount[]
   stableSwapPoolName: StableSwapPoolName
   withdrawTokenIndex: number | null
+  userSlippageTolerance: number
 }
 
 export default function useStableSwapRemoveLiquidity({
   amount,
   estimatedAmounts,
   withdrawTokenIndex,
-  stableSwapPoolName
+  stableSwapPoolName,
+  userSlippageTolerance
 }: Props): () => Promise<string> {
   const pool = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
   const swapContract = useStableSwapContract(stableSwapPoolName)
   const amountString = amount?.raw.toString()
 
-  const [userSlippageTolerance] = useUserSlippageTolerance()
   const estimatedMinAmounts = estimatedAmounts.map(({ raw: amount }) =>
     computeSlippageAdjustedMinAmount(amount, userSlippageTolerance).toString()
   )
