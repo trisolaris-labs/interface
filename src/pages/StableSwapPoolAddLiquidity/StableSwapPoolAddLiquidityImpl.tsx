@@ -94,7 +94,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     <>
       <AppBody>
         <Wrapper>
-          <AutoColumn gap="20px">
+          <AutoColumn id="stableswap-add-liquidity" gap="20px">
             <HeadingContainer>
               <TYPE.mediumHeader>Add Liquidity to {stableSwapPoolName}</TYPE.mediumHeader>
               <Settings />

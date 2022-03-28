@@ -60,6 +60,7 @@ export default function StableSwapPoolAddLiquidityApprovalsRow({ children, stabl
     <RowBetween>
       {currencyApprovalsData.map(({ approval, symbol, onClick }, i) => (
         <ButtonPrimary
+          id={`add-liquidity-approve-button-${['a', 'b'][i]}`}
           key={symbol ?? i}
           onClick={onClick}
           disabled={[ApprovalState.PENDING, ApprovalState.APPROVED].includes(approval)}

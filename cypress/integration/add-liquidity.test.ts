@@ -131,6 +131,36 @@ describe('Add Liquidity', () => {
     cy.get('#add-liquidity-input-tokenb .token-symbol-container').should('contain.text', 'USDT')
     cy.get('#add-liquidity-input-tokena .token-amount-input').type('1', { force: true, delay: 200 })
     cy.get('#add-liquidity-input-tokenb .token-amount-input').type('1', { force: true, delay: 200 })
+
+    cy.get('#stableswap-add-liquidity')
+      .then($rl => {
+        if ($rl.find('#add-liquidity-approve-button-a').length) {
+          cy.get('#add-liquidity-approve-button-a')
+            .should('contain.text', 'Approve')
+            .click()
+            .wait(5000)
+        }
+        return cy.get('#stableswap-add-liquidity')
+      })
+      .then($rl => {
+        if ($rl.find('#add-liquidity-approve-button-b').length) {
+          cy.get('#add-liquidity-approve-button-b')
+            .should('contain.text', 'Approve')
+            .click()
+            .wait(5000)
+        }
+        return cy.get('#stableswap-add-liquidity')
+      })
+      .then($rl => {
+        cy.get('#add-liquidity-supply-button')
+          .should('contain.text', 'Supply')
+          .click()
+
+        if ($rl.find('#confirm-add-liquidity-button').length) {
+          cy.get('#confirm-add-liquidity-button').click()
+        }
+      })
+
     cy.get('#add-liquidity-supply-button')
       .should('contain.text', 'Supply')
       .click()
