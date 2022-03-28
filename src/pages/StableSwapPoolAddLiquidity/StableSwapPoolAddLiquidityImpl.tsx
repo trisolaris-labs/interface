@@ -1,10 +1,9 @@
-import React, { useContext, useState } from 'react'
-import { Plus } from 'react-feather'
+import React, { useState } from 'react'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
+
 import { ButtonError, ButtonLight } from '../../components/Button'
-import { AutoColumn, ColumnCenter } from '../../components/Column'
+import { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 
 import { useActiveWeb3React } from '../../hooks'
@@ -27,6 +26,8 @@ import StableSwapPoolAddLiquidityApprovalsRow from './StableSwapPoolAddLiquidity
 import { TYPE } from '../../theme'
 import Settings from '../../components/Settings'
 import { HeadingContainer } from '../Swap/Swap.styles'
+import { AutoRow } from '../../components/Row'
+import CaptionWithIcon from '../../components/CaptionWithIcon'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -34,7 +35,6 @@ type Props = {
 
 export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: Props) {
   const { account, chainId, library } = useActiveWeb3React()
-  const theme = useContext(ThemeContext)
   const { t } = useTranslation()
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
@@ -96,7 +96,10 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
         <Wrapper>
           <AutoColumn id="stableswap-add-liquidity" gap="20px">
             <HeadingContainer>
-              <TYPE.mediumHeader>Add Liquidity to {stableSwapPoolName}</TYPE.mediumHeader>
+              <AutoRow>
+                <TYPE.mediumHeader>Add Liquidity to {stableSwapPoolName}</TYPE.mediumHeader>
+                <CaptionWithIcon>Stable pools on Trisolaris support uneven deposits</CaptionWithIcon>
+              </AutoRow>
               <Settings />
             </HeadingContainer>
             <CurrencyInputPanel
@@ -118,9 +121,6 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               id="add-liquidity-input-tokena"
               showCommonBases
             />
-            <ColumnCenter>
-              <Plus size="16" color={theme.text2} />
-            </ColumnCenter>
             <CurrencyInputPanel
               disableCurrencySelect
               value={typedValue1}
@@ -141,30 +141,25 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               showCommonBases
             />
             {hasThirdCurrency ? (
-              <>
-                <ColumnCenter>
-                  <Plus size="16" color={theme.text2} />
-                </ColumnCenter>
-                <CurrencyInputPanel
-                  disableCurrencySelect
-                  value={typedValue2}
-                  onUserInput={onField2Input}
-                  onClickBalanceButton={value => {
-                    const amount = maxAmounts[Field.CURRENCY_2]
-                    onField2Input(
-                      (value === BalanceButtonValueEnum.MAX
-                        ? amount
-                        : divideCurrencyAmountByNumber(amount, 2)
-                      )?.toExact() ?? ''
-                    )
-                  }}
-                  disableHalfButton={atHalfAmounts[Field.CURRENCY_2]}
-                  disableMaxButton={atMaxAmounts[Field.CURRENCY_2]}
-                  currency={currencies[Field.CURRENCY_2]}
-                  id="add-liquidity-input-tokenc"
-                  showCommonBases
-                />
-              </>
+              <CurrencyInputPanel
+                disableCurrencySelect
+                value={typedValue2}
+                onUserInput={onField2Input}
+                onClickBalanceButton={value => {
+                  const amount = maxAmounts[Field.CURRENCY_2]
+                  onField2Input(
+                    (value === BalanceButtonValueEnum.MAX
+                      ? amount
+                      : divideCurrencyAmountByNumber(amount, 2)
+                    )?.toExact() ?? ''
+                  )
+                }}
+                disableHalfButton={atHalfAmounts[Field.CURRENCY_2]}
+                disableMaxButton={atMaxAmounts[Field.CURRENCY_2]}
+                currency={currencies[Field.CURRENCY_2]}
+                id="add-liquidity-input-token2"
+                showCommonBases
+              />
             ) : null}
             {!account ? (
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
