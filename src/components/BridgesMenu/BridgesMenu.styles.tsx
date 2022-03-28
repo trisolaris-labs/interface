@@ -46,6 +46,7 @@ export const StyledExternalLink = styled(ExternalLink).attrs({
 `
 
 export const MenuButton = styled(ButtonDropdown)`
+  border: 0px;
   padding: 0px;
   background: transparent;
   text-decoration: none;
@@ -57,16 +58,21 @@ export const MenuButton = styled(ButtonDropdown)`
     color: ${({ theme }) => darken(0.1, theme.text1)};
     box-shadow: none;
   }
-  margin: 0px 4px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  svg{
+    display:none;
+  }
+`}
+
+  ${({ theme }) => theme.mediaWidth.upToXxSmall`
+  svg{
+    width:1rem;
+  }
+`}
 `
 
 export const StyledArrow = styled.span`
   font-size: 11px;
   margin-left: 0.3rem;
-`
-
-export const StyledButtonText = styled.span`
-  ${({ theme }) => theme.mediaWidth.upToXxxSmall`
-    display: none;
-  `}
 `

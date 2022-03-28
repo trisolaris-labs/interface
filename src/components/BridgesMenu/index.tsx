@@ -6,20 +6,20 @@ import { useModalOpen, useToggleModal } from '../../state/application/hooks'
 import { ApplicationModal } from '../../state/application/actions'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 
-import { StyledMenuFlyout, StyledExternalLink, MenuButton, StyledArrow, StyledButtonText } from './BridgesMenu.styles'
+import { StyledMenuFlyout, StyledExternalLink, MenuButton, StyledArrow } from './BridgesMenu.styles'
 
 import { BRIDGES } from './BridgesMenu.constants'
 
-export default function BridgesMenu() {
+export default function BridgesMenu({ ...rest }) {
   const node = useRef<HTMLDivElement>()
   const open = useModalOpen(ApplicationModal.BRIDGES_MENU)
   const toggle = useToggleModal(ApplicationModal.BRIDGES_MENU)
   useOnClickOutside(node, open ? toggle : undefined)
 
   return (
-    <StyledMenu ref={node as any}>
+    <StyledMenu ref={node as any} {...rest}>
       <MenuButton onClick={toggle}>
-        <StyledButtonText>Bridges</StyledButtonText>
+        <span>Bridges</span>
       </MenuButton>
 
       {open && (

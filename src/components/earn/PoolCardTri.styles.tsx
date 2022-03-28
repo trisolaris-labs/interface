@@ -1,9 +1,10 @@
 import styled from 'styled-components'
-import { lighten } from 'polished'
+import { lighten, darken } from 'polished'
 
 import { TYPE } from '../../theme'
 import Card from '../Card'
 import { ButtonPrimary } from '../Button'
+import { ExternalLink } from '../../theme'
 
 export const Wrapper = styled(Card)<{ bgColor1: string | null; bgColor2?: string | null; isDoubleRewards: boolean }>`
   border: ${({ isDoubleRewards, theme }) =>
@@ -19,7 +20,7 @@ export const Wrapper = styled(Card)<{ bgColor1: string | null; bgColor2?: string
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
       grid-template-rows: auto 1fr;
-      padding: .75rem;
+      padding: 1.1rem .75rem;
 `};
 `
 

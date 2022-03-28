@@ -3404,6 +3404,154 @@ Object {
 }
 `;
 
+exports[`stake-constants.ts Aurora Pools: Aurora Pool [ID: 23] 1`] = `
+Object {
+  "ID": 23,
+  "allocPoint": 1,
+  "apr": 0,
+  "apr2": 0,
+  "chefVersion": 1,
+  "doubleRewardAmount": TokenAmount {
+    "currency": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+    "denominator": JSBI [
+      660865024,
+      931322574,
+    ],
+    "numerator": JSBI [],
+    "token": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+  },
+  "doubleRewardToken": Token {
+    "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
+    "chainId": 1313161554,
+    "decimals": 24,
+    "name": "WNEAR Token",
+    "symbol": "wNEAR",
+  },
+  "doubleRewards": true,
+  "earnedAmount": TokenAmount {
+    "currency": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+    "denominator": JSBI [
+      660865024,
+      931322574,
+    ],
+    "numerator": JSBI [],
+    "token": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+  },
+  "inStaging": false,
+  "isPeriodFinished": false,
+  "lpAddress": "0x6277f94a69Df5df0Bc58b25917B9ECEFBf1b846A",
+  "noTriRewards": false,
+  "poolId": 16,
+  "rewardRate": TokenAmount {
+    "currency": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+    "denominator": JSBI [
+      660865024,
+      931322574,
+    ],
+    "numerator": JSBI [],
+    "token": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+  },
+  "rewarderAddress": "0x170431D69544a1BC97855C6564E8460d39508844",
+  "stakedAmount": TokenAmount {
+    "currency": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+    "denominator": JSBI [
+      660865024,
+      931322574,
+    ],
+    "numerator": JSBI [],
+    "token": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+  },
+  "stakingRewardAddress": "0x3838956710bcc9D122Dd23863a0549ca8D5675D6",
+  "tokens": Array [
+    Token {
+      "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
+      "chainId": 1313161554,
+      "decimals": 6,
+      "name": "Tether USD",
+      "symbol": "USDT",
+    },
+    Token {
+      "address": "0x293074789b247cab05357b08052468B5d7A23c5a",
+      "chainId": 1313161554,
+      "decimals": 8,
+      "name": "aUSDO",
+      "symbol": "aUSDO",
+    },
+  ],
+  "totalRewardRate": 1,
+  "totalStakedAmount": TokenAmount {
+    "currency": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+    "denominator": JSBI [
+      660865024,
+      931322574,
+    ],
+    "numerator": JSBI [],
+    "token": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+  },
+  "totalStakedInUSD": 0,
+}
+`;
+
 exports[`stake-constants.ts Polygon Pools: Polygon Pool [ID: 0] 1`] = `
 Object {
   "ID": 0,

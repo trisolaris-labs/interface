@@ -112,7 +112,7 @@
     "acceptUpdate": "Accept update",
     "dismiss": "Dismiss"
   },
-  "positionCard":{
+  "positionCard": {
     "add": "Add",
     "remove": "Remove",
     "poolShare": "Pool Share",
@@ -149,8 +149,7 @@
     "select": "Select",
     "manageTokenLists": "Manage Token Lists"
   },
-  "settings":
-  {
+  "settings": {
     "areYouSure": "Are you sure?",
     "expertInfo": "Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result in bad rates and lost funds.",
     "expertWarningCAPS": "ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.",
@@ -192,7 +191,7 @@
   },
   "tokenWarningModal": {
     "tokenImported": "Token imported",
-    "anyoneCanCreateWarning": "Anyone can create an ERC-20 token on Polygon with <em>any</em> name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.",
+    "anyoneCanCreateWarning": "Anyone can create an ERC-20 token on Polygon with <i>any</i> name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.",
     "loadArbitraryWarning": "This interface can load arbitrary tokens by token addresses. Please take extra caution and do your research when interacting with arbitrary ERC-20 tokens.",
     "purchaseArbitraryWarning": "If you purchase an arbitrary token, <strong>you may be unable to sell it back.</strong>",
     "understand": "I understand",

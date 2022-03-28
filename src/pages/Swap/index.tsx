@@ -1,7 +1,7 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import ReactGA from 'react-ga'
 import { ThemeContext } from 'styled-components'
-import { JSBI, Percent, Token, Trade } from '@trisolaris/sdk'
+import { JSBI, Percent, Token, Trade, ChainId } from '@trisolaris/sdk'
 import { ChevronDown } from 'react-feather'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
@@ -18,7 +18,6 @@ import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetai
 import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
 import { ChevronWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../components/swap/styleds'
-import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import spacemenAndPlanets from '../../assets/svg/spacemen_and_planets.svg'
@@ -49,6 +48,7 @@ import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 
 import { Field } from '../../state/swap/actions'
 import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO, ENABLE_STABLESWAP } from '../../constants'
+import { AURORA } from '../../constants/tokens'
 
 import { ClickableText } from '../Pool/styleds'
 import { LinkStyledButton, TYPE } from '../../theme'
@@ -67,7 +67,11 @@ export default function Swap() {
   ]
   const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
   const urlLoadedTokens: Token[] = useMemo(
-    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
+    () =>
+      [loadedInputCurrency, loadedOutputCurrency]
+        ?.filter((c): c is Token => c instanceof Token)
+        .filter(token => token.address !== AURORA[ChainId.AURORA].address) ?? [],
+
     [loadedInputCurrency, loadedOutputCurrency]
   )
   const handleConfirmTokenWarning = useCallback(() => {

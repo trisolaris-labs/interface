@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Token } from '@trisolaris/sdk'
+import { Token, ChainId } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
+import { Settings2 as ManageIcon } from 'lucide-react'
 
 import { TYPE } from '../../theme'
 import { AutoColumn } from '../Column'
@@ -17,9 +18,6 @@ import { currencyId } from '../../utils/currencyId'
 import { addCommasToNumber } from '../../utils'
 import { getPairRenderOrder, isTokenAmountPositive } from '../../utils/pools'
 
-import { BIG_INT_ZERO } from '../../constants'
-import { Settings2 as ManageIcon } from 'lucide-react'
-
 import {
   Wrapper,
   PairContainer,
@@ -28,6 +26,7 @@ import {
   StyledActionsContainer,
   Button
 } from './PoolCardTri.styles'
+import GetTokenLink from './FarmsPortfolio/GetTokenLink'
 
 type PoolCardTriProps = {
   apr: number
@@ -101,8 +100,10 @@ const DefaultPoolCardtri = ({
   return (
     <Wrapper bgColor1={backgroundColor1} bgColor2={backgroundColor2} isDoubleRewards={doubleRewards}>
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
+
       <AutoRow justifyContent="space-between">
         <PairContainer>
+          <GetTokenLink tokens={[token0, token1]} />
           <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
           <ResponsiveCurrencyLabel>
             {currency0.symbol}-{currency1.symbol}
@@ -123,7 +124,6 @@ const DefaultPoolCardtri = ({
           </StyledActionsContainer>
         )}
       </AutoRow>
-
       <RowBetween>
         <AutoColumn>
           <TYPE.mutedSubHeader>{t('earn.totalStaked')}</TYPE.mutedSubHeader>

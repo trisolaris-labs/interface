@@ -23,7 +23,8 @@ import {
   META,
   XNL,
   GBA,
-  AUSDO
+  AUSDO,
+  BBT
 } from '../../constants/tokens'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
@@ -382,8 +383,18 @@ const AURORA_POOLS: StakingTri[] = [
     inStaging: false,
     doubleRewards: true,
     doubleRewardToken: WNEAR[ChainId.AURORA]
+  }),
+  createMCV2Pool({
+    ID: 24,
+    poolId: 17,
+    tokens: [WNEAR[ChainId.AURORA], BBT[ChainId.AURORA]],
+    lpAddress: '0xadAbA7E2bf88Bd10ACb782302A568294566236dC',
+    rewarderAddress: '0xABE01A6b6922130C982E221681EB4C4aD07A21dA',
+    allocPoint: 1,
+    noTriRewards: true,
+    inStaging: false,
+    doubleRewardToken: BBT[ChainId.AURORA]
   })
-
 ]
 
 export const STAKING: {

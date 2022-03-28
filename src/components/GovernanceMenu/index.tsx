@@ -6,20 +6,20 @@ import { useModalOpen, useToggleModal } from '../../state/application/hooks'
 import { ApplicationModal } from '../../state/application/actions'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 
-import { StyledMenuFlyout, StyledExternalLink, MenuButton, StyledArrow, StyledButtonText } from '../BridgesMenu/BridgesMenu.styles'
+import { StyledMenuFlyout, StyledExternalLink, MenuButton, StyledArrow } from '../BridgesMenu/BridgesMenu.styles'
 
 import { GOVERNANCE } from './GovernanceMenu.constants'
 
-export default function GovernanceMenu() {
+export default function GovernanceMenu({ ...rest }) {
   const node = useRef<HTMLDivElement>()
   const open = useModalOpen(ApplicationModal.GOVERNANCE_MENU)
   const toggle = useToggleModal(ApplicationModal.GOVERNANCE_MENU)
   useOnClickOutside(node, open ? toggle : undefined)
 
   return (
-    <StyledMenu ref={node as any}>
+    <StyledMenu ref={node as any} {...rest}>
       <MenuButton onClick={toggle}>
-        <StyledButtonText>Governance</StyledButtonText>
+        <span>Governance</span>
       </MenuButton>
 
       {open && (

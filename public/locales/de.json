@@ -112,7 +112,7 @@
     "acceptUpdate": "Update bestätigen",
     "dismiss": "Abbruch"
   },
-  "positionCard":{
+  "positionCard": {
     "add": "Hinzufügen",
     "remove": "Entfernen",
     "poolShare": "Anteil am Pool",
@@ -149,8 +149,7 @@
     "select": "auswählen",
     "manageTokenLists": "Tokenlisten verwalten"
   },
-  "settings":
-  {
+  "settings": {
     "areYouSure": "Bist du dir sicher?",
     "expertInfo": "Der Expertenmodus deaktiviert die Aufforderung zur Transaktionsbestätigung und erlaubt Trades mit hoher Slippage, welche oft zu schlechten Tauschraten und unwiderruflich verlorenen Mitteln führen.",
     "expertWarningCAPS": "BENUTZE DIESEN MODUS NUR, WENN DU GENAU WEISST, WAS DU TUST.",
@@ -192,7 +191,7 @@
   },
   "tokenWarningModal": {
     "tokenImported": "Token importiert",
-    "anyoneCanCreateWarning": "Jeder kann einen ERC-20-Token auf Avalanche mit <em>beliebigem</em> Namen erstellen, einschließlich der Erstellung von gefakten Versionen bestehender Token und Token, die den Anschein haben, Projekte zu repräsentieren, für die es keinen Token gibt.",
+    "anyoneCanCreateWarning": "Jeder kann einen ERC-20-Token auf Avalanche mit <i>beliebigem</i> Namen erstellen, einschließlich der Erstellung von gefakten Versionen bestehender Token und Token, die den Anschein haben, Projekte zu repräsentieren, für die es keinen Token gibt.",
     "loadArbitraryWarning": "Mit dieser Schnittstelle kannst du beliebige Token über ihre Token-Adresse laden. Bitte sei besonders vorsichtig und recherchiere gründlich, wenn du beliebige ERC-20 lädst.",
     "purchaseArbitraryWarning": "Wenn du einen beliebigen Token kaufst, <strong>kannst du ihn unter Umständen nicht zurückverkaufen.</strong>",
     "understand": "Ich verstehe",
