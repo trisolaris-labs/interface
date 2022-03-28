@@ -10,7 +10,7 @@ export default function StableSwapPoolAddLiquidity(props: Props) {
 
   // If invalid StableSwapPoolName is passed in, redirect to the stableswap pools page
   if (stableSwapPoolName == null || !StableSwapPoolName.hasOwnProperty(stableSwapPoolName)) {
-    return <Redirect to="/stableswap-pool" />
+    return <Redirect to="/pool/stable" />
   }
 
   return <StableSwapPoolAddLiquidityImpl stableSwapPoolName={stableSwapPoolName} />
