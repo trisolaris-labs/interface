@@ -42,6 +42,49 @@ describe('Add Liquidity', () => {
     cy.url().should('contain', `/add/${AURORA[ChainId.AURORA].address}/${WETH[ChainId.AURORA].address}`)
   })
 
+  // NOTE - skipped, requires token balances
+  it.only('can add liquidity to the ETH/USDC defaultswap pool ', () => {
+    cy.visit('/pool')
+    cy.get('#join-pool-button')
+      .should('contain.text', 'Add liquidity')
+      .click()
+    cy.wait(300)
+      .url()
+      .should('contain', '/add/ETH')
+    cy.get('#add-liquidity-input-tokena .token-symbol-container').should('contain.text', 'ETH')
+    cy.get('#add-liquidity-input-tokenb .open-currency-select-button').click()
+    cy.get('#token-search-input').type('usdc', { force: true, delay: 200 })
+    cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).click()
+    cy.get('#add-liquidity-input-tokena .token-amount-input').type('0.00001', { force: true, delay: 200 })
+    cy.get('#defaultswap-add-liquidity')
+      .then($rl => {
+        if ($rl.find('#add-liquidity-approve-button-a').length) {
+          cy.get('#add-liquidity-approve-button-a')
+            .should('contain.text', 'Approve')
+            .click()
+            .wait(5000)
+        }
+        return $rl
+      })
+      .then($rl => {
+        if ($rl.find('#add-liquidity-approve-button-b').length) {
+          cy.get('#add-liquidity-approve-button-b')
+            .should('contain.text', 'Approve')
+            .click()
+            .wait(5000)
+        }
+        return
+      })
+      .then(() => {
+        cy.get('#add-liquidity-supply-button')
+          .should('contain.text', 'Supply')
+          .click()
+          .wait(5000)
+      })
+  })
+
+  // STABLESWAP
+
   it('loads the USDT_USDC stableswap pool by name', () => {
     cy.visit('/pool/stable/add/USDT_USDC')
     cy.url().should('contain', '/pool/stable/add/USDT_USDC')
