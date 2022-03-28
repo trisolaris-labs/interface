@@ -31,8 +31,13 @@ async function init() {
   const imports = "\n\nimport { ChainId, Token } from '@trisolaris/sdk'"
 
   const tokens = _.map(mergedTokenMap, (tokenObj, symbol) => {
+    // Removes extra whitespace and replaces spaces with `_`
+    const formattedSymbol = symbol
+      .toUpperCase()
+      .trim()
+      .replace(/\W+/g, '_')
     const token =
-      `\n\nexport const ${symbol.toUpperCase()}: { [chainId in ChainId]: Token } = {` +
+      `\n\nexport const ${formattedSymbol}: { [chainId in ChainId]: Token } = {` +
       `${_.map(tokenObj, (token, chainID) => {
         let chainEnumString = null
 
