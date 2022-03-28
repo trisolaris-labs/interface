@@ -2,6 +2,7 @@ import { ChainId, JSBI } from '@trisolaris/sdk'
 import React, { useEffect, useRef, useState } from 'react'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { ButtonLight, ButtonConfirmed, ButtonError } from '../../components/Button'
+import CaptionWithIcon from '../../components/CaptionWithIcon'
 import { DarkGreyCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
@@ -111,8 +112,9 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
         <DarkGreyCard>
           <AutoColumn gap="20px">
             <RowBetween>
-              <AutoColumn gap="20px" justify="start">
+              <AutoColumn justify="start">
                 <TYPE.mediumHeader>Remove Liquidity from {poolData.name}</TYPE.mediumHeader>
+                <CaptionWithIcon>Stable pools on Trisolaris support uneven withdrawals</CaptionWithIcon>
               </AutoColumn>
               <AutoColumn gap="20px">
                 <StableSwapRemoveLiquidityTokenSelector
