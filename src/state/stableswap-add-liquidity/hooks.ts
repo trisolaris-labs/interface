@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
+import { ChainId, Currency, CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
@@ -21,6 +21,7 @@ import { BigNumber } from 'ethers'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import { useTransactionAdder } from '../transactions/hooks'
 import { computeSlippageAdjustedMinAmount } from '../../utils/prices'
+import { dummyToken } from '../stake/stake-constants'
 
 export function useStableSwapAddLiquidityState(): AppState['stableswapAddLiquidity'] {
   return useSelector<AppState, AppState['stableswapAddLiquidity']>(state => state.stableswapAddLiquidity)
@@ -59,9 +60,7 @@ export function useDerivedStableSwapAddLiquidityInfo(
     [currency0, currency1, currency2]
   )
 
-  // pair
-  const [pairState, pair] = usePair(currencies[Field.CURRENCY_0], currencies[Field.CURRENCY_1])
-  const totalLPTokenSuppply = useTotalSupply(pair?.liquidityToken)
+  const totalLPTokenSuppply = useTotalSupply(poolData.lpToken ?? dummyToken)
 
   // balances
   const balances = useCurrencyBalances(account ?? undefined, [
@@ -84,10 +83,6 @@ export function useDerivedStableSwapAddLiquidityInfo(
   let error: string | undefined
   if (!account) {
     error = t('mintHooks.connectWallet')
-  }
-
-  if (pairState === PairState.INVALID) {
-    error = error ?? t('mintHooks.invalidPair')
   }
 
   if (
@@ -181,7 +176,7 @@ export function useStableSwapAddLiquidityCallback(
     async (formattedCurrencyAmounts: string[]) => {
       const isFirstTransaction = JSBI.equal(totalLPTokenSuppply?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
       if (isFirstTransaction) {
-        return BIG_INT_ZERO
+        return BIG_INT_ZERO.toString()
       }
 
       const minToMint = await stableSwapContract?.calculateTokenAmount(
