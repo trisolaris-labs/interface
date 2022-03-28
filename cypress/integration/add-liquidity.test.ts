@@ -43,7 +43,7 @@ describe('Add Liquidity', () => {
   })
 
   // NOTE - skipped, requires token balances
-  it.only('can add liquidity to the ETH/USDC defaultswap pool ', () => {
+  it.skip('can add liquidity to the ETH/USDC defaultswap pool ', () => {
     cy.visit('/pool')
     cy.get('#join-pool-button')
       .should('contain.text', 'Add liquidity')
@@ -64,7 +64,7 @@ describe('Add Liquidity', () => {
             .click()
             .wait(5000)
         }
-        return $rl
+        return cy.get('#defaultswap-add-liquidity')
       })
       .then($rl => {
         if ($rl.find('#add-liquidity-approve-button-b').length) {
@@ -73,13 +73,16 @@ describe('Add Liquidity', () => {
             .click()
             .wait(5000)
         }
-        return
+        return cy.get('#defaultswap-add-liquidity')
       })
-      .then(() => {
+      .then($rl => {
         cy.get('#add-liquidity-supply-button')
           .should('contain.text', 'Supply')
           .click()
-          .wait(5000)
+
+        if ($rl.find('#confirm-add-liquidity-button').length) {
+          cy.get('#confirm-add-liquidity-button').click()
+        }
       })
   })
 
@@ -88,13 +91,12 @@ describe('Add Liquidity', () => {
   it('loads the USDT_USDC stableswap pool by name', () => {
     cy.visit('/pool/stable/add/USDT_USDC')
     cy.url().should('contain', '/pool/stable/add/USDT_USDC')
-    cy.get('#add-liquidity-input-tokena .token-symbol-container').should('contain.text', 'USDT')
-    cy.get('#add-liquidity-input-tokenb .token-symbol-container').should('contain.text', 'USDC')
+    cy.get('#stableswap-manage-button').should('contain.text', 'Manage')
   })
 
   it('cannot load an invalid stableswap pool by name, redirects to swap page', () => {
     cy.visit('/pool/stable/add/X_Y')
-    cy.url().should('contain', '/swap')
+    cy.url().should('contain', '/pool/stable')
   })
 
   it('cannot add liquidity to the USDT_USDC stableswap pool due to insufficient balances', () => {

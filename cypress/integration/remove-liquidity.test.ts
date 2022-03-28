@@ -37,11 +37,41 @@ describe('Remove Liquidity', () => {
     cy.get('#remove-liquidity-tokenb').should('contain.text', 'AURORA')
   })
 
-  it('loads the USDT_USDC stableswap pool by name', () => {
-    cy.visit('/pool/stable/remove/USDT_USDC')
-    cy.url().should('contain', '/pool/stable/remove/USDT_USDC')
-    cy.get('#remove-liquidity-input-tokena .token-symbol-container').should('contain.text', 'USDT')
-    cy.get('#remove-liquidity-input-tokenb .token-symbol-container').should('contain.text', 'USDC')
+  // NOTE - skipped, requires actual added liquidity balances/lp tokens
+  it.only('can remove liquidity from the ETH/USDC defaultswap pool ', () => {
+    cy.visit(`/remove/${WNEAR[ChainId.AURORA].address}-${AURORA[ChainId.AURORA].address}`)
+    cy.get('#remove-liquidity-tokena').should('contain.text', 'wNEAR')
+    cy.get('#remove-liquidity-tokenb').should('contain.text', 'AURORA')
+    cy.get('#liquidity-amount .token-amount-input').type('0.00001', { force: true, delay: 200 })
+
+    cy.get('#defaultswap-remove-liquidity')
+      .then($rl => {
+        if ($rl.find('#remove-liquidity-approve-button').length) {
+          cy.get('#remove-liquidity-approve-button')
+            .should('contain.text', 'Approve')
+            .click()
+            .wait(5000)
+        }
+        return cy.get('#defaultswap-remove-liquidity')
+      })
+      .then($rl => {
+        cy.get('#remove-liquidity-remove-button')
+          .should('contain.text', 'Remove')
+          .click()
+
+        if ($rl.find('#confirm-remove-liquidity-button').length) {
+          cy.get('#confirm-remove-liquidity-button').click()
+        }
+      })
+  })
+
+  // Stableswap
+
+  it('loads the USDC_USDT stableswap pool by name', () => {
+    cy.visit('/pool/stable/remove/USDC_USDT')
+    cy.url().should('contain', '/pool/stable/remove/USDC_USDT')
+    cy.get('#remove-liquidity-input-tokena .token-symbol-container').should('contain.text', 'USDC')
+    cy.get('#remove-liquidity-input-tokenb .token-symbol-container').should('contain.text', 'USDT')
   })
 
   it('cannot load an invalid stableswap pool by name, redirects to swap page', () => {
@@ -49,7 +79,7 @@ describe('Remove Liquidity', () => {
     cy.url().should('contain', '/swap')
   })
 
-  it('cannot remove liquidity to the USDT_USDC stableswap pool due to insufficient balances', () => {
+  it('cannot remove liquidity to the USDC_USDT stableswap pool due to insufficient balances', () => {
     cy.visit('/pool')
     cy.get('#stableswap-pool-nav-link')
       .should('contain.text', 'StableSwap AMM')
@@ -63,9 +93,9 @@ describe('Remove Liquidity', () => {
   })
 
   // NOTE - skipped, requires actual added liquidity balances/lp tokens
-  it.skip('can remove liquidity to the USDT_USDC stableswap pool ', () => {
-    cy.visit('/pool/stable/remove/USDT_USDC')
-    cy.url().should('contain', '/pool/stable/remove/USDT_USDC')
+  it.skip('can remove liquidity to the USDC_USDT stableswap pool ', () => {
+    cy.visit('/pool/stable/remove/USDC_USDT')
+    cy.url().should('contain', '/pool/stable/remove/USDC_USDT')
     // cy.visit('/pool')
     // cy.get('#stableswap-pool-nav-link')
     //   .should('contain.text', 'StableSwap AMM')
@@ -75,9 +105,9 @@ describe('Remove Liquidity', () => {
     //   .click()
     cy.wait(300)
       .url()
-      .should('contain', '/pool/stable/remove/USDT_USDC')
-    cy.get('#remove-liquidity-input-tokena .token-symbol-container').should('contain.text', 'USDT')
-    cy.get('#remove-liquidity-input-tokenb .token-symbol-container').should('contain.text', 'USDC')
+      .should('contain', '/pool/stable/remove/USDC_USDT')
+    cy.get('#remove-liquidity-input-tokena .token-symbol-container').should('contain.text', 'USDC')
+    cy.get('#remove-liquidity-input-tokenb .token-symbol-container').should('contain.text', 'USDT')
     cy.get('#remove-liquidity-balance').should('not.contain.text', 'Balance: 0')
     cy.get('#stableswap-remove-liquidity .token-amount-input').type('1', { force: true, delay: 200 })
     cy.get('#stableswap-remove-liquidity')

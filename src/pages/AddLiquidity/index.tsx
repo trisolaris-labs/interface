@@ -397,7 +397,7 @@ export default function AddLiquidity({
             {!account ? (
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
             ) : (
-              <AutoColumn gap={'md'}>
+              <AutoColumn id="defaultswap-add-liquidity" gap={'md'}>
                 {(approvalA === ApprovalState.NOT_APPROVED ||
                   approvalA === ApprovalState.PENDING ||
                   approvalB === ApprovalState.NOT_APPROVED ||
