@@ -26,6 +26,8 @@ import CurrencyLogo from '../../CurrencyLogo'
 
 import ContractAddress from '../../ContractAddress'
 import { TYPE } from '../../../theme'
+import { HelpCircle } from 'lucide-react'
+import { MouseoverTooltip } from '../../Tooltip'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -67,7 +69,7 @@ font-size: 16px !important;
 `
 
 const StyledFixedHeightRow = styled(FixedHeightRow)`
-  z-index: 99;
+  z-index: 1;
   box-sizing: content-box;
   border: 20px solid transparent;
   margin: -20px;
@@ -113,6 +115,34 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   function handleRemoveLiquidity() {
     push(`${pathname}/remove/${name}`)
   }
+
+  const formattedPoolTokenData = stablePoolData.tokens.map(({ token, percent, value }) => ({
+    label: token.name,
+    token,
+    value: `${value.toString()} (${percent.toFixed(2)}%)`
+  }))
+
+  const formattedPoolData = [
+    {
+      label: 'Virtual Price',
+      value: stablePoolData.virtualPrice == null ? '-' : `$${stablePoolData.virtualPrice?.toFixed(6)}`,
+      tooltipData: 'Average dollar value of pool token.'
+    },
+    {
+      label: 'Amplification coefficient',
+      value: stablePoolData.aParameter?.toString() ?? '-',
+      tooltipData:
+        "Higher values widen the range of low-slippages swaps, while lower values help keep the pool's composition balanced."
+    },
+    {
+      label: 'Swap Fee',
+      value: stablePoolData.swapFee == null ? '-' : `${stablePoolData.swapFee?.toString()}%`
+    },
+    {
+      label: 'Admin Fee',
+      value: stablePoolData.adminFee == null ? '-' : `${stablePoolData.adminFee?.toString()}%`
+    }
+  ]
 
   const handleCardClick = () => {
     setShowMore(!showMore)
@@ -215,7 +245,23 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
                 </FixedHeightRow>
               </AutoColumn>
 
-              <ButtonRow marginTop="10px">
+              {/* <ButtonRow marginTop="10px"> */}
+              {formattedPoolData.slice(1).map(({ label, value, tooltipData }) => (
+                <FixedHeightRow key={label}>
+                  <div>
+                    <StyledText fontWeight={500}>{label}:</StyledText>
+                    {tooltipData && (
+                      <MouseoverTooltip text={tooltipData}>
+                        <HelpCircle size={16} style={{ zIndex: 10 }} />
+                      </MouseoverTooltip>
+                    )}
+                  </div>
+                  <StyledText fontWeight={500}>{value}</StyledText>
+                </FixedHeightRow>
+              ))}
+            </AutoColumn>
+            <AutoColumn gap="8px" style={{ marginTop: '10px' }}>
+              <ButtonRow>
                 <ButtonPrimary id="stableswap-add-liquidity-button" width="45%" onClick={handleAddLiquidity}>
                   Add
                 </ButtonPrimary>
