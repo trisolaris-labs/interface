@@ -145,7 +145,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   return (
     <StyledPositionCard border={border} bgColor={backgroundColor1}>
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
-      <AutoColumn gap="8px">
+      <AutoColumn id={`stableswap-position-card-${name}`} gap="8px">
         <StyledFixedHeightRow onClick={handleCardClick}>
           <RowFixed>
             {currency2 != null ? (
