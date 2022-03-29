@@ -67,10 +67,10 @@ font-size: 16px !important;
 
 const StyledFixedHeightRow = styled(FixedHeightRow)`
   z-index: 99;
-  padding-top: 35px;
-  margin-top: -20px;
-  padding-bottom: 35px;
-  margin-bottom: -20px;
+  box-sizing: content-box;
+  border: 20px solid transparent;
+  margin: -20px;
+  cursor: pointer;
 `
 
 interface PositionCardProps {
@@ -143,9 +143,9 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   }
 
   return (
-    <StyledPositionCard border={border} bgColor={backgroundColor1}>
+    <StyledPositionCard border={border} bgColor={backgroundColor1} id={`stableswap-position-card-${name}`}>
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
-      <AutoColumn id={`stableswap-position-card-${name}`} gap="8px">
+      <AutoColumn gap="8px">
         <StyledFixedHeightRow onClick={handleCardClick}>
           <RowFixed>
             {currency2 != null ? (
