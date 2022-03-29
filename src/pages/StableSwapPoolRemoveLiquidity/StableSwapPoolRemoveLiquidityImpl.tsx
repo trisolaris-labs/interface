@@ -129,9 +129,9 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   function modalHeader() {
     return (
       <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
-        {estimatedAmounts.map((currencyAmount, index, arr) => {
+        {estimatedAmounts.map(currencyAmount => {
           const { currency } = currencyAmount
-          const numTokens = arr.length
+
           return currencyAmount.greaterThan(BIG_INT_ZERO) ? (
             <React.Fragment key={currency.symbol}>
               <RowBetween align="flex-end" key={currency.symbol}>
@@ -145,11 +145,6 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                   </Text>
                 </RowFixed>
               </RowBetween>
-              {index + 1 < numTokens && (
-                <RowFixed>
-                  <Plus size="16" color={theme.text2} />
-                </RowFixed>
-              )}
             </React.Fragment>
           ) : null
         })}
@@ -183,40 +178,18 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
             </Text>
           </RowFixed>
         </RowBetween>
-        {
-          /* 
-        //TODO: Check if applies for stableswap
-        {pair && (
-          <>
-            <RowBetween>
-              <Text color={theme.text2} fontWeight={500} fontSize={16}>
-                {t('removeLiquidity.price')}
-              </Text>
-              <Text fontWeight={500} fontSize={16} color={theme.text1}>
-                1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
-              </Text>
-            </RowBetween>
-            <RowBetween>
-              <div />
-              <Text fontWeight={500} fontSize={16} color={theme.text1}>
-                1 {currencyB?.symbol} = {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
-              </Text>
-            </RowBetween>
-          </>
-        )} */
-          <ButtonPrimary disabled={approvalState === ApprovalState.NOT_APPROVED} onClick={handleRemoveLiquidity}>
-            <Text fontWeight={500} fontSize={20}>
-              Confirm
-            </Text>
-          </ButtonPrimary>
-        }
+        <ButtonPrimary disabled={approvalState === ApprovalState.NOT_APPROVED} onClick={handleRemoveLiquidity}>
+          <Text fontWeight={500} fontSize={20}>
+            Confirm
+          </Text>
+        </ButtonPrimary>
       </>
     )
   }
 
-  const pendingText = `Removing ${estimatedAmounts.map(
-    amount => `${amount.toSignificant(6)} ${amount.currency.symbol}`
-  )}`
+  const pendingText = `Removing ${estimatedAmounts
+    .map(amount => `${amount.toSignificant(6)} ${amount.currency.symbol} `)
+    .join('')}`
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
