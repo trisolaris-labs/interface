@@ -23,7 +23,7 @@ class CustomizedBridge extends Eip1193Bridge {
     }
     console.log(`method: ${method}`)
     function wrapResponse(result, error = null) {
-      if (result == null && result == null) {
+      if (result == null && error != null) {
         error = new Error(`Something went wrong on result, result is${result}`)
       }
       if (isCallbackForm) {
@@ -47,14 +47,23 @@ class CustomizedBridge extends Eip1193Bridge {
       // this seems to throw unless the from arg is removed
       delete argsObject.from
     }
-    if (method === 'eth_sendTransaction') {
-      argsObject = { ...argsObject, gasPrice: params.gas }
-      delete argsObject.gas
-    }
     try {
+      if (method === 'eth_sendTransaction') {
+        delete argsObject.gas
+        const gasPrice = await this.provider.getGasPrice()
+        const result = await super.send(method, [
+          {
+            ...argsObject,
+            gasPrice
+          },
+          ...paramsRest
+        ])
+        return wrapResponse(result)
+      }
       const result = await super.send(method, [argsObject, ...paramsRest])
       return wrapResponse(result)
     } catch (error) {
+      console.error({ error })
       return wrapResponse(null, error)
     }
   }
