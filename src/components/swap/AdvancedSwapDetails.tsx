@@ -92,8 +92,12 @@ function TradeSummary({
               {t('swap.routedViaAmmType')}
             </TYPE.black>
           </RowFixed>
-          <TYPE.black id={'swap-routed-via'} fontSize={14} color={theme.text1}>
-            {isRoutedViaStableSwap ? 'Stable AMM' : 'Default AMM'}
+          <TYPE.black
+            id={'swap-routed-via'}
+            fontSize={14}
+            color={isRoutedViaStableSwap ? theme.metallicGold : theme.yellow2}
+          >
+            {isRoutedViaStableSwap ? `Stable AMM` : 'Standard AMM'}
           </TYPE.black>
         </RowBetween>
       </AutoColumn>
