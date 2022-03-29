@@ -139,7 +139,6 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   ]
 
   const handleCardClick = () => {
-    console.log('click!')
     setShowMore(!showMore)
   }
 
