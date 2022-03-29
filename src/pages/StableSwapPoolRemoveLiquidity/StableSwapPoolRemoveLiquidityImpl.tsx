@@ -1,5 +1,5 @@
 import { ChainId, JSBI } from '@trisolaris/sdk'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useContext, useCallback } from 'react'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { ButtonLight, ButtonConfirmed, ButtonError } from '../../components/Button'
 import CaptionWithIcon from '../../components/CaptionWithIcon'
@@ -23,6 +23,18 @@ import { Dots } from '../Pool/styleds'
 import StableSwapRemoveCurrencyRow from './StableSwapRemoveLiquidityCurrencyRow'
 import StableSwapRemoveLiquidityInputPanel from './StableSwapRemoveLiquidityInputPanel'
 import StableSwapRemoveLiquidityTokenSelector from './StableSwapRemoveLiquidityTokenSelector'
+
+import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
+import { useTranslation } from 'react-i18next'
+import { Text } from 'rebass'
+import { RowFixed } from '../../components/Row'
+import CurrencyLogo from '../../components/CurrencyLogo'
+import { Plus } from 'lucide-react'
+import { ThemeContext } from 'styled-components'
+import { useUserSlippageTolerance } from '../../state/user/hooks'
+import DoubleCurrencyLogo from '../../components/DoubleLogo'
+import { ButtonPrimary } from '../../components/Button'
+import { useExpertModeManager } from '../../state/user/hooks'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -78,13 +90,15 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
     const amount = getClickedAmount(value)
     _setInput(amount)
   }
+  const [userSlippageTolerance] = useUserSlippageTolerance()
 
   const [approvalState, handleApproval] = useApproveCallback(parsedAmount, pool.address)
-  const handleRemoveLiquidity = useStableSwapRemoveLiquidity({
+  const { removeLiquidity: handleRemoveLiquidity, attemptingTxn, txHash, setTxHash } = useStableSwapRemoveLiquidity({
     amount: parsedAmount,
     estimatedAmounts,
     withdrawTokenIndex,
-    stableSwapPoolName
+    stableSwapPoolName,
+    userSlippageTolerance
   })
 
   function renderApproveButton() {
@@ -107,8 +121,103 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
     )
   }
 
+  const theme = useContext(ThemeContext)
+  const { t } = useTranslation()
+  const [isExpertMode] = useExpertModeManager()
+
+  // modal and loading
+  const [showConfirm, setShowConfirm] = useState<boolean>(false)
+
+  function modalHeader() {
+    return (
+      <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
+        {estimatedAmounts.map(currencyAmount => {
+          const { currency } = currencyAmount
+
+          return currencyAmount.greaterThan(BIG_INT_ZERO) ? (
+            <React.Fragment key={currency.symbol}>
+              <RowBetween align="flex-end" key={currency.symbol}>
+                <Text fontSize={24} fontWeight={500}>
+                  {currencyAmount.toSignificant(6)}
+                </Text>
+                <RowFixed gap="4px">
+                  <CurrencyLogo currency={currency} size={'24px'} />
+                  <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+                    {currency.symbol}
+                  </Text>
+                </RowFixed>
+              </RowBetween>
+            </React.Fragment>
+          ) : null
+        })}
+
+        <TYPE.italic fontSize={12} color={theme.text2} textAlign="left" padding={'12px 0 0 0'}>
+          {/*TODO: Translate using i18n*/}
+          {`Output is estimated. If the price changes by more than ${userSlippageTolerance /
+            100}% your transaction will revert.`}
+        </TYPE.italic>
+      </AutoColumn>
+    )
+  }
+
+  function modalBottom() {
+    const poolTokens = estimatedAmounts.map(amount => amount.currency.symbol)
+    return (
+      <>
+        <RowBetween>
+          <Text color={theme.text2} fontWeight={500} fontSize={16}>
+            {/*TODO: Translate using i18n*/}
+            {`TLP ${poolTokens} Burned`}
+          </Text>
+          <RowFixed>
+            <DoubleCurrencyLogo
+              currency0={estimatedAmounts[0].currency}
+              currency1={estimatedAmounts[1].currency}
+              margin={true}
+            />
+            <Text fontWeight={500} fontSize={16}>
+              {parsedAmount?.toSignificant(6)}
+            </Text>
+          </RowFixed>
+        </RowBetween>
+        <ButtonPrimary disabled={approvalState === ApprovalState.NOT_APPROVED} onClick={handleRemoveLiquidity}>
+          <Text fontWeight={500} fontSize={20}>
+            Confirm
+          </Text>
+        </ButtonPrimary>
+      </>
+    )
+  }
+
+  const pendingText = `Removing ${estimatedAmounts
+    .map(amount => `${amount.toSignificant(6)} ${amount.currency.symbol} `)
+    .join('')}`
+
+  const handleDismissConfirmation = useCallback(() => {
+    setShowConfirm(false)
+    if (txHash) {
+      setInput('0')
+    }
+    setTxHash('')
+  }, [setInput, txHash])
+
   return (
     <PageWrapper gap="lg" justify="center">
+      <TransactionConfirmationModal
+        isOpen={showConfirm}
+        onDismiss={handleDismissConfirmation}
+        attemptingTxn={attemptingTxn}
+        hash={txHash ? txHash : ''}
+        content={() => (
+          <ConfirmationModalContent
+            title={t('removeLiquidity.youWillReceive')}
+            onDismiss={handleDismissConfirmation}
+            topContent={modalHeader}
+            bottomContent={modalBottom}
+          />
+        )}
+        pendingText={pendingText}
+      />
       <AutoColumn style={{ width: '100%' }}>
         <DarkGreyCard>
           <AutoColumn gap="20px">
@@ -162,7 +271,9 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                     parsedAmount == null ||
                     JSBI.equal(parsedAmount.raw, BIG_INT_ZERO)
                   }
-                  onClick={handleRemoveLiquidity}
+                  onClick={() => {
+                    isExpertMode ? handleRemoveLiquidity() : setShowConfirm(true)
+                  }}
                 >
                   {error != null ? error.reason : 'Remove Liquidity'}
                 </ButtonError>

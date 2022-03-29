@@ -1,5 +1,5 @@
 import { ChainId, Currency, CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
 import { useTotalSupply } from '../../data/TotalSupply'
@@ -156,12 +156,14 @@ export function useStableSwapAddLiquidityActionHandlers(): {
 
 export function useStableSwapAddLiquidityCallback(
   stableSwapPoolName: StableSwapPoolName
-): { callback: () => Promise<string> } {
+): { callback: () => Promise<string>; txHash: string; setTxHash: React.Dispatch<React.SetStateAction<string>> } {
   const { account } = useActiveWeb3React()
   const stableSwapContract = useStableSwapContract(stableSwapPoolName)
   const { currencies, parsedAmounts, hasThirdCurrency, totalLPTokenSuppply } = useDerivedStableSwapAddLiquidityInfo(
     stableSwapPoolName
   )
+
+  const [txHash, setTxHash] = useState('')
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
   const addTransaction = useTransactionAdder()
@@ -217,9 +219,9 @@ export function useStableSwapAddLiquidityCallback(
     addTransaction(transaction, {
       summary: `Add ${summary.join(', ')}`
     })
-
+    setTxHash(transaction.hash)
     return transaction
   }, [account, addTransaction, currencies, deadline, getMinToMint, hasThirdCurrency, parsedAmounts, stableSwapContract])
 
-  return { callback }
+  return { callback, txHash, setTxHash }
 }

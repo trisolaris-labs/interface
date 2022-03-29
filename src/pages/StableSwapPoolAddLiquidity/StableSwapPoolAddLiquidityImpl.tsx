@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useContext, useState, useCallback } from 'react'
+import { Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
 
@@ -29,17 +30,30 @@ import { HeadingContainer } from '../Swap/Swap.styles'
 import { AutoRow } from '../../components/Row'
 import CaptionWithIcon from '../../components/CaptionWithIcon'
 
+import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
+import { RowFixed } from '../../components/Row'
+import CurrencyLogo from '../../components/CurrencyLogo'
+import { useUserSlippageTolerance } from '../../state/user/hooks'
+import DoubleCurrencyLogo from '../../components/DoubleLogo'
+import { ButtonPrimary } from '../../components/Button'
+import { RowBetween } from '../../components/Row'
+import { CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
+import { useStableSwapContract } from '../../hooks/useContract'
+import { ThemeContext } from 'styled-components'
+import { BIG_INT_ZERO } from '../../constants'
+import { useExpertModeManager } from '../../state/user/hooks'
+
 type Props = {
   stableSwapPoolName: StableSwapPoolName
 }
 
 export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: Props) {
   const { account, chainId, library } = useActiveWeb3React()
+
+  const theme = useContext(ThemeContext)
   const { t } = useTranslation()
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
-
-  // const expertMode = useIsExpertMode()
 
   // mint state
   const {
@@ -53,13 +67,18 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
 
   const { onField0Input, onField1Input, onField2Input } = useStableSwapAddLiquidityActionHandlers()
 
-  const isValid = !error
+  const [isExpertMode] = useExpertModeManager()
+
+  const amountsAreNotZero = Object.values(parsedAmounts).some(parsedAmount =>
+    JSBI.greaterThan(parsedAmount ? parsedAmount.raw : BIG_INT_ZERO, BIG_INT_ZERO)
+  )
+  const isValid = !error && amountsAreNotZero
 
   // @TODO Add Loading Animation/behavior
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
   // txn values
-  const { callback: addLiquidityCallback } = useStableSwapAddLiquidityCallback(stableSwapPoolName)
+  const { callback: addLiquidityCallback, txHash, setTxHash } = useStableSwapAddLiquidityCallback(stableSwapPoolName)
 
   // get the max amounts user can add
   const { getMaxAmounts } = useCurrencyInputPanel()
@@ -90,11 +109,81 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
       })
   }
 
+  const [showConfirm, setShowConfirm] = useState<boolean>(false)
+
+  const handleDismissConfirmation = useCallback(() => {
+    setShowConfirm(false)
+
+    onField0Input('')
+    onField1Input('')
+    onField2Input('')
+
+    setTxHash('')
+  }, [
+    onField0Input,
+    onField1Input,
+    onField2Input
+    // txHash
+  ])
+
+  const pendingText = `Supplying ${Object.values(parsedAmounts)
+    .map(amount => (amount ? `${amount?.toSignificant(6)} ${amount?.currency.symbol}  ` : ''))
+    .join('')}`
+
+  const modalHeader = () => {
+    return (
+      <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
+        {Object.values(parsedAmounts).map(parsedAmount => {
+          const { currency } = parsedAmount || {}
+
+          return parsedAmount ? (
+            <RowBetween align="flex-end" key={currency?.symbol}>
+              <Text fontSize={24} fontWeight={500}>
+                {parsedAmount.toExact()}
+              </Text>
+              <RowFixed gap="4px">
+                <CurrencyLogo currency={currency} size={'24px'} />
+                <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+                  {currency?.symbol}
+                </Text>
+              </RowFixed>
+            </RowBetween>
+          ) : null
+        })}
+      </AutoColumn>
+    )
+  }
+
+  const modalBottom = () => {
+    return (
+      <ButtonPrimary onClick={() => onAdd()}>
+        <Text fontWeight={500} fontSize={20}>
+          Confirm
+        </Text>
+      </ButtonPrimary>
+    )
+  }
+
   return (
     <>
       <AppBody>
         <Wrapper>
           <AutoColumn id="stableswap-add-liquidity" gap="20px">
+            <TransactionConfirmationModal
+              isOpen={showConfirm}
+              onDismiss={handleDismissConfirmation}
+              attemptingTxn={attemptingTxn}
+              hash={txHash ? txHash : ''}
+              content={() => (
+                <ConfirmationModalContent
+                  title={'You will supply'}
+                  onDismiss={handleDismissConfirmation}
+                  topContent={modalHeader}
+                  bottomContent={modalBottom}
+                />
+              )}
+              pendingText={pendingText}
+            />
             <HeadingContainer>
               <AutoRow>
                 <TYPE.mediumHeader>Add Liquidity to {stableSwapPoolName}</TYPE.mediumHeader>
@@ -169,8 +258,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                   <ButtonError
                     id={'add-liquidity-supply-button'}
                     onClick={() => {
-                      //   expertMode ? onAdd() : setShowConfirm(true)
-                      onAdd()
+                      isExpertMode ? onAdd() : setShowConfirm(true)
                     }}
                     disabled={!isValid}
                     error={!isValid}
