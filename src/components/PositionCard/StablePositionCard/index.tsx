@@ -54,8 +54,23 @@ const ButtonRow = styled(AutoRow)`
 const StyledText = styled(Text)`
   font-size: 16px;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  font-size: 14px;
+  font-size: 12px;
+  max-width: 180px;
 `};
+`
+
+const StyledPoolName = styled(Text)`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+font-size: 16px !important;
+`};
+`
+
+const StyledFixedHeightRow = styled(FixedHeightRow)`
+  z-index: 99;
+  padding-top: 35px;
+  margin-top: -20px;
+  padding-bottom: 35px;
+  margin-bottom: -20px;
 `
 
 interface PositionCardProps {
@@ -69,10 +84,6 @@ interface StablePositionCardProps {
   showUnwrapped?: boolean
   border?: string
 }
-
-const ManageButton = styled(ButtonEmpty)`
-  color: ${({ theme }) => theme.white};
-`
 
 export default function FullStablePositionCard({ poolName, border }: StablePositionCardProps) {
   const { t } = useTranslation()
@@ -127,11 +138,16 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
     }
   ]
 
+  const handleCardClick = () => {
+    console.log('click!')
+    setShowMore(!showMore)
+  }
+
   return (
     <StyledPositionCard border={border} bgColor={backgroundColor1}>
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
       <AutoColumn gap="8px">
-        <FixedHeightRow>
+        <StyledFixedHeightRow onClick={handleCardClick}>
           <RowFixed>
             {currency2 != null ? (
               <TripleCurrencyLogo
@@ -144,60 +160,43 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
             ) : (
               <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
             )}
-            <Text fontWeight={500} fontSize={20}>
+            <StyledPoolName fontWeight={500} fontSize={20}>
               {name}
-            </Text>
+            </StyledPoolName>
           </RowFixed>
 
           <RowFixed gap="8px">
-            <ManageButton
-              id="stableswap-manage-button"
-              padding="6px 8px"
-              borderRadius="12px"
-              width="fit-content"
-              onClick={() => setShowMore(!showMore)}
-            >
-              {showMore ? (
-                <>
-                  {' '}
-                  {t('positionCard.manage')}
-                  <ChevronUp size="20" style={{ marginLeft: '10px' }} />
-                </>
-              ) : (
-                <>
-                  {t('positionCard.manage')}
-                  <ChevronDown size="20" style={{ marginLeft: '10px' }} />
-                </>
-              )}
-            </ManageButton>
+            {stablePoolData?.lpToken != null ? (
+              <StyledText textAlign="end" fontWeight={500}>
+                {`${userData?.lpTokenBalance.toFixed(6) ?? 0} ${stablePoolData.lpToken?.name}`}
+                <CurrencyLogo
+                  size="20px"
+                  style={{ marginLeft: '8px' }}
+                  currency={unwrappedToken(stablePoolData.lpToken)}
+                />
+              </StyledText>
+            ) : null}
           </RowFixed>
-        </FixedHeightRow>
+        </StyledFixedHeightRow>
+
         {showMore && (
           <div style={{ marginTop: '10px' }}>
-            {stablePoolData?.lpToken != null ? (
+            <AutoColumn gap="8px">
+              {formattedPoolData.slice(0, 1).map(({ label, value }) => (
+                <FixedHeightRow key={label}>
+                  <StyledText fontWeight={500}>{label}:</StyledText>
+                  <StyledText fontWeight={500}>{value}</StyledText>
+                </FixedHeightRow>
+              ))}
               <FixedHeightRow>
-                <StyledText fontWeight={500}>Pool Tokens:</StyledText>
-
-                <StyledText textAlign="end" fontWeight={500}>
-                  {`${userData?.lpTokenBalance.toFixed(6) ?? 0} ${stablePoolData.lpToken?.name}`}
-                  <CurrencyLogo
-                    size="20px"
-                    style={{ marginLeft: '8px' }}
-                    currency={unwrappedToken(stablePoolData.lpToken)}
-                  />
-                </StyledText>
+                <div>Token Address:</div>
+                <ContractAddress address={stablePoolData.lpToken?.address} />
               </FixedHeightRow>
-            ) : null}
-            {formattedPoolData.slice(0, 1).map(({ label, value }) => (
-              <FixedHeightRow key={label}>
-                <StyledText fontWeight={500}>{label}:</StyledText>
-                <StyledText fontWeight={500}>{value}</StyledText>
+              <FixedHeightRow>
+                <div>Pool Address:</div>
+                <ContractAddress address={poolAddress} />
               </FixedHeightRow>
-            ))}
-            <FixedHeightRow>
-              <div>Pool Address:</div>
-              <ContractAddress address={poolAddress} />
-            </FixedHeightRow>
+            </AutoColumn>
             <AutoColumn gap="8px">
               <AutoColumn gap="8px" style={{ margin: '10px 0' }}>
                 {formattedPoolTokenData.map(({ label, token, value }) => (
@@ -210,10 +209,6 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
                       <StyledText fontWeight={500} marginLeft={'6px'}>
                         {value}
                       </StyledText>
-                    </FixedHeightRow>
-                    <FixedHeightRow>
-                      <div>Address:</div>
-                      <ContractAddress token={token} />
                     </FixedHeightRow>
                   </React.Fragment>
                 ))}
