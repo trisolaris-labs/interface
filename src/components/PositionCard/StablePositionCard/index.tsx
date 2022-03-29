@@ -25,6 +25,7 @@ import _ from 'lodash'
 import CurrencyLogo from '../../CurrencyLogo'
 
 import ContractAddress from '../../ContractAddress'
+import { TYPE } from '../../../theme'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -113,31 +114,6 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
     push(`${pathname}/remove/${name}`)
   }
 
-  const formattedPoolTokenData = stablePoolData.tokens.map(({ token, percent, value }) => ({
-    label: token.name,
-    token,
-    value: `${value.toString()} (${percent.toFixed(2)}%)`
-  }))
-
-  const formattedPoolData = [
-    {
-      label: 'Virtual Price',
-      value: stablePoolData.virtualPrice == null ? '-' : `$${stablePoolData.virtualPrice?.toFixed(6)}`
-    },
-    {
-      label: 'Amplification coefficient',
-      value: stablePoolData.aParameter?.toString() ?? '-'
-    },
-    {
-      label: 'Swap Fee',
-      value: stablePoolData.swapFee == null ? '-' : `${stablePoolData.swapFee?.toString()}%`
-    },
-    {
-      label: 'Admin Fee',
-      value: stablePoolData.adminFee == null ? '-' : `${stablePoolData.adminFee?.toString()}%`
-    }
-  ]
-
   const handleCardClick = () => {
     setShowMore(!showMore)
   }
@@ -165,11 +141,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
           </RowFixed>
 
           <RowFixed justify="flex-end" gap="8px">
-            {stablePoolData?.lpToken != null ? (
-              <StyledText textAlign="end" fontWeight={500}>
-                {`${userData?.lpTokenBalance.toFixed(6) ?? 0} ${stablePoolData.lpToken?.name}`}
-              </StyledText>
-            ) : null}
+            <StyledText fontWeight={500}>{showMore ? 'Hide Details' : 'View Details'}</StyledText>
             {showMore ? (
               <ChevronUp size="20" style={{ marginLeft: '10px' }} />
             ) : (
@@ -178,50 +150,72 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
           </RowFixed>
         </StyledFixedHeightRow>
 
+        {userData?.lpTokenBalance.greaterThan(BIG_INT_ZERO) ? (
+          <AutoColumn gap="8px">
+            <FixedHeightRow marginTop="4px">
+              <StyledText fontWeight={500}>Deposited Amount</StyledText>
+              <StyledText fontWeight={500}>{`${userData?.usdBalance.toString()}`}</StyledText>
+            </FixedHeightRow>
+            <FixedHeightRow>
+              <StyledText fontWeight={500}>{stablePoolData.lpToken?.name} LP Token Balance</StyledText>
+              <StyledText fontWeight={500}>{`${userData?.lpTokenBalance.toFixed(3)}`}</StyledText>
+            </FixedHeightRow>
+          </AutoColumn>
+        ) : null}
+
         {showMore && (
           <div style={{ marginTop: '10px' }}>
             <AutoColumn gap="8px">
-              {formattedPoolData.slice(0, 1).map(({ label, value }) => (
-                <FixedHeightRow key={label}>
-                  <StyledText fontWeight={500}>{label}:</StyledText>
-                  <StyledText fontWeight={500}>{value}</StyledText>
+              <TYPE.subHeader fontSize={16} fontWeight={500}>
+                Currency Reserves
+              </TYPE.subHeader>
+              {stablePoolData.tokens.map(({ token, percent, value }) => (
+                <FixedHeightRow key={token.name}>
+                  <div>
+                    <CurrencyLogo size="20px" style={{ marginRight: '8px' }} currency={unwrappedToken(token)} />
+                    {token.name}
+                  </div>
+                  <StyledText fontWeight={500} marginLeft={'6px'}>
+                    {`${value.toString()} (${percent.toFixed(2)}%)`}
+                  </StyledText>
                 </FixedHeightRow>
               ))}
+
+              <TYPE.subHeader fontSize={16} fontWeight={500} marginTop="8px">
+                Pool Info
+              </TYPE.subHeader>
               <FixedHeightRow>
-                <div>Token Address:</div>
-                <ContractAddress address={stablePoolData.lpToken?.address} />
+                <StyledText>Swap Fee:</StyledText>
+                <StyledText>
+                  {stablePoolData.swapFee == null ? '-' : `${stablePoolData.swapFee?.toString()}%`}
+                </StyledText>
               </FixedHeightRow>
               <FixedHeightRow>
-                <div>Pool Address:</div>
-                <ContractAddress address={poolAddress} />
+                <StyledText>Admin Fee:</StyledText>
+                <StyledText>
+                  {stablePoolData.adminFee == null ? '-' : `${stablePoolData.adminFee?.toString()}%`}
+                </StyledText>
               </FixedHeightRow>
-            </AutoColumn>
-            <AutoColumn gap="8px">
-              <AutoColumn gap="8px" style={{ margin: '10px 0' }}>
-                {formattedPoolTokenData.map(({ label, token, value }) => (
-                  <React.Fragment key={label}>
-                    <FixedHeightRow>
-                      <div>
-                        <CurrencyLogo size="20px" style={{ marginRight: '8px' }} currency={unwrappedToken(token)} />
-                        {label}
-                      </div>
-                      <StyledText fontWeight={500} marginLeft={'6px'}>
-                        {value}
-                      </StyledText>
-                    </FixedHeightRow>
-                  </React.Fragment>
-                ))}
+              <FixedHeightRow>
+                <StyledText>Amplification coefficient:</StyledText>
+                <StyledText>{stablePoolData.aParameter?.toString() ?? '-'}</StyledText>
+              </FixedHeightRow>
+
+              <TYPE.subHeader fontSize={16} fontWeight={500} marginTop="8px">
+                Contracts
+              </TYPE.subHeader>
+              <AutoColumn gap="8px">
+                <FixedHeightRow>
+                  <div>{stablePoolData.lpToken?.name} LP Token:</div>
+                  <ContractAddress address={stablePoolData.lpToken?.address} />
+                </FixedHeightRow>
+                <FixedHeightRow>
+                  <div>{stablePoolData.name} Pool Contract:</div>
+                  <ContractAddress address={poolAddress} />
+                </FixedHeightRow>
               </AutoColumn>
 
-              {formattedPoolData.slice(1).map(({ label, value }) => (
-                <FixedHeightRow key={label}>
-                  <StyledText fontWeight={500}>{label}:</StyledText>
-                  <StyledText fontWeight={500}>{value}</StyledText>
-                </FixedHeightRow>
-              ))}
-            </AutoColumn>
-            <AutoColumn gap="8px" style={{ marginTop: '10px' }}>
-              <ButtonRow>
+              <ButtonRow marginTop="10px">
                 <ButtonPrimary id="stableswap-add-liquidity-button" width="45%" onClick={handleAddLiquidity}>
                   Add
                 </ButtonPrimary>

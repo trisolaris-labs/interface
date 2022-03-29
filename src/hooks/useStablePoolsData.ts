@@ -53,7 +53,7 @@ export interface StablePoolDataType {
 export interface UserShareType {
   lpTokenBalance: TokenAmount
   name: StableSwapPoolName // TODO: does this need to be on user share?
-  share: JSBI
+  share: Percent
   tokens: TokenShareType[]
   usdBalance: JSBI
   underlyingTokensAmount: JSBI
@@ -130,17 +130,11 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
     ? BIG_INT_ZERO
     : JSBI.divide(JSBI.multiply(tokenBalancesUSDSum, BIG_NUMBERS['10e18']), tokenBalancesSum)
 
-  const userShare = sumAllJSBI([
-    calculatePctOfTotalShare(userLPTokenBalance, totalLpTokenBalance)
-    // calculatePctOfTotalShare(amountStakedInRewards, totalLpTokenBalance // @TODO What is this?
-  ])
-  const userPoolTokenBalances = tokenBalances.map(balance => {
-    return JSBI.divide(JSBI.multiply(userShare, balance), BIG_NUMBERS['10e18'])
-  })
+  const userShare = calculatePctOfTotalShare(userLPTokenBalance, totalLpTokenBalance)
+  const userPoolTokenBalances = tokenBalances.map(balance => userShare.multiply(balance).quotient)
   const userPoolTokenBalancesSum = sumAllJSBI(userPoolTokenBalances)
-  const userPoolTokenBalancesUSD = tokenBalancesUSD.map(balance => {
-    return JSBI.divide(JSBI.multiply(userShare, balance), BIG_NUMBERS['10e18'])
-  })
+
+  const userPoolTokenBalancesUSD = tokenBalancesUSD.map(balance => userShare.multiply(balance).quotient)
   const userPoolTokenBalancesUSDSum = sumAllJSBI(userPoolTokenBalancesUSD)
 
   const poolTokens = effectivePoolTokens.map((token, i) => ({
@@ -158,11 +152,15 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
   const userPoolTokens = effectivePoolTokens.map((token, i) => ({
     token,
     percent: new Percent(
-      JSBI.multiply(tokenBalances[i], JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(5))),
-      JSBI.equal(totalLpTokenBalance.raw, BIG_INT_ZERO) ? JSBI.BigInt(1) : tokenBalancesSum
+      userPoolTokenBalances[i],
+      JSBI.equal(tokenBalancesSum, BIG_INT_ZERO) ? JSBI.BigInt(1) : tokenBalancesSum
     ),
-    value: userPoolTokenBalances[i]
+    value: JSBI.divide(
+      userPoolTokenBalances[i],
+      JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(effectivePoolTokens[i].decimals))
+    )
   }))
+
   const poolAddress = pool.address?.toLowerCase()
   const metaSwapAddress = pool.metaSwapAddresses?.toLowerCase()
   const underlyingPool = metaSwapAddress || poolAddress
@@ -233,10 +231,10 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
   return [poolData, userShareData]
 }
 
-function calculatePctOfTotalShare(lpTokenAmount: TokenAmount, totalLpTokenBalance: TokenAmount): JSBI {
+function calculatePctOfTotalShare(lpTokenAmount: TokenAmount, totalLpTokenBalance: TokenAmount): Percent {
   // returns the % of total lpTokens
-  return JSBI.divide(
-    JSBI.multiply(lpTokenAmount.raw, BIG_NUMBERS['10e18']),
+  return new Percent(
+    lpTokenAmount.raw,
     JSBI.equal(totalLpTokenBalance.raw, BIG_INT_ZERO) ? JSBI.BigInt(1) : totalLpTokenBalance.raw
   )
 }
