@@ -35,7 +35,7 @@ describe('Swap', () => {
       .should('have.value', '0.0')
   })
 
-  it('cannot default swap ETH for USDC due to insufficient balance', () => {
+  it('cannot defaultswap ETH for USDC due to insufficient balance', () => {
     cy.get('#swap-currency-output .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdc')
     cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).should('be.visible')
@@ -43,12 +43,12 @@ describe('Swap', () => {
     cy.get('#swap-currency-input .token-amount-input').should('be.visible')
     cy.get('#swap-currency-input .token-amount-input').type('5', { force: true, delay: 200 })
     cy.get('#swap-currency-output .token-amount-input').should('not.equal', '')
-    cy.get('#swap-routed-via').should('contain', 'Default AMM')
+    cy.get('#swap-routed-via').should('contain', 'Standard AMM')
     cy.get('#swap-button').should('contain', 'Insufficient ETH balance')
   })
 
   // NOTE - Depends on stableswap liquidity and quotes hence skipped
-  it.skip('cannot default swap USDT for USDC due to insufficient balance', () => {
+  it.skip('cannot defaultswap USDT for USDC due to insufficient balance', () => {
     cy.get('#swap-currency-input .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdt')
     cy.get(`.token-item-${USDT[ChainId.AURORA].address}`).should('be.visible')
@@ -62,7 +62,7 @@ describe('Swap', () => {
     cy.get('#swap-currency-input .token-amount-input').should('be.visible')
     cy.get('#swap-currency-input .token-amount-input').type('5000', { force: true, delay: 200 })
     cy.get('#swap-currency-output .token-amount-input').should('not.equal', '')
-    cy.get('#swap-routed-via').should('contain', 'Default AMM')
+    cy.get('#swap-routed-via').should('contain', 'Standard AMM')
     cy.get('#swap-button').should('contain', 'Insufficient USDT balance')
   })
 
@@ -103,7 +103,7 @@ describe('Swap', () => {
   })
 
   // NOTE - depends on private key balance
-  it.skip('can default swap ETH for USDC', () => {
+  it.skip('can defaultswap ETH for USDC', () => {
     cy.get('#swap-currency-output .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdc')
     cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).should('be.visible')
@@ -111,7 +111,7 @@ describe('Swap', () => {
     cy.get('#swap-currency-input .token-amount-input').should('be.visible')
     cy.get('#swap-currency-input .token-amount-input').type('0.000001', { force: true, delay: 200 })
     cy.get('#swap-currency-output .token-amount-input').should('not.equal', '')
-    cy.get('#swap-routed-via').should('contain', 'Default AMM')
+    cy.get('#swap-routed-via').should('contain', 'Standard AMM')
     cy.get('#swap-page')
       .wait(2000)
       .then($rl => {
