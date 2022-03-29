@@ -34,6 +34,7 @@ import { ThemeContext } from 'styled-components'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { ButtonPrimary } from '../../components/Button'
+import { useExpertModeManager } from '../../state/user/hooks'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -122,6 +123,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
 
   const theme = useContext(ThemeContext)
   const { t } = useTranslation()
+  const [isExpertMode] = useExpertModeManager()
 
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
@@ -270,7 +272,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                     JSBI.equal(parsedAmount.raw, BIG_INT_ZERO)
                   }
                   onClick={() => {
-                    setShowConfirm(true)
+                    isExpertMode ? handleRemoveLiquidity() : setShowConfirm(true)
                   }}
                 >
                   {error != null ? error.reason : 'Remove Liquidity'}

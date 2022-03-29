@@ -40,8 +40,8 @@ import { RowBetween } from '../../components/Row'
 import { CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
 import { useStableSwapContract } from '../../hooks/useContract'
 import { ThemeContext } from 'styled-components'
-
 import { BIG_INT_ZERO } from '../../constants'
+import { useExpertModeManager } from '../../state/user/hooks'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -55,8 +55,6 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
-  // const expertMode = useIsExpertMode()
-
   // mint state
   const {
     [Field.CURRENCY_0]: typedValue0,
@@ -68,6 +66,8 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   )
 
   const { onField0Input, onField1Input, onField2Input } = useStableSwapAddLiquidityActionHandlers()
+
+  const [isExpertMode] = useExpertModeManager()
 
   const amountsAreNotZero = Object.values(parsedAmounts).some(parsedAmount =>
     JSBI.greaterThan(parsedAmount ? parsedAmount.raw : BIG_INT_ZERO, BIG_INT_ZERO)
@@ -258,9 +258,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                   <ButtonError
                     id={'add-liquidity-supply-button'}
                     onClick={() => {
-                      //   expertMode ? onAdd() : setShowConfirm(true)
-                      setShowConfirm(true)
-                      // onAdd()
+                      isExpertMode ? onAdd() : setShowConfirm(true)
                     }}
                     disabled={!isValid}
                     error={!isValid}
