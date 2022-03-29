@@ -54,7 +54,7 @@ describe('Add Liquidity', () => {
     cy.get('#add-liquidity-input-tokenb .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdc', { force: true, delay: 200 })
     cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).click()
-    cy.get('#add-liquidity-input-tokena .token-amount-input').type('0.00001', { force: true, delay: 200 })
+    cy.get('#add-liquidity-input-tokena .token-amount-input').type('5', { force: true, delay: 200 })
     cy.get('#defaultswap-add-liquidity')
       .then($rl => {
         if ($rl.find('#add-liquidity-approve-button-a').length) {
@@ -82,7 +82,7 @@ describe('Add Liquidity', () => {
   })
 
   // NOTE - skipped, requires token balances
-  it.skip('can add liquidity to the ETH/USDC defaultswap pool ', () => {
+  it.skip('can add liquidity to the ETH/USDC defaultswap pool', () => {
     cy.visit('/pool')
     cy.get('#join-pool-button')
       .should('contain.text', 'Add liquidity')
@@ -94,7 +94,7 @@ describe('Add Liquidity', () => {
     cy.get('#add-liquidity-input-tokenb .open-currency-select-button').click()
     cy.get('#token-search-input').type('usdc', { force: true, delay: 200 })
     cy.get(`.token-item-${USDC[ChainId.AURORA].address}`).click()
-    cy.get('#add-liquidity-input-tokena .token-amount-input').type('0.00001', { force: true, delay: 200 })
+    cy.get('#add-liquidity-input-tokena .token-amount-input').type('0.000001', { force: true, delay: 200 })
     cy.get('#defaultswap-add-liquidity')
       .then($rl => {
         if ($rl.find('#add-liquidity-approve-button-a').length) {
@@ -114,14 +114,15 @@ describe('Add Liquidity', () => {
         }
         return cy.get('#defaultswap-add-liquidity')
       })
-      .then($rl => {
+      .then(() => {
         cy.get('#add-Liquidity-supply-button')
           .should('contain.text', 'Supply')
           .click()
-
-        if ($rl.find('#confirm-add-liquidity-button').length) {
-          cy.get('#confirm-add-liquidity-button').click()
-        }
+          .wait(500)
+        cy.get('#confirm-add-liquidity-button')
+          .click()
+          .wait(5000)
+        cy.get('div').contains('Transaction Submitted')
       })
   })
 
@@ -152,14 +153,12 @@ describe('Add Liquidity', () => {
   })
 
   // NOTE - skipped, requires token balances
-  it.skip('can add liquidity to the USDC_USDT stableswap pool ', () => {
+  it.skip('can add liquidity to the USDC_USDT stableswap pool with two tokens', () => {
     cy.visit('/pool')
     cy.get('#stableswap-pool-nav-link')
       .should('contain.text', 'StableSwap AMM')
       .click()
-    cy.get('#stableswap-manage-button')
-      .should('contain.text', 'Manage')
-      .click()
+    cy.get('#stableswap-compact-clickable-position-card-USDC_USDT').click()
     cy.get('#stableswap-add-liquidity-button')
       .should('contain.text', 'Add')
       .click()
@@ -168,40 +167,98 @@ describe('Add Liquidity', () => {
       .should('contain', '/pool/stable/add/USDC_USDT')
     cy.get('#add-liquidity-input-tokena .token-symbol-container').should('contain.text', 'USDC')
     cy.get('#add-liquidity-input-tokenb .token-symbol-container').should('contain.text', 'USDT')
-    cy.get('#add-liquidity-input-tokena .token-amount-input').type('1', { force: true, delay: 200 })
-    cy.get('#add-liquidity-input-tokenb .token-amount-input').type('1', { force: true, delay: 200 })
+    cy.get('#add-liquidity-input-tokena .token-amount-input').type('0.0001', { force: true, delay: 200 })
+    cy.get('#add-liquidity-input-tokenb .token-amount-input').type('0.0001', { force: true, delay: 200 })
 
     cy.get('#stableswap-add-liquidity')
+      .wait(2000)
       .then($rl => {
         if ($rl.find('#add-liquidity-approve-button-a').length) {
-          cy.get('#add-liquidity-approve-button-a')
-            .should('contain.text', 'Approve')
-            .click()
-            .wait(5000)
+          if ($rl.find('#add-liquidity-approve-button-a').attr('disabled') !== 'disabled') {
+            cy.get('#add-liquidity-approve-button-a')
+              .should('contain.text', 'Approve')
+              .click()
+              .wait(5000)
+          }
         }
         return cy.get('#stableswap-add-liquidity')
       })
       .then($rl => {
         if ($rl.find('#add-liquidity-approve-button-b').length) {
-          cy.get('#add-liquidity-approve-button-b')
-            .should('contain.text', 'Approve')
-            .click()
-            .wait(5000)
+          if ($rl.find('#add-liquidity-approve-button-b').attr('disabled') !== 'disabled') {
+            cy.get('#add-liquidity-approve-button-b')
+              .should('contain.text', 'Approve')
+              .click()
+              .wait(5000)
+          }
         }
         return cy.get('#stableswap-add-liquidity')
       })
-      .then($rl => {
+      .then(() => {
         cy.get('#add-liquidity-supply-button')
           .should('contain.text', 'Supply')
           .click()
 
-        if ($rl.find('#confirm-add-liquidity-button').length) {
-          cy.get('#confirm-add-liquidity-button').click()
-        }
+        cy.get('div')
+          .contains('Confirm')
+          .click()
+          .wait(5000)
+        cy.get('div').contains('Transaction Submitted')
       })
+  })
 
-    cy.get('#add-liquidity-supply-button')
-      .should('contain.text', 'Supply')
+  // NOTE - skipped, requires token balances
+  it.skip('can add liquidity to the USDC_USDT stableswap pool with one token', () => {
+    cy.visit('/pool')
+    cy.get('#stableswap-pool-nav-link')
+      .should('contain.text', 'StableSwap AMM')
       .click()
+    cy.get('#stableswap-compact-clickable-position-card-USDC_USDT').click()
+    cy.get('#stableswap-add-liquidity-button')
+      .should('contain.text', 'Add')
+      .click()
+    cy.wait(300)
+      .url()
+      .should('contain', '/pool/stable/add/USDC_USDT')
+    cy.get('#add-liquidity-input-tokena .token-symbol-container').should('contain.text', 'USDC')
+    cy.get('#add-liquidity-input-tokenb .token-symbol-container').should('contain.text', 'USDT')
+    cy.get('#add-liquidity-input-tokena .token-amount-input').type('0.0001', { force: true, delay: 200 })
+    // cy.get('#add-liquidity-input-tokenb .token-amount-input').type('0.0001', { force: true, delay: 200 })
+
+    cy.get('#stableswap-add-liquidity')
+      .wait(2000)
+      .then($rl => {
+        if ($rl.find('#add-liquidity-approve-button-a').length) {
+          if ($rl.find('#add-liquidity-approve-button-a').attr('disabled') !== 'disabled') {
+            cy.get('#add-liquidity-approve-button-a')
+              .should('contain.text', 'Approve')
+              .click()
+              .wait(5000)
+          }
+        }
+        return cy.get('#stableswap-add-liquidity')
+      })
+      .then($rl => {
+        if ($rl.find('#add-liquidity-approve-button-b').length) {
+          if ($rl.find('#add-liquidity-approve-button-b').attr('disabled') !== 'disabled') {
+            cy.get('#add-liquidity-approve-button-b')
+              .should('contain.text', 'Approve')
+              .click()
+              .wait(5000)
+          }
+        }
+        return cy.get('#stableswap-add-liquidity')
+      })
+      .then(() => {
+        cy.get('#add-liquidity-supply-button')
+          .should('contain.text', 'Supply')
+          .click()
+
+        cy.get('div')
+          .contains('Confirm')
+          .click()
+          .wait(5000)
+        cy.get('div').contains('Transaction Submitted')
+      })
   })
 })

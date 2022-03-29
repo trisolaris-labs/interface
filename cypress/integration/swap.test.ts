@@ -131,7 +131,7 @@ describe('Swap', () => {
         cy.get('#confirm-swap-or-send')
           .should('contain', 'Confirm Swap')
           .click()
-          .wait(3000)
+          .wait(5000)
         cy.get('div').contains('Transaction Submitted')
       })
   })

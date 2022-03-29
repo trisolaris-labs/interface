@@ -1,4 +1,4 @@
-import { JsonRpcBatchProvider } from '@ethersproject/providers'
+import { JsonRpcProvider } from '@ethersproject/providers'
 import { Wallet } from '@ethersproject/wallet'
 import { Eip1193Bridge } from '@ethersproject/experimental'
 
@@ -24,7 +24,7 @@ class CustomizedBridge extends Eip1193Bridge {
     console.log(`method: ${method}`)
     function wrapResponse(result, error = null) {
       if (result == null && error != null) {
-        error = new Error(`Something went wrong on result, result is${result}`)
+        error = new Error(`Something went wrong on result, result is ${result}`)
       }
       if (isCallbackForm) {
         callback(error, result ? { result } : null)
@@ -74,7 +74,7 @@ Cypress.Commands.overwrite('visit', (original, url, options) => {
     onBeforeLoad(win) {
       options && options.onBeforeLoad && options.onBeforeLoad(win)
       win.localStorage.clear()
-      const provider = new JsonRpcBatchProvider(Cypress.env('PROVIDER_HOST'), {
+      const provider = new JsonRpcProvider(Cypress.env('PROVIDER_HOST'), {
         name: 'aurora',
         chainId: Number(Cypress.env('NETWORK_ID'))
       })
