@@ -164,12 +164,17 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
             </StyledPoolName>
           </RowFixed>
 
-          <RowFixed gap="8px">
+          <RowFixed justify="flex-end" gap="8px">
             {stablePoolData?.lpToken != null ? (
               <StyledText textAlign="end" fontWeight={500}>
                 {`${userData?.lpTokenBalance.toFixed(6) ?? 0} ${stablePoolData.lpToken?.name}`}
               </StyledText>
             ) : null}
+            {showMore ? (
+              <ChevronUp size="20" style={{ marginLeft: '10px' }} />
+            ) : (
+              <ChevronDown size="20" style={{ marginLeft: '10px' }} />
+            )}
           </RowFixed>
         </StyledFixedHeightRow>
 
