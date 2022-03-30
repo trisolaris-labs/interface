@@ -137,12 +137,6 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
     push(`${pathname}/remove/${name}`)
   }
 
-  const formattedPoolTokenData = stablePoolData.tokens.map(({ token, percent, value }) => ({
-    label: token.name,
-    token,
-    value: `${value.toString()} (${percent.toFixed(2)}%)`
-  }))
-
   const formattedPoolData = [
     {
       label: 'Virtual Price',
@@ -150,18 +144,19 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
       tooltipData: 'Average dollar value of pool token.'
     },
     {
+      label: 'Swap Fee',
+
+      value: stablePoolData.swapFee == null ? '-' : `${stablePoolData.swapFee?.toSignificant(2)}%`
+    },
+    {
+      label: 'Admin Fee',
+      value: stablePoolData.adminFee == null ? '-' : `${stablePoolData.adminFee?.toSignificant(2)}%`
+    },
+    {
       label: 'Amplification coefficient',
       value: stablePoolData.aParameter?.toString() ?? '-',
       tooltipData:
         "Higher values widen the range of low-slippages swaps, while lower values help keep the pool's composition balanced."
-    },
-    {
-      label: 'Swap Fee',
-      value: stablePoolData.swapFee == null ? '-' : `${stablePoolData.swapFee?.toString()}%`
-    },
-    {
-      label: 'Admin Fee',
-      value: stablePoolData.adminFee == null ? '-' : `${stablePoolData.adminFee?.toString()}%`
     }
   ]
 
@@ -232,7 +227,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
             </FixedHeightRow>
             <FixedHeightRow>
               <StyledText fontWeight={500}>{stablePoolData.lpToken?.name} LP Token Balance</StyledText>
-              <StyledText fontWeight={500}>{`${userData?.lpTokenBalance.toFixed(3)}`}</StyledText>
+              <StyledText fontWeight={500}>{`$${userData?.lpTokenBalance.toFixed(3)}`}</StyledText>
             </FixedHeightRow>
           </AutoColumn>
         ) : null}
@@ -258,25 +253,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
               <TYPE.subHeader fontSize={16} fontWeight={500} marginTop="8px">
                 Pool Info
               </TYPE.subHeader>
-              {formattedPoolData
-                .slice(0, 1)
-                .map(({ label, value, tooltipData }) => renderRow({ label, value, tooltipData }))}
-              <FixedHeightRow>
-                <StyledText>Swap Fee:</StyledText>
-                <StyledText>
-                  {stablePoolData.swapFee == null ? '-' : `${stablePoolData.swapFee?.toSignificant(2)}%`}
-                </StyledText>
-              </FixedHeightRow>
-              <FixedHeightRow>
-                <StyledText>Admin Fee:</StyledText>
-                <StyledText>
-                  {stablePoolData.adminFee == null ? '-' : `${stablePoolData.adminFee?.toSignificant(2)}%`}
-                </StyledText>
-              </FixedHeightRow>
-              <FixedHeightRow>
-                <StyledText>Amplification coefficient:</StyledText>
-                <StyledText>{stablePoolData.aParameter?.toString() ?? '-'}</StyledText>
-              </FixedHeightRow>
+              {formattedPoolData.map(({ label, value, tooltipData }) => renderRow({ label, value, tooltipData }))}
 
               <TYPE.subHeader fontSize={16} fontWeight={500} marginTop="8px">
                 Contracts
@@ -291,24 +268,6 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
                   <ContractAddress address={poolAddress} />
                 </FixedHeightRow>
               </AutoColumn>
-
-              {/* <ButtonRow marginTop="10px"> */}
-              {formattedPoolData.slice(1).map(({ label, value, tooltipData }) => (
-                <FixedHeightRow key={label}>
-                  <div>
-                    <StyledText fontWeight={500}>{label}:</StyledText>
-                    {tooltipData && (
-                      <MouseoverTooltip text={tooltipData}>
-                        <HelpCircle size={16} style={{ zIndex: 10 }} />
-                      </MouseoverTooltip>
-                    )}
-                  </div>
-                  <StyledText fontWeight={500}>{value}</StyledText>
-                </FixedHeightRow>
-              ))}
-              {formattedPoolData
-                .slice(1)
-                .map(({ label, value, tooltipData }) => renderRow({ label, value, tooltipData }))}
             </AutoColumn>
             <AutoColumn gap="8px" style={{ marginTop: '10px' }}>
               <ButtonRow>
