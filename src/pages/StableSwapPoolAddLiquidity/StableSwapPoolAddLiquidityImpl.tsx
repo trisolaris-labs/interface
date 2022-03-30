@@ -72,7 +72,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   const amountsAreNotZero = Object.values(parsedAmounts).some(parsedAmount =>
     JSBI.greaterThan(parsedAmount ? parsedAmount.raw : BIG_INT_ZERO, BIG_INT_ZERO)
   )
-  const isValid = !error && amountsAreNotZero
+  const isValid = !error
 
   // @TODO Add Loading Animation/behavior
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
@@ -260,7 +260,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                     onClick={() => {
                       isExpertMode ? onAdd() : setShowConfirm(true)
                     }}
-                    disabled={!isValid}
+                    disabled={!amountsAreNotZero}
                     error={!isValid}
                   >
                     <Text fontSize={20} fontWeight={500}>
