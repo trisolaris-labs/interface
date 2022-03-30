@@ -182,6 +182,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   const poolTokensString = poolTokens
     .map((token, index, arr) => `${token.symbol}${index + 1 < arr.length ? '/' : ''}`)
     .join('')
+  const formattedPoolName = name.replace(/_/g, '/')
 
   return (
     <StyledPositionCard border={border} bgColor={backgroundColor1} id={`stableswap-position-card-${name}`}>
@@ -201,7 +202,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
               <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
             )}
             <StyledPoolName fontWeight={500} fontSize={20}>
-              {name}
+              {formattedPoolName}
             </StyledPoolName>
           </RowFixed>
 
@@ -258,7 +259,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
                   <StyledContractAddress address={stablePoolData.lpToken?.address} />
                 </FixedHeightRow>
                 <FixedHeightRow>
-                  <StyledText>{stablePoolData.name} Pool Contract:</StyledText>
+                  <StyledText>{formattedPoolName} Pool Contract:</StyledText>
                   <StyledContractAddress address={poolAddress} />
                 </FixedHeightRow>
               </AutoColumn>
