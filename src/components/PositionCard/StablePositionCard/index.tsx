@@ -1,8 +1,8 @@
 import { ChainId, Pair } from '@trisolaris/sdk'
 import { darken } from 'polished'
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Text } from 'rebass'
-import styled from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { unwrappedToken } from '../../../utils/wrappedCurrency'
 import { ButtonPrimary } from '../../Button'
 import { ChevronDown, ChevronUp } from 'react-feather'
@@ -26,6 +26,9 @@ import CurrencyLogo from '../../CurrencyLogo'
 
 import ContractAddress from '../../ContractAddress'
 import { TYPE } from '../../../theme'
+import { HelpCircle } from 'lucide-react'
+import { MouseoverTooltip } from '../../Tooltip'
+import { useWindowSize } from '../../../hooks/useWindowSize'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -67,11 +70,35 @@ font-size: 16px !important;
 `
 
 const StyledFixedHeightRow = styled(FixedHeightRow)`
-  z-index: 99;
+  z-index: 1;
   box-sizing: content-box;
   border: 20px solid transparent;
   margin: -20px;
   cursor: pointer;
+`
+
+const StyledMouseoverTooltip = styled(MouseoverTooltip)`
+  font-size: 0.9rem;
+  text-align: center;
+  min-width: 360px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  min-width: 190px;
+  font-size: 0.75rem;
+  `};
+`
+
+const StyledColon = styled.span`
+  margin-left: 30px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  margin-left: 22px;
+  `};
+`
+
+const StyledContractAddress = styled(ContractAddress)`
+  font-size: 16px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+font-size: 12px !important;
+`};
 `
 
 interface PositionCardProps {
@@ -92,6 +119,9 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
     location: { pathname },
     push
   } = useHistory()
+
+  const { width } = useWindowSize()
+  const theme = useContext(ThemeContext)
 
   const { name, poolTokens, address: poolAddress } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
 
@@ -114,10 +144,44 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
     push(`${pathname}/remove/${name}`)
   }
 
+  const formattedPoolData = [
+    {
+      label: 'Virtual Price',
+      value: stablePoolData.virtualPrice == null ? '-' : `$${stablePoolData.virtualPrice?.toFixed(6)}`,
+      tooltipData: 'Average dollar value of pool token.'
+    }
+  ]
+
   const handleCardClick = () => {
     setShowMore(!showMore)
   }
 
+  const renderRow = ({ label, tooltipData, value }: { label: string; tooltipData?: string; value: string }) => {
+    return (
+      <FixedHeightRow key={label}>
+        <StyledText style={{ zIndex: 1, display: 'flex' }}>
+          {`${label}${tooltipData ? '' : ':'}`}
+          {tooltipData && (
+            <>
+              <StyledMouseoverTooltip text={tooltipData} placement="top">
+                <HelpCircle
+                  size={width && width < theme.viewPorts.upToExtraSmall ? 14 : 20}
+                  style={{ cursor: 'pointer', position: 'absolute', margin: '0 2px 0 5px' }}
+                />
+              </StyledMouseoverTooltip>
+              <StyledColon>:</StyledColon>
+            </>
+          )}
+        </StyledText>
+
+        <StyledText fontWeight={500}>{value}</StyledText>
+      </FixedHeightRow>
+    )
+  }
+
+  const poolTokensString = poolTokens
+    .map((token, index, arr) => `${token.symbol}${index + 1 < arr.length ? '/' : ''}`)
+    .join('')
   const formattedPoolName = name.replace(/_/g, '/')
 
   return (
@@ -155,27 +219,25 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
         {userData?.lpTokenBalance.greaterThan(BIG_INT_ZERO) ? (
           <AutoColumn gap="8px">
             <FixedHeightRow marginTop="4px">
-              <StyledText fontWeight={500}>Deposited Amount</StyledText>
-              <StyledText fontWeight={500}>{`$${userData?.usdBalance.toString()}`}</StyledText>
-            </FixedHeightRow>
-            <FixedHeightRow>
-              <StyledText fontWeight={500}>{stablePoolData.lpToken?.name} LP Token Balance</StyledText>
-              <StyledText fontWeight={500}>{`${userData?.lpTokenBalance.toFixed(3)}`}</StyledText>
+              <StyledText fontWeight={500}>User {poolTokensString} LP Balance:</StyledText>
+              <StyledText fontWeight={500}>{`$${userData?.usdBalance.toString()} (${userData?.lpTokenBalance.toFixed(
+                3
+              )} LP tokens) `}</StyledText>
             </FixedHeightRow>
           </AutoColumn>
         ) : null}
 
         {showMore && (
-          <div style={{ marginTop: '10px' }}>
+          <div style={{ marginTop: '14px' }}>
             <AutoColumn gap="8px">
-              <TYPE.subHeader fontSize={16} fontWeight={500}>
+              <TYPE.subHeader fontSize={16} fontWeight={600}>
                 Currency Reserves
               </TYPE.subHeader>
               {stablePoolData.tokens.map(({ token, percent, value }) => (
                 <FixedHeightRow key={token.name}>
                   <div>
                     <CurrencyLogo size="20px" style={{ marginRight: '8px' }} currency={unwrappedToken(token)} />
-                    {token.name}
+                    {token.name}:
                   </div>
                   <StyledText fontWeight={500} marginLeft={'6px'}>
                     {`${value.toString()} (${percent.toFixed(2)}%)`}
@@ -183,41 +245,27 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
                 </FixedHeightRow>
               ))}
 
-              <TYPE.subHeader fontSize={16} fontWeight={500} marginTop="8px">
+              <TYPE.subHeader fontSize={16} fontWeight={600} marginTop="8px">
                 Pool Info
               </TYPE.subHeader>
-              <FixedHeightRow>
-                <StyledText>Swap Fee:</StyledText>
-                <StyledText>
-                  {stablePoolData.swapFee == null ? '-' : `${stablePoolData.swapFee?.toSignificant(2)}%`}
-                </StyledText>
-              </FixedHeightRow>
-              <FixedHeightRow>
-                <StyledText>Admin Fee:</StyledText>
-                <StyledText>
-                  {stablePoolData.adminFee == null ? '-' : `${stablePoolData.adminFee?.toSignificant(2)}%`}
-                </StyledText>
-              </FixedHeightRow>
-              <FixedHeightRow>
-                <StyledText>Amplification coefficient:</StyledText>
-                <StyledText>{stablePoolData.aParameter?.toString() ?? '-'}</StyledText>
-              </FixedHeightRow>
+              {formattedPoolData.map(({ label, value, tooltipData }) => renderRow({ label, value, tooltipData }))}
 
-              <TYPE.subHeader fontSize={16} fontWeight={500} marginTop="8px">
+              <TYPE.subHeader fontSize={16} fontWeight={600} marginTop="8px">
                 Contracts
               </TYPE.subHeader>
               <AutoColumn gap="8px">
                 <FixedHeightRow>
-                  <div>{stablePoolData.lpToken?.name} LP Token:</div>
-                  <ContractAddress address={stablePoolData.lpToken?.address} />
+                  <StyledText>{stablePoolData.lpToken?.name} LP Token:</StyledText>
+                  <StyledContractAddress address={stablePoolData.lpToken?.address} />
                 </FixedHeightRow>
                 <FixedHeightRow>
-                  <div>{formattedPoolName} Pool Contract:</div>
-                  <ContractAddress address={poolAddress} />
+                  <StyledText>{formattedPoolName} Pool Contract:</StyledText>
+                  <StyledContractAddress address={poolAddress} />
                 </FixedHeightRow>
               </AutoColumn>
-
-              <ButtonRow marginTop="10px">
+            </AutoColumn>
+            <AutoColumn gap="8px" style={{ marginTop: '10px' }}>
+              <ButtonRow>
                 <ButtonPrimary id="stableswap-add-liquidity-button" width="45%" onClick={handleAddLiquidity}>
                   Add
                 </ButtonPrimary>

@@ -121,7 +121,9 @@ export function theme(darkMode: boolean): DefaultTheme {
       flex-flow: row nowrap;
     `,
 
-    pageWidth: '720px'
+    pageWidth: '720px',
+
+    viewPorts: MEDIA_WIDTHS
   }
 }
 
