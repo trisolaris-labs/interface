@@ -8,6 +8,7 @@ import { Field } from '../../state/stableswap-add-liquidity/actions'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import { Dots } from '../Pool/styleds'
 import { useTranslation } from 'react-i18next'
+import { BIG_INT_ZERO } from '../../constants'
 
 type Props = {
   children: JSX.Element
@@ -27,11 +28,13 @@ export default function StableSwapPoolAddLiquidityApprovalsRow({ children, stabl
   const currencyApprovalsData = [
     {
       approval: approval0,
+      value: parsedAmounts[Field.CURRENCY_0],
       symbol: currencies[Field.CURRENCY_0]?.symbol,
       onClick: approve0Callback
     },
     {
       approval: approval1,
+      value: parsedAmounts[Field.CURRENCY_1],
       symbol: currencies[Field.CURRENCY_1]?.symbol,
       onClick: approve1Callback
     }
@@ -40,25 +43,29 @@ export default function StableSwapPoolAddLiquidityApprovalsRow({ children, stabl
   if (hasThirdCurrency) {
     currencyApprovalsData.push({
       approval: approval2,
+      value: parsedAmounts[Field.CURRENCY_2],
       symbol: currencies[Field.CURRENCY_2]?.symbol,
       onClick: approve2Callback
     })
   }
 
-  const hasUnapprovedTokens = currencyApprovalsData.some(({ approval }) =>
-    [ApprovalState.NOT_APPROVED, ApprovalState.PENDING].includes(approval)
+  const unapprovedTokens = currencyApprovalsData.filter(
+    ({ approval, value }) =>
+      [ApprovalState.NOT_APPROVED, ApprovalState.PENDING].includes(approval) &&
+      value != null &&
+      value.greaterThan(BIG_INT_ZERO)
   )
 
   // If no approvals needed or there's an error, return children
-  if (!hasUnapprovedTokens || error) {
+  if (unapprovedTokens.length === 0 || error) {
     return children
   }
 
-  const width = `${Math.floor(100 / currencyApprovalsData.length) - 2}%`
+  const width = `${Math.floor(100 / unapprovedTokens.length) - 2}%`
 
   return (
     <RowBetween>
-      {currencyApprovalsData.map(({ approval, symbol, onClick }, i) => (
+      {unapprovedTokens.map(({ approval, symbol, onClick }, i) => (
         <ButtonPrimary
           id={`add-liquidity-approve-button-${['a', 'b'][i]}`}
           key={symbol ?? i}
