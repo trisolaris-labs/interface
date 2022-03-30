@@ -422,7 +422,11 @@ export default function RemoveLiquidity({
             </RowBetween>
           </>
         )}
-        <ButtonPrimary disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)} onClick={onRemove}>
+        <ButtonPrimary
+          id="confirm-remove-liquidity-button"
+          disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)}
+          onClick={onRemove}
+        >
           <Text fontWeight={500} fontSize={20}>
             {/*TODO: Translate using i18n*/}
             Confirm
@@ -502,7 +506,7 @@ export default function RemoveLiquidity({
             )}
             pendingText={pendingText}
           />
-          <AutoColumn gap="md">
+          <AutoColumn id="defaultswap-remove-liquidity" gap="md">
             <CurrencyInputPanel
               value={formattedAmounts[Field.LIQUIDITY]}
               onUserInput={onLiquidityInput}
@@ -573,6 +577,7 @@ export default function RemoveLiquidity({
               ) : (
                 <RowBetween>
                   <ButtonConfirmed
+                    id="remove-liquidity-approve-button"
                     onClick={onAttemptToApprove}
                     confirmed={approval === ApprovalState.APPROVED || signatureData !== null}
                     disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
@@ -589,6 +594,7 @@ export default function RemoveLiquidity({
                     )}
                   </ButtonConfirmed>
                   <ButtonError
+                    id="remove-liquidity-remove-button"
                     onClick={() => {
                       setShowConfirm(true)
                     }}

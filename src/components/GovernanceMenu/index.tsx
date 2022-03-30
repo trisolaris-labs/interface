@@ -10,7 +10,7 @@ import { StyledMenuFlyout, StyledExternalLink, MenuButton, StyledArrow } from '.
 
 import { GOVERNANCE } from './GovernanceMenu.constants'
 
-export default function GovernanceMenu({...rest}) {
+export default function GovernanceMenu({ ...rest }) {
   const node = useRef<HTMLDivElement>()
   const open = useModalOpen(ApplicationModal.GOVERNANCE_MENU)
   const toggle = useToggleModal(ApplicationModal.GOVERNANCE_MENU)

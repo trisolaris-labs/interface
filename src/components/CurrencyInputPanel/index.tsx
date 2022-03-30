@@ -13,6 +13,7 @@ import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useTranslation } from 'react-i18next'
+import { StableSwapSearchProps } from '../SearchModal/CurrencySearch'
 import BalanceButton, { Props as BalanceButtonProps } from '../BalanceButton'
 import BalanceButtonValueEnum from '../BalanceButton/BalanceButtonValueEnum'
 
@@ -124,8 +125,9 @@ export default function CurrencyInputPanel({
   otherCurrency,
   id,
   showCommonBases,
-  customBalanceText
-}: CurrencyInputPanelProps & BalanceButtonProps) {
+  customBalanceText,
+  ...stableSwapProps
+}: CurrencyInputPanelProps & StableSwapSearchProps & BalanceButtonProps) {
   const { t } = useTranslation()
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -223,6 +225,7 @@ export default function CurrencyInputPanel({
           selectedCurrency={currency}
           otherSelectedCurrency={otherCurrency}
           showCommonBases={showCommonBases}
+          {...stableSwapProps}
         />
       )}
     </InputPanel>

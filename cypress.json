@@ -4,5 +4,12 @@
   "fixturesFolder": false,
   "supportFile": "cypress/support/index.js",
   "video": false,
-  "defaultCommandTimeout": 10000
+  "defaultCommandTimeout": 10000,
+  "env": {
+    "NETWORK_ID": "1313161554",
+    "PROVIDER_HOST": "https://mainnet.aurora.dev",
+    "PRIVATE_TEST_WALLET_PK": "0xad20c82497421e9784f18460ad2fe84f73569068e98e270b3e63743268af5763",
+    "PRIVATE_TEST_WALLET_ADDRESS": "0x0fF2D1eFd7A57B7562b2bf27F3f37899dB27F4a5",
+    "PRIVATE_TEST_WALLET_ADDRESS_SHORTENED": "0x0fF2...F4a5"
+  }
 }

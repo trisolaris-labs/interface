@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import ReactGA from 'react-ga'
 import useLast from '../../hooks/useLast'
 import Modal from '../Modal'
-import { CurrencySearch } from './CurrencySearch'
+import { CurrencySearch, StableSwapSearchProps } from './CurrencySearch'
 import { ListSelect } from './ListSelect'
 
 interface CurrencySearchModalProps {
@@ -21,8 +21,9 @@ export default function CurrencySearchModal({
   onCurrencySelect,
   selectedCurrency,
   otherSelectedCurrency,
-  showCommonBases = false
-}: CurrencySearchModalProps) {
+  showCommonBases = false,
+  ...stableSwapProps
+}: CurrencySearchModalProps & StableSwapSearchProps) {
   const [listView, setListView] = useState<boolean>(false)
   const lastOpen = useLast(isOpen)
 
@@ -68,6 +69,7 @@ export default function CurrencySearchModal({
           selectedCurrency={selectedCurrency}
           otherSelectedCurrency={otherSelectedCurrency}
           showCommonBases={showCommonBases}
+          {...stableSwapProps}
         />
       )}
     </Modal>

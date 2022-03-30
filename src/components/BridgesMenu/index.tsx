@@ -10,7 +10,7 @@ import { StyledMenuFlyout, StyledExternalLink, MenuButton, StyledArrow } from '.
 
 import { BRIDGES } from './BridgesMenu.constants'
 
-export default function BridgesMenu({...rest}) {
+export default function BridgesMenu({ ...rest }) {
   const node = useRef<HTMLDivElement>()
   const open = useModalOpen(ApplicationModal.BRIDGES_MENU)
   const toggle = useToggleModal(ApplicationModal.BRIDGES_MENU)

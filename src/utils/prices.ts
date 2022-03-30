@@ -1,8 +1,9 @@
-import { BLOCKED_PRICE_IMPACT_NON_EXPERT } from '../constants'
+import { BIG_INT_ZERO, BLOCKED_PRICE_IMPACT_NON_EXPERT } from '../constants'
 import { CurrencyAmount, Fraction, JSBI, Percent, TokenAmount, Trade } from '@trisolaris/sdk'
 import { ALLOWED_PRICE_IMPACT_HIGH, ALLOWED_PRICE_IMPACT_LOW, ALLOWED_PRICE_IMPACT_MEDIUM } from '../constants'
 import { Field } from '../state/swap/actions'
 import { basisPointsToPercent } from './index'
+import { StableSwapTrade } from '../state/stableswap/hooks'
 
 const BASE_FEE = new Percent(JSBI.BigInt(30), JSBI.BigInt(10000))
 const ONE_HUNDRED_PERCENT = new Percent(JSBI.BigInt(10000), JSBI.BigInt(10000))
@@ -54,6 +55,14 @@ export function computeSlippageAdjustedAmounts(
   }
 }
 
+export function computeSlippageAdjustedMinAmount(value: JSBI, allowedSlippage: number) {
+  if (JSBI.equal(value, BIG_INT_ZERO)) {
+    return BIG_INT_ZERO
+  }
+
+  return JSBI.divide(JSBI.multiply(value, JSBI.BigInt(10000 - allowedSlippage)), JSBI.BigInt(10000))
+}
+
 export function warningSeverity(priceImpact: Percent | undefined): 0 | 1 | 2 | 3 | 4 {
   if (!priceImpact?.lessThan(BLOCKED_PRICE_IMPACT_NON_EXPERT)) return 4
   if (!priceImpact?.lessThan(ALLOWED_PRICE_IMPACT_HIGH)) return 3
@@ -62,7 +71,7 @@ export function warningSeverity(priceImpact: Percent | undefined): 0 | 1 | 2 | 3
   return 0
 }
 
-export function formatExecutionPrice(trade?: Trade, inverted?: boolean): string {
+export function formatExecutionPrice(trade?: Trade | StableSwapTrade, inverted?: boolean): string {
   if (!trade) {
     return ''
   }

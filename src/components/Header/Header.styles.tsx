@@ -8,7 +8,7 @@ import BridgesMenu from '../BridgesMenu'
 import GovernanceMenu from '../GovernanceMenu'
 
 const responsiveTextAndMargin = css`
-margin: 0 12px;
+  margin: 0 12px;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
 margin: 0 5px;
 font-size: 0.925rem;

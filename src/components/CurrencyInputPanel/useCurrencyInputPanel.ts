@@ -1,45 +1,39 @@
 import { CurrencyAmount, TokenAmount } from '@trisolaris/sdk'
-import { Field } from '../../state/mint/actions'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { divideCurrencyAmountByNumber } from '../../utils'
 import BalanceButtonValueEnum from '../BalanceButton/BalanceButtonValueEnum'
+import _ from 'lodash'
 
-type Props = {
-  currencyBalances: { [field in Field]?: CurrencyAmount }
-  parsedAmounts: { [field in Field]?: CurrencyAmount }
-}
+type TAmounts<Type> = { [x: string]: Type }
 
 export default function useCurrencyInputPanel() {
-  const getMaxAmounts = function getMaxAmounts({ currencyBalances, parsedAmounts }: Props) {
-    const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-      (accumulator, field) => {
-        return {
-          ...accumulator,
-          [field]: maxAmountSpend(currencyBalances[field])
-        }
-      },
-      {}
-    )
+  const getMaxAmounts = function getMaxAmounts({
+    currencyBalances,
+    parsedAmounts
+  }: {
+    currencyBalances: TAmounts<CurrencyAmount | undefined>
+    parsedAmounts: TAmounts<CurrencyAmount | undefined>
+  }) {
+    const maxAmounts: TAmounts<TokenAmount> = _.keys(currencyBalances).reduce((accumulator, field) => {
+      return {
+        ...accumulator,
+        [field]: maxAmountSpend(currencyBalances[field])
+      }
+    }, {})
 
-    const atMaxAmounts: { [field in Field]?: boolean } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-      (accumulator, field) => {
-        return {
-          ...accumulator,
-          [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0')
-        }
-      },
-      {}
-    )
+    const atMaxAmounts: TAmounts<boolean> = _.keys(currencyBalances).reduce((accumulator, field) => {
+      return {
+        ...accumulator,
+        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0')
+      }
+    }, {})
 
-    const atHalfAmounts: { [field in Field]?: boolean } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-      (accumulator, field) => {
-        return {
-          ...accumulator,
-          [field]: divideCurrencyAmountByNumber(maxAmounts[field], 2)?.equalTo(parsedAmounts[field] ?? '0')
-        }
-      },
-      {}
-    )
+    const atHalfAmounts: TAmounts<boolean> = _.keys(currencyBalances).reduce((accumulator, field) => {
+      return {
+        ...accumulator,
+        [field]: divideCurrencyAmountByNumber(maxAmounts[field], 2)?.equalTo(parsedAmounts[field] ?? '0')
+      }
+    }, {})
 
     return { maxAmounts, atMaxAmounts, atHalfAmounts }
   }
@@ -55,14 +49,12 @@ export default function useCurrencyInputPanel() {
     const atMaxAmount = Boolean(maxAmountInput && parsedAmount?.equalTo(maxAmountInput))
 
     const halfMaxAmountInput = divideCurrencyAmountByNumber(maxAmountInput, 2)
-    const atHalfAmount =
-      halfMaxAmountInput != null ? parsedAmount?.equalTo(halfMaxAmountInput) : false
+    const atHalfAmount = halfMaxAmountInput != null ? parsedAmount?.equalTo(halfMaxAmountInput) : false
 
     const getClickedAmount = (value: BalanceButtonValueEnum) => {
       let amount
       if (maxAmountInput != null) {
-        amount =
-          value === BalanceButtonValueEnum.HALF ? halfMaxAmountInput : maxAmountInput
+        amount = value === BalanceButtonValueEnum.HALF ? halfMaxAmountInput : maxAmountInput
       }
 
       return amount?.toExact() ?? '0'

@@ -3,6 +3,7 @@ import { AnyAction, combineReducers, EmptyObject, Store } from '@reduxjs/toolkit
 import application, { ApplicationState } from './application/reducer'
 import user, { UserState } from './user/reducer'
 import transactions, { TransactionState } from './transactions/reducer'
+import stableswap, { StableSwapState } from './stableswap/reducer'
 import swap, { SwapState } from './swap/reducer'
 import mint, { MintState } from './mint/reducer'
 import lists, { ListsState } from './lists/reducer'
@@ -15,11 +16,14 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, pers
 
 import storage from 'redux-persist/lib/storage'
 import { PersistPartial } from 'redux-persist/lib/persistReducer'
+import stableswapAddLiquidity, { StableSwapAddLiquidityState } from './stableswap-add-liquidity/reducer'
 
 const reducer = combineReducers({
   application,
   user,
   transactions,
+  stableswap,
+  stableswapAddLiquidity,
   swap,
   mint,
   burn,
@@ -32,6 +36,8 @@ type State = EmptyObject & {
   application: ApplicationState
   user: UserState
   transactions: TransactionState
+  stableswap: StableSwapState
+  stableswapAddLiquidity: StableSwapAddLiquidityState
   swap: SwapState
   mint: MintState
   burn: BurnState

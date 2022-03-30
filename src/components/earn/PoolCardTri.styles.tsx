@@ -76,4 +76,3 @@ export const TokenPairBackgroundColor = styled.span<{ bgColor1: string | null; b
   left: 0;
   user-select: none;
 `
-

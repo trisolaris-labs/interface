@@ -397,7 +397,7 @@ export default function AddLiquidity({
             {!account ? (
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
             ) : (
-              <AutoColumn gap={'md'}>
+              <AutoColumn id="defaultswap-add-liquidity" gap={'md'}>
                 {(approvalA === ApprovalState.NOT_APPROVED ||
                   approvalA === ApprovalState.PENDING ||
                   approvalB === ApprovalState.NOT_APPROVED ||
@@ -406,6 +406,7 @@ export default function AddLiquidity({
                     <RowBetween>
                       {approvalA !== ApprovalState.APPROVED && (
                         <ButtonPrimary
+                          id={'add-Liquidity-approve-button-a'}
                           onClick={approveACallback}
                           disabled={approvalA === ApprovalState.PENDING}
                           width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
@@ -419,6 +420,7 @@ export default function AddLiquidity({
                       )}
                       {approvalB !== ApprovalState.APPROVED && (
                         <ButtonPrimary
+                          id={'add-Liquidity-approve-button-b'}
                           onClick={approveBCallback}
                           disabled={approvalB === ApprovalState.PENDING}
                           width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
@@ -433,6 +435,7 @@ export default function AddLiquidity({
                     </RowBetween>
                   )}
                 <ButtonError
+                  id={'add-Liquidity-supply-button'}
                   onClick={() => {
                     expertMode ? onAdd() : setShowConfirm(true)
                   }}

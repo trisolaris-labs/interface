@@ -10,6 +10,10 @@ import { useMemo } from 'react'
 
 import COMPLEX_REWARDER_ABI from '../constants/abis/complex-rewarder.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
+import STABLE_SWAP_FLASH_LOAN_ABI from '../constants/abis/stableswap/swapFlashLoan.json'
+import STABLE_SWAP_META_SWAP_DEPOSIT_ABI from '../constants/abis/stableswap/metaSwapDeposit.json'
+import STABLE_SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from '../constants/abis/stableswap/swapFlashLoanNoWithdrawFee.json'
+import STABLE_SWAP_LP_TOKEN_UNGUARDED_ABI from '../constants/abis/stableswap/lpTokenUnguarded.json'
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
 import ERC20_ABI from '../constants/abis/erc20.json'
 import BRIDGE_TOKEN_ABI from '../constants/abis/bridge-token.json'
@@ -22,6 +26,13 @@ import { AIRDROP_ADDRESS, BRIDGE_MIGRATOR_ADDRESS } from '../constants'
 import { PNG, TRI, USDC, WNEAR } from '../constants/tokens'
 import { GOVERNANCE_ADDRESS } from '../constants'
 import { STAKING } from '../state/stake/stake-constants'
+import {
+  isLegacySwapABIPool,
+  isMetaPool,
+  StableSwapPool,
+  StableSwapPoolName,
+  STABLESWAP_POOLS
+} from '../state/stableswap/constants'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -114,4 +125,54 @@ function findPoolContract(tokenA: Token, tokenB: Token) {
 
     return hasTokenA && hasTokenB
   })
+}
+
+function useLegacyStableSwapABIPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
+  return useContract(pool?.address, STABLE_SWAP_FLASH_LOAN_ABI, withSignerIfPossible)
+}
+
+function useStableSwapMetaPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
+  return useContract(pool?.address, STABLE_SWAP_META_SWAP_DEPOSIT_ABI, withSignerIfPossible)
+}
+
+function useStableSwapPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
+  return useContract(pool?.address, STABLE_SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI, withSignerIfPossible)
+}
+
+export function useStableSwapContract(poolName?: StableSwapPoolName, withSignerIfPossible = true): Contract | null {
+  const { chainId, library } = useActiveWeb3React()
+
+  const pool = poolName == null ? null : STABLESWAP_POOLS[ChainId.AURORA][poolName]
+  const legacyStableSwapABIPool = useLegacyStableSwapABIPool(pool, withSignerIfPossible)
+  const metaPool = useStableSwapMetaPool(pool, withSignerIfPossible)
+  const stableSwapPool = useStableSwapPool(pool, withSignerIfPossible)
+
+  return useMemo(() => {
+    if (!pool || !library || !chainId) {
+      return null
+    }
+
+    if (pool?.address == null) {
+      return null
+    }
+
+    if (isLegacySwapABIPool(pool.name)) {
+      return legacyStableSwapABIPool
+    }
+
+    if (isMetaPool(pool.name)) {
+      return metaPool
+    }
+
+    return stableSwapPool
+  }, [pool, library, chainId, legacyStableSwapABIPool, metaPool, stableSwapPool])
+}
+
+export function useStableSwapLPTokenContract(
+  poolName: StableSwapPoolName,
+  withSignerIfPossible = true
+): Contract | null {
+  const { lpToken } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
+
+  return useContract(lpToken.address, STABLE_SWAP_LP_TOKEN_UNGUARDED_ABI, withSignerIfPossible)
 }

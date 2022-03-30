@@ -6,7 +6,7 @@ import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
-import { useAllTokens, useToken } from '../../hooks/Tokens'
+import { useAllTokens, useAllStableSwapTokens, useToken, useAllValidStableSwapOutputTokens } from '../../hooks/Tokens'
 import { useSelectedListInfo } from '../../state/lists/hooks'
 import { CloseIcon, LinkStyledButton, TYPE } from '../../theme'
 import { isAddress } from '../../utils'
@@ -22,7 +22,7 @@ import SortButton from './SortButton'
 import { useTokenComparator } from './sorting'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
-
+import { Field } from '../../state/stableswap/actions'
 interface CurrencySearchProps {
   isOpen: boolean
   onDismiss: () => void
@@ -32,6 +32,16 @@ interface CurrencySearchProps {
   showCommonBases?: boolean
   onChangeList: () => void
 }
+
+export type StableSwapSearchProps =
+  | {
+      isStableSwap?: true
+      stableSwapInputField?: Field
+    }
+  | {
+      isStableSwap?: false | null
+      stableSwapInputField?: null
+    }
 
 const StyledTokenList = styled(Column)`
   flex: 1;
@@ -49,8 +59,10 @@ export function CurrencySearch({
   showCommonBases,
   onDismiss,
   isOpen,
-  onChangeList
-}: CurrencySearchProps) {
+  onChangeList,
+  isStableSwap = false,
+  stableSwapInputField
+}: CurrencySearchProps & StableSwapSearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
@@ -59,6 +71,24 @@ export function CurrencySearch({
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
   const allTokens = useAllTokens()
+  const allStableSwapTokens = useAllStableSwapTokens()
+  const allValidStableSwapOutputTokens = useAllValidStableSwapOutputTokens()
+
+  const tokens = useMemo(() => {
+    if (isStableSwap === true && stableSwapInputField != null) {
+      // If stableswapping, input should show all available token options
+      if (stableSwapInputField === Field.INPUT) {
+        return allStableSwapTokens
+      }
+
+      // If stableswapping, output should show all valid token options for a given stable input
+      if (stableSwapInputField === Field.OUTPUT) {
+        return allValidStableSwapOutputTokens
+      }
+    }
+
+    return allTokens
+  }, [allStableSwapTokens, allTokens, allValidStableSwapOutputTokens, isStableSwap, stableSwapInputField])
 
   // if they input an address, use it
   const isAddressSearch = isAddress(searchQuery)
@@ -83,8 +113,8 @@ export function CurrencySearch({
 
   const filteredTokens: Token[] = useMemo(() => {
     if (isAddressSearch) return searchToken ? [searchToken] : []
-    return filterTokens(Object.values(allTokens), searchQuery)
-  }, [isAddressSearch, searchToken, allTokens, searchQuery])
+    return filterTokens(Object.values(tokens), searchQuery)
+  }, [isAddressSearch, searchToken, tokens, searchQuery])
 
   const filteredSortedTokens: Token[] = useMemo(() => {
     if (searchToken) return [searchToken]
@@ -183,7 +213,7 @@ export function CurrencySearch({
           {({ height }) => (
             <CurrencyList
               height={height}
-              showETH={showETH}
+              showETH={isStableSwap ? false : showETH}
               currencies={filteredSortedTokens}
               onCurrencySelect={handleCurrencySelect}
               otherCurrency={otherSelectedCurrency}

@@ -19,6 +19,7 @@ export interface Colors {
   bg3: Color
   bg4: Color
   bg5: Color
+  bg6: Color
 
   modalBG: Color
   advancedBG: Color
@@ -79,5 +80,14 @@ declare module 'styled-components' {
     flexRowNoWrap: FlattenSimpleInterpolation
 
     pageWidth: string
+
+    viewPorts: {
+      upToXxxSmall: number
+      upToXxSmall: number
+      upToExtraSmall: number
+      upToSmall: number
+      upToMedium: number
+      upToLarge: number
+    }
   }
 }

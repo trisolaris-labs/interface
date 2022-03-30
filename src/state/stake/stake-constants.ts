@@ -384,7 +384,7 @@ const AURORA_POOLS: StakingTri[] = [
     doubleRewards: true,
     doubleRewardToken: WNEAR[ChainId.AURORA]
   }),
-   createMCV2Pool({
+  createMCV2Pool({
     ID: 24,
     poolId: 17,
     tokens: [WNEAR[ChainId.AURORA], BBT[ChainId.AURORA]],
@@ -395,7 +395,6 @@ const AURORA_POOLS: StakingTri[] = [
     inStaging: false,
     doubleRewardToken: BBT[ChainId.AURORA]
   })
-
 ]
 
 export const STAKING: {

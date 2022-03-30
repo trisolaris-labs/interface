@@ -1,28 +1,14 @@
-// ***********************************************
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-
 import { JsonRpcProvider } from '@ethersproject/providers'
 import { Wallet } from '@ethersproject/wallet'
-import { _Eip1193Bridge } from '@ethersproject/experimental/lib/eip1193-bridge'
+import { Eip1193Bridge } from '@ethersproject/experimental'
 
-// never send real ether to this, obviously
-const PRIVATE_KEY_TEST_NEVER_USE = '0xad20c82497421e9784f18460ad2fe84f73569068e98e270b3e63743268af5763'
+export const TEST_ADDRESS_NEVER_USE_SHORTENED = Cypress.env('PRIVATE_TEST_WALLET_ADDRESS_SHORTENED')
 
-// address of the above key
-export const TEST_ADDRESS_NEVER_USE = '0x0fF2D1eFd7A57B7562b2bf27F3f37899dB27F4a5'
-
-export const TEST_ADDRESS_NEVER_USE_SHORTENED = '0x0fF2...F4a5'
-
-class CustomizedBridge extends _Eip1193Bridge {
+class CustomizedBridge extends Eip1193Bridge {
   async sendAsync(...args) {
-    console.debug('sendAsync called', ...args)
     return this.send(...args)
   }
   async send(...args) {
-    console.debug('send called', ...args)
     const isCallbackForm = typeof args[0] === 'object' && typeof args[1] === 'function'
     let callback
     let method
@@ -35,48 +21,66 @@ class CustomizedBridge extends _Eip1193Bridge {
       method = args[0]
       params = args[1]
     }
-    if (method === 'eth_requestAccounts' || method === 'eth_accounts') {
-      if (isCallbackForm) {
-        callback({ result: [TEST_ADDRESS_NEVER_USE] })
-      } else {
-        return Promise.resolve([TEST_ADDRESS_NEVER_USE])
+    console.log(`method: ${method}`)
+    function wrapResponse(result, error = null) {
+      if (result == null && error != null) {
+        error = new Error(`Something went wrong on result, result is ${result}`)
       }
+      if (isCallbackForm) {
+        callback(error, result ? { result } : null)
+      } else {
+        return result ? Promise.resolve(result) : Promise.reject(error)
+      }
+    }
+    if (method === 'eth_requestAccounts' || method === 'eth_accounts') {
+      return wrapResponse([Cypress.env('PRIVATE_TEST_WALLET_ADDRESS')])
     }
     if (method === 'eth_chainId') {
-      if (isCallbackForm) {
-        callback(null, { result: '0x4' })
-      } else {
-        return Promise.resolve('0x4')
-      }
+      return wrapResponse(
+        `0x${Number(Cypress.env('NETWORK_ID'))
+          .toString(16)
+          .toUpperCase()}`
+      )
+    }
+    const [argsObject, ...paramsRest] = params || []
+    if ((method === 'eth_call' || method === 'eth_sendTransaction') && typeof argsObject === 'object') {
+      // this seems to throw unless the from arg is removed
+      delete argsObject.from
     }
     try {
-      const result = await super.send(method, params)
-      console.debug('result received', method, params, result)
-      if (isCallbackForm) {
-        callback(null, { result })
-      } else {
-        return result
+      if (method === 'eth_sendTransaction') {
+        delete argsObject.gas
+        const gasPrice = await this.provider.getGasPrice()
+        const result = await super.send(method, [
+          {
+            ...argsObject,
+            gasPrice
+          },
+          ...paramsRest
+        ])
+        return wrapResponse(result)
       }
+      const result = await super.send(method, [argsObject, ...paramsRest])
+      return wrapResponse(result)
     } catch (error) {
-      if (isCallbackForm) {
-        callback(error, null)
-      } else {
-        throw error
-      }
+      console.error({ error })
+      return wrapResponse(null, error)
     }
   }
 }
-
-// sets up the injected provider to be a mock ethereum provider with the given mnemonic/index
 Cypress.Commands.overwrite('visit', (original, url, options) => {
   return original(url.startsWith('/') && url.length > 2 && !url.startsWith('/#') ? `/#${url}` : url, {
     ...options,
     onBeforeLoad(win) {
       options && options.onBeforeLoad && options.onBeforeLoad(win)
       win.localStorage.clear()
-      const provider = new JsonRpcProvider('https://rinkeby.infura.io/v3/4bf032f2d38a4ed6bb975b80d6340847', 4)
-      const signer = new Wallet(PRIVATE_KEY_TEST_NEVER_USE, provider)
+      const provider = new JsonRpcProvider(Cypress.env('PROVIDER_HOST'), {
+        name: 'aurora',
+        chainId: Number(Cypress.env('NETWORK_ID'))
+      })
+      const signer = new Wallet(Cypress.env('PRIVATE_TEST_WALLET_PK'), provider)
       win.ethereum = new CustomizedBridge(signer, provider)
+      win.ethereum.isMetaMask = true
     }
   })
 })

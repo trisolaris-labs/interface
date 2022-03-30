@@ -1,4 +1,4 @@
-import { Trade, TradeType } from '@trisolaris/sdk'
+import { Trade, TradeType, Percent } from '@trisolaris/sdk'
 import React, { useContext, useMemo, useState } from 'react'
 import { Repeat } from 'react-feather'
 import { Text } from 'rebass'
@@ -18,19 +18,28 @@ import { AutoRow, RowBetween, RowFixed } from '../Row'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
 import { useTranslation } from 'react-i18next'
+import { StableSwapTrade } from '../../state/stableswap/hooks'
 
 export default function SwapModalFooter({
   trade,
   onConfirm,
   allowedSlippage,
   swapErrorMessage,
-  disabledConfirm
+  disabledConfirm,
+  isRoutedViaStableSwap,
+  stableswapPriceImpactWithoutFee,
+  isStableSwapPriceImpactSevere,
+  stableSwapTrade
 }: {
   trade: Trade
   allowedSlippage: number
   onConfirm: () => void
   swapErrorMessage: string | undefined
   disabledConfirm: boolean
+  stableswapPriceImpactWithoutFee: Percent
+  isRoutedViaStableSwap: boolean
+  isStableSwapPriceImpactSevere: boolean
+  stableSwapTrade?: StableSwapTrade
 }) {
   const [showInverted, setShowInverted] = useState<boolean>(false)
   const theme = useContext(ThemeContext)
@@ -61,7 +70,7 @@ export default function SwapModalFooter({
               paddingLeft: '10px'
             }}
           >
-            {formatExecutionPrice(trade, showInverted)}
+            {formatExecutionPrice(isRoutedViaStableSwap ? stableSwapTrade : trade, showInverted)}
             <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
               <Repeat size={14} />
             </StyledBalanceMaxMini>
@@ -71,18 +80,24 @@ export default function SwapModalFooter({
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              {trade.tradeType === TradeType.EXACT_INPUT ? t('swap.minimumReceived') : t('swap.maximumSold')}
+              {trade.tradeType === TradeType.EXACT_INPUT || isRoutedViaStableSwap
+                ? t('swap.minimumReceived')
+                : t('swap.maximumSold')}
             </TYPE.black>
             <QuestionHelper text={t('swap.transactionRevertHelper')} />
           </RowFixed>
           <RowFixed>
             <TYPE.black fontSize={14}>
-              {trade.tradeType === TradeType.EXACT_INPUT
+              {isRoutedViaStableSwap
+                ? stableSwapTrade?.outputAmountLessSlippage.toSignificant(4)
+                : trade.tradeType === TradeType.EXACT_INPUT
                 ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4) ?? '-'
                 : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4) ?? '-'}
             </TYPE.black>
             <TYPE.black fontSize={14} marginLeft={'4px'}>
-              {trade.tradeType === TradeType.EXACT_INPUT
+              {isRoutedViaStableSwap
+                ? stableSwapTrade?.outputAmount.currency.symbol
+                : trade.tradeType === TradeType.EXACT_INPUT
                 ? trade.outputAmount.currency.symbol
                 : trade.inputAmount.currency.symbol}
             </TYPE.black>
@@ -95,19 +110,25 @@ export default function SwapModalFooter({
             </TYPE.black>
             <QuestionHelper text={t('swap.priceImpactHelper')} />
           </RowFixed>
-          <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
+          <FormattedPriceImpact
+            isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
+            priceImpact={isRoutedViaStableSwap ? stableswapPriceImpactWithoutFee : priceImpactWithoutFee}
+            isRoutedViaStableSwap={isRoutedViaStableSwap}
+          />
         </RowBetween>
-        <RowBetween>
-          <RowFixed>
-            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              {t('swap.liquidityProviderFee')}
+        {!isRoutedViaStableSwap && (
+          <RowBetween>
+            <RowFixed>
+              <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+                {t('swap.liquidityProviderFee')}
+              </TYPE.black>
+              <QuestionHelper text={t('swap.liquidityProviderHelper')} />
+            </RowFixed>
+            <TYPE.black fontSize={14}>
+              {realizedLPFee ? realizedLPFee?.toSignificant(6) + ' ' + trade.inputAmount.currency.symbol : '-'}
             </TYPE.black>
-            <QuestionHelper text={t('swap.liquidityProviderHelper')} />
-          </RowFixed>
-          <TYPE.black fontSize={14}>
-            {realizedLPFee ? realizedLPFee?.toSignificant(6) + ' ' + trade.inputAmount.currency.symbol : '-'}
-          </TYPE.black>
-        </RowBetween>
+          </RowBetween>
+        )}
       </AutoColumn>
 
       <AutoRow>

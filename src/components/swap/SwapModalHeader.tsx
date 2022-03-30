@@ -13,19 +13,30 @@ import CurrencyLogo from '../CurrencyLogo'
 import { RowBetween, RowFixed } from '../Row'
 import { TruncatedText, SwapShowAcceptChanges } from './styleds'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
+
+import { StableSwapTrade } from '../../state/stableswap/hooks'
+
+const StyledMinimumReceived = styled.div`
+  font-weight: 500;
+`
 
 export default function SwapModalHeader({
   trade,
   allowedSlippage,
   recipient,
   showAcceptChanges,
-  onAcceptChanges
+  onAcceptChanges,
+  isRoutedViaStableSwap,
+  stableSwapTrade
 }: {
   trade: Trade
   allowedSlippage: number
   recipient: string | null
   showAcceptChanges: boolean
   onAcceptChanges: () => void
+  isRoutedViaStableSwap: boolean
+  stableSwapTrade: StableSwapTrade | undefined
 }) {
   const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
     trade,
@@ -37,22 +48,29 @@ export default function SwapModalHeader({
   const theme = useContext(ThemeContext)
   const { t } = useTranslation()
 
+  const tradeInputAmount = isRoutedViaStableSwap ? stableSwapTrade?.inputAmount : trade.inputAmount
+  const tradeOutputAmount = isRoutedViaStableSwap ? stableSwapTrade?.outputAmount : trade.outputAmount
+
+  const tradeOutputAmountWithSlippage = isRoutedViaStableSwap
+    ? stableSwapTrade?.outputAmountLessSlippage
+    : slippageAdjustedAmounts[Field.OUTPUT]
+
   return (
     <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
       <RowBetween align="flex-end">
         <RowFixed gap={'0px'}>
-          <CurrencyLogo currency={trade.inputAmount.currency} size={'24px'} style={{ marginRight: '12px' }} />
+          <CurrencyLogo currency={tradeInputAmount?.currency} size={'24px'} style={{ marginRight: '12px' }} />
           <TruncatedText
             fontSize={24}
             fontWeight={500}
             color={showAcceptChanges && trade.tradeType === TradeType.EXACT_OUTPUT ? theme.primary1 : ''}
           >
-            {trade.inputAmount.toSignificant(6)}
+            {tradeInputAmount?.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
         <RowFixed gap={'0px'}>
           <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
-            {trade.inputAmount.currency.symbol}
+            {tradeInputAmount?.currency.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -61,7 +79,7 @@ export default function SwapModalHeader({
       </RowFixed>
       <RowBetween align="flex-end">
         <RowFixed gap={'0px'}>
-          <CurrencyLogo currency={trade.outputAmount.currency} size={'24px'} style={{ marginRight: '12px' }} />
+          <CurrencyLogo currency={tradeOutputAmount?.currency} size={'24px'} style={{ marginRight: '12px' }} />
           <TruncatedText
             fontSize={24}
             fontWeight={500}
@@ -73,12 +91,12 @@ export default function SwapModalHeader({
                 : ''
             }
           >
-            {trade.outputAmount.toSignificant(6)}
+            {tradeOutputAmount?.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
         <RowFixed gap={'0px'}>
           <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
-            {trade.outputAmount.currency.symbol}
+            {tradeOutputAmount?.currency.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -99,20 +117,24 @@ export default function SwapModalHeader({
         </SwapShowAcceptChanges>
       ) : null}
       <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
-        {trade.tradeType === TradeType.EXACT_INPUT ? (
+        {isRoutedViaStableSwap || trade.tradeType === TradeType.EXACT_INPUT ? (
           <TYPE.italic textAlign="left" style={{ width: '100%' }}>
             {t('swap.outputEstimated')}
-            <b>
-              {slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(6)} {trade.outputAmount.currency.symbol}
-            </b>
+            {
+              <StyledMinimumReceived>
+                {tradeOutputAmountWithSlippage?.toSignificant(6)} {tradeOutputAmount?.currency.symbol}
+              </StyledMinimumReceived>
+            }
             {t('swap.transactionRevert')}
           </TYPE.italic>
         ) : (
           <TYPE.italic textAlign="left" style={{ width: '100%' }}>
             {t('swap.inputEstimated')}
-            <b>
-              {slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)} {trade.inputAmount.currency.symbol}
-            </b>
+            {
+              <StyledMinimumReceived>
+                {slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)} {trade.inputAmount.currency.symbol}
+              </StyledMinimumReceived>
+            }
             {t('swap.transactionRevert')}
           </TYPE.italic>
         )}

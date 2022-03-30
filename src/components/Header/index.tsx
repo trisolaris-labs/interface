@@ -113,10 +113,9 @@ export default function Header() {
             to={'/pool'}
             isActive={(match, { pathname }) =>
               Boolean(match) ||
-              pathname.startsWith('/add') ||
-              pathname.startsWith('/remove') ||
-              pathname.startsWith('/create') ||
-              pathname.startsWith('/find')
+              ['/add', '/remove', '/create', '/find', '/pool/stable', '/pool/add', '/pool/remove'].some(item =>
+                pathname.startsWith(item)
+              )
             }
           >
             {t('header.pool')}
