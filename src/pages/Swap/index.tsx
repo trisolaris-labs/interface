@@ -54,7 +54,7 @@ import {
   ENABLE_STABLESWAP
 } from '../../constants'
 
-import { ClickableText } from '../Pool/styleds'
+import { ClickableText, Dots } from '../Pool/styleds'
 import { LinkStyledButton, TYPE } from '../../theme'
 import { WarningWrapper, Root, SwapContainer, IconContainer, HeadingContainer } from './Swap.styles'
 import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
@@ -373,6 +373,11 @@ export default function Swap() {
     return highImpactTrade ? `${t('swapPage.swap')} ${t('swapPage.anyway')}` : t('swapPage.swap')
   }
 
+  const disableTradingUntilStableSwapRateIsCalculated =
+    isStableSwap &&
+    parsedAmounts[Field.INPUT]?.greaterThan(BIG_INT_ZERO) &&
+    stableswapTrade?.outputAmount.equalTo(BIG_INT_ZERO)
+
   return (
     <>
       <TokenWarningModal
@@ -526,6 +531,10 @@ export default function Swap() {
                   <GreyCard style={{ textAlign: 'center' }}>
                     <TYPE.main mb="4px">{t('swapPage.insufficientLiquidity')}</TYPE.main>
                   </GreyCard>
+                ) : disableTradingUntilStableSwapRateIsCalculated ? (
+                  <ButtonPrimary disabled>
+                    <Dots>Optimizing Trade Route</Dots>
+                  </ButtonPrimary>
                 ) : showApproveFlow ? (
                   <RowBetween>
                     <ButtonConfirmed
