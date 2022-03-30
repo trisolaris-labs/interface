@@ -188,9 +188,10 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
     )
   }
 
-  const pendingText = `Removing ${estimatedAmounts
-    .map(amount => `${amount.toSignificant(6)} ${amount.currency.symbol} `)
-    .join('')}`
+  const pendingText = `Burning ${parsedAmount?.toSignificant(6)} ${pool.lpToken.symbol} for ${estimatedAmounts
+    .filter(amount => amount.greaterThan(BIG_INT_ZERO))
+    .map(amount => `${amount.toSignificant(6)} ${amount.currency.symbol}`)
+    .join(', ')}`
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
