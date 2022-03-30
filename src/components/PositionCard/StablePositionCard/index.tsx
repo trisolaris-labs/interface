@@ -154,7 +154,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
           <AutoColumn gap="8px">
             <FixedHeightRow marginTop="4px">
               <StyledText fontWeight={500}>Deposited Amount</StyledText>
-              <StyledText fontWeight={500}>{`${userData?.usdBalance.toString()}`}</StyledText>
+              <StyledText fontWeight={500}>{`$${userData?.usdBalance.toString()}`}</StyledText>
             </FixedHeightRow>
             <FixedHeightRow>
               <StyledText fontWeight={500}>{stablePoolData.lpToken?.name} LP Token Balance</StyledText>

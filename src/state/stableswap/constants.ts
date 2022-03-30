@@ -26,7 +26,7 @@ export enum StableSwapPoolTypes {
   OTHER
 }
 
-export function getTokenForStablePoolType(poolType: StableSwapPoolTypes): Token | null {
+export function getTokenForStablePoolType(poolType: StableSwapPoolTypes): Token {
   if (poolType === StableSwapPoolTypes.BTC) {
     return WBTC[ChainId.AURORA]
   } else if (poolType === StableSwapPoolTypes.ETH) {
@@ -34,7 +34,7 @@ export function getTokenForStablePoolType(poolType: StableSwapPoolTypes): Token 
   } else if (poolType === StableSwapPoolTypes.USD) {
     return USDC[ChainId.AURORA]
   } else {
-    return null
+    throw new Error('[getTokenForStablePoolType] Error getting token')
   }
 }
 

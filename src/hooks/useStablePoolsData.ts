@@ -10,15 +10,12 @@ import { useSingleCallResult, useSingleContractMultipleData } from '../state/mul
 import { useTokenBalance } from '../state/wallet/hooks'
 import { useTotalSupply } from '../data/TotalSupply'
 import { BIG_INT_ZERO } from '../constants'
+import { USDC } from '../constants/tokens'
 
 interface TokenShareType {
   percent: Percent
   token: Token
   value: JSBI
-}
-
-const BIG_NUMBERS = {
-  '10e18': JSBI.BigInt(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
 }
 
 export type Partners = 'keep' | 'sharedStake' | 'alchemix'
@@ -46,7 +43,7 @@ export interface StablePoolDataType {
   //       }
   //     >
   //   >
-  lpTokenPriceUSD: JSBI
+  // lpTokenPriceUSD: JSBI
   lpToken: Token | null
 }
 
@@ -55,31 +52,12 @@ export interface UserShareType {
   name: StableSwapPoolName // TODO: does this need to be on user share?
   share: Percent
   tokens: TokenShareType[]
-  usdBalance: JSBI
+  usdBalance: string
   underlyingTokensAmount: JSBI
   amountsStaked: Partial<Record<Partners, BigNumber>>
 }
 
 export type PoolDataHookReturnType = [StablePoolDataType, UserShareType | null]
-
-const emptyPoolData = {
-  adminFee: BIG_INT_ZERO,
-  aParameter: BIG_INT_ZERO,
-  apy: null,
-  name: '',
-  reserve: null,
-  swapFee: BIG_INT_ZERO,
-  tokens: [],
-  totalLocked: null,
-  utilization: null,
-  virtualPrice: null,
-  volume: null,
-  //   aprs: {},
-  lpTokenPriceUSD: BIG_INT_ZERO,
-  lpToken: null,
-  isPaused: false,
-  triPerDay: null
-} as StablePoolDataType
 
 export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookReturnType {
   const { account } = useActiveWeb3React()
@@ -118,24 +96,22 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
     // use another token to estimate USD price of meta LP tokens
     const effectiveToken = isMetaSwap && i === arr.length - 1 ? getTokenForStablePoolType(pool.type) : token
     const balance = tokenBalances[i]
+    const tokenAmount = new TokenAmount(effectiveToken, balance)
 
-    return JSBI.divide(
-      JSBI.multiply(JSBI.BigInt(balance), JSBI.BigInt(effectiveToken?.decimals ?? 18)),
-      BIG_NUMBERS['10e18']
-    )
+    return tokenAmount.raw
   })
 
-  const tokenBalancesUSDSum = sumAllJSBI(tokenBalancesUSD)
-  const lpTokenPriceUSD = JSBI.equal(tokenBalancesSum, BIG_INT_ZERO)
-    ? BIG_INT_ZERO
-    : JSBI.divide(JSBI.multiply(tokenBalancesUSDSum, BIG_NUMBERS['10e18']), tokenBalancesSum)
+  const tokenBalancesUSDSum = tokenBalancesUSD.reduce((acc, item) => JSBI.add(acc, item), BIG_INT_ZERO)
 
   const userShare = calculatePctOfTotalShare(userLPTokenBalance, totalLpTokenBalance)
   const userPoolTokenBalances = tokenBalances.map(balance => userShare.multiply(balance).quotient)
   const userPoolTokenBalancesSum = sumAllJSBI(userPoolTokenBalances)
 
   const userPoolTokenBalancesUSD = tokenBalancesUSD.map(balance => userShare.multiply(balance).quotient)
-  const userPoolTokenBalancesUSDSum = sumAllJSBI(userPoolTokenBalancesUSD)
+  const userPoolTokenBalancesUSDSum = new TokenAmount(
+    USDC[ChainId.AURORA],
+    sumAllJSBI(userPoolTokenBalancesUSD)
+  ).toFixed(2)
 
   const poolTokens = effectivePoolTokens.map((token, i) => ({
     token,
@@ -200,7 +176,7 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
     utilization: null, // @TODO
     apy: null, // @TODO
     //   aprs,
-    lpTokenPriceUSD,
+    // lpTokenPriceUSD, // not needed now, might be needed for metapool
     //   lpToken: POOL.lpToken.symbol,
     lpToken,
     isPaused,
