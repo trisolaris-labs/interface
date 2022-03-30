@@ -87,13 +87,6 @@ const StyledMouseoverTooltip = styled(MouseoverTooltip)`
   `};
 `
 
-const StyledColon = styled.span`
-  margin-left: 30px;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  margin-left: 22px;
-  `};
-`
-
 const StyledContractAddress = styled(ContractAddress)`
   font-size: 16px;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -169,7 +162,6 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
                   style={{ cursor: 'pointer', position: 'absolute', margin: '0 2px 0 5px' }}
                 />
               </StyledMouseoverTooltip>
-              <StyledColon>:</StyledColon>
             </>
           )}
         </StyledText>
@@ -219,7 +211,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
         {userData?.lpTokenBalance.greaterThan(BIG_INT_ZERO) ? (
           <AutoColumn gap="8px">
             <FixedHeightRow marginTop="4px">
-              <StyledText fontWeight={500}>User {poolTokensString} LP Balance:</StyledText>
+              <StyledText fontWeight={500}>User {poolTokensString} LP Balance</StyledText>
               <StyledText fontWeight={500}>{`$${userData?.usdBalance.toString()} (${userData?.lpTokenBalance.toFixed(
                 3
               )} LP tokens) `}</StyledText>
@@ -237,7 +229,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
                 <FixedHeightRow key={token.name}>
                   <div>
                     <CurrencyLogo size="20px" style={{ marginRight: '8px' }} currency={unwrappedToken(token)} />
-                    {token.name}:
+                    {token.name}
                   </div>
                   <StyledText fontWeight={500} marginLeft={'6px'}>
                     {`${value.toString()} (${percent.toFixed(2)}%)`}
@@ -255,11 +247,11 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
               </TYPE.subHeader>
               <AutoColumn gap="8px">
                 <FixedHeightRow>
-                  <StyledText>{stablePoolData.lpToken?.name} LP Token:</StyledText>
+                  <StyledText>{stablePoolData.lpToken?.name} LP Token</StyledText>
                   <StyledContractAddress address={stablePoolData.lpToken?.address} />
                 </FixedHeightRow>
                 <FixedHeightRow>
-                  <StyledText>{formattedPoolName} Pool Contract:</StyledText>
+                  <StyledText>{formattedPoolName} Pool Contract</StyledText>
                   <StyledContractAddress address={poolAddress} />
                 </FixedHeightRow>
               </AutoColumn>
