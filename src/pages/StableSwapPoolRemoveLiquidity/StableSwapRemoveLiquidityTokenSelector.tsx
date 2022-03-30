@@ -2,11 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { ButtonOutlined, ButtonSecondary } from '../../components/Button'
 import CurrencyLogo from '../../components/CurrencyLogo'
-import { RowBetween } from '../../components/Row'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { StableSwapPoolName } from '../../state/stableswap/constants'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
-import Settings from '../../components/Settings'
 
 const CurrencySymbol = styled('span')`
   margin-left: 4px;
@@ -29,7 +27,7 @@ export default function StableSwapRemoveLiquidityTokenSelector({
   const AllButton = tokenIndex === null ? ButtonSecondary : ButtonOutlined
 
   return (
-    <RowBetween>
+    <>
       <AllButton
         margin="4px"
         padding="8px"
@@ -62,7 +60,6 @@ export default function StableSwapRemoveLiquidityTokenSelector({
           </Button>
         )
       })}
-      <Settings />
-    </RowBetween>
+    </>
   )
 }

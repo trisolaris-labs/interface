@@ -7,7 +7,7 @@ import { DarkGreyCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import { PageWrapper } from '../../components/Page'
-import { RowBetween } from '../../components/Row'
+import { AutoRow, RowBetween } from '../../components/Row'
 import { BIG_INT_ZERO } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
@@ -29,12 +29,12 @@ import { useTranslation } from 'react-i18next'
 import { Text } from 'rebass'
 import { RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
-import { Plus } from 'lucide-react'
 import { ThemeContext } from 'styled-components'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { ButtonPrimary } from '../../components/Button'
 import { useExpertModeManager } from '../../state/user/hooks'
+import Settings from '../../components/Settings'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -221,19 +221,10 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
       <AutoColumn style={{ width: '100%' }}>
         <DarkGreyCard>
           <AutoColumn gap="20px">
-            <RowBetween>
-              <AutoColumn justify="start">
-                <TYPE.mediumHeader>Remove Liquidity from {poolData.name}</TYPE.mediumHeader>
-                <CaptionWithIcon>Stable pools on Trisolaris support uneven withdrawals</CaptionWithIcon>
-              </AutoColumn>
-              <AutoColumn gap="20px">
-                <StableSwapRemoveLiquidityTokenSelector
-                  stableSwapPoolName={stableSwapPoolName}
-                  tokenIndex={withdrawTokenIndex}
-                  onSelectTokenIndex={setWithdrawTokenIndex}
-                />
-              </AutoColumn>
-            </RowBetween>
+            <AutoRow justify="space-between">
+              <TYPE.mediumHeader>Remove Liquidity from {poolData.name}</TYPE.mediumHeader>
+              <Settings />
+            </AutoRow>
             <StableSwapRemoveLiquidityInputPanel
               id="stableswap-remove-liquidity"
               value={input}
@@ -244,6 +235,18 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
               disableMaxButton={atMaxAmountInput}
               disableHalfButton={atHalfAmountInput}
             />
+            <div>
+              <AutoRow justify="flex-start">
+                <StableSwapRemoveLiquidityTokenSelector
+                  stableSwapPoolName={stableSwapPoolName}
+                  tokenIndex={withdrawTokenIndex}
+                  onSelectTokenIndex={setWithdrawTokenIndex}
+                />
+              </AutoRow>
+              <AutoRow marginLeft="4px">
+                <CaptionWithIcon>Choose how you would like to receive your withdrawn tokens</CaptionWithIcon>
+              </AutoRow>
+            </div>
 
             {estimatedAmounts.map((currencyAmount, i) => {
               const { currency } = currencyAmount
