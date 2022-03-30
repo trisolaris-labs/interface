@@ -149,21 +149,6 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
       label: 'Virtual Price',
       value: stablePoolData.virtualPrice == null ? '-' : `$${stablePoolData.virtualPrice?.toFixed(6)}`,
       tooltipData: 'Average dollar value of pool token.'
-    },
-    {
-      label: 'Swap Fee',
-
-      value: stablePoolData.swapFee == null ? '-' : `${stablePoolData.swapFee?.toSignificant(2)}%`
-    },
-    {
-      label: 'Admin Fee',
-      value: stablePoolData.adminFee == null ? '-' : `${stablePoolData.adminFee?.toSignificant(2)}%`
-    },
-    {
-      label: 'Amplification coefficient',
-      value: stablePoolData.aParameter?.toString() ?? '-',
-      tooltipData:
-        "Higher values widen the range of low-slippages swaps, while lower values help keep the pool's composition balanced."
     }
   ]
 
@@ -193,6 +178,10 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
       </FixedHeightRow>
     )
   }
+
+  const poolTokensString = poolTokens
+    .map((token, index, arr) => `${token.symbol}${index + 1 < arr.length ? '/' : ''}`)
+    .join('')
 
   return (
     <StyledPositionCard border={border} bgColor={backgroundColor1} id={`stableswap-position-card-${name}`}>
@@ -229,18 +218,16 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
         {userData?.lpTokenBalance.greaterThan(BIG_INT_ZERO) ? (
           <AutoColumn gap="8px">
             <FixedHeightRow marginTop="4px">
-              <StyledText fontWeight={500}>Deposited Amount</StyledText>
-              <StyledText fontWeight={500}>{`$${userData?.usdBalance.toString()}`}</StyledText>
-            </FixedHeightRow>
-            <FixedHeightRow>
-              <StyledText fontWeight={500}>{stablePoolData.lpToken?.name} LP Token Balance</StyledText>
-              <StyledText fontWeight={500}>{`$${userData?.lpTokenBalance.toFixed(3)}`}</StyledText>
+              <StyledText fontWeight={500}>User {poolTokensString} LP Balance:</StyledText>
+              <StyledText fontWeight={500}>{`$${userData?.usdBalance.toString()} (${userData?.lpTokenBalance.toFixed(
+                3
+              )} LP tokens) `}</StyledText>
             </FixedHeightRow>
           </AutoColumn>
         ) : null}
 
         {showMore && (
-          <div style={{ marginTop: '20px' }}>
+          <div style={{ marginTop: '14px' }}>
             <AutoColumn gap="8px">
               <TYPE.subHeader fontSize={16} fontWeight={600}>
                 Currency Reserves
