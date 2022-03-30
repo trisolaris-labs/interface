@@ -6,10 +6,10 @@ import { Copy, Check } from 'lucide-react'
 import useCopyClipboard from '../../hooks/useCopyClipboard'
 import { shortenAddress } from '../../utils'
 
-import { StyledAddressContainer, StyledContractButton, StyledTooltip } from './ContractAddress.styles'
+import { StyledAddressContainer, StyledContractButton, StyledTooltip, StyledText } from './ContractAddress.styles'
 
-const ContractAddress = ({ token, address }: { token?: Token; address?: string }) => {
-  const addressToShow = (address ?? token?.address) ?? ""
+const ContractAddress = ({ token, address, ...rest }: { token?: Token; address?: string }) => {
+  const addressToShow = address ?? token?.address ?? ''
 
   const [showTooltip, setShowTooltip] = useState(false)
   const [isCopied, setCopied] = useCopyClipboard(750)
@@ -33,15 +33,14 @@ const ContractAddress = ({ token, address }: { token?: Token; address?: string }
   }
 
   return (
-    <StyledAddressContainer>
-      <Text fontSize={16} fontWeight={500} marginRight={'10px'}>
-        {shortenAddress(addressToShow)}
-      </Text>
+    <StyledAddressContainer {...rest}>
+      <StyledText {...rest}>{shortenAddress(addressToShow)}</StyledText>
       <StyledContractButton
         onMouseEnter={handleMouseEnter}
         onBlur={handleMouseLeave}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
+        style={{ marginLeft: '10px' }}
       >
         <StyledTooltip text={isCopied ? 'Copied!' : 'Copy address to clipboard'} placement="top" show={showTooltip}>
           {isCopied ? <Check size={14} /> : <Copy size={14} />}

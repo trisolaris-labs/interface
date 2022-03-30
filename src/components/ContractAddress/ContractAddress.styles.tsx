@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { darken } from 'polished'
 
 import Tooltip from '../Tooltip'
+import { Text } from 'rebass'
 
 export const StyledAddressContainer = styled.div`
   display: flex;
@@ -34,4 +35,10 @@ export const StyledTooltip = styled(Tooltip)`
   min-width: 190px;
   font-size: 0.75rem;
   text-align: center;
+`
+
+export const StyledText = styled(Text)`
+  font-size: 16px;
+  font-weight: 500;
+  margin-right: 10px;
 `

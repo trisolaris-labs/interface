@@ -94,6 +94,13 @@ const StyledColon = styled.span`
   `};
 `
 
+const StyledContractAddress = styled(ContractAddress)`
+  font-size: 16px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+font-size: 12px !important;
+`};
+`
+
 interface PositionCardProps {
   pair: Pair
   showUnwrapped?: boolean
@@ -235,7 +242,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
         {showMore && (
           <div style={{ marginTop: '20px' }}>
             <AutoColumn gap="8px">
-              <TYPE.subHeader fontSize={16} fontWeight={500}>
+              <TYPE.subHeader fontSize={16} fontWeight={600}>
                 Currency Reserves
               </TYPE.subHeader>
               {stablePoolData.tokens.map(({ token, percent, value }) => (
@@ -250,22 +257,22 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
                 </FixedHeightRow>
               ))}
 
-              <TYPE.subHeader fontSize={16} fontWeight={500} marginTop="8px">
+              <TYPE.subHeader fontSize={16} fontWeight={600} marginTop="8px">
                 Pool Info
               </TYPE.subHeader>
               {formattedPoolData.map(({ label, value, tooltipData }) => renderRow({ label, value, tooltipData }))}
 
-              <TYPE.subHeader fontSize={16} fontWeight={500} marginTop="8px">
+              <TYPE.subHeader fontSize={16} fontWeight={600} marginTop="8px">
                 Contracts
               </TYPE.subHeader>
               <AutoColumn gap="8px">
                 <FixedHeightRow>
-                  <div>{stablePoolData.lpToken?.name} LP Token:</div>
-                  <ContractAddress address={stablePoolData.lpToken?.address} />
+                  <StyledText fontWeight={500}>{stablePoolData.lpToken?.name} LP Token:</StyledText>
+                  <StyledContractAddress address={stablePoolData.lpToken?.address} />
                 </FixedHeightRow>
                 <FixedHeightRow>
-                  <div>{stablePoolData.name} Pool Contract:</div>
-                  <ContractAddress address={poolAddress} />
+                  <StyledText fontWeight={500}>{stablePoolData.name} Pool Contract:</StyledText>
+                  <StyledContractAddress address={poolAddress} />
                 </FixedHeightRow>
               </AutoColumn>
             </AutoColumn>
