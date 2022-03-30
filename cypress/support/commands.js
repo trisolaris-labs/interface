@@ -1,4 +1,4 @@
-import { JsonRpcBatchProvider } from '@ethersproject/providers'
+import { JsonRpcProvider } from '@ethersproject/providers'
 import { Wallet } from '@ethersproject/wallet'
 import { Eip1193Bridge } from '@ethersproject/experimental'
 
@@ -23,8 +23,8 @@ class CustomizedBridge extends Eip1193Bridge {
     }
     console.log(`method: ${method}`)
     function wrapResponse(result, error = null) {
-      if (result == null && result == null) {
-        error = new Error(`Something went wrong on result, result is${result}`)
+      if (result == null && error != null) {
+        error = new Error(`Something went wrong on result, result is ${result}`)
       }
       if (isCallbackForm) {
         callback(error, result ? { result } : null)
@@ -47,14 +47,23 @@ class CustomizedBridge extends Eip1193Bridge {
       // this seems to throw unless the from arg is removed
       delete argsObject.from
     }
-    if (method === 'eth_sendTransaction') {
-      argsObject = { ...argsObject, gasPrice: params.gas }
-      delete argsObject.gas
-    }
     try {
+      if (method === 'eth_sendTransaction') {
+        delete argsObject.gas
+        const gasPrice = await this.provider.getGasPrice()
+        const result = await super.send(method, [
+          {
+            ...argsObject,
+            gasPrice
+          },
+          ...paramsRest
+        ])
+        return wrapResponse(result)
+      }
       const result = await super.send(method, [argsObject, ...paramsRest])
       return wrapResponse(result)
     } catch (error) {
+      console.error({ error })
       return wrapResponse(null, error)
     }
   }
@@ -65,7 +74,7 @@ Cypress.Commands.overwrite('visit', (original, url, options) => {
     onBeforeLoad(win) {
       options && options.onBeforeLoad && options.onBeforeLoad(win)
       win.localStorage.clear()
-      const provider = new JsonRpcBatchProvider(Cypress.env('PROVIDER_HOST'), {
+      const provider = new JsonRpcProvider(Cypress.env('PROVIDER_HOST'), {
         name: 'aurora',
         chainId: Number(Cypress.env('NETWORK_ID'))
       })
