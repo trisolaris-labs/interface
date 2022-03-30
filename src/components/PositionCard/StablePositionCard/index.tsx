@@ -174,7 +174,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   const renderRow = ({ label, tooltipData, value }: { label: string; tooltipData?: string; value: string }) => {
     return (
       <FixedHeightRow key={label}>
-        <StyledText fontWeight={500} style={{ zIndex: 1, display: 'flex' }}>
+        <StyledText style={{ zIndex: 1, display: 'flex' }}>
           {`${label}${tooltipData ? '' : ':'}`}
           {tooltipData && (
             <>
@@ -267,11 +267,11 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
               </TYPE.subHeader>
               <AutoColumn gap="8px">
                 <FixedHeightRow>
-                  <StyledText fontWeight={500}>{stablePoolData.lpToken?.name} LP Token:</StyledText>
+                  <StyledText>{stablePoolData.lpToken?.name} LP Token:</StyledText>
                   <StyledContractAddress address={stablePoolData.lpToken?.address} />
                 </FixedHeightRow>
                 <FixedHeightRow>
-                  <StyledText fontWeight={500}>{stablePoolData.name} Pool Contract:</StyledText>
+                  <StyledText>{stablePoolData.name} Pool Contract:</StyledText>
                   <StyledContractAddress address={poolAddress} />
                 </FixedHeightRow>
               </AutoColumn>
