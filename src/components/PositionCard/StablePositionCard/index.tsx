@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { unwrappedToken } from '../../../utils/wrappedCurrency'
-import { ButtonEmpty, ButtonPrimary } from '../../Button'
+import { ButtonPrimary } from '../../Button'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { TokenPairBackgroundColor } from '../../earn/PoolCardTri.styles'
 
@@ -187,13 +187,13 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
               <FixedHeightRow>
                 <StyledText>Swap Fee:</StyledText>
                 <StyledText>
-                  {stablePoolData.swapFee == null ? '-' : `${stablePoolData.swapFee?.toString()}%`}
+                  {stablePoolData.swapFee == null ? '-' : `${stablePoolData.swapFee?.toSignificant(2)}%`}
                 </StyledText>
               </FixedHeightRow>
               <FixedHeightRow>
                 <StyledText>Admin Fee:</StyledText>
                 <StyledText>
-                  {stablePoolData.adminFee == null ? '-' : `${stablePoolData.adminFee?.toString()}%`}
+                  {stablePoolData.adminFee == null ? '-' : `${stablePoolData.adminFee?.toSignificant(2)}%`}
                 </StyledText>
               </FixedHeightRow>
               <FixedHeightRow>

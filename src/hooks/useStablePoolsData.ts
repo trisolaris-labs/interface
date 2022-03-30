@@ -20,12 +20,12 @@ interface TokenShareType {
 
 export type Partners = 'keep' | 'sharedStake' | 'alchemix'
 export interface StablePoolDataType {
-  adminFee: JSBI
+  adminFee: Percent
   aParameter: JSBI
   apy: JSBI | null
   name: string
   reserve: JSBI | null
-  swapFee: JSBI
+  swapFee: Percent
   tokens: TokenShareType[]
   totalLocked: TokenAmount | null
   utilization: JSBI | null
@@ -71,8 +71,10 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
   const swapContract = useStableSwapContract(poolName)
 
   const swapStorage = useSingleCallResult(swapContract, 'swapStorage')
-  const adminFee = swapStorage?.result?.adminFee?.[0] ?? BIG_INT_ZERO
-  const swapFee = swapStorage?.result?.swapFee?.[0] ?? BIG_INT_ZERO
+  const [adminFee, swapFee] = [
+    swapStorage?.result?.adminFee ?? BIG_INT_ZERO,
+    swapStorage?.result?.swapFee ?? BIG_INT_ZERO
+  ].map(value => new Percent(value, JSBI.BigInt(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(12)))))
   const rawVirtualPrice = useSingleCallResult(swapContract, 'getVirtualPrice')?.result?.[0] ?? BIG_INT_ZERO
   const virtualPrice = JSBI.equal(BIG_INT_ZERO, JSBI.BigInt(rawVirtualPrice))
     ? null
