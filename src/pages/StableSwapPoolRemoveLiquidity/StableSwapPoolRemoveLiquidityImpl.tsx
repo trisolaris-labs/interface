@@ -161,13 +161,12 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   }
 
   function modalBottom() {
-    const poolTokens = estimatedAmounts.map(amount => amount.currency.symbol)
     return (
       <>
         <RowBetween>
           <Text color={theme.text2} fontWeight={500} fontSize={16}>
             {/*TODO: Translate using i18n*/}
-            {`TLP ${poolTokens} Burned`}
+            {`${pool.lpToken.symbol} Burned`}
           </Text>
           <RowFixed>
             <DoubleCurrencyLogo
