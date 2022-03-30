@@ -57,7 +57,7 @@ export function PoolTabs({ active }: { active: '/pool/stable' | '/pool' }) {
   return (
     <Tabs>
       <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === '/pool'}>
-        Normal AMM
+        Standard AMM
       </StyledNavLink>
       <StyledNavLink id={`stableswap-pool-nav-link`} to={'/pool/stable'} isActive={() => active === '/pool/stable'}>
         StableSwap AMM
