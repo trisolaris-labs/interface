@@ -236,7 +236,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
                 <FixedHeightRow key={token.name}>
                   <div>
                     <CurrencyLogo size="20px" style={{ marginRight: '8px' }} currency={unwrappedToken(token)} />
-                    {token.name}
+                    {token.name}:
                   </div>
                   <StyledText fontWeight={500} marginLeft={'6px'}>
                     {`${value.toString()} (${percent.toFixed(2)}%)`}
