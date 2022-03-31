@@ -129,6 +129,19 @@ export default function SwapModalFooter({
             </TYPE.black>
           </RowBetween>
         )}
+
+        <RowBetween>
+          <RowFixed>
+            <TYPE.black fontSize={14} fontWeight={400}>
+              {t('swap.routedViaAmmType')}
+            </TYPE.black>
+          </RowFixed>
+          <TYPE.black
+            id={'swap-routed-via-confirmation'}
+            color={isRoutedViaStableSwap ? theme.metallicGold : theme.yellow2}
+            fontSize={14}
+          >{`${isRoutedViaStableSwap ? 'Stable' : 'Standard'} AMM`}</TYPE.black>
+        </RowBetween>
       </AutoColumn>
 
       <AutoRow>

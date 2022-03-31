@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components'
 import { darken } from 'polished'
 import { useTranslation } from 'react-i18next'
 import { NavLink, Link as HistoryLink, useHistory } from 'react-router-dom'
@@ -28,13 +28,17 @@ const StyledNavLink = styled(NavLink).attrs({
   outline: none;
   cursor: pointer;
   text-decoration: none;
-  color: ${({ theme }) => theme.text3};
+  color: ${({ theme, color }) => color || theme.text3};
   font-size: 20px;
 
   &.${activeClassName} {
     border-radius: 12px;
     font-weight: 500;
-    color: ${({ theme }) => theme.text1};
+    color: ${({ theme, color }) => color || theme.text1};
+    ${({ color }) =>
+      color &&
+      `text-decoration: underline;
+       text-underline-offset: 3px;`}
   }
 
   :hover,
@@ -53,14 +57,20 @@ const StyledArrowLeft = styled(ArrowLeft)`
 `
 
 export function PoolTabs({ active }: { active: '/pool/stable' | '/pool' }) {
+  const theme = useContext(ThemeContext)
   const { t } = useTranslation()
   return (
     <Tabs>
-      <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === '/pool'}>
+      <StyledNavLink color={theme.yellow2} id={`pool-nav-link`} to={'/pool'} isActive={() => active === '/pool'}>
         Standard AMM
       </StyledNavLink>
-      <StyledNavLink id={`stableswap-pool-nav-link`} to={'/pool/stable'} isActive={() => active === '/pool/stable'}>
-        StableSwap AMM
+      <StyledNavLink
+        id={`stableswap-pool-nav-link`}
+        to={'/pool/stable'}
+        isActive={() => active === '/pool/stable'}
+        color={theme.metallicGold}
+      >
+        Stable AMM
       </StyledNavLink>
     </Tabs>
   )
