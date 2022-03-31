@@ -1,7 +1,7 @@
 import { ChainId, JSBI, Percent, Token, WETH as _WETH } from '@trisolaris/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { injected, walletlink, walletconnect } from '../connectors'
-import { DAI, TRI, USDT, WNEAR, LUNA, AURORA, POLAR, SPOLAR, LUNAR } from './tokens'
+import { DAI, TRI, USDT, WNEAR, LUNA, AURORA, POLAR, SPOLAR, LUNAR, STNEAR, XTRI } from './tokens'
 
 export const GAS_PRICE = 250
 
@@ -39,7 +39,9 @@ const COMMON_BASES: ChainTokenList = {
     USDT[ChainId.AURORA],
     createProperlyNamedWETH(),
     TRI[ChainId.AURORA],
-    LUNA[ChainId.AURORA]
+    LUNA[ChainId.AURORA],
+    XTRI[ChainId.AURORA],
+    STNEAR[ChainId.AURORA]
   ]
 }
 
