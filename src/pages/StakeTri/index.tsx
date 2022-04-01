@@ -107,12 +107,6 @@ export default function StakeTri() {
     _setInput(amount)
   }
 
-  const handleClickMax = useCallback(() => {
-    if (maxAmountInput) {
-      setInput(maxAmountInput.toExact())
-    }
-  }, [maxAmountInput, setInput])
-
   function renderApproveButton() {
     if (!isStaking) {
       return null
@@ -139,7 +133,7 @@ export default function StakeTri() {
   function renderStakeButton() {
     // If account balance is less than inputted amount
     const insufficientFunds = (balance?.equalTo(BIG_INT_ZERO) ?? false) || parsedAmount?.greaterThan(balance)
-    if (insufficientFunds) {
+    if (insufficientFunds && parsedAmount?.greaterThan(BIG_INT_ZERO)) {
       return (
         <ButtonError error={true} disabled={true}>
           Insufficient Balance
