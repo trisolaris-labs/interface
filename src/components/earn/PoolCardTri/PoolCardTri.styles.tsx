@@ -1,10 +1,9 @@
 import styled from 'styled-components'
-import { lighten, darken } from 'polished'
+import { lighten } from 'polished'
 
-import { TYPE } from '../../theme'
-import Card from '../Card'
-import { ButtonPrimary } from '../Button'
-import { ExternalLink } from '../../theme'
+import { TYPE } from '../../../theme'
+import Card from '../../Card'
+import { ButtonPrimary } from '../../Button'
 
 export const Wrapper = styled(Card)<{ bgColor1: string | null; bgColor2?: string | null; isDoubleRewards: boolean }>`
   border: ${({ isDoubleRewards, theme }) =>
@@ -13,10 +12,11 @@ export const Wrapper = styled(Card)<{ bgColor1: string | null; bgColor2?: string
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 12px;
+  gap: 32px;
   box-shadow: ${({ isDoubleRewards, theme }) =>
     isDoubleRewards ? `0px 0px 8px 5px ${theme.primary1}` : `0 2px 8px 0 ${theme.bg3}`};
   position: relative;
+  padding: 0.9rem 1.25rem;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
       grid-template-rows: auto 1fr;
@@ -75,4 +75,9 @@ export const TokenPairBackgroundColor = styled.span<{ bgColor1: string | null; b
   top: 0;
   left: 0;
   user-select: none;
+`
+
+export const StyledDepositButton = styled(Button)`
+  width: 90px;
+  max-width: 90px;
 `

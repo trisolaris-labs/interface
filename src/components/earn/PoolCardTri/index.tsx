@@ -1,22 +1,23 @@
 import React, { useState } from 'react'
-import { Token, ChainId } from '@trisolaris/sdk'
+import { Token } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { Settings2 as ManageIcon } from 'lucide-react'
 
-import { TYPE } from '../../theme'
-import { AutoColumn } from '../Column'
-import DoubleCurrencyLogo from '../DoubleLogo'
-import { ButtonGold } from '../Button'
-import { AutoRow, RowBetween } from '../Row'
-import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
+import { TYPE } from '../../../theme'
+import { AutoColumn } from '../../Column'
+import DoubleCurrencyLogo from '../../DoubleLogo'
+import { ButtonGold } from '../../Button'
+import { AutoRow, RowBetween } from '../../Row'
+import ClaimRewardModal from '../../../components/earn/ClaimRewardModalTri'
+import GetTokenLink from './GetTokenLink'
 
-import { ChefVersions } from '../../state/stake/stake-constants'
-import { useSingleFarm } from '../../state/stake/user-farms'
-import { useColorForToken } from '../../hooks/useColor'
-import { currencyId } from '../../utils/currencyId'
-import { addCommasToNumber } from '../../utils'
-import { getPairRenderOrder, isTokenAmountPositive } from '../../utils/pools'
+import { ChefVersions } from '../../../state/stake/stake-constants'
+import { useSingleFarm } from '../../../state/stake/user-farms'
+import { useColorForToken } from '../../../hooks/useColor'
+import { currencyId } from '../../../utils/currencyId'
+import { addCommasToNumber } from '../../../utils'
+import { getPairRenderOrder, isTokenAmountPositive } from '../../../utils/pools'
 
 import {
   Wrapper,
@@ -24,9 +25,9 @@ import {
   ResponsiveCurrencyLabel,
   TokenPairBackgroundColor,
   StyledActionsContainer,
-  Button
+  Button,
+  StyledDepositButton
 } from './PoolCardTri.styles'
-import GetTokenLink from './FarmsPortfolio/GetTokenLink'
 
 type PoolCardTriProps = {
   apr: number
@@ -91,9 +92,9 @@ const DefaultPoolCardtri = ({
         <ManageIcon size={20} />
       </Button>
     ) : (
-      <Button disabled={isPeriodFinished} isStaking={false} {...sharedProps}>
+      <StyledDepositButton disabled={isPeriodFinished} isStaking={false} {...sharedProps}>
         {t('earn.deposit')}
-      </Button>
+      </StyledDepositButton>
     )
   }
 
@@ -103,7 +104,7 @@ const DefaultPoolCardtri = ({
 
       <AutoRow justifyContent="space-between">
         <PairContainer>
-          <GetTokenLink tokens={[token0, token1]} />
+          {!isStaking && <GetTokenLink tokens={[token0, token1]} />}
           <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
           <ResponsiveCurrencyLabel>
             {currency0.symbol}-{currency1.symbol}
@@ -130,7 +131,7 @@ const DefaultPoolCardtri = ({
           <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
         </AutoColumn>
         <AutoColumn>
-          <TYPE.mutedSubHeader textAlign="end">APR</TYPE.mutedSubHeader>
+          <TYPE.mutedSubHeader textAlign="start">APR</TYPE.mutedSubHeader>
           <TYPE.white textAlign="end">
             {isDualRewards && doubleRewards && !inStaging
               ? `${apr}% TRI + ${`${apr2}%`} ${`${doubleRewardToken.symbol}`}`

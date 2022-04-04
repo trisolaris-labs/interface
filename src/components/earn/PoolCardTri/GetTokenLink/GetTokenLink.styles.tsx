@@ -8,11 +8,11 @@ export const StyledExternalLink = styled(ExternalLink)`
   text-decoration: underline;
   color: ${({ theme }) => theme.text2};
   font-weight: 400;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   margin: 0;
   position: absolute;
-  top: 7px;
-  left: 70px;
+  top: 58px;
+  right: 18px;
 
   :active {
     text-decoration: underline;
@@ -24,6 +24,6 @@ export const StyledExternalLink = styled(ExternalLink)`
   }
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-  left:60px;
+  right:10px;
 `};
 `
