@@ -47,12 +47,7 @@ import { useIsSelectedAEBToken } from '../../state/lists/hooks'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 
 import { Field } from '../../state/swap/actions'
-import {
-  INITIAL_ALLOWED_SLIPPAGE,
-  BIG_INT_ZERO,
-  TOKEN_WARNING_MODAL_ALLOWLIST,
-  ENABLE_STABLESWAP
-} from '../../constants'
+import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO, TOKEN_WARNING_MODAL_ALLOWLIST } from '../../constants'
 
 import { ClickableText, Dots } from '../Pool/styleds'
 import { LinkStyledButton, TYPE } from '../../theme'
@@ -146,7 +141,6 @@ export default function Swap() {
 
   const isRoutedViaStableSwap: boolean =
     useMemo(() => {
-      if (ENABLE_STABLESWAP === false) return false
       if (isStableSwap) {
         const swapOutputRaw = parsedAmounts?.OUTPUT?.raw
         if (swapOutputRaw) {
