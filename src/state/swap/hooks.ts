@@ -177,8 +177,12 @@ export function useDerivedSwapInfo(
     () =>
       find(STABLESWAP_POOLS[ChainId.AURORA], pool => {
         return (
-          Boolean(pool.poolTokens?.find(stableToken => stableToken?.symbol === currencies[Field.INPUT]?.symbol)) &&
-          Boolean(pool.poolTokens?.find(stableToken => stableToken?.symbol === currencies[Field.OUTPUT]?.symbol))
+          Boolean(
+            pool.underlyingPoolTokens?.find(stableToken => stableToken?.symbol === currencies[Field.INPUT]?.symbol)
+          ) &&
+          Boolean(
+            pool.underlyingPoolTokens?.find(stableToken => stableToken?.symbol === currencies[Field.OUTPUT]?.symbol)
+          )
         )
       })
         ? true
