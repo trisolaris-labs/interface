@@ -65,7 +65,9 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
   const pool = STABLESWAP_POOLS[ChainId.AURORA][poolName]
   const { lpToken, rewardPids /* @TODO Update this when rewarders are added */, metaSwapAddresses } = pool
   const effectivePoolTokens =
-    (Number(pool.underlyingPoolTokens?.length ?? 0) > 0 ? pool.underlyingPoolTokens : pool.poolTokens) ?? []
+    pool?.underlyingPoolTokens != null && pool.underlyingPoolTokens.length > 0
+      ? pool.underlyingPoolTokens
+      : pool.poolTokens
   const isMetaSwap = metaSwapAddresses != null
 
   const swapContract = useStableSwapContract(poolName)

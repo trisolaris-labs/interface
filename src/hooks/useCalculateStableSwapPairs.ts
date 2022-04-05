@@ -45,7 +45,6 @@ export type StableSwapData =
 
 export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData[] {
   const poolsStatuses = useStableSwapPoolsStatuses()
-  const { chainId } = useActiveWeb3React()
   const tokenToPoolsMapSorted = useMemo(() => {
     const sortedPools = Object.values(STABLESWAP_POOLS[ChainId.AURORA])
       .filter(pool => !poolsStatuses[pool.name]?.isPaused) // paused pools can't swap
@@ -59,7 +58,12 @@ export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData
       })
     const tokenToPools = sortedPools.reduce((acc, { name: poolName }) => {
       const pool = STABLESWAP_POOLS[ChainId.AURORA][poolName]
-      pool.poolTokens.forEach(token => {
+      const tokens =
+        pool?.underlyingPoolTokens != null && pool.underlyingPoolTokens.length > 0
+          ? pool.underlyingPoolTokens
+          : pool.poolTokens
+
+      tokens.forEach(token => {
         acc[token.address] = (acc[token.address] || []).concat(poolName)
       })
       return acc
