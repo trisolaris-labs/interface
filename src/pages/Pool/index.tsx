@@ -19,7 +19,6 @@ import { usePairs } from '../../data/Reserves'
 import { useTrackedTokenPairs, toV2LiquidityToken } from '../../state/user/hooks'
 
 import { TitleRow, ButtonRow, ResponsiveButtonPrimary, ResponsiveButtonSecondary, EmptyProposals } from './styleds'
-import { ENABLE_STABLESWAP } from '../../constants'
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
@@ -61,8 +60,7 @@ export default function Pool() {
   const hasV1Liquidity = undefined
   return (
     <PageWrapper>
-      {ENABLE_STABLESWAP ? <PoolTabs active="/pool" /> : null}
-
+      <PoolTabs active="/pool" />
       <AutoColumn gap="lg" justify="center">
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>

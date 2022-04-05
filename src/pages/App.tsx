@@ -27,7 +27,6 @@ import StableSwapPool from './StableSwapPool'
 import StableSwapPoolAddLiquidity from './StableSwapPoolAddLiquidity'
 import StableSwapPoolRemoveLiquidity from './StableSwapPoolRemoveLiquidity'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
-import { ENABLE_STABLESWAP } from '../constants'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -86,23 +85,14 @@ export default function App() {
               <Route exact strict path="/buy" component={Buy} />
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/pool" component={Pool} />
-              {ENABLE_STABLESWAP ? <Route exact strict path="/pool/stable" component={StableSwapPool} /> : null}
-              {ENABLE_STABLESWAP ? (
-                <Route
-                  exact
-                  strict
-                  path="/pool/stable/add/:stableSwapPoolName"
-                  component={StableSwapPoolAddLiquidity}
-                />
-              ) : null}
-              {ENABLE_STABLESWAP ? (
-                <Route
-                  exact
-                  strict
-                  path="/pool/stable/remove/:stableSwapPoolName"
-                  component={StableSwapPoolRemoveLiquidity}
-                />
-              ) : null}
+              <Route exact strict path="/pool/stable" component={StableSwapPool} />
+              <Route exact strict path="/pool/stable/add/:stableSwapPoolName" component={StableSwapPoolAddLiquidity} />
+              <Route
+                exact
+                strict
+                path="/pool/stable/remove/:stableSwapPoolName"
+                component={StableSwapPoolRemoveLiquidity}
+              />
               <Route exact strict path="/farm/:version" component={EarnTri} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
               <Route exact strict path="/stake" component={StakeTri} />
