@@ -64,6 +64,7 @@ export type StakingTriFarms = {
   inStaging: boolean
   noTriRewards: boolean
   doubleRewardToken: Token
+  isStableSwap: boolean
 }
 
 export interface ExternalInfo {
@@ -107,7 +108,8 @@ const NULL_POOL: StakingTri = {
   doubleRewards: false,
   inStaging: false,
   noTriRewards: false,
-  doubleRewardToken: dummyToken
+  doubleRewardToken: dummyToken,
+  isStableSwap: false
 }
 const NULL_POOLS = [NULL_POOL]
 
@@ -394,6 +396,17 @@ const AURORA_POOLS: StakingTri[] = [
     noTriRewards: true,
     inStaging: false,
     doubleRewardToken: BBT[ChainId.AURORA]
+  }),
+  createMCV2Pool({
+    ID: 25,
+    poolId: 18,
+    tokens: [USDT[ChainId.AURORA], USDC[ChainId.AURORA]],
+    lpAddress: '0x5eb99863f7efe88c447bc9d52aa800421b1de6c9',
+    rewarderAddress: '',
+    allocPoint: 1,
+    noTriRewards: false,
+    inStaging: true,
+    isStableSwap: true
   })
 ]
 
