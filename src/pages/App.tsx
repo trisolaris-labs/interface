@@ -93,7 +93,7 @@ export default function App() {
                 path="/pool/stable/remove/:stableSwapPoolName"
                 component={StableSwapPoolRemoveLiquidity}
               />
-              <Route exact strict path="/farm/:version" component={EarnTri} />
+              <Route exact strict path="/farm/:farmsType?" component={EarnTri} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
               <Route exact strict path="/stake" component={StakeTri} />
               <Route exact path="/add" component={AddLiquidity} />

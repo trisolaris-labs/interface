@@ -69,6 +69,7 @@ export type StakingTriFarms = {
   inStaging: boolean
   noTriRewards: boolean
   doubleRewardToken: Token
+  isStableSwap: boolean
 }
 
 export interface ExternalInfo {
@@ -112,7 +113,8 @@ const NULL_POOL: StakingTri = {
   doubleRewards: false,
   inStaging: false,
   noTriRewards: false,
-  doubleRewardToken: dummyToken
+  doubleRewardToken: dummyToken,
+  isStableSwap: false
 }
 const NULL_POOLS = [NULL_POOL]
 

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { isEqual } from 'lodash'
@@ -11,6 +11,7 @@ import { PageWrapper } from '../../components/Page'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
 import FarmBanner from '../../components/earn/FarmBanner'
 import Toggle from '../../components/Toggle'
+import { FarmTabs } from '../../components/NavigationTabs'
 
 import { useFarms } from '../../state/stake/apr'
 import { StakingTri } from '../../state/stake/stake-constants'
@@ -46,9 +47,9 @@ const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
 export default function Earn({
   match: {
-    params: { version }
+    params: { farmsType }
   }
-}: RouteComponentProps<{ version: string }>) {
+}: RouteComponentProps<{ farmsType: 'stable' | '' }>) {
   const { t } = useTranslation()
   const allFarmArrs = useFarms()
 
@@ -59,10 +60,15 @@ export default function Earn({
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [sortDescending, setSortDescending] = useState<boolean>(true)
 
+  const stableFarmsTabActive = farmsType === 'stable'
+  const tabFarmArrs = !stableFarmsTabActive
+    ? allFarmArrs.filter(farm => !farm.isStableSwap === true)
+    : allFarmArrs.filter(farm => farm.isStableSwap === true)
+
   const getSortedFarms = () => {
     switch (sortBy) {
       case SortingType.default:
-        return POOLS_ORDER.map(index => allFarmArrs[index])
+        return stableFarmsTabActive ? tabFarmArrs : POOLS_ORDER.map(index => tabFarmArrs[index])
       case SortingType.liquidity:
         return sortDescending
           ? farmArrs.sort((a, b) => (a.totalStakedInUSD < b.totalStakedInUSD ? 1 : -1))
@@ -74,13 +80,14 @@ export default function Earn({
     }
   }
 
-  const farmArrs = allFarmArrs.filter(farm => !LEGACY_POOLS.includes(farm.ID))
+  const farmArrs = tabFarmArrs.filter(farm => !LEGACY_POOLS.includes(farm.ID))
   const farmArrsInOrder = useMemo(() => getSortedFarms(), [sortBy, farmArrs])
+
   const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards && !farm.noTriRewards)
 
   const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(nonDualRewardPools)
 
-  const legacyFarmArrsInOrder = allFarmArrs.filter(farm => LEGACY_POOLS.includes(farm.ID))
+  const legacyFarmArrsInOrder = tabFarmArrs.filter(farm => LEGACY_POOLS.includes(farm.ID))
   const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards)
   const nonTriFarms = farmArrsInOrder.filter(farm => farm.noTriRewards)
 
@@ -139,6 +146,7 @@ export default function Earn({
       <MemoizedFarmBanner />
       <AutoColumn gap="lg" style={{ width: '100%' }}>
         <StyledSearchInput placeholder={t('earnPage.farmsSearchPlaceholder')} onChange={handleInput} />
+        <FarmTabs active={farmsType} />
         <StyledFiltersContainer>
           <StyledToggleContainer>
             <Text fontWeight={400} fontSize={16} marginRight={20}>
@@ -162,7 +170,7 @@ export default function Earn({
             </Text>
           </StyledSortContainer>
         </StyledFiltersContainer>
-        {!searchQuery.length && !activeFarmsFilter && (
+        {!searchQuery.length && !activeFarmsFilter && dualRewardPools.length > 0 && (
           <>
             <DataRow style={{ alignItems: 'baseline' }}>
               <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Dual Rewards Pools</TYPE.mediumHeader>
@@ -219,7 +227,7 @@ export default function Earn({
         </PoolSection>
       </AutoColumn>
       <AutoColumn gap="lg" style={{ width: '100%' }}>
-        {!searchQuery.length && !activeFarmsFilter && (
+        {!searchQuery.length && !activeFarmsFilter && nonTriFarms.length > 0 && (
           <>
             <DataRow style={{ alignItems: 'baseline' }}>
               <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Ecosystem Pools</TYPE.mediumHeader>
@@ -248,7 +256,7 @@ export default function Earn({
           </>
         )}
       </AutoColumn>
-      {!searchQuery.length && !activeFarmsFilter && (
+      {!searchQuery.length && !activeFarmsFilter && legacyFarmArrsInOrder.length > 0 && (
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
