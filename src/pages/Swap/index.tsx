@@ -148,6 +148,7 @@ export default function Swap() {
     useMemo(() => {
       if (ENABLE_STABLESWAP === false) return false
       if (isStableSwap) {
+        // console.log({ stableswapTrade })
         const swapOutputRaw = parsedAmounts?.OUTPUT?.raw
         if (swapOutputRaw) {
           return JSBI.greaterThan(stableswapTrade?.outputAmount?.raw ?? JSBI.BigInt(0), swapOutputRaw)

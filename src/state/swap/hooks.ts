@@ -190,6 +190,8 @@ export function useDerivedSwapInfo(
     [currencies]
   )
 
+  // console.log({ isStableSwap })
+
   // get link to trade on v1, if a better rate exists
   const v1Trade = undefined
 
