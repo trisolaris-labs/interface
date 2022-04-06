@@ -160,8 +160,8 @@ export function useStableSwapContract(poolName?: StableSwapPoolName, withSignerI
       return legacyStableSwapABIPool
     }
 
-    // TODO: Verify whether this is called when meta pool contract is deployed
     if (isMetaPool(pool.name)) {
+      // console.log({ metaPool })
       return metaPool
     }
 

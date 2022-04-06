@@ -96,7 +96,7 @@ function buildSwapSideData(token: Token, pool?: StableSwapPool): Required<SwapSi
   return {
     address: token.address,
     poolName: pool?.name,
-    tokenIndex: pool?.poolTokens.findIndex(t => t.address === token.address)
+    tokenIndex: pool?.underlyingPoolTokens?.findIndex(t => t.address === token.address)
   }
 }
 
