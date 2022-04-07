@@ -18,7 +18,6 @@ export default function useStableSwapEstimateRemoveLiquidity({
   withdrawTokenIndex,
   stableSwapPoolName
 }: Props): [CurrencyAmount[], () => Promise<void>, TXError | null] {
-  // NOTE - Does this need changing to underlyingPoolTokens? Maybe not?
   const { poolTokens } = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
   const poolCurrencies = poolTokens.map(token => unwrappedToken(token))
 
