@@ -8,10 +8,10 @@ import { abi as PNG_ABI } from '@pangolindex/governance/artifacts/contracts/PNG.
 import { abi as BRIDGE_MIGRATOR_ABI } from '@pangolindex/exchange-contracts/artifacts/contracts/pangolin-periphery/PangolinBridgeMigrationRouter.sol/PangolinBridgeMigrationRouter.json'
 import { useMemo } from 'react'
 
-import COMPLEX_REWARDER_ABI from '../constants/abis/complex-rewarder.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
 import STABLE_SWAP_FLASH_LOAN_ABI from '../constants/abis/stableswap/swapFlashLoan.json'
 import STABLE_SWAP_META_SWAP_DEPOSIT_ABI from '../constants/abis/stableswap/metaSwapDeposit.json'
+import STABLE_META_SWAP_ABI from '../constants/abis/stableswap/metaSwap.json'
 import STABLE_SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from '../constants/abis/stableswap/swapFlashLoanNoWithdrawFee.json'
 import STABLE_SWAP_LP_TOKEN_UNGUARDED_ABI from '../constants/abis/stableswap/lpTokenUnguarded.json'
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
@@ -132,7 +132,7 @@ function useLegacyStableSwapABIPool(pool: StableSwapPool | null, withSignerIfPos
 }
 
 function useStableSwapMetaPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
-  return useContract(pool?.address, STABLE_SWAP_META_SWAP_DEPOSIT_ABI, withSignerIfPossible)
+  return useContract(pool?.address, STABLE_META_SWAP_ABI, withSignerIfPossible)
 }
 
 function useStableSwapPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
@@ -175,4 +175,8 @@ export function useStableSwapLPTokenContract(
   const { lpToken } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
 
   return useContract(lpToken.address, STABLE_SWAP_LP_TOKEN_UNGUARDED_ABI, withSignerIfPossible)
+}
+
+function useStableSwapMetaPoolDeposit(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
+  return useContract(pool?.address, STABLE_SWAP_META_SWAP_DEPOSIT_ABI, withSignerIfPossible)
 }
