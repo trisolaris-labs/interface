@@ -213,7 +213,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
           <AutoColumn gap="8px">
             <FixedHeightRow marginTop="4px">
               <StyledText fontWeight={500}>User {poolTokensString} LP Balance</StyledText>
-              <StyledText fontWeight={500}>{`$${userData?.usdBalance.toString()} (${userData?.lpTokenBalance.toFixed(
+              <StyledText fontWeight={500}>{`$${userData?.usdBalance.toFixed(4)} (${userData?.lpTokenBalance.toFixed(
                 3
               )} LP tokens) `}</StyledText>
             </FixedHeightRow>
@@ -233,7 +233,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
                     {token.name}
                   </div>
                   <StyledText fontWeight={500} marginLeft={'6px'}>
-                    {`${value.toString()} (${percent.toFixed(2)}%)`}
+                    {`${value.toSignificant(4)} (${percent.toFixed(2)}%)`}
                   </StyledText>
                 </FixedHeightRow>
               ))}
