@@ -58,10 +58,7 @@ export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData
       })
     const tokenToPools = sortedPools.reduce((acc, { name: poolName }) => {
       const pool = STABLESWAP_POOLS[ChainId.AURORA][poolName]
-      const tokens =
-        pool?.underlyingPoolTokens != null && pool.underlyingPoolTokens.length > 0
-          ? pool.underlyingPoolTokens
-          : pool.poolTokens
+      const tokens = pool.poolTokens
 
       tokens.forEach(token => {
         acc[token.address] = (acc[token.address] || []).concat(poolName)
