@@ -58,10 +58,7 @@ export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData
       })
     const tokenToPools = sortedPools.reduce((acc, { name: poolName }) => {
       const pool = STABLESWAP_POOLS[ChainId.AURORA][poolName]
-      const tokens =
-        pool?.underlyingPoolTokens != null && pool.underlyingPoolTokens.length > 0
-          ? pool.underlyingPoolTokens
-          : pool.poolTokens
+      const tokens = pool.poolTokens
 
       tokens.forEach(token => {
         acc[token.address] = (acc[token.address] || []).concat(poolName)
@@ -96,7 +93,7 @@ function buildSwapSideData(token: Token, pool?: StableSwapPool): Required<SwapSi
   return {
     address: token.address,
     poolName: pool?.name,
-    tokenIndex: pool?.poolTokens.findIndex(t => t.address === token.address)
+    tokenIndex: pool?.poolTokens?.findIndex(t => t.address === token.address)
   }
 }
 
