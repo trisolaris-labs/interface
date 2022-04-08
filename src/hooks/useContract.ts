@@ -161,7 +161,6 @@ export function useStableSwapContract(poolName?: StableSwapPoolName, withSignerI
     }
 
     if (isMetaPool(pool.name)) {
-      // console.log({ metaPool })
       return metaPool
     }
 
