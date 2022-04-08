@@ -150,7 +150,6 @@ export default function Swap() {
       if (isStableSwap) {
         const swapOutputRaw = parsedAmounts?.OUTPUT?.raw
         if (swapOutputRaw) {
-          // console.log({ stableswapTrade })
           // console.log(stableswapTrade?.outputAmount?.raw?.toString())
           // return true
           return JSBI.greaterThan(stableswapTrade?.outputAmount?.raw ?? JSBI.BigInt(0), swapOutputRaw)
