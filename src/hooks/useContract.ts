@@ -1,5 +1,6 @@
 import { Contract } from '@ethersproject/contracts'
 import { ChainId, Token, WETH } from '@trisolaris/sdk'
+// eslint-disable-next-line @typescript-eslint/camelcase
 import IUniswapV2Pair_ABI from '../constants/abis/polygon/IUniswapV2Pair.json'
 import { abi as STAKING_REWARDS_ABI } from '@pangolindex/governance/artifacts/contracts/StakingRewards.sol/StakingRewards.json'
 import { abi as AIRDROP_ABI } from '@pangolindex/governance/artifacts/contracts/Airdrop.sol/Airdrop.json'
@@ -131,8 +132,8 @@ function useLegacyStableSwapABIPool(pool: StableSwapPool | null, withSignerIfPos
   return useContract(pool?.address, STABLE_SWAP_FLASH_LOAN_ABI, withSignerIfPossible)
 }
 
-function useStableSwapMetaPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
-  return useContract(pool?.address, STABLE_META_SWAP_ABI, withSignerIfPossible)
+function useStableSwapMetaPoolDeposit(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
+  return useContract(pool?.address, STABLE_SWAP_META_SWAP_DEPOSIT_ABI, withSignerIfPossible)
 }
 
 function useStableSwapPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
@@ -177,6 +178,6 @@ export function useStableSwapLPTokenContract(
   return useContract(lpToken.address, STABLE_SWAP_LP_TOKEN_UNGUARDED_ABI, withSignerIfPossible)
 }
 
-function useStableSwapMetaPoolDeposit(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
-  return useContract(pool?.address, STABLE_SWAP_META_SWAP_DEPOSIT_ABI, withSignerIfPossible)
+export function useStableSwapMetaPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
+  return useContract(pool?.address, STABLE_META_SWAP_ABI, withSignerIfPossible)
 }

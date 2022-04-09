@@ -2,8 +2,13 @@ import { AddressZero } from '@ethersproject/constants'
 
 import { BigNumber } from '@ethersproject/bignumber'
 import { useActiveWeb3React } from '.'
-import { getTokenForStablePoolType, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
-import { useStableSwapContract } from './useContract'
+import {
+  getTokenForStablePoolType,
+  isMetaPool,
+  StableSwapPoolName,
+  STABLESWAP_POOLS
+} from '../state/stableswap/constants'
+import { useStableSwapContract, useStableSwapMetaPool } from './useContract'
 import { ChainId, Fraction, JSBI, Percent, Price, Token, TokenAmount } from '@trisolaris/sdk'
 import { useSingleCallResult, useSingleContractMultipleData } from '../state/multicall/hooks'
 import { useTokenBalance } from '../state/wallet/hooks'
@@ -48,39 +53,40 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
   const { account } = useActiveWeb3React()
 
   const pool = STABLESWAP_POOLS[ChainId.AURORA][poolName]
-  const { lpToken, metaSwapAddresses } = pool
+  const { lpToken, poolTokens, type, underlyingPoolTokens } = pool
   const effectivePoolTokens =
-    pool?.underlyingPoolTokens != null && pool.underlyingPoolTokens.length > 0
-      ? pool.underlyingPoolTokens
-      : pool.poolTokens
-  const isMetaSwap = metaSwapAddresses != null
+    underlyingPoolTokens != null && underlyingPoolTokens.length > 0 ? underlyingPoolTokens : poolTokens
+  const isMetaSwap = isMetaPool(poolName)
 
   const swapContract = useStableSwapContract(poolName)
+  const metaSwapContract = useStableSwapMetaPool(pool)
 
-  const swapStorage = useSingleCallResult(swapContract, 'swapStorage')
+  const effectiveContract = isMetaSwap ? metaSwapContract : swapContract
+
+  const swapStorage = useSingleCallResult(effectiveContract, 'swapStorage')
   const [adminFee, swapFee] = [
     swapStorage?.result?.adminFee ?? BIG_INT_ZERO,
     swapStorage?.result?.swapFee ?? BIG_INT_ZERO
   ].map(value => new Percent(value, JSBI.BigInt(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(12)))))
-  const rawVirtualPrice = useSingleCallResult(swapContract, 'getVirtualPrice')?.result?.[0] ?? BIG_INT_ZERO
+  const rawVirtualPrice = useSingleCallResult(effectiveContract, 'getVirtualPrice')?.result?.[0] ?? BIG_INT_ZERO
   const virtualPrice = JSBI.equal(BIG_INT_ZERO, JSBI.BigInt(rawVirtualPrice))
     ? null
     : new Fraction(JSBI.BigInt(rawVirtualPrice), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
-  const aParameter: JSBI = useSingleCallResult(swapContract, 'getA')?.result?.[0] ?? BIG_INT_ZERO
-  const isPaused: boolean = useSingleCallResult(swapContract, 'paused')?.result?.[0] ?? false
+  const aParameter: JSBI = useSingleCallResult(effectiveContract, 'getA')?.result?.[0] ?? BIG_INT_ZERO
+  const isPaused: boolean = useSingleCallResult(effectiveContract, 'paused')?.result?.[0] ?? false
   const userLPTokenBalance = useTokenBalance(account ?? AddressZero, lpToken) ?? new TokenAmount(lpToken, BIG_INT_ZERO)
   const totalLpTokenBalance = useTotalSupply(lpToken) ?? new TokenAmount(lpToken, BIG_INT_ZERO)
 
   // Pool token data
   const tokenBalanceInputs: number[][] = (effectivePoolTokens ?? []).map((_, i) => [i])
-  const tokenBalances = useSingleContractMultipleData(swapContract, 'getTokenBalance', tokenBalanceInputs)
+  const tokenBalances = useSingleContractMultipleData(effectiveContract, 'getTokenBalance', tokenBalanceInputs)
     ?.map(response => response?.result)
     ?.flat()
     ?.map((item: any) => JSBI.BigInt(item ?? BIG_INT_ZERO))
 
   const tokenBalancesSum = sumAllJSBI(tokenBalances)
 
-  const poolPresentationTokenDecimals = getTokenForStablePoolType(pool.type).decimals
+  const poolPresentationTokenDecimals = getTokenForStablePoolType(type).decimals
   const STABLE_POOL_CONTRACT_DECIMALS = 18
   const decimalDelta = JSBI.exponentiate(
     JSBI.BigInt(10),
@@ -91,7 +97,7 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
 
   const tokenBalancesUSD = effectivePoolTokens.map((token, i, arr) => {
     // use another token to estimate USD price of meta LP tokens
-    const effectiveToken = isMetaSwap && i === arr.length - 1 ? getTokenForStablePoolType(pool.type) : token
+    const effectiveToken = isMetaSwap && i === arr.length - 1 ? getTokenForStablePoolType(type) : token
     const balance = tokenBalances[i]
     const tokenAmount = new TokenAmount(effectiveToken, balance)
 
@@ -129,7 +135,7 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
           : tokenBalancesSum
       )
 
-  const poolTokens = effectivePoolTokens.map((token, i) => ({
+  const tokens = effectivePoolTokens.map((token, i) => ({
     token,
     percent: new Percent(
       tokenBalances[i],
@@ -140,8 +146,8 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
 
   const poolData = {
     name: poolName,
-    tokens: poolTokens,
-    reserve: new TokenAmount(getTokenForStablePoolType(pool.type), tokenBalancesUSDSum),
+    tokens,
+    reserve: new TokenAmount(getTokenForStablePoolType(type), tokenBalancesUSDSum),
     totalLocked: totalLpTokenBalance,
     virtualPrice: virtualPrice,
     adminFee: adminFee,
