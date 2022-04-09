@@ -17,6 +17,7 @@ export function useSingleFarm(version: number): StakingTri {
   const { chefVersion, poolId, rewarderAddress } = activeFarms[version]
 
   const stakingInfoData = useFetchStakingInfoData()
+
   const complexRewarderContract = useComplexRewarderContract(rewarderAddress)
 
   const v1args = [poolId.toString(), account?.toString()]
@@ -26,6 +27,7 @@ export function useSingleFarm(version: number): StakingTri {
 
   const pendingTri = useSingleCallResult(contract, 'pendingTri', v1args) //user related
   const userInfo = useSingleCallResult(contract, 'userInfo', v1args) //user related
+
   const pendingComplexRewards = useSingleCallResult(
     chefVersion === ChefVersions.V2 ? complexRewarderContract : null,
     'pendingTokens',

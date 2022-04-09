@@ -3,7 +3,6 @@ import { AutoColumn } from '../../components/Column'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import { JSBI } from '@trisolaris/sdk'
 import { RouteComponentProps } from 'react-router-dom'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -32,7 +31,12 @@ import useTLP from '../../hooks/useTLP'
 import { getPairRenderOrder } from '../../utils/pools'
 
 import { BIG_INT_ZERO } from '../../constants'
-import { ChefVersions } from '../../state/stake/stake-constants'
+
+import { StableSwapPoolName } from '../../state/stableswap/constants'
+import { useSingleStableFarm } from '../../state/stake/userStableFarms'
+import { STABLESWAP_POOLS, STABLE_FARMS_ENUM } from '../../state/stableswap/constants'
+import { ChainId } from '@trisolaris/sdk'
+import { ChefVersions, dummyAmount, dummyToken } from '../../state/stake/stake-constants'
 
 const PositionInfo = styled(AutoColumn)<{ dim: any }>`
   position: relative;
@@ -105,14 +109,16 @@ const DataRow = styled(RowBetween)`
    `};
 `
 
-export default function Manage({
+export default function StableFarmManage({
   match: {
-    params: { currencyIdA, currencyIdB, version }
+    params: { stableFarmName }
   }
-}: RouteComponentProps<{ currencyIdA: string; currencyIdB: string; version: string }>) {
+}: RouteComponentProps<{ stableFarmName: StableSwapPoolName }>) {
   const { account } = useActiveWeb3React()
 
-  const stakingInfo = useSingleFarm(Number(version))
+  const stableFarm = STABLE_FARMS_ENUM[ChainId.AURORA][stableFarmName]
+  const stakingInfo = useSingleStableFarm(stableFarmName)
+  console.log(stakingInfo)
 
   const {
     chefVersion,
@@ -131,7 +137,7 @@ export default function Manage({
   const isDualRewards = chefVersion === ChefVersions.V2
 
   // get currencies and pair
-  const { currency0, currency1, token0, token1 } = getPairRenderOrder(...tokens)
+  const { currency0, currency1, token0, token1 } = getPairRenderOrder(tokens[0], tokens[1])
 
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
   const totalRewardRateFriendly = addCommasToNumber(totalRewardRate.toString())
@@ -141,7 +147,7 @@ export default function Manage({
 
   // Only override `backgroundColor2` if it's a dual rewards pool
   const backgroundColor2 = useColorForToken(token1, () => isDualRewards)
-  // detect existing unstaked LP position to show add button if none found
+  //   // detect existing unstaked LP position to show add button if none found
   const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakedAmount?.token)
   const showAddLiquidityButton = Boolean(stakingInfo?.stakedAmount?.equalTo('0') && userLiquidityUnstaked?.equalTo('0'))
 
@@ -156,7 +162,9 @@ export default function Manage({
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
 
-  const lpToken = useTLP({ lpAddress, token0, token1 })
+  // const lpToken = useTLP({ lpAddress, token0, token1 })
+
+  const lpToken = stableFarm.lpToken
 
   const { userLPAmountUSDFormatted } =
     useUserFarmStatistics({
@@ -232,7 +240,7 @@ export default function Manage({
           </CardSection>
         </VoteCard>
       ) : null}
-
+      {/* 
       {stakingInfo != null ? (
         <>
           <StakingModal
@@ -252,7 +260,7 @@ export default function Manage({
             stakingInfo={stakingInfo}
           />
         </>
-      ) : null}
+      ) : null} */}
 
       <PositionInfo gap="lg" justify="center" dim={showAddLiquidityButton}>
         <BottomSection gap="lg" justify="center">

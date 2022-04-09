@@ -1,6 +1,11 @@
 import { ChainId, Token, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
+
+import { ChefVersions, createMCV2Pool, NULL_POOL } from '../stake/stake-constants'
+
 import { USDC, USDT, WBTC } from '../../constants/tokens'
+import { StakingTri } from '../stake/stake-constants'
+import { MASTERCHEF_ADDRESS_V2 } from '../stake/hooks-sushi'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
@@ -113,3 +118,23 @@ export const TOKENS_MAP = _.transform(
   },
   {} as StableSwapTokensMap
 )
+
+export const STABLE_FARMS_ENUM = {
+  [ChainId.AURORA]: {
+    [StableSwapPoolName.USDC_USDT]: {
+      ...NULL_POOL,
+      poolId: 18,
+      name: StableSwapPoolName.USDC_USDT,
+      tokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
+      lpAddress: STABLESWAP_POOLS[ChainId.AURORA].USDC_USDT.lpToken.address,
+      rewarderAddress: '',
+      allocPoint: 1,
+      noTriRewards: false,
+      lpToken: STABLESWAP_POOLS[ChainId.AURORA].USDC_USDT.lpToken,
+      inStaging: true,
+      isStableSwap: true,
+      stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
+      chefVersion: ChefVersions.V2
+    }
+  }
+}

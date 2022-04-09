@@ -26,6 +26,7 @@ import {
   AUSDO,
   BBT
 } from '../../constants/tokens'
+import { StableSwapPoolName } from '../stableswap/constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
 export enum ChefVersions {
@@ -65,6 +66,7 @@ export type StakingTriFarms = {
   noTriRewards: boolean
   doubleRewardToken: Token
   isStableSwap: boolean
+  stablePoolname: string
 }
 
 export interface ExternalInfo {
@@ -77,13 +79,14 @@ export interface ExternalInfo {
   allocPoint: number
   apr: number
   apr2: number
+  poolId: number
 }
 
 export const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
 
-const dummyAmount = new TokenAmount(dummyToken, '0')
+export const dummyAmount = new TokenAmount(dummyToken, '0')
 
-const NULL_POOL: StakingTri = {
+export const NULL_POOL: StakingTri = {
   ID: 0,
   poolId: 0,
   tokens: [
@@ -109,7 +112,8 @@ const NULL_POOL: StakingTri = {
   inStaging: false,
   noTriRewards: false,
   doubleRewardToken: dummyToken,
-  isStableSwap: false
+  isStableSwap: false,
+  stablePoolname: ''
 }
 const NULL_POOLS = [NULL_POOL]
 
@@ -145,7 +149,7 @@ function createMCV1Pool(poolData: TCreateMCPool): StakingTri {
  * @param poolData
  * @returns StakingTri
  */
-function createMCV2Pool(poolData: TCreateMCPool): StakingTri {
+export function createMCV2Pool(poolData: TCreateMCPool): StakingTri {
   const masterchefV2Props = {
     stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
     chefVersion: ChefVersions.V2

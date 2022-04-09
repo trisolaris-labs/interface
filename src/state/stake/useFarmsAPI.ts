@@ -46,7 +46,8 @@ export function useFarmsAPI(): StakingTriFarms[] {
       inStaging: activeFarms[index].inStaging,
       noTriRewards: activeFarms[index].noTriRewards,
       doubleRewardToken: activeFarms[index].doubleRewardToken,
-      isStableSwap: activeFarms[index].isStableSwap
+      isStableSwap: false,
+      stablePoolname: ''
     }
   })
 

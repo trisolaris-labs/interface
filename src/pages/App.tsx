@@ -27,6 +27,7 @@ import StableSwapPool from './StableSwapPool'
 import StableSwapPoolAddLiquidity from './StableSwapPoolAddLiquidity'
 import StableSwapPoolRemoveLiquidity from './StableSwapPoolRemoveLiquidity'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
+import StableFarmManage from './EarnTri/StableSwapManage'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -105,6 +106,7 @@ export default function App() {
               <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
               <Route exact strict path="/tri/:currencyIdA/:currencyIdB/:version" component={Manage} />
+              <Route exact strict path="/tri/stable/:stableFarmName" component={StableFarmManage} />
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>
