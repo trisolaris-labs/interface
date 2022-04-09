@@ -1,5 +1,4 @@
-import React, { useContext, useState, useCallback } from 'react'
-import { Plus } from 'react-feather'
+import React, { useState, useCallback } from 'react'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
 
@@ -33,13 +32,9 @@ import CaptionWithIcon from '../../components/CaptionWithIcon'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import { RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
-import { useUserSlippageTolerance } from '../../state/user/hooks'
-import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { ButtonPrimary } from '../../components/Button'
 import { RowBetween } from '../../components/Row'
-import { CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
-import { useStableSwapContract } from '../../hooks/useContract'
-import { ThemeContext } from 'styled-components'
+import { JSBI } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../../constants'
 import { useExpertModeManager } from '../../state/user/hooks'
 
@@ -50,7 +45,6 @@ type Props = {
 export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: Props) {
   const { account, chainId, library } = useActiveWeb3React()
 
-  const theme = useContext(ThemeContext)
   const { t } = useTranslation()
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
@@ -119,12 +113,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     onField2Input('')
 
     setTxHash('')
-  }, [
-    onField0Input,
-    onField1Input,
-    onField2Input
-    // txHash
-  ])
+  }, [onField0Input, onField1Input, onField2Input, setTxHash])
 
   const pendingText = `Supplying ${Object.values(parsedAmounts)
     .map(amount => (amount ? `${amount?.toSignificant(6)} ${amount?.currency.symbol}  ` : ''))
@@ -261,7 +250,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                       isExpertMode ? onAdd() : setShowConfirm(true)
                     }}
                     disabled={!amountsAreNotZero}
-                    error={!isValid}
+                    error={amountsAreNotZero && !isValid}
                   >
                     <Text fontSize={20} fontWeight={500}>
                       {error ?? t('addLiquidity.supply')}
