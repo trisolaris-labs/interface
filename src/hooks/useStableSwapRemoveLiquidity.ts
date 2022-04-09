@@ -1,10 +1,9 @@
 import { CurrencyAmount, ChainId } from '@trisolaris/sdk'
 import { BigNumber } from 'ethers'
 import { useCallback, useState } from 'react'
-import { StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
+import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { computeSlippageAdjustedMinAmount } from '../utils/prices'
-import { unwrappedToken } from '../utils/wrappedCurrency'
 import { useStableSwapContract } from './useContract'
 import useTransactionDeadline from './useTransactionDeadline'
 
@@ -32,8 +31,13 @@ export default function useStableSwapRemoveLiquidity({
   const [txHash, setTxHash] = useState('')
 
   const pool = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
-  const swapContract = useStableSwapContract(stableSwapPoolName)
-  const amountString = amount?.raw.toString()
+  const swapContract = useStableSwapContract(
+    stableSwapPoolName,
+    true, // require signer
+    isMetaPool(stableSwapPoolName) // if it's a metapool, use unwrapped tokens
+  )
+  const amountString = amount?.toSignificant(6)
+  const amountRawString = amount?.raw.toString()
 
   const estimatedMinAmounts = estimatedAmounts.map(({ raw: amount }) =>
     computeSlippageAdjustedMinAmount(amount, userSlippageTolerance).toString()
@@ -47,30 +51,27 @@ export default function useStableSwapRemoveLiquidity({
 
   const removeLiquidity = useCallback(async () => {
     try {
-      if (amountString == null) {
+      if (amountRawString == null) {
         return
       }
       setAttemptingTxn(true)
       let transaction
       if (withdrawTokenIndex != null) {
         transaction = await swapContract?.removeLiquidityOneToken(
-          amountString,
+          amountRawString,
           withdrawTokenIndex,
           estimatedMinAmounts[withdrawTokenIndex],
           deadline?.toNumber()
         )
       } else {
-        transaction = await swapContract?.removeLiquidity(amountString, estimatedMinAmounts, deadline?.toNumber())
+        transaction = await swapContract?.removeLiquidity(amountRawString, estimatedMinAmounts, deadline?.toNumber())
       }
 
       await transaction.wait()
       setAttemptingTxn(false)
 
       addTransaction(transaction, {
-        // summary: `Removed Liquidity: ${CurrencyAmount.fromRawAmount(unwrappedToken(pool.lpToken), amountString)} ${
-        //   pool.lpToken.symbol
-        // }`
-        summary: `Removed Liquidity: ${amount?.toSignificant(6)} ${pool.lpToken.symbol}`
+        summary: `Removed Liquidity: ${amountString} ${pool.lpToken.symbol}`
       })
       setTxHash(transaction.hash)
       return transaction
@@ -78,7 +79,16 @@ export default function useStableSwapRemoveLiquidity({
       setAttemptingTxn(false)
       console.error(error)
     }
-  }, [addTransaction, amountString, deadline, estimatedMinAmounts, pool.lpToken, swapContract, withdrawTokenIndex])
+  }, [
+    addTransaction,
+    amountRawString,
+    amountString,
+    deadline,
+    estimatedMinAmounts,
+    pool.lpToken.symbol,
+    swapContract,
+    withdrawTokenIndex
+  ])
 
   return { removeLiquidity, attemptingTxn, txHash, setTxHash }
 }
