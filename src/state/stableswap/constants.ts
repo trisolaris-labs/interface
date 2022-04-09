@@ -110,8 +110,8 @@ export const STABLESWAP_POOLS: StableSwapPools = {
       // *** NOTE *** - For future reference, this order of the pool tokens must be equivalent to the LP token name order
       // Also to verify, please query the swap contract for the individual stable token indexes
       poolTokens: [UST[ChainId.AURORA], USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
-      address: '0x6c1db069dc048C4C534391cA57C6B04Ae04A1958', // MetaSwapDeposit
-      metaSwapAddresses: '0x264e4B3F80f62442C812F9D08F7f8b77B2c70FD4', // MetaSwap
+      address: '0x264e4B3F80f62442C812F9D08F7f8b77B2c70FD4', // MetaSwapDeposit
+      metaSwapAddresses: '0x6c1db069dc048C4C534391cA57C6B04Ae04A1958', // MetaSwap
       type: StableSwapPoolTypes.USD,
       route: 'usd',
       underlyingPoolTokens: [
