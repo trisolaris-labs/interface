@@ -1,7 +1,6 @@
 import { ChainId, Currency, CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
 import { useCallback, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { PairState, usePair } from '../../data/Reserves'
 import { useTotalSupply } from '../../data/TotalSupply'
 
 import { useActiveWeb3React } from '../../hooks'
@@ -12,8 +11,7 @@ import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
 import { useTranslation } from 'react-i18next'
 
-import { StableSwapPoolName } from '../stableswap/constants'
-import useStablePoolsData from '../../hooks/useStablePoolsData'
+import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
 import { useStableSwapContract } from '../../hooks/useContract'
 import { BIG_INT_ZERO } from '../../constants'
 import { useUserSlippageTolerance } from '../user/hooks'
@@ -21,7 +19,6 @@ import { BigNumber } from 'ethers'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import { useTransactionAdder } from '../transactions/hooks'
 import { computeSlippageAdjustedMinAmount } from '../../utils/prices'
-import { dummyToken } from '../stake/stake-constants'
 
 export function useStableSwapAddLiquidityState(): AppState['stableswapAddLiquidity'] {
   return useSelector<AppState, AppState['stableswapAddLiquidity']>(state => state.stableswapAddLiquidity)
@@ -46,8 +43,8 @@ export function useDerivedStableSwapAddLiquidityInfo(
     [Field.CURRENCY_2]: typedValue2
   } = useStableSwapAddLiquidityState()
 
-  const [poolData] = useStablePoolsData(stableSwapPoolName)
-  const [currency0, currency1, currency2] = poolData.tokens.map(({ token }) => unwrappedToken(token))
+  const { lpToken, poolTokens } = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
+  const [currency0, currency1, currency2] = poolTokens.map(token => unwrappedToken(token))
   const hasThirdCurrency = currency2 != null
 
   // tokens
@@ -60,7 +57,7 @@ export function useDerivedStableSwapAddLiquidityInfo(
     [currency0, currency1, currency2]
   )
 
-  const totalLPTokenSuppply = useTotalSupply(poolData.lpToken ?? dummyToken)
+  const totalLPTokenSuppply = useTotalSupply(lpToken)
 
   // balances
   const balances = useCurrencyBalances(account ?? undefined, [
@@ -158,7 +155,11 @@ export function useStableSwapAddLiquidityCallback(
   stableSwapPoolName: StableSwapPoolName
 ): { callback: () => Promise<string>; txHash: string; setTxHash: React.Dispatch<React.SetStateAction<string>> } {
   const { account } = useActiveWeb3React()
-  const stableSwapContract = useStableSwapContract(stableSwapPoolName)
+  const stableSwapContract = useStableSwapContract(
+    stableSwapPoolName,
+    true, // require signer
+    isMetaPool(stableSwapPoolName) // if it's a metapool, use unwrapped tokens
+  )
   const { currencies, parsedAmounts, hasThirdCurrency, totalLPTokenSuppply } = useDerivedStableSwapAddLiquidityInfo(
     stableSwapPoolName
   )

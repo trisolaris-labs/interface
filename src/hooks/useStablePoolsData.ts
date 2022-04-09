@@ -59,7 +59,7 @@ export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookR
   const isMetaSwap = isMetaPool(poolName)
 
   const swapContract = useStableSwapContract(poolName)
-  const metaSwapContract = useStableSwapMetaPool(pool)
+  const metaSwapContract = useStableSwapMetaPool(pool.address)
 
   const effectiveContract = isMetaSwap ? metaSwapContract : swapContract
 
