@@ -1,9 +1,9 @@
+import { ChainId } from '@trisolaris/sdk'
 import React from 'react'
 import styled from 'styled-components'
 import { ButtonOutlined, ButtonSecondary } from '../../components/Button'
 import CurrencyLogo from '../../components/CurrencyLogo'
-import useStablePoolsData from '../../hooks/useStablePoolsData'
-import { StableSwapPoolName } from '../../state/stableswap/constants'
+import { StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 
 const CurrencySymbol = styled('span')`
@@ -21,8 +21,8 @@ export default function StableSwapRemoveLiquidityTokenSelector({
   tokenIndex,
   onSelectTokenIndex
 }: Props) {
-  const [poolData] = useStablePoolsData(stableSwapPoolName)
-  const currencies = poolData?.tokens?.map(({ token }) => unwrappedToken(token)) ?? []
+  const { poolTokens } = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
+  const currencies = poolTokens.map(token => unwrappedToken(token))
 
   const AllButton = tokenIndex === null ? ButtonSecondary : ButtonOutlined
 
