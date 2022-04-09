@@ -36,7 +36,7 @@ import { StableSwapPoolName } from '../../state/stableswap/constants'
 import { useSingleStableFarm } from '../../state/stake/userStableFarms'
 import { STABLESWAP_POOLS, STABLE_FARMS_ENUM } from '../../state/stableswap/constants'
 import { ChainId } from '@trisolaris/sdk'
-import { ChefVersions, dummyAmount, dummyToken } from '../../state/stake/stake-constants'
+import { ChefVersions, dummyAmount, dummyToken, NULL_POOL } from '../../state/stake/stake-constants'
 
 const PositionInfo = styled(AutoColumn)<{ dim: any }>`
   position: relative;
@@ -116,9 +116,9 @@ export default function StableFarmManage({
 }: RouteComponentProps<{ stableFarmName: StableSwapPoolName }>) {
   const { account } = useActiveWeb3React()
 
-  const stableFarm = STABLE_FARMS_ENUM[ChainId.AURORA][stableFarmName]
+  const stableFarm = STABLE_FARMS_ENUM[ChainId.AURORA][stableFarmName] 
+
   const stakingInfo = useSingleStableFarm(stableFarmName)
-  console.log(stakingInfo)
 
   const {
     chefVersion,
@@ -164,7 +164,7 @@ export default function StableFarmManage({
 
   // const lpToken = useTLP({ lpAddress, token0, token1 })
 
-  const lpToken = stableFarm.lpToken
+  const lpToken = stableFarm.lpToken ?? dummyToken
 
   const { userLPAmountUSDFormatted } =
     useUserFarmStatistics({

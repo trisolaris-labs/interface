@@ -8,27 +8,12 @@ import { useActiveWeb3React } from '../../hooks'
 import { useFetchStakingInfoData } from '../../fetchers/farms'
 import { useBlockNumber } from '../application/hooks'
 
-import { tokenAmount, ChefVersions, dummyToken, dummyAmount, NULL_POOL } from './stake-constants'
+import { tokenAmount, ChefVersions, dummyToken, dummyAmount } from './stake-constants'
 import { TRI } from '../../constants/tokens'
-import { StableSwapPoolName, STABLE_FARMS_ENUM } from '../stableswap/constants'
-
-type StableFarm = {
-  tokens: Token[]
-  isPeriodFinished: boolean
-  earnedAmount: TokenAmount
-  doubleRewardAmount: TokenAmount
-  stakedAmount: TokenAmount | null
-  totalStakedAmount: TokenAmount
-  totalStakedInUSD: number
-  totalRewardRate: number
-  rewardRate: TokenAmount
-  apr: number
-  apr2: number
-  chefVersion: ChefVersions
-}
+import { StableSwapPoolName, STABLE_FARMS_ENUM, StableFarm } from '../stableswap/constants'
 
 // // gets the staking info from the network for the active chain id
-export function useSingleStableFarm(stableFarmName: StableSwapPoolName): any {
+export function useSingleStableFarm(stableFarmName: StableSwapPoolName): StableFarm {
   const stableFarm = STABLE_FARMS_ENUM[ChainId.AURORA][stableFarmName]
 
   const { chainId, account } = useActiveWeb3React()
@@ -81,7 +66,7 @@ export function useSingleStableFarm(stableFarmName: StableSwapPoolName): any {
     const { totalStakedInUSD, totalRewardRate, apr, apr2 } = stableFarmStakingInfo
 
     return {
-      //   ...stablePool,
+      ...stableFarm,
       tokens: stableFarm.tokens,
       isPeriodFinished: false,
       earnedAmount: earnedAmount,

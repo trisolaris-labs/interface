@@ -119,7 +119,11 @@ export const TOKENS_MAP = _.transform(
   {} as StableSwapTokensMap
 )
 
-export const STABLE_FARMS_ENUM = {
+export type StableFarm = StakingTri & { name: StableSwapPoolName; lpToken: Token }
+
+export const STABLE_FARMS_ENUM: {
+  [ChainId.AURORA]: { [name in StableSwapPoolName]: StableFarm }
+} = {
   [ChainId.AURORA]: {
     [StableSwapPoolName.USDC_USDT]: {
       ...NULL_POOL,
