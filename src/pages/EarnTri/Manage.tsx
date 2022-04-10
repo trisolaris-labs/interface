@@ -1,16 +1,15 @@
 import React, { useCallback, useState } from 'react'
 import { AutoColumn } from '../../components/Column'
-import styled from 'styled-components'
+
 import { Link } from 'react-router-dom'
 
-import { JSBI } from '@trisolaris/sdk'
 import { RouteComponentProps } from 'react-router-dom'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { TYPE } from '../../theme'
 
 import { RowBetween } from '../../components/Row'
-import { CardSection, DataCard, HighlightCard } from '../../components/earn/styled'
+import { CardSection } from '../../components/earn/styled'
 import { ButtonPrimary } from '../../components/Button'
 import StakingModal from '../../components/earn/StakingModalTri'
 import UnstakingModal from '../../components/earn/UnstakingModalTri'
@@ -24,8 +23,7 @@ import { useTranslation } from 'react-i18next'
 import { useSingleFarm } from '../../state/stake/user-farms'
 import useUserFarmStatistics from '../../state/stake/useUserFarmStatistics'
 import { PageWrapper } from '../../components/Page'
-import { Card } from 'rebass'
-import { DarkGreyCard } from '../../components/Card'
+
 import { addCommasToNumber } from '../../utils'
 import CountUp from '../../components/CountUp'
 import useTLP from '../../hooks/useTLP'
@@ -34,76 +32,17 @@ import { getPairRenderOrder } from '../../utils/pools'
 import { BIG_INT_ZERO } from '../../constants'
 import { ChefVersions } from '../../state/stake/stake-constants'
 
-const PositionInfo = styled(AutoColumn)<{ dim: any }>`
-  position: relative;
-  width: 100%;
-  opacity: ${({ dim }) => (dim ? 0.6 : 1)};
-`
-
-const BottomSection = styled(AutoColumn)`
-  border-radius: 12px;
-  width: 100%;
-  position: relative;
-`
-
-const ResponsiveRowBetween = styled(RowBetween)`
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    flex-direction: column;
-  `};
-`
-
-const StyledBottomCard = styled(DataCard)<{ dim: any }>`
-  background: ${({ theme }) => theme.bg3};
-  opacity: ${({ dim }) => (dim ? 0.4 : 1)};
-  padding: 1rem 1.25rem;
-`
-
-const PoolData = styled(DarkGreyCard)`
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 110px;
-    text-align: center;
-  `};
-`
-
-const Wrapper = styled(Card)`
-  border-radius: 10px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-  width: 100%;
-`
-
-const VoteCard = styled(HighlightCard)`
-  // background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
-  // overflow: hidden;
-`
-
-const BackgroundColor = styled.span<{ bgColor1: string | null; bgColor2?: string | null }>`
-   background: ${({ theme, bgColor1, bgColor2 }) =>
-     `linear-gradient(90deg, ${bgColor1 ?? theme.blue1} 0%, ${bgColor2 ?? 'grey'} 90%);`}
-   background-size: cover;
-   mix-blend-mode: overlay;
-   border-radius: 10px;
-   width: 100%;
-   height: 100%;
-   opacity: 0.5;
-   position: absolute;
-   top: 0;
-   left: 0;
-   user-select: none;
-`
-
-const DataRow = styled(RowBetween)`
-  justify-content: center;
-  gap: 12px;
-
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-     gap: 12px;
-   `};
-`
+import {
+  PositionInfo,
+  BottomSection,
+  ResponsiveRowBetween,
+  StyledBottomCard,
+  PoolData,
+  Wrapper,
+  VoteCard,
+  BackgroundColor,
+  DataRow
+} from './Manage.styles'
 
 export default function Manage({
   match: {
@@ -157,7 +96,7 @@ export default function Manage({
   const { t } = useTranslation()
 
   const lpToken = useTLP({ lpAddress, token0, token1 })
-
+  console.log(stakedAmount?.toExact())
   const { userLPAmountUSDFormatted } =
     useUserFarmStatistics({
       lpToken,
