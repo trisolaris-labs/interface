@@ -69,7 +69,7 @@ const DefaultPoolCardtri = ({
 }: { enableClaimButton?: boolean; enableModal?: () => void } & StablePoolCardTriProps) => {
   const isDualRewards = chefVersion == 1
 
-  const { currency0, currency1, token0, token1 } = getPairRenderOrder(_token0, _token1)
+  const { currency0, currency1, token0, token1 } = getPairRenderOrder(_token1, _token0)
 
   const { t } = useTranslation()
   // get the color of the token

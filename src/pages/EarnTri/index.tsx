@@ -209,7 +209,7 @@ export default function Earn({
           </DataRow>
         )}
         <PoolSection>
-          {filteredFarms.map((farm: any) => {
+          {filteredFarms.map((farm: StakingTri | StableFarm) => {
             return stableFarmsTabActive && 'name' in farm ? (
               <MemoizedStablePoolCardTRI
                 key={farm.name}

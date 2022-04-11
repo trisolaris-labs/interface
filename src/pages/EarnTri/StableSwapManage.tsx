@@ -71,7 +71,7 @@ export default function StableFarmManage({
   const isDualRewards = chefVersion === ChefVersions.V2
 
   // get currencies and pair
-  const { currency0, currency1, token0, token1 } = getPairRenderOrder(tokens[0], tokens[1])
+  const { currency0, currency1, token0, token1 } = getPairRenderOrder(tokens[1], tokens[0])
 
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
   const totalRewardRateFriendly = addCommasToNumber(totalRewardRate.toString())
@@ -99,7 +99,6 @@ export default function StableFarmManage({
   // const lpToken = useTLP({ lpAddress, token0, token1 })
 
   const lpToken = stableFarm.lpToken ?? dummyToken
-
 
   const { userLPAmountUSDFormatted } =
     useUserFarmStatistics({
