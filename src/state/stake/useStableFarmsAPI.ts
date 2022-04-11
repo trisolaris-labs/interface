@@ -56,7 +56,6 @@ export function useStableFarmsAPI(): StableFarm[] {
       inStaging: farm.inStaging,
       noTriRewards: farm.noTriRewards,
       doubleRewardToken: farm.doubleRewardToken,
-      isStableSwap: true,
       name: farm.name,
       lpToken: farm.lpToken
     }

@@ -66,9 +66,7 @@ export default function Earn({
   const [sortDescending, setSortDescending] = useState<boolean>(true)
 
   const stableFarmsTabActive = farmsType === 'stable'
-  // const tabFarmArrs = !stableFarmsTabActive
-  //   ? allFarmArrs.filter(farm => !farm.isStableSwap === true)
-  //   : allFarmArrs.filter(farm => farm.isStableSwap === true)
+
   const tabFarmArrs = stableFarmsTabActive ? stableFarmArrs : allFarmArrs
 
   const getSortedFarms = () => {
@@ -147,7 +145,6 @@ export default function Earn({
     return sortDescending ? <ChevronDown size={15} /> : <ChevronUp size={15} />
   }
 
-  console.log(filteredFarms)
   return (
     <PageWrapper gap="lg" justify="center">
       <MemoizedFarmBanner />

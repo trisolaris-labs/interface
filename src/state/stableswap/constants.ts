@@ -136,7 +136,6 @@ export const STABLE_FARMS: {
       noTriRewards: false,
       lpToken: STABLESWAP_POOLS[ChainId.AURORA].USDC_USDT.lpToken,
       inStaging: true,
-      isStableSwap: true,
       stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
       chefVersion: ChefVersions.V2
     }
