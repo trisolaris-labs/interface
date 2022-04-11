@@ -28,17 +28,16 @@ const StyledNavLink = styled(NavLink).attrs({
   outline: none;
   cursor: pointer;
   text-decoration: none;
-  color: ${({ theme, color }) => color || theme.text3};
+  color: ${({ theme, color }) => color || theme.text1};
   font-size: 20px;
 
   &.${activeClassName} {
     border-radius: 12px;
     font-weight: 500;
     color: ${({ theme, color }) => color || theme.text1};
-    ${({ color }) =>
-      color &&
-      `text-decoration: underline;
-       text-underline-offset: 3px;`}
+    text-decoration: underline;
+    text-decoration-color: ${({ theme, color }) => color || theme.primary1};
+    text-underline-offset: 12px;
   }
 
   :hover,
@@ -57,24 +56,18 @@ const StyledArrowLeft = styled(ArrowLeft)`
 `
 
 export function PoolTabs({ active }: { active: '/pool/stable' | '/pool' }) {
-  const theme = useContext(ThemeContext)
-  const { t } = useTranslation()
   return (
     <Tabs>
-      <StyledNavLink color={theme.yellow2} id={`pool-nav-link`} to={'/pool'} isActive={() => active === '/pool'}>
+      <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === '/pool'}>
         Standard AMM
       </StyledNavLink>
-      <StyledNavLink
-        id={`stableswap-pool-nav-link`}
-        to={'/pool/stable'}
-        isActive={() => active === '/pool/stable'}
-        color={theme.metallicGold}
-      >
+      <StyledNavLink id={`stableswap-pool-nav-link`} to={'/pool/stable'} isActive={() => active === '/pool/stable'}>
         Stable AMM
       </StyledNavLink>
     </Tabs>
   )
 }
+
 
 export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' }) {
   const { t } = useTranslation()
