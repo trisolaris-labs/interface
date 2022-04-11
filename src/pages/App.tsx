@@ -27,7 +27,7 @@ import StableSwapPool from './StableSwapPool'
 import StableSwapPoolAddLiquidity from './StableSwapPoolAddLiquidity'
 import StableSwapPoolRemoveLiquidity from './StableSwapPoolRemoveLiquidity'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
-import StableFarmManage from './EarnTri/StableSwapManage'
+import StableFarmManage from './EarnTri/StableFarmManage'
 
 const AppWrapper = styled.div`
   display: flex;
