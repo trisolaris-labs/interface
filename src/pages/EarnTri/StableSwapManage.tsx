@@ -20,7 +20,7 @@ import { useTokenBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { useColorForToken } from '../../hooks/useColor'
 import useUserFarmStatistics from '../../state/stake/useUserFarmStatistics'
-import { useSingleStableFarm } from '../../state/stake/userStableFarms'
+import { useSingleStableFarm } from '../../state/stake/useSingleStableFarm'
 
 import { getPairRenderOrder } from '../../utils/pools'
 import { currencyId } from '../../utils/currencyId'

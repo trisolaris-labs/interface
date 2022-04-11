@@ -2,31 +2,20 @@ import { ChainId, JSBI, TokenAmount, Token } from '@trisolaris/sdk'
 import { useMemo } from 'react'
 
 import { useComplexRewarderContract, useMasterChefV2ContractForVersion } from './hooks-sushi'
-import { useSingleCallResult } from '../../state/multicall/hooks'
+import { useSingleCallResult } from '../multicall/hooks'
 import { PairState, usePair } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 import { useFetchStakingInfoData } from '../../fetchers/farms'
 import { useBlockNumber } from '../application/hooks'
 
-import { tokenAmount, ChefVersions, dummyToken, dummyAmount } from './stake-constants'
+import { tokenAmount, ChefVersions, dummyToken, dummyAmount, NULL_POOL } from './stake-constants'
 import { TRI } from '../../constants/tokens'
 import { StableSwapPoolName, STABLE_FARMS, StableFarm } from '../stableswap/constants'
 
-const MOCK_DATA = {
-  allocPoint: 11,
-  apr: 40.325080657227005,
-  apr2: 0,
-  chefVersion: 'v2',
-  id: 25,
-  lpAddress: '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9',
-  poolId: 18,
-  totalRewardRate: 316008,
-  totalStaked: 1,
-  totalStakedInUSD: 1.028562,
-  totalSupply: 162118860652705970000
-}
+import { MOCK_DATA } from './MOCK_STABLEFARM_DATA'
+
 // // gets the staking info from the network for the active chain id
-export function useSingleStableFarm(stableFarmName: StableSwapPoolName): StableFarm {
+export function useSingleStableFarm(stableFarmName: StableSwapPoolName): any {
   const stableFarm = STABLE_FARMS[ChainId.AURORA][stableFarmName]
 
   const { chainId, account } = useActiveWeb3React()

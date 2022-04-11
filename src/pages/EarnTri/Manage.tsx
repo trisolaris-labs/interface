@@ -96,7 +96,7 @@ export default function Manage({
   const { t } = useTranslation()
 
   const lpToken = useTLP({ lpAddress, token0, token1 })
-  console.log(stakedAmount?.toExact())
+
   const { userLPAmountUSDFormatted } =
     useUserFarmStatistics({
       lpToken,

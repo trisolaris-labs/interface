@@ -1,11 +1,11 @@
-import { ChainId, Token, WETH } from '@trisolaris/sdk'
+import { ChainId, Token, WETH, TokenAmount } from '@trisolaris/sdk'
 import _ from 'lodash'
 
-import { ChefVersions, createMCV2Pool, NULL_POOL } from '../stake/stake-constants'
+import { MASTERCHEF_ADDRESS_V2 } from '../stake/hooks-sushi'
 
+import { ChefVersions, NULL_POOL } from '../stake/stake-constants'
 import { USDC, USDT, WBTC } from '../../constants/tokens'
 import { StakingTri } from '../stake/stake-constants'
-import { MASTERCHEF_ADDRESS_V2 } from '../stake/hooks-sushi'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
@@ -141,4 +141,9 @@ export const STABLE_FARMS: {
       chefVersion: ChefVersions.V2
     }
   }
+}
+
+export type StableFarmsStakedAmounts = {
+  name: StableSwapPoolName
+  stakedAmount: TokenAmount | null
 }
