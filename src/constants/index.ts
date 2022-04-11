@@ -1,7 +1,7 @@
 import { ChainId, JSBI, Percent, Token, WETH as _WETH } from '@trisolaris/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { injected, walletlink, walletconnect } from '../connectors'
-import { DAI, TRI, USDT, WNEAR, LUNA, AURORA, POLAR, SPOLAR, LUNAR, STNEAR, XTRI } from './tokens'
+import { DAI, TRI, USDT, WNEAR, LUNA, AURORA, POLAR, SPOLAR, LUNAR, STNEAR, XTRI, USDC } from './tokens'
 
 export const GAS_PRICE = 250
 
@@ -35,12 +35,13 @@ const COMMON_BASES: ChainTokenList = {
   [ChainId.AVALANCHE]: [DAI[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
   [ChainId.POLYGON]: [DAI[ChainId.POLYGON], USDT[ChainId.POLYGON]],
   [ChainId.AURORA]: [
-    WNEAR[ChainId.AURORA],
+    USDC[ChainId.AURORA],
     USDT[ChainId.AURORA],
     createProperlyNamedWETH(),
     TRI[ChainId.AURORA],
     LUNA[ChainId.AURORA],
     XTRI[ChainId.AURORA],
+    WNEAR[ChainId.AURORA],
     STNEAR[ChainId.AURORA]
   ]
 }
@@ -54,9 +55,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  * Some tokens can only be swapped via certain pairs, so we override the list of bases that are considered for these
  * tokens.
  */
-export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-  [ChainId.AVALANCHE]: {}
-}
+export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {}
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
