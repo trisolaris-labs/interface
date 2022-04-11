@@ -12,13 +12,16 @@ import PoolCardTRI from '../../components/earn/PoolCardTri'
 import FarmBanner from '../../components/earn/FarmBanner'
 import Toggle from '../../components/Toggle'
 import { FarmTabs } from '../../components/NavigationTabs'
+import StablePoolCardTri from '../../components/earn/StablePoolCardTri'
 
 import { useFarms } from '../../state/stake/apr'
 import { StakingTri } from '../../state/stake/stake-constants'
 import { useIsFilterActiveFarms, useToggleFilterActiveFarms } from '../../state/user/hooks'
+import { useStableFarms } from '../../state/stake/useStableFarms'
 
 import { TYPE } from '../../theme'
 import { isTokenAmountPositive } from '../../utils/pools'
+import { StableFarm } from '../../state/stableswap/constants'
 
 import {
   PoolSection,
@@ -44,6 +47,7 @@ const LEGACY_POOLS = [6, 16, 12, 13, 14]
 
 const MemoizedFarmBanner = React.memo(FarmBanner)
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
+const MemoizedStablePoolCardTRI = React.memo(StablePoolCardTri)
 
 export default function Earn({
   match: {
@@ -52,6 +56,7 @@ export default function Earn({
 }: RouteComponentProps<{ farmsType: 'stable' | '' }>) {
   const { t } = useTranslation()
   const allFarmArrs = useFarms()
+  const stableFarmArrs = useStableFarms()
 
   const toggleActiveFarms = useToggleFilterActiveFarms()
   const activeFarmsFilter = useIsFilterActiveFarms()
@@ -61,9 +66,10 @@ export default function Earn({
   const [sortDescending, setSortDescending] = useState<boolean>(true)
 
   const stableFarmsTabActive = farmsType === 'stable'
-  const tabFarmArrs = !stableFarmsTabActive
-    ? allFarmArrs.filter(farm => !farm.isStableSwap === true)
-    : allFarmArrs.filter(farm => farm.isStableSwap === true)
+  // const tabFarmArrs = !stableFarmsTabActive
+  //   ? allFarmArrs.filter(farm => !farm.isStableSwap === true)
+  //   : allFarmArrs.filter(farm => farm.isStableSwap === true)
+  const tabFarmArrs = stableFarmsTabActive ? stableFarmArrs : allFarmArrs
 
   const getSortedFarms = () => {
     switch (sortBy) {
@@ -122,7 +128,7 @@ export default function Earn({
     )
   }
 
-  const filteredFarms = useMemo(() => filterFarms(currentFarms, searchQuery), [
+  const filteredFarms: (StableFarm | StakingTri)[] = useMemo(() => filterFarms(currentFarms, searchQuery), [
     currentFarms,
     searchQuery,
     activeFarmsFilter,
@@ -141,6 +147,7 @@ export default function Earn({
     return sortDescending ? <ChevronDown size={15} /> : <ChevronUp size={15} />
   }
 
+  console.log(filteredFarms)
   return (
     <PageWrapper gap="lg" justify="center">
       <MemoizedFarmBanner />
@@ -204,26 +211,44 @@ export default function Earn({
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>TRI Pools</TYPE.mediumHeader>
           </DataRow>
         )}
-
         <PoolSection>
-          {filteredFarms.map(farm => (
-            <MemoizedPoolCardTRI
-              key={farm.ID}
-              apr={farm.apr}
-              apr2={farm.apr2}
-              chefVersion={farm.chefVersion}
-              isPeriodFinished={farm.isPeriodFinished}
-              token0={farm.tokens[0]}
-              token1={farm.tokens[1]}
-              totalStakedInUSD={farm.totalStakedInUSD}
-              version={farm.ID}
-              doubleRewards={farm.doubleRewards}
-              inStaging={farm.inStaging}
-              noTriRewards={farm.noTriRewards}
-              doubleRewardToken={farm.doubleRewardToken}
-              isStaking={isTokenAmountPositive(farm.stakedAmount)}
-            />
-          ))}
+          {filteredFarms.map((farm: any) => {
+            return stableFarmsTabActive && 'name' in farm ? (
+              <MemoizedStablePoolCardTRI
+                key={farm.name}
+                apr={farm.apr}
+                apr2={farm.apr2}
+                chefVersion={farm.chefVersion}
+                isPeriodFinished={farm.isPeriodFinished}
+                token0={farm.tokens[0]}
+                token1={farm.tokens[1]}
+                totalStakedInUSD={farm.totalStakedInUSD}
+                doubleRewards={farm.doubleRewards}
+                inStaging={farm.inStaging}
+                noTriRewards={farm.noTriRewards}
+                doubleRewardToken={farm.doubleRewardToken}
+                isStaking={isTokenAmountPositive(farm.stakedAmount)}
+                stableFarm={farm.name}
+              />
+            ) : (
+              <MemoizedPoolCardTRI
+                key={farm.ID}
+                apr={farm.apr}
+                apr2={farm.apr2}
+                chefVersion={farm.chefVersion}
+                isPeriodFinished={farm.isPeriodFinished}
+                token0={farm.tokens[0]}
+                token1={farm.tokens[1]}
+                totalStakedInUSD={farm.totalStakedInUSD}
+                version={farm.ID}
+                doubleRewards={farm.doubleRewards}
+                inStaging={farm.inStaging}
+                noTriRewards={farm.noTriRewards}
+                doubleRewardToken={farm.doubleRewardToken}
+                isStaking={isTokenAmountPositive(farm.stakedAmount)}
+              />
+            )
+          })}
         </PoolSection>
       </AutoColumn>
       <AutoColumn gap="lg" style={{ width: '100%' }}>

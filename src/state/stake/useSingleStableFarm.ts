@@ -10,7 +10,7 @@ import { useBlockNumber } from '../application/hooks'
 
 import { tokenAmount, ChefVersions, dummyToken, dummyAmount, NULL_POOL } from './stake-constants'
 import { TRI } from '../../constants/tokens'
-import { StableSwapPoolName, STABLE_FARMS, StableFarm } from '../stableswap/constants'
+import { StableSwapPoolName, STABLE_FARMS } from '../stableswap/constants'
 
 import { MOCK_DATA } from './MOCK_STABLEFARM_DATA'
 

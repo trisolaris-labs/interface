@@ -401,17 +401,6 @@ const AURORA_POOLS: StakingTri[] = [
     inStaging: false,
     doubleRewardToken: BBT[ChainId.AURORA]
   })
-  // createMCV2Pool({
-  //   ID: 25,
-  //   poolId: 18,
-  //   tokens: [USDT[ChainId.AURORA], USDC[ChainId.AURORA]],
-  //   lpAddress: '0x5eb99863f7efe88c447bc9d52aa800421b1de6c9',
-  //   rewarderAddress: '',
-  //   allocPoint: 1,
-  //   noTriRewards: false,
-  //   inStaging: true,
-  //   isStableSwap: true
-  // })
 ]
 
 export const STAKING: {
