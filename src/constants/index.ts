@@ -216,6 +216,7 @@ export const WYRE_API_URL = 'https://api.sendwyre.com'
 export const WYRE_QUOTE_API_ENDPOINT = '/v3/orders/quote/partner'
 export const WYRE_RESERVE_API_ENDPOINT = '/v3/orders/reserve'
 export const WYRE_CALLBACK_URL = 'https://app.pangolin.exchange/'
+export const ENABLE_STABLE_FARMS: boolean = process.env.REACT_APP_ENABLE_STABLE_FARMS === 'true'
 
 export const TOKEN_WARNING_MODAL_ALLOWLIST = new Set(
   [AURORA[ChainId.AURORA], POLAR[ChainId.AURORA], SPOLAR[ChainId.AURORA], LUNAR[ChainId.AURORA]].map(({ address }) =>

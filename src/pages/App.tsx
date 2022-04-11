@@ -29,6 +29,9 @@ import StableSwapPoolRemoveLiquidity from './StableSwapPoolRemoveLiquidity'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 import StableFarmManage from './EarnTri/StableFarmManage'
 
+import { ENABLE_STABLE_FARMS } from '../constants'
+import EarnWithStableFarms from './EarnTri/EarnWithStableFarms'
+
 const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
@@ -94,7 +97,11 @@ export default function App() {
                 path="/pool/stable/remove/:stableSwapPoolName"
                 component={StableSwapPoolRemoveLiquidity}
               />
-              <Route exact strict path="/farm/:farmsType?" component={EarnTri} />
+              {ENABLE_STABLE_FARMS ? (
+                <Route exact strict path="/farm/:farmsType?" component={EarnWithStableFarms} />
+              ) : (
+                <Route exact strict path="/farm/:version?" component={EarnTri} />
+              )}
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
               <Route exact strict path="/stake" component={StakeTri} />
               <Route exact path="/add" component={AddLiquidity} />
@@ -106,7 +113,9 @@ export default function App() {
               <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
               <Route exact strict path="/tri/:currencyIdA/:currencyIdB/:version" component={Manage} />
-              <Route exact strict path="/tri/stable/:stableFarmName" component={StableFarmManage} />
+              {ENABLE_STABLE_FARMS && (
+                <Route exact strict path="/tri/stable/:stableFarmName" component={StableFarmManage} />
+              )}
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>
