@@ -149,6 +149,13 @@ export const SPOLAR: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729', 18, 'SPOLAR', 'Polar Share'),
 }
 
+export const LUNAR: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'LUNAR', 'Lunar'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'LUNAR', 'Lunar'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'LUNAR', 'Lunar'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x25e801Eb75859Ba4052C4ac4233ceC0264eaDF8c', 18, 'LUNAR', 'Lunar'),
+}
+
 export const AUSDO: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 8, 'aUSDO', 'aUSDO'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 8, 'aUSDO', 'aUSDO'),
@@ -161,6 +168,20 @@ export const BBT: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'BBT', 'BlueBit Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BBT', 'BlueBit Token'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4148d2Ce7816F0AE378d98b40eB3A7211E1fcF0D', 18, 'BBT', 'BlueBit Token'),
+}
+
+export const USD_TLP: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USD TLP', 'Trisolaris USDC/USDT'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USD TLP', 'Trisolaris USDC/USDT'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USD TLP', 'Trisolaris USDC/USDT'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9', 18, 'USD TLP', 'Trisolaris USDC/USDT'),
+}
+
+export const SHITZU: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'SHITZU', 'Shitzu'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'SHITZU', 'Shitzu'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'SHITZU', 'Shitzu'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x68e401B61eA53889505cc1366710f733A60C2d41', 18, 'SHITZU', 'Shitzu'),
 }
 
 export const PNG: { [chainId in ChainId]: Token } = {
