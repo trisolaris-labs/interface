@@ -231,7 +231,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x5eeC60F348cB1D661E4A5122CF4638c7DB7A886e',
     rewarderAddress: '0x94669d7a170bfe62FAc297061663e0B48C63B9B5',
     allocPoint: 1,
-    doubleRewards: false,
+    doubleRewards: true,
     doubleRewardToken: AURORA[ChainId.AURORA]
   }),
   createMCV2Pool({
@@ -241,7 +241,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xd1654a7713617d41A8C9530Fb9B948d00e162194',
     rewarderAddress: '0x78EdEeFdF8c3ad827228d07018578E89Cf159Df1',
     allocPoint: 1,
-    doubleRewards: false,
+    doubleRewards: true,
     doubleRewardToken: AURORA[ChainId.AURORA]
   }),
   createMCV2Pool({
@@ -251,7 +251,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xdF8CbF89ad9b7dAFdd3e37acEc539eEcC8c47914',
     rewarderAddress: '0x89F6628927fdFA2592E016Ba5B14389a4b08D681',
     allocPoint: 1,
-    doubleRewards: true,
+    doubleRewards: false,
     doubleRewardToken: LUNA[ChainId.AURORA]
   }),
   createMCV2Pool({
@@ -261,7 +261,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xa9eded3E339b9cd92bB6DEF5c5379d678131fF90',
     rewarderAddress: '0x17d1597ec86fD6aecbfE0F32Ab2F2aD9c37E6750',
     allocPoint: 1,
-    doubleRewards: true,
+    doubleRewards: false,
     doubleRewardToken: LUNA[ChainId.AURORA]
   }),
   createMCV2Pool({
