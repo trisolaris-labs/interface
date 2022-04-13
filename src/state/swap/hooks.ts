@@ -186,7 +186,6 @@ export function useDerivedSwapInfo(
     [currencies]
   )
 
-
   // get link to trade on v1, if a better rate exists
   const v1Trade = undefined
 
