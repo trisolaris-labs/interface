@@ -49,7 +49,7 @@ export interface UserShareType {
 
 export type PoolDataHookReturnType = [StablePoolDataType, UserShareType | null]
 
-export default function usePoolData(poolName: StableSwapPoolName): PoolDataHookReturnType {
+export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDataHookReturnType {
   const { account } = useActiveWeb3React()
 
   const pool = STABLESWAP_POOLS[ChainId.AURORA][poolName]
