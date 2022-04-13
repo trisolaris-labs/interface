@@ -6,11 +6,10 @@ export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
 }
 
-export function isMetaPool(poolName: StableSwapPoolName | undefined): boolean {
-  if (!poolName) {
-    return false
-  }
-  return new Set([StableSwapPoolName.META_UST]).has(poolName)
+export function isMetaPool(poolName?: StableSwapPoolName): boolean {
+  const metapools = new Set<StableSwapPoolName | undefined>([StableSwapPoolName.META_UST])
+
+  return metapools.has(poolName)
 }
 
 export enum STABLE_SWAP_TYPES {
