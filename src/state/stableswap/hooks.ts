@@ -18,7 +18,7 @@ import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { StableSwapData, useCalculateStableSwapPairs } from '../../hooks/useCalculateStableSwapPairs'
 import { useStableSwapContract } from '../../hooks/useContract'
 import { useSingleCallResult } from '../multicall/hooks'
-import { STABLE_SWAP_TYPES } from './constants'
+import { isMetaPool, STABLE_SWAP_TYPES } from './constants'
 import _ from 'lodash'
 import { Contract } from 'ethers'
 import { USDC } from '../../constants/tokens'
@@ -88,10 +88,6 @@ export function calculatePriceImpact(
 }
 
 export function useStableSwapState(): AppState['stableswap'] {
-  if (ENABLE_STABLESWAP === false) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useSelector<AppState, AppState['stableswap']>(state => state.stableswap)
-  }
   // eslint-disable-next-line react-hooks/rules-of-hooks
   return useSelector<AppState, AppState['swap']>(state => state.swap)
 }
@@ -236,7 +232,11 @@ export function useDerivedStableSwapInfo(): {
 
   const inputToken = wrappedCurrency(currencies?.[Field.INPUT], chainId)
   const selectedStableSwapPool = useSelectedStableSwapPool()
-  const stableSwapContract = useStableSwapContract(selectedStableSwapPool?.to?.poolName, true)
+  const stableSwapContract = useStableSwapContract(
+    selectedStableSwapPool?.to?.poolName,
+    true,
+    isMetaPool(selectedStableSwapPool?.to?.poolName)
+  )
   const calculateSwapResponse = useSingleCallResult(stableSwapContract, 'calculateSwap', [
     selectedStableSwapPool?.from.tokenIndex ?? 0,
     selectedStableSwapPool?.to.tokenIndex ?? 0,

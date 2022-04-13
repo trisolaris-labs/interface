@@ -10,6 +10,7 @@ import { useActiveWeb3React } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
 import { StableSwapTrade, useSelectedStableSwapPool } from '../state/stableswap/hooks'
 import { useStableSwapContract } from './useContract'
+import { isMetaPool } from '../state/stableswap/constants'
 
 export enum StableSwapCallbackState {
   INVALID,
@@ -47,7 +48,11 @@ function useStableSwapCallArguments(
   let deadline = useTransactionDeadline()
 
   const selectedStableSwapPool = useSelectedStableSwapPool()
-  const stableSwapContract = useStableSwapContract(selectedStableSwapPool?.to?.poolName, true)
+  const stableSwapContract = useStableSwapContract(
+    selectedStableSwapPool?.to?.poolName,
+    true,
+    isMetaPool(selectedStableSwapPool?.to?.poolName)
+  )
 
   const currentTime = BigNumber.from(new Date().getTime())
   if (deadline && deadline < currentTime.add(10)) {

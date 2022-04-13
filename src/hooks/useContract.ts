@@ -137,8 +137,8 @@ export function useStableSwapContract(
   const { chainId, library } = useActiveWeb3React()
 
   const pool = poolName == null ? null : STABLESWAP_POOLS[ChainId.AURORA][poolName]
-  const metaPool = useStableSwapMetaPoolDeposit(pool?.address, withSignerIfPossible)
-  const metaPoolUnwrappedTokens = useStableSwapMetaPoolDeposit(pool?.metaSwapAddresses, withSignerIfPossible)
+  const metaPoolUnwrappedTokens = useStableSwapMetaPoolDeposit(pool?.address, withSignerIfPossible)
+  const metaPool = useStableSwapMetaPoolDeposit(pool?.metaSwapAddresses, withSignerIfPossible)
   const stableSwapPool = useStableSwapPool(pool?.address, withSignerIfPossible)
 
   return useMemo(() => {

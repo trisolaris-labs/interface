@@ -58,8 +58,8 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
     underlyingPoolTokens != null && underlyingPoolTokens.length > 0 ? underlyingPoolTokens : poolTokens
   const isMetaSwap = isMetaPool(poolName)
 
-  const swapContract = useStableSwapContract(poolName)
-  const metaSwapContract = useStableSwapMetaPool(pool.address)
+  const swapContract = useStableSwapContract(poolName, true, isMetaPool(poolName))
+  const metaSwapContract = useStableSwapMetaPool(pool?.metaSwapAddresses ?? pool.address)
 
   const effectiveContract = isMetaSwap ? metaSwapContract : swapContract
 
