@@ -10,6 +10,7 @@ import { useActiveWeb3React } from './index'
 import useTransactionDeadline from './useTransactionDeadline'
 import { StableSwapTrade, useSelectedStableSwapPool } from '../state/stableswap/hooks'
 import { useStableSwapContract } from './useContract'
+import { isMetaPool } from '../state/stableswap/constants'
 
 export enum StableSwapCallbackState {
   INVALID,
@@ -47,7 +48,11 @@ function useStableSwapCallArguments(
   let deadline = useTransactionDeadline()
 
   const selectedStableSwapPool = useSelectedStableSwapPool()
-  const stableSwapContract = useStableSwapContract(selectedStableSwapPool?.to?.poolName, true)
+  const stableSwapContract = useStableSwapContract(
+    selectedStableSwapPool?.to?.poolName,
+    true,
+    isMetaPool(selectedStableSwapPool?.to?.poolName)
+  )
 
   const currentTime = BigNumber.from(new Date().getTime())
   if (deadline && deadline < currentTime.add(10)) {
@@ -64,22 +69,21 @@ function useStableSwapCallArguments(
       return []
     }
 
-    const swapMethods: any[] = []
-
-    const args = [
-      trade.stableSwapData.from.tokenIndex,
-      trade.stableSwapData.to.tokenIndex,
-      trade.inputAmount.raw.toString(),
-      trade.outputAmount.raw.toString(),
-      deadline.toNumber()
+    return [
+      {
+        contract,
+        parameters: {
+          methodName: 'swap',
+          args: [
+            trade.stableSwapData.from.tokenIndex,
+            trade.stableSwapData.to.tokenIndex,
+            trade.inputAmount.raw.toString(),
+            trade.outputAmount.raw.toString(),
+            deadline.toNumber()
+          ]
+        }
+      } as StableSwapCall
     ]
-
-    swapMethods.push({
-      methodName: 'swap',
-      args
-    })
-
-    return swapMethods.map((parameters: any) => ({ parameters, contract }))
   }, [deadline, stableSwapContract, trade])
 }
 
