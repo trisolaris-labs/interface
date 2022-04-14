@@ -53,13 +53,19 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   const {
     [Field.CURRENCY_0]: typedValue0,
     [Field.CURRENCY_1]: typedValue1,
-    [Field.CURRENCY_2]: typedValue2
+    [Field.CURRENCY_2]: typedValue2,
+    [Field.CURRENCY_3]: typedValue3
   } = useStableSwapAddLiquidityState()
-  const { currencies, currencyBalances, parsedAmounts, error, hasThirdCurrency } = useDerivedStableSwapAddLiquidityInfo(
-    stableSwapPoolName
-  )
+  const {
+    currencies,
+    currencyBalances,
+    parsedAmounts,
+    error,
+    hasThirdCurrency,
+    hasFourthCurrency
+  } = useDerivedStableSwapAddLiquidityInfo(stableSwapPoolName)
 
-  const { onField0Input, onField1Input, onField2Input } = useStableSwapAddLiquidityActionHandlers()
+  const { onField0Input, onField1Input, onField2Input, onField3Input } = useStableSwapAddLiquidityActionHandlers()
 
   const [isExpertMode] = useExpertModeManager()
 
@@ -236,6 +242,27 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                 disableMaxButton={atMaxAmounts[Field.CURRENCY_2]}
                 currency={currencies[Field.CURRENCY_2]}
                 id="add-liquidity-input-token2"
+                showCommonBases
+              />
+            ) : null}
+            {hasFourthCurrency ? (
+              <CurrencyInputPanel
+                disableCurrencySelect
+                value={typedValue3}
+                onUserInput={onField3Input}
+                onClickBalanceButton={value => {
+                  const amount = maxAmounts[Field.CURRENCY_3]
+                  onField3Input(
+                    (value === BalanceButtonValueEnum.MAX
+                      ? amount
+                      : divideCurrencyAmountByNumber(amount, 2)
+                    )?.toExact() ?? ''
+                  )
+                }}
+                disableHalfButton={atHalfAmounts[Field.CURRENCY_3]}
+                disableMaxButton={atMaxAmounts[Field.CURRENCY_3]}
+                currency={currencies[Field.CURRENCY_3]}
+                id="add-liquidity-input-token3"
                 showCommonBases
               />
             ) : null}
