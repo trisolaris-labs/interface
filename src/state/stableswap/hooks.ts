@@ -40,7 +40,7 @@ export function isStableSwapHighPriceImpact(priceImpact: JSBI): boolean {
   // const negOne = BigNumber.from(10)
   //   .pow(18 - 2)
   //   .mul(-1)
-  const negOne = JSBI.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18 - 2)), JSBI.BigInt(-1))
+  const negOne = JSBI.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)), JSBI.BigInt(-1))
 
   // return priceImpact.lte(negOne)
   return JSBI.LE(priceImpact, negOne)
