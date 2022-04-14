@@ -1,7 +1,6 @@
 import { ChainId, JSBI, Token } from '@trisolaris/sdk'
 import { useCallback, useMemo } from 'react'
 
-import { useActiveWeb3React } from '.'
 import {
   StableSwapPool,
   StableSwapPoolName,
@@ -57,10 +56,9 @@ export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData
         return aTVL ? -1 : 1
       })
     const tokenToPools = sortedPools.reduce((acc, { name: poolName }) => {
-      const pool = STABLESWAP_POOLS[ChainId.AURORA][poolName]
-      const tokens = pool.poolTokens
+      const { poolTokens } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
 
-      tokens.forEach(token => {
+      poolTokens.forEach(token => {
         acc[token.address] = (acc[token.address] || []).concat(poolName)
       })
       return acc
