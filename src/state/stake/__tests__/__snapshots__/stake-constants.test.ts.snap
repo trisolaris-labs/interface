@@ -118,7 +118,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
   ],
@@ -259,7 +259,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
@@ -407,7 +407,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
@@ -703,7 +703,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
@@ -858,7 +858,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
   ],
@@ -1367,7 +1367,7 @@ Object {
     "name": "Wrapped LUNA",
     "symbol": "atLUNA",
   },
-  "doubleRewards": true,
+  "doubleRewards": false,
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
@@ -1443,7 +1443,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
@@ -1515,7 +1515,7 @@ Object {
     "name": "Wrapped LUNA",
     "symbol": "atLUNA",
   },
-  "doubleRewards": true,
+  "doubleRewards": false,
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
@@ -1591,7 +1591,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
@@ -1887,7 +1887,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
@@ -2035,7 +2035,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
@@ -2183,7 +2183,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
@@ -2331,7 +2331,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
@@ -2479,7 +2479,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
@@ -2627,7 +2627,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
@@ -2923,7 +2923,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
@@ -3219,7 +3219,7 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
@@ -3436,7 +3436,7 @@ Object {
     "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
     "chainId": 1313161554,
     "decimals": 24,
-    "name": "WNEAR Token",
+    "name": "Wrapped Near",
     "symbol": "wNEAR",
   },
   "doubleRewards": true,
@@ -3524,6 +3524,154 @@ Object {
       "decimals": 8,
       "name": "aUSDO",
       "symbol": "aUSDO",
+    },
+  ],
+  "totalRewardRate": 1,
+  "totalStakedAmount": TokenAmount {
+    "currency": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+    "denominator": JSBI [
+      660865024,
+      931322574,
+    ],
+    "numerator": JSBI [],
+    "token": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+  },
+  "totalStakedInUSD": 0,
+}
+`;
+
+exports[`stake-constants.ts Aurora Pools: Aurora Pool [ID: 24] 1`] = `
+Object {
+  "ID": 24,
+  "allocPoint": 1,
+  "apr": 0,
+  "apr2": 0,
+  "chefVersion": 1,
+  "doubleRewardAmount": TokenAmount {
+    "currency": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+    "denominator": JSBI [
+      660865024,
+      931322574,
+    ],
+    "numerator": JSBI [],
+    "token": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+  },
+  "doubleRewardToken": Token {
+    "address": "0x4148d2Ce7816F0AE378d98b40eB3A7211E1fcF0D",
+    "chainId": 1313161554,
+    "decimals": 18,
+    "name": "BlueBit Token",
+    "symbol": "BBT",
+  },
+  "doubleRewards": false,
+  "earnedAmount": TokenAmount {
+    "currency": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+    "denominator": JSBI [
+      660865024,
+      931322574,
+    ],
+    "numerator": JSBI [],
+    "token": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+  },
+  "inStaging": false,
+  "isPeriodFinished": false,
+  "lpAddress": "0xadAbA7E2bf88Bd10ACb782302A568294566236dC",
+  "noTriRewards": true,
+  "poolId": 17,
+  "rewardRate": TokenAmount {
+    "currency": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+    "denominator": JSBI [
+      660865024,
+      931322574,
+    ],
+    "numerator": JSBI [],
+    "token": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+  },
+  "rewarderAddress": "0xABE01A6b6922130C982E221681EB4C4aD07A21dA",
+  "stakedAmount": TokenAmount {
+    "currency": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+    "denominator": JSBI [
+      660865024,
+      931322574,
+    ],
+    "numerator": JSBI [],
+    "token": Token {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "ZERO",
+      "symbol": "ZERO",
+    },
+  },
+  "stakingRewardAddress": "0x3838956710bcc9D122Dd23863a0549ca8D5675D6",
+  "tokens": Array [
+    Token {
+      "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
+      "chainId": 1313161554,
+      "decimals": 24,
+      "name": "Wrapped Near",
+      "symbol": "wNEAR",
+    },
+    Token {
+      "address": "0x4148d2Ce7816F0AE378d98b40eB3A7211E1fcF0D",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "name": "BlueBit Token",
+      "symbol": "BBT",
     },
   ],
   "totalRewardRate": 1,
@@ -3660,14 +3808,14 @@ Object {
   "stakingRewardAddress": "0x43A1dD21a5237C6F5eEC94747C28aa3f5C8fa1c7",
   "tokens": Array [
     Token {
-      "address": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+      "address": "0x0000000000000000000000000000000000000000",
       "chainId": 137,
       "decimals": 18,
       "name": "Dai Stablecoin",
       "symbol": "DAI",
     },
     Token {
-      "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+      "address": "0x0000000000000000000000000000000000000000",
       "chainId": 137,
       "decimals": 6,
       "name": "USD Coin",
@@ -3808,14 +3956,14 @@ Object {
   "stakingRewardAddress": "0x43A1dD21a5237C6F5eEC94747C28aa3f5C8fa1c7",
   "tokens": Array [
     Token {
-      "address": "0xD6DF932A45C0f255f85145f286eA0b292B21C90B",
+      "address": "0x0000000000000000000000000000000000000000",
       "chainId": 137,
       "decimals": 18,
-      "name": "AAVE Token",
+      "name": "Aave Token",
       "symbol": "AAVE",
     },
     Token {
-      "address": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+      "address": "0x0000000000000000000000000000000000000000",
       "chainId": 137,
       "decimals": 18,
       "name": "Dai Stablecoin",

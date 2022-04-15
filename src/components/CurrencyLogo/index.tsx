@@ -2,7 +2,6 @@ import { Currency, CETH, Token } from '@trisolaris/sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 
-// import AvaxLogo from '../../assets/images/avalanche_token_round.png'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import { useActiveWeb3React } from '../../hooks'
@@ -68,9 +67,7 @@ export default function CurrencyLogo({
     } else {
       return (
         <StyledEthereumLogo
-          src={
-            'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/ethlogo.svg'
-          }
+          src={'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/ethlogo.svg'}
           size={size}
           style={style}
         />
