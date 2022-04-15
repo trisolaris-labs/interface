@@ -318,7 +318,7 @@ export function useDerivedStableSwapInfo(): {
   }
 
   const inputOutputAmountDecimalsDifference = calculateInputOutputAmountDecimalsDifference(
-    parsedAmount,
+    tradeData?.inputAmount,
     tradeData?.outputAmount
   )
 
@@ -330,7 +330,7 @@ export function useDerivedStableSwapInfo(): {
   )
 
   const priceImpact = calculatePriceImpact(
-    tradeData?.inputAmount.raw ?? JSBI.BigInt(0),
+    tradeData?.inputAmount?.raw ?? JSBI.BigInt(0),
     outputAmountNormalisedToDecimalsDifference ?? JSBI.BigInt(0)
   )
 
