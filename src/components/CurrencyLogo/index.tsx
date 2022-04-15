@@ -8,8 +8,12 @@ import { WrappedTokenInfo } from '../../state/lists/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import Logo from '../Logo'
 
-const getTokenLogoURL = (address: string) =>
-  `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${address}/logo.png`
+const getTokenLogoURL = (address: string) => {
+  return [
+    `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${address}/logo.svg`,
+    `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${address}/logo.png`
+  ]
+}
 
 export const StyledEthereumLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
@@ -42,10 +46,10 @@ export default function CurrencyLogo({
 
     if (currency instanceof Token) {
       if (currency instanceof WrappedTokenInfo) {
-        return [...uriLocations, getTokenLogoURL(currency.address)]
+        return [...uriLocations, ...getTokenLogoURL(currency.address)]
       }
 
-      return [...uriLocations, getTokenLogoURL(currency.address)]
+      return [...uriLocations, ...getTokenLogoURL(currency.address)]
     }
     return []
   }, [currency, uriLocations])
@@ -65,7 +69,7 @@ export default function CurrencyLogo({
       return (
         <StyledEthereumLogo
           src={
-            'https://raw.githubusercontent.com/pangolindex/tokens/main/assets/0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB/logo.png'
+            'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/ethlogo.svg'
           }
           size={size}
           style={style}
