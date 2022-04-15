@@ -301,9 +301,37 @@ export function useDerivedStableSwapInfo(): {
     }
   }
 
+  const calculateInputOutputAmountDecimalsDifference = (
+    inputAmount: CurrencyAmount | undefined,
+    outputAmount: CurrencyAmount | undefined
+  ): JSBI => {
+    if (inputAmount && outputAmount) {
+      const inputDecimals = inputAmount?.currency?.decimals ?? 0
+      const outputDecimals = outputAmount?.currency?.decimals ?? 0
+
+      // NOTE - should this be the diff max e.g. if other way round?
+      if (outputDecimals < inputDecimals) {
+        return JSBI.BigInt(inputDecimals - outputDecimals)
+      }
+    }
+    return BIG_INT_ZERO
+  }
+
+  const inputOutputAmountDecimalsDifference = calculateInputOutputAmountDecimalsDifference(
+    parsedAmount,
+    tradeData?.outputAmount
+  )
+
+  const outputAmountNormalisedToDecimalsDifference = JSBI.multiply(
+    tradeData?.outputAmount.raw ?? JSBI.BigInt(0),
+    JSBI.GT(inputOutputAmountDecimalsDifference, 0)
+      ? JSBI.exponentiate(JSBI.BigInt(10), inputOutputAmountDecimalsDifference)
+      : JSBI.BigInt(1)
+  )
+
   const priceImpact = calculatePriceImpact(
     tradeData?.inputAmount.raw ?? JSBI.BigInt(0),
-    tradeData?.outputAmount.raw ?? JSBI.BigInt(0)
+    outputAmountNormalisedToDecimalsDifference ?? JSBI.BigInt(0)
   )
 
   return {
