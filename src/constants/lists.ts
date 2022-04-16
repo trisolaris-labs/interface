@@ -31,3 +31,5 @@ const LIST_OF_LISTS: Map<ChainId, string[]> = new Map([
 export const DEFAULT_LIST_OF_LISTS = LIST_OF_LISTS.get(ChainId.AURORA)!
 export const DEFAULT_TOKEN_LIST_URL = DEFAULT_LISTS.get(ChainId.AURORA)!
 export const STABLECOIN_TOKEN_LIST = STABLECOIN_LISTS.get(ChainId.AVALANCHE)!
+
+

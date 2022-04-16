@@ -12,6 +12,10 @@ import { useActiveWeb3React } from '../../hooks'
 import useTriPrice from '../../hooks/useTriPrice'
 import { useToggleTriPriceModal } from '../../state/application/hooks'
 
+import { useSelector, useDispatch } from 'react-redux'
+import { AppState, AppDispatch } from '../../state'
+import { setDefaultList } from '../../state/lists/actions'
+
 import {
   HeaderFrame,
   HeaderControls,
@@ -43,6 +47,20 @@ export default function Header() {
   const toggleTriPriceModal = useToggleTriPriceModal()
 
   const isEmbedded = useEmbeddedSwapUI()
+
+  const lastInitializedList = useSelector<AppState, any>(state => state.lists.lastInitializedDefaultListOfLists)
+
+  const dispatch = useDispatch<AppDispatch>()
+
+  console.log(lastInitializedList[0])
+  if (
+    lastInitializedList[0] ===
+    'https://raw.githubusercontent.com/aurora-is-near/bridge-assets/master/assets/aurora.tokenlist.json'
+  ) {
+    console.log('clearing and dispatching')
+    localStorage.clear()
+    dispatch(setDefaultList())
+  }
 
   // Use a minimal header/footer when the `/swap` page is embedded on third-party websites
   if (isEmbedded) {

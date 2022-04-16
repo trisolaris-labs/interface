@@ -3,7 +3,7 @@ import { getVersionUpgrade, VersionUpgrade } from '@pangolindex/token-lists'
 import { TokenList } from '@pangolindex/token-lists/dist/types'
 import { DEFAULT_LIST_OF_LISTS, DEFAULT_TOKEN_LIST_URL, STABLECOIN_TOKEN_LIST } from '../../constants/lists'
 import { updateVersion } from '../global/actions'
-import { acceptListUpdate, addList, fetchTokenList, removeList, selectList } from './actions'
+import { acceptListUpdate, addList, fetchTokenList, removeList, selectList, setDefaultList } from './actions'
 
 export interface ListsState {
   readonly byUrl: {
@@ -183,13 +183,16 @@ export default createReducer(initialState, builder =>
         })
       }
 
-      state.lastInitializedDefaultListOfLists = DEFAULT_LIST_OF_LISTS
-
       if (!state.selectedListUrl) {
         state.selectedListUrl = [DEFAULT_TOKEN_LIST_URL]
         if (!state.byUrl[DEFAULT_TOKEN_LIST_URL]) {
           state.byUrl[DEFAULT_TOKEN_LIST_URL] = NEW_LIST_STATE
         }
       }
+    })
+    .addCase(setDefaultList, state => {
+      console.log(state)
+      state.lastInitializedDefaultListOfLists = [DEFAULT_TOKEN_LIST_URL]
+      console.log(state)
     })
 )
