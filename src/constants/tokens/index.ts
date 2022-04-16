@@ -170,11 +170,11 @@ export const BBT: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4148d2Ce7816F0AE378d98b40eB3A7211E1fcF0D', 18, 'BBT', 'BlueBit Token'),
 }
 
-export const USDTLP: { [chainId in ChainId]: Token } = {
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USDTLP', 'Trisolaris USDC/USDT'),
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USDTLP', 'Trisolaris USDC/USDT'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USDTLP', 'Trisolaris USDC/USDT'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9', 18, 'USDTLP', 'Trisolaris USDC/USDT'),
+export const USD_TLP: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USD TLP', 'Trisolaris USDC/USDT'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USD TLP', 'Trisolaris USDC/USDT'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USD TLP', 'Trisolaris USDC/USDT'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9', 18, 'USD TLP', 'Trisolaris USDC/USDT'),
 }
 
 export const AAVE: { [chainId in ChainId]: Token } = {
