@@ -247,7 +247,7 @@ Object {
 
 exports[`constants/index.ts Base Tokens 8`] = `
 Object {
-  "UST": Object {
+  "ATUST": Object {
     "1313161554": Token {
       "address": "0x5ce9F0B6AFb36135b5ddBF11705cEB65E634A9dC",
       "chainId": 1313161554,
@@ -282,7 +282,7 @@ Object {
 
 exports[`constants/index.ts Base Tokens 9`] = `
 Object {
-  "LUNA": Object {
+  "ATLUNA": Object {
     "1313161554": Token {
       "address": "0xC4bdd27c33ec7daa6fcfd8532ddB524Bf4038096",
       "chainId": 1313161554,
@@ -354,31 +354,31 @@ exports[`constants/index.ts Base Tokens 11`] = `
 Object {
   "AAVE": Object {
     "1313161554": Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0x4e834cDCc911605227eedDDb89Fad336AB9dc00a",
       "chainId": 1313161554,
       "decimals": 18,
-      "name": "AAVE Token",
+      "name": "Aave Token",
       "symbol": "AAVE",
     },
     "137": Token {
       "address": "0xD6DF932A45C0f255f85145f286eA0b292B21C90B",
       "chainId": 137,
       "decimals": 18,
-      "name": "AAVE Token",
+      "name": "Aave Token",
       "symbol": "AAVE",
     },
     "43113": Token {
       "address": "0x0000000000000000000000000000000000000000",
       "chainId": 43113,
       "decimals": 18,
-      "name": "AAVE Token",
+      "name": "Aave Token",
       "symbol": "AAVE",
     },
     "43114": Token {
       "address": "0x63a72806098Bd3D9520cC43356dD78afe5D386D9",
       "chainId": 43114,
       "decimals": 18,
-      "name": "AAVE Token",
+      "name": "Aave Token",
       "symbol": "AAVE",
     },
   },
@@ -392,28 +392,28 @@ Object {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
       "chainId": 1313161554,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     "137": Token {
       "address": "0x0000000000000000000000000000000000000000",
       "chainId": 137,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     "43113": Token {
       "address": "0x0000000000000000000000000000000000000000",
       "chainId": 43113,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     "43114": Token {
       "address": "0x0000000000000000000000000000000000000000",
       "chainId": 43114,
       "decimals": 24,
-      "name": "WNEAR Token",
+      "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
   },

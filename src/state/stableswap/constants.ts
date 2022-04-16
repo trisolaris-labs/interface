@@ -89,7 +89,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
         ChainId.AURORA,
         '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9',
         18,
-        'USD TLP',
+        'USDTLP',
         'Trisolaris USDC/USDT'
       ),
       // *** NOTE *** - For future reference, this order of the pool tokens must be equivalent to the LP token name order
