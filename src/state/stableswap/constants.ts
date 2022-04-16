@@ -7,7 +7,7 @@ export function isLegacySwapABIPool(poolName: string): boolean {
 }
 
 export function isMetaPool(poolName?: StableSwapPoolName): boolean {
-  const metapools = new Set<StableSwapPoolName | undefined>([StableSwapPoolName.META_UST])
+  const metapools = new Set<StableSwapPoolName | undefined>()
 
   return metapools.has(poolName)
 }
@@ -18,7 +18,6 @@ export enum STABLE_SWAP_TYPES {
 }
 
 export enum StableSwapPoolName {
-  META_UST = 'META_UST',
   USDC_USDT = 'USDC_USDT'
 }
 
@@ -99,25 +98,6 @@ export const STABLESWAP_POOLS: StableSwapPools = {
       address: '0x13e7a001EC72AB30D66E2f386f677e25dCFF5F59',
       type: StableSwapPoolTypes.USD,
       route: 'usd',
-      isOutdated: false,
-      rewardPids: null
-    },
-    [StableSwapPoolName.META_UST]: {
-      name: StableSwapPoolName.META_UST,
-      // @TODO Move the prod version of this token to the Tokens repo
-      lpToken: new Token(ChainId.AURORA, '0x2fB7f5A8386bcFf6452AFFF1f9C2BAcC4cacdDFb', 18, 'UST TLP', 'TEST Meta UST'),
-      // *** NOTE *** - For future reference, this order of the pool tokens must be equivalent to the LP token name order
-      // Also to verify, please query the swap contract for the individual stable token indexes
-      poolTokens: [UST[ChainId.AURORA], USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
-      address: '0x264e4B3F80f62442C812F9D08F7f8b77B2c70FD4', // MetaSwap
-      metaSwapAddresses: '0x6c1db069dc048C4C534391cA57C6B04Ae04A1958', // MetaSwapDeposit
-      type: StableSwapPoolTypes.USD,
-      route: 'usd',
-      underlyingPoolTokens: [
-        UST[ChainId.AURORA],
-        new Token(ChainId.AURORA, '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9', 18, 'USD TLP', 'Trisolaris USDC/USDT')
-      ],
-      underlyingPool: StableSwapPoolName.USDC_USDT,
       isOutdated: false,
       rewardPids: null
     }
