@@ -13,6 +13,9 @@ export const POLYGON_BRIDGE_LIST =
 export const TRISOLARIS_LIST =
   'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/lists/1313161554/list.json'
 
+export const AURORA_LIST =
+  'https://raw.githubusercontent.com/aurora-is-near/bridge-assets/master/assets/aurora.tokenlist.json'
+
 const DEFAULT_LISTS: Map<ChainId, string> = new Map([
   [ChainId.AVALANCHE, AVAX_BRIDGE_LIST],
   [ChainId.POLYGON, POLYGON_BRIDGE_LIST],
@@ -31,5 +34,3 @@ const LIST_OF_LISTS: Map<ChainId, string[]> = new Map([
 export const DEFAULT_LIST_OF_LISTS = LIST_OF_LISTS.get(ChainId.AURORA)!
 export const DEFAULT_TOKEN_LIST_URL = DEFAULT_LISTS.get(ChainId.AURORA)!
 export const STABLECOIN_TOKEN_LIST = STABLECOIN_LISTS.get(ChainId.AVALANCHE)!
-
-

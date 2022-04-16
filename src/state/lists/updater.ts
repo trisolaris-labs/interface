@@ -9,10 +9,20 @@ import { addPopup } from '../application/actions'
 import { AppDispatch, AppState } from '../index'
 import { acceptListUpdate } from './actions'
 
+import { setDefaultList } from '../../state/lists/actions'
+import { AURORA_LIST } from '../../constants/lists'
+
 export default function Updater(): null {
   const { library } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
+
+  // Code for making trisolaris list the default.
+  const lastInitializedList = useSelector<AppState, any>(state => state.lists.lastInitializedDefaultListOfLists)
+
+  if (lastInitializedList[0] === AURORA_LIST) {
+    dispatch(setDefaultList())
+  }
 
   const isWindowVisible = useIsWindowVisible()
 

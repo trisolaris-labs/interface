@@ -1,7 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { getVersionUpgrade, VersionUpgrade } from '@pangolindex/token-lists'
 import { TokenList } from '@pangolindex/token-lists/dist/types'
-import { DEFAULT_LIST_OF_LISTS, DEFAULT_TOKEN_LIST_URL, STABLECOIN_TOKEN_LIST } from '../../constants/lists'
+import {
+  DEFAULT_LIST_OF_LISTS,
+  DEFAULT_TOKEN_LIST_URL,
+  STABLECOIN_TOKEN_LIST,
+  AURORA_LIST
+} from '../../constants/lists'
 import { updateVersion } from '../global/actions'
 import { acceptListUpdate, addList, fetchTokenList, removeList, selectList, setDefaultList } from './actions'
 
@@ -191,8 +196,7 @@ export default createReducer(initialState, builder =>
       }
     })
     .addCase(setDefaultList, state => {
-      console.log(state)
       state.lastInitializedDefaultListOfLists = [DEFAULT_TOKEN_LIST_URL]
-      console.log(state)
+      state.selectedListUrl = [DEFAULT_TOKEN_LIST_URL]
     })
 )
