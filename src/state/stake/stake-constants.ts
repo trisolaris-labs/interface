@@ -10,8 +10,8 @@ import {
   WBTC,
   TRI,
   AURORA,
-  LUNA,
-  UST,
+  ATLUNA,
+  ATUST,
   BNB,
   AVAX,
   MATIC,
@@ -247,22 +247,22 @@ const AURORA_POOLS: StakingTri[] = [
   createMCV2Pool({
     ID: 9,
     poolId: 2,
-    tokens: [WNEAR[ChainId.AURORA], LUNA[ChainId.AURORA]],
+    tokens: [WNEAR[ChainId.AURORA], ATLUNA[ChainId.AURORA]],
     lpAddress: '0xdF8CbF89ad9b7dAFdd3e37acEc539eEcC8c47914',
     rewarderAddress: '0x89F6628927fdFA2592E016Ba5B14389a4b08D681',
     allocPoint: 1,
     doubleRewards: false,
-    doubleRewardToken: LUNA[ChainId.AURORA]
+    doubleRewardToken: ATLUNA[ChainId.AURORA]
   }),
   createMCV2Pool({
     ID: 10,
     poolId: 3,
-    tokens: [WNEAR[ChainId.AURORA], UST[ChainId.AURORA]],
+    tokens: [WNEAR[ChainId.AURORA], ATUST[ChainId.AURORA]],
     lpAddress: '0xa9eded3E339b9cd92bB6DEF5c5379d678131fF90',
     rewarderAddress: '0x17d1597ec86fD6aecbfE0F32Ab2F2aD9c37E6750',
     allocPoint: 1,
     doubleRewards: false,
-    doubleRewardToken: LUNA[ChainId.AURORA]
+    doubleRewardToken: ATLUNA[ChainId.AURORA]
   }),
   createMCV2Pool({
     ID: 11,
