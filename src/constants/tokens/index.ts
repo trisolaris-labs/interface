@@ -156,13 +156,6 @@ export const LUNAR: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x25e801Eb75859Ba4052C4ac4233ceC0264eaDF8c', 18, 'LUNAR', 'Lunar'),
 }
 
-export const TRIPOLAR: { [chainId in ChainId]: Token } = {
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'TRIPOLAR', 'TRIPOLAR'),
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'TRIPOLAR', 'TRIPOLAR'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'TRIPOLAR', 'TRIPOLAR'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x60527a2751A827ec0Adf861EfcAcbf111587d748', 18, 'TRIPOLAR', 'TRIPOLAR'),
-}
-
 export const AUSDO: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 8, 'aUSDO', 'aUSDO'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 8, 'aUSDO', 'aUSDO'),
@@ -588,6 +581,13 @@ export const GBA: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'GBA', 'Golden Banana'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'GBA', 'Golden Banana'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0xc2ac78FFdDf39e5cD6D83bbD70c1D67517C467eF', 18, 'GBA', 'Golden Banana'),
+}
+
+export const TRIPOLAR: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'TRIPOLAR', 'TRIPOLAR'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'TRIPOLAR', 'TRIPOLAR'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'TRIPOLAR', 'TRIPOLAR'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x60527a2751A827ec0Adf861EfcAcbf111587d748', 18, 'TRIPOLAR', 'TRIPOLAR'),
 }
 
 export const PNG: { [chainId in ChainId]: Token } = {
