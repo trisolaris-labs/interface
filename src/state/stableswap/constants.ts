@@ -1,6 +1,6 @@
 import { ChainId, Token, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
-import { USDC, USDT, UST, WBTC } from '../../constants/tokens'
+import { USDC, USDT, WBTC } from '../../constants/tokens'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
