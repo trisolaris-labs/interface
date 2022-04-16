@@ -3808,14 +3808,14 @@ Object {
   "stakingRewardAddress": "0x43A1dD21a5237C6F5eEC94747C28aa3f5C8fa1c7",
   "tokens": Array [
     Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
       "chainId": 137,
       "decimals": 18,
       "name": "Dai Stablecoin",
       "symbol": "DAI",
     },
     Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
       "chainId": 137,
       "decimals": 6,
       "name": "USD Coin",
@@ -3956,14 +3956,14 @@ Object {
   "stakingRewardAddress": "0x43A1dD21a5237C6F5eEC94747C28aa3f5C8fa1c7",
   "tokens": Array [
     Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0xD6DF932A45C0f255f85145f286eA0b292B21C90B",
       "chainId": 137,
       "decimals": 18,
       "name": "Aave Token",
       "symbol": "AAVE",
     },
     Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
       "chainId": 137,
       "decimals": 18,
       "name": "Dai Stablecoin",

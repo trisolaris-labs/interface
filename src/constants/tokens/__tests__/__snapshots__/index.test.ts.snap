@@ -46,7 +46,7 @@ Object {
       "symbol": "USDT",
     },
     "137": Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
       "chainId": 137,
       "decimals": 6,
       "name": "Tether USD",
@@ -60,7 +60,7 @@ Object {
       "symbol": "USDT",
     },
     "43114": Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0xde3A24028580884448a5397872046a019649b084",
       "chainId": 43114,
       "decimals": 6,
       "name": "Tether USD",
@@ -81,7 +81,7 @@ Object {
       "symbol": "WBTC",
     },
     "137": Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
       "chainId": 137,
       "decimals": 8,
       "name": "Wrapped Bitcoin",
@@ -95,7 +95,7 @@ Object {
       "symbol": "WBTC",
     },
     "43114": Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0x408D4cD0ADb7ceBd1F1A1C33A0Ba2098E1295bAB",
       "chainId": 43114,
       "decimals": 8,
       "name": "Wrapped Bitcoin",
@@ -116,7 +116,7 @@ Object {
       "symbol": "DAI",
     },
     "137": Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
       "chainId": 137,
       "decimals": 18,
       "name": "Dai Stablecoin",
@@ -130,7 +130,7 @@ Object {
       "symbol": "DAI",
     },
     "43114": Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a",
       "chainId": 43114,
       "decimals": 18,
       "name": "Dai Stablecoin",
@@ -326,7 +326,7 @@ Object {
       "symbol": "USDC",
     },
     "137": Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
       "chainId": 137,
       "decimals": 6,
       "name": "USD Coin",
@@ -340,7 +340,7 @@ Object {
       "symbol": "USDC",
     },
     "43114": Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
       "chainId": 43114,
       "decimals": 6,
       "name": "USD Coin",
@@ -361,7 +361,7 @@ Object {
       "symbol": "AAVE",
     },
     "137": Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0xD6DF932A45C0f255f85145f286eA0b292B21C90B",
       "chainId": 137,
       "decimals": 18,
       "name": "Aave Token",
@@ -375,7 +375,7 @@ Object {
       "symbol": "AAVE",
     },
     "43114": Token {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0x63a72806098Bd3D9520cC43356dD78afe5D386D9",
       "chainId": 43114,
       "decimals": 18,
       "name": "Aave Token",

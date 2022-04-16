@@ -18,9 +18,11 @@ export default function Updater(): null {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
 
   // Code for making trisolaris list the default.
-  const lastInitializedList = useSelector<AppState, any>(state => state.lists.lastInitializedDefaultListOfLists)
+  const lastInitializedList = useSelector<AppState, AppState['lists']['lastInitializedDefaultListOfLists']>(
+    state => state.lists.lastInitializedDefaultListOfLists
+  )
 
-  if (lastInitializedList[0] === AURORA_LIST) {
+  if (lastInitializedList?.[0] === AURORA_LIST) {
     dispatch(setDefaultList())
   }
 
