@@ -1,12 +1,12 @@
-import { Currency, CurrencyAmount, Pair, Token, Trade } from '@trisolaris/sdk'
+import { ChainId, Currency, CurrencyAmount, Pair, Token, TokenAmount, Trade } from '@trisolaris/sdk'
 import flatMap from 'lodash.flatmap'
 import { useMemo } from 'react'
 
-import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../constants'
+import { useActiveWeb3React } from './index'
+
 import { PairState, usePairs } from '../data/Reserves'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
-
-import { useActiveWeb3React } from './index'
+import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES, CUSTOM_TOKEN_MAX_HOPS } from '../constants'
 
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   const { chainId } = useActiveWeb3React()
@@ -78,8 +78,19 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   )
 }
 
-const MAX_HOPS=4
-const MAX_NUM_RESULTS=1
+const MAX_NUM_RESULTS = 1
+const MAX_HOPS_DEFAULT = 3
+
+const getMaxHops = (tokenAddresses?: string[]) => {
+  if (
+    tokenAddresses?.length &&
+    (CUSTOM_TOKEN_MAX_HOPS[tokenAddresses[0]] || CUSTOM_TOKEN_MAX_HOPS[tokenAddresses[1]])
+  ) {
+    return CUSTOM_TOKEN_MAX_HOPS[tokenAddresses[0]] ?? CUSTOM_TOKEN_MAX_HOPS[tokenAddresses[1]]
+  }
+  return MAX_HOPS_DEFAULT
+}
+/**
 /**
  * Returns the best trade for the exact amount of tokens in to the given token out
  */
@@ -88,7 +99,11 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
   return useMemo(() => {
     if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
       return (
-        Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: MAX_HOPS, maxNumResults: MAX_NUM_RESULTS })[0] ?? null
+        Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, {
+          maxHops: getMaxHops([(currencyAmountIn.currency as Token).address, (currencyOut as Token).address]),
+
+          maxNumResults: MAX_NUM_RESULTS
+        })[0] ?? null
       )
     }
     return null
@@ -104,8 +119,10 @@ export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: Curr
   return useMemo(() => {
     if (currencyIn && currencyAmountOut && allowedPairs.length > 0) {
       return (
-        Trade.bestTradeExactOut(allowedPairs, currencyIn, currencyAmountOut, { maxHops: MAX_HOPS, maxNumResults: MAX_NUM_RESULTS })[0] ??
-        null
+        Trade.bestTradeExactOut(allowedPairs, currencyIn, currencyAmountOut, {
+          maxHops: getMaxHops([(currencyAmountOut.currency as Token).address, (currencyIn as Token).address]),
+          maxNumResults: MAX_NUM_RESULTS
+        })[0] ?? null
       )
     }
     return null
