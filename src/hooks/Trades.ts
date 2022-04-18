@@ -78,6 +78,8 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   )
 }
 
+const MAX_HOPS=4
+const MAX_NUM_RESULTS=1
 /**
  * Returns the best trade for the exact amount of tokens in to the given token out
  */
@@ -86,7 +88,7 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
   return useMemo(() => {
     if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
       return (
-        Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: 4, maxNumResults: 1 })[0] ?? null
+        Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: MAX_HOPS, maxNumResults: MAX_NUM_RESULTS })[0] ?? null
       )
     }
     return null
@@ -102,7 +104,7 @@ export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: Curr
   return useMemo(() => {
     if (currencyIn && currencyAmountOut && allowedPairs.length > 0) {
       return (
-        Trade.bestTradeExactOut(allowedPairs, currencyIn, currencyAmountOut, { maxHops: 4, maxNumResults: 1 })[0] ??
+        Trade.bestTradeExactOut(allowedPairs, currencyIn, currencyAmountOut, { maxHops: MAX_HOPS, maxNumResults: MAX_NUM_RESULTS })[0] ??
         null
       )
     }
