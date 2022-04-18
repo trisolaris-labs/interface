@@ -81,7 +81,7 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
 const MAX_NUM_RESULTS = 1
 const MAX_HOPS_DEFAULT = 3
 
-const getMaxHops = (tokenAddresses?: string[]) => {
+const getMaxHops = (tokenAddresses?: [string, string]) => {
   if (
     tokenAddresses?.length &&
     (CUSTOM_TOKEN_MAX_HOPS[tokenAddresses[0]] || CUSTOM_TOKEN_MAX_HOPS[tokenAddresses[1]])
