@@ -33,6 +33,9 @@ import {
 } from '../../constants/tokens'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
+import { StableSwapPoolName } from '../stableswap/constants'
+import { ENABLE_STABLE_FARMS } from '../../constants'
+
 export enum ChefVersions {
   V1,
   V2
@@ -70,6 +73,8 @@ export type StakingTriFarms = {
   noTriRewards: boolean
   doubleRewardToken: Token
   isStableSwap: boolean
+  stableSwapPoolName: string
+  stableSwapLpToken: Token
 }
 
 export interface ExternalInfo {
@@ -114,7 +119,9 @@ const NULL_POOL: StakingTri = {
   inStaging: false,
   noTriRewards: false,
   doubleRewardToken: dummyToken,
-  isStableSwap: false
+  isStableSwap: false,
+  stableSwapPoolName: '',
+  stableSwapLpToken: dummyToken
 }
 const NULL_POOLS = [NULL_POOL]
 
@@ -180,6 +187,30 @@ const POLYGON_POOLS: StakingTri[] = [
     allocPoint: 1
   })
 ]
+
+const STABLE_POOL_FARMS = ENABLE_STABLE_FARMS
+  ? [
+      createMCV2Pool({
+        ID: 25,
+        poolId: 18,
+        tokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
+        lpAddress: '0x5eb99863f7efe88c447bc9d52aa800421b1de6c9',
+        rewarderAddress: '',
+        allocPoint: 1,
+        noTriRewards: false,
+        inStaging: true,
+        isStableSwap: true,
+        stableSwapPoolName: StableSwapPoolName.USDC_USDT,
+        stableSwapLpToken: new Token(
+          ChainId.AURORA,
+          '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9',
+          18,
+          'USD TLP',
+          'Trisolaris USDC/USDT'
+        )
+      })
+    ]
+  : []
 
 const AURORA_POOLS: StakingTri[] = [
   createMCV1Pool({

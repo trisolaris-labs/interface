@@ -3,6 +3,7 @@ import { TRI } from '../constants/tokens'
 import { unwrappedToken } from './wrappedCurrency'
 
 export const getPairRenderOrder = (token0: Token, token1: Token) => {
+  // TODO: Adapt for 3/4 token pools 
   const currency0 = unwrappedToken(token0)
   const currency1 = unwrappedToken(token1)
 

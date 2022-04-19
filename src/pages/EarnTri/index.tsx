@@ -6,18 +6,19 @@ import { Text } from 'rebass'
 import { ChevronDown, ChevronUp } from 'react-feather'
 
 import { AutoColumn } from '../../components/Column'
-
 import { PageWrapper } from '../../components/Page'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
 import FarmBanner from '../../components/earn/FarmBanner'
 import Toggle from '../../components/Toggle'
 import { FarmTabs } from '../../components/NavigationTabs'
 
-import { useFarms } from '../../state/stake/apr'
-import { StakingTri } from '../../state/stake/stake-constants'
 import { useIsFilterActiveFarms, useToggleFilterActiveFarms } from '../../state/user/hooks'
 
+import { useFarms } from '../../state/stake/apr'
+import { StakingTri } from '../../state/stake/stake-constants'
+import { ENABLE_STABLE_FARMS } from '../../constants'
 import { TYPE } from '../../theme'
+
 import { isTokenAmountPositive } from '../../utils/pools'
 
 import {
@@ -146,7 +147,7 @@ export default function Earn({
       <MemoizedFarmBanner />
       <AutoColumn gap="lg" style={{ width: '100%' }}>
         <StyledSearchInput placeholder={t('earnPage.farmsSearchPlaceholder')} onChange={handleInput} />
-        <FarmTabs active={farmsType} />
+        {ENABLE_STABLE_FARMS && <FarmTabs active={farmsType} />}
         <StyledFiltersContainer>
           <StyledToggleContainer>
             <Text fontWeight={400} fontSize={16} marginRight={20}>
