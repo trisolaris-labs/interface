@@ -3,7 +3,6 @@ import { AutoColumn } from '../../components/Column'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import { JSBI } from '@trisolaris/sdk'
 import { RouteComponentProps } from 'react-router-dom'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -33,76 +32,19 @@ import { getPairRenderOrder } from '../../utils/pools'
 
 import { BIG_INT_ZERO } from '../../constants'
 
-const PositionInfo = styled(AutoColumn)<{ dim: any }>`
-  position: relative;
-  width: 100%;
-  opacity: ${({ dim }) => (dim ? 0.6 : 1)};
-`
+import { ChefVersions } from '../../state/stake/stake-constants'
 
-const BottomSection = styled(AutoColumn)`
-  border-radius: 12px;
-  width: 100%;
-  position: relative;
-`
-
-const ResponsiveRowBetween = styled(RowBetween)`
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    flex-direction: column;
-  `};
-`
-
-const StyledBottomCard = styled(DataCard)<{ dim: any }>`
-  background: ${({ theme }) => theme.bg3};
-  opacity: ${({ dim }) => (dim ? 0.4 : 1)};
-  padding: 1rem 1.25rem;
-`
-
-const PoolData = styled(DarkGreyCard)`
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 110px;
-    text-align: center;
-  `};
-`
-
-const Wrapper = styled(Card)`
-  border-radius: 10px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-  width: 100%;
-`
-
-const VoteCard = styled(HighlightCard)`
-  // background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
-  // overflow: hidden;
-`
-
-const BackgroundColor = styled.span<{ bgColor1: string | null; bgColor2?: string | null }>`
-   background: ${({ theme, bgColor1, bgColor2 }) =>
-     `linear-gradient(90deg, ${bgColor1 ?? theme.blue1} 0%, ${bgColor2 ?? 'grey'} 90%);`}
-   background-size: cover;
-   mix-blend-mode: overlay;
-   border-radius: 10px;
-   width: 100%;
-   height: 100%;
-   opacity: 0.5;
-   position: absolute;
-   top: 0;
-   left: 0;
-   user-select: none;
-`
-
-const DataRow = styled(RowBetween)`
-  justify-content: center;
-  gap: 12px;
-
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-     gap: 12px;
-   `};
-`
+import {
+  PositionInfo,
+  BottomSection,
+  ResponsiveRowBetween,
+  StyledBottomCard,
+  PoolData,
+  Wrapper,
+  VoteCard,
+  BackgroundColor,
+  DataRow
+} from './Manage.styles'
 
 export default function Manage({
   match: {
@@ -124,12 +66,17 @@ export default function Manage({
     tokens,
     totalRewardRate,
     totalStakedInUSD,
-    doubleRewardToken
+    doubleRewardToken,
+    isStableSwap,
+    stableSwapPoolName,
+    stableSwapLpToken
   } = stakingInfo
-  const isDualRewards = chefVersion == 1
+  const isDualRewards = chefVersion === ChefVersions.V2
 
   // get currencies and pair
-  const { currency0, currency1, token0, token1 } = getPairRenderOrder(...tokens)
+  const { currency0, currency1, token0, token1 } = isStableSwap
+    ? getPairRenderOrder(tokens[1], tokens[0])
+    : getPairRenderOrder(tokens[0], tokens[1])
 
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
   const totalRewardRateFriendly = addCommasToNumber(totalRewardRate.toString())
@@ -140,7 +87,9 @@ export default function Manage({
   // Only override `backgroundColor2` if it's a dual rewards pool
   const backgroundColor2 = useColorForToken(token1, () => isDualRewards)
   // detect existing unstaked LP position to show add button if none found
-  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakedAmount?.token)
+  const stakedAmountToken = isStableSwap ? stableSwapLpToken : stakedAmount?.token
+
+  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakedAmountToken)
   const showAddLiquidityButton = Boolean(stakingInfo?.stakedAmount?.equalTo('0') && userLiquidityUnstaked?.equalTo('0'))
 
   // toggle for staking modal and unstaking modal
@@ -154,7 +103,8 @@ export default function Manage({
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
 
-  const lpToken = useTLP({ lpAddress, token0, token1 })
+  const computedLpToken = useTLP({ lpAddress, token0, token1 })
+  const lpToken = isStableSwap ? stableSwapLpToken : computedLpToken
 
   const { userLPAmountUSDFormatted } =
     useUserFarmStatistics({
@@ -222,7 +172,11 @@ export default function Manage({
                 padding="8px"
                 width={'fit-content'}
                 as={Link}
-                to={`/add/${currency0 && currencyId(currency0)}/${currency1 && currencyId(currency1)}`}
+                to={
+                  isStableSwap
+                    ? `/pool/stable/add/${stableSwapPoolName}`
+                    : `/add/${currency0 && currencyId(currency0)}/${currency1 && currencyId(currency1)}`
+                }
               >
                 {t('earnPage.addPoolLiquidity', { poolHandle })}
               </ButtonPrimary>

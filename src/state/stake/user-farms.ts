@@ -74,6 +74,7 @@ export function useSingleFarm(version: number): StakingTri {
 
     const { totalStakedInUSD, totalRewardRate, apr, apr2 } = stakingInfoData[version]
 
+
     return {
       ...activeFarms[version],
       tokens: tokens!,
