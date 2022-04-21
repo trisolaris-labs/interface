@@ -27,6 +27,7 @@ import {
   Button
 } from './PoolCardTri.styles'
 import GetTokenLink from './FarmsPortfolio/GetTokenLink'
+import { SHITZU } from '../../constants/tokens'
 
 type PoolCardTriProps = {
   apr: number
@@ -147,7 +148,7 @@ const DefaultPoolCardtri = ({
 }
 
 const StakingPoolCardTRI = (props: PoolCardTriProps) => {
-  const { version } = props
+  const { version, token0 } = props
 
   const stakingInfo = useSingleFarm(Number(version))
   const { earnedAmount, doubleRewardAmount } = stakingInfo
@@ -156,6 +157,7 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
   const enableModal = () => setShowClaimRewardModal(true)
+
   return (
     <>
       {showClaimRewardModal && stakingInfo && (
