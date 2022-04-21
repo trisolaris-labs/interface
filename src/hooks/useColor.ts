@@ -6,6 +6,29 @@ import { Token } from '@trisolaris/sdk'
 
 const COLOR_MAP = new Map()
 
+async function getVibrant(path: string, address: string) {
+  try {
+    const palette = await Vibrant.from(path).getPalette()
+
+    if (palette?.Vibrant == null) {
+      return null
+    }
+
+    let color = palette.Vibrant.hex
+    let AAscore = hex(color, '#FFF')
+    while (AAscore < 3) {
+      color = shade(0.005, color)
+      AAscore = hex(color, '#FFF')
+    }
+
+    COLOR_MAP.set(address, color)
+
+    return color
+  } catch (error) {
+    return null
+  }
+}
+
 async function getColorFromToken(token: Token): Promise<string | null> {
   if (COLOR_MAP.has(token.address)) {
     return COLOR_MAP.get(token.address)
@@ -16,38 +39,7 @@ async function getColorFromToken(token: Token): Promise<string | null> {
     `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${token.address}/logo.png`
   ]
 
-  const getVibrant = (path: string) => {
-    return Vibrant.from(path)
-      .getPalette()
-      .then(palette => {
-        if (palette?.Vibrant) {
-          let detectedHex = palette.Vibrant.hex
-          let AAscore = hex(detectedHex, '#FFF')
-          while (AAscore < 3) {
-            detectedHex = shade(0.005, detectedHex)
-            AAscore = hex(detectedHex, '#FFF')
-          }
-          return detectedHex
-        }
-        return null
-      })
-      .then(color => {
-        if (color != null) {
-          COLOR_MAP.set(token.address, color)
-        }
-
-        return color
-      })
-      .catch(() => null)
-  }
-
-  return getVibrant(paths[0]).then(
-    tokenColor =>
-      tokenColor ??
-      getVibrant(paths[1]).then(tokenColor => {
-        return tokenColor
-      })
-  )
+  return (await getVibrant(paths[0], token.address)) ?? (await getVibrant(paths[1], token.address))
 }
 
 export function useColor(token?: Token) {
