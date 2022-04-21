@@ -223,6 +223,7 @@ export default function Earn({
               noTriRewards={farm.noTriRewards}
               doubleRewardToken={farm.doubleRewardToken}
               isStaking={isTokenAmountPositive(farm.stakedAmount)}
+              isStableSwap={farm.isStableSwap}
             />
           ))}
         </PoolSection>
