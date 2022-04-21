@@ -113,7 +113,7 @@
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "clean": "rm -rf node_modules && yarn install",
     "predeploy": "yarn clean && yarn build",
-    "deploy": "npm version patch && gh-pages -d build",
+    "deploy": "gh-pages -d build",
     "deploy-staging": "gcloud app deploy --project=trisolaris-ad-hoc",
     "test": "jest --testPathPattern=/__tests__/",
     "test_old": "react-scripts test --env=jsdom",
