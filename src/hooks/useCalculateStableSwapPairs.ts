@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Token } from '@trisolaris/sdk'
+import { JSBI, Token } from '@trisolaris/sdk'
 import { useCallback, useMemo } from 'react'
 
 import {
@@ -45,7 +45,7 @@ export type StableSwapData =
 export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData[] {
   const poolsStatuses = useStableSwapPoolsStatuses()
   const tokenToPoolsMapSorted = useMemo(() => {
-    const sortedPools = Object.values(STABLESWAP_POOLS[ChainId.AURORA])
+    const sortedPools = Object.values(STABLESWAP_POOLS)
       .filter(pool => !poolsStatuses[pool.name]?.isPaused) // paused pools can't swap
       .sort((a, b) => {
         const aTVL = poolsStatuses[a.name]?.tvl
@@ -56,7 +56,7 @@ export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData
         return aTVL ? -1 : 1
       })
     const tokenToPools = sortedPools.reduce((acc, { name: poolName }) => {
-      const { poolTokens } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
+      const { poolTokens } = STABLESWAP_POOLS[poolName]
 
       poolTokens.forEach(token => {
         acc[token.address] = (acc[token.address] || []).concat(poolName)
@@ -72,12 +72,7 @@ export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData
         return []
       }
 
-      const swapPairs = getTradingPairsForToken(
-        TOKENS_MAP,
-        STABLESWAP_POOLS[ChainId.AURORA],
-        tokenToPoolsMapSorted,
-        token
-      )
+      const swapPairs = getTradingPairsForToken(TOKENS_MAP, STABLESWAP_POOLS, tokenToPoolsMapSorted, token)
 
       return swapPairs
     },

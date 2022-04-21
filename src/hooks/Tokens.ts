@@ -1,5 +1,5 @@
 import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, CETH, Token, currencyEquals, ChainId } from '@trisolaris/sdk'
+import { Currency, CETH, Token, currencyEquals } from '@trisolaris/sdk'
 import _ from 'lodash'
 import { useMemo } from 'react'
 import { useSelectedTokenList } from '../state/lists/hooks'
@@ -51,7 +51,7 @@ export function useAllStableSwapTokens(): TokensMap {
     }
 
     const validStablesSet = _.transform(
-      STABLESWAP_POOLS[ChainId.AURORA],
+      STABLESWAP_POOLS,
       (acc, pool) => {
         pool.poolTokens.forEach(token => acc.add(token.address))
 

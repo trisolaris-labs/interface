@@ -21,10 +21,7 @@ type StableSwapPoolStatuses = {
 export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
   const { chainId = ChainId.AURORA } = useActiveWeb3React()
 
-  const stableSwapPools = useMemo(
-    () => Object.values(STABLESWAP_POOLS[ChainId.AURORA]).filter(({ address }) => address),
-    []
-  )
+  const stableSwapPools = useMemo(() => Object.values(STABLESWAP_POOLS).filter(({ address }) => address), [])
 
   const stableSwapPoolLPTokens: string[] = chainId == null ? [] : stableSwapPools.map(({ lpToken }) => lpToken.address)
   const swapAddresses: string[] = chainId == null ? [] : stableSwapPools.map(({ address }) => address)

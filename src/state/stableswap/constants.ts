@@ -75,37 +75,32 @@ export type StableSwapTokenToPoolsMap = {
   [tokenSymbol: string]: string[]
 }
 
-export type StableSwapPools = {
-  // NOTE - chain id index is AURORA from the enum, are we really gonna deploy this crosschain though
-  [ChainId.AURORA]: { [name in StableSwapPoolName]: StableSwapPool }
-}
+export type StableSwapPools = { [name in StableSwapPoolName]: StableSwapPool }
 
 export const STABLESWAP_POOLS: StableSwapPools = {
-  [ChainId.AURORA]: {
-    [StableSwapPoolName.USDC_USDT]: {
-      name: StableSwapPoolName.USDC_USDT,
-      // @TODO Move the prod version of this token to the Tokens repo
-      lpToken: new Token(
-        ChainId.AURORA,
-        '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9',
-        18,
-        'USDTLP',
-        'Trisolaris USDC/USDT'
-      ),
-      // *** NOTE *** - For future reference, this order of the pool tokens must be equivalent to the LP token name order
-      // Also to verify, please query the swap contract for the individual stable token indexes
-      poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
-      address: '0x13e7a001EC72AB30D66E2f386f677e25dCFF5F59',
-      type: StableSwapPoolTypes.USD,
-      route: 'usd',
-      isOutdated: false,
-      rewardPids: null
-    }
+  [StableSwapPoolName.USDC_USDT]: {
+    name: StableSwapPoolName.USDC_USDT,
+    // @TODO Move the prod version of this token to the Tokens repo
+    lpToken: new Token(
+      ChainId.AURORA,
+      '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9',
+      18,
+      'USDTLP',
+      'Trisolaris USDC/USDT'
+    ),
+    // *** NOTE *** - For future reference, this order of the pool tokens must be equivalent to the LP token name order
+    // Also to verify, please query the swap contract for the individual stable token indexes
+    poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
+    address: '0x13e7a001EC72AB30D66E2f386f677e25dCFF5F59',
+    type: StableSwapPoolTypes.USD,
+    route: 'usd',
+    isOutdated: false,
+    rewardPids: null
   }
 }
 
 export const TOKENS_MAP = _.transform(
-  STABLESWAP_POOLS[ChainId.AURORA],
+  STABLESWAP_POOLS,
   (acc, pool) => {
     pool.poolTokens?.forEach(token => {
       if (token?.symbol != null) {

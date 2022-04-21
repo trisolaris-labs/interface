@@ -175,7 +175,7 @@ export function useDerivedSwapInfo(
 
   const isStableSwap = useMemo(
     () =>
-      find(STABLESWAP_POOLS[ChainId.AURORA], pool => {
+      find(STABLESWAP_POOLS, pool => {
         return (
           Boolean(pool.poolTokens?.find(stableToken => stableToken?.symbol === currencies[Field.INPUT]?.symbol)) &&
           Boolean(pool.poolTokens?.find(stableToken => stableToken?.symbol === currencies[Field.OUTPUT]?.symbol))

@@ -39,11 +39,10 @@ export interface StablePoolDataType {
 
 export interface UserShareType {
   lpTokenBalance: TokenAmount
-  name: StableSwapPoolName // TODO: does this need to be on user share?
+  name: StableSwapPoolName
   share: Percent
   tokens: TokenShareType[]
   usdBalance: TokenAmount
-  // underlyingTokensAmount: JSBI
   amountsStaked: Partial<Record<Partners, BigNumber>>
 }
 
@@ -52,7 +51,7 @@ export type PoolDataHookReturnType = [StablePoolDataType, UserShareType | null]
 export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDataHookReturnType {
   const { account } = useActiveWeb3React()
 
-  const pool = STABLESWAP_POOLS[ChainId.AURORA][poolName]
+  const pool = STABLESWAP_POOLS[poolName]
   const { lpToken, poolTokens, type, underlyingPoolTokens } = pool
   const effectivePoolTokens =
     underlyingPoolTokens != null && underlyingPoolTokens.length > 0 ? underlyingPoolTokens : poolTokens

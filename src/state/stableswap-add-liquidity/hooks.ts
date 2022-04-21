@@ -1,4 +1,4 @@
-import { ChainId, Currency, CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
+import { Currency, CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
 import { useCallback, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTotalSupply } from '../../data/TotalSupply'
@@ -45,7 +45,7 @@ export function useDerivedStableSwapAddLiquidityInfo(
     [Field.CURRENCY_3]: typedValue3
   } = useStableSwapAddLiquidityState()
 
-  const { lpToken, poolTokens } = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
+  const { lpToken, poolTokens } = STABLESWAP_POOLS[stableSwapPoolName]
   const [currency0, currency1, currency2, currency3] = poolTokens.map(token => unwrappedToken(token))
   const hasThirdCurrency = currency2 != null
   const hasFourthCurrency = hasThirdCurrency && currency3 != null
