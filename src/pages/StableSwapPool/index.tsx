@@ -9,7 +9,6 @@ import { RowBetween } from '../../components/Row'
 import { AutoColumn } from '../../components/Column'
 
 import { useActiveWeb3React } from '../../hooks'
-import { ChainId } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { PageWrapper } from '../../components/Page'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
@@ -44,7 +43,7 @@ export default function Pool() {
 
           {account ? (
             <>
-              {_.map(STABLESWAP_POOLS[ChainId.AURORA]).map(({ name }) => (
+              {_.map(STABLESWAP_POOLS, ({ name }) => (
                 <FullStablePositionCard key={name} poolName={name} />
               ))}
             </>

@@ -1,4 +1,3 @@
-import { ChainId } from '@trisolaris/sdk'
 import React from 'react'
 import { ButtonPrimary } from '../../components/Button'
 import { RowBetween } from '../../components/Row'
@@ -16,7 +15,7 @@ type Props = {
 }
 
 export default function StableSwapPoolAddLiquidityApprovalsRow({ children, stableSwapPoolName }: Props) {
-  const { address, metaSwapAddresses } = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
+  const { address, metaSwapAddresses } = STABLESWAP_POOLS[stableSwapPoolName]
   const {
     currencies,
     parsedAmounts,

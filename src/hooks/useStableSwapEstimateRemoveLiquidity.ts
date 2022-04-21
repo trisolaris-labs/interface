@@ -1,4 +1,4 @@
-import { CurrencyAmount, ChainId, JSBI } from '@trisolaris/sdk'
+import { CurrencyAmount, JSBI } from '@trisolaris/sdk'
 import { useState, useCallback } from 'react'
 import { BIG_INT_ZERO } from '../constants'
 import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
@@ -18,7 +18,7 @@ export default function useStableSwapEstimateRemoveLiquidity({
   withdrawTokenIndex,
   stableSwapPoolName
 }: Props): [CurrencyAmount[], () => Promise<void>, TXError | null] {
-  const { poolTokens } = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
+  const { poolTokens } = STABLESWAP_POOLS[stableSwapPoolName]
   const poolCurrencies = poolTokens.map(token => unwrappedToken(token))
 
   const initialAmounts = poolCurrencies.map(currency => CurrencyAmount.fromRawAmount(currency, BIG_INT_ZERO))

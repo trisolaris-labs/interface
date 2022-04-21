@@ -1,4 +1,4 @@
-import { CurrencyAmount, ChainId } from '@trisolaris/sdk'
+import { CurrencyAmount } from '@trisolaris/sdk'
 import { BigNumber } from 'ethers'
 import { useCallback, useState } from 'react'
 import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
@@ -30,7 +30,7 @@ export default function useStableSwapRemoveLiquidity({
   const [attemptingTxn, setAttemptingTxn] = useState(false)
   const [txHash, setTxHash] = useState('')
 
-  const pool = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
+  const pool = STABLESWAP_POOLS[stableSwapPoolName]
   const swapContract = useStableSwapContract(
     stableSwapPoolName,
     true, // require signer

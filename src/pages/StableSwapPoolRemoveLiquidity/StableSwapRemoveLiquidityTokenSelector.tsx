@@ -1,4 +1,3 @@
-import { ChainId } from '@trisolaris/sdk'
 import React from 'react'
 import styled from 'styled-components'
 import { ButtonOutlined, ButtonSecondary } from '../../components/Button'
@@ -21,7 +20,7 @@ export default function StableSwapRemoveLiquidityTokenSelector({
   tokenIndex,
   onSelectTokenIndex
 }: Props) {
-  const { poolTokens } = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
+  const { poolTokens } = STABLESWAP_POOLS[stableSwapPoolName]
   const currencies = poolTokens.map(token => unwrappedToken(token))
 
   const AllButton = tokenIndex === null ? ButtonSecondary : ButtonOutlined

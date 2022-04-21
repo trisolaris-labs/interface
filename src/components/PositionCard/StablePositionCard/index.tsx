@@ -1,4 +1,4 @@
-import { ChainId, Pair } from '@trisolaris/sdk'
+import { Pair } from '@trisolaris/sdk'
 import { darken } from 'polished'
 import React, { useState, useContext } from 'react'
 import { Text } from 'rebass'
@@ -118,7 +118,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
 
   const [stablePoolData, userData] = useStablePoolsData(poolName)
   const { name, tokens } = stablePoolData
-  const { address: poolAddress } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
+  const { address: poolAddress } = STABLESWAP_POOLS[poolName]
   const poolTokens = tokens.map(({ token }) => token)
   const [token0, token1, token2] = poolTokens
   const [currency0, currency1, currency2] = poolTokens.map(token => unwrappedToken(token))

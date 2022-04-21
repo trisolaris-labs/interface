@@ -1,4 +1,4 @@
-import { ChainId, JSBI } from '@trisolaris/sdk'
+import { JSBI } from '@trisolaris/sdk'
 import React, { useEffect, useRef, useState, useContext, useCallback } from 'react'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { ButtonLight, ButtonConfirmed, ButtonError } from '../../components/Button'
@@ -50,7 +50,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const [withdrawTokenIndex, setWithdrawTokenIndex] = useState<number | null>(null)
   const withdrawTokenIndexRef = useRef(withdrawTokenIndex)
   const [poolData, userShareData] = useStablePoolsData(stableSwapPoolName)
-  const pool = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
+  const pool = STABLESWAP_POOLS[stableSwapPoolName]
   const { address, lpToken, metaSwapAddresses } = pool
   const effectiveAddress = isMetaPool(stableSwapPoolName) ? metaSwapAddresses : address
   const currency = unwrappedToken(lpToken)

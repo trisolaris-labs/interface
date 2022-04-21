@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { ThemeContext } from 'styled-components'
-import { ChainId } from '@trisolaris/sdk'
 
 import { RowBetween } from '../../components/Row'
 import { Input as NumericalInput } from '../../components/NumericalInput'
@@ -46,7 +45,7 @@ export default function StableSwapRemoveLiquidityInputPanel({
 }: Props & BalanceButtonProps) {
   const { t } = useTranslation()
   const [_poolData, userShareData] = useStablePoolsData(stableSwapPoolName)
-  const currency = unwrappedToken(STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName].lpToken)
+  const currency = unwrappedToken(STABLESWAP_POOLS[stableSwapPoolName].lpToken)
 
   const { account } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
