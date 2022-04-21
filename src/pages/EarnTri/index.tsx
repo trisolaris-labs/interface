@@ -38,7 +38,7 @@ enum SortingType {
 
 type SearchableTokenProps = { symbol: string | undefined; name: string | undefined; address: string }
 
-const POOLS_ORDER = [5, 11, 8, 7, 0, 1, 2, 3, 4, 15, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30]
+const POOLS_ORDER = [5, 11, 8, 30, 7, 0, 1, 2, 3, 4, 15, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29]
 const LEGACY_POOLS = [6, 16, 12, 13, 14, 9, 10]
 
 const MemoizedFarmBanner = React.memo(FarmBanner)
