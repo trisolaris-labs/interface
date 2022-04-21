@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Token } from '@trisolaris/sdk'
+import { Token, ChainId } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { Settings2 as ManageIcon } from 'lucide-react'
@@ -27,7 +27,6 @@ import {
   Button
 } from './PoolCardTri.styles'
 import GetTokenLink from './FarmsPortfolio/GetTokenLink'
-
 
 type PoolCardTriProps = {
   apr: number
@@ -148,7 +147,7 @@ const DefaultPoolCardtri = ({
 }
 
 const StakingPoolCardTRI = (props: PoolCardTriProps) => {
-  const { version, token0 } = props
+  const { version } = props
 
   const stakingInfo = useSingleFarm(Number(version))
   const { earnedAmount, doubleRewardAmount } = stakingInfo
@@ -157,7 +156,6 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
   const enableModal = () => setShowClaimRewardModal(true)
-
   return (
     <>
       {showClaimRewardModal && stakingInfo && (
