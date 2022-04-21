@@ -43,6 +43,7 @@ type PoolCardTriProps = {
   doubleRewardToken: Token
   isStaking: boolean
   version: number
+  isStableSwap?: boolean
 }
 
 const DefaultPoolCardtri = ({
@@ -60,12 +61,15 @@ const DefaultPoolCardtri = ({
   doubleRewardToken,
   isStaking,
   version,
+  isStableSwap,
   enableClaimButton = false,
-  enableModal = () => null
+  enableModal = () => null,
+
 }: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
   const isDualRewards = chefVersion == 1
 
-  const { currency0, currency1, token0, token1 } = getPairRenderOrder(_token0, _token1)
+  // TODO: temp fix, have to rework for 3+ pools
+  const { currency0, currency1, token0, token1 } = isStableSwap?  getPairRenderOrder(_token1, _token0) : getPairRenderOrder(_token0, _token1)
 
   const { t } = useTranslation()
   // get the color of the token
