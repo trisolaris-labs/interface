@@ -28,7 +28,8 @@ import {
   SHITZU,
   ROSE,
   RUSD,
-  LINEAR
+  LINEAR,
+  BSTN
 } from '../../constants/tokens'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
@@ -456,6 +457,18 @@ const AURORA_POOLS: StakingTri[] = [
     inStaging: true,
     doubleRewards: true,
     doubleRewardToken: LINEAR[ChainId.AURORA]
+  }),
+  createMCV2Pool({
+    ID: 30,
+    poolId: 23,
+    tokens: [WNEAR[ChainId.AURORA], BSTN[ChainId.AURORA]],
+    lpAddress: '0xBBf3D4281F10E537d5b13CA80bE22362310b2bf9',
+    rewarderAddress: '0xDc6d09f5CC085E29972d192cB3AdCDFA6495a741',
+    allocPoint: 1,
+    noTriRewards: false,
+    inStaging: true,
+    doubleRewards: true,
+    doubleRewardToken: BSTN[ChainId.AURORA]
   })
 ]
 
