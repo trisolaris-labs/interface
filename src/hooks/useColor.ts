@@ -11,30 +11,43 @@ async function getColorFromToken(token: Token): Promise<string | null> {
     return COLOR_MAP.get(token.address)
   }
 
-  const path = `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${token.address}/logo.png`
+  const paths = [
+    `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${token.address}/logo.svg`,
+    `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${token.address}/logo.png`
+  ]
 
-  return Vibrant.from(path)
-    .getPalette()
-    .then(palette => {
-      if (palette?.Vibrant) {
-        let detectedHex = palette.Vibrant.hex
-        let AAscore = hex(detectedHex, '#FFF')
-        while (AAscore < 3) {
-          detectedHex = shade(0.005, detectedHex)
-          AAscore = hex(detectedHex, '#FFF')
+  const getVibrant = (path: string) => {
+    return Vibrant.from(path)
+      .getPalette()
+      .then(palette => {
+        if (palette?.Vibrant) {
+          let detectedHex = palette.Vibrant.hex
+          let AAscore = hex(detectedHex, '#FFF')
+          while (AAscore < 3) {
+            detectedHex = shade(0.005, detectedHex)
+            AAscore = hex(detectedHex, '#FFF')
+          }
+          return detectedHex
         }
-        return detectedHex
-      }
-      return null
-    })
-    .then(color => {
-      if (color != null) {
-        COLOR_MAP.set(token.address, color)
-      }
+        return null
+      })
+      .then(color => {
+        if (color != null) {
+          COLOR_MAP.set(token.address, color)
+        }
 
-      return color
-    })
-    .catch(() => null)
+        return color
+      })
+      .catch(() => null)
+  }
+
+  return getVibrant(paths[0]).then(
+    tokenColor =>
+      tokenColor ??
+      getVibrant(paths[1]).then(tokenColor => {
+        return tokenColor
+      })
+  )
 }
 
 export function useColor(token?: Token) {
