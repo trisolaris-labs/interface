@@ -116,8 +116,10 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   const { width } = useWindowSize()
   const theme = useContext(ThemeContext)
 
-  const { name, poolTokens, address: poolAddress } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
-
+  const [stablePoolData, userData] = useStablePoolsData(poolName)
+  const { name, tokens } = stablePoolData
+  const { address: poolAddress } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
+  const poolTokens = tokens.map(({ token }) => token)
   const [token0, token1, token2] = poolTokens
   const [currency0, currency1, currency2] = poolTokens.map(token => unwrappedToken(token))
   const [showMore, setShowMore] = useState(false)
@@ -127,7 +129,6 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   // @TODO Update styling so it can handle 3 color gradient
   const backgroundColor3 = useColorWithDefault('#2172E5', token2)
 
-  const [stablePoolData, userData] = useStablePoolsData(poolName)
   const hasLPTokenBalance = userData?.lpTokenBalance?.greaterThan(BIG_INT_ZERO) ?? false
 
   function handleAddLiquidity() {
@@ -212,7 +213,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
           <AutoColumn gap="8px">
             <FixedHeightRow marginTop="4px">
               <StyledText fontWeight={500}>User {poolTokensString} LP Balance</StyledText>
-              <StyledText fontWeight={500}>{`$${userData?.usdBalance.toString()} (${userData?.lpTokenBalance.toFixed(
+              <StyledText fontWeight={500}>{`$${userData?.usdBalance.toFixed(4)} (${userData?.lpTokenBalance.toFixed(
                 3
               )} LP tokens) `}</StyledText>
             </FixedHeightRow>
@@ -232,7 +233,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
                     {token.name}
                   </div>
                   <StyledText fontWeight={500} marginLeft={'6px'}>
-                    {`${value.toString()} (${percent.toFixed(2)}%)`}
+                    {`${value.toSignificant(4)} (${percent.toFixed(2)}%)`}
                   </StyledText>
                 </FixedHeightRow>
               ))}

@@ -1,5 +1,6 @@
 import { Contract } from '@ethersproject/contracts'
 import { ChainId, Token, WETH } from '@trisolaris/sdk'
+// eslint-disable-next-line @typescript-eslint/camelcase
 import IUniswapV2Pair_ABI from '../constants/abis/polygon/IUniswapV2Pair.json'
 import { abi as STAKING_REWARDS_ABI } from '@pangolindex/governance/artifacts/contracts/StakingRewards.sol/StakingRewards.json'
 import { abi as AIRDROP_ABI } from '@pangolindex/governance/artifacts/contracts/Airdrop.sol/Airdrop.json'
@@ -8,10 +9,9 @@ import { abi as PNG_ABI } from '@pangolindex/governance/artifacts/contracts/PNG.
 import { abi as BRIDGE_MIGRATOR_ABI } from '@pangolindex/exchange-contracts/artifacts/contracts/pangolin-periphery/PangolinBridgeMigrationRouter.sol/PangolinBridgeMigrationRouter.json'
 import { useMemo } from 'react'
 
-import COMPLEX_REWARDER_ABI from '../constants/abis/complex-rewarder.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
-import STABLE_SWAP_FLASH_LOAN_ABI from '../constants/abis/stableswap/swapFlashLoan.json'
 import STABLE_SWAP_META_SWAP_DEPOSIT_ABI from '../constants/abis/stableswap/metaSwapDeposit.json'
+import STABLE_META_SWAP_ABI from '../constants/abis/stableswap/metaSwap.json'
 import STABLE_SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from '../constants/abis/stableswap/swapFlashLoanNoWithdrawFee.json'
 import STABLE_SWAP_LP_TOKEN_UNGUARDED_ABI from '../constants/abis/stableswap/lpTokenUnguarded.json'
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
@@ -26,13 +26,7 @@ import { AIRDROP_ADDRESS, BRIDGE_MIGRATOR_ADDRESS } from '../constants'
 import { PNG, TRI, USDC, WNEAR } from '../constants/tokens'
 import { GOVERNANCE_ADDRESS } from '../constants'
 import { STAKING } from '../state/stake/stake-constants'
-import {
-  isLegacySwapABIPool,
-  isMetaPool,
-  StableSwapPool,
-  StableSwapPoolName,
-  STABLESWAP_POOLS
-} from '../state/stableswap/constants'
+import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -127,25 +121,25 @@ function findPoolContract(tokenA: Token, tokenB: Token) {
   })
 }
 
-function useLegacyStableSwapABIPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
-  return useContract(pool?.address, STABLE_SWAP_FLASH_LOAN_ABI, withSignerIfPossible)
+function useStableSwapMetaPoolDeposit(address?: string, withSignerIfPossible = true): Contract | null {
+  return useContract(address, STABLE_SWAP_META_SWAP_DEPOSIT_ABI, withSignerIfPossible)
 }
 
-function useStableSwapMetaPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
-  return useContract(pool?.address, STABLE_SWAP_META_SWAP_DEPOSIT_ABI, withSignerIfPossible)
+export function useStableSwapPool(address?: string, withSignerIfPossible = true): Contract | null {
+  return useContract(address, STABLE_SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI, withSignerIfPossible)
 }
 
-function useStableSwapPool(pool: StableSwapPool | null, withSignerIfPossible = true): Contract | null {
-  return useContract(pool?.address, STABLE_SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI, withSignerIfPossible)
-}
-
-export function useStableSwapContract(poolName?: StableSwapPoolName, withSignerIfPossible = true): Contract | null {
+export function useStableSwapContract(
+  poolName?: StableSwapPoolName,
+  withSignerIfPossible = true,
+  shouldUseUnwrappedTokens = false
+): Contract | null {
   const { chainId, library } = useActiveWeb3React()
 
   const pool = poolName == null ? null : STABLESWAP_POOLS[ChainId.AURORA][poolName]
-  const legacyStableSwapABIPool = useLegacyStableSwapABIPool(pool, withSignerIfPossible)
-  const metaPool = useStableSwapMetaPool(pool, withSignerIfPossible)
-  const stableSwapPool = useStableSwapPool(pool, withSignerIfPossible)
+  const metaPool = useStableSwapMetaPoolDeposit(pool?.address, withSignerIfPossible)
+  const metaPoolUnwrappedTokens = useStableSwapMetaPoolDeposit(pool?.metaSwapAddresses, withSignerIfPossible)
+  const stableSwapPool = useStableSwapPool(pool?.address, withSignerIfPossible)
 
   return useMemo(() => {
     if (!pool || !library || !chainId) {
@@ -156,16 +150,12 @@ export function useStableSwapContract(poolName?: StableSwapPoolName, withSignerI
       return null
     }
 
-    if (isLegacySwapABIPool(pool.name)) {
-      return legacyStableSwapABIPool
-    }
-
     if (isMetaPool(pool.name)) {
-      return metaPool
+      return shouldUseUnwrappedTokens ? metaPoolUnwrappedTokens : metaPool
     }
 
     return stableSwapPool
-  }, [pool, library, chainId, legacyStableSwapABIPool, metaPool, stableSwapPool])
+  }, [pool, library, chainId, stableSwapPool, shouldUseUnwrappedTokens, metaPoolUnwrappedTokens, metaPool])
 }
 
 export function useStableSwapLPTokenContract(
@@ -175,4 +165,8 @@ export function useStableSwapLPTokenContract(
   const { lpToken } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
 
   return useContract(lpToken.address, STABLE_SWAP_LP_TOKEN_UNGUARDED_ABI, withSignerIfPossible)
+}
+
+export function useStableSwapMetaPool(address?: string, withSignerIfPossible = true): Contract | null {
+  return useContract(address, STABLE_META_SWAP_ABI, withSignerIfPossible)
 }

@@ -54,6 +54,11 @@ export function useAllStableSwapTokens(): TokensMap {
       STABLESWAP_POOLS[ChainId.AURORA],
       (acc, pool) => {
         pool.poolTokens.forEach(token => acc.add(token.address))
+
+        if (pool.underlyingPoolTokens != null && pool.underlyingPoolTokens.length > 0) {
+          pool.underlyingPoolTokens.forEach(token => acc.add(token.address))
+        }
+
         return acc
       },
       new Set()

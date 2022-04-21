@@ -18,7 +18,7 @@ import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { StableSwapData, useCalculateStableSwapPairs } from '../../hooks/useCalculateStableSwapPairs'
 import { useStableSwapContract } from '../../hooks/useContract'
 import { useSingleCallResult } from '../multicall/hooks'
-import { STABLE_SWAP_TYPES } from './constants'
+import { isMetaPool, STABLE_SWAP_TYPES } from './constants'
 import _ from 'lodash'
 import { Contract } from 'ethers'
 import { USDC } from '../../constants/tokens'
@@ -231,7 +231,12 @@ export function useDerivedStableSwapInfo(): {
 
   const inputToken = wrappedCurrency(currencies?.[Field.INPUT], chainId)
   const selectedStableSwapPool = useSelectedStableSwapPool()
-  const stableSwapContract = useStableSwapContract(selectedStableSwapPool?.to?.poolName, true)
+
+  const stableSwapContract = useStableSwapContract(
+    selectedStableSwapPool?.to?.poolName,
+    true,
+    isMetaPool(selectedStableSwapPool?.to?.poolName)
+  )
   const calculateSwapResponse = useSingleCallResult(stableSwapContract, 'calculateSwap', [
     selectedStableSwapPool?.from.tokenIndex ?? 0,
     selectedStableSwapPool?.to.tokenIndex ?? 0,
@@ -296,10 +301,11 @@ export function useDerivedStableSwapInfo(): {
     }
   }
 
-  const priceImpact = calculatePriceImpact(
-    tradeData?.inputAmount.raw ?? JSBI.BigInt(0),
-    tradeData?.outputAmount.raw ?? JSBI.BigInt(0)
+  const [normalizedRawInputAmount, normalizedRawOutputAmount] = normalizeInputOutputAmountDecimals(
+    tradeData?.inputAmount,
+    tradeData?.outputAmount
   )
+  const priceImpact = calculatePriceImpact(normalizedRawInputAmount, normalizedRawOutputAmount)
 
   return {
     priceImpact,
@@ -308,6 +314,48 @@ export function useDerivedStableSwapInfo(): {
     parsedAmount,
     inputError,
     stableswapTrade: tradeData
+  }
+}
+
+/**
+ * Given an input and output amount, modifies the currency amount
+ * with fewer decimals to match the currency amount with more decimals
+ * @returns [CurrencyAmount, CurrencyAmount]
+ */
+function normalizeInputOutputAmountDecimals(
+  inputAmount: CurrencyAmount | undefined,
+  outputAmount: CurrencyAmount | undefined
+) {
+  if (inputAmount == null || outputAmount == null) {
+    return [BIG_INT_ZERO, BIG_INT_ZERO]
+  }
+
+  const [{ currency: inputCurrency, raw: inputAmountRaw }, { currency: outputCurrency, raw: outputAmountRaw }] = [
+    inputAmount,
+    outputAmount
+  ]
+
+  switch (true) {
+    case inputCurrency.decimals > outputCurrency.decimals: {
+      return [
+        inputAmountRaw,
+        JSBI.multiply(
+          outputAmountRaw,
+          JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency.decimals - outputCurrency.decimals))
+        )
+      ]
+    }
+    case inputCurrency.decimals < outputCurrency.decimals: {
+      return [
+        JSBI.multiply(
+          inputAmountRaw,
+          JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(outputCurrency.decimals - inputCurrency.decimals))
+        ),
+        outputAmountRaw
+      ]
+    }
+    default:
+      return [inputAmountRaw, outputAmountRaw]
   }
 }
 

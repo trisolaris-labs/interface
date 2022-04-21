@@ -1,7 +1,7 @@
 import { CurrencyAmount, ChainId, JSBI } from '@trisolaris/sdk'
 import { useState, useCallback } from 'react'
 import { BIG_INT_ZERO } from '../constants'
-import { StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
+import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import { unwrappedToken } from '../utils/wrappedCurrency'
 import { useStableSwapContract } from './useContract'
 
@@ -25,7 +25,11 @@ export default function useStableSwapEstimateRemoveLiquidity({
   const [amounts, setAmounts] = useState<CurrencyAmount[]>(initialAmounts)
   const [error, setError] = useState<TXError | null>(null)
 
-  const swapContract = useStableSwapContract(stableSwapPoolName)
+  const swapContract = useStableSwapContract(
+    stableSwapPoolName,
+    false, // require signer
+    isMetaPool(stableSwapPoolName) // if it's a metapool, use unwrapped tokens
+  )
   const resetState = useCallback(() => {
     setAmounts(initialAmounts)
     setError(null)

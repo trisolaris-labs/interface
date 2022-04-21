@@ -1,7 +1,6 @@
 import { ChainId, JSBI, Token } from '@trisolaris/sdk'
 import { useCallback, useMemo } from 'react'
 
-import { useActiveWeb3React } from '.'
 import {
   StableSwapPool,
   StableSwapPoolName,
@@ -45,7 +44,6 @@ export type StableSwapData =
 
 export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData[] {
   const poolsStatuses = useStableSwapPoolsStatuses()
-  const { chainId } = useActiveWeb3React()
   const tokenToPoolsMapSorted = useMemo(() => {
     const sortedPools = Object.values(STABLESWAP_POOLS[ChainId.AURORA])
       .filter(pool => !poolsStatuses[pool.name]?.isPaused) // paused pools can't swap
@@ -58,8 +56,9 @@ export function useCalculateStableSwapPairs(): (token?: Token) => StableSwapData
         return aTVL ? -1 : 1
       })
     const tokenToPools = sortedPools.reduce((acc, { name: poolName }) => {
-      const pool = STABLESWAP_POOLS[ChainId.AURORA][poolName]
-      pool.poolTokens.forEach(token => {
+      const { poolTokens } = STABLESWAP_POOLS[ChainId.AURORA][poolName]
+
+      poolTokens.forEach(token => {
         acc[token.address] = (acc[token.address] || []).concat(poolName)
       })
       return acc
@@ -92,7 +91,7 @@ function buildSwapSideData(token: Token, pool?: StableSwapPool): Required<SwapSi
   return {
     address: token.address,
     poolName: pool?.name,
-    tokenIndex: pool?.poolTokens.findIndex(t => t.address === token.address)
+    tokenIndex: pool?.poolTokens?.findIndex(t => t.address === token.address)
   }
 }
 

@@ -27,8 +27,7 @@ export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
   )
 
   const stableSwapPoolLPTokens: string[] = chainId == null ? [] : stableSwapPools.map(({ lpToken }) => lpToken.address)
-  const swapAddresses: string[] =
-    chainId == null ? [] : stableSwapPools.map(({ metaSwapAddresses, address }) => metaSwapAddresses ?? address)
+  const swapAddresses: string[] = chainId == null ? [] : stableSwapPools.map(({ address }) => address)
 
   const FALLBACK_TVL = BIG_INT_ZERO
   const tvls = useMultipleContractSingleData(

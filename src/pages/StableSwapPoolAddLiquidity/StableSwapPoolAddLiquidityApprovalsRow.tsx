@@ -5,7 +5,7 @@ import { RowBetween } from '../../components/Row'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useDerivedStableSwapAddLiquidityInfo } from '../../state/stableswap-add-liquidity/hooks'
 import { Field } from '../../state/stableswap-add-liquidity/actions'
-import { StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/constants'
+import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import { Dots } from '../Pool/styleds'
 import { useTranslation } from 'react-i18next'
 import { BIG_INT_ZERO } from '../../constants'
@@ -16,14 +16,21 @@ type Props = {
 }
 
 export default function StableSwapPoolAddLiquidityApprovalsRow({ children, stableSwapPoolName }: Props) {
-  const { address } = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
-  const { currencies, parsedAmounts, error, hasThirdCurrency } = useDerivedStableSwapAddLiquidityInfo(
-    stableSwapPoolName
-  )
+  const { address, metaSwapAddresses } = STABLESWAP_POOLS[ChainId.AURORA][stableSwapPoolName]
+  const {
+    currencies,
+    parsedAmounts,
+    error,
+    hasThirdCurrency,
+    hasFourthCurrency
+  } = useDerivedStableSwapAddLiquidityInfo(stableSwapPoolName)
 
-  const [approval0, approve0Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_0], address)
-  const [approval1, approve1Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_1], address)
-  const [approval2, approve2Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_2], address)
+  const effectiveAddress = isMetaPool(stableSwapPoolName) ? metaSwapAddresses : address
+
+  const [approval0, approve0Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_0], effectiveAddress)
+  const [approval1, approve1Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_1], effectiveAddress)
+  const [approval2, approve2Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_2], effectiveAddress)
+  const [approval3, approve3Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_3], effectiveAddress)
 
   const currencyApprovalsData = [
     {
@@ -46,6 +53,15 @@ export default function StableSwapPoolAddLiquidityApprovalsRow({ children, stabl
       value: parsedAmounts[Field.CURRENCY_2],
       symbol: currencies[Field.CURRENCY_2]?.symbol,
       onClick: approve2Callback
+    })
+  }
+
+  if (hasFourthCurrency) {
+    currencyApprovalsData.push({
+      approval: approval3,
+      value: parsedAmounts[Field.CURRENCY_3],
+      symbol: currencies[Field.CURRENCY_3]?.symbol,
+      onClick: approve3Callback
     })
   }
 

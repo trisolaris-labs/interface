@@ -6,8 +6,10 @@ export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
 }
 
-export function isMetaPool(poolName = ''): boolean {
-  return new Set(['dummy value']).has(poolName)
+export function isMetaPool(poolName?: StableSwapPoolName): boolean {
+  const metapools = new Set<StableSwapPoolName | undefined>()
+
+  return metapools.has(poolName)
 }
 
 export enum STABLE_SWAP_TYPES {
@@ -41,6 +43,8 @@ export function getTokenForStablePoolType(poolType: StableSwapPoolTypes): Token 
 export type StableSwapPool = {
   name: StableSwapPoolName
   lpToken: Token
+
+  // These are the tokens in the pool (don't put LP tokens here)
   poolTokens: Token[]
 
   // Used for Deposits
@@ -51,6 +55,8 @@ export type StableSwapPool = {
 
   // Used for Swaps
   metaSwapAddresses?: string
+
+  // These are the actual tokens in the pool (LP tokens should be at the end)
   underlyingPoolTokens?: Token[]
   underlyingPool?: StableSwapPoolName
   isOutdated?: boolean // pool can be outdated but not have a migration target
@@ -92,8 +98,6 @@ export const STABLESWAP_POOLS: StableSwapPools = {
       address: '0x13e7a001EC72AB30D66E2f386f677e25dCFF5F59',
       type: StableSwapPoolTypes.USD,
       route: 'usd',
-      underlyingPoolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
-      underlyingPool: StableSwapPoolName.USDC_USDT,
       isOutdated: false,
       rewardPids: null
     }
@@ -103,7 +107,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
 export const TOKENS_MAP = _.transform(
   STABLESWAP_POOLS[ChainId.AURORA],
   (acc, pool) => {
-    pool.poolTokens.forEach(token => {
+    pool.poolTokens?.forEach(token => {
       if (token?.symbol != null) {
         acc[token.symbol] = token
       }

@@ -255,15 +255,17 @@ export default function Swap() {
   const swapCallbackError = isRoutedViaStableSwap ? stableswapCallbackError : defaultswapCallbackError
 
   const { priceImpactWithoutFee: defaultswapPriceImpactWithoutFee } = computeTradePriceBreakdown(trade)
-  const stableswapPriceImpactWithoutFee = useMemo(() => {
-    // multiply price impact by negative one for porting
-    // priceImpact is supposed to be 18 decimals formatted, so we use that as the numerator
-    // for the denominator, we use 100 * 18 decimals?
-    return new Percent(
-      JSBI.multiply(JSBI.BigInt(-1), stableswapPriceImpact),
-      JSBI.multiply(JSBI.BigInt(100), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
-    )
-  }, [stableswapPriceImpact])
+
+  const hasPriceImpact = JSBI.equal(
+    JSBI.BigInt(-1),
+    JSBI.divide(stableswapPriceImpact, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+  )
+  const stableswapPriceImpactWithoutFee = hasPriceImpact
+    ? new Percent('0', '1')
+    : new Percent(
+        JSBI.multiply(JSBI.BigInt(-1), stableswapPriceImpact),
+        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+      )
 
   const handleSwap = useCallback(() => {
     if (defaultswapPriceImpactWithoutFee && !confirmPriceImpactWithoutFee(defaultswapPriceImpactWithoutFee)) {
