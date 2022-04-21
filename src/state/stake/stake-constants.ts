@@ -24,7 +24,11 @@ import {
   XNL,
   GBA,
   AUSDO,
-  BBT
+  BBT,
+  SHITZU,
+  ROSE,
+  RUSD,
+  LINEAR
 } from '../../constants/tokens'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
@@ -394,6 +398,64 @@ const AURORA_POOLS: StakingTri[] = [
     noTriRewards: true,
     inStaging: false,
     doubleRewardToken: BBT[ChainId.AURORA]
+  }),
+  // Needed to add the this pool due to some functions and features breaking when jumping from ID 24 to 26. 
+  // TODO:  Will be replaced by stable farm pool in stable farms PR.
+  createMCV2Pool({
+    ID: 25,
+    poolId: 18,
+    tokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
+    lpAddress: '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9',
+    rewarderAddress: '',
+    allocPoint: 1,
+    noTriRewards: false,
+    inStaging: true
+  }),
+  createMCV2Pool({
+    ID: 26,
+    poolId: 19,
+    tokens: [SHITZU[ChainId.AURORA], USDC[ChainId.AURORA]],
+    lpAddress: '0x5E74D85311fe2409c341Ce49Ce432BB950D221DE',
+    noTriRewards: false,
+    allocPoint: 1,
+    inStaging: true,
+    doubleRewards: false
+  }),
+  createMCV2Pool({
+    ID: 27,
+    poolId: 20,
+    tokens: [WNEAR[ChainId.AURORA], ROSE[ChainId.AURORA]],
+    lpAddress: '0xbe753E99D0dBd12FB39edF9b884eBF3B1B09f26C',
+    rewarderAddress: '0xfe9B7A3bf38cE0CA3D5fA25d371Ff5C6598663d4',
+    allocPoint: 1,
+    noTriRewards: false,
+    inStaging: true,
+    doubleRewards: true,
+    doubleRewardToken: ROSE[ChainId.AURORA]
+  }),
+  createMCV2Pool({
+    ID: 28,
+    poolId: 21,
+    tokens: [WNEAR[ChainId.AURORA], RUSD[ChainId.AURORA]],
+    lpAddress: '0xbC0e71aE3Ef51ae62103E003A9Be2ffDe8421700',
+    rewarderAddress: '0x87a03aFA70302a5a0F6156eBEd27f230ABF0e69C',
+    allocPoint: 1,
+    noTriRewards: false,
+    inStaging: true,
+    doubleRewards: true,
+    doubleRewardToken: ROSE[ChainId.AURORA]
+  }),
+  createMCV2Pool({
+    ID: 29,
+    poolId: 22,
+    tokens: [WNEAR[ChainId.AURORA], LINEAR[ChainId.AURORA]],
+    lpAddress: '0xbceA13f9125b0E3B66e979FedBCbf7A4AfBa6fd1',
+    rewarderAddress: '0x1616B20534d1d1d731C31Ca325F4e909b8f3E0f0',
+    allocPoint: 1,
+    noTriRewards: false,
+    inStaging: true,
+    doubleRewards: true,
+    doubleRewardToken: LINEAR[ChainId.AURORA]
   })
 ]
 

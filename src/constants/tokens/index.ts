@@ -590,6 +590,20 @@ export const TRIPOLAR: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x60527a2751A827ec0Adf861EfcAcbf111587d748', 18, 'TRIPOLAR', 'TRIPOLAR'),
 }
 
+export const ROSE: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'ROSE', 'Rose Token'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'ROSE', 'Rose Token'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'ROSE', 'Rose Token'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xdcD6D4e2B3e1D1E1E6Fa8C21C8A323DcbecfF970', 18, 'ROSE', 'Rose Token'),
+}
+
+export const RUSD: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'RUSD', 'Rose USD'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'RUSD', 'Rose USD'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'RUSD', 'Rose USD'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x19cc40283B057D6608C22F1D20F17e16C245642E', 18, 'RUSD', 'Rose USD'),
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),
