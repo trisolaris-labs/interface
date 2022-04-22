@@ -206,8 +206,8 @@ export default function WalletModal({
       const option = SUPPORTED_WALLETS[key]
       // check for mobile options
       if (isMobile) {
-        if (!window.web3 && !window.ethereum && option.mobile) {
-          return (
+        return (
+          option.name !== SUPPORTED_WALLETS.INJECTED.name && (
             <Option
               onClick={() => {
                 option.connector !== connector && !option.href && tryActivation(option.connector)
@@ -222,8 +222,7 @@ export default function WalletModal({
               icon={require('../../assets/images/' + option.iconName)}
             />
           )
-        }
-        return null
+        )
       }
 
       // overwrite injected when needed
