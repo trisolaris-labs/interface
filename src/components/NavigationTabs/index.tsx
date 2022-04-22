@@ -1,11 +1,12 @@
-import React, { useContext } from 'react'
-import styled, { ThemeContext } from 'styled-components'
+import React from 'react'
+import styled from 'styled-components'
 import { darken } from 'polished'
 import { useTranslation } from 'react-i18next'
 import { NavLink, Link as HistoryLink, useHistory } from 'react-router-dom'
+import Settings from '../../components/Settings'
 
 import { ArrowLeft } from 'react-feather'
-import { RowBetween } from '../Row'
+import { AutoRow, RowBetween } from '../Row'
 import QuestionHelper from '../QuestionHelper'
 
 const Tabs = styled.div`
@@ -68,7 +69,6 @@ export function PoolTabs({ active }: { active: '/pool/stable' | '/pool' }) {
   )
 }
 
-
 export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' }) {
   const { t } = useTranslation()
   return (
@@ -124,9 +124,7 @@ export function AddRemoveTabs({ adding, creating }: { adding: boolean; creating:
             ? t('navigationTabs.addLiquidity')
             : t('navigationTabs.removeLiquidity')}
         </ActiveText>
-        <QuestionHelper
-          text={adding ? t('navigationTabs.whenYouAddLiquidityInfo') : t('navigationTabs.removingPoolTokensInfo')}
-        />
+        <Settings />
       </RowBetween>
     </Tabs>
   )
