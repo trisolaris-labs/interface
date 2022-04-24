@@ -4,7 +4,7 @@ import { Card } from 'rebass'
 import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import { DarkGreyCard } from '../../components/Card'
-import { DataCard, HighlightCard } from '../../components/earn/styled'
+import { DataCard } from '../../components/earn/styled'
 
 export const PositionInfo = styled(AutoColumn)<{ dim: any }>`
   position: relative;
@@ -46,11 +46,6 @@ export const Wrapper = styled(Card)`
   grid-template-columns: 1fr;
   gap: 12px;
   width: 100%;
-`
-
-export const VoteCard = styled(HighlightCard)`
-  // background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
-  // overflow: hidden;
 `
 
 export const BackgroundColor = styled.span<{ bgColor1: string | null; bgColor2?: string | null }>`
