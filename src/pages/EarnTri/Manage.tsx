@@ -1,37 +1,32 @@
 import React, { useCallback, useState } from 'react'
-import { AutoColumn } from '../../components/Column'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
-import { RouteComponentProps } from 'react-router-dom'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
-import { useWalletModalToggle } from '../../state/application/hooks'
-import { TYPE } from '../../theme'
-
+import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
-import { CardSection, DataCard, HighlightCard } from '../../components/earn/styled'
+import { CardSection, HighlightCard } from '../../components/earn/styled'
 import { ButtonPrimary } from '../../components/Button'
 import StakingModal from '../../components/earn/StakingModalTri'
 import UnstakingModal from '../../components/earn/UnstakingModalTri'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
+import { PageWrapper } from '../../components/Page'
+import CountUp from '../../components/CountUp'
+
+import { useWalletModalToggle } from '../../state/application/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { useColorForToken } from '../../hooks/useColor'
-
-import { currencyId } from '../../utils/currencyId'
-import { useTranslation } from 'react-i18next'
 import { useSingleFarm } from '../../state/stake/user-farms'
 import useUserFarmStatistics from '../../state/stake/useUserFarmStatistics'
-import { PageWrapper } from '../../components/Page'
-import { Card } from 'rebass'
-import { DarkGreyCard } from '../../components/Card'
-import { addCommasToNumber } from '../../utils'
-import CountUp from '../../components/CountUp'
 import useTLP from '../../hooks/useTLP'
+
+import { currencyId } from '../../utils/currencyId'
+import { addCommasToNumber } from '../../utils'
 import { getPairRenderOrder } from '../../utils/pools'
 
+import { TYPE } from '../../theme'
 import { BIG_INT_ZERO } from '../../constants'
-
 import { ChefVersions } from '../../state/stake/stake-constants'
 
 import {
@@ -41,7 +36,6 @@ import {
   StyledBottomCard,
   PoolData,
   Wrapper,
-  VoteCard,
   BackgroundColor,
   DataRow
 } from './Manage.styles'
@@ -159,7 +153,7 @@ export default function Manage({
       </DataRow>
 
       {showAddLiquidityButton ? (
-        <VoteCard>
+        <HighlightCard>
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
@@ -182,7 +176,7 @@ export default function Manage({
               </ButtonPrimary>
             </AutoColumn>
           </CardSection>
-        </VoteCard>
+        </HighlightCard>
       ) : null}
 
       {stakingInfo != null ? (

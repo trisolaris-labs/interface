@@ -50,7 +50,7 @@ export default function Earn({
   match: {
     params: { farmsType }
   }
-}: RouteComponentProps<{ farmsType: 'stable' | '' }>) {
+}: RouteComponentProps<{ farmsType: 'stable' }>) {
   const { t } = useTranslation()
   const allFarmArrs = useFarms()
 
