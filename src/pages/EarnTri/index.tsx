@@ -69,7 +69,9 @@ export default function Earn({
   const getSortedFarms = () => {
     switch (sortBy) {
       case SortingType.default:
-        return stableFarmsTabActive ? tabFarmArrs : POOLS_ORDER.map(index => tabFarmArrs[index])
+        return stableFarmsTabActive
+          ? farmArrs
+          : farmArrs.sort((a, b) => POOLS_ORDER.indexOf(a.ID) - POOLS_ORDER.indexOf(b.ID))
       case SortingType.liquidity:
         return sortDescending
           ? farmArrs.sort((a, b) => (a.totalStakedInUSD < b.totalStakedInUSD ? 1 : -1))

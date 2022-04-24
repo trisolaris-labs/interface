@@ -29,7 +29,8 @@ import {
   ROSE,
   RUSD,
   LINEAR,
-  BSTN
+  BSTN,
+  USD_TLP
 } from '../../constants/tokens'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
@@ -433,17 +434,18 @@ const AURORA_POOLS: StakingTri[] = [
     inStaging: false,
     doubleRewardToken: BBT[ChainId.AURORA]
   }),
-  // Needed to add the this pool due to some functions and features breaking when jumping from ID 24 to 26. 
-  // TODO:  Will be replaced by stable farm pool in stable farms PR.
   createMCV2Pool({
     ID: 25,
     poolId: 18,
     tokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
-    lpAddress: '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9',
+    lpAddress: '0x5eb99863f7efe88c447bc9d52aa800421b1de6c9',
     rewarderAddress: '',
     allocPoint: 1,
     noTriRewards: false,
-    inStaging: true
+    inStaging: true,
+    isStableSwap: true,
+    stableSwapPoolName: StableSwapPoolName.USDC_USDT,
+    stableSwapLpToken: USD_TLP[ChainId.AURORA]
   }),
   createMCV2Pool({
     ID: 26,
