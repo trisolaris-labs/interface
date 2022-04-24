@@ -227,4 +227,8 @@ export const TOKEN_WARNING_MODAL_ALLOWLIST = new Set(
   ].map(({ address }) => address.toLowerCase())
 )
 
-export const CUSTOM_TOKEN_MAX_HOPS = { [TRIPOLAR[ChainId.AURORA].address]: 4 }
+export const CUSTOM_TOKEN_MAX_HOPS = {
+  [TRIPOLAR[ChainId.AURORA].address]: 4,
+  [XTRI[ChainId.AURORA].address]: 4,
+  [LUNAR[ChainId.AURORA].address]: 4
+}
