@@ -1,6 +1,6 @@
 import { ChainId, Token, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
-import { USDC, USDT, WBTC } from '../../constants/tokens'
+import { USDC, USDT, USD_TLP, WBTC } from '../../constants/tokens'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
@@ -81,13 +81,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
   [StableSwapPoolName.USDC_USDT]: {
     name: StableSwapPoolName.USDC_USDT,
     // @TODO Move the prod version of this token to the Tokens repo
-    lpToken: new Token(
-      ChainId.AURORA,
-      '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9',
-      18,
-      'USDTLP',
-      'Trisolaris USDC/USDT'
-    ),
+    lpToken: USD_TLP[ChainId.AURORA],
     // *** NOTE *** - For future reference, this order of the pool tokens must be equivalent to the LP token name order
     // Also to verify, please query the swap contract for the individual stable token indexes
     poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],

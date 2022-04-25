@@ -31,8 +31,6 @@ import {
   StyledSortOption,
   StyledArrowContainer
 } from './EarnTri.styles'
-import { ATUST, BSTN, TRI, USDC, USDT } from '../../constants/tokens'
-import { ChainId } from '@trisolaris/sdk'
 
 enum SortingType {
   liquidity = 'Liquidity',
