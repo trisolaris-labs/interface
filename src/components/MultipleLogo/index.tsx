@@ -14,6 +14,7 @@ interface MultipleLogoProps {
   margin?: boolean
   size?: number
   currencies: Currency[]
+  separation?: number
 }
 
 const HigherLogo = styled(CurrencyLogo)<{ zIndex: number }>`
@@ -24,12 +25,12 @@ const HigherLogo = styled(CurrencyLogo)<{ zIndex: number }>`
 const CoveredLogo = styled(CurrencyLogo)<{ sizeraw: number; zIndex: number; position: number }>`
   position: absolute;
   z-index: ${({ zIndex }) => zIndex};
-  left: ${({ position }) => `${position}px`}
+  left: ${({ position }) => `${position}px`};
 `
 
-export default function MultipleLogo({ currencies, size = 16, margin = false }: MultipleLogoProps) {
+export default function MultipleLogo({ currencies, size = 16, margin = false, separation }: MultipleLogoProps) {
   const currenciesQty = currencies.length
-
+  const logosSeparation = separation ?? 10
   return (
     <Wrapper sizeraw={size} margin={margin}>
       <HigherLogo currency={currencies[0]} size={size.toString() + 'px'} zIndex={currenciesQty} />
@@ -40,7 +41,7 @@ export default function MultipleLogo({ currencies, size = 16, margin = false }: 
           size={size.toString() + 'px'}
           sizeraw={size}
           zIndex={currenciesQty - index - 1}
-          position={currenciesQty>3 ? (10*(index+1)) : 10*(index+1)}
+          position={currenciesQty > 3 ? logosSeparation * (index + 1) : logosSeparation * (index + 1)}
         />
       ))}
     </Wrapper>

@@ -12,6 +12,7 @@ import UnstakingModal from '../../components/earn/UnstakingModalTri'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
 import { PageWrapper } from '../../components/Page'
 import CountUp from '../../components/CountUp'
+import MultipleLogo from '../../components/MultipleLogo'
 
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
@@ -67,10 +68,6 @@ export default function Manage({
   } = stakingInfo
   const isDualRewards = chefVersion === ChefVersions.V2
 
-  // get currencies and pair
-  // const { currencies,tokens } = isStableSwap
-  //   ? getPairRenderOrder(tokens[1], tokens[0])
-  //   : getPairRenderOrder(tokens[0], tokens[1])
   const { currencies, tokens } = getPairRenderOrder(_tokens)
   const token0 = tokens[0]
   const token1 = tokens[1]
@@ -82,7 +79,7 @@ export default function Manage({
 
   const backgroundColor1 = useColorForToken(tokens[0])
   // Only override `backgroundColor2` if it's a dual rewards pool
-  const backgroundColor2 = useColorForToken(tokens[tokens.length - 1], () => isDualRewards)
+  const backgroundColor2 = useColorForToken(tokens[tokens.length-1], () => isDualRewards)
 
   // detect existing unstaked LP position to show add button if none found
   const stakedAmountToken = isStableSwap ? stableSwapLpToken : stakedAmount?.token
@@ -112,7 +109,7 @@ export default function Manage({
       chefVersion: chefVersion
     }) ?? {}
 
-  const poolHandle = `${token0.symbol}-${token1.symbol}`
+  const poolHandle = tokens.map((token, index) => `${token.symbol}${index < tokens.length - 1 ? '-' : ''}`)
 
   const handleDepositClick = useCallback(() => {
     if (account) {
@@ -128,7 +125,11 @@ export default function Manage({
         <TYPE.largeHeader>
           {poolHandle} {t('earnPage.liquidityMining')}
         </TYPE.largeHeader>
-        <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
+        {currencies.length > 2 ? (
+          <MultipleLogo currencies={currencies} size={24} separation={20} margin />
+        ) : (
+          <DoubleCurrencyLogo currency0={currencies[0]} currency1={currencies[1]} size={24} />
+        )}
       </RowBetween>
 
       <DataRow style={{ gap: '24px' }}>
