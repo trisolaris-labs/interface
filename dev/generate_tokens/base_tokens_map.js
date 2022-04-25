@@ -95,5 +95,8 @@ module.exports = {
       'AAVE',
       'Aave Token'
     )
+  },
+  WUST: {
+    [ChainId.AURORA]: new Token(ChainId.AURORA, '0x8D07bBb478B84f7E940e97C8e9cF7B3645166b03', 6, 'WUST', 'UST (WormHole)')
   }
 }

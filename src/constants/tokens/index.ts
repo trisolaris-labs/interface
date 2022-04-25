@@ -610,3 +610,10 @@ export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x60781C2586D68229fde47564546784ab3fACA982', 18, 'PNG', 'Pangolin'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0b20972B45ffB8e5d4D37AF4024E1bf0b03f15ae', 18, 'WETH', 'Ethereum'),
 }
+
+export const WUST: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 6, 'WUST', 'UST (WormHole)'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'WUST', 'UST (WormHole)'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 6, 'WUST', 'UST (WormHole)'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x8D07bBb478B84f7E940e97C8e9cF7B3645166b03', 6, 'WUST', 'UST (WormHole)'),
+}
