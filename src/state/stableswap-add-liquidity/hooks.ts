@@ -48,10 +48,10 @@ export function useDerivedStableSwapAddLiquidityInfo(
   } = useStableSwapAddLiquidityState()
 
   const { lpToken, poolTokens } = STABLESWAP_POOLS[stableSwapPoolName]
-  const [currency0, currency1, currency2, currency3] = poolTokens.map(token => unwrappedToken(token))
+  const [currency0, currency1, currency2, currency3, currency4] = poolTokens.map(token => unwrappedToken(token))
   const hasThirdCurrency = currency2 != null
   const hasFourthCurrency = hasThirdCurrency && currency3 != null
-  const hasFifthCurrency = hasFourthCurrency && currency3 != null
+  const hasFifthCurrency = hasFourthCurrency && currency4 != null
 
   // tokens
   const currencies: { [field in Field]?: Currency } = useMemo(
@@ -60,9 +60,9 @@ export function useDerivedStableSwapAddLiquidityInfo(
       [Field.CURRENCY_1]: currency1 ?? undefined,
       [Field.CURRENCY_2]: currency2 ?? undefined,
       [Field.CURRENCY_3]: currency3 ?? undefined,
-      [Field.CURRENCY_4]: currency3 ?? undefined
+      [Field.CURRENCY_4]: currency4 ?? undefined
     }),
-    [currency0, currency1, currency2, currency3]
+    [currency0, currency1, currency2, currency3, currency4]
   )
 
   const totalLPTokenSuppply = useTotalSupply(lpToken)
@@ -79,7 +79,8 @@ export function useDerivedStableSwapAddLiquidityInfo(
     [Field.CURRENCY_0]: balances[0],
     [Field.CURRENCY_1]: balances[1],
     [Field.CURRENCY_2]: balances[2],
-    [Field.CURRENCY_3]: balances[3]
+    [Field.CURRENCY_3]: balances[3],
+    [Field.CURRENCY_4]: balances[4]
   }
 
   const parsedAmounts: { [field in Field]: CurrencyAmount | undefined } = {
