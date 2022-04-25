@@ -21,7 +21,8 @@ export default function StableSwapPoolAddLiquidityApprovalsRow({ children, stabl
     parsedAmounts,
     error,
     hasThirdCurrency,
-    hasFourthCurrency
+    hasFourthCurrency,
+    hasFifthCurrency
   } = useDerivedStableSwapAddLiquidityInfo(stableSwapPoolName)
 
   const effectiveAddress = isMetaPool(stableSwapPoolName) ? metaSwapAddresses : address
@@ -30,6 +31,7 @@ export default function StableSwapPoolAddLiquidityApprovalsRow({ children, stabl
   const [approval1, approve1Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_1], effectiveAddress)
   const [approval2, approve2Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_2], effectiveAddress)
   const [approval3, approve3Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_3], effectiveAddress)
+  const [approval4, approve4Callback] = useApproveCallback(parsedAmounts[Field.CURRENCY_4], effectiveAddress)
 
   const currencyApprovalsData = [
     {
@@ -61,6 +63,15 @@ export default function StableSwapPoolAddLiquidityApprovalsRow({ children, stabl
       value: parsedAmounts[Field.CURRENCY_3],
       symbol: currencies[Field.CURRENCY_3]?.symbol,
       onClick: approve3Callback
+    })
+  }
+
+  if (hasFifthCurrency) {
+    currencyApprovalsData.push({
+      approval: approval4,
+      value: parsedAmounts[Field.CURRENCY_4],
+      symbol: currencies[Field.CURRENCY_4]?.symbol,
+      onClick: approve4Callback
     })
   }
 

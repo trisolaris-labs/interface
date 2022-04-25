@@ -54,7 +54,8 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     [Field.CURRENCY_0]: typedValue0,
     [Field.CURRENCY_1]: typedValue1,
     [Field.CURRENCY_2]: typedValue2,
-    [Field.CURRENCY_3]: typedValue3
+    [Field.CURRENCY_3]: typedValue3,
+    [Field.CURRENCY_4]: typedValue4
   } = useStableSwapAddLiquidityState()
   const {
     currencies,
@@ -62,10 +63,17 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     parsedAmounts,
     error,
     hasThirdCurrency,
-    hasFourthCurrency
+    hasFourthCurrency,
+    hasFifthCurrency
   } = useDerivedStableSwapAddLiquidityInfo(stableSwapPoolName)
 
-  const { onField0Input, onField1Input, onField2Input, onField3Input } = useStableSwapAddLiquidityActionHandlers()
+  const {
+    onField0Input,
+    onField1Input,
+    onField2Input,
+    onField3Input,
+    onField4Input
+  } = useStableSwapAddLiquidityActionHandlers()
 
   const [isExpertMode] = useExpertModeManager()
 
@@ -263,6 +271,27 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                 disableMaxButton={atMaxAmounts[Field.CURRENCY_3]}
                 currency={currencies[Field.CURRENCY_3]}
                 id="add-liquidity-input-token3"
+                showCommonBases
+              />
+            ) : null}
+            {hasFifthCurrency ? (
+              <CurrencyInputPanel
+                disableCurrencySelect
+                value={typedValue4}
+                onUserInput={onField4Input}
+                onClickBalanceButton={value => {
+                  const amount = maxAmounts[Field.CURRENCY_4]
+                  onField4Input(
+                    (value === BalanceButtonValueEnum.MAX
+                      ? amount
+                      : divideCurrencyAmountByNumber(amount, 2)
+                    )?.toExact() ?? ''
+                  )
+                }}
+                disableHalfButton={atHalfAmounts[Field.CURRENCY_4]}
+                disableMaxButton={atMaxAmounts[Field.CURRENCY_4]}
+                currency={currencies[Field.CURRENCY_4]}
+                id="add-liquidity-input-token4"
                 showCommonBases
               />
             ) : null}
