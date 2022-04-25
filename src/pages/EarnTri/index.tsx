@@ -31,6 +31,8 @@ import {
   StyledSortOption,
   StyledArrowContainer
 } from './EarnTri.styles'
+import { ATUST, BSTN, TRI, USDC, USDT } from '../../constants/tokens'
+import { ChainId } from '@trisolaris/sdk'
 
 enum SortingType {
   liquidity = 'Liquidity',
@@ -186,8 +188,7 @@ export default function Earn({
                   apr2={farm.apr2}
                   chefVersion={farm.chefVersion}
                   isPeriodFinished={farm.isPeriodFinished}
-                  token0={farm.tokens[0]}
-                  token1={farm.tokens[1]}
+                  tokens={farm.tokens}
                   totalStakedInUSD={farm.totalStakedInUSD}
                   version={farm.ID}
                   doubleRewards={farm.doubleRewards}
@@ -216,8 +217,7 @@ export default function Earn({
               apr2={farm.apr2}
               chefVersion={farm.chefVersion}
               isPeriodFinished={farm.isPeriodFinished}
-              token0={farm.tokens[0]}
-              token1={farm.tokens[1]}
+              tokens={farm.tokens}
               totalStakedInUSD={farm.totalStakedInUSD}
               version={farm.ID}
               doubleRewards={farm.doubleRewards}
@@ -245,8 +245,7 @@ export default function Earn({
                   apr2={farm.apr2}
                   chefVersion={farm.chefVersion}
                   isPeriodFinished={farm.isPeriodFinished}
-                  token0={farm.tokens[0]}
-                  token1={farm.tokens[1]}
+                  tokens={farm.tokens}
                   totalStakedInUSD={farm.totalStakedInUSD}
                   version={farm.ID}
                   doubleRewards={farm.doubleRewards}
@@ -274,8 +273,7 @@ export default function Earn({
                 chefVersion={farm.chefVersion}
                 isLegacy={true}
                 isPeriodFinished={farm.isPeriodFinished}
-                token0={farm.tokens[0]}
-                token1={farm.tokens[1]}
+                tokens={farm.tokens}
                 totalStakedInUSD={farm.totalStakedInUSD}
                 version={farm.ID}
                 doubleRewards={farm.doubleRewards}

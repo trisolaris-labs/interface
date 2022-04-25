@@ -57,7 +57,7 @@ export default function Manage({
     noTriRewards,
     lpAddress,
     stakedAmount,
-    tokens,
+    tokens: _tokens,
     totalRewardRate,
     totalStakedInUSD,
     doubleRewardToken,
@@ -68,18 +68,22 @@ export default function Manage({
   const isDualRewards = chefVersion === ChefVersions.V2
 
   // get currencies and pair
-  const { currency0, currency1, token0, token1 } = isStableSwap
-    ? getPairRenderOrder(tokens[1], tokens[0])
-    : getPairRenderOrder(tokens[0], tokens[1])
+  // const { currencies,tokens } = isStableSwap
+  //   ? getPairRenderOrder(tokens[1], tokens[0])
+  //   : getPairRenderOrder(tokens[0], tokens[1])
+  const { currencies, tokens } = getPairRenderOrder(_tokens)
+  const token0 = tokens[0]
+  const token1 = tokens[1]
+  const currency0 = currencies[0]
+  const currency1 = currencies[1]
 
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
   const totalRewardRateFriendly = addCommasToNumber(totalRewardRate.toString())
 
-  // get the color of the token
-  const backgroundColor1 = useColorForToken(token0)
-
+  const backgroundColor1 = useColorForToken(tokens[0])
   // Only override `backgroundColor2` if it's a dual rewards pool
-  const backgroundColor2 = useColorForToken(token1, () => isDualRewards)
+  const backgroundColor2 = useColorForToken(tokens[tokens.length - 1], () => isDualRewards)
+
   // detect existing unstaked LP position to show add button if none found
   const stakedAmountToken = isStableSwap ? stableSwapLpToken : stakedAmount?.token
 

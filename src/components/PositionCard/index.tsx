@@ -41,7 +41,12 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
     !!userPoolBalance && !!totalPoolTokens && JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
       ? new Percent(userPoolBalance.raw, totalPoolTokens.raw)
       : undefined
-  const { currency0, currency1, token0, token1 } = getPairRenderOrder(pair?.token0, pair?.token1)
+  const { currencies, tokens } = getPairRenderOrder([pair?.token0, pair?.token1])
+
+  const token0 = tokens[0]
+  const token1 = tokens[1]
+  const currency0 = currencies[0]
+  const currency1 = currencies[1]
 
   const [token0Deposited, token1Deposited] =
     !!pair &&

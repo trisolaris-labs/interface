@@ -31,7 +31,8 @@ const StyledLogo = styled(Logo)<{ size: string }>`
 export default function CurrencyLogo({
   currency,
   size = '24px',
-  style
+  style,
+  ...rest
 }: {
   currency?: Currency
   size?: string
@@ -75,5 +76,5 @@ export default function CurrencyLogo({
     }
   }
 
-  return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
+  return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} {...rest} />
 }
