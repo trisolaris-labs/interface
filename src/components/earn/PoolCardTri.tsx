@@ -6,10 +6,10 @@ import { Settings2 as ManageIcon } from 'lucide-react'
 
 import { TYPE } from '../../theme'
 import { AutoColumn } from '../Column'
-import DoubleCurrencyLogo from '../DoubleLogo'
 import { ButtonGold } from '../Button'
 import { AutoRow, RowBetween } from '../Row'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
+import MultipleCurrencyLogo from '../MultipleCurrencyLogo'
 
 import { ChefVersions } from '../../state/stake/stake-constants'
 import { useSingleFarm } from '../../state/stake/user-farms'
@@ -37,12 +37,12 @@ type PoolCardTriProps = {
   noTriRewards: boolean
   isLegacy?: boolean
   isPeriodFinished: boolean
-  token0: Token
-  token1: Token
+  tokens: Token[]
   totalStakedInUSD: number
   doubleRewardToken: Token
   isStaking: boolean
   version: number
+  isStableSwap?: boolean
 }
 
 const DefaultPoolCardtri = ({
@@ -54,27 +54,25 @@ const DefaultPoolCardtri = ({
   noTriRewards,
   isLegacy,
   isPeriodFinished,
-  token0: _token0,
-  token1: _token1,
+  tokens: _tokens,
   totalStakedInUSD,
   doubleRewardToken,
   isStaking,
   version,
+  isStableSwap,
   enableClaimButton = false,
   enableModal = () => null
 }: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
-  const isDualRewards = chefVersion == 1
-
-  const { currency0, currency1, token0, token1 } = getPairRenderOrder(_token0, _token1)
-
-  const { t } = useTranslation()
-  // get the color of the token
-  const backgroundColor1 = useColorForToken(token0)
-
-  // Only override `backgroundColor2` if it's a dual rewards pool
-  const backgroundColor2 = useColorForToken(token1, () => isDualRewards)
-
   const history = useHistory()
+  const { t } = useTranslation()
+
+  const isDualRewards = chefVersion === ChefVersions.V2
+
+  const { currencies, tokens } = getPairRenderOrder(_tokens)
+
+  const backgroundColor1 = useColorForToken(tokens[0])
+  // Only override `backgroundColor2` if it's a dual rewards pool
+  const backgroundColor2 = useColorForToken(tokens[tokens.length - 1], () => isDualRewards)
 
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
 
@@ -82,7 +80,7 @@ const DefaultPoolCardtri = ({
     const sharedProps = {
       marginLeft: '0.5rem',
       onClick: () => {
-        history.push(`/tri/${currencyId(currency0)}/${currencyId(currency1)}/${version}`)
+        history.push(`/tri/${currencyId(currencies[0])}/${currencyId(currencies[1])}/${version}`)
       }
     }
 
@@ -97,16 +95,23 @@ const DefaultPoolCardtri = ({
     )
   }
 
+  const currenciesQty = currencies.length
+
   return (
-    <Wrapper bgColor1={backgroundColor1} bgColor2={backgroundColor2} isDoubleRewards={doubleRewards}>
+    <Wrapper
+      bgColor1={backgroundColor1}
+      bgColor2={backgroundColor2}
+      isDoubleRewards={doubleRewards}
+      currenciesQty={currenciesQty}
+    >
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
 
       <AutoRow justifyContent="space-between">
         <PairContainer>
-          <GetTokenLink tokens={[token0, token1]} />
-          <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
-          <ResponsiveCurrencyLabel>
-            {currency0.symbol}-{currency1.symbol}
+          <GetTokenLink tokens={tokens} />
+          <MultipleCurrencyLogo currencies={currencies} size={20} />
+          <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>
+            {currencies.map((currency, index) => `${currency.symbol}${index < currencies.length - 1 ? '-' : ''}`)}
           </ResponsiveCurrencyLabel>
         </PairContainer>
         {isLegacy && !isStaking ? (
