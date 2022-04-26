@@ -55,8 +55,7 @@ export default function EarnTri({
                   apr2={farm.apr2}
                   chefVersion={farm.chefVersion}
                   isPeriodFinished={farm.isPeriodFinished}
-                  token0={farm.tokens[0]}
-                  token1={farm.tokens[1]}
+                  tokens={farm.tokens}
                   totalStakedInUSD={farm.totalStakedInUSD}
                   version={farm.ID}
                   doubleRewards={farm.doubleRewards}
@@ -85,8 +84,7 @@ export default function EarnTri({
               apr2={farm.apr2}
               chefVersion={farm.chefVersion}
               isPeriodFinished={farm.isPeriodFinished}
-              token0={farm.tokens[0]}
-              token1={farm.tokens[1]}
+              tokens={farm.tokens}
               totalStakedInUSD={farm.totalStakedInUSD}
               version={farm.ID}
               doubleRewards={farm.doubleRewards}
@@ -113,8 +111,7 @@ export default function EarnTri({
                   apr2={farm.apr2}
                   chefVersion={farm.chefVersion}
                   isPeriodFinished={farm.isPeriodFinished}
-                  token0={farm.tokens[0]}
-                  token1={farm.tokens[1]}
+                  tokens={farm.tokens}
                   totalStakedInUSD={farm.totalStakedInUSD}
                   version={farm.ID}
                   doubleRewards={farm.doubleRewards}
@@ -142,8 +139,7 @@ export default function EarnTri({
                 chefVersion={farm.chefVersion}
                 isLegacy={true}
                 isPeriodFinished={farm.isPeriodFinished}
-                token0={farm.tokens[0]}
-                token1={farm.tokens[1]}
+                tokens={farm.tokens}
                 totalStakedInUSD={farm.totalStakedInUSD}
                 version={farm.ID}
                 doubleRewards={farm.doubleRewards}
