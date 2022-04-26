@@ -74,7 +74,14 @@ export default function Earn({
     }
   }
 
-  const farmArrs = allFarmArrs.filter(farm => !LEGACY_POOLS.includes(farm.ID))
+  const farmArrs = useMemo(
+    () =>
+      allFarmArrs
+        .filter(farm => !LEGACY_POOLS.includes(farm.ID)) // Ignore legacy pools in sorting/filtering
+        .filter(farm => POOLS_ORDER.includes(farm.ID)), // Ignore pools that are not in the rendering list
+    [allFarmArrs]
+  )
+
   const farmArrsInOrder = useMemo(() => getSortedFarms(), [sortBy, farmArrs])
   const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards && !farm.noTriRewards)
 
