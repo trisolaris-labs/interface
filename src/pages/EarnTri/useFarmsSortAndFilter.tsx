@@ -39,7 +39,13 @@ export default function useFarmsSortAndFilter({ poolsOrder, legacyPoolsOrder }: 
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [isSortDescending, setIsSortDescending] = useState<boolean>(true)
 
-  const farmArrs = allFarmArrs.filter(farm => !legacyPoolsOrder.includes(farm.ID))
+  const farmArrs = useMemo(
+    () =>
+      allFarmArrs
+        .filter(farm => !legacyPoolsOrder.includes(farm.ID)) // Ignore legacy pools in sorting/filtering
+        .filter(farm => poolsOrder.includes(farm.ID)), // Ignore pools that are not in the rendering list
+    [allFarmArrs, legacyPoolsOrder, poolsOrder]
+  )
   const farmArrsInOrder = useMemo((): StakingTri[] => {
     switch (sortBy) {
       case SortingType.default:
