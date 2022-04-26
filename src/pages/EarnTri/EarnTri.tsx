@@ -2,6 +2,8 @@ import React from 'react'
 import { AutoColumn } from '../../components/Column'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
 import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter/EarnTriSortAndFilterContainer'
+import { FarmTabs } from '../../components/NavigationTabs'
+import { ENABLE_STABLE_FARMS } from '../../constants'
 import { TYPE } from '../../theme'
 import { isTokenAmountPositive } from '../../utils/pools'
 import { PoolSection, DataRow } from './EarnTri.styles'
@@ -35,6 +37,7 @@ export default function EarnTri({
   return (
     <>
       <AutoColumn gap="lg" style={{ width: '100%' }}>
+        {ENABLE_STABLE_FARMS ? <FarmTabs active="normal" /> : null}
         <EarnTriSortAndFilterContainer
           activeFarmsFilter={activeFarmsFilter}
           handleSort={handleSort}

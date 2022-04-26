@@ -228,3 +228,4 @@ export const TOKEN_WARNING_MODAL_ALLOWLIST = new Set(
 )
 
 export const CUSTOM_TOKEN_MAX_HOPS = { [TRIPOLAR[ChainId.AURORA].address]: 4 }
+export const ENABLE_STABLE_FARMS = process.env.REACT_APP_ENABLE_STABLE_FARMS === 'true'
