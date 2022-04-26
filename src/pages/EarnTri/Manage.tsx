@@ -283,7 +283,6 @@ export default function Manage({
             >
               Withdraw
             </ButtonPrimary>
-
             <ButtonPrimary
               disabled={
                 earnedAmount == null ||
