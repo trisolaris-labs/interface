@@ -321,7 +321,7 @@ export const FRAX: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'FRAX', 'Frax'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'FRAX', 'Frax'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'FRAX', 'Frax'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xDA2585430fEf327aD8ee44Af8F1f989a2A91A3d2', 18, 'FRAX', 'Frax'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xE4B9e004389d91e4134a28F19BD833cBA1d994B6', 18, 'FRAX', 'Frax'),
 }
 
 export const FXS: { [chainId in ChainId]: Token } = {

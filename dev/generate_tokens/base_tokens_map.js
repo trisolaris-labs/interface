@@ -96,7 +96,18 @@ module.exports = {
       'Aave Token'
     )
   },
+  // TODO: Temporally adding here, will need to add to tokens repo and then clean this up.
   WUST: {
-    [ChainId.AURORA]: new Token(ChainId.AURORA, '0x8D07bBb478B84f7E940e97C8e9cF7B3645166b03', 6, 'WUST', 'UST (WormHole)')
+    [ChainId.AURORA]: new Token(
+      ChainId.AURORA,
+      '0x8D07bBb478B84f7E940e97C8e9cF7B3645166b03',
+      6,
+      'WUST',
+      'UST (WormHole)'
+    )
+  },
+  // TODO: Temporally adding correct FRAX address here. Will probably need to replace in our tokens repo.
+  FRAX: {
+    [ChainId.AURORA]: new Token(ChainId.AURORA, '0xe4b9e004389d91e4134a28f19bd833cba1d994b6', 18, 'FRAX', 'Frax')
   }
 }
