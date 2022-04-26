@@ -1,108 +1,44 @@
 import React, { useCallback, useState } from 'react'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+
 import { AutoColumn } from '../../components/Column'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-
-import { JSBI } from '@trisolaris/sdk'
-import { RouteComponentProps } from 'react-router-dom'
-import DoubleCurrencyLogo from '../../components/DoubleLogo'
-import { useWalletModalToggle } from '../../state/application/hooks'
-import { TYPE } from '../../theme'
-
 import { RowBetween } from '../../components/Row'
-import { CardSection, DataCard, HighlightCard } from '../../components/earn/styled'
+import { CardSection, HighlightCard } from '../../components/earn/styled'
 import { ButtonPrimary } from '../../components/Button'
 import StakingModal from '../../components/earn/StakingModalTri'
 import UnstakingModal from '../../components/earn/UnstakingModalTri'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
+import { PageWrapper } from '../../components/Page'
+import CountUp from '../../components/CountUp'
+import MultipleCurrencyLogo from '../../components/MultipleCurrencyLogo'
+
+import { useWalletModalToggle } from '../../state/application/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { useColorForToken } from '../../hooks/useColor'
-
-import { currencyId } from '../../utils/currencyId'
-import { useTranslation } from 'react-i18next'
 import { useSingleFarm } from '../../state/stake/user-farms'
 import useUserFarmStatistics from '../../state/stake/useUserFarmStatistics'
-import { PageWrapper } from '../../components/Page'
-import { Card } from 'rebass'
-import { DarkGreyCard } from '../../components/Card'
-import { addCommasToNumber } from '../../utils'
-import CountUp from '../../components/CountUp'
 import useTLP from '../../hooks/useTLP'
+
+import { currencyId } from '../../utils/currencyId'
+import { addCommasToNumber } from '../../utils'
 import { getPairRenderOrder } from '../../utils/pools'
 
+import { TYPE } from '../../theme'
 import { BIG_INT_ZERO } from '../../constants'
+import { ChefVersions } from '../../state/stake/stake-constants'
 
-const PositionInfo = styled(AutoColumn)<{ dim: any }>`
-  position: relative;
-  width: 100%;
-  opacity: ${({ dim }) => (dim ? 0.6 : 1)};
-`
-
-const BottomSection = styled(AutoColumn)`
-  border-radius: 12px;
-  width: 100%;
-  position: relative;
-`
-
-const ResponsiveRowBetween = styled(RowBetween)`
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    flex-direction: column;
-  `};
-`
-
-const StyledBottomCard = styled(DataCard)<{ dim: any }>`
-  background: ${({ theme }) => theme.bg3};
-  opacity: ${({ dim }) => (dim ? 0.4 : 1)};
-  padding: 1rem 1.25rem;
-`
-
-const PoolData = styled(DarkGreyCard)`
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 110px;
-    text-align: center;
-  `};
-`
-
-const Wrapper = styled(Card)`
-  border-radius: 10px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-  width: 100%;
-`
-
-const VoteCard = styled(HighlightCard)`
-  // background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
-  // overflow: hidden;
-`
-
-const BackgroundColor = styled.span<{ bgColor1: string | null; bgColor2?: string | null }>`
-   background: ${({ theme, bgColor1, bgColor2 }) =>
-     `linear-gradient(90deg, ${bgColor1 ?? theme.blue1} 0%, ${bgColor2 ?? 'grey'} 90%);`}
-   background-size: cover;
-   mix-blend-mode: overlay;
-   border-radius: 10px;
-   width: 100%;
-   height: 100%;
-   opacity: 0.5;
-   position: absolute;
-   top: 0;
-   left: 0;
-   user-select: none;
-`
-
-const DataRow = styled(RowBetween)`
-  justify-content: center;
-  gap: 12px;
-
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-     gap: 12px;
-   `};
-`
+import {
+  PositionInfo,
+  BottomSection,
+  ResponsiveRowBetween,
+  StyledBottomCard,
+  PoolData,
+  Wrapper,
+  BackgroundColor,
+  DataRow
+} from './Manage.styles'
 
 export default function Manage({
   match: {
@@ -121,26 +57,30 @@ export default function Manage({
     noTriRewards,
     lpAddress,
     stakedAmount,
-    tokens,
+    tokens: _tokens,
     totalRewardRate,
     totalStakedInUSD,
     doubleRewardToken
   } = stakingInfo
-  const isDualRewards = chefVersion == 1
+  const isDualRewards = chefVersion === ChefVersions.V2
 
-  // get currencies and pair
-  const { currency0, currency1, token0, token1 } = getPairRenderOrder(...tokens)
+  const { currencies, tokens } = getPairRenderOrder(_tokens)
+  const token0 = tokens[0]
+  const token1 = tokens[1]
+  const currency0 = currencies[0]
+  const currency1 = currencies[1]
 
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
   const totalRewardRateFriendly = addCommasToNumber(totalRewardRate.toString())
 
-  // get the color of the token
-  const backgroundColor1 = useColorForToken(token0)
-
+  const backgroundColor1 = useColorForToken(tokens[0])
   // Only override `backgroundColor2` if it's a dual rewards pool
-  const backgroundColor2 = useColorForToken(token1, () => isDualRewards)
+  const backgroundColor2 = useColorForToken(tokens[tokens.length - 1], () => isDualRewards)
+
   // detect existing unstaked LP position to show add button if none found
-  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakedAmount?.token)
+  const stakedAmountToken = stakedAmount?.token
+
+  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakedAmountToken)
   const showAddLiquidityButton = Boolean(stakingInfo?.stakedAmount?.equalTo('0') && userLiquidityUnstaked?.equalTo('0'))
 
   // toggle for staking modal and unstaking modal
@@ -154,7 +94,8 @@ export default function Manage({
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
 
-  const lpToken = useTLP({ lpAddress, token0, token1 })
+  const computedLpToken = useTLP({ lpAddress, token0, token1 })
+  const lpToken = computedLpToken
 
   const { userLPAmountUSDFormatted } =
     useUserFarmStatistics({
@@ -164,7 +105,7 @@ export default function Manage({
       chefVersion: chefVersion
     }) ?? {}
 
-  const poolHandle = `${token0.symbol}-${token1.symbol}`
+  const poolHandle = tokens.map((token, index) => `${token.symbol}${index < tokens.length - 1 ? '-' : ''}`)
 
   const handleDepositClick = useCallback(() => {
     if (account) {
@@ -180,7 +121,7 @@ export default function Manage({
         <TYPE.largeHeader>
           {poolHandle} {t('earnPage.liquidityMining')}
         </TYPE.largeHeader>
-        <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
+        <MultipleCurrencyLogo currencies={currencies} size={24} separation={20} margin />
       </RowBetween>
 
       <DataRow style={{ gap: '24px' }}>
@@ -209,7 +150,7 @@ export default function Manage({
       </DataRow>
 
       {showAddLiquidityButton ? (
-        <VoteCard>
+        <HighlightCard>
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
@@ -228,7 +169,7 @@ export default function Manage({
               </ButtonPrimary>
             </AutoColumn>
           </CardSection>
-        </VoteCard>
+        </HighlightCard>
       ) : null}
 
       {stakingInfo != null ? (
