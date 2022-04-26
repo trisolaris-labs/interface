@@ -1,4 +1,4 @@
-import { ChainId, JSBI, TokenAmount } from '@trisolaris/sdk'
+import { ChainId, JSBI, Token, TokenAmount } from '@trisolaris/sdk'
 import { useMasterChefV2ContractForVersion } from './hooks-sushi'
 import { ChefVersions, STAKING, StakingTri, StakingTriStakedAmounts } from './stake-constants'
 import { useSingleContractMultipleData } from '../multicall/hooks'
@@ -25,7 +25,9 @@ export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTr
   const isLoading = userInfo?.some(({ loading }) => loading)
 
   // get all the info from the staking rewards contracts
-  const tokens = activeFarms.filter(v => v.chefVersion === chefVersion).map(({ tokens }) => tokens)
+  const tokens: [Token, Token][] = activeFarms
+    .filter(v => v.chefVersion === chefVersion)
+    .map(({ tokens: [token0, token1] }) => [token0, token1])
   const pairs = usePairs(tokens)
 
   const getActiveFarmID = useCallback(

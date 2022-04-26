@@ -46,7 +46,7 @@ export type StableSwapPool = {
   lpToken: Token
 
   // These are the tokens in the pool (don't put LP tokens here)
-  poolTokens: Token[]
+  poolTokens: { 0: Token; 1: Token } & Array<Token>
 
   // Used for Deposits
   // Links to SwapFlashLoan.sol
