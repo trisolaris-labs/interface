@@ -161,7 +161,7 @@ export function useFarmsPortfolio(farmIds?: number[]): Result | null {
 
   const allUserInfo = [...userInfoV1, ...userInfoV2]
 
-  const tokens = activeFarms.map(farm => farm.tokens)
+  const tokens: [Token, Token][] = activeFarms.map(({ tokens: [token0, token1] }) => [token0, token1])
   const pairsResult = usePairs(tokens)
 
   // Loading
