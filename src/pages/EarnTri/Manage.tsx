@@ -105,7 +105,7 @@ export default function Manage({
       chefVersion: chefVersion
     }) ?? {}
 
-  const poolHandle = tokens.map((token, index) => `${token.symbol}${index < tokens.length - 1 ? '-' : ''}`)
+  const poolHandle = tokens.map(({ symbol }) => symbol).join('-')
 
   const handleDepositClick = useCallback(() => {
     if (account) {
