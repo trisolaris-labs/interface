@@ -14,6 +14,9 @@ export function useFarms(): StakingTri[] {
   const stakingInfoV1 = useFarmContractsForVersion(ChefVersions.V1)
   const stakingInfoV2 = useFarmContractsForVersion(ChefVersions.V2)
 
+  // @TODO
+  const stableSwapStakingInfo = useFarmContractsForStableSwap()
+
   const stakingInfo = stakingInfoV1.concat(stakingInfoV2)
 
   const stakingInfoMap = useMemo(
