@@ -9,7 +9,7 @@ export function useFarmsAPI(): StakingTriFarms[] {
   const { chainId } = useActiveWeb3React()
 
   const activeFarms = STAKING[chainId ?? ChainId.AURORA]
-  let lpAddresses = activeFarms.map(key => key.lpAddress)
+  const lpAddresses = activeFarms.map(key => key.lpAddress)
 
   const result = useRef<StakingTriFarms[]>(activeFarms)
   const stakingInfoData = useFetchStakingInfoData()
@@ -21,31 +21,46 @@ export function useFarmsAPI(): StakingTriFarms[] {
   }
 
   result.current = lpAddresses.map((_, index) => {
-    const { chefVersion, tokens } = activeFarms[index]
+    const {
+      chefVersion,
+      tokens,
+      ID,
+      poolId,
+      stakingRewardAddress,
+      lpAddress,
+      rewarderAddress,
+      allocPoint,
+      doubleRewards,
+      inStaging,
+      noTriRewards,
+      doubleRewardToken,
+      stableSwapPoolName
+    } = activeFarms[index]
     const { totalStakedInUSD, totalRewardRate, apr, apr2 } = stakingInfoData?.[index] ?? {}
 
     return {
-      ID: activeFarms[index].ID,
-      poolId: activeFarms[index].poolId,
-      stakingRewardAddress: activeFarms[index].stakingRewardAddress,
-      lpAddress: activeFarms[index].lpAddress,
-      rewarderAddress: activeFarms[index].rewarderAddress,
-      tokens: tokens,
+      ID,
+      poolId,
+      stakingRewardAddress,
+      lpAddress,
+      rewarderAddress,
+      tokens,
       isPeriodFinished: false,
       earnedAmount: tokenAmount,
       doubleRewardAmount: tokenAmount,
       totalStakedAmount: tokenAmount,
       totalStakedInUSD: Math.round(totalStakedInUSD ?? 0),
-      allocPoint: activeFarms[index].allocPoint,
+      allocPoint,
       totalRewardRate: Math.round(totalRewardRate ?? 0),
       rewardRate: tokenAmount,
       apr: Math.round(apr ?? 0),
       apr2: Math.round(apr2 ?? 0),
-      chefVersion: chefVersion,
-      doubleRewards: activeFarms[index].doubleRewards,
-      inStaging: activeFarms[index].inStaging,
-      noTriRewards: activeFarms[index].noTriRewards,
-      doubleRewardToken: activeFarms[index].doubleRewardToken
+      chefVersion,
+      doubleRewards,
+      inStaging,
+      noTriRewards,
+      doubleRewardToken,
+      stableSwapPoolName
     }
   })
 
