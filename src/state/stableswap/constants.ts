@@ -19,7 +19,7 @@ export enum STABLE_SWAP_TYPES {
 
 export enum StableSwapPoolName {
   USDC_USDT = 'USDC_USDT',
-  // USDC_USDT_WUST_FRAX = 'USDC_USDT_WUST_FRAX'
+  USDC_USDT_WUST_FRAX = 'USDC_USDT_WUST_FRAX'
 }
 
 export enum StableSwapPoolTypes {
@@ -98,22 +98,22 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     isOutdated: false,
     rewardPids: null
   },
-  // [StableSwapPoolName.USDC_USDT_WUST_FRAX]: {
-  //   name: StableSwapPoolName.USDC_USDT_WUST_FRAX,
-  //   lpToken: new Token(
-  //     ChainId.AURORA,
-  //     '0xcdb578ba21c65dbab2f2aa1ce912d689affda911',
-  //     18,
-  //     'USD TLP',
-  //     'UST_FRAX_USDC_USDT'
-  //   ),
-  //   poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA], WUST[ChainId.AURORA], FRAX[ChainId.AURORA]],
-  //   address: '0x21e756AF5a42838B4f17C3A70a395D3048da81D8',
-  //   type: StableSwapPoolTypes.USD,
-  //   route: 'usd',
-  //   isOutdated: false,
-  //   rewardPids: null
-  // }
+  [StableSwapPoolName.USDC_USDT_WUST_FRAX]: {
+    name: StableSwapPoolName.USDC_USDT_WUST_FRAX,
+    lpToken: new Token(
+      ChainId.AURORA,
+      '0xcdb578ba21c65dbab2f2aa1ce912d689affda911',
+      18,
+      'USD TLP',
+      'UST_FRAX_USDC_USDT'
+    ),
+    poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA], WUST[ChainId.AURORA], FRAX[ChainId.AURORA]],
+    address: '0x21e756AF5a42838B4f17C3A70a395D3048da81D8',
+    type: StableSwapPoolTypes.USD,
+    route: 'usd',
+    isOutdated: false,
+    rewardPids: null
+  }
 }
 
 export const TOKENS_MAP = _.transform(
