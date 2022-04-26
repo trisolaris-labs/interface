@@ -49,7 +49,7 @@ export function useFarms(): StakingTri[] {
 
         return acc
       }, []),
-    [stakingInfoMap, farms]
+    [activeFarms, farmsMap, stakingInfoMap]
   )
 
   return result

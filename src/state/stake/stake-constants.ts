@@ -31,6 +31,7 @@ import {
   LINEAR,
   BSTN
 } from '../../constants/tokens'
+import { StableSwapPoolName } from '../stableswap/constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
 export enum ChefVersions {
@@ -69,6 +70,7 @@ export type StakingTriFarms = {
   inStaging: boolean
   noTriRewards: boolean
   doubleRewardToken: Token
+  stableSwapPoolName: StableSwapPoolName | null
 }
 
 export interface ExternalInfo {
@@ -112,7 +114,8 @@ const NULL_POOL: StakingTri = {
   doubleRewards: false,
   inStaging: false,
   noTriRewards: false,
-  doubleRewardToken: dummyToken
+  doubleRewardToken: dummyToken,
+  stableSwapPoolName: null
 }
 const NULL_POOLS = [NULL_POOL]
 
@@ -400,7 +403,7 @@ const AURORA_POOLS: StakingTri[] = [
     inStaging: false,
     doubleRewardToken: BBT[ChainId.AURORA]
   }),
-  // Needed to add the this pool due to some functions and features breaking when jumping from ID 24 to 26. 
+  // Needed to add the this pool due to some functions and features breaking when jumping from ID 24 to 26.
   // TODO:  Will be replaced by stable farm pool in stable farms PR.
   createMCV2Pool({
     ID: 25,
@@ -410,7 +413,8 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '',
     allocPoint: 1,
     noTriRewards: false,
-    inStaging: true
+    inStaging: true,
+    stableSwapPoolName: StableSwapPoolName.USDC_USDT
   }),
   createMCV2Pool({
     ID: 26,
