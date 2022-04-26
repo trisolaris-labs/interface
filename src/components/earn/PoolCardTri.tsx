@@ -27,6 +27,8 @@ import {
   Button
 } from './PoolCardTri.styles'
 import GetTokenLink from './FarmsPortfolio/GetTokenLink'
+import { StableSwapPoolName } from '../../state/stableswap/constants'
+import { useSingleStableFarm } from '../../state/stake/user-stable-farms'
 
 type PoolCardTriProps = {
   apr: number
@@ -42,6 +44,7 @@ type PoolCardTriProps = {
   doubleRewardToken: Token
   isStaking: boolean
   version: number
+  stableSwapPoolName?: StableSwapPoolName
 }
 
 const DefaultPoolCardtri = ({
@@ -59,7 +62,8 @@ const DefaultPoolCardtri = ({
   isStaking,
   version,
   enableClaimButton = false,
-  enableModal = () => null
+  enableModal = () => null,
+  stableSwapPoolName
 }: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
   const history = useHistory()
   const { t } = useTranslation()
@@ -78,7 +82,11 @@ const DefaultPoolCardtri = ({
     const sharedProps = {
       marginLeft: '0.5rem',
       onClick: () => {
-        history.push(`/tri/${currencyId(currencies[0])}/${currencyId(currencies[1])}/${version}`)
+        history.push(
+          stableSwapPoolName
+            ? `/tri/${stableSwapPoolName}/${version}`
+            : `/tri/${currencyId(currencies[0])}/${currencyId(currencies[1])}/${version}`
+        )
       }
     }
 
@@ -149,6 +157,32 @@ const DefaultPoolCardtri = ({
   )
 }
 
+type StablePoolCardTriProps = PoolCardTriProps & { stableSwapPoolName: StableSwapPoolName }
+
+const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
+  const { version } = props
+
+  const stakingInfo = useSingleStableFarm(Number(version), props.stableSwapPoolName)
+  const { earnedAmount, doubleRewardAmount } = stakingInfo
+
+  const amountIsClaimable = isTokenAmountPositive(earnedAmount) || isTokenAmountPositive(doubleRewardAmount)
+  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
+
+  const enableModal = () => setShowClaimRewardModal(true)
+  return (
+    <>
+      {showClaimRewardModal && stakingInfo && (
+        <ClaimRewardModal
+          isOpen={showClaimRewardModal}
+          onDismiss={() => setShowClaimRewardModal(false)}
+          stakingInfo={stakingInfo}
+        />
+      )}
+      <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+    </>
+  )
+}
+
 const StakingPoolCardTRI = (props: PoolCardTriProps) => {
   const { version } = props
 
@@ -174,8 +208,17 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
 }
 
 const PoolCardTRI = (props: PoolCardTriProps) => {
-  const { isStaking } = props
-  return isStaking ? <StakingPoolCardTRI {...props} /> : <DefaultPoolCardtri {...props}></DefaultPoolCardtri>
+  const { isStaking, stableSwapPoolName } = props
+
+  if (!isStaking) {
+    return <DefaultPoolCardtri {...props} />
+  }
+
+  return stableSwapPoolName == null ? (
+    <StakingPoolCardTRI {...props} />
+  ) : (
+    <StableStakingPoolCardTRI {...props} stableSwapPoolName={stableSwapPoolName} />
+  )
 }
 
 export default PoolCardTRI
