@@ -42,7 +42,6 @@ type PoolCardTriProps = {
   doubleRewardToken: Token
   isStaking: boolean
   version: number
-  isStableSwap?: boolean
 }
 
 const DefaultPoolCardtri = ({
@@ -59,7 +58,6 @@ const DefaultPoolCardtri = ({
   doubleRewardToken,
   isStaking,
   version,
-  isStableSwap,
   enableClaimButton = false,
   enableModal = () => null
 }: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
