@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import SWAP_FLASH_LOAN_ABI from '../constants/abis/stableswap/swapFlashLoan.json'
-import LPTOKEN_UNGUARDED_ABI from '../constants/abis/stableswap/lpTokenUnguarded.json'
+import LPTOKEN_UNGUARDED_ABI from '../constants/abis/stableswap/lpToken.json'
 import { useActiveWeb3React } from '.'
 import { StableSwapPoolName, StableSwapPoolTypes, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
