@@ -31,7 +31,7 @@ import {
   LINEAR,
   BSTN
 } from '../../constants/tokens'
-import { StableSwapPoolName } from '../stableswap/constants'
+import { StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
 export enum ChefVersions {
@@ -48,7 +48,7 @@ export type StakingTriStakedAmounts = {
 export type StakingTriFarms = {
   ID: number
   poolId: number
-  tokens: [Token, Token] & Token[]
+  tokens: { 0: Token; 1: Token } & Array<Token>
   stakingRewardAddress: string
   lpAddress: string
   rewarderAddress: string
@@ -408,8 +408,8 @@ const AURORA_POOLS: StakingTri[] = [
   createMCV2Pool({
     ID: 25,
     poolId: 18,
-    tokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
-    lpAddress: '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9',
+    tokens: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT].poolTokens,
+    lpAddress: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT].lpToken.address,
     rewarderAddress: '',
     allocPoint: 1,
     noTriRewards: false,
