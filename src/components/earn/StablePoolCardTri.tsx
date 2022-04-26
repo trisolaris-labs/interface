@@ -12,7 +12,6 @@ import { AutoRow, RowBetween } from '../Row'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
 
 import { ChefVersions } from '../../state/stake/stake-constants'
-import { useSingleFarm } from '../../state/stake/user-farms'
 import { useColorForToken } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
 import { addCommasToNumber } from '../../utils'
@@ -28,6 +27,7 @@ import {
 } from './PoolCardTri.styles'
 import { StableSwapPoolName } from '../../state/stableswap/constants'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
+import { useSingleStableFarm } from '../../state/stake/user-stable-farms'
 
 type StablePoolCardTriProps = {
   apr: number
@@ -142,7 +142,7 @@ const DefaultStablePoolCardtri = ({
 const StakingStablePoolCardTRI = (props: StablePoolCardTriProps) => {
   const { version } = props
 
-  const stakingInfo = useSingleFarm(Number(version))
+  const stakingInfo = useSingleStableFarm(Number(version), props.stableSwapPoolName)
   const { earnedAmount, doubleRewardAmount } = stakingInfo
 
   const amountIsClaimable = isTokenAmountPositive(earnedAmount) || isTokenAmountPositive(doubleRewardAmount)
