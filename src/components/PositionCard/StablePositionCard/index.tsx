@@ -12,7 +12,6 @@ import { useColorWithDefault } from '../../../hooks/useColor'
 
 import Card, { LightCard } from '../../Card'
 import { AutoColumn } from '../../Column'
-import DoubleCurrencyLogo from '../../DoubleLogo'
 import { AutoRow, RowBetween, RowFixed } from '../../Row'
 import { useTranslation } from 'react-i18next'
 
