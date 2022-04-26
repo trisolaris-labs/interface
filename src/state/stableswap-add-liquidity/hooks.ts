@@ -48,10 +48,10 @@ export function useDerivedStableSwapAddLiquidityInfo(
   } = useStableSwapAddLiquidityState()
 
   const { lpToken, poolTokens } = STABLESWAP_POOLS[stableSwapPoolName]
-  const [currency0, currency1, currency2, currency3] = poolTokens.map(token => unwrappedToken(token))
+  const [currency0, currency1, currency2, currency3, currency4] = poolTokens.map(token => unwrappedToken(token))
   const hasThirdCurrency = currency2 != null
   const hasFourthCurrency = hasThirdCurrency && currency3 != null
-  const hasFifthCurrency = hasFourthCurrency && currency3 != null
+  const hasFifthCurrency = hasFourthCurrency && currency4 != null
 
   // tokens
   const currencies: { [field in Field]?: Currency } = useMemo(
