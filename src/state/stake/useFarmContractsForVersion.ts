@@ -12,6 +12,8 @@ export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTr
   const { chainId, account } = useActiveWeb3React()
 
   const activeFarms = STAKING[chainId ?? ChainId.AURORA]
+    // Ignore all stable farms
+    .filter(({ stableSwapPoolName }) => stableSwapPoolName == null)
   const contract = useMasterChefV2ContractForVersion(chefVersion)
   const latestBlock = useBlockNumber()
 
