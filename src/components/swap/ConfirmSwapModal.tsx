@@ -66,7 +66,7 @@ export default function ConfirmSwapModal({
   const { stableswapTrade } = useDerivedStableSwapInfo()
 
   const modalHeader = useCallback(() => {
-    return trade ? (
+    return trade|| stableswapTrade ? (
       <SwapModalHeader
         trade={trade}
         allowedSlippage={allowedSlippage}
@@ -75,6 +75,8 @@ export default function ConfirmSwapModal({
         onAcceptChanges={onAcceptChanges}
         isRoutedViaStableSwap={isRoutedViaStableSwap}
         stableSwapTrade={stableswapTrade}
+        stableswapPriceImpactWithoutFee={stableswapPriceImpactWithoutFee}
+        isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
       />
     ) : null
   }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade])
