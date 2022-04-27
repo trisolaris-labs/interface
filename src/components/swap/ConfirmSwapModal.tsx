@@ -80,7 +80,7 @@ export default function ConfirmSwapModal({
   }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade])
 
   const modalBottom = useCallback(() => {
-    return trade ? (
+    return trade || stableswapTrade ? (
       <SwapModalFooter
         onConfirm={onConfirm}
         trade={trade}
