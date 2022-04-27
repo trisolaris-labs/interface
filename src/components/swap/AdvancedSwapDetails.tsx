@@ -12,7 +12,7 @@ import { SectionBreak } from './styleds'
 import SwapRoute from './SwapRoute'
 import { useTranslation } from 'react-i18next'
 
-import { useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
+import { StableSwapTrade, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 
 function TradeSummary({
   trade,
@@ -105,8 +105,78 @@ function TradeSummary({
   )
 }
 
+function StableTradeSummary({
+  stableswapPriceImpactWithoutFee,
+  allowedSlippage,
+  isRoutedViaStableSwap,
+  isStableSwapPriceImpactSevere
+}: {
+  stableswapPriceImpactWithoutFee: Percent
+  allowedSlippage: number
+  isRoutedViaStableSwap: boolean
+  isStableSwapPriceImpactSevere: boolean
+}) {
+  const theme = useContext(ThemeContext)
+  const { stableswapTrade } = useDerivedStableSwapInfo()
+  const { t } = useTranslation()
+
+  const receivedAmountEstimate =
+    (isRoutedViaStableSwap &&
+      `${stableswapTrade?.outputAmountLessSlippage.toSignificant(4)} ${
+        stableswapTrade?.outputAmountLessSlippage.currency.symbol
+      }`) ??
+    '-'
+
+  return (
+    <>
+      <AutoColumn gap="4px" style={{ padding: '0 20px' }}>
+        <RowBetween>
+          <RowFixed>
+            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+              {t('swap.minimumReceived')}
+            </TYPE.black>
+          </RowFixed>
+          <RowFixed>
+            <TYPE.black color={theme.text1} fontSize={14}>
+              {receivedAmountEstimate}
+            </TYPE.black>
+          </RowFixed>
+        </RowBetween>
+        <RowBetween>
+          <RowFixed>
+            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+              {t('swap.priceImpact')}
+            </TYPE.black>
+          </RowFixed>
+          <FormattedPriceImpact
+            isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
+            priceImpact={stableswapPriceImpactWithoutFee}
+            isRoutedViaStableSwap={isRoutedViaStableSwap}
+          />
+        </RowBetween>
+
+        <RowBetween>
+          <RowFixed>
+            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+              {t('swap.routedViaAmmType')}
+            </TYPE.black>
+          </RowFixed>
+          <TYPE.black
+            id={'swap-routed-via'}
+            fontSize={14}
+            color={isRoutedViaStableSwap ? theme.metallicGold : theme.yellow2}
+          >
+            {isRoutedViaStableSwap ? `Stable AMM` : 'Standard AMM'}
+          </TYPE.black>
+        </RowBetween>
+      </AutoColumn>
+    </>
+  )
+}
+
 export interface AdvancedSwapDetailsProps {
   trade?: Trade
+  stableswapTrade?: StableSwapTrade
   stableswapPriceImpactWithoutFee: Percent
   isRoutedViaStableSwap: boolean
   isStableSwapPriceImpactSevere: boolean
@@ -127,7 +197,7 @@ export function AdvancedSwapDetails({
 
   return (
     <AutoColumn gap="md">
-      {trade && (
+      {trade ? (
         <>
           <TradeSummary
             isRoutedViaStableSwap={isRoutedViaStableSwap}
@@ -152,6 +222,13 @@ export function AdvancedSwapDetails({
             </>
           )}
         </>
+      ) : (
+        <StableTradeSummary
+          isRoutedViaStableSwap={isRoutedViaStableSwap}
+          stableswapPriceImpactWithoutFee={stableswapPriceImpactWithoutFee}
+          allowedSlippage={allowedSlippage}
+          isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
+        />
       )}
     </AutoColumn>
   )
