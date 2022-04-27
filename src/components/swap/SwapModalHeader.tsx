@@ -1,4 +1,4 @@
-import { Trade, TradeType } from '@trisolaris/sdk'
+import { Trade, TradeType, Percent } from '@trisolaris/sdk'
 import React, { useContext, useMemo } from 'react'
 import { ArrowDown, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
@@ -28,28 +28,35 @@ export default function SwapModalHeader({
   showAcceptChanges,
   onAcceptChanges,
   isRoutedViaStableSwap,
-  stableSwapTrade
+  stableSwapTrade,
+  stableswapPriceImpactWithoutFee,
+  isStableSwapPriceImpactSevere
 }: {
-  trade: Trade
+  trade?: Trade
   allowedSlippage: number
   recipient: string | null
   showAcceptChanges: boolean
   onAcceptChanges: () => void
   isRoutedViaStableSwap: boolean
   stableSwapTrade: StableSwapTrade | undefined
+  stableswapPriceImpactWithoutFee: Percent
+  isStableSwapPriceImpactSevere: boolean
 }) {
   const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
     trade,
     allowedSlippage
   ])
   const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
-  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
+
+  const priceImpactSeverity = warningSeverity(
+    isRoutedViaStableSwap ? stableswapPriceImpactWithoutFee : priceImpactWithoutFee
+  )
 
   const theme = useContext(ThemeContext)
   const { t } = useTranslation()
 
-  const tradeInputAmount = isRoutedViaStableSwap ? stableSwapTrade?.inputAmount : trade.inputAmount
-  const tradeOutputAmount = isRoutedViaStableSwap ? stableSwapTrade?.outputAmount : trade.outputAmount
+  const tradeInputAmount = isRoutedViaStableSwap ? stableSwapTrade?.inputAmount : trade?.inputAmount
+  const tradeOutputAmount = isRoutedViaStableSwap ? stableSwapTrade?.outputAmount : trade?.outputAmount
 
   const tradeOutputAmountWithSlippage = isRoutedViaStableSwap
     ? stableSwapTrade?.outputAmountLessSlippage
@@ -63,7 +70,11 @@ export default function SwapModalHeader({
           <TruncatedText
             fontSize={24}
             fontWeight={500}
-            color={showAcceptChanges && trade.tradeType === TradeType.EXACT_OUTPUT ? theme.primary1 : ''}
+            color={
+              showAcceptChanges && (trade?.tradeType === TradeType.EXACT_OUTPUT || isRoutedViaStableSwap)
+                ? theme.primary1
+                : ''
+            }
           >
             {tradeInputAmount?.toSignificant(6)}
           </TruncatedText>
@@ -86,7 +97,7 @@ export default function SwapModalHeader({
             color={
               priceImpactSeverity > 2
                 ? theme.red1
-                : showAcceptChanges && trade.tradeType === TradeType.EXACT_INPUT
+                : showAcceptChanges && trade?.tradeType === TradeType.EXACT_INPUT
                 ? theme.primary1
                 : ''
             }
@@ -117,7 +128,7 @@ export default function SwapModalHeader({
         </SwapShowAcceptChanges>
       ) : null}
       <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
-        {isRoutedViaStableSwap || trade.tradeType === TradeType.EXACT_INPUT ? (
+        {isRoutedViaStableSwap || trade?.tradeType === TradeType.EXACT_INPUT ? (
           <TYPE.italic textAlign="left" style={{ width: '100%' }}>
             {t('swap.outputEstimated')}
             {
@@ -132,7 +143,7 @@ export default function SwapModalHeader({
             {t('swap.inputEstimated')}
             {
               <StyledMinimumReceived>
-                {slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)} {trade.inputAmount.currency.symbol}
+                {slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)} {tradeInputAmount?.currency.symbol}
               </StyledMinimumReceived>
             }
             {t('swap.transactionRevert')}
