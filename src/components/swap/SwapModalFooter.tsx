@@ -57,7 +57,7 @@ export default function SwapModalFooter({
       <AutoColumn gap="0px">
         <RowBetween align="center">
           <Text fontWeight={400} fontSize={14} color={theme.text2}>
-            {t('swap.price')}
+            {t('swap.price')} {isRoutedViaStableSwap && ` (Slippage Tolerance)`}
           </Text>
           <Text
             fontWeight={500}
@@ -71,7 +71,7 @@ export default function SwapModalFooter({
               paddingLeft: '10px'
             }}
           >
-            {formatExecutionPrice(isRoutedViaStableSwap ? stableSwapTrade : trade, showInverted)}
+            {formatExecutionPrice(isRoutedViaStableSwap ? stableSwapTrade : trade, showInverted, isRoutedViaStableSwap)}
             <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
               <Repeat size={14} />
             </StyledBalanceMaxMini>

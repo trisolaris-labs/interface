@@ -77,7 +77,7 @@ export default function ConfirmSwapModal({
         stableSwapTrade={stableswapTrade}
       />
     ) : null
-  }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade])
+  }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade, isRoutedViaStableSwap, stableswapTrade])
 
   const modalBottom = useCallback(() => {
     return trade || stableswapTrade ? (
@@ -93,7 +93,17 @@ export default function ConfirmSwapModal({
         stableSwapTrade={stableswapTrade}
       />
     ) : null
-  }, [allowedSlippage, onConfirm, showAcceptChanges, swapErrorMessage, trade])
+  }, [
+    trade,
+    stableswapTrade,
+    onConfirm,
+    showAcceptChanges,
+    swapErrorMessage,
+    allowedSlippage,
+    isRoutedViaStableSwap,
+    stableswapPriceImpactWithoutFee,
+    isStableSwapPriceImpactSevere
+  ])
 
   const currentTrade = isRoutedViaStableSwap ? stableswapTrade : trade
   // text to show while loading
