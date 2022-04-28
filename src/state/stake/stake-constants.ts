@@ -29,7 +29,8 @@ import {
   ROSE,
   RUSD,
   LINEAR,
-  BSTN
+  BSTN,
+  KSW
 } from '../../constants/tokens'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
@@ -473,7 +474,7 @@ const AURORA_POOLS: StakingTri[] = [
   createMCV2Pool({
     ID: 31,
     poolId: 24,
-    tokens: [WNEAR[ChainId.AURORA], AURORA[ChainId.AURORA]],
+    tokens: [KSW[ChainId.AURORA], WNEAR[ChainId.AURORA]],
     lpAddress: '0x1e0e812FBcd3EB75D8562AD6F310Ed94D258D008',
     rewarderAddress: '0x34c58E960b80217fA3e0323d37563c762a131AD9',
     allocPoint: 1,
@@ -491,7 +492,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: true,
-    doubleRewards: true,
+    doubleRewards: false,
     doubleRewardToken: AURORA[ChainId.AURORA]
   }),
   createMCV2Pool({
@@ -505,6 +506,18 @@ const AURORA_POOLS: StakingTri[] = [
     inStaging: true,
     doubleRewards: true,
     doubleRewardToken: AURORA[ChainId.AURORA]
+  }),
+  createMCV2Pool({
+    ID: 34,
+    poolId: 27,
+    tokens: [WNEAR[ChainId.AURORA], USDT[ChainId.AURORA]],
+    lpAddress: '0x29C160d2EF4790F9A23B813e7544D99E539c28Ba',
+    rewarderAddress: '0x0Cc7e9D333bDAb07b2C8d41363C72c472B7E9594',
+    allocPoint: 1,
+    noTriRewards: true,
+    inStaging: true,
+    doubleRewards: false,
+    doubleRewardToken: KSW[ChainId.AURORA]
   })
 
 ]
