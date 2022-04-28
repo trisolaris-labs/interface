@@ -469,44 +469,7 @@ const AURORA_POOLS: StakingTri[] = [
     inStaging: false,
     doubleRewards: true,
     doubleRewardToken: BSTN[ChainId.AURORA]
-  }),
-  createMCV2Pool({
-    ID: 31,
-    poolId: 24,
-    tokens: [WNEAR[ChainId.AURORA], AURORA[ChainId.AURORA]],
-    lpAddress: '0x1e0e812FBcd3EB75D8562AD6F310Ed94D258D008',
-    rewarderAddress: '0x34c58E960b80217fA3e0323d37563c762a131AD9',
-    allocPoint: 1,
-    noTriRewards: false,
-    inStaging: true,
-    doubleRewards: true,
-    doubleRewardToken: AURORA[ChainId.AURORA]
-  }),
-  createMCV2Pool({
-    ID: 32,
-    poolId: 25,
-    tokens: [WNEAR[ChainId.AURORA], USDC[ChainId.AURORA]],
-    lpAddress: '0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0',
-    rewarderAddress: '0x84C8B673ddBF0F647c350dEd488787d3102ebfa3',
-    allocPoint: 1,
-    noTriRewards: false,
-    inStaging: true,
-    doubleRewards: true,
-    doubleRewardToken: AURORA[ChainId.AURORA]
-  }),
-  createMCV2Pool({
-    ID: 33,
-    poolId: 26,
-    tokens: [WNEAR[ChainId.AURORA], USDT[ChainId.AURORA]],
-    lpAddress: '0x03B666f3488a7992b2385B12dF7f35156d7b29cD',
-    rewarderAddress: '0x4e0152b260319e5131f853AeCB92c8f992AA0c97',
-    allocPoint: 1,
-    noTriRewards: false,
-    inStaging: true,
-    doubleRewards: true,
-    doubleRewardToken: AURORA[ChainId.AURORA]
   })
-
 ]
 
 export const STAKING: {
