@@ -1,5 +1,5 @@
 import { BIG_INT_ZERO, BLOCKED_PRICE_IMPACT_NON_EXPERT } from '../constants'
-import { CurrencyAmount, Fraction, JSBI, Percent, TokenAmount, Trade } from '@trisolaris/sdk'
+import { CurrencyAmount, Fraction, JSBI, Percent, Price, TokenAmount, Trade } from '@trisolaris/sdk'
 import { ALLOWED_PRICE_IMPACT_HIGH, ALLOWED_PRICE_IMPACT_LOW, ALLOWED_PRICE_IMPACT_MEDIUM } from '../constants'
 import { Field } from '../state/swap/actions'
 import { basisPointsToPercent } from './index'
@@ -71,15 +71,18 @@ export function warningSeverity(priceImpact: Percent | undefined): 0 | 1 | 2 | 3
   return 0
 }
 
-export function formatExecutionPrice(trade?: Trade | StableSwapTrade, inverted?: boolean): string {
+export function formatExecutionPrice(
+  trade?: Trade | StableSwapTrade,
+  inverted?: boolean,
+  isRoutedViaStableSwap?: boolean
+): string {
   if (!trade) {
     return ''
   }
-  return inverted
-    ? `${trade.executionPrice.invert().toSignificant(6)} ${trade.inputAmount.currency.symbol} / ${
-        trade.outputAmount.currency.symbol
-      }`
-    : `${trade.executionPrice.toSignificant(6)} ${trade.outputAmount.currency.symbol} / ${
-        trade.inputAmount.currency.symbol
-      }`
+
+  const rotatedTrade = inverted ? trade.executionPrice.invert() : trade.executionPrice
+
+  return `${isRoutedViaStableSwap ? rotatedTrade?.raw?.toSignificant(6) : rotatedTrade.toSignificant(6)} ${
+    inverted ? trade.outputAmount.currency.symbol : trade.inputAmount.currency.symbol
+  } / ${inverted ? trade.inputAmount.currency.symbol : trade.outputAmount.currency.symbol}`
 }

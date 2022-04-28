@@ -31,7 +31,7 @@ export default function SwapModalFooter({
   isStableSwapPriceImpactSevere,
   stableSwapTrade
 }: {
-  trade: Trade
+  trade?: Trade
   allowedSlippage: number
   onConfirm: () => void
   swapErrorMessage: string | undefined
@@ -48,7 +48,8 @@ export default function SwapModalFooter({
     trade
   ])
   const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
-  const severity = warningSeverity(priceImpactWithoutFee)
+
+  const severity = warningSeverity(isRoutedViaStableSwap ? stableswapPriceImpactWithoutFee : priceImpactWithoutFee)
   const { t } = useTranslation()
 
   return (
@@ -56,7 +57,7 @@ export default function SwapModalFooter({
       <AutoColumn gap="0px">
         <RowBetween align="center">
           <Text fontWeight={400} fontSize={14} color={theme.text2}>
-            {t('swap.price')}
+            {t('swap.price')} {isRoutedViaStableSwap && ` (Slippage Tolerance)`}
           </Text>
           <Text
             fontWeight={500}
@@ -70,7 +71,7 @@ export default function SwapModalFooter({
               paddingLeft: '10px'
             }}
           >
-            {formatExecutionPrice(isRoutedViaStableSwap ? stableSwapTrade : trade, showInverted)}
+            {formatExecutionPrice(isRoutedViaStableSwap ? stableSwapTrade : trade, showInverted, isRoutedViaStableSwap)}
             <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
               <Repeat size={14} />
             </StyledBalanceMaxMini>
@@ -80,7 +81,7 @@ export default function SwapModalFooter({
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              {trade.tradeType === TradeType.EXACT_INPUT || isRoutedViaStableSwap
+              {trade?.tradeType === TradeType.EXACT_INPUT || isRoutedViaStableSwap
                 ? t('swap.minimumReceived')
                 : t('swap.maximumSold')}
             </TYPE.black>
@@ -90,16 +91,16 @@ export default function SwapModalFooter({
             <TYPE.black fontSize={14}>
               {isRoutedViaStableSwap
                 ? stableSwapTrade?.outputAmountLessSlippage.toSignificant(4)
-                : trade.tradeType === TradeType.EXACT_INPUT
+                : trade?.tradeType === TradeType.EXACT_INPUT
                 ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4) ?? '-'
                 : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4) ?? '-'}
             </TYPE.black>
             <TYPE.black fontSize={14} marginLeft={'4px'}>
               {isRoutedViaStableSwap
                 ? stableSwapTrade?.outputAmount.currency.symbol
-                : trade.tradeType === TradeType.EXACT_INPUT
-                ? trade.outputAmount.currency.symbol
-                : trade.inputAmount.currency.symbol}
+                : trade?.tradeType === TradeType.EXACT_INPUT
+                ? trade?.outputAmount.currency.symbol
+                : trade?.inputAmount.currency.symbol}
             </TYPE.black>
           </RowFixed>
         </RowBetween>
@@ -125,7 +126,7 @@ export default function SwapModalFooter({
               <QuestionHelper text={t('swap.liquidityProviderHelper')} />
             </RowFixed>
             <TYPE.black fontSize={14}>
-              {realizedLPFee ? realizedLPFee?.toSignificant(6) + ' ' + trade.inputAmount.currency.symbol : '-'}
+              {realizedLPFee ? realizedLPFee?.toSignificant(6) + ' ' + trade?.inputAmount.currency.symbol : '-'}
             </TYPE.black>
           </RowBetween>
         )}
