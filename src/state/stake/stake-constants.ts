@@ -519,7 +519,6 @@ const AURORA_POOLS: StakingTri[] = [
     doubleRewards: false,
     doubleRewardToken: KSW[ChainId.AURORA]
   })
-
 ]
 
 export const STAKING: {
