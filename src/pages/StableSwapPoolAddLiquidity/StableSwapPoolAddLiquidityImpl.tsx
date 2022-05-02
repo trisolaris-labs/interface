@@ -125,6 +125,8 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     onField0Input('')
     onField1Input('')
     onField2Input('')
+    onField3Input('')
+    onField4Input('')
 
     setTxHash('')
   }, [onField0Input, onField1Input, onField2Input, setTxHash])

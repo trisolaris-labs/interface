@@ -60,9 +60,9 @@ export function useDerivedStableSwapAddLiquidityInfo(
       [Field.CURRENCY_1]: currency1 ?? undefined,
       [Field.CURRENCY_2]: currency2 ?? undefined,
       [Field.CURRENCY_3]: currency3 ?? undefined,
-      [Field.CURRENCY_4]: currency3 ?? undefined
+      [Field.CURRENCY_4]: currency4 ?? undefined
     }),
-    [currency0, currency1, currency2, currency3]
+    [currency0, currency1, currency2, currency3, currency4]
   )
 
   const totalLPTokenSuppply = useTotalSupply(lpToken)
@@ -265,7 +265,13 @@ export function useStableSwapAddLiquidityCallback(
 
     await transaction?.wait()
 
-    const summary = ([Field.CURRENCY_0, Field.CURRENCY_1, Field.CURRENCY_2] as Field[]).reduce((acc, key: Field) => {
+    const summary = ([
+      Field.CURRENCY_0,
+      Field.CURRENCY_1,
+      Field.CURRENCY_2,
+      Field.CURRENCY_3,
+      Field.CURRENCY_4
+    ] as Field[]).reduce((acc, key: Field) => {
       if (parsedAmounts[key] != null && currencies[key] != null) {
         acc.push(`${parsedAmounts[key]?.toSignificant(3)} ${currencies[key]?.symbol}`)
       }
