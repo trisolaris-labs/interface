@@ -265,7 +265,13 @@ export function useStableSwapAddLiquidityCallback(
 
     await transaction?.wait()
 
-    const summary = ([Field.CURRENCY_0, Field.CURRENCY_1, Field.CURRENCY_2] as Field[]).reduce((acc, key: Field) => {
+    const summary = ([
+      Field.CURRENCY_0,
+      Field.CURRENCY_1,
+      Field.CURRENCY_2,
+      Field.CURRENCY_3,
+      Field.CURRENCY_4
+    ] as Field[]).reduce((acc, key: Field) => {
       if (parsedAmounts[key] != null && currencies[key] != null) {
         acc.push(`${parsedAmounts[key]?.toSignificant(3)} ${currencies[key]?.symbol}`)
       }
