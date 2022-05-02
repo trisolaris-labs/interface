@@ -60,9 +60,9 @@ export function useDerivedStableSwapAddLiquidityInfo(
       [Field.CURRENCY_1]: currency1 ?? undefined,
       [Field.CURRENCY_2]: currency2 ?? undefined,
       [Field.CURRENCY_3]: currency3 ?? undefined,
-      [Field.CURRENCY_4]: currency3 ?? undefined
+      [Field.CURRENCY_4]: currency4 ?? undefined
     }),
-    [currency0, currency1, currency2, currency3]
+    [currency0, currency1, currency2, currency3, currency4]
   )
 
   const totalLPTokenSuppply = useTotalSupply(lpToken)
