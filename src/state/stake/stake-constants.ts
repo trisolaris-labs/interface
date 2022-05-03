@@ -479,7 +479,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x34c58E960b80217fA3e0323d37563c762a131AD9',
     allocPoint: 1,
     noTriRewards: false,
-    inStaging: true,
+    inStaging: false,
     doubleRewards: true,
     doubleRewardToken: AURORA[ChainId.AURORA]
   }),
@@ -491,7 +491,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x84C8B673ddBF0F647c350dEd488787d3102ebfa3',
     allocPoint: 1,
     noTriRewards: false,
-    inStaging: true,
+    inStaging: false,
     doubleRewards: true,
     doubleRewardToken: AURORA[ChainId.AURORA]
   }),
@@ -503,7 +503,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x4e0152b260319e5131f853AeCB92c8f992AA0c97',
     allocPoint: 1,
     noTriRewards: false,
-    inStaging: true,
+    inStaging: false,
     doubleRewards: true,
     doubleRewardToken: AURORA[ChainId.AURORA]
   }),
@@ -515,7 +515,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x0Cc7e9D333bDAb07b2C8d41363C72c472B7E9594',
     allocPoint: 1,
     noTriRewards: true,
-    inStaging: true,
+    inStaging: false,
     doubleRewards: false,
     doubleRewardToken: AURORA[ChainId.AURORA]
   }),
