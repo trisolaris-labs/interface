@@ -43,6 +43,16 @@ const Tag = styled.div`
   margin-right: 4px;
 `
 
+const StyledTokenName = styled.span`
+  max-width: 160px;
+  opacity: 0.6;
+  margin-right: 0.5rem;
+  font-weight: 300;
+  font-size: 11.5px;
+  margin-top:2px;
+  color: ${({ theme }) => theme.text1}
+`
+
 function Balance({ balance }: { balance: CurrencyAmount }) {
   return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
 }
@@ -132,7 +142,9 @@ function CurrencyRow({
                 ({t('searchModal.remove')})
               </LinkStyledButton>
             </TYPE.main>
-          ) : null}
+          ) : (
+            <StyledTokenName>{currency.name}</StyledTokenName>
+          )}
           {!isOnSelectedList && !customAdded ? (
             <TYPE.main fontWeight={500}>
               {t('searchModal.foundByAddress')}
