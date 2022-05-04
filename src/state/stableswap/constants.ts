@@ -1,6 +1,6 @@
 import { ChainId, Token, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
-import { FRAX, USDC, USDT, WBTC, WUST } from '../../constants/tokens'
+import { FRAX, USDC, USDT, WBTC, WUST, USN} from '../../constants/tokens'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
@@ -19,7 +19,8 @@ export enum STABLE_SWAP_TYPES {
 
 export enum StableSwapPoolName {
   USDC_USDT = 'USDC_USDT',
-  USDC_USDT_WUST_FRAX = 'USDC_USDT_WUST_FRAX'
+  USDC_USDT_WUST_FRAX = 'USDC_USDT_WUST_FRAX',
+  USDC_USDT_WUST_FRAX_USN = 'USDC_USDT_WUST_FRAX_USN'
 }
 
 export enum StableSwapPoolTypes {
@@ -109,6 +110,22 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     ),
     poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA], WUST[ChainId.AURORA], FRAX[ChainId.AURORA]],
     address: '0x21e756AF5a42838B4f17C3A70a395D3048da81D8',
+    type: StableSwapPoolTypes.USD,
+    route: 'usd',
+    isOutdated: false,
+    rewardPids: null
+  },
+  [StableSwapPoolName.USDC_USDT_WUST_FRAX_USN]: {
+    name: StableSwapPoolName.USDC_USDT_WUST_FRAX_USN,
+    lpToken: new Token(
+      ChainId.AURORA,
+      '0x467171053355Da79409bf2F931D21ab1f24Fe0A6',
+      18,
+      'USD TLP',
+      'USDC_USDT_WUST_FRAX_USN'
+    ),
+    poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA], WUST[ChainId.AURORA], FRAX[ChainId.AURORA], USN[ChainId.AURORA]],
+    address: '0xdd407884589b23d2155923b8178bAA0c5725ad9c',
     type: StableSwapPoolTypes.USD,
     route: 'usd',
     isOutdated: false,

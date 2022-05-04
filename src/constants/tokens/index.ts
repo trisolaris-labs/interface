@@ -317,11 +317,11 @@ export const FAME: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0xD5c997724e4b5756d08E6464C01AFbC5F6397236', 18, 'FAME', 'FAME'),
 }
 
-export const FRAX: { [chainId in ChainId]: Token } = {
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'FRAX', 'Frax'),
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'FRAX', 'Frax'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'FRAX', 'Frax'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xE4B9e004389d91e4134a28F19BD833cBA1d994B6', 18, 'FRAX', 'Frax'),
+export const RNBWFRAX: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'rnbwFRAX', 'Frax (Rainbow Bridge)'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'rnbwFRAX', 'Frax (Rainbow Bridge)'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'rnbwFRAX', 'Frax (Rainbow Bridge)'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xDA2585430fEf327aD8ee44Af8F1f989a2A91A3d2', 18, 'rnbwFRAX', 'Frax (Rainbow Bridge)'),
 }
 
 export const FXS: { [chainId in ChainId]: Token } = {
@@ -604,11 +604,18 @@ export const RUSD: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x19cc40283B057D6608C22F1D20F17e16C245642E', 18, 'RUSD', 'Rose USD'),
 }
 
-export const PNG: { [chainId in ChainId]: Token } = {
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x60781C2586D68229fde47564546784ab3fACA982', 18, 'PNG', 'Pangolin'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0b20972B45ffB8e5d4D37AF4024E1bf0b03f15ae', 18, 'WETH', 'Ethereum'),
+export const VWAVE: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'VWAVE', 'vaporwave.finance'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'VWAVE', 'vaporwave.finance'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'VWAVE', 'vaporwave.finance'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x2451dB68DeD81900C4F16ae1af597E9658689734', 18, 'VWAVE', 'vaporwave.finance'),
+}
+
+export const FRAX: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'FRAX', 'Frax'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'FRAX', 'Frax'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'FRAX', 'Frax'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xE4B9e004389d91e4134a28F19BD833cBA1d994B6', 18, 'FRAX', 'Frax'),
 }
 
 export const WUST: { [chainId in ChainId]: Token } = {
@@ -616,4 +623,18 @@ export const WUST: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'WUST', 'UST (WormHole)'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 6, 'WUST', 'UST (WormHole)'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x8D07bBb478B84f7E940e97C8e9cF7B3645166b03', 6, 'WUST', 'UST (WormHole)'),
+}
+
+export const PNG: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x60781C2586D68229fde47564546784ab3fACA982', 18, 'PNG', 'Pangolin'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0b20972B45ffB8e5d4D37AF4024E1bf0b03f15ae', 18, 'WETH', 'Ethereum'),
+}
+
+export const USN: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USN', 'USN'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USN', 'USN'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USN', 'USN'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x5183e1B1091804BC2602586919E6880ac1cf2896', 18, 'USN', 'USN'),
 }
