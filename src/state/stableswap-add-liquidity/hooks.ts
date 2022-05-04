@@ -79,7 +79,8 @@ export function useDerivedStableSwapAddLiquidityInfo(
     [Field.CURRENCY_0]: balances[0],
     [Field.CURRENCY_1]: balances[1],
     [Field.CURRENCY_2]: balances[2],
-    [Field.CURRENCY_3]: balances[3]
+    [Field.CURRENCY_3]: balances[3],
+    [Field.CURRENCY_4]: balances[4]
   }
 
   const parsedAmounts: { [field in Field]: CurrencyAmount | undefined } = {
