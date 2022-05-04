@@ -1,6 +1,6 @@
 import { ChainId, Token, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
-import { FRAX, USDC, USDT, WBTC, WUST, USN} from '../../constants/tokens'
+import { FRAX, USDC, USDT, WBTC, WUST, USN } from '../../constants/tokens'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
@@ -106,7 +106,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
       '0xcdb578ba21c65dbab2f2aa1ce912d689affda911',
       18,
       'USD TLP',
-      'UST_FRAX_USDC_USDT'
+      'UST/FRAX/USDC/USDT'
     ),
     poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA], WUST[ChainId.AURORA], FRAX[ChainId.AURORA]],
     address: '0x21e756AF5a42838B4f17C3A70a395D3048da81D8',
@@ -122,9 +122,15 @@ export const STABLESWAP_POOLS: StableSwapPools = {
       '0x467171053355Da79409bf2F931D21ab1f24Fe0A6',
       18,
       'USD TLP',
-      'USDC_USDT_WUST_FRAX_USN'
+      'USDC/USDT/WUST/FRAX/USN'
     ),
-    poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA], WUST[ChainId.AURORA], FRAX[ChainId.AURORA], USN[ChainId.AURORA]],
+    poolTokens: [
+      USDC[ChainId.AURORA],
+      USDT[ChainId.AURORA],
+      WUST[ChainId.AURORA],
+      FRAX[ChainId.AURORA],
+      USN[ChainId.AURORA]
+    ],
     address: '0xdd407884589b23d2155923b8178bAA0c5725ad9c',
     type: StableSwapPoolTypes.USD,
     route: 'usd',
