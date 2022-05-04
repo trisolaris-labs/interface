@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import { StableSwapPoolName } from '../../state/stableswap/constants'
-import { divideCurrencyAmountByNumber } from '../../utils'
+import { divideCurrencyAmountByNumber, replaceUnderscoresWithSlashes } from '../../utils'
 import StableSwapPoolAddLiquidityApprovalsRow from './StableSwapPoolAddLiquidityApprovalsRow'
 import { TYPE } from '../../theme'
 import Settings from '../../components/Settings'
@@ -37,6 +37,7 @@ import { RowBetween } from '../../components/Row'
 import { JSBI } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../../constants'
 import { useExpertModeManager } from '../../state/user/hooks'
+import useStablePoolsData from '../../hooks/useStablePoolsData'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -44,7 +45,7 @@ type Props = {
 
 export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: Props) {
   const { account, chainId, library } = useActiveWeb3React()
-
+  const [poolData, _userShareData] = useStablePoolsData(stableSwapPoolName)
   const { t } = useTranslation()
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
@@ -129,7 +130,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     onField4Input('')
 
     setTxHash('')
-  }, [onField0Input, onField1Input, onField2Input, setTxHash])
+  }, [onField0Input, onField1Input, onField2Input, onField3Input, onField4Input, setTxHash])
 
   const pendingText = `Supplying ${Object.values(parsedAmounts)
     .map(amount => (amount ? `${amount?.toSignificant(6)} ${amount?.currency.symbol}  ` : ''))
@@ -191,7 +192,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
             />
             <HeadingContainer>
               <AutoRow>
-                <TYPE.mediumHeader>Add Liquidity to {stableSwapPoolName}</TYPE.mediumHeader>
+                <TYPE.mediumHeader>Add Liquidity to {replaceUnderscoresWithSlashes(poolData.name)}</TYPE.mediumHeader>
                 <CaptionWithIcon>Stable pools on Trisolaris support uneven deposits</CaptionWithIcon>
               </AutoRow>
               <Settings />

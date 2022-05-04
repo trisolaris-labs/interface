@@ -128,3 +128,7 @@ export function divideCurrencyAmountByNumber(numerator: CurrencyAmount | undefin
 
   return CurrencyAmount.fromRawAmount(currency, divisionResult)
 }
+
+export function replaceUnderscoresWithSlashes(value: string) {
+  return value.replace(/_/g, '/')
+}
