@@ -43,6 +43,20 @@ const Tag = styled.div`
   margin-right: 4px;
 `
 
+const StyledTokenName = styled.span`
+  max-width: 160px;
+  opacity: 0.6;
+  margin-right: 0.5rem;
+  font-weight: 300;
+  font-size: 11.5px;
+  margin-top: 2px;
+  color: ${({ theme }) => theme.text1};
+`
+
+const StyledRemoveTokenButton = styled(LinkStyledButton)`
+  font-size: 12px;
+`
+
 function Balance({ balance }: { balance: CurrencyAmount }) {
   return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
 }
@@ -120,19 +134,7 @@ function CurrencyRow({
           {currency.symbol}
         </Text>
         <FadedSpan>
-          {!isOnSelectedList && customAdded ? (
-            <TYPE.main fontWeight={500}>
-              {t('searchModal.addedByUser')}
-              <LinkStyledButton
-                onClick={event => {
-                  event.stopPropagation()
-                  if (chainId && currency instanceof Token) removeToken(chainId, currency.address)
-                }}
-              >
-                ({t('searchModal.remove')})
-              </LinkStyledButton>
-            </TYPE.main>
-          ) : null}
+          <StyledTokenName>{currency.name}</StyledTokenName>
           {!isOnSelectedList && !customAdded ? (
             <TYPE.main fontWeight={500}>
               {t('searchModal.foundByAddress')}
@@ -148,7 +150,26 @@ function CurrencyRow({
           ) : null}
         </FadedSpan>
       </Column>
-      <TokenTags currency={currency} />
+      {!isOnSelectedList && customAdded ? (
+        <TagContainer>
+          <RowFixed>
+            <TYPE.main fontWeight={500} fontSize={12}>
+              {t('searchModal.addedByUser')}
+              <StyledRemoveTokenButton
+                onClick={event => {
+                  event.stopPropagation()
+                  if (chainId && currency instanceof Token) removeToken(chainId, currency.address)
+                }}
+              >
+                ({t('searchModal.remove')})
+              </StyledRemoveTokenButton>
+            </TYPE.main>
+          </RowFixed>
+        </TagContainer>
+      ) : (
+        <TokenTags currency={currency} />
+      )}
+
       <RowFixed style={{ justifySelf: 'flex-end' }}>
         {balance ? <Balance balance={balance} /> : account ? <Loader /> : null}
       </RowFixed>
