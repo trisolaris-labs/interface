@@ -17,11 +17,11 @@ export const BRIDGES = [
   {
     id: 'frax',
     link: 'https://app.frax.finance/crosschain#aurora',
-    label: 'Get canonical FRAX'
+    label: 'Bridge Native FRAX'
   },
   {
     id: 'ust',
     link: 'https://www.portalbridge.com/#/transfer',
-    label: 'Get wormhole UST'
+    label: 'Bridge Wormhole UST'
   }
 ]
