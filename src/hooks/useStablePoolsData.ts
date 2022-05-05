@@ -9,7 +9,7 @@ import {
   STABLESWAP_POOLS
 } from '../state/stableswap/constants'
 import { useStableSwapContract, useStableSwapMetaPool } from './useContract'
-import { ChainId, Fraction, JSBI, Percent, Price, Token, TokenAmount } from '@trisolaris/sdk'
+import { ChainId, CurrencyAmount, JSBI, Percent, Price, Token, TokenAmount } from '@trisolaris/sdk'
 import { useSingleCallResult, useSingleContractMultipleData } from '../state/multicall/hooks'
 import { useTokenBalance } from '../state/wallet/hooks'
 import { useTotalSupply } from '../data/TotalSupply'
@@ -31,7 +31,7 @@ export interface StablePoolDataType {
   swapFee: Percent
   tokens: TokenShareType[]
   totalLocked: TokenAmount | null
-  virtualPrice: Fraction | null
+  virtualPrice: CurrencyAmount | null
   isPaused: boolean
   lpTokenPriceUSD: Price
   lpToken: Token | null
@@ -68,9 +68,7 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
     swapStorage?.result?.swapFee ?? BIG_INT_ZERO
   ].map(value => new Percent(value, JSBI.BigInt(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(12)))))
   const rawVirtualPrice = useSingleCallResult(effectiveContract, 'getVirtualPrice')?.result?.[0] ?? BIG_INT_ZERO
-  const virtualPrice = JSBI.equal(BIG_INT_ZERO, JSBI.BigInt(rawVirtualPrice))
-    ? null
-    : new Fraction(JSBI.BigInt(rawVirtualPrice), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+  const virtualPrice = CurrencyAmount.fromRawAmount(getTokenForStablePoolType(pool.type), rawVirtualPrice)
   const aParameter: JSBI = useSingleCallResult(effectiveContract, 'getA')?.result?.[0] ?? BIG_INT_ZERO
   const isPaused: boolean = useSingleCallResult(effectiveContract, 'paused')?.result?.[0] ?? false
   const userLPTokenBalance = useTokenBalance(account ?? AddressZero, lpToken) ?? new TokenAmount(lpToken, BIG_INT_ZERO)

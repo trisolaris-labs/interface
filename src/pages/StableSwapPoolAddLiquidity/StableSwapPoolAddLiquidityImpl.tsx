@@ -34,11 +34,12 @@ import { RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { ButtonPrimary } from '../../components/Button'
 import { RowBetween } from '../../components/Row'
-import { JSBI } from '@trisolaris/sdk'
+import { JSBI, Percent } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../../constants'
 import { useExpertModeManager } from '../../state/user/hooks'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
+import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -88,7 +89,12 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
   // txn values
-  const { callback: addLiquidityCallback, txHash, setTxHash } = useStableSwapAddLiquidityCallback(stableSwapPoolName)
+  const {
+    callback: addLiquidityCallback,
+    txHash,
+    setTxHash,
+    getAddLiquidityPriceImpact
+  } = useStableSwapAddLiquidityCallback(stableSwapPoolName)
 
   // get the max amounts user can add
   const { getMaxAmounts } = useCurrencyInputPanel()
@@ -96,6 +102,11 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
 
   async function onAdd() {
     if (!chainId || !library || !account) {
+      return
+    }
+
+    const minAmountPercent = await getAddLiquidityPriceImpact()
+    if (minAmountPercent != null && !confirmPriceImpactWithoutFee(minAmountPercent)) {
       return
     }
 
