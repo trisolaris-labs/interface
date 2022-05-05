@@ -42,10 +42,7 @@ export default function Pool() {
           </TitleRow>
 
           {account ? (
-            <>
-              <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_UST_FRAX_USN} />
-              <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT} />
-            </>
+            <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT} />
           ) : (
             <Card padding="40px">
               <TYPE.body color={theme.text3} textAlign="center">
