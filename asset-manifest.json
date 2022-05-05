@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.js": "./static/js/main.b849c36d.chunk.js",
-    "runtime-main.js": "./static/js/runtime-main.35c027d5.js",
+    "main.js": "./static/js/main.33394da0.chunk.js",
+    "runtime-main.js": "./static/js/runtime-main.5c7a255c.js",
     "static/css/2.5aa401b8.chunk.css": "./static/css/2.5aa401b8.chunk.css",
-    "static/js/2.e81e04bb.chunk.js": "./static/js/2.e81e04bb.chunk.js",
-    "static/js/3.734b2edb.chunk.js": "./static/js/3.734b2edb.chunk.js",
-    "static/js/4.57e3b128.chunk.js": "./static/js/4.57e3b128.chunk.js",
-    "static/js/5.9a6776c8.chunk.js": "./static/js/5.9a6776c8.chunk.js",
-    "static/js/6.4e2f9805.chunk.js": "./static/js/6.4e2f9805.chunk.js",
+    "static/js/2.d31e300d.chunk.js": "./static/js/2.d31e300d.chunk.js",
+    "static/js/3.6a33552d.chunk.js": "./static/js/3.6a33552d.chunk.js",
+    "static/js/4.1300f2f8.chunk.js": "./static/js/4.1300f2f8.chunk.js",
+    "static/js/5.f80f0275.chunk.js": "./static/js/5.f80f0275.chunk.js",
+    "static/js/6.e46736e9.chunk.js": "./static/js/6.e46736e9.chunk.js",
     "index.html": "./index.html",
-    "precache-manifest.7e9b09ca8ff26f5e57bde17ed48511c7.js": "./precache-manifest.7e9b09ca8ff26f5e57bde17ed48511c7.js",
+    "precache-manifest.9126642f5b68a6ced40884161d49d17b.js": "./precache-manifest.9126642f5b68a6ced40884161d49d17b.js",
     "service-worker.js": "./service-worker.js",
-    "static/js/2.e81e04bb.chunk.js.LICENSE.txt": "./static/js/2.e81e04bb.chunk.js.LICENSE.txt",
-    "static/js/3.734b2edb.chunk.js.LICENSE.txt": "./static/js/3.734b2edb.chunk.js.LICENSE.txt",
+    "static/js/2.d31e300d.chunk.js.LICENSE.txt": "./static/js/2.d31e300d.chunk.js.LICENSE.txt",
+    "static/js/3.6a33552d.chunk.js.LICENSE.txt": "./static/js/3.6a33552d.chunk.js.LICENSE.txt",
     "static/media/inter.css": "./static/media/Inter.var.8dd26c3d.woff2",
     "static/media/arrow-down-blue.svg": "./static/media/arrow-down-blue.cd061363.svg",
     "static/media/arrow-down-grey.svg": "./static/media/arrow-down-grey.c0dedd2f.svg",
@@ -48,9 +48,9 @@
     "static/media/xl_uni.png": "./static/media/xl_uni.ed12c533.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.35c027d5.js",
+    "static/js/runtime-main.5c7a255c.js",
     "static/css/2.5aa401b8.chunk.css",
-    "static/js/2.e81e04bb.chunk.js",
-    "static/js/main.b849c36d.chunk.js"
+    "static/js/2.d31e300d.chunk.js",
+    "static/js/main.33394da0.chunk.js"
   ]
 }
