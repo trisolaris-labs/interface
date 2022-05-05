@@ -36,7 +36,9 @@ export default function StableSwapRemoveLiquidityTokenSelector({
       >
         All
       </AllButton>
-      {currencies.map((currency, i) => {
+      {/*
+       TODO: Uncomment when better liquidity in stableswap pool to allow uneven liquidity removals
+       {currencies.map((currency, i) => {
         const Button = tokenIndex === i ? ButtonSecondary : ButtonOutlined
 
         return (
@@ -58,7 +60,7 @@ export default function StableSwapRemoveLiquidityTokenSelector({
             </CurrencySymbol>
           </Button>
         )
-      })}
+      })} */}
     </>
   )
 }
