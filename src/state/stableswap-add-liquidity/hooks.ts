@@ -347,11 +347,17 @@ export function useStableSwapAddLiquidityCallback(
     console.log('normalizedInputtedCurrencySum: ', normalizedInputtedCurrencySum.toString())
     console.log('normalizedExpectedLPAmountInUSD: ', normalizedExpectedLPAmountInUSD.toString())
 
-    const delta = JSBI.divide(normalizedInputtedCurrencySum, normalizedExpectedLPAmountInUSD)
+    // const delta = JSBI.divide(normalizedInputtedCurrencySum, normalizedExpectedLPAmountInUSD)
+    let delta = JSBI.subtract(normalizedExpectedLPAmountInUSD, normalizedInputtedCurrencySum)
+    delta = JSBI.lessThan(delta, JSBI.BigInt(0)) ? JSBI.multiply(delta, JSBI.BigInt(-1)) : delta
     console.log('delta: ', delta.toString())
-    const allowedSlippageJSBI = JSBI.divide(JSBI.BigInt(allowedSlippage), JSBI.BigInt(10000))
+
+    const allowedSlippageJSBI = JSBI.multiply(
+      JSBI.divide(normalizedInputtedCurrencySum, JSBI.BigInt(10000)),
+      JSBI.BigInt(allowedSlippage)
+    )
     console.log('allowedSlippageJSBI: ', allowedSlippageJSBI.toString())
-    const hasHighSlippage = JSBI.greaterThan(JSBI.multiply(delta, JSBI.BigInt(-1)), allowedSlippageJSBI)
+    const hasHighSlippage = JSBI.greaterThan(delta, allowedSlippageJSBI)
     console.log('hasHighSlippage: ', hasHighSlippage.toString())
 
     if (!hasHighSlippage) {
@@ -359,6 +365,7 @@ export function useStableSwapAddLiquidityCallback(
       return null
     }
 
+    // TODO: Needs verifying
     const result = new Percent(delta, JSBI.BigInt(100))
 
     console.log('result: ', result.toFixed(4))
