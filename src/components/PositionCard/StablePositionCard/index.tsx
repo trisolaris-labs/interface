@@ -63,8 +63,12 @@ const StyledText = styled(Text)`
 `
 
 const StyledPoolName = styled(Text)`
+  word-break: break-word;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
 font-size: 16px !important;
+`};
+${({ theme }) => theme.mediaWidth.upToXxSmall`
+font-size: 14px !important;
 `};
 `
 
@@ -90,6 +94,12 @@ const StyledContractAddress = styled(ContractAddress)`
   font-size: 16px;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
 font-size: 12px !important;
+`};
+`
+
+const StyledViewDetails = styled(StyledText)`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+display:none;
 `};
 `
 
@@ -188,7 +198,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
           </RowFixed>
 
           <RowFixed justify="flex-end" gap="8px">
-            <StyledText fontWeight={500}>{showMore ? 'Hide Details' : 'View Details'}</StyledText>
+            <StyledViewDetails fontWeight={500}>{showMore ? 'Hide Details' : 'View Details'}</StyledViewDetails>
             {showMore ? (
               <ChevronUp size="20" style={{ marginLeft: '10px' }} />
             ) : (
