@@ -174,8 +174,8 @@ export function useStableSwapAddLiquidityActionHandlers(): {
     onField0Input,
     onField1Input,
     onField2Input,
-    onField4Input,
-    onField3Input
+    onField3Input,
+    onField4Input
   }
 }
 

@@ -202,17 +202,6 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               disableCurrencySelect
               value={typedValue0}
               onUserInput={onField0Input}
-              onClickBalanceButton={value => {
-                const amount = maxAmounts[Field.CURRENCY_0]
-                onField0Input(
-                  (value === BalanceButtonValueEnum.MAX
-                    ? amount
-                    : divideCurrencyAmountByNumber(amount, 2)
-                  )?.toExact() ?? ''
-                )
-              }}
-              disableHalfButton={atHalfAmounts[Field.CURRENCY_0]}
-              disableMaxButton={atMaxAmounts[Field.CURRENCY_0]}
               currency={currencies[Field.CURRENCY_0]}
               id="add-liquidity-input-tokena"
               showCommonBases
@@ -221,17 +210,6 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               disableCurrencySelect
               value={typedValue1}
               onUserInput={onField1Input}
-              onClickBalanceButton={value => {
-                const amount = maxAmounts[Field.CURRENCY_1]
-                onField1Input(
-                  (value === BalanceButtonValueEnum.MAX
-                    ? amount
-                    : divideCurrencyAmountByNumber(amount, 2)
-                  )?.toExact() ?? ''
-                )
-              }}
-              disableHalfButton={atHalfAmounts[Field.CURRENCY_1]}
-              disableMaxButton={atMaxAmounts[Field.CURRENCY_1]}
               currency={currencies[Field.CURRENCY_1]}
               id="add-liquidity-input-tokenb"
               showCommonBases
@@ -241,17 +219,6 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                 disableCurrencySelect
                 value={typedValue2}
                 onUserInput={onField2Input}
-                onClickBalanceButton={value => {
-                  const amount = maxAmounts[Field.CURRENCY_2]
-                  onField2Input(
-                    (value === BalanceButtonValueEnum.MAX
-                      ? amount
-                      : divideCurrencyAmountByNumber(amount, 2)
-                    )?.toExact() ?? ''
-                  )
-                }}
-                disableHalfButton={atHalfAmounts[Field.CURRENCY_2]}
-                disableMaxButton={atMaxAmounts[Field.CURRENCY_2]}
                 currency={currencies[Field.CURRENCY_2]}
                 id="add-liquidity-input-token2"
                 showCommonBases
@@ -262,17 +229,6 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                 disableCurrencySelect
                 value={typedValue3}
                 onUserInput={onField3Input}
-                onClickBalanceButton={value => {
-                  const amount = maxAmounts[Field.CURRENCY_3]
-                  onField3Input(
-                    (value === BalanceButtonValueEnum.MAX
-                      ? amount
-                      : divideCurrencyAmountByNumber(amount, 2)
-                    )?.toExact() ?? ''
-                  )
-                }}
-                disableHalfButton={atHalfAmounts[Field.CURRENCY_3]}
-                disableMaxButton={atMaxAmounts[Field.CURRENCY_3]}
                 currency={currencies[Field.CURRENCY_3]}
                 id="add-liquidity-input-token3"
                 showCommonBases
@@ -283,17 +239,6 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                 disableCurrencySelect
                 value={typedValue4}
                 onUserInput={onField4Input}
-                onClickBalanceButton={value => {
-                  const amount = maxAmounts[Field.CURRENCY_4]
-                  onField4Input(
-                    (value === BalanceButtonValueEnum.MAX
-                      ? amount
-                      : divideCurrencyAmountByNumber(amount, 2)
-                    )?.toExact() ?? ''
-                  )
-                }}
-                disableHalfButton={atHalfAmounts[Field.CURRENCY_4]}
-                disableMaxButton={atMaxAmounts[Field.CURRENCY_4]}
                 currency={currencies[Field.CURRENCY_4]}
                 id="add-liquidity-input-token4"
                 showCommonBases
