@@ -19,7 +19,6 @@ export enum STABLE_SWAP_TYPES {
 
 export enum StableSwapPoolName {
   USDC_USDT = 'USDC_USDT',
-  USDC_USDT_UST_FRAX = 'USDC_USDT_UST_FRAX',
   USDC_USDT_UST_FRAX_USN = 'USDC_USDT_UST_FRAX_USN'
 }
 
@@ -94,22 +93,6 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     // Also to verify, please query the swap contract for the individual stable token indexes
     poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
     address: '0x13e7a001EC72AB30D66E2f386f677e25dCFF5F59',
-    type: StableSwapPoolTypes.USD,
-    route: 'usd',
-    isOutdated: false,
-    rewardPids: null
-  },
-  [StableSwapPoolName.USDC_USDT_UST_FRAX]: {
-    name: StableSwapPoolName.USDC_USDT_UST_FRAX,
-    lpToken: new Token(
-      ChainId.AURORA,
-      '0xcdb578ba21c65dbab2f2aa1ce912d689affda911',
-      18,
-      'USD TLP',
-      'UST/FRAX/USDC/USDT'
-    ),
-    poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA], UST[ChainId.AURORA], FRAX[ChainId.AURORA]],
-    address: '0x21e756AF5a42838B4f17C3A70a395D3048da81D8',
     type: StableSwapPoolTypes.USD,
     route: 'usd',
     isOutdated: false,
