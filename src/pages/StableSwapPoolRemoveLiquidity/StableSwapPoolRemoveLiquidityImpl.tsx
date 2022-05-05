@@ -252,9 +252,11 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                   onSelectTokenIndex={setWithdrawTokenIndex}
                 />
               </AutoRow>
-              <AutoRow marginLeft="4px">
+              {/*
+                TODO: Uncomment when better liquidity in stableswap pool to allow uneven liquidity removals
+               <AutoRow marginLeft="4px">
                 <CaptionWithIcon>Choose how you would like to receive your withdrawn tokens</CaptionWithIcon>
-              </AutoRow>
+              </AutoRow> */}
             </div>
 
             {estimatedAmounts.map((currencyAmount, i) => {
