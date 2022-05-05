@@ -31,10 +31,12 @@ import { RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { ThemeContext } from 'styled-components'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
-import DoubleCurrencyLogo from '../../components/DoubleLogo'
+import MultipleCurrencyLogo from '../../components/MultipleCurrencyLogo'
 import { ButtonPrimary } from '../../components/Button'
 import { useExpertModeManager } from '../../state/user/hooks'
 import Settings from '../../components/Settings'
+import { replaceUnderscoresWithSlashes } from '../../utils'
+import BackButton from '../../components/BackButton'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -175,11 +177,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
             {`${lpToken.symbol} Burned`}
           </Text>
           <RowFixed>
-            <DoubleCurrencyLogo
-              currency0={estimatedAmounts[0].currency}
-              currency1={estimatedAmounts[1].currency}
-              margin={true}
-            />
+            <MultipleCurrencyLogo currencies={estimatedAmounts.map(currencyAmount => currencyAmount.currency)} margin />
             <Text fontWeight={500} fontSize={16}>
               {parsedAmount?.toSignificant(6)}
             </Text>
@@ -205,7 +203,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
       setInput('0')
     }
     setTxHash('')
-  }, [setInput, txHash])
+  }, [setTxHash, txHash])
 
   const hasZeroInput = JSBI.equal(parsedAmount?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
 
@@ -230,7 +228,10 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
         <DarkGreyCard>
           <AutoColumn gap="20px">
             <AutoRow justify="space-between">
-              <TYPE.mediumHeader>Remove Liquidity from {poolData.name}</TYPE.mediumHeader>
+              <BackButton fallbackPath="/pool/stable" />
+              <TYPE.mediumHeader>
+                Remove Liquidity from {replaceUnderscoresWithSlashes(poolData.name)}
+              </TYPE.mediumHeader>
               <Settings />
             </AutoRow>
             <StableSwapRemoveLiquidityInputPanel

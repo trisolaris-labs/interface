@@ -186,9 +186,15 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   const { chainId } = useActiveWeb3React()
 
   // pinned pairs
-  const pinnedPairs = useMemo(() => (chainId ? trisolarisDefinedPools[chainId].map(pool => pool.tokens) ?? [] : []), [
-    chainId
-  ])
+  const pinnedPairs: [Token, Token][] = useMemo(
+    () =>
+      chainId
+        ? trisolarisDefinedPools[chainId]
+            .filter(pool => pool.stableSwapPoolName == null)
+            .map(({ tokens: [token0, token1] }) => [token0, token1]) ?? []
+        : [],
+    [chainId]
+  )
 
   // pairs saved by users
   const savedSerializedPairs = useSelector<AppState, AppState['user']['pairs']>(({ user: { pairs } }) => pairs)

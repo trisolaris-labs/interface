@@ -6,8 +6,9 @@ import { NavLink, Link as HistoryLink, useHistory } from 'react-router-dom'
 import Settings from '../../components/Settings'
 
 import { ArrowLeft } from 'react-feather'
-import { AutoRow, RowBetween } from '../Row'
+import { RowBetween } from '../Row'
 import QuestionHelper from '../QuestionHelper'
+import BackButton from '../BackButton'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -56,6 +57,19 @@ const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.text1};
 `
 
+export function FarmTabs({ active }: { active: 'stable' | 'normal' }) {
+  return (
+    <Tabs>
+      <StyledNavLink id={`standard-farms-nav-link`} to={'/farm'} isActive={() => active === 'normal'}>
+        Standard Farms
+      </StyledNavLink>
+      <StyledNavLink id={`stable-farms-nav-link`} to={'/farm/stable'} isActive={() => active === 'stable'}>
+        Stable Farms
+      </StyledNavLink>
+    </Tabs>
+  )
+}
+
 export function PoolTabs({ active }: { active: '/pool/stable' | '/pool' }) {
   return (
     <Tabs>
@@ -98,25 +112,20 @@ export function FindPoolTabs() {
   )
 }
 
-export function AddRemoveTabs({ adding, creating }: { adding: boolean; creating: boolean }) {
+export function AddRemoveTabs({
+  adding,
+  creating,
+  isStablePool
+}: {
+  adding: boolean
+  creating: boolean
+  isStablePool?: boolean
+}) {
   const { t } = useTranslation()
-  const history = useHistory()
   return (
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
-        <HistoryLink
-          to="#"
-          onClick={e => {
-            e.preventDefault()
-            if (history.length > 0) {
-              history.goBack()
-            } else {
-              history.push('/pool')
-            }
-          }}
-        >
-          <StyledArrowLeft />
-        </HistoryLink>
+        <BackButton fallbackPath={isStablePool ? '/pool/stable' : '/pool'} />
         <ActiveText>
           {creating
             ? t('navigationTabs.createPair')

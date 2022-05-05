@@ -33,6 +33,7 @@ export function useDerivedStableSwapAddLiquidityInfo(
   error?: string
   hasThirdCurrency: boolean
   hasFourthCurrency: boolean
+  hasFifthCurrency: boolean
   totalLPTokenSuppply: TokenAmount | undefined
 } {
   const { account } = useActiveWeb3React()
@@ -42,13 +43,15 @@ export function useDerivedStableSwapAddLiquidityInfo(
     [Field.CURRENCY_0]: typedValue0,
     [Field.CURRENCY_1]: typedValue1,
     [Field.CURRENCY_2]: typedValue2,
-    [Field.CURRENCY_3]: typedValue3
+    [Field.CURRENCY_3]: typedValue3,
+    [Field.CURRENCY_4]: typedValue4
   } = useStableSwapAddLiquidityState()
 
   const { lpToken, poolTokens } = STABLESWAP_POOLS[stableSwapPoolName]
-  const [currency0, currency1, currency2, currency3] = poolTokens.map(token => unwrappedToken(token))
+  const [currency0, currency1, currency2, currency3, currency4] = poolTokens.map(token => unwrappedToken(token))
   const hasThirdCurrency = currency2 != null
   const hasFourthCurrency = hasThirdCurrency && currency3 != null
+  const hasFifthCurrency = hasFourthCurrency && currency4 != null
 
   // tokens
   const currencies: { [field in Field]?: Currency } = useMemo(
@@ -56,9 +59,10 @@ export function useDerivedStableSwapAddLiquidityInfo(
       [Field.CURRENCY_0]: currency0 ?? undefined,
       [Field.CURRENCY_1]: currency1 ?? undefined,
       [Field.CURRENCY_2]: currency2 ?? undefined,
-      [Field.CURRENCY_3]: currency3 ?? undefined
+      [Field.CURRENCY_3]: currency3 ?? undefined,
+      [Field.CURRENCY_4]: currency4 ?? undefined
     }),
-    [currency0, currency1, currency2, currency3]
+    [currency0, currency1, currency2, currency3, currency4]
   )
 
   const totalLPTokenSuppply = useTotalSupply(lpToken)
@@ -68,20 +72,23 @@ export function useDerivedStableSwapAddLiquidityInfo(
     currencies[Field.CURRENCY_0],
     currencies[Field.CURRENCY_1],
     currencies[Field.CURRENCY_2],
-    currencies[Field.CURRENCY_3]
+    currencies[Field.CURRENCY_3],
+    currencies[Field.CURRENCY_4]
   ])
   const currencyBalances: { [field in Field]?: CurrencyAmount } = {
     [Field.CURRENCY_0]: balances[0],
     [Field.CURRENCY_1]: balances[1],
     [Field.CURRENCY_2]: balances[2],
-    [Field.CURRENCY_3]: balances[3]
+    [Field.CURRENCY_3]: balances[3],
+    [Field.CURRENCY_4]: balances[4]
   }
 
   const parsedAmounts: { [field in Field]: CurrencyAmount | undefined } = {
     [Field.CURRENCY_0]: tryParseAmount(typedValue0, currencies[Field.CURRENCY_0]),
     [Field.CURRENCY_1]: tryParseAmount(typedValue1, currencies[Field.CURRENCY_1]),
     [Field.CURRENCY_2]: tryParseAmount(typedValue2, currencies[Field.CURRENCY_2]),
-    [Field.CURRENCY_3]: tryParseAmount(typedValue3, currencies[Field.CURRENCY_3])
+    [Field.CURRENCY_3]: tryParseAmount(typedValue3, currencies[Field.CURRENCY_3]),
+    [Field.CURRENCY_4]: tryParseAmount(typedValue4, currencies[Field.CURRENCY_4])
   }
 
   let error: string | undefined
@@ -93,7 +100,8 @@ export function useDerivedStableSwapAddLiquidityInfo(
     !parsedAmounts[Field.CURRENCY_0] &&
     !parsedAmounts[Field.CURRENCY_1] &&
     (hasThirdCurrency ? !parsedAmounts[Field.CURRENCY_2] : false) &&
-    (hasFourthCurrency ? !parsedAmounts[Field.CURRENCY_3] : false)
+    (hasFourthCurrency ? !parsedAmounts[Field.CURRENCY_3] : false) &&
+    (hasFifthCurrency ? !parsedAmounts[Field.CURRENCY_4] : false)
   ) {
     error = error ?? t('mintHooks.enterAmount')
   }
@@ -102,7 +110,8 @@ export function useDerivedStableSwapAddLiquidityInfo(
     [Field.CURRENCY_0]: currency0Amount,
     [Field.CURRENCY_1]: currency1Amount,
     [Field.CURRENCY_2]: currency2Amount,
-    [Field.CURRENCY_3]: currency3Amount
+    [Field.CURRENCY_3]: currency3Amount,
+    [Field.CURRENCY_4]: currency4Amount
   } = parsedAmounts
 
   if (currency0Amount && currencyBalances?.[Field.CURRENCY_0]?.lessThan(currency0Amount)) {
@@ -121,6 +130,10 @@ export function useDerivedStableSwapAddLiquidityInfo(
     error = t('mintHooks.insufficient') + currencies[Field.CURRENCY_3]?.symbol + t('mintHooks.balance')
   }
 
+  if (hasFifthCurrency && currency4Amount && currencyBalances?.[Field.CURRENCY_4]?.lessThan(currency4Amount)) {
+    error = t('mintHooks.insufficient') + currencies[Field.CURRENCY_4]?.symbol + t('mintHooks.balance')
+  }
+
   return {
     currencies,
     currencyBalances,
@@ -128,6 +141,7 @@ export function useDerivedStableSwapAddLiquidityInfo(
     error,
     hasThirdCurrency,
     hasFourthCurrency,
+    hasFifthCurrency,
     totalLPTokenSuppply
   }
 }
@@ -137,6 +151,7 @@ export function useStableSwapAddLiquidityActionHandlers(): {
   onField1Input: (typedValue: string) => void
   onField2Input: (typedValue: string) => void
   onField3Input: (typedValue: string) => void
+  onField4Input: (typedValue: string) => void
 } {
   const dispatch = useDispatch<AppDispatch>()
 
@@ -164,11 +179,18 @@ export function useStableSwapAddLiquidityActionHandlers(): {
     },
     [dispatch]
   )
+  const onField4Input = useCallback(
+    (typedValue: string) => {
+      dispatch(typeInput({ field: Field.CURRENCY_4, typedValue }))
+    },
+    [dispatch]
+  )
 
   return {
     onField0Input,
     onField1Input,
     onField2Input,
+    onField4Input,
     onField3Input
   }
 }
@@ -187,6 +209,7 @@ export function useStableSwapAddLiquidityCallback(
     parsedAmounts,
     hasThirdCurrency,
     hasFourthCurrency,
+    hasFifthCurrency,
     totalLPTokenSuppply
   } = useDerivedStableSwapAddLiquidityInfo(stableSwapPoolName)
 
@@ -229,6 +252,10 @@ export function useStableSwapAddLiquidityCallback(
       currencyAmounts.push(parsedAmounts[Field.CURRENCY_3])
     }
 
+    if (hasFifthCurrency) {
+      currencyAmounts.push(parsedAmounts[Field.CURRENCY_4])
+    }
+
     const formattedCurrencyAmounts = currencyAmounts.map(item => item?.raw?.toString() ?? '0')
     const minToMint = await getMinToMint(formattedCurrencyAmounts)
 
@@ -239,7 +266,13 @@ export function useStableSwapAddLiquidityCallback(
 
     await transaction?.wait()
 
-    const summary = ([Field.CURRENCY_0, Field.CURRENCY_1, Field.CURRENCY_2] as Field[]).reduce((acc, key: Field) => {
+    const summary = ([
+      Field.CURRENCY_0,
+      Field.CURRENCY_1,
+      Field.CURRENCY_2,
+      Field.CURRENCY_3,
+      Field.CURRENCY_4
+    ] as Field[]).reduce((acc, key: Field) => {
       if (parsedAmounts[key] != null && currencies[key] != null) {
         acc.push(`${parsedAmounts[key]?.toSignificant(3)} ${currencies[key]?.symbol}`)
       }
@@ -258,6 +291,7 @@ export function useStableSwapAddLiquidityCallback(
     currencies,
     deadline,
     getMinToMint,
+    hasFifthCurrency,
     hasFourthCurrency,
     hasThirdCurrency,
     parsedAmounts,

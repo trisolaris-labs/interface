@@ -12,17 +12,16 @@ import { useColorWithDefault } from '../../../hooks/useColor'
 
 import Card, { LightCard } from '../../Card'
 import { AutoColumn } from '../../Column'
-import DoubleCurrencyLogo from '../../DoubleLogo'
 import { AutoRow, RowBetween, RowFixed } from '../../Row'
 import { useTranslation } from 'react-i18next'
 
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../../../state/stableswap/constants'
-import TripleCurrencyLogo from '../../TripleCurrencyLogo'
 import useStablePoolsData from '../../../hooks/useStablePoolsData'
 import { BIG_INT_ZERO } from '../../../constants'
 import { useHistory } from 'react-router-dom'
 import _ from 'lodash'
 import CurrencyLogo from '../../CurrencyLogo'
+import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 
 import ContractAddress from '../../ContractAddress'
 import { TYPE } from '../../../theme'
@@ -118,16 +117,15 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
 
   const [stablePoolData, userData] = useStablePoolsData(poolName)
   const { name, tokens } = stablePoolData
-  const { address: poolAddress } = STABLESWAP_POOLS[poolName]
+  const { address: poolAddress, poolTokens: stablePoolTokens } = STABLESWAP_POOLS[poolName]
   const poolTokens = tokens.map(({ token }) => token)
-  const [token0, token1, token2] = poolTokens
-  const [currency0, currency1, currency2] = poolTokens.map(token => unwrappedToken(token))
+
+  const currencies = stablePoolTokens.map(token => unwrappedToken(token))
   const [showMore, setShowMore] = useState(false)
 
-  const backgroundColor1 = useColorWithDefault('#2172E5', token0)
-  const backgroundColor2 = useColorWithDefault('#2172E5', token1)
+  const backgroundColor1 = useColorWithDefault('#2172E5', stablePoolTokens[0])
+  const backgroundColor2 = useColorWithDefault('#2172E5', stablePoolTokens[stablePoolTokens.length - 1])
   // @TODO Update styling so it can handle 3 color gradient
-  const backgroundColor3 = useColorWithDefault('#2172E5', token2)
 
   const hasLPTokenBalance = userData?.lpTokenBalance?.greaterThan(BIG_INT_ZERO) ?? false
 
@@ -183,18 +181,8 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
       <AutoColumn gap="8px">
         <StyledFixedHeightRow onClick={handleCardClick} id={`stableswap-compact-clickable-position-card-${name}`}>
           <RowFixed>
-            {currency2 != null ? (
-              <TripleCurrencyLogo
-                currency0={currency0}
-                currency1={currency1}
-                currency2={currency2}
-                margin={true}
-                size={20}
-              />
-            ) : (
-              <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
-            )}
-            <StyledPoolName fontWeight={500} fontSize={20}>
+            <MultipleCurrencyLogo currencies={currencies} size={20} />
+            <StyledPoolName fontWeight={500} fontSize={20} marginLeft={30}>
               {formattedPoolName}
             </StyledPoolName>
           </RowFixed>

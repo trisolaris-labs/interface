@@ -2,21 +2,27 @@ import { Token, TokenAmount, CETH } from '@trisolaris/sdk'
 import { TRI } from '../constants/tokens'
 import { unwrappedToken } from './wrappedCurrency'
 
-export const getPairRenderOrder = (token0: Token, token1: Token) => {
-  const currency0 = unwrappedToken(token0)
-  const currency1 = unwrappedToken(token1)
+export const getPairRenderOrder = (tokens: Token[]) => {
+  const currencyMap = tokens.map(token => unwrappedToken(token))
+  if (tokens.length > 2) {
+    return {
+      currencies: currencyMap,
+      tokens
+    }
+  }
+
+  const currency0 = currencyMap[0]
+  const currency1 = currencyMap[1]
+  const token0 = tokens[0]
+  const token1 = tokens[1]
 
   const token0IsFirst = {
-    currency0,
-    currency1,
-    token0,
-    token1
+    currencies: [currency0, currency1],
+    tokens: [token0, token1]
   }
   const token1IsFirst = {
-    currency0: currency1,
-    currency1: currency0,
-    token0: token1,
-    token1: token0
+    currencies: [currency1, currency0],
+    tokens: [token1, token0]
   }
 
   // If pair has CETH, put CETH second

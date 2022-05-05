@@ -4,9 +4,13 @@ import { lighten, darken } from 'polished'
 import { TYPE } from '../../theme'
 import Card from '../Card'
 import { ButtonPrimary } from '../Button'
-import { ExternalLink } from '../../theme'
 
-export const Wrapper = styled(Card)<{ bgColor1: string | null; bgColor2?: string | null; isDoubleRewards: boolean }>`
+export const Wrapper = styled(Card)<{
+  bgColor1: string | null
+  bgColor2?: string | null
+  isDoubleRewards: boolean
+  currenciesQty: number
+}>`
   border: ${({ isDoubleRewards, theme }) =>
     isDoubleRewards ? `1px solid ${theme.primary1}` : `1px solid ${theme.bg3};`};
   border-radius: 10px;
@@ -18,6 +22,8 @@ export const Wrapper = styled(Card)<{ bgColor1: string | null; bgColor2?: string
     isDoubleRewards ? `0px 0px 8px 5px ${theme.primary1}` : `0 2px 8px 0 ${theme.bg3}`};
   position: relative;
 
+  padding-left: ${({ currenciesQty }) => (currenciesQty > 3 ? '10px' : '20px')};
+  padding-right: ${({ currenciesQty }) => (currenciesQty > 3 ? '10px' : '20px')};
   ${({ theme }) => theme.mediaWidth.upToSmall`
       grid-template-rows: auto 1fr;
       padding: 1.1rem .75rem;
@@ -29,11 +35,13 @@ export const PairContainer = styled.div`
   align-items: center;
 `
 
-export const ResponsiveCurrencyLabel = styled(TYPE.white)`
-  font-size: 20 !important;
+export const ResponsiveCurrencyLabel = styled(TYPE.white)<{ currenciesQty: number }>`
+  font-size: ${({ currenciesQty }) => `${currenciesQty > 3 ? '14px' : '16px'} !important;`}
   margin-left: 0.5rem !important;
+  max-width: 150px;
   ${({ theme }) => theme.mediaWidth.upToSmall`
       font-size: 14 !important;
+      max-width: 200px;
   `};
 `
 

@@ -32,6 +32,7 @@ import {
   BSTN,
   KSW
 } from '../../constants/tokens'
+import { StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
 
 export enum ChefVersions {
@@ -48,7 +49,7 @@ export type StakingTriStakedAmounts = {
 export type StakingTriFarms = {
   ID: number
   poolId: number
-  tokens: [Token, Token]
+  tokens: { 0: Token; 1: Token } & Array<Token>
   stakingRewardAddress: string
   lpAddress: string
   rewarderAddress: string
@@ -70,6 +71,7 @@ export type StakingTriFarms = {
   inStaging: boolean
   noTriRewards: boolean
   doubleRewardToken: Token
+  stableSwapPoolName: StableSwapPoolName | null
 }
 
 export interface ExternalInfo {
@@ -113,7 +115,8 @@ const NULL_POOL: StakingTri = {
   doubleRewards: false,
   inStaging: false,
   noTriRewards: false,
-  doubleRewardToken: dummyToken
+  doubleRewardToken: dummyToken,
+  stableSwapPoolName: null
 }
 const NULL_POOLS = [NULL_POOL]
 
@@ -401,17 +404,18 @@ const AURORA_POOLS: StakingTri[] = [
     inStaging: false,
     doubleRewardToken: BBT[ChainId.AURORA]
   }),
-  // Needed to add the this pool due to some functions and features breaking when jumping from ID 24 to 26. 
+  // Needed to add the this pool due to some functions and features breaking when jumping from ID 24 to 26.
   // TODO:  Will be replaced by stable farm pool in stable farms PR.
   createMCV2Pool({
     ID: 25,
     poolId: 18,
-    tokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
-    lpAddress: '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9',
+    tokens: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT].poolTokens,
+    lpAddress: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT].lpToken.address,
     rewarderAddress: '',
     allocPoint: 1,
     noTriRewards: false,
-    inStaging: true
+    inStaging: true,
+    stableSwapPoolName: StableSwapPoolName.USDC_USDT
   }),
   createMCV2Pool({
     ID: 26,
@@ -471,7 +475,7 @@ const AURORA_POOLS: StakingTri[] = [
     doubleRewards: true,
     doubleRewardToken: BSTN[ChainId.AURORA]
   }),
-   createMCV2Pool({
+  createMCV2Pool({
     ID: 31,
     poolId: 24,
     tokens: [WNEAR[ChainId.AURORA], AURORA[ChainId.AURORA]],
@@ -518,10 +522,7 @@ const AURORA_POOLS: StakingTri[] = [
     inStaging: false,
     doubleRewards: false,
     doubleRewardToken: KSW[ChainId.AURORA]
-  }),
-  
-
-
+  })
 ]
 
 export const STAKING: {

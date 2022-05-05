@@ -91,6 +91,25 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "newFeeAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "oldFeeAddress",
+        "type": "address"
+      }
+    ],
+    "name": "NewFeeAddress",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "newSwapFee",
         "type": "uint256"
@@ -388,30 +407,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "calculateCurrentWithdrawFee",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
@@ -430,11 +425,6 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
       {
         "internalType": "uint256",
         "name": "tokenAmount",
@@ -489,11 +479,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
         "internalType": "uint256[]",
         "name": "amounts",
         "type": "uint256[]"
@@ -510,6 +495,19 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "feeAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -591,25 +589,6 @@
       }
     ],
     "name": "getAdminBalance",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "getDepositTimestamp",
     "outputs": [
       {
         "internalType": "uint256",
@@ -728,9 +707,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "uint256",
-        "name": "_withdrawFee",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "lpTokenTargetAddress",
+        "type": "address"
       }
     ],
     "name": "initialize",
@@ -917,12 +896,12 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "newWithdrawFee",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "newFeeAddress",
+        "type": "address"
       }
     ],
-    "name": "setDefaultWithdrawFee",
+    "name": "setFeeAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1039,11 +1018,6 @@
         "type": "uint256"
       },
       {
-        "internalType": "uint256",
-        "name": "defaultWithdrawFee",
-        "type": "uint256"
-      },
-      {
         "internalType": "contract LPToken",
         "name": "lpToken",
         "type": "address"
@@ -1068,24 +1042,6 @@
   {
     "inputs": [],
     "name": "unpause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "transferAmount",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateUserWithdrawFee",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

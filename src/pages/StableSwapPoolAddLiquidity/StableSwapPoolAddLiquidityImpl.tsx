@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import { StableSwapPoolName } from '../../state/stableswap/constants'
-import { divideCurrencyAmountByNumber } from '../../utils'
+import { divideCurrencyAmountByNumber, replaceUnderscoresWithSlashes } from '../../utils'
 import StableSwapPoolAddLiquidityApprovalsRow from './StableSwapPoolAddLiquidityApprovalsRow'
 import { TYPE } from '../../theme'
 import Settings from '../../components/Settings'
@@ -37,6 +37,8 @@ import { RowBetween } from '../../components/Row'
 import { JSBI } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../../constants'
 import { useExpertModeManager } from '../../state/user/hooks'
+import useStablePoolsData from '../../hooks/useStablePoolsData'
+import { AddRemoveTabs } from '../../components/NavigationTabs'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -44,7 +46,7 @@ type Props = {
 
 export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: Props) {
   const { account, chainId, library } = useActiveWeb3React()
-
+  const [poolData, _userShareData] = useStablePoolsData(stableSwapPoolName)
   const { t } = useTranslation()
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
@@ -54,7 +56,8 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     [Field.CURRENCY_0]: typedValue0,
     [Field.CURRENCY_1]: typedValue1,
     [Field.CURRENCY_2]: typedValue2,
-    [Field.CURRENCY_3]: typedValue3
+    [Field.CURRENCY_3]: typedValue3,
+    [Field.CURRENCY_4]: typedValue4
   } = useStableSwapAddLiquidityState()
   const {
     currencies,
@@ -62,10 +65,17 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     parsedAmounts,
     error,
     hasThirdCurrency,
-    hasFourthCurrency
+    hasFourthCurrency,
+    hasFifthCurrency
   } = useDerivedStableSwapAddLiquidityInfo(stableSwapPoolName)
 
-  const { onField0Input, onField1Input, onField2Input, onField3Input } = useStableSwapAddLiquidityActionHandlers()
+  const {
+    onField0Input,
+    onField1Input,
+    onField2Input,
+    onField3Input,
+    onField4Input
+  } = useStableSwapAddLiquidityActionHandlers()
 
   const [isExpertMode] = useExpertModeManager()
 
@@ -117,9 +127,11 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     onField0Input('')
     onField1Input('')
     onField2Input('')
+    onField3Input('')
+    onField4Input('')
 
     setTxHash('')
-  }, [onField0Input, onField1Input, onField2Input, setTxHash])
+  }, [onField0Input, onField1Input, onField2Input, onField3Input, onField4Input, setTxHash])
 
   const pendingText = `Supplying ${Object.values(parsedAmounts)
     .map(amount => (amount ? `${amount?.toSignificant(6)} ${amount?.currency.symbol}  ` : ''))
@@ -162,6 +174,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   return (
     <>
       <AppBody>
+        <AddRemoveTabs creating={false} adding={true} isStablePool />
         <Wrapper>
           <AutoColumn id="stableswap-add-liquidity" gap="20px">
             <TransactionConfirmationModal
@@ -180,11 +193,10 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               pendingText={pendingText}
             />
             <HeadingContainer>
-              <AutoRow>
-                <TYPE.mediumHeader>Add Liquidity to {stableSwapPoolName}</TYPE.mediumHeader>
+              <AutoRow justify="center">
+                <TYPE.mediumHeader>{replaceUnderscoresWithSlashes(poolData.name)}</TYPE.mediumHeader>
                 <CaptionWithIcon>Stable pools on Trisolaris support uneven deposits</CaptionWithIcon>
               </AutoRow>
-              <Settings />
             </HeadingContainer>
             <CurrencyInputPanel
               disableCurrencySelect
@@ -263,6 +275,27 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                 disableMaxButton={atMaxAmounts[Field.CURRENCY_3]}
                 currency={currencies[Field.CURRENCY_3]}
                 id="add-liquidity-input-token3"
+                showCommonBases
+              />
+            ) : null}
+            {hasFifthCurrency ? (
+              <CurrencyInputPanel
+                disableCurrencySelect
+                value={typedValue4}
+                onUserInput={onField4Input}
+                onClickBalanceButton={value => {
+                  const amount = maxAmounts[Field.CURRENCY_4]
+                  onField4Input(
+                    (value === BalanceButtonValueEnum.MAX
+                      ? amount
+                      : divideCurrencyAmountByNumber(amount, 2)
+                    )?.toExact() ?? ''
+                  )
+                }}
+                disableHalfButton={atHalfAmounts[Field.CURRENCY_4]}
+                disableMaxButton={atMaxAmounts[Field.CURRENCY_4]}
+                currency={currencies[Field.CURRENCY_4]}
+                id="add-liquidity-input-token4"
                 showCommonBases
               />
             ) : null}

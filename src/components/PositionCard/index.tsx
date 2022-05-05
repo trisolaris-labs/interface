@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { ButtonPrimary } from '../Button'
 import { AutoColumn } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
-import DoubleCurrencyLogo from '../DoubleLogo'
+import MultipleCurrencyLogo from '../MultipleCurrencyLogo'
 import { RowBetween, RowFixed } from '../Row'
 import { Dots } from '../swap/styleds'
 
@@ -41,7 +41,10 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
     !!userPoolBalance && !!totalPoolTokens && JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
       ? new Percent(userPoolBalance.raw, totalPoolTokens.raw)
       : undefined
-  const { currency0, currency1, token0, token1 } = getPairRenderOrder(pair?.token0, pair?.token1)
+  const { currencies, tokens } = getPairRenderOrder([pair?.token0, pair?.token1])
+
+  const [token0, token1] = tokens
+  const [currency0, currency1] = currencies
 
   const [token0Deposited, token1Deposited] =
     !!pair &&
@@ -72,7 +75,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
       <AutoColumn gap="12px">
         <FixedHeightRow>
           <RowFixed>
-            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
+            <MultipleCurrencyLogo currencies={currencies} margin={true} size={20} />
             <Text fontWeight={500} fontSize={20}>
               {!currency0 || !currency1 ? (
                 <Dots>{t('positionCard.loading')}</Dots>
