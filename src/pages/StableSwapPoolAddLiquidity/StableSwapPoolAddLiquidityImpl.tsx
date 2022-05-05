@@ -195,7 +195,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
             <HeadingContainer>
               <AutoRow justify="center">
                 <TYPE.mediumHeader>{replaceUnderscoresWithSlashes(poolData.name)}</TYPE.mediumHeader>
-                <CaptionWithIcon>Stable pools on Trisolaris support uneven deposits</CaptionWithIcon>
+                {/* TODO: Uncomment when enough liquidity: <CaptionWithIcon>Stable pools on Trisolaris support uneven deposits</CaptionWithIcon> */}
               </AutoRow>
             </HeadingContainer>
             <CurrencyInputPanel

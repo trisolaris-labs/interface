@@ -155,6 +155,7 @@ export function useStableSwapAddLiquidityActionHandlers(): {
 } {
   const dispatch = useDispatch<AppDispatch>()
 
+  // TODO: Allow uneven stable deposit inputs when enough liquidity
   const equaliseFieldInput = (typedValue: string) => {
     dispatch(typeInput({ field: Field.CURRENCY_0, typedValue }))
     dispatch(typeInput({ field: Field.CURRENCY_1, typedValue }))
