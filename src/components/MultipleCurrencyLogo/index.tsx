@@ -17,14 +17,14 @@ interface MultipleCurrencyLogoProps {
   separation?: number
 }
 
-const HigherLogo = styled(CurrencyLogo)<{ zIndex: number }>`
-  z-index: ${({ zIndex }) => zIndex};
-  margin-left: ${({ zIndex }) => (zIndex > 3 ? '0px' : '0px')};
-  margin-right: ${({ zIndex }) => (zIndex > 3 ? '35px' : '20px')};
+const HigherLogo = styled(CurrencyLogo)<{ order: number }>`
+  z-index: ${({ order }) => order};
+  margin-left: ${({ order }) => (order > 3 ? '0px' : '0px')};
+  margin-right: ${({ order }) => (order > 3 ? '35px' : '20px')};
 `
-const CoveredLogo = styled(CurrencyLogo)<{ sizeraw: number; zIndex: number; position: number }>`
+const CoveredLogo = styled(CurrencyLogo)<{ sizeraw: number; order: number; position: number }>`
   position: absolute;
-  z-index: ${({ zIndex }) => zIndex};
+  z-index: ${({ order }) => order};
   left: ${({ position }) => `${position}px`};
 `
 
@@ -41,14 +41,14 @@ export default function MultipleCurrencyLogo({
     <Wrapper sizeraw={size} margin={margin}>
       {currenciesQty > 2 ? (
         <>
-          <HigherLogo currency={currencies[0]} size={size.toString() + 'px'} zIndex={currenciesQty} />
+          <HigherLogo currency={currencies[0]} size={size.toString() + 'px'} order={currenciesQty} />
           {currencies.slice(1).map((currency, index) => (
             <CoveredLogo
               key={currency.symbol}
               currency={currency}
               size={size.toString() + 'px'}
               sizeraw={size}
-              zIndex={currenciesQty - index - 1}
+              order={currenciesQty - index - 1}
               position={logosSeparation * (index + 1)}
             />
           ))}
