@@ -36,6 +36,7 @@ import { ButtonPrimary } from '../../components/Button'
 import { useExpertModeManager } from '../../state/user/hooks'
 import Settings from '../../components/Settings'
 import { replaceUnderscoresWithSlashes } from '../../utils'
+import BackButton from '../../components/BackButton'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -227,6 +228,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
         <DarkGreyCard>
           <AutoColumn gap="20px">
             <AutoRow justify="space-between">
+              <BackButton fallbackPath="/pool/stable" />
               <TYPE.mediumHeader>
                 Remove Liquidity from {replaceUnderscoresWithSlashes(poolData.name)}
               </TYPE.mediumHeader>

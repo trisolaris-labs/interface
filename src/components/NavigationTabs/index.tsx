@@ -8,6 +8,7 @@ import Settings from '../../components/Settings'
 import { ArrowLeft } from 'react-feather'
 import { RowBetween } from '../Row'
 import QuestionHelper from '../QuestionHelper'
+import BackButton from '../BackButton'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -111,25 +112,20 @@ export function FindPoolTabs() {
   )
 }
 
-export function AddRemoveTabs({ adding, creating }: { adding: boolean; creating: boolean }) {
+export function AddRemoveTabs({
+  adding,
+  creating,
+  isStablePool
+}: {
+  adding: boolean
+  creating: boolean
+  isStablePool?: boolean
+}) {
   const { t } = useTranslation()
-  const history = useHistory()
   return (
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
-        <HistoryLink
-          to="#"
-          onClick={e => {
-            e.preventDefault()
-            if (history.length > 0) {
-              history.goBack()
-            } else {
-              history.push('/pool')
-            }
-          }}
-        >
-          <StyledArrowLeft />
-        </HistoryLink>
+        <BackButton fallbackPath={isStablePool ? '/pool/stable' : '/pool'} />
         <ActiveText>
           {creating
             ? t('navigationTabs.createPair')
