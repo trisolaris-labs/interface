@@ -67,7 +67,7 @@ const StyledPoolName = styled(Text)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
 font-size: 16px !important;
 `};
-${({ theme }) => theme.mediaWidth.upToXxSmall`
+  ${({ theme }) => theme.mediaWidth.upToXxSmall`
 font-size: 14px !important;
 `};
 `
@@ -188,7 +188,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   return (
     <StyledPositionCard border={border} bgColor={backgroundColor1} id={`stableswap-position-card-${name}`}>
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
-      <AutoColumn gap="8px">
+      <AutoColumn gap="10px">
         <StyledFixedHeightRow onClick={handleCardClick} id={`stableswap-compact-clickable-position-card-${name}`}>
           <RowFixed>
             <MultipleCurrencyLogo currencies={currencies} size={20} />
