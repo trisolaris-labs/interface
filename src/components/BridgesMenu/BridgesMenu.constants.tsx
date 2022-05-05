@@ -13,5 +13,15 @@ export const BRIDGES = [
     id: 'synapse',
     link: 'https://synapseprotocol.com/?inputCurrency=USDC&outputCurrency=USDC&outputChain=1313161554',
     label: 'Synapse Bridge'
+  },
+  {
+    id: 'frax',
+    link: 'https://app.frax.finance/crosschain#aurora',
+    label: 'Get canonical FRAX'
+  },
+  {
+    id: 'ust',
+    link: 'https://www.portalbridge.com/#/transfer',
+    label: 'Get wormhole UST'
   }
 ]
