@@ -21,8 +21,8 @@ export default function useStableSwapEstimateRemoveLiquidity({
   const { poolTokens } = STABLESWAP_POOLS[stableSwapPoolName]
   const poolCurrencies = poolTokens.map(token => unwrappedToken(token))
 
-  const initialAmounts = poolCurrencies.map(currency => CurrencyAmount.fromRawAmount(currency, BIG_INT_ZERO))
-  const [amounts, setAmounts] = useState<CurrencyAmount[]>(initialAmounts)
+  const emptyAmounts = poolCurrencies.map(currency => CurrencyAmount.fromRawAmount(currency, BIG_INT_ZERO))
+  const [amounts, setAmounts] = useState<CurrencyAmount[]>(emptyAmounts)
   const [error, setError] = useState<TXError | null>(null)
 
   const swapContract = useStableSwapContract(
@@ -30,11 +30,8 @@ export default function useStableSwapEstimateRemoveLiquidity({
     false, // require signer
     isMetaPool(stableSwapPoolName) // if it's a metapool, use unwrapped tokens
   )
-  const resetState = useCallback(() => {
-    setAmounts(initialAmounts)
-    setError(null)
-  }, [initialAmounts])
   const lpTokensBeingBurned = amount?.raw.toString() ?? '0'
+  const estimatedAmounts = lpTokensBeingBurned === '0' ? emptyAmounts : amounts
 
   const estimateRemovingOneToken = useCallback(
     (tokenIndex: number) =>
@@ -59,15 +56,17 @@ export default function useStableSwapEstimateRemoveLiquidity({
   )
 
   const estimateRemovedLiquidityTokenAmounts = useCallback(async () => {
-    resetState()
+    setError(null)
+
     const promise =
       withdrawTokenIndex != null ? estimateRemovingOneToken(withdrawTokenIndex) : estimateRemoveLiquidity()
 
     promise.catch((e: TXError) => {
       console.error('Error estimating removed liquidity: ', e)
+      setAmounts(emptyAmounts)
       setError(e)
     })
-  }, [estimateRemoveLiquidity, estimateRemovingOneToken, resetState, withdrawTokenIndex])
+  }, [emptyAmounts, estimateRemoveLiquidity, estimateRemovingOneToken, withdrawTokenIndex])
 
-  return [amounts, estimateRemovedLiquidityTokenAmounts, error]
+  return [estimatedAmounts, estimateRemovedLiquidityTokenAmounts, error]
 }

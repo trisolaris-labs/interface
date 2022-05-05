@@ -203,7 +203,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
       setInput('0')
     }
     setTxHash('')
-  }, [setInput, txHash])
+  }, [setTxHash, txHash])
 
   const hasZeroInput = JSBI.equal(parsedAmount?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
 
