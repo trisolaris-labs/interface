@@ -11,7 +11,7 @@ import { AutoColumn } from '../../components/Column'
 import { useActiveWeb3React } from '../../hooks'
 import { useTranslation } from 'react-i18next'
 import { PageWrapper } from '../../components/Page'
-import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
+import { StableSwapPoolName } from '../../state/stableswap/constants'
 import _ from 'lodash'
 
 const TitleRow = styled(RowBetween)`
@@ -43,9 +43,8 @@ export default function Pool() {
 
           {account ? (
             <>
-              {_.map(STABLESWAP_POOLS, ({ name }) => (
-                <FullStablePositionCard key={name} poolName={name} />
-              ))}
+              <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_UST_FRAX_USN} />
+              <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT} />
             </>
           ) : (
             <Card padding="40px">
