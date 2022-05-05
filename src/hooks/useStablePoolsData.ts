@@ -134,11 +134,13 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
           : tokenBalancesSum
       )
 
+  const tokenBalancesNormalized = normalizeTokensToFewestDecimalCount(effectivePoolTokens, tokenBalances)
+  const tokenBalancesSumNormalized = sumAllJSBI(tokenBalancesNormalized)
   const tokens = effectivePoolTokens.map((token, i) => ({
     token,
     percent: new Percent(
-      tokenBalances[i],
-      JSBI.equal(tokenBalancesSum, BIG_INT_ZERO) ? JSBI.BigInt(1) : tokenBalancesSum
+      tokenBalancesNormalized[i],
+      JSBI.equal(tokenBalancesSumNormalized, BIG_INT_ZERO) ? JSBI.BigInt(1) : tokenBalancesSumNormalized
     ),
     value: new TokenAmount(token, tokenBalances[i])
   }))
@@ -200,4 +202,24 @@ function calculatePctOfTotalShare(lpTokenAmount: TokenAmount, totalLpTokenBalanc
 
 function sumAllJSBI(items: JSBI[], startValue: JSBI = BIG_INT_ZERO): JSBI {
   return items.reduce((acc, item) => JSBI.ADD(JSBI.BigInt(item), acc), startValue)
+}
+
+function normalizeTokensToFewestDecimalCount(tokens: Token[], tokenBalances: JSBI[]) {
+  // find currency with fewest decimals
+  const minDecimals = tokens.reduce((acc, token) => Math.min(token.decimals, acc), tokens[0].decimals)
+
+  // based on that currency, make adjustments to all other currencies
+  // ensure that token order is maintained
+  const normalizedTokens = tokens.map((token, i) => {
+    if (token.decimals === minDecimals) {
+      return tokenBalances[i]
+    }
+
+    const decimalDifference = JSBI.BigInt(token.decimals - minDecimals)
+    const normalizedTokenBalance = JSBI.divide(tokenBalances[i], JSBI.exponentiate(JSBI.BigInt(10), decimalDifference))
+
+    return normalizedTokenBalance
+  })
+
+  return normalizedTokens
 }
