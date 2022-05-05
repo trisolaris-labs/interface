@@ -202,7 +202,7 @@ export function useStableSwapAddLiquidityCallback(
   callback: () => Promise<string>
   txHash: string
   setTxHash: React.Dispatch<React.SetStateAction<string>>
-  getAddLiquidityPriceImpact: () => Promise<Percent>
+  getAddLiquidityPriceImpact: () => Promise<Percent | null>
 } {
   const { account } = useActiveWeb3React()
   const stableSwapContract = useStableSwapContract(
@@ -253,9 +253,9 @@ export function useStableSwapAddLiquidityCallback(
   // sum all normalized inputted currencies
   // divide by (virtual price * min amount of LP tokens received)
   // If this percent is too high, show a warning
-  async function getAddLiquidityPriceImpact(): Promise<Percent> {
+  async function getAddLiquidityPriceImpact(): Promise<Percent | null> {
     if (virtualPrice == null) {
-      return new Percent('1')
+      return null
     }
 
     const groupedCurrencies = [
@@ -270,7 +270,7 @@ export function useStableSwapAddLiquidityCallback(
     ]
 
     if (groupedCurrencies[0].currency == null || groupedCurrencies[1].currency == null) {
-      return new Percent('1')
+      return null
     }
 
     if (hasThirdCurrency) {
@@ -318,7 +318,7 @@ export function useStableSwapAddLiquidityCallback(
     const minToMint = await getMinToMint()
 
     if (minToMint == null) {
-      return new Percent('1')
+      return null
     }
 
     const expectedLPAmountInUSD = JSBI.divide(
@@ -340,19 +340,30 @@ export function useStableSwapAddLiquidityCallback(
       JSBI.exponentiate(JSBI.BigInt(10), decimalDifference)
     )
 
-    const result = new Percent(
-      normalizedInputtedCurrencySum,
-      JSBI.equal(normalizedExpectedLPAmountInUSD, BIG_INT_ZERO) ? JSBI.BigInt(1) : normalizedExpectedLPAmountInUSD
-    )
+    if (JSBI.greaterThan(normalizedExpectedLPAmountInUSD, normalizedInputtedCurrencySum)) {
+      return null
+    }
 
-    const percentageDifference = new Percent('1').subtract(result)
+    console.log('normalizedInputtedCurrencySum: ', normalizedInputtedCurrencySum.toString())
+    console.log('normalizedExpectedLPAmountInUSD: ', normalizedExpectedLPAmountInUSD.toString())
 
-    return percentageDifference.lessThan(BIG_INT_ZERO)
-      ? new Percent(
-          JSBI.multiply(JSBI.BigInt(percentageDifference.numerator), JSBI.BigInt(-1)),
-          percentageDifference.denominator
-        )
-      : percentageDifference
+    const delta = JSBI.divide(normalizedInputtedCurrencySum, normalizedExpectedLPAmountInUSD)
+    console.log('delta: ', delta.toString())
+    const allowedSlippageJSBI = JSBI.divide(JSBI.BigInt(allowedSlippage), JSBI.BigInt(10000))
+    console.log('allowedSlippageJSBI: ', allowedSlippageJSBI.toString())
+    const hasHighSlippage = JSBI.greaterThan(JSBI.multiply(delta, JSBI.BigInt(-1)), allowedSlippageJSBI)
+    console.log('hasHighSlippage: ', hasHighSlippage.toString())
+
+    if (!hasHighSlippage) {
+      console.log('its fine')
+      return null
+    }
+
+    const result = new Percent(delta, JSBI.BigInt(100))
+
+    console.log('result: ', result.toFixed(4))
+
+    return result
   }
 
   const getMinToMint = useCallback(async () => {
