@@ -155,36 +155,19 @@ export function useStableSwapAddLiquidityActionHandlers(): {
 } {
   const dispatch = useDispatch<AppDispatch>()
 
-  const onField0Input = useCallback(
-    (typedValue: string) => {
-      dispatch(typeInput({ field: Field.CURRENCY_0, typedValue }))
-    },
-    [dispatch]
-  )
-  const onField1Input = useCallback(
-    (typedValue: string) => {
-      dispatch(typeInput({ field: Field.CURRENCY_1, typedValue }))
-    },
-    [dispatch]
-  )
-  const onField2Input = useCallback(
-    (typedValue: string) => {
-      dispatch(typeInput({ field: Field.CURRENCY_2, typedValue }))
-    },
-    [dispatch]
-  )
-  const onField3Input = useCallback(
-    (typedValue: string) => {
-      dispatch(typeInput({ field: Field.CURRENCY_3, typedValue }))
-    },
-    [dispatch]
-  )
-  const onField4Input = useCallback(
-    (typedValue: string) => {
-      dispatch(typeInput({ field: Field.CURRENCY_4, typedValue }))
-    },
-    [dispatch]
-  )
+  const equaliseFieldInput = (typedValue: string) => {
+    dispatch(typeInput({ field: Field.CURRENCY_0, typedValue }))
+    dispatch(typeInput({ field: Field.CURRENCY_1, typedValue }))
+    dispatch(typeInput({ field: Field.CURRENCY_2, typedValue }))
+    dispatch(typeInput({ field: Field.CURRENCY_3, typedValue }))
+    dispatch(typeInput({ field: Field.CURRENCY_4, typedValue }))
+  }
+
+  const onField0Input = useCallback(equaliseFieldInput, [dispatch])
+  const onField1Input = useCallback(equaliseFieldInput, [dispatch])
+  const onField2Input = useCallback(equaliseFieldInput, [dispatch])
+  const onField3Input = useCallback(equaliseFieldInput, [dispatch])
+  const onField4Input = useCallback(equaliseFieldInput, [dispatch])
 
   return {
     onField0Input,
