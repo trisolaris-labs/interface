@@ -38,6 +38,7 @@ import { JSBI } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../../constants'
 import { useExpertModeManager } from '../../state/user/hooks'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
+import { AddRemoveTabs } from '../../components/NavigationTabs'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -173,6 +174,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   return (
     <>
       <AppBody>
+        <AddRemoveTabs creating={false} adding={true} isStablePool />
         <Wrapper>
           <AutoColumn id="stableswap-add-liquidity" gap="20px">
             <TransactionConfirmationModal
@@ -191,11 +193,10 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               pendingText={pendingText}
             />
             <HeadingContainer>
-              <AutoRow>
-                <TYPE.mediumHeader>Add Liquidity to {replaceUnderscoresWithSlashes(poolData.name)}</TYPE.mediumHeader>
+              <AutoRow justify="center">
+                <TYPE.mediumHeader>{replaceUnderscoresWithSlashes(poolData.name)}</TYPE.mediumHeader>
                 <CaptionWithIcon>Stable pools on Trisolaris support uneven deposits</CaptionWithIcon>
               </AutoRow>
-              <Settings />
             </HeadingContainer>
             <CurrencyInputPanel
               disableCurrencySelect
