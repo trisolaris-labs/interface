@@ -261,15 +261,33 @@ export default function Swap() {
     JSBI.BigInt(-1),
     JSBI.divide(stableswapPriceImpact, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
   )
-  const stableswapPriceImpactWithoutFee = hasPriceImpact
-    ? new Percent('0', '1')
-    : new Percent(
-        JSBI.multiply(JSBI.BigInt(-1), stableswapPriceImpact),
-        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
-      )
+  const stableswapPriceImpactWithoutFee = useMemo(
+    () =>
+      hasPriceImpact
+        ? new Percent('0', '1')
+        : new Percent(
+            JSBI.multiply(JSBI.BigInt(-1), stableswapPriceImpact),
+            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+          ),
+    [hasPriceImpact, stableswapPriceImpact]
+  )
+
+  // warnings on slippage
+  const defaultswapPriceImpactSeverity = warningSeverity(defaultswapPriceImpactWithoutFee)
+  const isStableSwapPriceImpactSevere = isStableSwapHighPriceImpact(stableswapPriceImpact)
 
   const handleSwap = useCallback(() => {
-    if (defaultswapPriceImpactWithoutFee && !confirmPriceImpactWithoutFee(defaultswapPriceImpactWithoutFee)) {
+    if (
+      isRoutedViaStableSwap &&
+      isStableSwapPriceImpactSevere &&
+      !confirmPriceImpactWithoutFee(stableswapPriceImpactWithoutFee)
+    ) {
+      return
+    } else if (
+      !isRoutedViaStableSwap &&
+      defaultswapPriceImpactWithoutFee &&
+      !confirmPriceImpactWithoutFee(defaultswapPriceImpactWithoutFee)
+    ) {
       return
     }
 
@@ -301,23 +319,22 @@ export default function Swap() {
         })
       })
   }, [
+    isRoutedViaStableSwap,
+    isStableSwapPriceImpactSevere,
+    stableswapPriceImpactWithoutFee,
+    defaultswapPriceImpactWithoutFee,
     tradeToConfirm,
-    account,
+    showConfirm,
+    stableswapCallback,
+    swapCallback,
     recipient,
     recipientAddress,
-    showConfirm,
-    swapCallback,
-    trade,
-    isRoutedViaStableSwap,
-    stableswapCallback,
-    defaultswapPriceImpactWithoutFee
+    account,
+    trade?.inputAmount?.currency?.symbol,
+    trade?.outputAmount?.currency?.symbol
   ])
 
   const isAEBToken = useIsSelectedAEBToken()
-
-  // warnings on slippage
-  const defaultswapPriceImpactSeverity = warningSeverity(defaultswapPriceImpactWithoutFee)
-  const isStableSwapPriceImpactSevere = isStableSwapHighPriceImpact(stableswapPriceImpact)
 
   const onlyExpertTrade = isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 3
   const highImpactTrade = isRoutedViaStableSwap ? isStableSwapPriceImpactSevere : defaultswapPriceImpactSeverity > 2
@@ -568,7 +585,7 @@ export default function Swap() {
                       width="48%"
                       id="swap-button"
                       disabled={!isValid || approval !== ApprovalState.APPROVED || (!isExpertMode && onlyExpertTrade)}
-                      error={isValid && defaultswapPriceImpactSeverity > 2}
+                      error={isValid && highImpactTrade}
                     >
                       <Text fontSize={16} fontWeight={500}>
                         {renderSwapText()}
