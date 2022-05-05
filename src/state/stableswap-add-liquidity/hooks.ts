@@ -352,9 +352,9 @@ export function useStableSwapAddLiquidityCallback(
     delta = JSBI.lessThan(delta, JSBI.BigInt(0)) ? JSBI.multiply(delta, JSBI.BigInt(-1)) : delta
     console.log('delta: ', delta.toString())
 
-    const allowedSlippageJSBI = JSBI.multiply(
-      JSBI.divide(normalizedInputtedCurrencySum, JSBI.BigInt(10000)),
-      JSBI.BigInt(allowedSlippage)
+    const allowedSlippageJSBI = JSBI.divide(
+      JSBI.multiply(normalizedInputtedCurrencySum, JSBI.BigInt(allowedSlippage)),
+      JSBI.BigInt(10000)
     )
     console.log('allowedSlippageJSBI: ', allowedSlippageJSBI.toString())
     const hasHighSlippage = JSBI.greaterThan(delta, allowedSlippageJSBI)
@@ -366,7 +366,11 @@ export function useStableSwapAddLiquidityCallback(
     }
 
     // TODO: Needs verifying
-    const result = new Percent(delta, JSBI.BigInt(100))
+    const result = new Percent(
+      delta,
+      allowedSlippageJSBI
+      // JSBI.BigInt(100)
+    )
 
     console.log('result: ', result.toFixed(4))
 
