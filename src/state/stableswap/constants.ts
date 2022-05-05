@@ -1,6 +1,6 @@
 import { ChainId, Token, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
-import { FRAX, USDC, USDT, WBTC, WUST, USN } from '../../constants/tokens'
+import { FRAX, USDC, USDT, WBTC, UST, USN } from '../../constants/tokens'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
@@ -19,8 +19,8 @@ export enum STABLE_SWAP_TYPES {
 
 export enum StableSwapPoolName {
   USDC_USDT = 'USDC_USDT',
-  USDC_USDT_WUST_FRAX = 'USDC_USDT_WUST_FRAX',
-  USDC_USDT_WUST_FRAX_USN = 'USDC_USDT_WUST_FRAX_USN'
+  USDC_USDT_UST_FRAX = 'USDC_USDT_UST_FRAX',
+  USDC_USDT_UST_FRAX_USN = 'USDC_USDT_UST_FRAX_USN'
 }
 
 export enum StableSwapPoolTypes {
@@ -99,8 +99,8 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     isOutdated: false,
     rewardPids: null
   },
-  [StableSwapPoolName.USDC_USDT_WUST_FRAX]: {
-    name: StableSwapPoolName.USDC_USDT_WUST_FRAX,
+  [StableSwapPoolName.USDC_USDT_UST_FRAX]: {
+    name: StableSwapPoolName.USDC_USDT_UST_FRAX,
     lpToken: new Token(
       ChainId.AURORA,
       '0xcdb578ba21c65dbab2f2aa1ce912d689affda911',
@@ -108,26 +108,26 @@ export const STABLESWAP_POOLS: StableSwapPools = {
       'USD TLP',
       'UST/FRAX/USDC/USDT'
     ),
-    poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA], WUST[ChainId.AURORA], FRAX[ChainId.AURORA]],
+    poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA], UST[ChainId.AURORA], FRAX[ChainId.AURORA]],
     address: '0x21e756AF5a42838B4f17C3A70a395D3048da81D8',
     type: StableSwapPoolTypes.USD,
     route: 'usd',
     isOutdated: false,
     rewardPids: null
   },
-  [StableSwapPoolName.USDC_USDT_WUST_FRAX_USN]: {
-    name: StableSwapPoolName.USDC_USDT_WUST_FRAX_USN,
+  [StableSwapPoolName.USDC_USDT_UST_FRAX_USN]: {
+    name: StableSwapPoolName.USDC_USDT_UST_FRAX_USN,
     lpToken: new Token(
       ChainId.AURORA,
       '0x467171053355Da79409bf2F931D21ab1f24Fe0A6',
       18,
       'USD TLP',
-      'USDC/USDT/WUST/FRAX/USN'
+      'USDC/USDT/UST/FRAX/USN'
     ),
     poolTokens: [
       USDC[ChainId.AURORA],
       USDT[ChainId.AURORA],
-      WUST[ChainId.AURORA],
+      UST[ChainId.AURORA],
       FRAX[ChainId.AURORA],
       USN[ChainId.AURORA]
     ],
