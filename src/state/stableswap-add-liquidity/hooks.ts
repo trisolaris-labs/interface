@@ -390,10 +390,8 @@ export function useStableSwapAddLiquidityCallback(
       true // deposit boolean
     )
 
-    const minToMintLessSlippage = computeSlippageAdjustedMinAmount(JSBI.BigInt(minToMint), allowedSlippage)
-
-    return minToMintLessSlippage
-  }, [allowedSlippage, getFormattedCurrencies, stableSwapContract, totalLPTokenSuppply?.raw])
+    return JSBI.BigInt(minToMint)
+  }, [getFormattedCurrencies, stableSwapContract, totalLPTokenSuppply?.raw])
 
   const callback = useCallback(async () => {
     const minToMint = await getMinToMint()
