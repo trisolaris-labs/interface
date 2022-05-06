@@ -1,26 +1,35 @@
 import React from 'react'
-import { Price } from '@trisolaris/sdk'
+import { Price, Trade } from '@trisolaris/sdk'
 import { useContext } from 'react'
 import { Repeat } from 'react-feather'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 import { StyledBalanceMaxMini } from './styleds'
+import { StableSwapTrade } from '../../state/stableswap/hooks'
 
 interface TradePriceProps {
-  price?: Price
+  trade?: Trade | StableSwapTrade
+  isRoutedViaStableSwap: boolean
   showInverted: boolean
   setShowInverted: (showInverted: boolean) => void
 }
 
-export default function TradePrice({ price, showInverted, setShowInverted }: TradePriceProps) {
+export default function TradePrice({ trade, showInverted, setShowInverted, isRoutedViaStableSwap }: TradePriceProps) {
   const theme = useContext(ThemeContext)
+  const formatExecutionPrice = () => {
+    if (isRoutedViaStableSwap) {
+      return showInverted
+        ? trade?.executionPrice?.raw?.toSignificant(6)
+        : trade?.executionPrice?.raw?.invert()?.toSignificant(6)
+    }
+    return showInverted ? trade?.executionPrice?.toSignificant(6) : trade?.executionPrice?.invert()?.toSignificant(6)
+  }
+  const formattedExecutionPrice = formatExecutionPrice()
 
-  const formattedPrice = showInverted ? price?.toSignificant(6) : price?.invert()?.toSignificant(6)
-
-  const show = Boolean(price?.baseCurrency && price?.quoteCurrency)
+  const show = Boolean(trade?.executionPrice?.baseCurrency && trade?.executionPrice?.quoteCurrency)
   const label = showInverted
-    ? `${price?.quoteCurrency?.symbol} per ${price?.baseCurrency?.symbol}`
-    : `${price?.baseCurrency?.symbol} per ${price?.quoteCurrency?.symbol}`
+    ? `${trade?.executionPrice?.quoteCurrency?.symbol} per ${trade?.executionPrice?.baseCurrency?.symbol}`
+    : `${trade?.executionPrice?.baseCurrency?.symbol} per ${trade?.executionPrice?.quoteCurrency?.symbol}`
 
   return (
     <Text
@@ -31,7 +40,7 @@ export default function TradePrice({ price, showInverted, setShowInverted }: Tra
     >
       {show ? (
         <>
-          {formattedPrice ?? '-'} {label}
+          {formattedExecutionPrice ?? '-'} {label}
           <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
             <Repeat size={14} />
           </StyledBalanceMaxMini>
