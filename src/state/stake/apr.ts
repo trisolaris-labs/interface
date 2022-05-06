@@ -14,9 +14,10 @@ export function useFarms(): StakingTri[] {
   const farms = useFarmsAPI()
   const stakingInfoV1 = useFarmContractsForVersion(ChefVersions.V1)
   const stakingInfoV2 = useFarmContractsForVersion(ChefVersions.V2)
-  const stableSwapStakingInfo = useFarmContractsForStableSwap()
 
-  const stakingInfo = stakingInfoV1.concat(stakingInfoV2, stableSwapStakingInfo)
+  // TODO: Add back useFarmContractsForStableSwap separated data when incorrect farms data is fixed.
+
+  const stakingInfo = stakingInfoV1.concat(stakingInfoV2)
 
   const stakingInfoMap = useMemo(
     () =>
