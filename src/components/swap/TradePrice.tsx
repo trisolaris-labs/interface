@@ -1,5 +1,5 @@
 import React from 'react'
-import { Price, Trade } from '@trisolaris/sdk'
+import { JSBI, Price, Trade } from '@trisolaris/sdk'
 import { useContext } from 'react'
 import { Repeat } from 'react-feather'
 import { Text } from 'rebass'
@@ -18,11 +18,17 @@ export default function TradePrice({ trade, showInverted, setShowInverted, isRou
   const theme = useContext(ThemeContext)
   const formatExecutionPrice = () => {
     if (isRoutedViaStableSwap) {
-      return showInverted
+      if (
+        JSBI.equal(trade?.executionPrice?.raw?.numerator ?? JSBI.BigInt(0), JSBI.BigInt(0)) ||
+        JSBI.equal(trade?.executionPrice?.raw?.denominator ?? JSBI.BigInt(0), JSBI.BigInt(0))
+      ) {
+        return
+      }
+      return !showInverted
         ? trade?.executionPrice?.raw?.invert()?.toSignificant(6)
         : trade?.executionPrice?.raw?.toSignificant(6)
     }
-    return showInverted ? trade?.executionPrice?.invert()?.toSignificant(6) : trade?.executionPrice?.toSignificant(6)
+    return !showInverted ? trade?.executionPrice?.invert()?.toSignificant(6) : trade?.executionPrice?.toSignificant(6)
   }
   const formattedExecutionPrice = formatExecutionPrice()
 
