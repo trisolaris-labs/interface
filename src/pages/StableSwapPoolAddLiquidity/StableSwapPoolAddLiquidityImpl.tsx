@@ -34,7 +34,7 @@ import { RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { ButtonPrimary } from '../../components/Button'
 import { RowBetween } from '../../components/Row'
-import { JSBI } from '@trisolaris/sdk'
+import { JSBI, Percent } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../../constants'
 import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
@@ -196,6 +196,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   }
 
   const priceImpactFriendly = priceImpact != null ? `${priceImpact.toFixed(4)}%` : '-'
+  const isSlippageGreaterThanFivePercent = priceImpact != null && priceImpact.lessThan(new Percent('-5', '100'))
 
   return (
     <>
@@ -345,11 +346,12 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                     onClick={() => {
                       isExpertMode ? onAdd() : setShowConfirm(true)
                     }}
-                    disabled={!amountsAreNotZero || !isValid}
-                    error={amountsAreNotZero && !isValid}
+                    disabled={!amountsAreNotZero || !isValid || isSlippageGreaterThanFivePercent}
+                    error={(amountsAreNotZero && !isValid) || isSlippageGreaterThanFivePercent}
                   >
                     <Text fontSize={20} fontWeight={500}>
-                      {error ?? t('addLiquidity.supply')}
+                      {((isSlippageGreaterThanFivePercent && 'Slippage too high, contact us') || error) ??
+                        t('addLiquidity.supply')}
                     </Text>
                   </ButtonError>
                 </StableSwapPoolAddLiquidityApprovalsRow>
