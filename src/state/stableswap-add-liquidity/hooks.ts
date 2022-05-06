@@ -1,5 +1,5 @@
-import { Currency, CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { ChainId, Currency, CurrencyAmount, JSBI, Percent, Token, TokenAmount } from '@trisolaris/sdk'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTotalSupply } from '../../data/TotalSupply'
 
@@ -13,13 +13,16 @@ import { useTranslation } from 'react-i18next'
 
 import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
 import { useStableSwapContract } from '../../hooks/useContract'
-import { BIG_INT_ZERO } from '../../constants'
+import { BIG_INT_ZERO, ZERO_ADDRESS } from '../../constants'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { BigNumber } from 'ethers'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import { useTransactionAdder } from '../transactions/hooks'
 import { computeSlippageAdjustedMinAmount } from '../../utils/prices'
 import { dummyToken } from '../stake/stake-constants'
+import { calculatePriceImpact, isStableSwapHighPriceImpact } from '../stableswap/hooks'
+
+const STABLE_POOL_CONTRACT_DECIMALS = 18
 
 export function useStableSwapAddLiquidityState(): AppState['stableswapAddLiquidity'] {
   return useSelector<AppState, AppState['stableswapAddLiquidity']>(state => state.stableswapAddLiquidity)
@@ -300,6 +303,50 @@ export function useGetEstimatedOutput(
   return { getMinToMint }
 }
 
+/**
+ * Aggregates all input currencies and normalizes them to a common decimal
+ */
+export function useNormalizedInputTokenSum(
+  stableSwapPoolName: StableSwapPoolName,
+  normalizationDecimals: number = STABLE_POOL_CONTRACT_DECIMALS
+): TokenAmount {
+  const { parsedAmounts } = useDerivedStableSwapAddLiquidityInfo(stableSwapPoolName)
+  const token = new Token(ChainId.AURORA, ZERO_ADDRESS, normalizationDecimals, 'ZERO', 'ZERO')
+
+  const currencyAmounts = [
+    parsedAmounts[Field.CURRENCY_0],
+    parsedAmounts[Field.CURRENCY_1],
+    parsedAmounts[Field.CURRENCY_2],
+    parsedAmounts[Field.CURRENCY_3],
+    parsedAmounts[Field.CURRENCY_4]
+  ]
+
+  const normalizedAmounts = currencyAmounts.map(currencyAmount => {
+    if (currencyAmount == null) {
+      return BIG_INT_ZERO
+    }
+
+    const {
+      currency: { decimals },
+      raw: amount
+    } = currencyAmount
+    const decimalDelta = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(Math.abs(decimals - normalizationDecimals)))
+
+    switch (true) {
+      case decimals > normalizationDecimals:
+        return JSBI.divide(amount, decimalDelta)
+      case decimals < normalizationDecimals:
+        return JSBI.multiply(amount, decimalDelta)
+      default:
+        return amount
+    }
+  })
+
+  const normalizedSum = normalizedAmounts.reduce((acc, item) => JSBI.add(acc, item), BIG_INT_ZERO)
+
+  return new TokenAmount(token, normalizedSum)
+}
+
 function useFormattedParsedAmounts(stableSwapPoolName: StableSwapPoolName) {
   const { parsedAmounts, hasThirdCurrency, hasFourthCurrency, hasFifthCurrency } = useDerivedStableSwapAddLiquidityInfo(
     stableSwapPoolName
@@ -340,4 +387,41 @@ function useFormattedParsedAmounts(stableSwapPoolName: StableSwapPoolName) {
   ])
 
   return formattedCurrencyAmounts
+}
+
+export function useAddLiquidityPriceImpact(stableSwapPoolName: StableSwapPoolName, virtualPrice: TokenAmount | null) {
+  const { getMinToMint } = useGetEstimatedOutput(stableSwapPoolName)
+  const normalizedInputTokenSum = useNormalizedInputTokenSum(stableSwapPoolName)
+  const normalizedInputTokenSumString = normalizedInputTokenSum.raw.toString()
+  const normalizedInputTokenSumRef = useRef(normalizedInputTokenSumString)
+  const [priceImpact, setPriceImpact] = useState(BIG_INT_ZERO)
+  const [minToMint, setMinToMint] = useState<CurrencyAmount | null>(null)
+  const isHighImpact = isStableSwapHighPriceImpact(priceImpact)
+
+  useEffect(() => {
+    async function updatePriceImpact() {
+      const minToMint = await getMinToMint()
+      const priceImpact = calculatePriceImpact(normalizedInputTokenSum.raw, minToMint.raw, virtualPrice?.raw)
+
+      setPriceImpact(priceImpact)
+      setMinToMint(minToMint)
+    }
+
+    if (normalizedInputTokenSumString !== normalizedInputTokenSumRef.current) {
+      updatePriceImpact().then(() => {
+        normalizedInputTokenSumRef.current = normalizedInputTokenSumString
+      })
+    }
+  }, [getMinToMint, normalizedInputTokenSum.raw, normalizedInputTokenSumString, virtualPrice?.raw])
+
+  const priceImpactPercent = JSBI.equal(priceImpact, BIG_INT_ZERO)
+    ? null
+    : new Percent(priceImpact, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+
+  return {
+    isBonus: priceImpactPercent?.greaterThan(new Percent('0')) ?? false,
+    isHighImpact,
+    minToMint: minToMint?.equalTo(BIG_INT_ZERO) === false ? minToMint : null,
+    priceImpact: priceImpactPercent
+  }
 }

@@ -10,6 +10,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/stableswap-add-liquidity/actions'
 import {
+  useAddLiquidityPriceImpact,
   useDerivedStableSwapAddLiquidityInfo,
   useStableSwapAddLiquidityActionHandlers,
   useStableSwapAddLiquidityCallback,
@@ -38,15 +39,27 @@ import { BIG_INT_ZERO } from '../../constants'
 import { useExpertModeManager } from '../../state/user/hooks'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
+import styled from 'styled-components'
+
+const Bonus = styled(TYPE.main)`
+  color: ${({ theme }) => theme.green1};
+`
+const HighImpact = styled(TYPE.main)`
+  color: ${({ theme }) => theme.yellow2};
+`
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
 }
 
 export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: Props) {
+  const { t } = useTranslation()
   const { account, chainId, library } = useActiveWeb3React()
   const [poolData, _userShareData] = useStablePoolsData(stableSwapPoolName)
-  const { t } = useTranslation()
+  const { isBonus, isHighImpact, minToMint, priceImpact } = useAddLiquidityPriceImpact(
+    stableSwapPoolName,
+    poolData.virtualPrice
+  )
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
@@ -169,6 +182,8 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
       </ButtonPrimary>
     )
   }
+
+  const priceImpactFriendly = priceImpact != null ? `${priceImpact.toFixed(4)}%` : '-'
 
   return (
     <>
@@ -302,6 +317,16 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
             ) : (
               <AutoColumn gap={'md'}>
+                <RowBetween>
+                  {isBonus ? (
+                    <Bonus>Bonus: {priceImpactFriendly}</Bonus>
+                  ) : isHighImpact ? (
+                    <HighImpact>Slippage: {priceImpactFriendly}</HighImpact>
+                  ) : (
+                    <TYPE.main>Slippage: {priceImpactFriendly}</TYPE.main>
+                  )}
+                  <AutoColumn>LP Tokens: {minToMint?.toFixed(5) ?? '-'}</AutoColumn>
+                </RowBetween>
                 <StableSwapPoolAddLiquidityApprovalsRow stableSwapPoolName={stableSwapPoolName}>
                   <ButtonError
                     id={'add-liquidity-supply-button'}
