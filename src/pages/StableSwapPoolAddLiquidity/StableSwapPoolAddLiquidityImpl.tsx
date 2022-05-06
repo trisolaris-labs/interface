@@ -22,11 +22,16 @@ import { useTranslation } from 'react-i18next'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import { StableSwapPoolName } from '../../state/stableswap/constants'
-import { basisPointsToPercent, divideCurrencyAmountByNumber, replaceUnderscoresWithSlashes } from '../../utils'
+import {
+  addCommasToNumber,
+  basisPointsToPercent,
+  divideCurrencyAmountByNumber,
+  replaceUnderscoresWithSlashes
+} from '../../utils'
 import StableSwapPoolAddLiquidityApprovalsRow from './StableSwapPoolAddLiquidityApprovalsRow'
 import { TYPE } from '../../theme'
 import { HeadingContainer } from '../Swap/Swap.styles'
-import { AutoRow } from '../../components/Row'
+import { AutoRow, RowFlat } from '../../components/Row'
 import CaptionWithIcon from '../../components/CaptionWithIcon'
 
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
@@ -41,6 +46,7 @@ import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import confirmStableSwapAddLiquiditySlippage from './confirmStableSwapAddLiquiditySlippage'
 import StableSwapAddLiquiditySlippage from './StableSwapAddLiquiditySlippage'
+import Card from '../../components/Card'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -155,34 +161,61 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     .join('')}`
 
   const modalHeader = () => {
-    return (
-      <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
-        {Object.values(parsedAmounts).map(parsedAmount => {
-          const { currency } = parsedAmount || {}
+    if (!minToMint) {
+      return null
+    }
 
-          return parsedAmount ? (
-            <RowBetween align="flex-end" key={currency?.symbol}>
-              <Text fontSize={24} fontWeight={500}>
-                {parsedAmount.toExact()}
-              </Text>
-              <RowFixed gap="4px">
-                <CurrencyLogo currency={currency} size={'24px'} />
-                <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
-                  {currency?.symbol}
+    return (
+      <Card mt="12px" borderRadius="12px">
+        <AutoColumn gap="16px">
+          {Object.values(parsedAmounts).map(parsedAmount => {
+            if (parsedAmount == null) {
+              return null
+            }
+
+            const { currency } = parsedAmount
+
+            return (
+              <RowBetween align="flex-end" key={currency?.symbol}>
+                <Text fontSize={24} fontWeight={500}>
+                  {parsedAmount.toFixed(6)}
                 </Text>
-              </RowFixed>
-            </RowBetween>
-          ) : null
-        })}
-      </AutoColumn>
+                <RowFixed gap="4px">
+                  <CurrencyLogo currency={currency} size={'24px'} />
+                  <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+                    {currency?.symbol}
+                  </Text>
+                </RowFixed>
+              </RowBetween>
+            )
+          })}
+          <Text fontWeight={500} fontSize={20} marginTop="20px">
+            {t('addLiquidity.willReceive')}
+          </Text>
+          <RowFlat>
+            <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
+              {addCommasToNumber(minToMint?.toSignificant(6))}
+            </Text>
+          </RowFlat>
+          <StableSwapAddLiquiditySlippage
+            bonus={isBonus}
+            errorThreshold={PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE}
+            isHighImpact={isHighImpact}
+            priceImpact={priceImpact}
+          />
+          <TYPE.italic fontSize={12} textAlign="left">
+            {t('addLiquidity.outputEstimated', { allowedSlippage: allowedSlippage / 100 })}
+          </TYPE.italic>
+        </AutoColumn>
+      </Card>
     )
   }
 
   const modalBottom = () => {
     return (
-      <ButtonPrimary onClick={() => onAdd()}>
+      <ButtonPrimary onClick={onAdd}>
         <Text fontWeight={500} fontSize={20}>
-          Confirm
+          {t('addLiquidity.confirmSupply')}
         </Text>
       </ButtonPrimary>
     )
@@ -204,7 +237,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               hash={txHash ? txHash : ''}
               content={() => (
                 <ConfirmationModalContent
-                  title={'You will supply'}
+                  title={t('addLiquidity.supply')}
                   onDismiss={handleDismissConfirmation}
                   topContent={modalHeader}
                   bottomContent={modalBottom}
@@ -330,7 +363,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                     isHighImpact={isHighImpact}
                     priceImpact={priceImpact}
                   />
-                  <AutoColumn>Min. LP Tokens: {minToMint?.toFixed(5) ?? '-'}</AutoColumn>
+                  <AutoColumn>Min. LP Tokens: {addCommasToNumber(minToMint?.toFixed(5) ?? '-')}</AutoColumn>
                 </RowBetween>
                 <StableSwapPoolAddLiquidityApprovalsRow stableSwapPoolName={stableSwapPoolName}>
                   <ButtonError
