@@ -43,7 +43,8 @@ export default function StableSwapAddLiquiditySlippage({ bonus, errorThreshold, 
 
   const slippageIsNegligible =
     slippagePercentage.equalTo(PRICE_IMPACT_NEGLIGIBLE_THRESHOLD) ||
-    slippagePercentage.greaterThan(PRICE_IMPACT_NEGLIGIBLE_THRESHOLD)
+    slippagePercentage.lessThan(PRICE_IMPACT_NEGLIGIBLE_THRESHOLD)
+
   return slippageIsNegligible ? (
     <TYPE.main>{'Slippage: <0.01%'}</TYPE.main>
   ) : (
