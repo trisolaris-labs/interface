@@ -6,6 +6,7 @@ import { ChevronDown } from 'react-feather'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
 
+import TradePrice from '../../components/swap/TradePrice'
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonError, ButtonLight, ButtonPrimary, ButtonConfirmed } from '../../components/Button'
 import Card, { GreyCard } from '../../components/Card'
@@ -107,6 +108,8 @@ export default function Swap() {
     parsedAmount: stableswapParsedAmount,
     stableswapTrade
   } = useDerivedStableSwapInfo()
+
+  const [showInverted, setShowInverted] = useState<boolean>(false)
 
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
@@ -502,19 +505,17 @@ export default function Swap() {
                 {showWrap ? null : (
                   <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
                     <AutoColumn gap="4px">
-                      {Boolean(trade) && (
-                        <RowBetween align="center">
-                          <Text fontWeight={500} fontSize={14} color={theme.text2}>
-                            {t('swapPage.price')}
-                          </Text>
-                          {/* TODO: use execution price? */}
-                          {/* <TradePrice
-                            price={trade?.executionPrice}
-                            showInverted={showInverted}
-                            setShowInverted={setShowInverted}
-                          /> */}
-                        </RowBetween>
-                      )}
+                      <RowBetween align="center">
+                        <Text fontWeight={500} fontSize={14} color={theme.text2}>
+                          {t('swapPage.price')}
+                        </Text>
+                        <TradePrice
+                          trade={isRoutedViaStableSwap ? stableswapTrade : trade}
+                          isRoutedViaStableSwap={isRoutedViaStableSwap}
+                          showInverted={showInverted}
+                          setShowInverted={setShowInverted}
+                        />
+                      </RowBetween>
                       {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                         <RowBetween align="center">
                           <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
