@@ -13,7 +13,8 @@ export default function confirmStableSwapAddLiquiditySlippage(priceImpact: Perce
       window.prompt(
         'Warning: There is a high Price Impact on this transaction due either to the ' +
           "transaction's size or insufficient liquidity, which will result in a loss of funds. " +
-          'Please confirm that you understand before submitting your transaction.'
+          
+          '\n\nPlease type "confirm" if you are understand the implications of submitting your transaction'
       ) === i18next.t('swap.confirm')
     )
   }
