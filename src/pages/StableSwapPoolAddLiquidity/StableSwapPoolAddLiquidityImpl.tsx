@@ -34,15 +34,13 @@ import { RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { ButtonPrimary } from '../../components/Button'
 import { RowBetween } from '../../components/Row'
-import { JSBI, Percent } from '@trisolaris/sdk'
-import { BIG_INT_ZERO } from '../../constants'
+import { JSBI } from '@trisolaris/sdk'
+import { BIG_INT_ZERO, PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE } from '../../constants'
 import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import confirmStableSwapAddLiquiditySlippage from './confirmStableSwapAddLiquiditySlippage'
 import StableSwapAddLiquiditySlippage from './StableSwapAddLiquiditySlippage'
-
-const PRICE_IMPACT_ERROR_THRESHOLD = new Percent('-5', '100')
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -190,7 +188,8 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     )
   }
 
-  const isSlippageGreaterThanFivePercent = priceImpact != null && priceImpact.lessThan(PRICE_IMPACT_ERROR_THRESHOLD)
+  const isSlippageGreaterThanFivePercent =
+    priceImpact != null && priceImpact.lessThan(PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE)
 
   return (
     <>
@@ -327,7 +326,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                 <RowBetween>
                   <StableSwapAddLiquiditySlippage
                     bonus={isBonus}
-                    errorThreshold={PRICE_IMPACT_ERROR_THRESHOLD}
+                    errorThreshold={PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE}
                     isHighImpact={isHighImpact}
                     priceImpact={priceImpact}
                   />
