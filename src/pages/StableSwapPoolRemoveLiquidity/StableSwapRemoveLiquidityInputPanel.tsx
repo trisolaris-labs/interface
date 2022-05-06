@@ -23,11 +23,14 @@ import { StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/con
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import CurrencyLogo from '../../components/CurrencyLogo'
+import { TokenAmount } from '@trisolaris/sdk'
+import { addCommasToNumber } from '../../utils'
 
 type Props = {
   id: string
   stableSwapPoolName: StableSwapPoolName
   hideInput?: boolean
+  usdEstimate: TokenAmount | null
   value: string
   onUserInput: (value: string) => void
   onMax?: () => void
@@ -38,6 +41,7 @@ export default function StableSwapRemoveLiquidityInputPanel({
   onMax,
   onUserInput,
   stableSwapPoolName,
+  usdEstimate,
   value,
   disableMaxButton,
   disableHalfButton,
@@ -78,7 +82,9 @@ export default function StableSwapRemoveLiquidityInputPanel({
         </LabelRow>
         <InputRow selected={true}>
           <NumericalInput className="token-amount-input" value={value} onUserInput={onUserInput} />
-
+          {usdEstimate != null ? (
+            <span style={{ marginRight: '8px' }}>(${addCommasToNumber(usdEstimate.toFixed(2))})</span>
+          ) : null}
           <div>
             <Aligner>
               <CurrencyLogo currency={currency} size={'24px'} />

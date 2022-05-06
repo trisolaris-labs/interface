@@ -45,8 +45,8 @@ import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import confirmStableSwapAddLiquiditySlippage from './confirmStableSwapAddLiquiditySlippage'
-import StableSwapAddLiquiditySlippage from './StableSwapAddLiquiditySlippage'
 import Card from '../../components/Card'
+import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -197,7 +197,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               {addCommasToNumber(minToMint?.toSignificant(6))}
             </Text>
           </RowFlat>
-          <StableSwapAddLiquiditySlippage
+          <StableSwapLiquiditySlippage
             bonus={isBonus}
             errorThreshold={PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE}
             isHighImpact={isHighImpact}
@@ -357,7 +357,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
             ) : (
               <AutoColumn gap={'md'}>
                 <RowBetween>
-                  <StableSwapAddLiquiditySlippage
+                  <StableSwapLiquiditySlippage
                     bonus={isBonus}
                     errorThreshold={PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE}
                     isHighImpact={isHighImpact}
