@@ -110,7 +110,11 @@ export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currenc
 }
 
 export function addCommasToNumber(string: string): string {
-  return string.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  const regex = /\B(?=(\d{3})+(?!\d))/g
+  const [integer, decimals] = string.split('.')
+  const formattedInteger = integer.replace(regex, ',')
+
+  return decimals == null ? formattedInteger : `${formattedInteger}.${decimals}`
 }
 
 export function setIntersection<T>(set1: Set<T>, set2: Set<T>): Set<T> {
