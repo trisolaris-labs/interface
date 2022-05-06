@@ -17,7 +17,7 @@ export default function useStableSwapEstimateRemoveLiquidity({
   amount,
   withdrawTokenIndex,
   stableSwapPoolName
-}: Props): [CurrencyAmount[], () => Promise<void>, TXError | null] {
+}: Props): { estimatedAmounts: CurrencyAmount[]; getEstimatedAmounts: () => Promise<void>; error: TXError | null } {
   const { poolTokens } = STABLESWAP_POOLS[stableSwapPoolName]
   const poolCurrencies = poolTokens.map(token => unwrappedToken(token))
 
@@ -55,7 +55,7 @@ export default function useStableSwapEstimateRemoveLiquidity({
     [lpTokensBeingBurned, poolCurrencies, swapContract]
   )
 
-  const estimateRemovedLiquidityTokenAmounts = useCallback(async () => {
+  const getEstimatedAmounts = useCallback(async () => {
     setError(null)
 
     const promise =
@@ -68,5 +68,5 @@ export default function useStableSwapEstimateRemoveLiquidity({
     })
   }, [emptyAmounts, estimateRemoveLiquidity, estimateRemovingOneToken, withdrawTokenIndex])
 
-  return [estimatedAmounts, estimateRemovedLiquidityTokenAmounts, error]
+  return { estimatedAmounts, getEstimatedAmounts, error }
 }

@@ -21,6 +21,7 @@ import { useTransactionAdder } from '../transactions/hooks'
 import { computeSlippageAdjustedMinAmount } from '../../utils/prices'
 import { dummyToken } from '../stake/stake-constants'
 import { calculatePriceImpact, isStableSwapHighPriceImpact } from '../stableswap/hooks'
+import useNormalizeTokensToDecimal from '../../hooks/useNormalizeTokensToDecimal'
 
 const STABLE_POOL_CONTRACT_DECIMALS = 18
 
@@ -321,28 +322,8 @@ export function useNormalizedInputTokenSum(
     parsedAmounts[Field.CURRENCY_4]
   ]
 
-  const normalizedAmounts = currencyAmounts.map(currencyAmount => {
-    if (currencyAmount == null) {
-      return BIG_INT_ZERO
-    }
-
-    const {
-      currency: { decimals },
-      raw: amount
-    } = currencyAmount
-    const decimalDelta = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(Math.abs(decimals - normalizationDecimals)))
-
-    switch (true) {
-      case decimals > normalizationDecimals:
-        return JSBI.divide(amount, decimalDelta)
-      case decimals < normalizationDecimals:
-        return JSBI.multiply(amount, decimalDelta)
-      default:
-        return amount
-    }
-  })
-
-  const normalizedSum = normalizedAmounts.reduce((acc, item) => JSBI.add(acc, item), BIG_INT_ZERO)
+  const normalizedAmounts = useNormalizeTokensToDecimal({ currencyAmounts, normalizationToken: token })
+  const normalizedSum = normalizedAmounts.reduce((acc, item) => JSBI.add(acc, item.raw), BIG_INT_ZERO)
 
   return new TokenAmount(token, normalizedSum)
 }

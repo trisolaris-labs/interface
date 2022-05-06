@@ -1,14 +1,13 @@
-import { JSBI } from '@trisolaris/sdk'
+import { ChainId, JSBI, TokenAmount } from '@trisolaris/sdk'
 import React, { useEffect, useRef, useState, useContext, useCallback } from 'react'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { ButtonLight, ButtonConfirmed, ButtonError } from '../../components/Button'
-import CaptionWithIcon from '../../components/CaptionWithIcon'
 import { DarkGreyCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import { PageWrapper } from '../../components/Page'
 import { AutoRow, RowBetween } from '../../components/Row'
-import { BIG_INT_ZERO } from '../../constants'
+import { BIG_INT_ZERO, PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
@@ -37,6 +36,8 @@ import { useExpertModeManager } from '../../state/user/hooks'
 import Settings from '../../components/Settings'
 import { replaceUnderscoresWithSlashes } from '../../utils'
 import BackButton from '../../components/BackButton'
+import useRemoveLiquidityPriceImpact from '../../hooks/useRemoveLiquidityPriceImpact'
+import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -52,6 +53,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const [withdrawTokenIndex, setWithdrawTokenIndex] = useState<number | null>(null)
   const withdrawTokenIndexRef = useRef(withdrawTokenIndex)
   const [poolData, userShareData] = useStablePoolsData(stableSwapPoolName)
+  const { name, virtualPrice } = poolData
   const pool = STABLESWAP_POOLS[stableSwapPoolName]
   const { address, lpToken, metaSwapAddresses } = pool
   const effectiveAddress = isMetaPool(stableSwapPoolName) ? metaSwapAddresses : address
@@ -63,10 +65,17 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const parsedAmountString = parsedAmount?.raw?.toString() ?? null
   const rawParsedAmountRef = useRef(parsedAmountString)
 
-  const [estimatedAmounts, estimateRemovedLiquidityTokenAmounts, error] = useStableSwapEstimateRemoveLiquidity({
+  const { estimatedAmounts, getEstimatedAmounts, error } = useStableSwapEstimateRemoveLiquidity({
     amount: parsedAmount,
     stableSwapPoolName,
     withdrawTokenIndex
+  })
+
+  const { isBonus, isHighImpact, priceImpact } = useRemoveLiquidityPriceImpact({
+    estimatedAmounts,
+    lpToken,
+    virtualPrice,
+    withdrawLPTokenAmount: parsedAmount ?? null
   })
 
   useEffect(() => {
@@ -78,9 +87,9 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
       withdrawTokenIndexRef.current = withdrawTokenIndex
       rawParsedAmountRef.current = parsedAmountString
 
-      void estimateRemovedLiquidityTokenAmounts()
+      void getEstimatedAmounts()
     }
-  }, [estimateRemovedLiquidityTokenAmounts, withdrawTokenIndex, parsedAmountString, error])
+  }, [getEstimatedAmounts, withdrawTokenIndex, parsedAmountString, error])
 
   const { getMaxInputAmount } = useCurrencyInputPanel()
   const { atMaxAmount: atMaxAmountInput, atHalfAmount: atHalfAmountInput, getClickedAmount } = getMaxInputAmount({
@@ -206,6 +215,10 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   }, [setTxHash, txHash])
 
   const hasZeroInput = JSBI.equal(parsedAmount?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
+  const usdEstimate =
+    virtualPrice != null && parsedAmount != null
+      ? new TokenAmount(lpToken, JSBI.multiply(virtualPrice.raw, JSBI.BigInt(parsedAmount.toExact())))
+      : null
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -229,14 +242,13 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
           <AutoColumn gap="20px">
             <AutoRow justify="space-between">
               <BackButton fallbackPath="/pool/stable" />
-              <TYPE.mediumHeader>
-                Remove Liquidity from {replaceUnderscoresWithSlashes(poolData.name)}
-              </TYPE.mediumHeader>
+              <TYPE.mediumHeader>Remove Liquidity from {replaceUnderscoresWithSlashes(name)}</TYPE.mediumHeader>
               <Settings />
             </AutoRow>
             <StableSwapRemoveLiquidityInputPanel
               id="stableswap-remove-liquidity"
               value={input}
+              usdEstimate={usdEstimate}
               onUserInput={setInput}
               stableSwapPoolName={stableSwapPoolName}
               onMax={() => handleBalanceClick(BalanceButtonValueEnum.MAX)}
@@ -275,19 +287,27 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
             {account == null ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : (
-              <RowBetween>
-                {renderApproveButton()}
-                <ButtonError
-                  id={'stableswap-remove-liquidity-button'}
-                  error={!hasZeroInput && error != null}
-                  disabled={approvalState !== ApprovalState.APPROVED || hasZeroInput}
-                  onClick={() => {
-                    isExpertMode ? handleRemoveLiquidity() : setShowConfirm(true)
-                  }}
-                >
-                  {!hasZeroInput && error != null ? error.reason : 'Remove Liquidity'}
-                </ButtonError>
-              </RowBetween>
+              <AutoColumn gap="8px">
+                <StableSwapLiquiditySlippage
+                  bonus={isBonus}
+                  errorThreshold={PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE}
+                  isHighImpact={isHighImpact}
+                  priceImpact={priceImpact}
+                />
+                <RowBetween>
+                  {renderApproveButton()}
+                  <ButtonError
+                    id={'stableswap-remove-liquidity-button'}
+                    error={!hasZeroInput && error != null}
+                    disabled={approvalState !== ApprovalState.APPROVED || hasZeroInput}
+                    onClick={() => {
+                      isExpertMode ? handleRemoveLiquidity() : setShowConfirm(true)
+                    }}
+                  >
+                    {!hasZeroInput && error != null ? error.reason : 'Remove Liquidity'}
+                  </ButtonError>
+                </RowBetween>
+              </AutoColumn>
             )}
           </div>
         </DarkGreyCard>
