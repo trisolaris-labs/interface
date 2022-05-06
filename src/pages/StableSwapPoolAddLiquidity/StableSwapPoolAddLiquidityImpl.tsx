@@ -345,7 +345,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                     onClick={() => {
                       isExpertMode ? onAdd() : setShowConfirm(true)
                     }}
-                    disabled={!amountsAreNotZero}
+                    disabled={!amountsAreNotZero || !isValid}
                     error={amountsAreNotZero && !isValid}
                   >
                     <Text fontSize={20} fontWeight={500}>
