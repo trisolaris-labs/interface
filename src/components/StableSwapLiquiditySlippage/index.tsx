@@ -18,7 +18,7 @@ type Props = {
   priceImpact: Percent | null
 }
 
-export default function StableSwapAddLiquiditySlippage({ bonus, errorThreshold, isHighImpact, priceImpact }: Props) {
+export default function StableSwapLiquiditySlippage({ bonus, errorThreshold, isHighImpact, priceImpact }: Props) {
   if (priceImpact == null) {
     return <TYPE.main>Slippage: -</TYPE.main>
   }
