@@ -39,15 +39,10 @@ import { BIG_INT_ZERO } from '../../constants'
 import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
-import styled from 'styled-components'
 import confirmStableSwapAddLiquiditySlippage from './confirmStableSwapAddLiquiditySlippage'
+import StableSwapAddLiquiditySlippage from './StableSwapAddLiquiditySlippage'
 
-const Bonus = styled(TYPE.main)`
-  color: ${({ theme }) => theme.green1};
-`
-const HighImpact = styled(TYPE.main)`
-  color: ${({ theme }) => theme.yellow2};
-`
+const PRICE_IMPACT_ERROR_THRESHOLD = new Percent('-5', '100')
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -195,8 +190,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     )
   }
 
-  const priceImpactFriendly = priceImpact != null ? `${priceImpact.toFixed(4)}%` : '-'
-  const isSlippageGreaterThanFivePercent = priceImpact != null && priceImpact.lessThan(new Percent('-5', '100'))
+  const isSlippageGreaterThanFivePercent = priceImpact != null && priceImpact.lessThan(PRICE_IMPACT_ERROR_THRESHOLD)
 
   return (
     <>
@@ -331,13 +325,12 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
             ) : (
               <AutoColumn gap={'md'}>
                 <RowBetween>
-                  {isBonus ? (
-                    <Bonus>Bonus: {priceImpactFriendly}</Bonus>
-                  ) : isHighImpact ? (
-                    <HighImpact>Slippage: {priceImpactFriendly}</HighImpact>
-                  ) : (
-                    <TYPE.main>Slippage: {priceImpactFriendly}</TYPE.main>
-                  )}
+                  <StableSwapAddLiquiditySlippage
+                    bonus={isBonus}
+                    errorThreshold={PRICE_IMPACT_ERROR_THRESHOLD}
+                    isHighImpact={isHighImpact}
+                    priceImpact={priceImpact}
+                  />
                   <AutoColumn>Min. LP Tokens: {minToMint?.toFixed(5) ?? '-'}</AutoColumn>
                 </RowBetween>
                 <StableSwapPoolAddLiquidityApprovalsRow stableSwapPoolName={stableSwapPoolName}>
