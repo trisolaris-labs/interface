@@ -48,7 +48,12 @@ import { useIsSelectedAEBToken } from '../../state/lists/hooks'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 
 import { Field } from '../../state/swap/actions'
-import { INITIAL_ALLOWED_SLIPPAGE, BIG_INT_ZERO, TOKEN_WARNING_MODAL_ALLOWLIST } from '../../constants'
+import {
+  INITIAL_ALLOWED_SLIPPAGE,
+  BIG_INT_ZERO,
+  TOKEN_WARNING_MODAL_ALLOWLIST,
+  PRICE_IMPACT_ERROR_THRESHOLD
+} from '../../constants'
 
 import { ClickableText, Dots } from '../Pool/styleds'
 import { LinkStyledButton, TYPE } from '../../theme'
@@ -260,24 +265,27 @@ export default function Swap() {
 
   const { priceImpactWithoutFee: defaultswapPriceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 
-  const hasPriceImpact = JSBI.equal(
-    JSBI.BigInt(-1),
-    JSBI.divide(stableswapPriceImpact, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
-  )
+  const disableTradingUntilStableSwapRateIsCalculated =
+    isStableSwap &&
+    parsedAmounts[Field.INPUT]?.greaterThan(BIG_INT_ZERO) &&
+    stableswapTrade?.outputAmount.equalTo(BIG_INT_ZERO)
+
+  const hasPriceImpact = isStableSwapHighPriceImpact(stableswapPriceImpact)
+
   const stableswapPriceImpactWithoutFee = useMemo(
     () =>
       hasPriceImpact
-        ? new Percent('0', '1')
-        : new Percent(
+        ? new Percent(
             JSBI.multiply(JSBI.BigInt(-1), stableswapPriceImpact),
             JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
-          ),
+          )
+        : new Percent('0', '1'),
     [hasPriceImpact, stableswapPriceImpact]
   )
 
   // warnings on slippage
   const defaultswapPriceImpactSeverity = warningSeverity(defaultswapPriceImpactWithoutFee)
-  const isStableSwapPriceImpactSevere = isStableSwapHighPriceImpact(stableswapPriceImpact)
+  const isStableSwapPriceImpactSevere = stableswapPriceImpactWithoutFee.greaterThan(PRICE_IMPACT_ERROR_THRESHOLD)
 
   const handleSwap = useCallback(() => {
     if (
@@ -389,11 +397,6 @@ export default function Swap() {
     }
     return highImpactTrade ? `${t('swapPage.swap')} ${t('swapPage.anyway')}` : t('swapPage.swap')
   }
-
-  const disableTradingUntilStableSwapRateIsCalculated =
-    isStableSwap &&
-    parsedAmounts[Field.INPUT]?.greaterThan(BIG_INT_ZERO) &&
-    stableswapTrade?.outputAmount.equalTo(BIG_INT_ZERO)
 
   return (
     <>

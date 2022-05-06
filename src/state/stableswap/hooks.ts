@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { BIG_INT_ZERO } from '../../constants'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { StableSwapData, useCalculateStableSwapPairs } from '../../hooks/useCalculateStableSwapPairs'
-import { useStableSwapContract } from '../../hooks/useContract'
+import { useStableSwapContract, useStableSwapMetaPool } from '../../hooks/useContract'
 import { useSingleCallResult } from '../multicall/hooks'
 import { isMetaPool, STABLE_SWAP_TYPES } from './constants'
 import _ from 'lodash'
@@ -243,6 +243,14 @@ export function useDerivedStableSwapInfo(): {
     parsedAmount?.raw.toString()
   ])
 
+  // Get StableSwap Pool Virtual Price
+  const isMetaSwap = isMetaPool(selectedStableSwapPool?.to.poolName)
+  const swapContract = useStableSwapContract(selectedStableSwapPool?.to.poolName)
+  const metaSwapContract = useStableSwapMetaPool(selectedStableSwapPool?.to.address)
+  const effectiveContract = isMetaSwap ? metaSwapContract : swapContract
+  const rawVirtualPrice = useSingleCallResult(effectiveContract, 'getVirtualPrice')?.result?.[0]
+  const virtualPrice = rawVirtualPrice != null ? JSBI.BigInt(rawVirtualPrice) : null
+
   const amountToReceive = calculateSwapResponse?.result?.[0] ?? BIG_INT_ZERO
   const amountIn = useTokenBalance(account ?? undefined, inputToken)
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -305,7 +313,9 @@ export function useDerivedStableSwapInfo(): {
     tradeData?.inputAmount,
     tradeData?.outputAmount
   )
-  const priceImpact = calculatePriceImpact(normalizedRawInputAmount, normalizedRawOutputAmount)
+  const priceImpact = JSBI.equal(normalizedRawOutputAmount, BIG_INT_ZERO)
+    ? BIG_INT_ZERO
+    : calculatePriceImpact(normalizedRawInputAmount, normalizedRawOutputAmount, virtualPrice ?? undefined)
 
   return {
     priceImpact,
