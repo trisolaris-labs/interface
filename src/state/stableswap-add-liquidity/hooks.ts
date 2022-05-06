@@ -230,7 +230,7 @@ export function useStableSwapAddLiquidityCallback(
 
   const callback = useCallback(async () => {
     const minToMint = await getMinToMint()
-    const minToMintLessSlippage = computeSlippageAdjustedMinAmount(JSBI.BigInt(minToMint), allowedSlippage)
+    const minToMintLessSlippage = computeSlippageAdjustedMinAmount(JSBI.BigInt(minToMint.raw), allowedSlippage)
 
     const transactionArguments = [formattedParsedAmounts, minToMintLessSlippage.toString(), deadline?.toNumber()]
     const transaction = await stableSwapContract?.addLiquidity(...transactionArguments, {

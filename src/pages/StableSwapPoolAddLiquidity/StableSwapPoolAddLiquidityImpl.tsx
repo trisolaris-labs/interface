@@ -40,6 +40,7 @@ import { useExpertModeManager } from '../../state/user/hooks'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import styled from 'styled-components'
+import confirmAddLiquiditySlippage from './confirmAddLiquiditySlippage'
 
 const Bonus = styled(TYPE.main)`
   color: ${({ theme }) => theme.green1};
@@ -108,6 +109,10 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
 
   async function onAdd() {
     if (!chainId || !library || !account) {
+      return
+    }
+
+    if (isHighImpact && priceImpact != null && !confirmAddLiquiditySlippage(priceImpact)) {
       return
     }
 
