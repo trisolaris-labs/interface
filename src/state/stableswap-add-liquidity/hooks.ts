@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTotalSupply } from '../../data/TotalSupply'
 
@@ -19,6 +19,7 @@ import { BigNumber } from 'ethers'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import { useTransactionAdder } from '../transactions/hooks'
 import { computeSlippageAdjustedMinAmount } from '../../utils/prices'
+import { dummyToken } from '../stake/stake-constants'
 
 export function useStableSwapAddLiquidityState(): AppState['stableswapAddLiquidity'] {
   return useSelector<AppState, AppState['stableswapAddLiquidity']>(state => state.stableswapAddLiquidity)
@@ -197,21 +198,18 @@ export function useStableSwapAddLiquidityActionHandlers(): {
 
 export function useStableSwapAddLiquidityCallback(
   stableSwapPoolName: StableSwapPoolName
-): { callback: () => Promise<string>; txHash: string; setTxHash: React.Dispatch<React.SetStateAction<string>> } {
+): {
+  callback: () => Promise<string>
+  txHash: string
+  setTxHash: React.Dispatch<React.SetStateAction<string>>
+} {
   const { account } = useActiveWeb3React()
   const stableSwapContract = useStableSwapContract(
     stableSwapPoolName,
     true, // require signer
     isMetaPool(stableSwapPoolName) // if it's a metapool, use unwrapped tokens
   )
-  const {
-    currencies,
-    parsedAmounts,
-    hasThirdCurrency,
-    hasFourthCurrency,
-    hasFifthCurrency,
-    totalLPTokenSuppply
-  } = useDerivedStableSwapAddLiquidityInfo(stableSwapPoolName)
+  const { currencies, parsedAmounts } = useDerivedStableSwapAddLiquidityInfo(stableSwapPoolName)
 
   const [txHash, setTxHash] = useState('')
   // get custom setting values for user
@@ -224,42 +222,14 @@ export function useStableSwapAddLiquidityCallback(
     deadline = currentTime.add(10)
   }
 
-  const getMinToMint = useCallback(
-    async (formattedCurrencyAmounts: string[]) => {
-      const isFirstTransaction = JSBI.equal(totalLPTokenSuppply?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
-      if (isFirstTransaction) {
-        return BIG_INT_ZERO.toString()
-      }
-
-      const minToMint = await stableSwapContract?.calculateTokenAmount(
-        formattedCurrencyAmounts,
-        true // deposit boolean
-      )
-
-      const minToMintLessSlippage = computeSlippageAdjustedMinAmount(JSBI.BigInt(minToMint), allowedSlippage)
-      return minToMintLessSlippage.toString()
-    },
-    [allowedSlippage, stableSwapContract, totalLPTokenSuppply?.raw]
-  )
+  const formattedParsedAmounts = useFormattedParsedAmounts(stableSwapPoolName)
+  const { getMinToMint } = useGetEstimatedOutput(stableSwapPoolName)
 
   const callback = useCallback(async () => {
-    const currencyAmounts = [parsedAmounts[Field.CURRENCY_0], parsedAmounts[Field.CURRENCY_1]]
-    if (hasThirdCurrency) {
-      currencyAmounts.push(parsedAmounts[Field.CURRENCY_2])
-    }
+    const minToMint = await getMinToMint()
+    const minToMintLessSlippage = computeSlippageAdjustedMinAmount(JSBI.BigInt(minToMint), allowedSlippage)
 
-    if (hasFourthCurrency) {
-      currencyAmounts.push(parsedAmounts[Field.CURRENCY_3])
-    }
-
-    if (hasFifthCurrency) {
-      currencyAmounts.push(parsedAmounts[Field.CURRENCY_4])
-    }
-
-    const formattedCurrencyAmounts = currencyAmounts.map(item => item?.raw?.toString() ?? '0')
-    const minToMint = await getMinToMint(formattedCurrencyAmounts)
-
-    const transactionArguments = [formattedCurrencyAmounts, minToMint, deadline?.toNumber()]
+    const transactionArguments = [formattedParsedAmounts, minToMintLessSlippage.toString(), deadline?.toNumber()]
     const transaction = await stableSwapContract?.addLiquidity(...transactionArguments, {
       from: account
     })
@@ -288,15 +258,86 @@ export function useStableSwapAddLiquidityCallback(
   }, [
     account,
     addTransaction,
+    allowedSlippage,
     currencies,
     deadline,
+    formattedParsedAmounts,
     getMinToMint,
-    hasFifthCurrency,
-    hasFourthCurrency,
-    hasThirdCurrency,
     parsedAmounts,
     stableSwapContract
   ])
 
   return { callback, txHash, setTxHash }
+}
+
+export function useGetEstimatedOutput(
+  stableSwapPoolName: StableSwapPoolName
+): { getMinToMint: () => Promise<CurrencyAmount> } {
+  const { totalLPTokenSuppply } = useDerivedStableSwapAddLiquidityInfo(stableSwapPoolName)
+  const stableSwapContract = useStableSwapContract(
+    stableSwapPoolName,
+    true, // require signer
+    isMetaPool(stableSwapPoolName) // if it's a metapool, use unwrapped tokens
+  )
+  const formattedParsedAmounts = useFormattedParsedAmounts(stableSwapPoolName)
+  const totalLPTokenSupplyValue = totalLPTokenSuppply?.raw?.toString()
+
+  const getMinToMint = useCallback(async () => {
+    const isFirstTransaction = JSBI.equal(JSBI.BigInt(totalLPTokenSupplyValue ?? BIG_INT_ZERO), BIG_INT_ZERO)
+    const currency = totalLPTokenSuppply?.currency ?? dummyToken
+    if (isFirstTransaction) {
+      return CurrencyAmount.fromRawAmount(currency, JSBI.BigInt(BIG_INT_ZERO))
+    }
+
+    const minToMint = await stableSwapContract?.calculateTokenAmount(
+      formattedParsedAmounts,
+      true // deposit boolean
+    )
+
+    return CurrencyAmount.fromRawAmount(currency, JSBI.BigInt(minToMint))
+  }, [formattedParsedAmounts, stableSwapContract, totalLPTokenSupplyValue, totalLPTokenSuppply?.currency])
+
+  return { getMinToMint }
+}
+
+function useFormattedParsedAmounts(stableSwapPoolName: StableSwapPoolName) {
+  const { parsedAmounts, hasThirdCurrency, hasFourthCurrency, hasFifthCurrency } = useDerivedStableSwapAddLiquidityInfo(
+    stableSwapPoolName
+  )
+
+  const [typedValue0, typedValue1, typedValue2, typedValue3, typedValue4] = [
+    parsedAmounts[Field.CURRENCY_0],
+    parsedAmounts[Field.CURRENCY_1],
+    parsedAmounts[Field.CURRENCY_2],
+    parsedAmounts[Field.CURRENCY_3],
+    parsedAmounts[Field.CURRENCY_4]
+  ].map(v => v?.raw?.toString() ?? '0')
+
+  const formattedCurrencyAmounts = useMemo(() => {
+    const currencyAmounts = [typedValue0, typedValue1]
+    if (hasThirdCurrency) {
+      currencyAmounts.push(typedValue2)
+    }
+
+    if (hasFourthCurrency) {
+      currencyAmounts.push(typedValue3)
+    }
+
+    if (hasFifthCurrency) {
+      currencyAmounts.push(typedValue4)
+    }
+
+    return currencyAmounts
+  }, [
+    hasFifthCurrency,
+    hasFourthCurrency,
+    hasThirdCurrency,
+    typedValue0,
+    typedValue1,
+    typedValue2,
+    typedValue3,
+    typedValue4
+  ])
+
+  return formattedCurrencyAmounts
 }
