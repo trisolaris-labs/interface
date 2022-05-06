@@ -505,19 +505,17 @@ export default function Swap() {
                 {showWrap ? null : (
                   <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
                     <AutoColumn gap="4px">
-                      {Boolean(trade) && (
-                        <RowBetween align="center">
-                          <Text fontWeight={500} fontSize={14} color={theme.text2}>
-                            {t('swapPage.price')}
-                          </Text>
-                          <TradePrice
-                            trade={isRoutedViaStableSwap ? stableswapTrade : trade}
-                            isRoutedViaStableSwap={isRoutedViaStableSwap}
-                            showInverted={showInverted}
-                            setShowInverted={setShowInverted}
-                          />
-                        </RowBetween>
-                      )}
+                      <RowBetween align="center">
+                        <Text fontWeight={500} fontSize={14} color={theme.text2}>
+                          {t('swapPage.price')}
+                        </Text>
+                        <TradePrice
+                          trade={isRoutedViaStableSwap ? stableswapTrade : trade}
+                          isRoutedViaStableSwap={isRoutedViaStableSwap}
+                          showInverted={showInverted}
+                          setShowInverted={setShowInverted}
+                        />
+                      </RowBetween>
                       {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                         <RowBetween align="center">
                           <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>

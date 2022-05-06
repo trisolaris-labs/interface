@@ -19,10 +19,10 @@ export default function TradePrice({ trade, showInverted, setShowInverted, isRou
   const formatExecutionPrice = () => {
     if (isRoutedViaStableSwap) {
       return showInverted
-        ? trade?.executionPrice?.raw?.toSignificant(6)
-        : trade?.executionPrice?.raw?.invert()?.toSignificant(6)
+        ? trade?.executionPrice?.raw?.invert()?.toSignificant(6)
+        : trade?.executionPrice?.raw?.toSignificant(6)
     }
-    return showInverted ? trade?.executionPrice?.toSignificant(6) : trade?.executionPrice?.invert()?.toSignificant(6)
+    return showInverted ? trade?.executionPrice?.invert()?.toSignificant(6) : trade?.executionPrice?.toSignificant(6)
   }
   const formattedExecutionPrice = formatExecutionPrice()
 
