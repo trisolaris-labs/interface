@@ -7,8 +7,8 @@ import i18next from '../../i18n'
  *
  * @param priceImpactWithoutFee price impact of the trade without the fee.
  */
-export default function confirmAddLiquiditySlippage(priceImpactWithoutFee: Percent): boolean {
-  if (!priceImpactWithoutFee.lessThan(PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN)) {
+export default function confirmStableSwapAddLiquiditySlippage(priceImpact: Percent, allowedSlippage: Percent): boolean {
+  if (priceImpact.greaterThan(allowedSlippage)) {
     return (
       window.prompt(
         'Warning: There is a high Price Impact on this transaction due either to the ' +

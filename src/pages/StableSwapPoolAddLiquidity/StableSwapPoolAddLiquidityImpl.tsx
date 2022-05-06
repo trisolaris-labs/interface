@@ -22,7 +22,7 @@ import { useTranslation } from 'react-i18next'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import { StableSwapPoolName } from '../../state/stableswap/constants'
-import { divideCurrencyAmountByNumber, replaceUnderscoresWithSlashes } from '../../utils'
+import { basisPointsToPercent, divideCurrencyAmountByNumber, replaceUnderscoresWithSlashes } from '../../utils'
 import StableSwapPoolAddLiquidityApprovalsRow from './StableSwapPoolAddLiquidityApprovalsRow'
 import { TYPE } from '../../theme'
 import { HeadingContainer } from '../Swap/Swap.styles'
@@ -36,11 +36,11 @@ import { ButtonPrimary } from '../../components/Button'
 import { RowBetween } from '../../components/Row'
 import { JSBI } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../../constants'
-import { useExpertModeManager } from '../../state/user/hooks'
+import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import styled from 'styled-components'
-import confirmAddLiquiditySlippage from './confirmAddLiquiditySlippage'
+import confirmStableSwapAddLiquiditySlippage from './confirmStableSwapAddLiquiditySlippage'
 
 const Bonus = styled(TYPE.main)`
   color: ${({ theme }) => theme.green1};
@@ -57,6 +57,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   const { t } = useTranslation()
   const { account, chainId, library } = useActiveWeb3React()
   const [poolData, _userShareData] = useStablePoolsData(stableSwapPoolName)
+  const [allowedSlippage] = useUserSlippageTolerance()
   const { isBonus, isHighImpact, minToMint, priceImpact } = useAddLiquidityPriceImpact(
     stableSwapPoolName,
     poolData.virtualPrice
@@ -112,7 +113,13 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
       return
     }
 
-    if (isHighImpact && priceImpact != null && !confirmAddLiquiditySlippage(priceImpact)) {
+    if (
+      priceImpact != null &&
+      !confirmStableSwapAddLiquiditySlippage(
+        priceImpact?.lessThan(JSBI.BigInt(0)) ? priceImpact?.multiply(JSBI.BigInt(-1)) : priceImpact, // Make +ve for comparison
+        basisPointsToPercent(allowedSlippage) // Normalise user's slippage tolerance to compare to price impact percentage
+      )
+    ) {
       return
     }
 
