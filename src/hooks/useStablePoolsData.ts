@@ -13,9 +13,10 @@ import { ChainId, Fraction, JSBI, Percent, Price, Token, TokenAmount } from '@tr
 import { useSingleCallResult, useSingleContractMultipleData } from '../state/multicall/hooks'
 import { useTokenBalance } from '../state/wallet/hooks'
 import { useTotalSupply } from '../data/TotalSupply'
-import { BIG_INT_ZERO } from '../constants'
+import { BIG_INT_ZERO, ZERO_ADDRESS } from '../constants'
 import { USDC } from '../constants/tokens'
 
+const STABLE_POOL_CONTRACT_DECIMALS = 18
 interface TokenShareType {
   percent: Percent
   token: Token
@@ -31,7 +32,7 @@ export interface StablePoolDataType {
   swapFee: Percent
   tokens: TokenShareType[]
   totalLocked: TokenAmount | null
-  virtualPrice: Fraction | null
+  virtualPrice: TokenAmount | null
   isPaused: boolean
   lpTokenPriceUSD: Price
   lpToken: Token | null
@@ -70,7 +71,10 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
   const rawVirtualPrice = useSingleCallResult(effectiveContract, 'getVirtualPrice')?.result?.[0] ?? BIG_INT_ZERO
   const virtualPrice = JSBI.equal(BIG_INT_ZERO, JSBI.BigInt(rawVirtualPrice))
     ? null
-    : new Fraction(JSBI.BigInt(rawVirtualPrice), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+    : new TokenAmount(
+        new Token(ChainId.AURORA, ZERO_ADDRESS, STABLE_POOL_CONTRACT_DECIMALS),
+        JSBI.BigInt(rawVirtualPrice)
+      )
   const aParameter: JSBI = useSingleCallResult(effectiveContract, 'getA')?.result?.[0] ?? BIG_INT_ZERO
   const isPaused: boolean = useSingleCallResult(effectiveContract, 'paused')?.result?.[0] ?? false
   const userLPTokenBalance = useTokenBalance(account ?? AddressZero, lpToken) ?? new TokenAmount(lpToken, BIG_INT_ZERO)
@@ -86,7 +90,6 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
   const tokenBalancesSum = sumAllJSBI(tokenBalances)
 
   const poolPresentationTokenDecimals = getTokenForStablePoolType(type).decimals
-  const STABLE_POOL_CONTRACT_DECIMALS = 18
   const decimalDelta = JSBI.exponentiate(
     JSBI.BigInt(10),
     JSBI.BigInt(Math.abs(poolPresentationTokenDecimals - STABLE_POOL_CONTRACT_DECIMALS))
