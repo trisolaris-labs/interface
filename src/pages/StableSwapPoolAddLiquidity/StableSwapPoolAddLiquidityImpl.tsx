@@ -337,7 +337,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                   ) : (
                     <TYPE.main>Slippage: {priceImpactFriendly}</TYPE.main>
                   )}
-                  <AutoColumn>LP Tokens: {minToMint?.toFixed(5) ?? '-'}</AutoColumn>
+                  <AutoColumn>Min. LP Tokens: {minToMint?.toFixed(5) ?? '-'}</AutoColumn>
                 </RowBetween>
                 <StableSwapPoolAddLiquidityApprovalsRow stableSwapPoolName={stableSwapPoolName}>
                   <ButtonError
