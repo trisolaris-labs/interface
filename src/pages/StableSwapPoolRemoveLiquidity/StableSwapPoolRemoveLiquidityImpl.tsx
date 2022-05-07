@@ -38,6 +38,7 @@ import { replaceUnderscoresWithSlashes } from '../../utils'
 import BackButton from '../../components/BackButton'
 import useRemoveLiquidityPriceImpact from '../../hooks/useRemoveLiquidityPriceImpact'
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
+import { dummyToken } from '../../state/stake/stake-constants'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -61,7 +62,10 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
 
   const { account } = useActiveWeb3React()
 
-  const parsedAmount = tryParseAmount(input, currency)
+  const tryParsedAmount = tryParseAmount(input, currency)
+  
+  // setting 1 instead of 0 because it crashes otherwise. But it works ok like this.
+  const parsedAmount = tryParsedAmount ?? new TokenAmount(dummyToken, '1')
   const parsedAmountString = parsedAmount?.raw?.toString() ?? null
   const rawParsedAmountRef = useRef(parsedAmountString)
 
@@ -215,10 +219,12 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   }, [setTxHash, txHash])
 
   const hasZeroInput = JSBI.equal(parsedAmount?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
-  const usdEstimate =
-    virtualPrice != null && parsedAmount != null
-      ? new TokenAmount(lpToken, JSBI.multiply(virtualPrice.raw, JSBI.BigInt(parsedAmount.toExact())))
-      : null
+  const usdEstimate = null
+  // TODO: Add back when fixing usdEstimate
+
+  // virtualPrice != null && parsedAmount != null
+  //   ? new TokenAmount(lpToken, JSBI.multiply(virtualPrice.raw, JSBI.BigInt(parsedAmount.toExact())))
+  //   : null
 
   return (
     <PageWrapper gap="lg" justify="center">
