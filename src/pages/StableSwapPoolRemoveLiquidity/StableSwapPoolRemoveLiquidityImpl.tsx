@@ -68,7 +68,8 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const { estimatedAmounts, getEstimatedAmounts, error } = useStableSwapEstimateRemoveLiquidity({
     amount: parsedAmount,
     stableSwapPoolName,
-    withdrawTokenIndex
+    withdrawTokenIndex,
+    lpTokenBalance: userShareData?.lpTokenBalance
   })
 
   const { isBonus, isHighImpact, priceImpact } = useRemoveLiquidityPriceImpact({
@@ -298,8 +299,8 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                   {renderApproveButton()}
                   <ButtonError
                     id={'stableswap-remove-liquidity-button'}
-                    error={!hasZeroInput && error != null}
-                    disabled={approvalState !== ApprovalState.APPROVED || hasZeroInput}
+                    error={!hasZeroInput && !!error}
+                    disabled={approvalState !== ApprovalState.APPROVED || hasZeroInput || !!error}
                     onClick={() => {
                       isExpertMode ? handleRemoveLiquidity() : setShowConfirm(true)
                     }}

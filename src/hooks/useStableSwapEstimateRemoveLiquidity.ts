@@ -9,6 +9,7 @@ type Props = {
   amount: CurrencyAmount | undefined
   stableSwapPoolName: StableSwapPoolName
   withdrawTokenIndex: number | null
+  lpTokenBalance: CurrencyAmount | undefined
 }
 
 type TXError = Error & { reason: string }
@@ -16,7 +17,8 @@ type TXError = Error & { reason: string }
 export default function useStableSwapEstimateRemoveLiquidity({
   amount,
   withdrawTokenIndex,
-  stableSwapPoolName
+  stableSwapPoolName,
+  lpTokenBalance
 }: Props): { estimatedAmounts: CurrencyAmount[]; getEstimatedAmounts: () => Promise<void>; error: TXError | null } {
   const { poolTokens } = STABLESWAP_POOLS[stableSwapPoolName]
   const poolCurrencies = poolTokens.map(token => unwrappedToken(token))
@@ -57,6 +59,10 @@ export default function useStableSwapEstimateRemoveLiquidity({
 
   const getEstimatedAmounts = useCallback(async () => {
     setError(null)
+
+    if (amount?.greaterThan(lpTokenBalance ?? BIG_INT_ZERO)) {
+      setError({ ...new Error(), reason: 'Insufficient LP amount' })
+    }
 
     const promise =
       withdrawTokenIndex != null ? estimateRemovingOneToken(withdrawTokenIndex) : estimateRemoveLiquidity()
