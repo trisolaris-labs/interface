@@ -63,9 +63,8 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const { account } = useActiveWeb3React()
 
   const tryParsedAmount = tryParseAmount(input, currency)
-  
-  // setting 1 instead of 0 because it crashes otherwise. But it works ok like this.
-  const parsedAmount = tryParsedAmount ?? new TokenAmount(dummyToken, '1')
+
+  const parsedAmount = tryParsedAmount ?? new TokenAmount(dummyToken, '0')
   const parsedAmountString = parsedAmount?.raw?.toString() ?? null
   const rawParsedAmountRef = useRef(parsedAmountString)
 
@@ -113,7 +112,10 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   }
   const [userSlippageTolerance] = useUserSlippageTolerance()
 
-  const [approvalState, handleApproval] = useApproveCallback(parsedAmount, effectiveAddress)
+  const [approvalState, handleApproval] = useApproveCallback(
+    parsedAmount.greaterThan(BIG_INT_ZERO) ? parsedAmount : undefined,
+    effectiveAddress
+  )
   const { removeLiquidity: handleRemoveLiquidity, attemptingTxn, txHash, setTxHash } = useStableSwapRemoveLiquidity({
     amount: parsedAmount,
     estimatedAmounts,

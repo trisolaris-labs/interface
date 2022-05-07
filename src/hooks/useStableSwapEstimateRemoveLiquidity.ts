@@ -30,8 +30,8 @@ export default function useStableSwapEstimateRemoveLiquidity({
     false, // require signer
     isMetaPool(stableSwapPoolName) // if it's a metapool, use unwrapped tokens
   )
+
   const lpTokensBeingBurned = amount?.raw.toString() ?? '0'
-  const estimatedAmounts = lpTokensBeingBurned === '0' ? emptyAmounts : amounts
 
   const estimateRemovingOneToken = useCallback(
     (tokenIndex: number) =>
@@ -68,5 +68,5 @@ export default function useStableSwapEstimateRemoveLiquidity({
     })
   }, [emptyAmounts, estimateRemoveLiquidity, estimateRemovingOneToken, withdrawTokenIndex])
 
-  return { estimatedAmounts, getEstimatedAmounts, error }
+  return { estimatedAmounts: amounts, getEstimatedAmounts, error }
 }
