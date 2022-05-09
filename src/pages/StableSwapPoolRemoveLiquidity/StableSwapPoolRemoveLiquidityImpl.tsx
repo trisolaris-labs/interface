@@ -258,7 +258,13 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const hasZeroInput = JSBI.equal(parsedAmount?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
   const usdEstimate =
     virtualPrice != null && parsedAmount != null
-      ? new TokenAmount(lpToken, JSBI.multiply(virtualPrice.raw, JSBI.BigInt(parsedAmount.toExact())))
+      ? new TokenAmount(
+          lpToken,
+          JSBI.divide(
+            JSBI.multiply(virtualPrice.raw, parsedAmount.raw),
+            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+          )
+        )
       : null
 
   return (
