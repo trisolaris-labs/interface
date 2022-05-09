@@ -1,4 +1,4 @@
-import { ChainId, JSBI, TokenAmount } from '@trisolaris/sdk'
+import { CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
 import React, { useEffect, useRef, useState, useContext, useCallback } from 'react'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { ButtonLight, ButtonConfirmed, ButtonError } from '../../components/Button'
@@ -11,7 +11,6 @@ import { BIG_INT_ZERO, PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE } from '../../const
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
-import useStableSwapEstimateRemoveLiquidity from '../../hooks/useStableSwapEstimateRemoveLiquidity'
 import useStableSwapRemoveLiquidity from '../../hooks/useStableSwapRemoveLiquidity'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/constants'
@@ -38,8 +37,11 @@ import { replaceUnderscoresWithSlashes } from '../../utils'
 import BackButton from '../../components/BackButton'
 import useRemoveLiquidityPriceImpact from '../../hooks/useRemoveLiquidityPriceImpact'
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
+import { useStableSwapContract } from '../../hooks/useContract'
 
 const INPUT_CHAR_LIMIT = 18
+
+type TXError = Error & { reason: string }
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -58,6 +60,11 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const { address, lpToken, metaSwapAddresses } = pool
   const effectiveAddress = isMetaPool(stableSwapPoolName) ? metaSwapAddresses : address
   const currency = unwrappedToken(lpToken)
+  const swapContract = useStableSwapContract(
+    stableSwapPoolName,
+    false, // require signer
+    isMetaPool(stableSwapPoolName) // if it's a metapool, use unwrapped tokens
+  )
 
   const { account } = useActiveWeb3React()
 
@@ -65,11 +72,59 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const parsedAmountString = parsedAmount?.raw?.toString() ?? null
   const rawParsedAmountRef = useRef(parsedAmountString)
 
-  const { estimatedAmounts, getEstimatedAmounts, error } = useStableSwapEstimateRemoveLiquidity({
-    amount: parsedAmount,
-    stableSwapPoolName,
+  const estimateRemovingOneToken = useCallback(
+    async (tokenIndex: number) =>
+      swapContract?.calculateRemoveLiquidityOneToken(parsedAmountString ?? '0', tokenIndex).then((response: BigInt) => {
+        setEstimatedAmounts(
+          poolData.tokens.map(({ token }, i) =>
+            CurrencyAmount.fromRawAmount(token, i === tokenIndex ? JSBI.BigInt(response) : BIG_INT_ZERO)
+          )
+        )
+      }),
+    [parsedAmountString, poolData.tokens, swapContract]
+  )
+
+  const estimateRemoveLiquidity = useCallback(
+    () =>
+      swapContract?.calculateRemoveLiquidity(parsedAmountString ?? '0').then((response: BigInt[]) => {
+        setEstimatedAmounts(
+          poolData.tokens.map(({ token }, i) => CurrencyAmount.fromRawAmount(token, JSBI.BigInt(response[i])))
+        )
+      }),
+    [parsedAmountString, poolData.tokens, swapContract]
+  )
+
+  const [error, setError] = useState<TXError | null>(null)
+  const emptyAmounts = poolData.tokens.map(({ token }) => CurrencyAmount.fromRawAmount(token, BIG_INT_ZERO))
+  const [estimatedAmounts, setEstimatedAmounts] = useState<CurrencyAmount[]>(emptyAmounts)
+
+  const updateEstimatedAmounts = useCallback(async () => {
+    if (withdrawTokenIndexRef.current !== withdrawTokenIndex || rawParsedAmountRef.current !== parsedAmountString) {
+      withdrawTokenIndexRef.current = withdrawTokenIndex
+      rawParsedAmountRef.current = parsedAmountString
+      setError(null)
+
+      const promise =
+        withdrawTokenIndex != null ? estimateRemovingOneToken(withdrawTokenIndex) : estimateRemoveLiquidity()
+
+      promise.catch((e: TXError) => {
+        console.error('Error estimating removed liquidity: ', e)
+        setEstimatedAmounts(emptyAmounts)
+        setError(e)
+      })
+    }
+  }, [emptyAmounts, estimateRemoveLiquidity, estimateRemovingOneToken, parsedAmountString, withdrawTokenIndex])
+
+  useEffect(() => {
+    updateEstimatedAmounts()
+  }, [
+    emptyAmounts,
+    estimateRemoveLiquidity,
+    estimateRemovingOneToken,
+    parsedAmountString,
+    updateEstimatedAmounts,
     withdrawTokenIndex
-  })
+  ])
 
   const { isBonus, isHighImpact, priceImpact } = useRemoveLiquidityPriceImpact({
     estimatedAmounts,
@@ -77,19 +132,6 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
     virtualPrice,
     withdrawLPTokenAmount: parsedAmount ?? null
   })
-
-  useEffect(() => {
-    if (parsedAmountString == null) {
-      return
-    }
-
-    if (withdrawTokenIndexRef.current !== withdrawTokenIndex || rawParsedAmountRef.current !== parsedAmountString) {
-      withdrawTokenIndexRef.current = withdrawTokenIndex
-      rawParsedAmountRef.current = parsedAmountString
-
-      void getEstimatedAmounts()
-    }
-  }, [getEstimatedAmounts, withdrawTokenIndex, parsedAmountString, error])
 
   const { getMaxInputAmount } = useCurrencyInputPanel()
   const { atMaxAmount: atMaxAmountInput, atHalfAmount: atHalfAmountInput, getClickedAmount } = getMaxInputAmount({
@@ -217,8 +259,19 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const hasZeroInput = JSBI.equal(parsedAmount?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
   const usdEstimate =
     virtualPrice != null && parsedAmount != null
-      ? new TokenAmount(lpToken, JSBI.multiply(virtualPrice.raw, JSBI.BigInt(parsedAmount.toExact())))
+      ? new TokenAmount(
+          lpToken,
+          JSBI.divide(
+            JSBI.multiply(virtualPrice.raw, parsedAmount.raw),
+            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+          )
+        )
       : null
+
+  const insufficientBalanceError =
+    parsedAmount != null &&
+    userShareData?.lpTokenBalance != null &&
+    parsedAmount.greaterThan(userShareData.lpTokenBalance)
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -298,13 +351,17 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                   {renderApproveButton()}
                   <ButtonError
                     id={'stableswap-remove-liquidity-button'}
-                    error={!hasZeroInput && error != null}
-                    disabled={approvalState !== ApprovalState.APPROVED || hasZeroInput}
+                    error={insufficientBalanceError || (!hasZeroInput && error != null)}
+                    disabled={insufficientBalanceError || hasZeroInput || approvalState !== ApprovalState.APPROVED}
                     onClick={() => {
                       isExpertMode ? handleRemoveLiquidity() : setShowConfirm(true)
                     }}
                   >
-                    {!hasZeroInput && error != null ? error.reason : 'Remove Liquidity'}
+                    {insufficientBalanceError
+                      ? t('mintHooks.insufficientInputAmount')
+                      : !hasZeroInput && error != null
+                      ? error.reason
+                      : 'Remove Liquidity'}
                   </ButtonError>
                 </RowBetween>
               </AutoColumn>
