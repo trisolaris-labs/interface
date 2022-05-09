@@ -102,6 +102,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
     if (withdrawTokenIndexRef.current !== withdrawTokenIndex || rawParsedAmountRef.current !== parsedAmountString) {
       withdrawTokenIndexRef.current = withdrawTokenIndex
       rawParsedAmountRef.current = parsedAmountString
+      setError(null)
 
       const promise =
         withdrawTokenIndex != null ? estimateRemovingOneToken(withdrawTokenIndex) : estimateRemoveLiquidity()
@@ -267,6 +268,11 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
         )
       : null
 
+  const insufficientBalanceError =
+    parsedAmount != null &&
+    userShareData?.lpTokenBalance != null &&
+    parsedAmount.greaterThan(userShareData.lpTokenBalance)
+
   return (
     <PageWrapper gap="lg" justify="center">
       <TransactionConfirmationModal
@@ -345,13 +351,17 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                   {renderApproveButton()}
                   <ButtonError
                     id={'stableswap-remove-liquidity-button'}
-                    error={!hasZeroInput && error != null}
-                    disabled={approvalState !== ApprovalState.APPROVED || hasZeroInput}
+                    error={insufficientBalanceError || (!hasZeroInput && error != null)}
+                    disabled={insufficientBalanceError || hasZeroInput || approvalState !== ApprovalState.APPROVED}
                     onClick={() => {
                       isExpertMode ? handleRemoveLiquidity() : setShowConfirm(true)
                     }}
                   >
-                    {!hasZeroInput && error != null ? error.reason : 'Remove Liquidity'}
+                    {insufficientBalanceError
+                      ? t('mintHooks.insufficientInputAmount')
+                      : !hasZeroInput && error != null
+                      ? error.reason
+                      : 'Remove Liquidity'}
                   </ButtonError>
                 </RowBetween>
               </AutoColumn>
