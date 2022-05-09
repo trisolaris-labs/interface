@@ -164,9 +164,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   const modalHeader = () => {
     const { virtualPrice, lpToken } = poolData
     const usdEstimate =
-      virtualPrice != null && minToMint != null && lpToken != null
-        ? getLpTokenUsdEstimate(virtualPrice, minToMint, lpToken)
-        : null
+      virtualPrice && minToMint && lpToken ? getLpTokenUsdEstimate(virtualPrice, minToMint, lpToken) : null
 
     if (!minToMint) {
       return null
@@ -204,7 +202,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               {addCommasToNumber(minToMint?.toSignificant(6))}
             </Text>
           </RowFlat>
-          {usdEstimate && <span style={{ marginRight: '8px' }}>(${addCommasToNumber(usdEstimate.toFixed(2))})</span>}
+          {usdEstimate && <span>(${addCommasToNumber(usdEstimate.toFixed(2))})</span>}
           <StableSwapLiquiditySlippage
             bonus={isBonus}
             errorThreshold={PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE}
