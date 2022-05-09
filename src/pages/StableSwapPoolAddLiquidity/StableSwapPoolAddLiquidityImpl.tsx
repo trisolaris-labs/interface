@@ -47,6 +47,7 @@ import { AddRemoveTabs } from '../../components/NavigationTabs'
 import confirmStableSwapAddLiquiditySlippage from './confirmStableSwapAddLiquiditySlippage'
 import Card from '../../components/Card'
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
+import { getLpTokenUsdEstimate } from '../../utils/stableSwap'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -161,6 +162,12 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     .join('')}`
 
   const modalHeader = () => {
+    const { virtualPrice, lpToken } = poolData
+    const usdEstimate =
+      virtualPrice != null && minToMint != null && lpToken != null
+        ? getLpTokenUsdEstimate(virtualPrice, minToMint, lpToken)
+        : null
+
     if (!minToMint) {
       return null
     }
@@ -197,6 +204,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               {addCommasToNumber(minToMint?.toSignificant(6))}
             </Text>
           </RowFlat>
+          {usdEstimate && <span style={{ marginRight: '8px' }}>(${addCommasToNumber(usdEstimate.toFixed(2))})</span>}
           <StableSwapLiquiditySlippage
             bonus={isBonus}
             errorThreshold={PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE}
