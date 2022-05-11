@@ -36,6 +36,7 @@ export interface StablePoolDataType {
   isPaused: boolean
   lpTokenPriceUSD: Price
   lpToken: Token | null
+  disableAddLiquidity: boolean
 }
 
 export interface UserShareType {
@@ -53,7 +54,7 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
   const { account } = useActiveWeb3React()
 
   const pool = STABLESWAP_POOLS[poolName]
-  const { lpToken, poolTokens, type, underlyingPoolTokens } = pool
+  const { disableAddLiquidity, lpToken, poolTokens, type, underlyingPoolTokens } = pool
   const effectivePoolTokens =
     underlyingPoolTokens != null && underlyingPoolTokens.length > 0 ? underlyingPoolTokens : poolTokens
   const isMetaSwap = isMetaPool(poolName)
@@ -159,7 +160,8 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
     aParameter: aParameter,
     lpTokenPriceUSD,
     lpToken,
-    isPaused
+    isPaused,
+    disableAddLiquidity: disableAddLiquidity ?? false
   }
 
   // User Data
