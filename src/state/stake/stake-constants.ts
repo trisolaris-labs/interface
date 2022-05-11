@@ -41,7 +41,7 @@ export enum ChefVersions {
 }
 
 export type StakingTri = StakingTriStakedAmounts & StakingTriFarms
-
+export type NonTriAPR = { address: string; apr: number }
 export type StakingTriStakedAmounts = {
   ID: number
   stakedAmount: TokenAmount | null
@@ -66,6 +66,7 @@ export type StakingTriFarms = {
   rewardRate: TokenAmount
   apr: number
   apr2: number
+  nonTriAPRs?: NonTriAPR[]
   chefVersion: ChefVersions
   doubleRewards: boolean
   inStaging: boolean
@@ -84,6 +85,7 @@ export interface ExternalInfo {
   allocPoint: number
   apr: number
   apr2: number
+  nonTriAPRs?: NonTriAPR[]
 }
 
 export const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
@@ -111,6 +113,7 @@ const NULL_POOL: StakingTri = {
   rewardRate: dummyAmount,
   apr: 0,
   apr2: 0,
+  nonTriAPRs: [],
   chefVersion: ChefVersions.V1,
   doubleRewards: false,
   inStaging: false,

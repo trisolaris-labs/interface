@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Token, ChainId } from '@trisolaris/sdk'
+import { Token } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { Settings2 as ManageIcon } from 'lucide-react'
@@ -11,7 +11,7 @@ import { AutoRow, RowBetween } from '../Row'
 import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
 import MultipleCurrencyLogo from '../MultipleCurrencyLogo'
 
-import { ChefVersions } from '../../state/stake/stake-constants'
+import { ChefVersions, NonTriAPR } from '../../state/stake/stake-constants'
 import { useSingleFarm } from '../../state/stake/user-farms'
 import { useColorForToken } from '../../hooks/useColor'
 import { currencyId } from '../../utils/currencyId'
@@ -29,8 +29,9 @@ import {
 import GetTokenLink from './FarmsPortfolio/GetTokenLink'
 import { StableSwapPoolName } from '../../state/stableswap/constants'
 import { useSingleStableFarm } from '../../state/stake/user-stable-farms'
+import PoolCardTriRewardText from './PoolCardTriRewardText'
 
-type PoolCardTriProps = {
+export type PoolCardTriProps = {
   apr: number
   apr2: number
   doubleRewards: boolean
@@ -45,25 +46,24 @@ type PoolCardTriProps = {
   isStaking: boolean
   version: number
   stableSwapPoolName?: StableSwapPoolName
+  nonTriAPRs?: NonTriAPR[]
 }
 
 const DefaultPoolCardtri = ({
   apr,
-  apr2,
   chefVersion,
   doubleRewards,
   inStaging,
-  noTriRewards,
   isLegacy,
   isPeriodFinished,
   tokens: _tokens,
   totalStakedInUSD,
-  doubleRewardToken,
   isStaking,
   version,
   enableClaimButton = false,
   enableModal = () => null,
-  stableSwapPoolName
+  stableSwapPoolName,
+  nonTriAPRs
 }: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
   const history = useHistory()
   const { t } = useTranslation()
@@ -142,15 +142,7 @@ const DefaultPoolCardtri = ({
         </AutoColumn>
         <AutoColumn>
           <TYPE.mutedSubHeader textAlign="end">APR</TYPE.mutedSubHeader>
-          <TYPE.white textAlign="end">
-            {isDualRewards && doubleRewards && !inStaging
-              ? `${apr}% TRI + ${`${apr2}%`} ${`${doubleRewardToken.symbol}`}`
-              : inStaging
-              ? `Coming Soon`
-              : noTriRewards
-              ? `${`${apr2}%`} ${`${doubleRewardToken.symbol}`}`
-              : `${apr}%`}
-          </TYPE.white>
+          <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} />
         </AutoColumn>
       </RowBetween>
     </Wrapper>

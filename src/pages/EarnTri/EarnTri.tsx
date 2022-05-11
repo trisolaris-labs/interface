@@ -56,6 +56,7 @@ export default function EarnTri({
                   key={farm.ID}
                   apr={farm.apr}
                   apr2={farm.apr2}
+                  nonTriAPRs={farm.nonTriAPRs}
                   chefVersion={farm.chefVersion}
                   isPeriodFinished={farm.isPeriodFinished}
                   tokens={farm.tokens}
@@ -85,6 +86,7 @@ export default function EarnTri({
               key={farm.ID}
               apr={farm.apr}
               apr2={farm.apr2}
+              nonTriAPRs={farm.nonTriAPRs}
               chefVersion={farm.chefVersion}
               isPeriodFinished={farm.isPeriodFinished}
               tokens={farm.tokens}
@@ -112,6 +114,7 @@ export default function EarnTri({
                   key={farm.ID}
                   apr={farm.apr}
                   apr2={farm.apr2}
+                  nonTriAPRs={farm.nonTriAPRs}
                   chefVersion={farm.chefVersion}
                   isPeriodFinished={farm.isPeriodFinished}
                   tokens={farm.tokens}
@@ -139,6 +142,7 @@ export default function EarnTri({
                 key={farm.ID}
                 apr={farm.apr}
                 apr2={farm.apr2}
+                nonTriAPRs={farm.nonTriAPRs}
                 chefVersion={farm.chefVersion}
                 isLegacy={true}
                 isPeriodFinished={farm.isPeriodFinished}
