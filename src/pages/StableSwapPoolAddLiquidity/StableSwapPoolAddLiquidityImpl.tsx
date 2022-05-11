@@ -57,11 +57,9 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   const { t } = useTranslation()
   const { account, chainId, library } = useActiveWeb3React()
   const [poolData, _userShareData] = useStablePoolsData(stableSwapPoolName)
+  const { disableAddLiquidity, name, virtualPrice } = poolData
   const [allowedSlippage] = useUserSlippageTolerance()
-  const { isBonus, isHighImpact, minToMint, priceImpact } = useAddLiquidityPriceImpact(
-    stableSwapPoolName,
-    poolData.virtualPrice
-  )
+  const { isBonus, isHighImpact, minToMint, priceImpact } = useAddLiquidityPriceImpact(stableSwapPoolName, virtualPrice)
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
@@ -253,7 +251,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
             />
             <HeadingContainer>
               <AutoRow justify="center">
-                <TYPE.mediumHeader>{replaceUnderscoresWithSlashes(poolData.name)}</TYPE.mediumHeader>
+                <TYPE.mediumHeader>{replaceUnderscoresWithSlashes(name)}</TYPE.mediumHeader>
                 <CaptionWithIcon>Stable pools on Trisolaris support uneven deposits</CaptionWithIcon>
               </AutoRow>
             </HeadingContainer>
@@ -377,12 +375,14 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                     onClick={() => {
                       isExpertMode ? onAdd() : setShowConfirm(true)
                     }}
-                    disabled={!amountsAreNotZero || !isValid || isSlippageGreaterThanFivePercent}
+                    disabled={disableAddLiquidity || !amountsAreNotZero || !isValid || isSlippageGreaterThanFivePercent}
                     error={(amountsAreNotZero && !isValid) || isSlippageGreaterThanFivePercent}
                   >
                     <Text fontSize={20} fontWeight={500}>
-                      {((isSlippageGreaterThanFivePercent && 'Slippage too high, contact us') || error) ??
-                        t('addLiquidity.supply')}
+                      {disableAddLiquidity
+                        ? 'Adding liquidity is disabled'
+                        : ((isSlippageGreaterThanFivePercent && 'Slippage too high, contact us') || error) ??
+                          t('addLiquidity.supply')}
                     </Text>
                   </ButtonError>
                 </StableSwapPoolAddLiquidityApprovalsRow>
