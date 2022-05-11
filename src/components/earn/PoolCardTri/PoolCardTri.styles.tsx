@@ -45,7 +45,7 @@ export const ResponsiveCurrencyLabel = styled(TYPE.white)<{ currenciesQty: numbe
   `};
 `
 
-export const Button = styled(ButtonPrimary)<{ isStaking: boolean }>`
+export const Button = styled(ButtonPrimary)<{ isStaking?: boolean }>`
   background: ${({ isStaking, theme }) => (isStaking ? theme.black : theme.primary1)};
   padding: 8px;
   border-radius: 10px;
