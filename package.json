@@ -1,6 +1,7 @@
 {
   "name": "interface",
   "description": "Trisolaris Interface",
+  "version": "0.1.4",
   "homepage": ".",
   "private": true,
   "devDependencies": {
@@ -154,7 +155,6 @@
     "lucide-react": "^0.16.28",
     "react-error-boundary": "^3.1.4"
   },
-  "version": "0.1.3",
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
