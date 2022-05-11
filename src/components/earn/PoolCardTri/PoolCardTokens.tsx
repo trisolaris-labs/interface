@@ -12,14 +12,13 @@ type PoolCardTokensProps = {
 }
 
 function PoolCardTokens({ tokens }: PoolCardTokensProps) {
-  const { currencies } = getPairRenderOrder(tokens)
 
   return (
     <PairContainer>
       <GetTokenLink tokens={tokens} />
-      <MultipleCurrencyLogo currencies={currencies} size={20} />
-      <ResponsiveCurrencyLabel currenciesQty={currencies.length}>
-        {currencies.map((currency, index) => `${currency.symbol}${index < currencies.length - 1 ? '-' : ''}`)}
+      <MultipleCurrencyLogo currencies={tokens} size={20} />
+      <ResponsiveCurrencyLabel currenciesQty={tokens.length}>
+        {tokens.map((currency, index) => `${currency.symbol}${index < tokens.length - 1 ? '-' : ''}`)}
       </ResponsiveCurrencyLabel>
     </PairContainer>
   )

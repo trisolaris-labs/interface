@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { ChainId, Token } from '@trisolaris/sdk'
-import { useTranslation } from 'react-i18next'
 
 import PoolCardWrapper from './PoolCardWrapper'
 import PoolCardTokens from './PoolCardTokens'
@@ -42,22 +41,23 @@ function SponsoredPoolCardTRI({
 }: SponsoredPoolCardTriProps) {
   const { account } = useActiveWeb3React()
   const history = useHistory()
-  const { t } = useTranslation()
+
 
   const [token0, token1] = tokens
   const lpToken = toV2LiquidityToken([token0, token1], ChainId.AURORA)
 
-  const { currencies, tokens: orderedTokens } = getPairRenderOrder(tokens)
+  const { tokens: orderedTokens } = getPairRenderOrder(tokens)
 
   const userPoolBalance = useTokenBalance(account ?? undefined, lpToken)
 
   const handleAddLiq = () => {
     history.push(`/add/${currencyId(tokens[0])}/${currencyId(tokens[1])}/`)
   }
+
   return (
-    <PoolCardWrapper tokens={orderedTokens} doubleRewards={doubleRewards} currenciesQty={currencies.length}>
+    <PoolCardWrapper tokens={orderedTokens} doubleRewards={doubleRewards}>
       <AutoRow justifyContent="space-between">
-        <PoolCardTokens tokens={tokens} />
+        <PoolCardTokens tokens={orderedTokens} />
         <SponsoredButton disabled={isPeriodFinished} onClick={handleAddLiq}>
           Add Liquidity
         </SponsoredButton>

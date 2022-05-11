@@ -8,11 +8,10 @@ import { Wrapper, TokenPairBackgroundColor } from './PoolCardTri.styles'
 type PoolCardWrapperProps = {
   tokens: Token[]
   doubleRewards: boolean
-  currenciesQty: number
   children: React.ReactNode
 }
 
-function PoolCardWrapper({ tokens, doubleRewards, currenciesQty, children }: PoolCardWrapperProps) {
+function PoolCardWrapper({ tokens, doubleRewards, children }: PoolCardWrapperProps) {
   const backgroundColor1 = useColorForToken(tokens[0])
   const backgroundColor2 = useColorForToken(tokens[tokens.length - 1], () => doubleRewards)
 
@@ -21,7 +20,7 @@ function PoolCardWrapper({ tokens, doubleRewards, currenciesQty, children }: Poo
       bgColor1={backgroundColor1}
       bgColor2={backgroundColor2}
       isDoubleRewards={doubleRewards}
-      currenciesQty={currenciesQty}
+      currenciesQty={tokens.length}
     >
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
       {children}

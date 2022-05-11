@@ -90,10 +90,8 @@ const DefaultPoolCardtri = ({
     )
   }
 
-  const currenciesQty = currencies.length
-
   return (
-    <PoolCardWrapper tokens={tokens} doubleRewards={doubleRewards} currenciesQty={currenciesQty}>
+    <PoolCardWrapper tokens={tokens} doubleRewards={doubleRewards}>
       <AutoRow justifyContent="space-between">
         <PoolCardTokens tokens={tokens} />
         {isLegacy && !isStaking ? (
