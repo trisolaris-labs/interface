@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react'
-import { isEqual } from 'lodash'
+import _, { isEqual } from 'lodash'
 import { useFarms } from '../../state/stake/apr'
 import { StakingTri } from '../../state/stake/stake-constants'
 import { useIsFilterActiveFarms } from '../../state/user/hooks'
@@ -49,15 +49,15 @@ export default function useFarmsSortAndFilter({ poolsOrder, legacyPoolsOrder }: 
   const farmArrsInOrder = useMemo((): StakingTri[] => {
     switch (sortBy) {
       case SortingType.default:
-        return poolsOrder.map((index: number) => allFarmArrs[index])
+        return poolsOrder.map(index => allFarmArrs[index])
       case SortingType.liquidity:
-        return isSortDescending
-          ? farmArrs.sort((a, b) => (a.totalStakedInUSD < b.totalStakedInUSD ? 1 : -1))
-          : farmArrs.sort((a, b) => (a.totalStakedInUSD > b.totalStakedInUSD ? 1 : -1))
+        return _.orderBy(farmArrs, 'totalStakedInUSD', isSortDescending ? 'desc' : 'asc')
       case SortingType.totalApr:
-        return isSortDescending
-          ? farmArrs.sort((a, b) => (a.apr + a.apr2 < b.apr + b.apr2 ? 1 : -1))
-          : farmArrs.sort((a, b) => (a.apr + a.apr2 > b.apr + b.apr2 ? 1 : -1))
+        return _.orderBy(
+          farmArrs,
+          ({ apr: triAPR, nonTriAPRs }) => (nonTriAPRs ?? []).reduce((acc: number, { apr }) => acc + apr, triAPR ?? 0),
+          isSortDescending ? 'desc' : 'asc'
+        )
     }
   }, [allFarmArrs, farmArrs, isSortDescending, poolsOrder, sortBy])
   const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards && !farm.noTriRewards)

@@ -36,7 +36,7 @@ export function useFarmsAPI(): StakingTriFarms[] {
       doubleRewardToken,
       stableSwapPoolName
     } = activeFarms[index]
-    const { totalStakedInUSD, totalRewardRate, apr, apr2 } = stakingInfoData?.[index] ?? {}
+    const { totalStakedInUSD, totalRewardRate, apr, apr2, nonTriAPRs } = stakingInfoData?.[index] ?? {}
 
     return {
       ID,
@@ -60,7 +60,8 @@ export function useFarmsAPI(): StakingTriFarms[] {
       inStaging,
       noTriRewards,
       doubleRewardToken,
-      stableSwapPoolName
+      stableSwapPoolName,
+      nonTriAPRs
     }
   })
 
