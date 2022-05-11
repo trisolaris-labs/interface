@@ -15,7 +15,7 @@ type Props = {
 }
 
 export default function StableSwapPoolAddLiquidityApprovalsRow({ children, stableSwapPoolName }: Props) {
-  const { address, metaSwapAddresses } = STABLESWAP_POOLS[stableSwapPoolName]
+  const { address, disableAddLiquidity, metaSwapAddresses } = STABLESWAP_POOLS[stableSwapPoolName]
   const {
     currencies,
     parsedAmounts,
@@ -83,7 +83,7 @@ export default function StableSwapPoolAddLiquidityApprovalsRow({ children, stabl
   )
 
   // If no approvals needed or there's an error, return children
-  if (unapprovedTokens.length === 0 || error) {
+  if (disableAddLiquidity || unapprovedTokens.length === 0 || error) {
     return children
   }
 

@@ -62,6 +62,9 @@ export type StableSwapPool = {
   underlyingPool?: StableSwapPoolName
   isOutdated?: boolean // pool can be outdated but not have a migration target
   rewardPids: number | null
+
+  // UI Gating
+  disableAddLiquidity?: boolean
 }
 
 export type StableSwapPoolsMap = {
@@ -118,7 +121,8 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     type: StableSwapPoolTypes.USD,
     route: 'usd',
     isOutdated: false,
-    rewardPids: null
+    rewardPids: null,
+    disableAddLiquidity: true
   }
 }
 

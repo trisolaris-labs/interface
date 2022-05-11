@@ -126,7 +126,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   const theme = useContext(ThemeContext)
 
   const [stablePoolData, userData] = useStablePoolsData(poolName)
-  const { name, tokens } = stablePoolData
+  const { disableAddLiquidity, name, tokens } = stablePoolData
   const { address: poolAddress, poolTokens: stablePoolTokens } = STABLESWAP_POOLS[poolName]
   const poolTokens = tokens.map(({ token }) => token)
 
@@ -257,7 +257,12 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
             </AutoColumn>
             <AutoColumn gap="8px" style={{ marginTop: '10px' }}>
               <ButtonRow>
-                <ButtonPrimary id="stableswap-add-liquidity-button" width="45%" onClick={handleAddLiquidity}>
+                <ButtonPrimary
+                  disabled={disableAddLiquidity}
+                  id="stableswap-add-liquidity-button"
+                  width="45%"
+                  onClick={handleAddLiquidity}
+                >
                   Add
                 </ButtonPrimary>
                 <ButtonPrimary
