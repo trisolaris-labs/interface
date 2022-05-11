@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import { lighten, darken } from 'polished'
 
-import { TYPE } from '../../theme'
-import Card from '../Card'
-import { ButtonPrimary } from '../Button'
+import { TYPE } from '../../../theme'
+import Card from '../../Card'
+import { ButtonPrimary } from '../../Button'
 
 export const Wrapper = styled(Card)<{
   bgColor1: string | null

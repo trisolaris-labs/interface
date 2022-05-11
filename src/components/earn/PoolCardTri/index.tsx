@@ -1,34 +1,27 @@
 import React, { useState } from 'react'
-import { Token, ChainId } from '@trisolaris/sdk'
+import { Token } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { Settings2 as ManageIcon } from 'lucide-react'
 
-import { TYPE } from '../../theme'
-import { AutoColumn } from '../Column'
-import { ButtonGold } from '../Button'
-import { AutoRow, RowBetween } from '../Row'
-import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
-import MultipleCurrencyLogo from '../MultipleCurrencyLogo'
+import { TYPE } from '../../../theme'
+import { AutoColumn } from '../../Column'
+import { ButtonGold } from '../../Button'
+import { AutoRow, RowBetween } from '../../Row'
+import ClaimRewardModal from '../ClaimRewardModalTri'
+import PoolCardWrapper from './PoolCardWrapper'
+import PoolCardTokens from './PoolCardTokens'
 
-import { ChefVersions } from '../../state/stake/stake-constants'
-import { useSingleFarm } from '../../state/stake/user-farms'
-import { useColorForToken } from '../../hooks/useColor'
-import { currencyId } from '../../utils/currencyId'
-import { addCommasToNumber } from '../../utils'
-import { getPairRenderOrder, isTokenAmountPositive } from '../../utils/pools'
+import { ChefVersions } from '../../../state/stake/stake-constants'
+import { useSingleFarm } from '../../../state/stake/user-farms'
+import { currencyId } from '../../../utils/currencyId'
+import { addCommasToNumber } from '../../../utils'
+import { getPairRenderOrder, isTokenAmountPositive } from '../../../utils/pools'
 
-import {
-  Wrapper,
-  PairContainer,
-  ResponsiveCurrencyLabel,
-  TokenPairBackgroundColor,
-  StyledActionsContainer,
-  Button
-} from './PoolCardTri.styles'
-import GetTokenLink from './FarmsPortfolio/GetTokenLink'
-import { StableSwapPoolName } from '../../state/stableswap/constants'
-import { useSingleStableFarm } from '../../state/stake/user-stable-farms'
+import { StyledActionsContainer, Button } from './PoolCardTri.styles'
+
+import { StableSwapPoolName } from '../../../state/stableswap/constants'
+import { useSingleStableFarm } from '../../../state/stake/user-stable-farms'
 
 type PoolCardTriProps = {
   apr: number
@@ -72,10 +65,6 @@ const DefaultPoolCardtri = ({
 
   const { currencies, tokens } = getPairRenderOrder(_tokens)
 
-  const backgroundColor1 = useColorForToken(tokens[0])
-  // Only override `backgroundColor2` if it's a dual rewards pool
-  const backgroundColor2 = useColorForToken(tokens[tokens.length - 1], () => isDualRewards)
-
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
 
   function renderManageOrDepositButton() {
@@ -104,22 +93,9 @@ const DefaultPoolCardtri = ({
   const currenciesQty = currencies.length
 
   return (
-    <Wrapper
-      bgColor1={backgroundColor1}
-      bgColor2={backgroundColor2}
-      isDoubleRewards={doubleRewards}
-      currenciesQty={currenciesQty}
-    >
-      <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
-
+    <PoolCardWrapper tokens={tokens} doubleRewards={doubleRewards} currenciesQty={currenciesQty}>
       <AutoRow justifyContent="space-between">
-        <PairContainer>
-          <GetTokenLink tokens={tokens} />
-          <MultipleCurrencyLogo currencies={currencies} size={20} />
-          <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>
-            {currencies.map((currency, index) => `${currency.symbol}${index < currencies.length - 1 ? '-' : ''}`)}
-          </ResponsiveCurrencyLabel>
-        </PairContainer>
+        <PoolCardTokens tokens={tokens} />
         {isLegacy && !isStaking ? (
           <Button disabled={true} isStaking={isStaking}>
             {t('earn.deposit')}
@@ -153,7 +129,7 @@ const DefaultPoolCardtri = ({
           </TYPE.white>
         </AutoColumn>
       </RowBetween>
-    </Wrapper>
+    </PoolCardWrapper>
   )
 }
 

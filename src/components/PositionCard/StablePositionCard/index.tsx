@@ -6,7 +6,7 @@ import styled, { ThemeContext } from 'styled-components'
 import { unwrappedToken } from '../../../utils/wrappedCurrency'
 import { ButtonPrimary } from '../../Button'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { TokenPairBackgroundColor } from '../../earn/PoolCardTri.styles'
+import { TokenPairBackgroundColor } from '../../earn/PoolCardTri/PoolCardTri.styles'
 
 import { useColorWithDefault } from '../../../hooks/useColor'
 
