@@ -46,7 +46,7 @@ export type PoolCardTriProps = {
   isStaking: boolean
   version: number
   stableSwapPoolName?: StableSwapPoolName
-  nonTriAPRs?: NonTriAPR[]
+  nonTriAPRs: NonTriAPR[]
 }
 
 const DefaultPoolCardtri = ({

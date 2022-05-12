@@ -66,7 +66,7 @@ export type StakingTriFarms = {
   rewardRate: TokenAmount
   apr: number
   apr2: number
-  nonTriAPRs?: NonTriAPR[]
+  nonTriAPRs: NonTriAPR[]
   chefVersion: ChefVersions
   doubleRewards: boolean
   inStaging: boolean
@@ -85,7 +85,7 @@ export interface ExternalInfo {
   allocPoint: number
   apr: number
   apr2: number
-  nonTriAPRs?: NonTriAPR[]
+  nonTriAPRs: NonTriAPR[]
 }
 
 export const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
