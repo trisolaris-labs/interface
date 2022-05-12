@@ -80,6 +80,15 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs }: Pr
   const hasOnlyTriRewards = hasTriRewards && !hasNonTriRewards
   const hasOnlyNonTriRewards = !hasTriRewards && hasNonTriRewards
   const hasMultipleNonTriRewards = hasNonTriRewards && Number(nonTriAPRs?.length) > 1
+  const hasNoRewards = !hasTriRewards && !hasNonTriRewards
+
+  if (hasNoRewards) {
+    return (
+      <AutoRow alignItems="center" justifyContent="space-evenly">
+        <TYPE.body>-</TYPE.body>
+      </AutoRow>
+    )
+  }
 
   // If only TRI rewards
   if (hasOnlyTriRewards) {
