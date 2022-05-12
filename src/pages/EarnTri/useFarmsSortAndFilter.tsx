@@ -55,7 +55,7 @@ export default function useFarmsSortAndFilter({ poolsOrder, legacyPoolsOrder }: 
       case SortingType.totalApr:
         return _.orderBy(
           farmArrs,
-          ({ apr: triAPR, nonTriAPRs }) => (nonTriAPRs ?? []).reduce((acc: number, { apr }) => acc + apr, triAPR ?? 0),
+          ({ apr: triAPR, nonTriAPRs }) => nonTriAPRs.reduce((acc: number, { apr }) => acc + apr, triAPR ?? 0),
           isSortDescending ? 'desc' : 'asc'
         )
     }
