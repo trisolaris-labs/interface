@@ -29,11 +29,13 @@ const StyledLogo = styled(Logo)<{ size: string }>`
 `
 
 export default function CurrencyLogo({
+  alt,
   currency,
   size = '24px',
   style,
   ...rest
 }: {
+  alt?: string
   currency?: Currency
   size?: string
   style?: React.CSSProperties
@@ -77,5 +79,7 @@ export default function CurrencyLogo({
     }
   }
 
-  return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} {...rest}/>
+  return (
+    <StyledLogo size={size} srcs={srcs} alt={alt ?? `${currency?.symbol ?? 'token'} logo`} style={style} {...rest} />
+  )
 }

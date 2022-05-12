@@ -57,7 +57,7 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs }: Pr
           {tooltipData.map(({ token, apr }) => (
             <RowBetween key={token.address}>
               <AutoColumn justify="center" style={{ display: 'inline-flex' }}>
-                <CurrencyLogo currency={token} size={'16px'} />
+                <CurrencyLogo alt="" currency={token} size={'16px'} />
                 <TYPE.body marginLeft="0.5rem">{token.symbol}</TYPE.body>
               </AutoColumn>
               <AutoColumn style={{ marginLeft: '1rem' }}>
@@ -100,7 +100,7 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs }: Pr
     <Popover content={tooltipContent} show={show}>
       <IconWrapper onMouseEnter={open} onMouseLeave={close}>
         {tooltipData.map(({ token }) => (
-          <CurrencyLogo currency={token} key={token.address} size={'16px'} style={{ marginRight: '4px' }} />
+          <CurrencyLogo alt="" currency={token} key={token.address} size={'16px'} style={{ marginRight: '4px' }} />
         ))}
         <TYPE.white marginRight="4px" textAlign="end">
           {totalAPR}%
@@ -114,7 +114,7 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs }: Pr
 function PoolCardTriSingleCurrencyReward({ apr, token }: { apr: number; token: Token }) {
   return (
     <AutoRow alignItems="center">
-      <CurrencyLogo currency={token} size={'16px'} style={{ marginRight: '4px' }} />
+      <CurrencyLogo alt="" currency={token} size={'16px'} style={{ marginRight: '4px' }} />
       <TYPE.body>{apr}%</TYPE.body>
     </AutoRow>
   )
