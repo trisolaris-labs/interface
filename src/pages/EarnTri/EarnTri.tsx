@@ -55,7 +55,6 @@ export default function EarnTri({
                 <MemoizedPoolCardTRI
                   key={farm.ID}
                   apr={farm.apr}
-                  apr2={farm.apr2}
                   nonTriAPRs={farm.nonTriAPRs}
                   chefVersion={farm.chefVersion}
                   isPeriodFinished={farm.isPeriodFinished}
@@ -85,7 +84,6 @@ export default function EarnTri({
             <MemoizedPoolCardTRI
               key={farm.ID}
               apr={farm.apr}
-              apr2={farm.apr2}
               nonTriAPRs={farm.nonTriAPRs}
               chefVersion={farm.chefVersion}
               isPeriodFinished={farm.isPeriodFinished}
@@ -113,7 +111,6 @@ export default function EarnTri({
                 <MemoizedPoolCardTRI
                   key={farm.ID}
                   apr={farm.apr}
-                  apr2={farm.apr2}
                   nonTriAPRs={farm.nonTriAPRs}
                   chefVersion={farm.chefVersion}
                   isPeriodFinished={farm.isPeriodFinished}
@@ -141,7 +138,6 @@ export default function EarnTri({
               <MemoizedPoolCardTRI
                 key={farm.ID}
                 apr={farm.apr}
-                apr2={farm.apr2}
                 nonTriAPRs={farm.nonTriAPRs}
                 chefVersion={farm.chefVersion}
                 isLegacy={true}

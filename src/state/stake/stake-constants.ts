@@ -65,7 +65,6 @@ export type StakingTriFarms = {
   // equivalent to percent of total supply * reward rate
   rewardRate: TokenAmount
   apr: number
-  apr2: number
   nonTriAPRs: NonTriAPR[]
   chefVersion: ChefVersions
   doubleRewards: boolean
@@ -84,7 +83,6 @@ export interface ExternalInfo {
   totalRewardRate: number
   allocPoint: number
   apr: number
-  apr2: number
   nonTriAPRs: NonTriAPR[]
 }
 
@@ -112,7 +110,6 @@ const NULL_POOL: StakingTri = {
   totalRewardRate: 1,
   rewardRate: dummyAmount,
   apr: 0,
-  apr2: 0,
   nonTriAPRs: [],
   chefVersion: ChefVersions.V1,
   doubleRewards: false,

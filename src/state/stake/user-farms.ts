@@ -72,7 +72,7 @@ export function useSingleFarm(version: number): StakingTri {
       JSBI.BigInt(earnedComplexRewardPool)
     )
 
-    const { totalStakedInUSD, totalRewardRate, apr, apr2 } = stakingInfoData[version]
+    const { totalStakedInUSD, totalRewardRate, apr } = stakingInfoData[version]
 
     return {
       ...activeFarms[version],
@@ -86,7 +86,6 @@ export function useSingleFarm(version: number): StakingTri {
       totalRewardRate: Math.round(totalRewardRate),
       rewardRate: tokenAmount,
       apr: Math.round(apr),
-      apr2: Math.round(apr2),
       chefVersion
     }
   }, [chainId, userInfo, pendingTri, pendingComplexRewards, pairState, tokens, tokenA, tokenB, latestBlock])
