@@ -64,7 +64,7 @@ export function useSingleStableFarm(version: number, stableSwapPoolName: StableS
       JSBI.BigInt(earnedComplexRewardPool)
     )
 
-    const { totalStakedInUSD, totalRewardRate, apr, apr2 } = stakingInfoData[version]
+    const { totalStakedInUSD, totalRewardRate, apr, nonTriAPRs } = stakingInfoData[version]
 
     return {
       ...activeFarms[version],
@@ -77,7 +77,7 @@ export function useSingleStableFarm(version: number, stableSwapPoolName: StableS
       totalRewardRate: Math.round(totalRewardRate),
       rewardRate: tokenAmount,
       apr: Math.round(apr),
-      apr2: Math.round(apr2),
+      nonTriAPRs: nonTriAPRs.map(data => ({ ...data, apr: Math.round(data.apr) })),
       chefVersion
     }
   }, [

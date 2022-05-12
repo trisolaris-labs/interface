@@ -33,7 +33,6 @@ import PoolCardTriRewardText from './PoolCardTriRewardText'
 
 export type PoolCardTriProps = {
   apr: number
-  apr2: number
   doubleRewards: boolean
   chefVersion: ChefVersions
   inStaging: boolean
