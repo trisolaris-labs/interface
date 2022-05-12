@@ -61,7 +61,7 @@ export function useFarmsAPI(): StakingTriFarms[] {
       noTriRewards,
       doubleRewardToken,
       stableSwapPoolName,
-      nonTriAPRs
+      nonTriAPRs: nonTriAPRs.map(data => ({ ...data, apr: Math.round(data.apr) }))
     }
   })
 
