@@ -1,43 +1,36 @@
 import { ChainId, JSBI, TokenAmount } from '@trisolaris/sdk'
 import { TRI } from '../../constants/tokens'
-import { useComplexRewarderContract, useMasterChefV2ContractForVersion } from './hooks-sushi'
-import { STAKING, StakingTri, tokenAmount, ChefVersions } from './stake-constants'
+import { useMasterChefV2ContractForVersion } from './hooks-sushi'
+import { STAKING, StakingTri, tokenAmount } from './stake-constants'
 import { useSingleCallResult } from '../../state/multicall/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { useFetchStakingInfoData } from '../../fetchers/farms'
 import { useMemo } from 'react'
-import { useBlockNumber } from '../application/hooks'
 import { StableSwapPoolName } from '../stableswap/constants'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
+import useGetNonTriRewardsForPoolID from './useGetNonTriRewardsForPoolID'
 
 // gets the staking info from the network for the active chain id
 export function useSingleStableFarm(version: number, stableSwapPoolName: StableSwapPoolName): StakingTri {
   const { chainId, account } = useActiveWeb3React()
-  const latestBlock = useBlockNumber()
   const activeFarms = STAKING[chainId ?? ChainId.AURORA]
-  const { chefVersion, poolId, rewarderAddress } = activeFarms[version]
+  const { chefVersion, poolId } = activeFarms[version]
 
   const stakingInfoData = useFetchStakingInfoData()
-  const complexRewarderContract = useComplexRewarderContract(rewarderAddress)
 
   const v1args = [poolId.toString(), account?.toString()]
-  const v2args = [poolId.toString(), account?.toString(), '0']
 
   const contract = useMasterChefV2ContractForVersion(chefVersion)
 
   const pendingTri = useSingleCallResult(contract, 'pendingTri', v1args) //user related
   const userInfo = useSingleCallResult(contract, 'userInfo', v1args) //user related
-  const pendingComplexRewards = useSingleCallResult(
-    chefVersion === ChefVersions.V2 ? complexRewarderContract : null,
-    'pendingTokens',
-    v2args
-  )
+  const earnedNonTriRewards = useGetNonTriRewardsForPoolID(version)
   // get all the info from the staking rewards contracts
   const [stablePoolData] = useStablePoolsData(stableSwapPoolName)
 
   const result = useMemo(() => {
     // Loading
-    if (chainId == null || userInfo?.loading || pendingTri?.loading || pendingComplexRewards?.loading) {
+    if (chainId == null || userInfo?.loading || pendingTri?.loading || earnedNonTriRewards?.loading) {
       return activeFarms[version]
     }
 
@@ -46,7 +39,7 @@ export function useSingleStableFarm(version: number, stableSwapPoolName: StableS
       stablePoolData == null ||
       stablePoolData?.lpToken == null ||
       userInfo.error ||
-      pendingComplexRewards.error ||
+      earnedNonTriRewards.error ||
       pendingTri.error ||
       stakingInfoData?.[version] == null
     ) {
@@ -55,14 +48,9 @@ export function useSingleStableFarm(version: number, stableSwapPoolName: StableS
     }
     const userInfoPool = JSBI.BigInt(userInfo.result?.['amount'] ?? 0)
     const earnedRewardPool = JSBI.BigInt(pendingTri.result?.[0] ?? 0)
-    const earnedComplexRewardPool = JSBI.BigInt(pendingComplexRewards.result?.rewardAmounts?.[0] ?? 0)
 
     const stakedAmount = new TokenAmount(stablePoolData.lpToken, JSBI.BigInt(userInfoPool))
     const earnedAmount = new TokenAmount(TRI[ChainId.AURORA], JSBI.BigInt(earnedRewardPool))
-    const earnedComplexAmount = new TokenAmount(
-      activeFarms[version].doubleRewardToken,
-      JSBI.BigInt(earnedComplexRewardPool)
-    )
 
     const { totalStakedInUSD, totalRewardRate, apr, nonTriAPRs } = stakingInfoData[version]
 
@@ -70,7 +58,6 @@ export function useSingleStableFarm(version: number, stableSwapPoolName: StableS
       ...activeFarms[version],
       isPeriodFinished: false,
       earnedAmount: earnedAmount,
-      doubleRewardAmount: earnedComplexAmount,
       stakedAmount,
       totalStakedAmount: tokenAmount,
       totalStakedInUSD: Math.round(totalStakedInUSD),
@@ -78,6 +65,7 @@ export function useSingleStableFarm(version: number, stableSwapPoolName: StableS
       rewardRate: tokenAmount,
       apr: Math.round(apr),
       nonTriAPRs: nonTriAPRs.map(data => ({ ...data, apr: Math.round(data.apr) })),
+      earnedNonTriRewards: earnedNonTriRewards.result,
       chefVersion
     }
   }, [
@@ -88,9 +76,9 @@ export function useSingleStableFarm(version: number, stableSwapPoolName: StableS
     pendingTri?.loading,
     pendingTri.error,
     pendingTri.result,
-    pendingComplexRewards?.loading,
-    pendingComplexRewards.error,
-    pendingComplexRewards.result?.rewardAmounts,
+    earnedNonTriRewards?.loading,
+    earnedNonTriRewards.error,
+    earnedNonTriRewards.result,
     stablePoolData,
     stakingInfoData,
     version,

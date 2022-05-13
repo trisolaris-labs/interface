@@ -32,10 +32,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
   const addTransaction = useTransactionAdder()
   const [hash, setHash] = useState<string | undefined>()
   const [attempting, setAttempting] = useState(false)
-  const chefVersion = stakingInfo.chefVersion
-  const doubleRewardsOn = stakingInfo.doubleRewards
-  const doubleRewardToken = stakingInfo.doubleRewardToken
-  const noTriRewards = stakingInfo.noTriRewards
+  const { chefVersion, earnedNonTriRewards, noTriRewards, poolId } = stakingInfo
 
   function wrappedOnDismiss() {
     setHash(undefined)
@@ -47,11 +44,11 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
   const stakingContractv2 = useMasterChefV2Contract()
 
   async function onClaimReward() {
-    if (stakingInfo.chefVersion == 0) {
+    if (chefVersion == 0) {
       if (stakingContract && stakingInfo?.stakedAmount) {
         setAttempting(true)
         await stakingContract
-          .harvest(stakingInfo.poolId)
+          .harvest(poolId)
           .then((response: TransactionResponse) => {
             addTransaction(response, {
               summary: t('earn.claimAccumulated')
@@ -67,7 +64,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
       if (stakingContractv2 && stakingInfo?.stakedAmount) {
         setAttempting(true)
         await stakingContractv2
-          .harvest(stakingInfo.poolId, account)
+          .harvest(poolId, account)
           .then((response: TransactionResponse) => {
             addTransaction(response, {
               summary: t('earn.claimAccumulated')

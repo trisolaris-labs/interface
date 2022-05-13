@@ -42,6 +42,7 @@ export enum ChefVersions {
 
 export type StakingTri = StakingTriStakedAmounts & StakingTriFarms
 export type NonTriAPR = { address: string; apr: number }
+export type EarnedNonTriRewards = { token: Token; amount: TokenAmount }
 export type StakingTriStakedAmounts = {
   ID: number
   stakedAmount: TokenAmount | null
@@ -55,7 +56,6 @@ export type StakingTriFarms = {
   rewarderAddress: string
   isPeriodFinished: boolean
   earnedAmount: TokenAmount
-  doubleRewardAmount: TokenAmount
   totalStakedAmount: TokenAmount
   totalStakedInUSD: number
   allocPoint: number
@@ -66,11 +66,11 @@ export type StakingTriFarms = {
   rewardRate: TokenAmount
   apr: number
   nonTriAPRs: NonTriAPR[]
+  earnedNonTriRewards: EarnedNonTriRewards[]
   chefVersion: ChefVersions
   doubleRewards: boolean
   inStaging: boolean
   noTriRewards: boolean
-  doubleRewardToken: Token
   stableSwapPoolName: StableSwapPoolName | null
 }
 
@@ -103,7 +103,6 @@ const NULL_POOL: StakingTri = {
   isPeriodFinished: false,
   stakedAmount: dummyAmount,
   earnedAmount: dummyAmount,
-  doubleRewardAmount: dummyAmount,
   totalStakedAmount: dummyAmount,
   totalStakedInUSD: 0,
   allocPoint: 0,
@@ -115,7 +114,6 @@ const NULL_POOL: StakingTri = {
   doubleRewards: false,
   inStaging: false,
   noTriRewards: false,
-  doubleRewardToken: dummyToken,
   stableSwapPoolName: null
 }
 const NULL_POOLS = [NULL_POOL]
@@ -240,8 +238,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x5eeC60F348cB1D661E4A5122CF4638c7DB7A886e',
     rewarderAddress: '0x94669d7a170bfe62FAc297061663e0B48C63B9B5',
     allocPoint: 1,
-    doubleRewards: true,
-    doubleRewardToken: AURORA[ChainId.AURORA]
+    doubleRewards: true
   }),
   createMCV2Pool({
     ID: 8,
@@ -250,8 +247,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xd1654a7713617d41A8C9530Fb9B948d00e162194',
     rewarderAddress: '0x78EdEeFdF8c3ad827228d07018578E89Cf159Df1',
     allocPoint: 1,
-    doubleRewards: true,
-    doubleRewardToken: AURORA[ChainId.AURORA]
+    doubleRewards: true
   }),
   createMCV2Pool({
     ID: 9,
@@ -260,8 +256,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xdF8CbF89ad9b7dAFdd3e37acEc539eEcC8c47914',
     rewarderAddress: '0x89F6628927fdFA2592E016Ba5B14389a4b08D681',
     allocPoint: 1,
-    doubleRewards: false,
-    doubleRewardToken: ATLUNA[ChainId.AURORA]
+    doubleRewards: false
   }),
   createMCV2Pool({
     ID: 10,
@@ -270,8 +265,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xa9eded3E339b9cd92bB6DEF5c5379d678131fF90',
     rewarderAddress: '0x17d1597ec86fD6aecbfE0F32Ab2F2aD9c37E6750',
     allocPoint: 1,
-    doubleRewards: false,
-    doubleRewardToken: ATLUNA[ChainId.AURORA]
+    doubleRewards: false
   }),
   createMCV2Pool({
     ID: 11,
@@ -308,8 +302,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x48887cEEA1b8AD328d5254BeF774Be91B90FaA09',
     rewarderAddress: '0x42b950FB4dd822ef04C4388450726EFbF1C3CF63',
     allocPoint: 1,
-    doubleRewards: true,
-    doubleRewardToken: FLX[ChainId.AURORA]
+    doubleRewards: true
   }),
   createMCV2Pool({
     ID: 16,
@@ -318,8 +311,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xd62f9ec4C4d323A0C111d5e78b77eA33A2AA862f',
     rewarderAddress: '0x9847F7e33CCbC0542b05d15c5cf3aE2Ae092C057',
     allocPoint: 1,
-    noTriRewards: true,
-    doubleRewardToken: MECHA[ChainId.AURORA]
+    noTriRewards: true
   }),
   createMCV2Pool({
     ID: 17,
@@ -328,8 +320,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xdDAdf88b007B95fEb42DDbd110034C9a8e9746F2',
     rewarderAddress: '0xbbE41F699B0fB747cd4bA21067F6b27e0698Bc30',
     allocPoint: 1,
-    noTriRewards: true,
-    doubleRewardToken: SOLACE[ChainId.AURORA]
+    noTriRewards: true
   }),
   createMCV2Pool({
     ID: 18,
@@ -338,8 +329,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x5913f644A10d98c79F2e0b609988640187256373',
     rewarderAddress: '0x7B9e31BbEdbfdc99e3CC8b879b9a3B1e379Ce530',
     allocPoint: 1,
-    doubleRewards: true,
-    doubleRewardToken: META[ChainId.AURORA]
+    doubleRewards: true
   }),
   createMCV2Pool({
     ID: 19,
@@ -348,8 +338,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x47924Ae4968832984F4091EEC537dfF5c38948a4',
     rewarderAddress: '0xf267212F1D8888e0eD20BbB0c7C87A089cDe6E88',
     allocPoint: 1,
-    doubleRewards: true,
-    doubleRewardToken: META[ChainId.AURORA]
+    doubleRewards: true
   }),
   createMCV2Pool({
     ID: 20,
@@ -358,8 +347,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xb419ff9221039Bdca7bb92A131DD9CF7DEb9b8e5',
     rewarderAddress: '0xb84293D04137c9061afe34118Dac9931df153826',
     allocPoint: 1,
-    noTriRewards: true,
-    doubleRewardToken: XNL[ChainId.AURORA]
+    noTriRewards: true
   }),
   createMCV2Pool({
     ID: 21,
@@ -368,8 +356,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xFBc4C42159A5575a772BebA7E3BF91DB508E127a',
     rewarderAddress: '0x028Fbc4BB5787e340524EF41d95875Ac2C382101',
     allocPoint: 1,
-    noTriRewards: true,
-    doubleRewardToken: XNL[ChainId.AURORA]
+    noTriRewards: true
   }),
   createMCV2Pool({
     ID: 22,
@@ -378,8 +365,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x7B273238C6DD0453C160f305df35c350a123E505',
     rewarderAddress: '0xDAc58A615E2A1a94D7fb726a96C273c057997D50',
     allocPoint: 1,
-    noTriRewards: true,
-    doubleRewardToken: GBA[ChainId.AURORA]
+    noTriRewards: true
   }),
   createMCV2Pool({
     ID: 23,
@@ -390,8 +376,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true,
-    doubleRewardToken: WNEAR[ChainId.AURORA]
+    doubleRewards: true
   }),
   createMCV2Pool({
     ID: 24,
@@ -401,8 +386,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0xABE01A6b6922130C982E221681EB4C4aD07A21dA',
     allocPoint: 1,
     noTriRewards: true,
-    inStaging: false,
-    doubleRewardToken: BBT[ChainId.AURORA]
+    inStaging: false
   }),
   // Needed to add the this pool due to some functions and features breaking when jumping from ID 24 to 26.
   // TODO:  Will be replaced by stable farm pool in stable farms PR.
@@ -436,8 +420,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true,
-    doubleRewardToken: ROSE[ChainId.AURORA]
+    doubleRewards: true
   }),
   createMCV2Pool({
     ID: 28,
@@ -448,8 +431,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true,
-    doubleRewardToken: ROSE[ChainId.AURORA]
+    doubleRewards: true
   }),
   createMCV2Pool({
     ID: 29,
@@ -460,8 +442,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true,
-    doubleRewardToken: LINEAR[ChainId.AURORA]
+    doubleRewards: true
   }),
   createMCV2Pool({
     ID: 30,
@@ -472,8 +453,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true,
-    doubleRewardToken: BSTN[ChainId.AURORA]
+    doubleRewards: true
   }),
   createMCV2Pool({
     ID: 31,
@@ -484,8 +464,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true,
-    doubleRewardToken: AURORA[ChainId.AURORA]
+    doubleRewards: true
   }),
   createMCV2Pool({
     ID: 32,
@@ -496,8 +475,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true,
-    doubleRewardToken: AURORA[ChainId.AURORA]
+    doubleRewards: true
   }),
   createMCV2Pool({
     ID: 33,
@@ -508,8 +486,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true,
-    doubleRewardToken: AURORA[ChainId.AURORA]
+    doubleRewards: true
   }),
   createMCV2Pool({
     ID: 34,
@@ -520,8 +497,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: true,
     inStaging: false,
-    doubleRewards: false,
-    doubleRewardToken: KSW[ChainId.AURORA]
+    doubleRewards: false
   })
 ]
 
