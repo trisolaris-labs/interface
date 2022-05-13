@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Modal from '../Modal'
 import { AutoColumn } from '../Column'
 import styled from 'styled-components'
-import { RowBetween } from '../Row'
+import { AutoRow, RowBetween } from '../Row'
 import { TYPE, CloseIcon } from '../../theme'
 import { ButtonError } from '../Button'
 import { SubmittedView, LoadingView } from '../ModalViews'
@@ -13,8 +13,7 @@ import FormattedCurrencyAmount from '../FormattedCurrencyAmount'
 import { useActiveWeb3React } from '../../hooks'
 import { useTranslation } from 'react-i18next'
 import { StakingTri } from '../../state/stake/stake-constants'
-import { parseUnits } from '@ethersproject/units'
-import { CurrencyAmount } from '@trisolaris/sdk'
+import { BIG_INT_ZERO } from '../../constants'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -44,17 +43,14 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
 
   const stakingContract = useMasterChefContract()
   const stakingContractv2 = useMasterChefV2Contract()
-  const chefVersion = stakingInfo.chefVersion
-  const doubleRewardsOn = stakingInfo.doubleRewards
-  const doubleRewardToken = stakingInfo.doubleRewardToken
-  const noTriRewards = stakingInfo.noTriRewards
+  const { chefVersion, earnedAmount, earnedNonTriRewards, noTriRewards, poolId, stakedAmount } = stakingInfo
 
   async function onWithdraw() {
-    if (stakingInfo.chefVersion == 0) {
-      if (stakingContract && stakingInfo?.stakedAmount) {
+    if (chefVersion == 0) {
+      if (stakingContract && stakedAmount != null) {
         setAttempting(true)
         await stakingContract
-          .withdraw(stakingInfo.poolId, stakingInfo.stakedAmount.raw.toString())
+          .withdraw(poolId, stakedAmount?.raw.toString())
           .then((response: TransactionResponse) => {
             addTransaction(response, {
               summary: t('earn.withdrawDepositedLiquidity')
@@ -67,10 +63,10 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
           })
       }
     } else {
-      if (stakingContractv2 && stakingInfo?.stakedAmount) {
+      if (stakingContractv2 && stakedAmount != null) {
         setAttempting(true)
         await stakingContractv2
-          .withdrawAndHarvest(stakingInfo.poolId, stakingInfo.stakedAmount.raw.toString(), account)
+          .withdrawAndHarvest(poolId, stakedAmount?.raw.toString(), account)
           .then((response: TransactionResponse) => {
             addTransaction(response, {
               summary: t('earn.withdrawDepositedLiquidity')
@@ -101,34 +97,42 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
             <TYPE.mediumHeader>Withdraw</TYPE.mediumHeader>
             <CloseIcon onClick={wrappedOndismiss} />
           </RowBetween>
-          {stakingInfo?.stakedAmount && (
+          {stakedAmount && (
             <AutoColumn justify="center" gap="md">
               <TYPE.body fontWeight={600} fontSize={36}>
-                {<FormattedCurrencyAmount currencyAmount={stakingInfo.stakedAmount} />}
+                {<FormattedCurrencyAmount currencyAmount={stakedAmount} />}
               </TYPE.body>
               <TYPE.body>{t('earn.depositedPglLiquidity')}</TYPE.body>
             </AutoColumn>
           )}
-          {stakingInfo?.earnedAmount && (
+          {earnedAmount && (
             <AutoColumn justify="center" gap="md">
               <TYPE.body fontWeight={600} fontSize={36}>
-                {<FormattedCurrencyAmount currencyAmount={stakingInfo?.earnedAmount} />}
+                {<FormattedCurrencyAmount currencyAmount={earnedAmount} />}
               </TYPE.body>
               <TYPE.body>{t('earn.unclaimed')}</TYPE.body>
             </AutoColumn>
           )}
-          {chefVersion == 1 && (doubleRewardsOn || noTriRewards) && (
+          {chefVersion == 1 && (earnedNonTriRewards.length > 0 || noTriRewards) && (
             <AutoColumn justify="center" gap="md">
-              <TYPE.body fontWeight={600} fontSize={36}>
-                {<FormattedCurrencyAmount currencyAmount={stakingInfo?.doubleRewardAmount} />}
-              </TYPE.body>
-              <TYPE.body>
-                {'Unclaimed'} {doubleRewardToken.symbol}
-              </TYPE.body>
+              <AutoRow justify="center">
+                {earnedNonTriRewards
+                  .filter(({ amount }) => amount.greaterThan(BIG_INT_ZERO))
+                  .map(({ amount, token }) => (
+                    <AutoColumn justify="center" gap="md" key={token.address}>
+                      <TYPE.body fontWeight={600} fontSize={36}>
+                        {<FormattedCurrencyAmount currencyAmount={amount} />}
+                      </TYPE.body>
+                      <TYPE.body>
+                        {'Unclaimed'} {token.symbol}
+                      </TYPE.body>
+                    </AutoColumn>
+                  ))}
+              </AutoRow>
             </AutoColumn>
           )}
           <TYPE.subHeader style={{ textAlign: 'center' }}>{t('earn.whenYouWithdrawWarning')}</TYPE.subHeader>
-          <ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onWithdraw}>
+          <ButtonError disabled={!!error} error={!!error && !!stakedAmount} onClick={onWithdraw}>
             {error ?? t('earn.withdrawAndClaim')}
           </ButtonError>
         </ContentWrapper>
@@ -136,15 +140,15 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
       {attempting && !hash && (
         <LoadingView onDismiss={wrappedOndismiss}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.body fontSize={20}>
-              {t('earn.withdrawingPgl', { amount: stakingInfo?.stakedAmount?.toSignificant(4) })}
-            </TYPE.body>
-            <TYPE.body fontSize={20}>
-              {t('earn.claimingPng', { amount: stakingInfo?.earnedAmount?.toSignificant(4) })}
-            </TYPE.body>
-            {chefVersion == 1 && (doubleRewardsOn || noTriRewards) && (
+            <TYPE.body fontSize={20}>{t('earn.withdrawingPgl', { amount: stakedAmount?.toSignificant(4) })}</TYPE.body>
+            <TYPE.body fontSize={20}>{t('earn.claimingPng', { amount: earnedAmount?.toSignificant(4) })}</TYPE.body>
+            {chefVersion == 1 && (earnedNonTriRewards.length > 0 || noTriRewards) && (
               <TYPE.body fontSize={20}>
-                {'Claiming'} {stakingInfo?.doubleRewardAmount?.toSignificant(4)} {doubleRewardToken.symbol}
+                {'Claiming'}{' '}
+                {earnedNonTriRewards
+                  .filter(({ amount }) => amount.greaterThan(BIG_INT_ZERO))
+                  .map(({ amount, token }) => `${amount.toSignificant(4)} ${token.symbol}`)
+                  .join(', ')}
               </TYPE.body>
             )}
           </AutoColumn>

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import { AutoColumn } from '../../components/Column'
@@ -17,7 +17,6 @@ import { useWalletModalToggle } from '../../state/application/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { useColorForToken } from '../../hooks/useColor'
-import { useSingleFarm } from '../../state/stake/user-farms'
 import useUserFarmStatistics from '../../state/stake/useUserFarmStatistics'
 import useTLP from '../../hooks/useTLP'
 
@@ -52,8 +51,6 @@ export default function ManageImpl({
 
   const {
     chefVersion,
-    doubleRewards,
-    doubleRewardAmount,
     earnedAmount,
     inStaging,
     noTriRewards,
@@ -62,7 +59,8 @@ export default function ManageImpl({
     tokens: _tokens,
     totalRewardRate,
     totalStakedInUSD,
-    doubleRewardToken
+    earnedNonTriRewards,
+    hasNonTriRewards
   } = stakingInfo
   const isDualRewards = chefVersion === ChefVersions.V2
 
@@ -236,9 +234,13 @@ export default function ManageImpl({
             <AutoColumn gap="sm">
               <RowBetween>
                 {!noTriRewards ? <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black> : null}
-                {(isDualRewards && doubleRewards) || noTriRewards ? (
+                {(isDualRewards && hasNonTriRewards) || noTriRewards ? (
                   <TYPE.black>
-                    {t('earnPage.unclaimed')} {doubleRewardToken.symbol}
+                    {t('earnPage.unclaimed')}{' '}
+                    {earnedNonTriRewards
+                      .filter(({ amount }) => amount.greaterThan(BIG_INT_ZERO))
+                      .map(({ amount, token }) => `${amount.toSignificant(4)} ${token.symbol}`)
+                      .join(', ')}
                   </TYPE.black>
                 ) : null}
               </RowBetween>
@@ -251,14 +253,18 @@ export default function ManageImpl({
                     />
                   </TYPE.largeHeader>
                 ) : null}
-                {(isDualRewards && doubleRewards) || noTriRewards ? (
-                  <TYPE.largeHeader fontSize={36} fontWeight={600}>
-                    <CountUp
-                      enabled={doubleRewardAmount?.greaterThan(BIG_INT_ZERO)}
-                      value={parseFloat(doubleRewardAmount?.toFixed(6) ?? '0')}
-                    />
-                  </TYPE.largeHeader>
-                ) : null}
+                {(isDualRewards && hasNonTriRewards) || noTriRewards
+                  ? earnedNonTriRewards
+                      .filter(({ amount }) => amount.greaterThan(BIG_INT_ZERO))
+                      .map(({ amount, token }) => (
+                        <TYPE.largeHeader fontSize={36} fontWeight={600} key={token.address}>
+                          <CountUp
+                            enabled={amount?.greaterThan(BIG_INT_ZERO)}
+                            value={parseFloat(amount?.toFixed(6) ?? '0')}
+                          />
+                        </TYPE.largeHeader>
+                      ))
+                  : null}
               </RowBetween>
             </AutoColumn>
           </StyledBottomCard>
@@ -288,7 +294,8 @@ export default function ManageImpl({
             <ButtonPrimary
               disabled={
                 earnedAmount == null ||
-                (earnedAmount?.equalTo(BIG_INT_ZERO) && doubleRewardAmount?.equalTo(BIG_INT_ZERO))
+                (earnedAmount?.equalTo(BIG_INT_ZERO) &&
+                  !earnedNonTriRewards.some(({ amount }) => amount.greaterThan(BIG_INT_ZERO)))
               }
               padding="8px"
               borderRadius="8px"

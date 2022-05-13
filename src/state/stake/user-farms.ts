@@ -74,6 +74,7 @@ export function useSingleFarm(version: number): StakingTri {
       apr: Math.round(apr),
       nonTriAPRs: nonTriAPRs.map(data => ({ ...data, apr: Math.round(data.apr) })),
       earnedNonTriRewards: earnedNonTriRewards.result,
+      hasNonTriRewards: nonTriAPRs.length > 0,
       chefVersion
     }
   }, [

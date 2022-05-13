@@ -37,10 +37,9 @@ export default function EarnTri({ stablePoolsOrder }: { stablePoolsOrder: number
                 stableSwapPoolName={farm.stableSwapPoolName}
                 totalStakedInUSD={farm.totalStakedInUSD}
                 version={farm.ID}
-                doubleRewards={farm.doubleRewards}
+                hasNonTriRewards={farm.hasNonTriRewards}
                 inStaging={farm.inStaging}
                 noTriRewards={farm.noTriRewards}
-                doubleRewardToken={farm.doubleRewardToken}
                 isStaking={isTokenAmountPositive(farm.stakedAmount)}
               />
             )

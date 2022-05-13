@@ -42,7 +42,7 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs }: Pr
   const tooltipData = useMemo(
     () =>
       [{ token: TRI[ChainId.AURORA], apr }].concat(
-        nonTriAPRs?.map(({ address, apr }) => ({
+        nonTriAPRs.map(({ address, apr }) => ({
           token: getTokenByAddress(address),
           apr
         })) ?? []
@@ -76,10 +76,10 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs }: Pr
   }
 
   const hasTriRewards = apr !== 0
-  const hasNonTriRewards = nonTriAPRs?.some(({ apr }) => apr > 0)
+  const hasNonTriRewards = nonTriAPRs.length > 0
   const hasOnlyTriRewards = hasTriRewards && !hasNonTriRewards
   const hasOnlyNonTriRewards = !hasTriRewards && hasNonTriRewards
-  const hasMultipleNonTriRewards = hasNonTriRewards && Number(nonTriAPRs?.length) > 1
+  const hasMultipleNonTriRewards = nonTriAPRs.length > 1
   const hasNoRewards = !hasTriRewards && !hasNonTriRewards
 
   if (hasNoRewards) {

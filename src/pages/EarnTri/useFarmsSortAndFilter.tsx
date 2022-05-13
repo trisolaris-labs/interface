@@ -60,8 +60,8 @@ export default function useFarmsSortAndFilter({ poolsOrder, legacyPoolsOrder }: 
         )
     }
   }, [allFarmArrs, farmArrs, isSortDescending, poolsOrder, sortBy])
-  const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards && !farm.noTriRewards)
-  const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards)
+  const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.hasNonTriRewards && !farm.noTriRewards)
+  const dualRewardPools = farmArrsInOrder.filter(farm => farm.hasNonTriRewards && !farm.noTriRewards)
 
   const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(nonDualRewardPools)
 

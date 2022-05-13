@@ -47,7 +47,7 @@ export function useFarmsPortfolio(farmIds?: number[]): Result | null {
     poolId: farm.poolId,
     rewarderAddress: farm.rewarderAddress,
     v1args: [farm.poolId.toString(), account],
-    doubleRewardToken: activeFarms[farm.ID].doubleRewardToken
+    nonTriRewardTokens: activeFarms[farm.ID].earnedNonTriRewards.map(({ token }) => token)
   }))
 
   const v1Farms = farms.filter(farm => farm.chefVersion === ChefVersions.V1)
@@ -80,16 +80,20 @@ export function useFarmsPortfolio(farmIds?: number[]): Result | null {
 
   const complexRewardsLoading = callResultIsLoading(pendingComplexRewards)
 
-  const mapDoubleRewardToken = (addressToSearch: string) => {
-    const farm = v2Farms.find(farm => farm.doubleRewardToken.address === addressToSearch)
-    return farm?.doubleRewardToken
-  }
+  const rewardTokenMap = v2Farms.reduce(
+    (map, farm) =>
+      farm.nonTriRewardTokens.reduce((acc, token) => {
+        acc[token.address] = token
+        return acc
+      }, map),
+    {} as { [address: string]: Token }
+  )
 
   const earnedComplexRewardPool =
     pendingComplexRewards.length && !complexRewardsLoading
       ? pendingComplexRewards.map(farmData => ({
           rewardAmount: JSBI.BigInt(farmData?.result?.rewardAmounts?.[0] ?? 0),
-          rewardToken: mapDoubleRewardToken(farmData?.result?.rewardTokens[0]) ?? dummyToken
+          rewardToken: rewardTokenMap[farmData?.result?.rewardTokens[0]] ?? dummyToken
         }))
       : null
 

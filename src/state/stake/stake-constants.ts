@@ -68,7 +68,7 @@ export type StakingTriFarms = {
   nonTriAPRs: NonTriAPR[]
   earnedNonTriRewards: EarnedNonTriRewards[]
   chefVersion: ChefVersions
-  doubleRewards: boolean
+  hasNonTriRewards: boolean
   inStaging: boolean
   noTriRewards: boolean
   stableSwapPoolName: StableSwapPoolName | null
@@ -111,9 +111,10 @@ const NULL_POOL: StakingTri = {
   apr: 0,
   nonTriAPRs: [],
   chefVersion: ChefVersions.V1,
-  doubleRewards: false,
+  hasNonTriRewards: false,
   inStaging: false,
   noTriRewards: false,
+  earnedNonTriRewards: [],
   stableSwapPoolName: null
 }
 const NULL_POOLS = [NULL_POOL]
@@ -238,7 +239,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x5eeC60F348cB1D661E4A5122CF4638c7DB7A886e',
     rewarderAddress: '0x94669d7a170bfe62FAc297061663e0B48C63B9B5',
     allocPoint: 1,
-    doubleRewards: true
+    hasNonTriRewards: true
   }),
   createMCV2Pool({
     ID: 8,
@@ -247,7 +248,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xd1654a7713617d41A8C9530Fb9B948d00e162194',
     rewarderAddress: '0x78EdEeFdF8c3ad827228d07018578E89Cf159Df1',
     allocPoint: 1,
-    doubleRewards: true
+    hasNonTriRewards: true
   }),
   createMCV2Pool({
     ID: 9,
@@ -256,7 +257,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xdF8CbF89ad9b7dAFdd3e37acEc539eEcC8c47914',
     rewarderAddress: '0x89F6628927fdFA2592E016Ba5B14389a4b08D681',
     allocPoint: 1,
-    doubleRewards: false
+    hasNonTriRewards: false
   }),
   createMCV2Pool({
     ID: 10,
@@ -265,7 +266,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xa9eded3E339b9cd92bB6DEF5c5379d678131fF90',
     rewarderAddress: '0x17d1597ec86fD6aecbfE0F32Ab2F2aD9c37E6750',
     allocPoint: 1,
-    doubleRewards: false
+    hasNonTriRewards: false
   }),
   createMCV2Pool({
     ID: 11,
@@ -302,7 +303,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x48887cEEA1b8AD328d5254BeF774Be91B90FaA09',
     rewarderAddress: '0x42b950FB4dd822ef04C4388450726EFbF1C3CF63',
     allocPoint: 1,
-    doubleRewards: true
+    hasNonTriRewards: true
   }),
   createMCV2Pool({
     ID: 16,
@@ -329,7 +330,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x5913f644A10d98c79F2e0b609988640187256373',
     rewarderAddress: '0x7B9e31BbEdbfdc99e3CC8b879b9a3B1e379Ce530',
     allocPoint: 1,
-    doubleRewards: true
+    hasNonTriRewards: true
   }),
   createMCV2Pool({
     ID: 19,
@@ -338,7 +339,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x47924Ae4968832984F4091EEC537dfF5c38948a4',
     rewarderAddress: '0xf267212F1D8888e0eD20BbB0c7C87A089cDe6E88',
     allocPoint: 1,
-    doubleRewards: true
+    hasNonTriRewards: true
   }),
   createMCV2Pool({
     ID: 20,
@@ -376,7 +377,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true
+    hasNonTriRewards: true
   }),
   createMCV2Pool({
     ID: 24,
@@ -409,7 +410,7 @@ const AURORA_POOLS: StakingTri[] = [
     noTriRewards: false,
     allocPoint: 1,
     inStaging: false,
-    doubleRewards: false
+    hasNonTriRewards: false
   }),
   createMCV2Pool({
     ID: 27,
@@ -420,7 +421,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true
+    hasNonTriRewards: true
   }),
   createMCV2Pool({
     ID: 28,
@@ -431,7 +432,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true
+    hasNonTriRewards: true
   }),
   createMCV2Pool({
     ID: 29,
@@ -442,7 +443,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true
+    hasNonTriRewards: true
   }),
   createMCV2Pool({
     ID: 30,
@@ -453,7 +454,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true
+    hasNonTriRewards: true
   }),
   createMCV2Pool({
     ID: 31,
@@ -464,7 +465,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true
+    hasNonTriRewards: true
   }),
   createMCV2Pool({
     ID: 32,
@@ -475,7 +476,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true
+    hasNonTriRewards: true
   }),
   createMCV2Pool({
     ID: 33,
@@ -486,7 +487,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: false,
     inStaging: false,
-    doubleRewards: true
+    hasNonTriRewards: true
   }),
   createMCV2Pool({
     ID: 34,
@@ -497,7 +498,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     noTriRewards: true,
     inStaging: false,
-    doubleRewards: false
+    hasNonTriRewards: false
   })
 ]
 
