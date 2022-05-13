@@ -528,14 +528,11 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 28,
     tokens: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT_USN].poolTokens,
     lpAddress: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT_USN].lpToken.address,
-    rewarderAddress: '0x78391f26397A099Ec9cC346A23f856d1284cBd06',
-    doubleRewards: true,
-    doubleRewardToken: AURORA[ChainId.AURORA],
     allocPoint: 1,
     noTriRewards: false,
     inStaging: true,
     stableSwapPoolName: StableSwapPoolName.USDC_USDT_USN
-  }),
+  })
 ]
 
 export const STAKING: {
