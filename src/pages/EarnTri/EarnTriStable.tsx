@@ -3,22 +3,26 @@ import { AutoColumn } from '../../components/Column'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
 import { FarmTabs } from '../../components/NavigationTabs'
 import { useFarms } from '../../state/stake/apr'
+import { StakingTri } from '../../state/stake/stake-constants'
 import { TYPE } from '../../theme'
 import { isTokenAmountPositive } from '../../utils/pools'
 import { PoolSection, DataRow } from './EarnTri.styles'
 
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
-export default function EarnTri({ stablePoolsOrder }: { stablePoolsOrder: number[] }) {
+export default function EarnTri({
+  stablePoolsOrder,
+  stableFarms
+}: {
+  stablePoolsOrder: number[]
+  stableFarms: StakingTri[]
+}) {
   const allFarmArrs = useFarms()
   const stablePoolsOrderSet = new Set(stablePoolsOrder)
-  const stablePools = allFarmArrs.filter(({ ID }) => stablePoolsOrderSet.has(ID))
+  const stablePools = stableFarms.filter(({ ID }) => stablePoolsOrderSet.has(ID))
 
   return (
     <>
-      <AutoColumn gap="lg" style={{ width: '100%' }}>
-        <FarmTabs active="stable" />
-      </AutoColumn>
       <AutoColumn gap="lg" style={{ width: '100%' }}>
         <DataRow style={{ alignItems: 'baseline' }}>
           <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Stable Pools</TYPE.mediumHeader>

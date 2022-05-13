@@ -3,6 +3,7 @@ import { AutoColumn } from '../../components/Column'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
 import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter/EarnTriSortAndFilterContainer'
 import { FarmTabs } from '../../components/NavigationTabs'
+import { StakingTri } from '../../state/stake/stake-constants'
 import { TYPE } from '../../theme'
 import { isTokenAmountPositive } from '../../utils/pools'
 import { PoolSection, DataRow } from './EarnTri.styles'
@@ -12,38 +13,49 @@ const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
 export default function EarnTri({
   poolsOrder,
-  legacyPoolsOrder
+  legacyPoolsOrder,
+  activeFarmsFilter,
+  hasSeachQuery,
+  dualRewardPools,
+  filteredFarms,
+  nonTriFarms,
+  legacyFarms
 }: {
   poolsOrder: number[]
   legacyPoolsOrder: number[]
+  activeFarmsFilter: boolean
+  hasSeachQuery: boolean
+  dualRewardPools: StakingTri[]
+  filteredFarms: StakingTri[]
+  nonTriFarms: StakingTri[]
+  legacyFarms: StakingTri[]
 }) {
-  const {
-    activeFarmsFilter,
-    dualRewardPools,
-    filteredFarms,
-    handleSort,
-    hasSeachQuery,
-    legacyFarms,
-    nonTriFarms,
-    onInputChange,
-    isSortDescending,
-    sortBy
-  } = useFarmsSortAndFilter({
-    poolsOrder,
-    legacyPoolsOrder
-  })
+  // const {
+  //   activeFarmsFilter,
+  //   dualRewardPools,
+  //   filteredFarms,
+  //   handleSort,
+  //   hasSeachQuery,
+  //   legacyFarms,
+  //   nonTriFarms,
+  //   onInputChange,
+  //   isSortDescending,
+  //   sortBy
+  // } = useFarmsSortAndFilter({
+  //   poolsOrder,
+  //   legacyPoolsOrder
+  // })
 
   return (
     <>
       <AutoColumn gap="lg" style={{ width: '100%' }}>
-        <FarmTabs active="normal" />
-        <EarnTriSortAndFilterContainer
+        {/* <EarnTriSortAndFilterContainer
           activeFarmsFilter={activeFarmsFilter}
           handleSort={handleSort}
           isSortDescending={isSortDescending}
           onInputChange={onInputChange}
           sortBy={sortBy}
-        />
+        /> */}
         {!hasSeachQuery && !activeFarmsFilter && (
           <>
             <DataRow style={{ alignItems: 'baseline' }}>
