@@ -42,7 +42,6 @@ export default function useFarmsSortAndFilter({
   const activeFarmsFilter = useIsFilterActiveFarms()
   const allPools = poolsOrder.concat(stablePoolsOrder)
 
-  
   const [sortBy, setSortBy] = useState<SortingType>(SortingType.default)
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [isSortDescending, setIsSortDescending] = useState<boolean>(true)
@@ -68,10 +67,13 @@ export default function useFarmsSortAndFilter({
         )
     }
   }, [allFarmArrs, farmArrs, isSortDescending, allPools, sortBy])
-  const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.doubleRewards && !farm.noTriRewards)
-  const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards)
-
   const stablePoolsOrderSet = new Set(stablePoolsOrder)
+
+  const nonDualRewardPools = farmArrsInOrder.filter(
+    farm => !farm.doubleRewards && !farm.noTriRewards && !stablePoolsOrderSet.has(farm.ID)
+  )
+  const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards && !stablePoolsOrderSet.has(farm.ID))
+
   const stablePoolFarms = farmArrsInOrder.filter(({ ID }) => stablePoolsOrderSet.has(ID))
 
   const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(nonDualRewardPools)
