@@ -533,7 +533,7 @@ const AURORA_POOLS: StakingTri[] = [
     doubleRewardToken: AURORA[ChainId.AURORA],
     allocPoint: 1,
     noTriRewards: false,
-    inStaging: false,
+    inStaging: true,
     stableSwapPoolName: StableSwapPoolName.USDC_USDT_USN
   })
 ]
