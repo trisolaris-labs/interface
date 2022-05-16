@@ -217,27 +217,31 @@ export default function CurrencyInputPanel({
           >
             <Aligner>
               {tokens ? (
-                <MultipleCurrencyLogo currencies={tokens} size={24} margin={true} />
+                <>
+                  <MultipleCurrencyLogo currencies={tokens} size={24} margin={true} />
+                  <StyledTokenName className="pair-name-container">
+                    {tokens.map(({ symbol }) => symbol).join('-')}
+                  </StyledTokenName>
+                </>
               ) : pair ? (
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
+                <>
+                  <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
+                  <StyledTokenName className="pair-name-container">
+                    {pair?.token0.symbol}:{pair?.token1.symbol}
+                  </StyledTokenName>
+                </>
               ) : currency ? (
-                <CurrencyLogo currency={currency} size={'24px'} />
+                <>
+                  <CurrencyLogo currency={currency} size={'24px'} />
+                  <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                    {(currency && currency.symbol && currency.symbol.length > 20
+                      ? currency.symbol.slice(0, 4) +
+                        '...' +
+                        currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                      : currency?.symbol) || t('currencyInputPanel.selectToken')}
+                  </StyledTokenName>
+                </>
               ) : null}
-              {tokens ? (
-                tokens.map(({ symbol }) => symbol).join('-')
-              ) : pair ? (
-                <StyledTokenName className="pair-name-container">
-                  {pair?.token0.symbol}:{pair?.token1.symbol}
-                </StyledTokenName>
-              ) : (
-                <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                  {(currency && currency.symbol && currency.symbol.length > 20
-                    ? currency.symbol.slice(0, 4) +
-                      '...' +
-                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                    : currency?.symbol) || t('currencyInputPanel.selectToken')}
-                </StyledTokenName>
-              )}
               {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
             </Aligner>
           </CurrencySelect>
