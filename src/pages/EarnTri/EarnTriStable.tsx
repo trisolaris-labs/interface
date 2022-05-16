@@ -29,7 +29,7 @@ export default function EarnTri({
         </DataRow>
 
         <PoolSection>
-          {stablePools.map(farm =>
+          {stableFarms.map(farm =>
             farm.stableSwapPoolName == null ? null : (
               <MemoizedPoolCardTRI
                 key={farm.ID}
