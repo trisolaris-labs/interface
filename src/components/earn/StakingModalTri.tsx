@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next'
 import { parseUnits } from '@ethersproject/units'
 import useTLP from '../../hooks/useTLP'
 import useCurrencyInputPanel from '../CurrencyInputPanel/useCurrencyInputPanel'
+import { getPairRenderOrder } from '../../utils/pools'
 
 const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
   display: flex;
@@ -75,6 +76,10 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
     token0: stakingInfo.tokens[0],
     token1: stakingInfo.tokens[1]
   })
+
+  const { tokens } = stakingInfo
+
+  const { tokens: orderedTokens } = getPairRenderOrder(tokens)
 
   // approval data for stake
   const deadline = useTransactionDeadline()
@@ -168,6 +173,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
             disableCurrencySelect={true}
             customBalanceText={t('earn.availableToDeposit')}
             id="stake-liquidity-token"
+            tokens={orderedTokens}
           />
 
           {/* <HypotheticalRewardRate dim={!hypotheticalRewardRate.greaterThan('0')}>
