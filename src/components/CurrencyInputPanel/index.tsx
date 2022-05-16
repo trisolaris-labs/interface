@@ -110,7 +110,6 @@ interface CurrencyInputPanelProps {
   showCommonBases?: boolean
   customBalanceText?: string
   tokens?: Token[]
-  stableSwapPoolName?: StableSwapPoolName
 }
 
 export default function CurrencyInputPanel({
@@ -131,7 +130,6 @@ export default function CurrencyInputPanel({
   showCommonBases,
   customBalanceText,
   tokens,
-  stableSwapPoolName,
   ...stableSwapProps
 }: CurrencyInputPanelProps & StableSwapSearchProps & BalanceButtonProps) {
   const { t } = useTranslation()
@@ -145,36 +143,22 @@ export default function CurrencyInputPanel({
     setModalOpen(false)
   }, [setModalOpen])
 
-  const renderLogos = () => {
-    if (tokens) {
-      return <MultipleCurrencyLogo currencies={tokens} size={24} margin={true} />
-    } else {
-      return pair ? (
-        <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
-      ) : currency ? (
-        <CurrencyLogo currency={currency} size={'24px'} />
-      ) : null
-    }
-  }
-
   const renderTokenName = () => {
-    if (tokens) {
-      return tokens.map(({ symbol }) => symbol).join('-')
-    } else {
-      return pair ? (
-        <StyledTokenName className="pair-name-container">
-          {pair?.token0.symbol}:{pair?.token1.symbol}
-        </StyledTokenName>
-      ) : (
-        <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-          {(currency && currency.symbol && currency.symbol.length > 20
-            ? currency.symbol.slice(0, 4) +
-              '...' +
-              currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-            : currency?.symbol) || t('currencyInputPanel.selectToken')}
-        </StyledTokenName>
-      )
-    }
+    return tokens ? (
+      tokens.map(({ symbol }) => symbol).join('-')
+    ) : pair ? (
+      <StyledTokenName className="pair-name-container">
+        {pair?.token0.symbol}:{pair?.token1.symbol}
+      </StyledTokenName>
+    ) : (
+      <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+        {(currency && currency.symbol && currency.symbol.length > 20
+          ? currency.symbol.slice(0, 4) +
+            '...' +
+            currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+          : currency?.symbol) || t('currencyInputPanel.selectToken')}
+      </StyledTokenName>
+    )
   }
 
   return (
@@ -232,8 +216,28 @@ export default function CurrencyInputPanel({
             }}
           >
             <Aligner>
-              {renderLogos()}
-              {renderTokenName()}
+              {tokens ? (
+                <MultipleCurrencyLogo currencies={tokens} size={24} margin={true} />
+              ) : pair ? (
+                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
+              ) : currency ? (
+                <CurrencyLogo currency={currency} size={'24px'} />
+              ) : null}
+              {tokens ? (
+                tokens.map(({ symbol }) => symbol).join('-')
+              ) : pair ? (
+                <StyledTokenName className="pair-name-container">
+                  {pair?.token0.symbol}:{pair?.token1.symbol}
+                </StyledTokenName>
+              ) : (
+                <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                  {(currency && currency.symbol && currency.symbol.length > 20
+                    ? currency.symbol.slice(0, 4) +
+                      '...' +
+                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                    : currency?.symbol) || t('currencyInputPanel.selectToken')}
+                </StyledTokenName>
+              )}
               {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
             </Aligner>
           </CurrencySelect>
