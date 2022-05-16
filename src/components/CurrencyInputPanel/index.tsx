@@ -143,24 +143,6 @@ export default function CurrencyInputPanel({
     setModalOpen(false)
   }, [setModalOpen])
 
-  const renderTokenName = () => {
-    return tokens ? (
-      tokens.map(({ symbol }) => symbol).join('-')
-    ) : pair ? (
-      <StyledTokenName className="pair-name-container">
-        {pair?.token0.symbol}:{pair?.token1.symbol}
-      </StyledTokenName>
-    ) : (
-      <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-        {(currency && currency.symbol && currency.symbol.length > 20
-          ? currency.symbol.slice(0, 4) +
-            '...' +
-            currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-          : currency?.symbol) || t('currencyInputPanel.selectToken')}
-      </StyledTokenName>
-    )
-  }
-
   return (
     <InputPanel id={id}>
       <Container hideInput={hideInput}>
