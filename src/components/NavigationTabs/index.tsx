@@ -64,7 +64,7 @@ export function FarmTabs({ active }: { active: 'stable' | 'normal' }) {
         Standard Farms
       </StyledNavLink>
       <StyledNavLink id={`stable-farms-nav-link`} to={'/farm/stable'} isActive={() => active === 'stable'}>
-        Stable Farms
+        Stableswap Farms
       </StyledNavLink>
     </Tabs>
   )
