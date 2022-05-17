@@ -1,10 +1,7 @@
 import React from 'react'
-import { RouteComponentProps } from 'react-router-dom'
 import { PageWrapper } from '../../components/Page'
 import FarmBanner from '../../components/earn/FarmBanner'
 import EarnTri from './EarnTri'
-import EarnTriStable from './EarnTriStable'
-import { FarmType } from './FarmType'
 
 import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter/EarnTriSortAndFilterContainer'
 import useFarmsSortAndFilter from './useFarmsSortAndFilter'
@@ -15,11 +12,7 @@ const STABLE_POOLS = [25, 35]
 
 const MemoizedFarmBanner = React.memo(FarmBanner)
 
-export default function Earn({
-  match: {
-    params: { farmType = FarmType.NORMAL }
-  }
-}: RouteComponentProps<{ farmType?: FarmType }>) {
+export default function Earn() {
   const {
     activeFarmsFilter,
     dualRewardPools,
