@@ -249,8 +249,6 @@ export const CUSTOM_TOKEN_MAX_HOPS = {
   [LUNAR[ChainId.AURORA].address]: 4
 }
 
-export const URL_WARNING_DOMAIN_EXCEPTIONS = new Set(['aurora.plus', 'dexscreener.com'])
-
 export const PRICE_IMPACT_NEGLIGIBLE_THRESHOLD = new Percent('1', '10000')
 export const PRICE_IMPACT_ERROR_THRESHOLD = new Percent('5', '100')
 export const PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE = new Percent('-5', '100')
