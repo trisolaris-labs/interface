@@ -1,39 +1,48 @@
 import React from 'react'
 import { AutoColumn } from '../../components/Column'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
-import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter/EarnTriSortAndFilterContainer'
-import { FarmTabs } from '../../components/NavigationTabs'
-import { StakingTri } from '../../state/stake/stake-constants'
 import { TYPE } from '../../theme'
 import { isTokenAmountPositive } from '../../utils/pools'
 import { PoolSection, DataRow } from './EarnTri.styles'
+
+import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter/EarnTriSortAndFilterContainer'
 import useFarmsSortAndFilter from './useFarmsSortAndFilter'
+
+const POOLS_ORDER = [32, 33, 5, 11, 31, 8, 30, 7, 0, 3, 4, 15, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 34]
+const LEGACY_POOLS = [1, 2, 6, 16, 12, 13, 14, 9, 10]
+const STABLE_POOLS = [35]
 
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
-export default function EarnTri({
-  poolsOrder,
-  legacyPoolsOrder,
-  activeFarmsFilter,
-  hasSearchQuery,
-  dualRewardPools,
-  filteredFarms,
-  nonTriFarms,
-  legacyFarms,
-  stableFarms
-}: {
-  poolsOrder: number[]
-  legacyPoolsOrder: number[]
-  activeFarmsFilter: boolean
-  hasSearchQuery: boolean
-  dualRewardPools: StakingTri[]
-  filteredFarms: StakingTri[]
-  nonTriFarms: StakingTri[]
-  legacyFarms: StakingTri[]
-  stableFarms: StakingTri[]
-}) {
+export default function EarnTri() {
+  const {
+    activeFarmsFilter,
+    dualRewardPools,
+    stablePoolFarms,
+    filteredFarms,
+    handleSort,
+    hasSearchQuery,
+    legacyFarms,
+    nonTriFarms,
+    onInputChange,
+    isSortDescending,
+    sortBy
+  } = useFarmsSortAndFilter({
+    poolsOrder: POOLS_ORDER,
+    legacyPoolsOrder: LEGACY_POOLS,
+    stablePoolsOrder: STABLE_POOLS
+  })
+
   return (
     <>
+      <EarnTriSortAndFilterContainer
+        activeFarmsFilter={activeFarmsFilter}
+        handleSort={handleSort}
+        isSortDescending={isSortDescending}
+        onInputChange={onInputChange}
+        sortBy={sortBy}
+      />
+
       {!hasSearchQuery && !activeFarmsFilter && (
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <DataRow style={{ alignItems: 'baseline' }}>
@@ -41,7 +50,7 @@ export default function EarnTri({
           </DataRow>
 
           <PoolSection>
-            {stableFarms.map(farm =>
+            {stablePoolFarms.map(farm =>
               farm.stableSwapPoolName == null ? null : (
                 <MemoizedPoolCardTRI
                   key={farm.ID}
