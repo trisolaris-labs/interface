@@ -71,7 +71,6 @@ export default function App() {
       <Route component={GoogleAnalyticsReporter} />
       <Route component={DarkModeQueryParamReader} />
       <AppWrapper>
-        <URLWarning />
         <HeaderWrapper>
           <Header />
         </HeaderWrapper>
