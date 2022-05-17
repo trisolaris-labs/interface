@@ -632,6 +632,13 @@ export const USN: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x5183e1B1091804BC2602586919E6880ac1cf2896', 18, 'USN', 'USN'),
 }
 
+export const ETHERNAL: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'ETHERNAL', 'ETHERNAL'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'ETHERNAL', 'ETHERNAL'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'ETHERNAL', 'ETHERNAL'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x17cbd9C274e90C537790C51b4015a65cD015497e', 18, 'ETHERNAL', 'ETHERNAL'),
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),
