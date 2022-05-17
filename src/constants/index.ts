@@ -15,7 +15,8 @@ import {
   XTRI,
   USDC,
   TRIPOLAR,
-  PLY
+  PLY,
+  ETHERNAL
 } from './tokens'
 
 export const GAS_PRICE = 250
@@ -239,7 +240,8 @@ export const TOKEN_WARNING_MODAL_ALLOWLIST = new Set(
     POLAR[ChainId.AURORA],
     SPOLAR[ChainId.AURORA],
     LUNAR[ChainId.AURORA],
-    TRIPOLAR[ChainId.AURORA]
+    TRIPOLAR[ChainId.AURORA],
+    ETHERNAL[ChainId.AURORA]
   ].map(({ address }) => address.toLowerCase())
 )
 
