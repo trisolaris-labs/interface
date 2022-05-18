@@ -59,7 +59,8 @@ const COMMON_BASES: ChainTokenList = {
     XTRI[ChainId.AURORA],
     WNEAR[ChainId.AURORA],
     STNEAR[ChainId.AURORA],
-    PLY[ChainId.AURORA]
+    PLY[ChainId.AURORA],
+    AURORA[ChainId.AURORA]
   ]
 }
 
