@@ -1,50 +1,81 @@
 import React from 'react'
 import { AutoColumn } from '../../components/Column'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
-import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter/EarnTriSortAndFilterContainer'
-import { FarmTabs } from '../../components/NavigationTabs'
 import { TYPE } from '../../theme'
 import { isTokenAmountPositive } from '../../utils/pools'
 import { PoolSection, DataRow } from './EarnTri.styles'
+
+import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter/EarnTriSortAndFilterContainer'
 import useFarmsSortAndFilter from './useFarmsSortAndFilter'
+
+const POOLS_ORDER = [32, 33, 5, 11, 31, 8, 30, 7, 0, 3, 4, 15, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 34]
+const LEGACY_POOLS = [1, 2, 6, 16, 12, 13, 14, 9, 10]
+const STABLE_POOLS = [35]
 
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
-export default function EarnTri({
-  poolsOrder,
-  legacyPoolsOrder
-}: {
-  poolsOrder: number[]
-  legacyPoolsOrder: number[]
-}) {
+export default function EarnTri() {
   const {
     activeFarmsFilter,
     dualRewardPools,
+    stablePoolFarms,
     filteredFarms,
     handleSort,
-    hasSeachQuery,
+    hasSearchQuery,
     legacyFarms,
     nonTriFarms,
     onInputChange,
     isSortDescending,
     sortBy
   } = useFarmsSortAndFilter({
-    poolsOrder,
-    legacyPoolsOrder
+    poolsOrder: POOLS_ORDER,
+    legacyPoolsOrder: LEGACY_POOLS,
+    stablePoolsOrder: STABLE_POOLS
   })
 
   return (
     <>
+      <EarnTriSortAndFilterContainer
+        activeFarmsFilter={activeFarmsFilter}
+        handleSort={handleSort}
+        isSortDescending={isSortDescending}
+        onInputChange={onInputChange}
+        sortBy={sortBy}
+      />
+
+      {!hasSearchQuery && !activeFarmsFilter && (
+        <AutoColumn gap="lg" style={{ width: '100%' }}>
+          <DataRow style={{ alignItems: 'baseline' }}>
+            <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Stable Pools</TYPE.mediumHeader>
+          </DataRow>
+
+          <PoolSection>
+            {stablePoolFarms.map(farm =>
+              farm.stableSwapPoolName == null ? null : (
+                <MemoizedPoolCardTRI
+                  key={farm.ID}
+                  apr={farm.apr}
+                  nonTriAPRs={farm.nonTriAPRs}
+                  chefVersion={farm.chefVersion}
+                  isPeriodFinished={farm.isPeriodFinished}
+                  tokens={farm.tokens}
+                  stableSwapPoolName={farm.stableSwapPoolName}
+                  totalStakedInUSD={farm.totalStakedInUSD}
+                  version={farm.ID}
+                  doubleRewards={farm.doubleRewards}
+                  inStaging={farm.inStaging}
+                  noTriRewards={farm.noTriRewards}
+                  doubleRewardToken={farm.doubleRewardToken}
+                  isStaking={isTokenAmountPositive(farm.stakedAmount)}
+                />
+              )
+            )}
+          </PoolSection>
+        </AutoColumn>
+      )}
+
       <AutoColumn gap="lg" style={{ width: '100%' }}>
-        <FarmTabs active="normal" />
-        <EarnTriSortAndFilterContainer
-          activeFarmsFilter={activeFarmsFilter}
-          handleSort={handleSort}
-          isSortDescending={isSortDescending}
-          onInputChange={onInputChange}
-          sortBy={sortBy}
-        />
-        {!hasSeachQuery && !activeFarmsFilter && (
+        {!hasSearchQuery && !activeFarmsFilter && (
           <>
             <DataRow style={{ alignItems: 'baseline' }}>
               <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Dual Rewards Pools</TYPE.mediumHeader>
@@ -72,7 +103,7 @@ export default function EarnTri({
         )}
       </AutoColumn>
       <AutoColumn gap="lg" style={{ width: '100%' }}>
-        {!hasSeachQuery && !activeFarmsFilter && (
+        {!hasSearchQuery && !activeFarmsFilter && (
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>TRI Pools</TYPE.mediumHeader>
           </DataRow>
@@ -99,7 +130,7 @@ export default function EarnTri({
         </PoolSection>
       </AutoColumn>
       <AutoColumn gap="lg" style={{ width: '100%' }}>
-        {!hasSeachQuery && !activeFarmsFilter && (
+        {!hasSearchQuery && !activeFarmsFilter && (
           <>
             <DataRow style={{ alignItems: 'baseline' }}>
               <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Ecosystem Pools</TYPE.mediumHeader>
@@ -127,7 +158,7 @@ export default function EarnTri({
           </>
         )}
       </AutoColumn>
-      {!hasSeachQuery && !activeFarmsFilter && (
+      {!hasSearchQuery && !activeFarmsFilter && (
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
