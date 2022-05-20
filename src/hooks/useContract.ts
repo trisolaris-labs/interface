@@ -173,15 +173,15 @@ export function useStableSwapMetaPool(address?: string, withSignerIfPossible = t
   return useContract(address, STABLE_META_SWAP_ABI, withSignerIfPossible)
 }
 
-export function usePiTriContract(withSignerIfPossible = true): Contract | null {
+export function usePTriContract(withSignerIfPossible = true): Contract | null {
   const { chainId, library } = useActiveWeb3React()
-  const piTriContract = useContract(ADDRESSES.PTRI, PTRI_ABI, withSignerIfPossible)
+  const pTriContract = useContract(ADDRESSES.PTRI, PTRI_ABI, withSignerIfPossible)
 
   return useMemo(() => {
     if (!library || !chainId) {
       return null
     }
 
-    return piTriContract
+    return pTriContract
   }, [library, chainId])
 }

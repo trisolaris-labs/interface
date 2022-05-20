@@ -1,12 +1,16 @@
-import React, { useState } from 'react'
-import { ChainId } from '@trisolaris/sdk'
+import React, { useState, useCallback } from 'react'
+import { ChainId, CurrencyAmount } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
 
 import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
 import ApproveButton from '../../components/ApproveButton'
+import StakeButton from './StakeButton'
 
 import { tryParseAmount } from '../../state/stableswap/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
+import { useApproveCallback } from '../../hooks/useApproveCallback'
+import { useTransactionAdder } from '../../state/transactions/hooks'
+import { usePTriContract } from '../../hooks/useContract'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 
 import { PTRI, TRI } from '../../constants/tokens'
@@ -16,6 +20,8 @@ const INPUT_CHAR_LIMIT = 18
 
 function StakeBox() {
   const { account } = useActiveWeb3React()
+  const pTriContract = usePTriContract()
+  const addTransaction = useTransactionAdder()
 
   const isStaking = true
   const triBalance = useTokenBalance(account ?? undefined, TRI[ChainId.AURORA])!
@@ -26,8 +32,11 @@ function StakeBox() {
   const balance = isStaking ? triBalance : pTriBalance
 
   const [input, _setInput] = useState<string>('')
+  const [pendingTx, setPendingTx] = useState(false)
 
   const parsedAmount = tryParseAmount(input, balance?.currency)
+
+  const [approvalState, handleApproval] = useApproveCallback(parsedAmount, PTRI[ChainId.AURORA].address)
 
   function setInput(v: string) {
     // Allows user to paste in long balances
@@ -45,6 +54,34 @@ function StakeBox() {
     parsedAmount: parsedAmount
   })
 
+  const deposit = useCallback(
+    async (amount: CurrencyAmount | undefined) => {
+      if (amount?.raw) {
+        const tx = await pTriContract?.deposit(amount?.raw.toString(), account)
+        return addTransaction(tx, { summary: 'Deposited into Ptri' })
+      }
+    },
+    [addTransaction, pTriContract]
+  )
+
+  async function handleStake() {
+    try {
+      setPendingTx(true)
+
+      if (isStaking) {
+        await deposit(parsedAmount)
+      } else {
+        // await leave(parsedAmount)
+      }
+
+      setInput('')
+    } catch (e) {
+      console.error(`Error ${isStaking ? 'Staking' : 'Unstaking'}: `, e)
+    } finally {
+      setPendingTx(false)
+    }
+  }
+
   return (
     <div>
       <StakeInputPanel
@@ -57,7 +94,15 @@ function StakeBox() {
         disableMaxButton={atMaxAmountInput}
         disableHalfButton={atHalfAmountInput}
       />
-      <ApproveButton address={PTRI[ChainId.AURORA].address} amount={parsedAmount} />
+      <ApproveButton approvalState={approvalState} handleApproval={handleApproval} />
+      <StakeButton
+        balance={balance}
+        stakingAmount={parsedAmount}
+        approvalState={approvalState}
+        isStaking={isStaking}
+        pendingTx={pendingTx}
+        handleStake={handleStake}
+      />
     </div>
   )
 }

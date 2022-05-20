@@ -22,6 +22,7 @@ import { useWalletModalToggle } from '../../state/application/hooks'
 import { Dots } from '../../components/swap/styleds'
 import StakingAPRCard from './StakingAPRCard'
 import { PageWrapper } from '../../components/Page'
+import StakeBox from './StakeBox'
 
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
@@ -177,6 +178,7 @@ export default function StakeTri() {
 
   return (
     <PageWrapper gap="lg" justify="center">
+      <StakeBox />
       <TopSection gap="md">
         <HighlightCard>
           <CardSection>

@@ -1,18 +1,15 @@
 import React from 'react'
-import { CurrencyAmount } from '@trisolaris/sdk'
 
 import { ButtonConfirmed } from '../../components/Button'
 import { Dots } from '../../pages/Pool/styleds'
 
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
+import { ApprovalState } from '../../hooks/useApproveCallback'
 
 type ApproveButtonProps = {
-  address: string
-  amount: CurrencyAmount | undefined
+  approvalState: ApprovalState
+  handleApproval: () => void
 }
-function ApproveButton({ address, amount }: ApproveButtonProps) {
-  const [approvalState, handleApproval] = useApproveCallback(amount, address)
-
+function ApproveButton({ approvalState, handleApproval }: ApproveButtonProps) {
   return (
     <ButtonConfirmed
       mr="0.5rem"
