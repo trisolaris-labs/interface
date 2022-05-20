@@ -27,6 +27,8 @@ import { PNG, TRI, USDC, WNEAR } from '../constants/tokens'
 import { GOVERNANCE_ADDRESS } from '../constants'
 import { STAKING } from '../state/stake/stake-constants'
 import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
+import PTRI_ABI from '../constants/abis/pTri/ptri.json'
+import { ADDRESSES } from '../constants/contractAddresses'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -169,4 +171,17 @@ export function useStableSwapLPTokenContract(
 
 export function useStableSwapMetaPool(address?: string, withSignerIfPossible = true): Contract | null {
   return useContract(address, STABLE_META_SWAP_ABI, withSignerIfPossible)
+}
+
+export function usePiTriContract(withSignerIfPossible = true): Contract | null {
+  const { chainId, library } = useActiveWeb3React()
+  const piTriContract = useContract(ADDRESSES.PTRI, PTRI_ABI, withSignerIfPossible)
+
+  return useMemo(() => {
+    if (!library || !chainId) {
+      return null
+    }
+
+    return piTriContract
+  }, [library, chainId])
 }

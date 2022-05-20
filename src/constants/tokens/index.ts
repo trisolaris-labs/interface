@@ -645,3 +645,10 @@ export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x60781C2586D68229fde47564546784ab3fACA982', 18, 'PNG', 'Pangolin'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0b20972B45ffB8e5d4D37AF4024E1bf0b03f15ae', 18, 'WETH', 'Ethereum'),
 }
+
+export const PTRI: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'pTRI', 'pTRI Token'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'pTRI', 'pTRI Token'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'pTRI', 'pTRI Token'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4b795e73fCCeF8BA801D17492366c5B85257926B', 18, 'pTRI', 'pTRI Token'),
+}
