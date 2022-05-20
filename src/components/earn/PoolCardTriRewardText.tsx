@@ -26,9 +26,9 @@ const ContentWrapper = styled.div`
   width: fit-content;
 `
 
-type Props = Pick<PoolCardTriProps, 'apr' | 'inStaging' | 'nonTriAPRs'>
+type Props = Pick<PoolCardTriProps, 'apr' | 'inStaging' | 'nonTriAPRs' | 'isLegacy'>
 
-export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs }: Props) {
+export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLegacy }: Props) {
   const [show, setShow] = useState(false)
   const open = useCallback(() => setShow(true), [setShow])
   const close = useCallback(() => setShow(false), [setShow])
@@ -80,7 +80,7 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs }: Pr
   const hasOnlyTriRewards = hasTriRewards && !hasNonTriRewards
   const hasOnlyNonTriRewards = !hasTriRewards && hasNonTriRewards
   const hasMultipleNonTriRewards = hasNonTriRewards && Number(nonTriAPRs?.length) > 1
-  const hasNoRewards = !hasTriRewards && !hasNonTriRewards
+  const hasNoRewards = (!hasTriRewards && !hasNonTriRewards) || isLegacy
 
   if (hasNoRewards) {
     return (
