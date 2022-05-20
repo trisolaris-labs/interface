@@ -11,10 +11,10 @@ type StakeButtonProps = {
   approvalState: ApprovalState
   isStaking: boolean
   pendingTx: boolean
-  handleStake: () => void
+  handleStakeAndUnstake: () => void
 }
 
-function StakeButton({ balance, stakingAmount, approvalState, isStaking, pendingTx, handleStake }: StakeButtonProps) {
+function StakeButton({ balance, stakingAmount, approvalState, isStaking, pendingTx, handleStakeAndUnstake }: StakeButtonProps) {
     
   const insufficientFunds = (balance?.equalTo(BIG_INT_ZERO) ?? false) || stakingAmount?.greaterThan(balance)
   if (insufficientFunds && stakingAmount?.greaterThan(BIG_INT_ZERO)) {
@@ -32,7 +32,7 @@ function StakeButton({ balance, stakingAmount, approvalState, isStaking, pending
     stakingAmount?.greaterThan(BIG_INT_ZERO) === true
 
   return (
-    <ButtonPrimary disabled={!isValid} onClick={handleStake}>
+    <ButtonPrimary disabled={!isValid} onClick={handleStakeAndUnstake}>
       {isStaking ? 'Stake' : 'Unstake'}
     </ButtonPrimary>
   )

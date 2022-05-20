@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react'
+import styled from 'styled-components'
 import { ChainId, CurrencyAmount } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
 
@@ -8,7 +9,7 @@ import StakeButton from './StakeButton'
 
 import { tryParseAmount } from '../../state/stableswap/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
-import { useApproveCallback } from '../../hooks/useApproveCallback'
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { usePTriContract } from '../../hooks/useContract'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
@@ -17,6 +18,19 @@ import { PTRI, TRI } from '../../constants/tokens'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 
 const INPUT_CHAR_LIMIT = 18
+
+const StakeBoxContainer = styled.div`
+  // background: rgba(0, 95, 171, 1);
+  background: #0e3f69;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 100%;
+`
+
+const ButtonsContainer = styled.div`
+  margin-top: 20px;
+  display: flex;
+`
 
 function StakeBox() {
   const { account } = useActiveWeb3React()
@@ -64,7 +78,7 @@ function StakeBox() {
     [addTransaction, pTriContract]
   )
 
-  async function handleStake() {
+  async function handleStakeAndUnstake() {
     try {
       setPendingTx(true)
 
@@ -83,7 +97,7 @@ function StakeBox() {
   }
 
   return (
-    <div>
+    <StakeBoxContainer>
       <StakeInputPanel
         value={input!}
         onUserInput={setInput}
@@ -94,16 +108,20 @@ function StakeBox() {
         disableMaxButton={atMaxAmountInput}
         disableHalfButton={atHalfAmountInput}
       />
-      <ApproveButton approvalState={approvalState} handleApproval={handleApproval} />
-      <StakeButton
-        balance={balance}
-        stakingAmount={parsedAmount}
-        approvalState={approvalState}
-        isStaking={isStaking}
-        pendingTx={pendingTx}
-        handleStake={handleStake}
-      />
-    </div>
+      <ButtonsContainer>
+        {approvalState !== ApprovalState.APPROVED && (
+          <ApproveButton approvalState={approvalState} handleApproval={handleApproval} />
+        )}
+        <StakeButton
+          balance={balance}
+          stakingAmount={parsedAmount}
+          approvalState={approvalState}
+          isStaking={isStaking}
+          pendingTx={pendingTx}
+          handleStakeAndUnstake={handleStakeAndUnstake}
+        />
+      </ButtonsContainer>
+    </StakeBoxContainer>
   )
 }
 
