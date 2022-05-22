@@ -6,6 +6,10 @@ import { useActiveWeb3React } from '../../hooks'
 import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
 import ApproveButton from '../../components/ApproveButton'
 import StakeButton from './StakeButton'
+import Toggle from '../../components/Toggle'
+import { RowBetween } from '../../components/Row'
+import { AutoColumn } from '../../components/Column'
+import { ClickableText } from '../Pool/styleds'
 
 import { tryParseAmount } from '../../state/stableswap/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
@@ -16,6 +20,7 @@ import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurren
 
 import { PTRI, TRI } from '../../constants/tokens'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
+import { TYPE } from '../../theme'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -32,21 +37,21 @@ const ButtonsContainer = styled.div`
   display: flex;
 `
 
+
 function StakeBox() {
   const { account } = useActiveWeb3React()
   const pTriContract = usePTriContract()
   const addTransaction = useTransactionAdder()
+  const { getMaxInputAmount } = useCurrencyInputPanel()
 
-  const isStaking = true
   const triBalance = useTokenBalance(account ?? undefined, TRI[ChainId.AURORA])!
   const pTriBalance = useTokenBalance(account ?? undefined, PTRI[ChainId.AURORA])!
 
-  const { getMaxInputAmount } = useCurrencyInputPanel()
-
-  const balance = isStaking ? triBalance : pTriBalance
-
   const [input, _setInput] = useState<string>('')
   const [pendingTx, setPendingTx] = useState(false)
+  const [isStaking, setIsStaking] = useState(true)
+
+  const balance = isStaking ? triBalance : pTriBalance
 
   const parsedAmount = tryParseAmount(input, balance?.currency)
 
@@ -78,6 +83,16 @@ function StakeBox() {
     [addTransaction, pTriContract]
   )
 
+  const withdraw = useCallback(
+    async (amount: CurrencyAmount | undefined) => {
+      if (amount?.raw) {
+        const tx = await pTriContract?.withdraw(amount?.raw.toString(), account, account)
+        return addTransaction(tx, { summary: 'Withdraw pTri' })
+      }
+    },
+    [addTransaction, pTriContract]
+  )
+
   async function handleStakeAndUnstake() {
     try {
       setPendingTx(true)
@@ -85,7 +100,7 @@ function StakeBox() {
       if (isStaking) {
         await deposit(parsedAmount)
       } else {
-        // await leave(parsedAmount)
+        await withdraw(parsedAmount)
       }
 
       setInput('')
@@ -96,8 +111,30 @@ function StakeBox() {
     }
   }
 
+  function handleStakeToggle() {
+    setIsStaking(!isStaking)
+    setInput('')
+  }
+
   return (
     <StakeBoxContainer>
+      <RowBetween marginBottom={10}>
+        <AutoColumn gap="20px" justify="start">
+          <TYPE.mediumHeader>{isStaking ? 'Stake TRI' : 'Unstake pTRI'}</TYPE.mediumHeader>
+        </AutoColumn>
+        <AutoColumn gap="20px">
+          <RowBetween>
+            <Toggle
+              id="toggle-staking"
+              isActive={isStaking}
+              toggle={handleStakeToggle}
+              customToggleText={{ on: 'Stake', off: 'Unstake' }}
+              fontSize="14px"
+            />
+          </RowBetween>
+        </AutoColumn>
+      </RowBetween>
+
       <StakeInputPanel
         value={input!}
         onUserInput={setInput}
