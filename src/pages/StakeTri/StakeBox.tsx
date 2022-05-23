@@ -9,7 +9,6 @@ import StakeButton from './StakeButton'
 import Toggle from '../../components/Toggle'
 import { RowBetween } from '../../components/Row'
 import { AutoColumn } from '../../components/Column'
-import { ClickableText } from '../Pool/styleds'
 
 import { tryParseAmount } from '../../state/stableswap/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
@@ -25,7 +24,6 @@ import { TYPE } from '../../theme'
 const INPUT_CHAR_LIMIT = 18
 
 const StakeBoxContainer = styled.div`
-  // background: rgba(0, 95, 171, 1);
   background: #0e3f69;
   padding: 2rem;
   border-radius: 10px;
@@ -37,6 +35,18 @@ const ButtonsContainer = styled.div`
   display: flex;
 `
 
+const ReceiverAddressContainer = styled.div`
+  background: ${({ theme }) => theme.bg3};
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  padding: 1rem;
+`
+
+const ReceiverAddressInfo = styled.span`
+  margin-right: 5px;
+`
 
 function StakeBox() {
   const { account } = useActiveWeb3React()
@@ -145,6 +155,7 @@ function StakeBox() {
         disableMaxButton={atMaxAmountInput}
         disableHalfButton={atHalfAmountInput}
       />
+
       <ButtonsContainer>
         {approvalState !== ApprovalState.APPROVED && (
           <ApproveButton approvalState={approvalState} handleApproval={handleApproval} />
