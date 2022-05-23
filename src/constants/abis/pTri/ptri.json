@@ -192,6 +192,17 @@
     "type": "function"
   },
   {
+    "inputs": [
+      { "internalType": "address", "name": "masterChef_", "type": "address" },
+      { "internalType": "address", "name": "receiver_", "type": "address" },
+      { "internalType": "uint256", "name": "pid_", "type": "uint256" }
+    ],
+    "name": "claimAndStake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "address", "name": "account_", "type": "address" }],
     "name": "claimableRevenueAssets",
     "outputs": [{ "internalType": "uint256", "name": "balanceOfAssets_", "type": "uint256" }],

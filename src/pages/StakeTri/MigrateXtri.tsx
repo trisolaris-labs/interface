@@ -98,11 +98,13 @@ function MigrateXtri() {
             maxWidth={150}
             onClick={handleMigrate}
             disabled={
-              approvalState !== ApprovalState.APPROVED || hasPTriBalance || JSBI.equal(xTriBalance?.raw, BIG_INT_ZERO)
+              approvalState !== ApprovalState.APPROVED ||
+              (hasPTriBalance && !hasXTriBalance) ||
+              JSBI.equal(xTriBalance?.raw, BIG_INT_ZERO)
             }
-            confirmed={hasPTriBalance}
+            confirmed={hasPTriBalance && !hasXTriBalance}
           >
-            {hasPTriBalance ? 'Migrated!' : 'Migrate'}
+            {hasPTriBalance && !hasXTriBalance ? 'Migrated!' : 'Migrate'}
           </ButtonConfirmed>
         </AutoColumn>
         <AutoColumn gap="lg">
