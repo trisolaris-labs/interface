@@ -25,8 +25,12 @@ function MigrateXtri() {
   const [pendingTx, setPendingTx] = useState(false)
   const { account } = useActiveWeb3React()
   const xTriBalance = useTokenBalance(account ?? undefined, XTRI[ChainId.AURORA])!
+  const hasXTriBalance = JSBI.greaterThan(xTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
 
-  const [approvalState, handleApproval] = useApproveCallback(xTriBalance, PTRI[ChainId.AURORA].address)
+  const [approvalState, handleApproval] = useApproveCallback(
+    hasXTriBalance ? xTriBalance : undefined,
+    PTRI[ChainId.AURORA].address
+  )
 
   const addTransaction = useTransactionAdder()
 
@@ -105,7 +109,9 @@ function MigrateXtri() {
           {hasPTriBalance && (
             <>
               <StyledStepNumber>✓</StyledStepNumber>
-              <Text justifySelf="center" fontSize={20}>Done!</Text>
+              <Text justifySelf="center" fontSize={20}>
+                Done!
+              </Text>
             </>
           )}
         </AutoColumn>
