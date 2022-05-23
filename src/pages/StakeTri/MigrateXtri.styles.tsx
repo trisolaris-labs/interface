@@ -13,11 +13,19 @@ padding: 2rem;
 `
 
 export const StepsContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-column-gap: 20px;
 `
 
 export const StyledStepNumber = styled.div`
   font-size: 7rem;
   justify-self: center;
+  max-width: 150px;
+`
+
+export const StyledStepNumberDone = styled(StyledStepNumber)`
+  font-size: 3rem;
+  align-self: center;
+  min-width: 150px;
 `

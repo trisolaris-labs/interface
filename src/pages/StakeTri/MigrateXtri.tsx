@@ -19,7 +19,7 @@ import { ApprovalState } from '../../hooks/useApproveCallback'
 import { XTRI, PTRI } from '../../constants/tokens'
 import { BIG_INT_ZERO } from '../../constants'
 
-import { StyledContainer, StepsContainer, StyledStepNumber } from './MigrateXtri.styles'
+import { StyledContainer, StepsContainer, StyledStepNumber, StyledStepNumberDone } from './MigrateXtri.styles'
 
 function MigrateXtri() {
   const [pendingTx, setPendingTx] = useState(false)
@@ -77,6 +77,7 @@ function MigrateXtri() {
       <StepsContainer>
         <AutoColumn gap="lg">
           <StyledStepNumber>1</StyledStepNumber>
+          <Text>First, we need to approve migratting your XTRI </Text>
           <ButtonConfirmed
             mr="0.5rem"
             onClick={handleApproval}
@@ -94,8 +95,8 @@ function MigrateXtri() {
         </AutoColumn>
         <AutoColumn gap="lg">
           <StyledStepNumber>2</StyledStepNumber>
+          <Text>No we will migrate your tokens to 𝜋Tri </Text>
           <ButtonConfirmed
-            maxWidth={150}
             onClick={handleMigrate}
             disabled={
               approvalState !== ApprovalState.APPROVED ||
@@ -108,14 +109,7 @@ function MigrateXtri() {
           </ButtonConfirmed>
         </AutoColumn>
         <AutoColumn gap="lg">
-          {hasPTriBalance && (
-            <>
-              <StyledStepNumber>✓</StyledStepNumber>
-              <Text justifySelf="center" fontSize={20}>
-                Done!
-              </Text>
-            </>
-          )}
+          <StyledStepNumberDone>{hasPTriBalance && 'Done!'}</StyledStepNumberDone>
         </AutoColumn>
       </StepsContainer>
     </StyledContainer>
