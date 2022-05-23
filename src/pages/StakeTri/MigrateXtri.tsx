@@ -7,6 +7,7 @@ import { ButtonConfirmed } from '../../components/Button'
 import { LargeHeaderWhite } from './StakeTriV1'
 import { RowBetween } from '../../components/Row'
 import { Dots } from '../../components/swap/styleds'
+import { Text } from 'rebass'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
@@ -104,7 +105,7 @@ function MigrateXtri() {
           {hasPTriBalance && (
             <>
               <StyledStepNumber>✓</StyledStepNumber>
-              <div>Done!</div>
+              <Text justifySelf="center" fontSize={20}>Done!</Text>
             </>
           )}
         </AutoColumn>
