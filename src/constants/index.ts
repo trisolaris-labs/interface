@@ -15,7 +15,8 @@ import {
   XTRI,
   USDC,
   TRIPOLAR,
-  PLY
+  PLY,
+  ETHERNAL
 } from './tokens'
 
 export const GAS_PRICE = 250
@@ -58,7 +59,8 @@ const COMMON_BASES: ChainTokenList = {
     XTRI[ChainId.AURORA],
     WNEAR[ChainId.AURORA],
     STNEAR[ChainId.AURORA],
-    PLY[ChainId.AURORA]
+    PLY[ChainId.AURORA],
+    AURORA[ChainId.AURORA]
   ]
 }
 
@@ -239,7 +241,8 @@ export const TOKEN_WARNING_MODAL_ALLOWLIST = new Set(
     POLAR[ChainId.AURORA],
     SPOLAR[ChainId.AURORA],
     LUNAR[ChainId.AURORA],
-    TRIPOLAR[ChainId.AURORA]
+    TRIPOLAR[ChainId.AURORA],
+    ETHERNAL[ChainId.AURORA]
   ].map(({ address }) => address.toLowerCase())
 )
 
@@ -249,7 +252,6 @@ export const CUSTOM_TOKEN_MAX_HOPS = {
   [LUNAR[ChainId.AURORA].address]: 4
 }
 
-export const ENABLE_STABLE_FARMS = process.env.REACT_APP_ENABLE_STABLE_FARMS === 'true'
 export const PRICE_IMPACT_NEGLIGIBLE_THRESHOLD = new Percent('1', '10000')
 export const PRICE_IMPACT_ERROR_THRESHOLD = new Percent('5', '100')
 export const PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE = new Percent('-5', '100')

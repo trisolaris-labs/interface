@@ -17,8 +17,9 @@ type FarmsSortAndFilterResult = {
   activeFarmsFilter: boolean
   dualRewardPools: StakingTri[]
   filteredFarms: StakingTri[]
+  stablePoolFarms: StakingTri[]
   handleSort: (sortingType: SortingType) => void
-  hasSeachQuery: boolean
+  hasSearchQuery: boolean
   isSortDescending: boolean
   legacyFarms: StakingTri[]
   nonTriFarms: StakingTri[]
@@ -29,11 +30,17 @@ type FarmsSortAndFilterResult = {
 type Props = {
   poolsOrder: number[]
   legacyPoolsOrder: number[]
+  stablePoolsOrder: number[]
 }
 
-export default function useFarmsSortAndFilter({ poolsOrder, legacyPoolsOrder }: Props): FarmsSortAndFilterResult {
+export default function useFarmsSortAndFilter({
+  poolsOrder,
+  legacyPoolsOrder,
+  stablePoolsOrder
+}: Props): FarmsSortAndFilterResult {
   const allFarmArrs = useFarms()
   const activeFarmsFilter = useIsFilterActiveFarms()
+  const allPools = poolsOrder.concat(stablePoolsOrder)
 
   const [sortBy, setSortBy] = useState<SortingType>(SortingType.default)
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -43,13 +50,13 @@ export default function useFarmsSortAndFilter({ poolsOrder, legacyPoolsOrder }: 
     () =>
       allFarmArrs
         .filter(farm => !legacyPoolsOrder.includes(farm.ID)) // Ignore legacy pools in sorting/filtering
-        .filter(farm => poolsOrder.includes(farm.ID)), // Ignore pools that are not in the rendering list
-    [allFarmArrs, legacyPoolsOrder, poolsOrder]
+        .filter(farm => allPools.includes(farm.ID)), // Ignore pools that are not in the rendering list
+    [allFarmArrs, legacyPoolsOrder, allPools]
   )
   const farmArrsInOrder = useMemo((): StakingTri[] => {
     switch (sortBy) {
       case SortingType.default:
-        return poolsOrder.map(index => allFarmArrs[index])
+        return allPools.map(index => allFarmArrs[index])
       case SortingType.liquidity:
         return _.orderBy(farmArrs, 'totalStakedInUSD', isSortDescending ? 'desc' : 'asc')
       case SortingType.totalApr:
@@ -59,9 +66,17 @@ export default function useFarmsSortAndFilter({ poolsOrder, legacyPoolsOrder }: 
           isSortDescending ? 'desc' : 'asc'
         )
     }
-  }, [allFarmArrs, farmArrs, isSortDescending, poolsOrder, sortBy])
-  const nonDualRewardPools = farmArrsInOrder.filter(farm => !farm.hasNonTriRewards && !farm.noTriRewards)
-  const dualRewardPools = farmArrsInOrder.filter(farm => farm.hasNonTriRewards && !farm.noTriRewards)
+  }, [allFarmArrs, farmArrs, isSortDescending, allPools, sortBy])
+  const stablePoolsOrderSet = new Set(stablePoolsOrder)
+
+  const nonDualRewardPools = farmArrsInOrder.filter(
+    farm => !farm.hasNonTriRewards && !farm.noTriRewards && !stablePoolsOrderSet.has(farm.ID)
+  )
+  const dualRewardPools = farmArrsInOrder.filter(
+    farm => farm.hasNonTriRewards && !farm.noTriRewards && !stablePoolsOrderSet.has(farm.ID)
+  )
+
+  const stablePoolFarms = farmArrsInOrder.filter(({ ID }) => stablePoolsOrderSet.has(ID))
 
   const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(nonDualRewardPools)
 
@@ -114,11 +129,12 @@ export default function useFarmsSortAndFilter({ poolsOrder, legacyPoolsOrder }: 
     dualRewardPools,
     filteredFarms,
     handleSort,
-    hasSeachQuery: searchQuery.length > 0,
+    hasSearchQuery: searchQuery.length > 0,
     legacyFarms,
     nonTriFarms,
     onInputChange: handleInput,
     isSortDescending,
-    sortBy
+    sortBy,
+    stablePoolFarms
   }
 }

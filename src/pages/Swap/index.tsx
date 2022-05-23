@@ -108,6 +108,7 @@ export default function Swap() {
     inputError: defaultswapInputError
   } = useDerivedSwapInfo()
   const {
+    isLoadingSwapResponse,
     priceImpact: stableswapPriceImpact,
     inputError: stableswapInputError,
     parsedAmount: stableswapParsedAmount,
@@ -265,21 +266,18 @@ export default function Swap() {
 
   const { priceImpactWithoutFee: defaultswapPriceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 
-  const disableTradingUntilStableSwapRateIsCalculated =
-    isStableSwap &&
-    parsedAmounts[Field.INPUT]?.greaterThan(BIG_INT_ZERO) &&
-    stableswapTrade?.outputAmount.equalTo(BIG_INT_ZERO)
+  const disableTradingUntilStableSwapRateIsCalculated = isStableSwap && isLoadingSwapResponse
 
   const hasPriceImpact = isStableSwapHighPriceImpact(stableswapPriceImpact)
 
   const stableswapPriceImpactWithoutFee = useMemo(
     () =>
       hasPriceImpact
-        ? new Percent(
+        ? new Percent('0', '1')
+        : new Percent(
             JSBI.multiply(JSBI.BigInt(-1), stableswapPriceImpact),
             JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
-          )
-        : new Percent('0', '1'),
+          ),
     [hasPriceImpact, stableswapPriceImpact]
   )
 
@@ -634,13 +632,15 @@ export default function Swap() {
               </BottomGrouping>
             </Wrapper>
           </AppBody>
-          <AdvancedSwapDetailsDropdown
-            trade={trade}
-            stableswapTrade={stableswapTrade}
-            isRoutedViaStableSwap={isRoutedViaStableSwap}
-            stableswapPriceImpactWithoutFee={stableswapPriceImpactWithoutFee}
-            isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
-          />
+          {disableTradingUntilStableSwapRateIsCalculated ? null : (
+            <AdvancedSwapDetailsDropdown
+              trade={trade}
+              stableswapTrade={stableswapTrade}
+              isRoutedViaStableSwap={isRoutedViaStableSwap}
+              stableswapPriceImpactWithoutFee={stableswapPriceImpactWithoutFee}
+              isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
+            />
+          )}
         </SwapContainer>
       </Root>
     </>

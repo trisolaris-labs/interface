@@ -105,7 +105,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               <TYPE.body>{t('earn.depositedPglLiquidity')}</TYPE.body>
             </AutoColumn>
           )}
-          {earnedAmount && (
+          {earnedAmount?.greaterThan(BIG_INT_ZERO) && (
             <AutoColumn justify="center" gap="md">
               <TYPE.body fontWeight={600} fontSize={36}>
                 {<FormattedCurrencyAmount currencyAmount={earnedAmount} />}

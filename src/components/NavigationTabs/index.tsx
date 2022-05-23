@@ -57,19 +57,6 @@ const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.text1};
 `
 
-export function FarmTabs({ active }: { active: 'stable' | 'normal' }) {
-  return (
-    <Tabs>
-      <StyledNavLink id={`standard-farms-nav-link`} to={'/farm'} isActive={() => active === 'normal'}>
-        Standard Farms
-      </StyledNavLink>
-      <StyledNavLink id={`stable-farms-nav-link`} to={'/farm/stable'} isActive={() => active === 'stable'}>
-        Stable Farms
-      </StyledNavLink>
-    </Tabs>
-  )
-}
-
 export function PoolTabs({ active }: { active: '/pool/stable' | '/pool' }) {
   return (
     <Tabs>

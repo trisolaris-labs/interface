@@ -140,7 +140,7 @@ const DefaultPoolCardtri = ({
         </AutoColumn>
         <AutoColumn>
           <TYPE.mutedSubHeader textAlign="end">APR</TYPE.mutedSubHeader>
-          <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} />
+          <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AutoColumn>
       </RowBetween>
     </Wrapper>

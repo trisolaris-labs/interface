@@ -4,11 +4,9 @@ import { PoolTabs } from '../../components/NavigationTabs'
 
 import FullStablePositionCard from '../../components/PositionCard/StablePositionCard'
 import { TYPE, HideSmall } from '../../theme'
-import Card from '../../components/Card'
 import { RowBetween } from '../../components/Row'
 import { AutoColumn } from '../../components/Column'
 
-import { useActiveWeb3React } from '../../hooks'
 import { useTranslation } from 'react-i18next'
 import { PageWrapper } from '../../components/Page'
 import { StableSwapPoolName } from '../../state/stableswap/constants'
@@ -25,7 +23,6 @@ const TitleRow = styled(RowBetween)`
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
-  const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
   return (
@@ -40,20 +37,9 @@ export default function Pool() {
               </TYPE.mediumHeader>
             </HideSmall>
           </TitleRow>
-
-          {account ? (
-            <>
-              <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_USN} />
-              <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT} />
-              <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_UST_FRAX_USN} />
-            </>
-          ) : (
-            <Card padding="40px">
-              <TYPE.body color={theme.text3} textAlign="center">
-                {t('pool.connectWalletToView')}
-              </TYPE.body>
-            </Card>
-          )}
+          <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_USN} />
+          <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT} />
+          <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_UST_FRAX_USN} />
         </AutoColumn>
       </AutoColumn>
     </PageWrapper>

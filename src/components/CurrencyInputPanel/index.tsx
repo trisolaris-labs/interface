@@ -1,11 +1,11 @@
-import { Currency, Pair } from '@trisolaris/sdk'
+import { Currency, Pair, Token } from '@trisolaris/sdk'
 import React, { useState, useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { darken } from 'polished'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import CurrencyLogo from '../CurrencyLogo'
-import DoubleCurrencyLogo from '../DoubleLogo'
+import MultipleCurrencyLogo from '../MultipleCurrencyLogo'
 import { RowBetween, RowFlat } from '../Row'
 import { TYPE } from '../../theme'
 import { Input as NumericalInput } from '../NumericalInput'
@@ -16,6 +16,8 @@ import { useTranslation } from 'react-i18next'
 import { StableSwapSearchProps } from '../SearchModal/CurrencySearch'
 import BalanceButton, { Props as BalanceButtonProps } from '../BalanceButton'
 import BalanceButtonValueEnum from '../BalanceButton/BalanceButtonValueEnum'
+import { StableSwapPoolName } from '../../state/stableswap/constants'
+import DoubleCurrencyLogo from '../DoubleLogo'
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -107,6 +109,7 @@ interface CurrencyInputPanelProps {
   id: string
   showCommonBases?: boolean
   customBalanceText?: string
+  tokens?: Token[]
 }
 
 export default function CurrencyInputPanel({
@@ -126,6 +129,7 @@ export default function CurrencyInputPanel({
   id,
   showCommonBases,
   customBalanceText,
+  tokens,
   ...stableSwapProps
 }: CurrencyInputPanelProps & StableSwapSearchProps & BalanceButtonProps) {
   const { t } = useTranslation()
@@ -194,24 +198,32 @@ export default function CurrencyInputPanel({
             }}
           >
             <Aligner>
-              {pair ? (
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
+              {tokens ? (
+                <>
+                  <MultipleCurrencyLogo currencies={tokens} size={24} margin={true} />
+                  <StyledTokenName className="pair-name-container">
+                    {tokens.map(({ symbol }) => symbol).join('-')}
+                  </StyledTokenName>
+                </>
+              ) : pair ? (
+                <>
+                  <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
+                  <StyledTokenName className="pair-name-container">
+                    {pair?.token0.symbol}-{pair?.token1.symbol}
+                  </StyledTokenName>
+                </>
               ) : currency ? (
-                <CurrencyLogo currency={currency} size={'24px'} />
+                <>
+                  <CurrencyLogo currency={currency} size={'24px'} />
+                  <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                    {(currency && currency.symbol && currency.symbol.length > 20
+                      ? currency.symbol.slice(0, 4) +
+                        '...' +
+                        currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                      : currency?.symbol) || t('currencyInputPanel.selectToken')}
+                  </StyledTokenName>
+                </>
               ) : null}
-              {pair ? (
-                <StyledTokenName className="pair-name-container">
-                  {pair?.token0.symbol}:{pair?.token1.symbol}
-                </StyledTokenName>
-              ) : (
-                <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                  {(currency && currency.symbol && currency.symbol.length > 20
-                    ? currency.symbol.slice(0, 4) +
-                      '...' +
-                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                    : currency?.symbol) || t('currencyInputPanel.selectToken')}
-                </StyledTokenName>
-              )}
               {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
             </Aligner>
           </CurrencySelect>
