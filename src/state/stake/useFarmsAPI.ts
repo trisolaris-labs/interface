@@ -31,12 +31,14 @@ export function useFarmsAPI(): StakingTriFarms[] {
       rewarderAddress,
       allocPoint,
       inStaging,
-      noTriRewards,
       stableSwapPoolName,
-      hasNonTriRewards,
       earnedNonTriRewards
     } = activeFarms[index]
-    const { totalStakedInUSD, totalRewardRate, apr, nonTriAPRs = [] } = stakingInfoData?.[index] ?? {}
+    const { totalStakedInUSD, totalRewardRate, apr: _apr, nonTriAPRs: _nonTriAPRs = [] } =
+      stakingInfoData?.[index] ?? {}
+
+    const apr = Math.round(_apr ?? 0)
+    const nonTriAPRs = _nonTriAPRs.map(data => ({ ...data, apr: Math.round(data.apr) }))
 
     return {
       ID,
@@ -52,13 +54,13 @@ export function useFarmsAPI(): StakingTriFarms[] {
       allocPoint,
       totalRewardRate: Math.round(totalRewardRate ?? 0),
       rewardRate: tokenAmount,
-      apr: Math.round(apr ?? 0),
+      apr,
       chefVersion,
       inStaging,
-      noTriRewards,
+      noTriRewards: apr === 0,
       stableSwapPoolName,
-      nonTriAPRs: nonTriAPRs.map(data => ({ ...data, apr: Math.round(data.apr) })),
-      hasNonTriRewards,
+      nonTriAPRs,
+      hasNonTriRewards: nonTriAPRs.some(({ apr }) => apr > 0),
       earnedNonTriRewards
     }
   })

@@ -8,9 +8,9 @@ import Popover from '../Popover'
 import { PoolCardTriProps } from './PoolCardTri'
 import styled from 'styled-components'
 import { Info } from 'react-feather'
-import { useAllTokens } from '../../hooks/Tokens'
 import _ from 'lodash'
 import CurrencyLogo from '../CurrencyLogo'
+import useGetTokenByAddress from '../../hooks/useGetTokenByAddress'
 
 const IconWrapper = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -32,13 +32,7 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs }: Pr
   const [show, setShow] = useState(false)
   const open = useCallback(() => setShow(true), [setShow])
   const close = useCallback(() => setShow(false), [setShow])
-  const allTokens = useAllTokens()
-  const getTokenByAddress = useCallback(
-    address =>
-      _.find(allTokens, token => token.address.toLowerCase() === address.toLowerCase()) ??
-      new Token(ChainId.AURORA, address, 18),
-    [allTokens]
-  )
+  const getTokenByAddress = useGetTokenByAddress()
   const tooltipData = useMemo(
     () =>
       [{ token: TRI[ChainId.AURORA], apr }].concat(

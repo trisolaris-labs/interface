@@ -1,27 +1,20 @@
-import React, { useCallback, useMemo } from 'react'
-import { Token, ChainId, TokenAmount, JSBI } from '@trisolaris/sdk'
+import React, { useMemo } from 'react'
+import { ChainId, TokenAmount, JSBI } from '@trisolaris/sdk'
 import _ from 'lodash'
 import { useActiveWeb3React } from '../../hooks'
-import { useAllTokens } from '../../hooks/Tokens'
 import { CallState, useSingleCallResult } from '../multicall/hooks'
 import { useComplexNRewarderContract } from './hooks-sushi'
 import { ChefVersions, EarnedNonTriRewards, STAKING } from './stake-constants'
+import useGetTokenByAddress from '../../hooks/useGetTokenByAddress'
 
 export default function useGetNonTriRewardsForPoolID(
   version: number
 ): Pick<CallState, 'error' | 'loading'> & { result: EarnedNonTriRewards[] } {
   const { chainId, account } = useActiveWeb3React()
-  const allTokens = useAllTokens()
   const activeFarms = STAKING[chainId ?? ChainId.AURORA]
   const { chefVersion, poolId, rewarderAddress } = activeFarms[version]
   const complexNRewarderContract = useComplexNRewarderContract(rewarderAddress)
-
-  const getTokenByAddress = useCallback(
-    address =>
-      _.find(allTokens, token => token.address.toLowerCase() === address.toLowerCase()) ??
-      new Token(ChainId.AURORA, address, 18),
-    [allTokens]
-  )
+  const getTokenByAddress = useGetTokenByAddress()
 
   const { error, loading, result } = useSingleCallResult(
     chefVersion === ChefVersions.V2 ? complexNRewarderContract : null,
