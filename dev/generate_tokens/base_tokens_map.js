@@ -97,12 +97,6 @@ module.exports = {
     )
   },
   PTRI: {
-    [ChainId.AURORA]: new Token(
-      ChainId.AURORA,
-      '0x0b4Bc561767C0B1e5a4220746F357c476E5179B0',
-      18,
-      'pTRI',
-      'pTRI Token'
-    )
+    [ChainId.AURORA]: new Token(ChainId.AURORA, '0x04ED68E80a3c36A61E991a51B656FB733712cec8', 18, 'pTRI', 'pTRI Token')
   }
 }
