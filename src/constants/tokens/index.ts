@@ -650,5 +650,5 @@ export const PTRI: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'pTRI', 'pTRI Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'pTRI', 'pTRI Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'pTRI', 'pTRI Token'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x805Aee9893f86Dbbb9bC104aB1821B8026eB9dFb', 18, 'pTRI', 'pTRI Token'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xb7Ce7E00f53B260C89FED2F1b809738DB858a222', 18, 'pTRI', 'pTRI Token'),
 }
