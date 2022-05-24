@@ -19,10 +19,17 @@ import { ApprovalState } from '../../hooks/useApproveCallback'
 import { XTRI, PTRI } from '../../constants/tokens'
 import { BIG_INT_ZERO } from '../../constants'
 
-import { StyledContainer, StepsContainer, StyledStepNumber, StyledStepNumberDone } from './MigrateXtri.styles'
+import {
+  StyledContainer,
+  StepsContainer,
+  StyledStepNumber,
+  StyledStepNumberDone,
+  StyledAutoColumn
+} from './MigrateXtri.styles'
 
 enum MIGRATION_STATUS {
   NOT_MIGRATED,
+  INITIATED,
   MIGRATING,
   MIGRATED
 }
@@ -40,9 +47,20 @@ function MigrateXtri() {
   )
 
   const addTransaction = useTransactionAdder()
-
   const pTriContract = usePTriContract()
+
   const hasMigrated = migrateStatus === MIGRATION_STATUS.MIGRATED
+
+  // const handleApprove = async () => {
+  //   setMigrateStatus(MIGRATION_STATUS.INITIATED)
+  //   try {
+  //     await handleApproval()
+  //   } finally {
+  //     if (approvalState !== ApprovalState.APPROVED) {
+  //       setMigrateStatus(MIGRATION_STATUS.NOT_MIGRATED)
+  //     }
+  //   }
+  // }
 
   const migrate = useCallback(
     async (amount: CurrencyAmount | undefined) => {
@@ -57,17 +75,18 @@ function MigrateXtri() {
 
   async function handleMigrate() {
     if (xTriBalance?.greaterThan(BIG_INT_ZERO)) {
-      if (migrateStatus === MIGRATION_STATUS.NOT_MIGRATED) {
-        setMigrateStatus(MIGRATION_STATUS.MIGRATING)
-      }
       try {
         setPendingTx(true)
+        if (migrateStatus === MIGRATION_STATUS.NOT_MIGRATED) {
+          setMigrateStatus(MIGRATION_STATUS.MIGRATING)
+        }
         await migrate(xTriBalance)
+        setMigrateStatus(MIGRATION_STATUS.MIGRATED)
       } catch (e) {
         console.error(`Error migrating`, e)
+        setMigrateStatus(MIGRATION_STATUS.NOT_MIGRATED)
       } finally {
         setPendingTx(false)
-        setMigrateStatus(MIGRATION_STATUS.MIGRATED)
       }
     }
   }
@@ -84,9 +103,11 @@ function MigrateXtri() {
       </div>
       <RowBetween />
       <StepsContainer>
-        <AutoColumn gap="lg">
+        <StyledAutoColumn gap="lg">
           <StyledStepNumber>1</StyledStepNumber>
-          <Text>First, we need to approve migratting your XTRI </Text>
+          <Text>
+            First, we need to approve migratting your XTRI to <span style={{ fontWeight: 600 }}>PTRI</span>
+          </Text>
           <ButtonConfirmed
             mr="0.5rem"
             onClick={handleApproval}
@@ -101,21 +122,31 @@ function MigrateXtri() {
               'Approve'
             )}
           </ButtonConfirmed>
-        </AutoColumn>
-        <AutoColumn gap="lg">
-          <StyledStepNumber>2</StyledStepNumber>
-          <Text>No we will migrate your tokens to pTri </Text>
-          <ButtonConfirmed
-            onClick={handleMigrate}
-            disabled={approvalState !== ApprovalState.APPROVED || hasMigrated || !hasXTriBalance}
-            confirmed={hasMigrated}
-          >
-            {hasMigrated ? 'Migrated!' : 'Migrate'}
-          </ButtonConfirmed>
-        </AutoColumn>
-        <AutoColumn gap="lg">
-          <StyledStepNumberDone>{hasMigrated && <>Done!</>}</StyledStepNumberDone>
-        </AutoColumn>
+        </StyledAutoColumn>
+        {(approvalState === ApprovalState.APPROVED || migrateStatus >= MIGRATION_STATUS.MIGRATING) && (
+          <StyledAutoColumn gap="lg">
+            <StyledStepNumber>2</StyledStepNumber>
+            <Text>Now we need to migrate your tokens to pTri </Text>
+            <ButtonConfirmed
+              onClick={handleMigrate}
+              disabled={approvalState !== ApprovalState.APPROVED || hasMigrated || !hasXTriBalance}
+              confirmed={hasMigrated}
+            >
+              {hasMigrated ? (
+                'Migrated!'
+              ) : migrateStatus === MIGRATION_STATUS.MIGRATING ? (
+                <Dots>Migrating</Dots>
+              ) : (
+                'Migrate'
+              )}
+            </ButtonConfirmed>
+          </StyledAutoColumn>
+        )}
+        {hasMigrated && (
+          <StyledAutoColumn gap="lg">
+            <StyledStepNumberDone>Done!</StyledStepNumberDone>
+          </StyledAutoColumn>
+        )}
       </StepsContainer>
     </StyledContainer>
   )
