@@ -62,10 +62,9 @@ export default function EarnTri() {
                   stableSwapPoolName={farm.stableSwapPoolName}
                   totalStakedInUSD={farm.totalStakedInUSD}
                   version={farm.ID}
-                  doubleRewards={farm.doubleRewards}
+                  hasNonTriRewards={farm.hasNonTriRewards}
                   inStaging={farm.inStaging}
                   noTriRewards={farm.noTriRewards}
-                  doubleRewardToken={farm.doubleRewardToken}
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
                 />
               )
@@ -91,10 +90,9 @@ export default function EarnTri() {
                   tokens={farm.tokens}
                   totalStakedInUSD={farm.totalStakedInUSD}
                   version={farm.ID}
-                  doubleRewards={farm.doubleRewards}
+                  hasNonTriRewards={farm.hasNonTriRewards}
                   inStaging={farm.inStaging}
                   noTriRewards={farm.noTriRewards}
-                  doubleRewardToken={farm.doubleRewardToken}
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
                 />
               ))}
@@ -120,10 +118,9 @@ export default function EarnTri() {
               tokens={farm.tokens}
               totalStakedInUSD={farm.totalStakedInUSD}
               version={farm.ID}
-              doubleRewards={farm.doubleRewards}
+              hasNonTriRewards={farm.hasNonTriRewards}
               inStaging={farm.inStaging}
               noTriRewards={farm.noTriRewards}
-              doubleRewardToken={farm.doubleRewardToken}
               isStaking={isTokenAmountPositive(farm.stakedAmount)}
             />
           ))}
@@ -147,10 +144,9 @@ export default function EarnTri() {
                   tokens={farm.tokens}
                   totalStakedInUSD={farm.totalStakedInUSD}
                   version={farm.ID}
-                  doubleRewards={farm.doubleRewards}
+                  hasNonTriRewards={farm.hasNonTriRewards}
                   inStaging={farm.inStaging}
                   noTriRewards={farm.noTriRewards}
-                  doubleRewardToken={farm.doubleRewardToken}
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
                 />
               ))}
@@ -175,10 +171,9 @@ export default function EarnTri() {
                 tokens={farm.tokens}
                 totalStakedInUSD={farm.totalStakedInUSD}
                 version={farm.ID}
-                doubleRewards={farm.doubleRewards}
+                hasNonTriRewards={farm.hasNonTriRewards}
                 inStaging={farm.inStaging}
                 noTriRewards={farm.noTriRewards}
-                doubleRewardToken={farm.doubleRewardToken}
                 isStaking={isTokenAmountPositive(farm.stakedAmount)}
               />
             ))}

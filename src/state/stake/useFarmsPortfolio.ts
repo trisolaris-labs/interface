@@ -9,7 +9,7 @@ import { useFetchStakingInfoData } from '../../fetchers/farms'
 
 import { addCommasToNumber } from '../../utils'
 
-import COMPLEX_REWARDER from '../../constants/abis/complex-rewarder.json'
+import COMPLEX_N_REWARDER_ABI from '../../constants/abis/complex-n-rewarder.json'
 import { STAKING, ChefVersions } from './stake-constants'
 import { TRI } from '../../constants/tokens'
 import { dummyToken } from './stake-constants'
@@ -17,6 +17,8 @@ import { BIG_INT_ZERO, ZERO_ADDRESS } from '../../constants'
 
 import { CallState } from '../../state/multicall/hooks'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
+import _ from 'lodash'
+import useGetTokenByAddress from '../../hooks/useGetTokenByAddress'
 
 type FarmAmount = {
   [id: string]: {
@@ -47,7 +49,7 @@ export function useFarmsPortfolio(farmIds?: number[]): Result | null {
     poolId: farm.poolId,
     rewarderAddress: farm.rewarderAddress,
     v1args: [farm.poolId.toString(), account],
-    doubleRewardToken: activeFarms[farm.ID].doubleRewardToken
+    nonTriRewardTokens: activeFarms[farm.ID].earnedNonTriRewards.map(({ token }) => token)
   }))
 
   const v1Farms = farms.filter(farm => farm.chefVersion === ChefVersions.V1)
@@ -68,30 +70,33 @@ export function useFarmsPortfolio(farmIds?: number[]): Result | null {
   const complexRewarderAddressList = v2Farms.map(farm => farm.rewarderAddress).filter(address => address)
   const complexRewarderContractList = useComplexRewarderMultipleContracts(complexRewarderAddressList)
 
-  const complexRewardsContractAdressList =
+  const complexRewardsContractAddressList =
     complexRewarderContractList?.map(contract => (complexRewarderContractList ? contract?.address : undefined)) ?? []
 
   const pendingComplexRewards = useMultipleContractSingleData(
-    complexRewardsContractAdressList,
-    new Interface(COMPLEX_REWARDER),
+    complexRewardsContractAddressList,
+    new Interface(COMPLEX_N_REWARDER_ABI),
     'pendingTokens',
     [0, account, '0']
   )
 
+  const getTokenByAddress = useGetTokenByAddress()
   const complexRewardsLoading = callResultIsLoading(pendingComplexRewards)
 
-  const mapDoubleRewardToken = (addressToSearch: string) => {
-    const farm = v2Farms.find(farm => farm.doubleRewardToken.address === addressToSearch)
-    return farm?.doubleRewardToken
-  }
+  const earnedComplexRewardPool = complexRewardsLoading
+    ? null
+    : pendingComplexRewards.reduce((acc: { rewardAmount: any; rewardToken: Token }[], farmData) => {
+        if (farmData.result?.rewardAmounts != null && Number(farmData.result?.rewardAmounts?.length) > 0) {
+          farmData.result.rewardAmounts.forEach((amount: any, i: number) => {
+            acc.push({
+              rewardAmount: amount,
+              rewardToken: getTokenByAddress(farmData?.result?.rewardTokens[i])
+            })
+          })
+        }
 
-  const earnedComplexRewardPool =
-    pendingComplexRewards.length && !complexRewardsLoading
-      ? pendingComplexRewards.map(farmData => ({
-          rewardAmount: JSBI.BigInt(farmData?.result?.rewardAmounts?.[0] ?? 0),
-          rewardToken: mapDoubleRewardToken(farmData?.result?.rewardTokens[0]) ?? dummyToken
-        }))
-      : null
+        return acc
+      }, [])
 
   const complexTokenAmounts = earnedComplexRewardPool?.map(pool => ({
     token: pool.rewardToken,

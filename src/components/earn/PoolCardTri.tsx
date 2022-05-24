@@ -33,7 +33,7 @@ import PoolCardTriRewardText from './PoolCardTriRewardText'
 
 export type PoolCardTriProps = {
   apr: number
-  doubleRewards: boolean
+  hasNonTriRewards: boolean
   chefVersion: ChefVersions
   inStaging: boolean
   noTriRewards: boolean
@@ -41,7 +41,6 @@ export type PoolCardTriProps = {
   isPeriodFinished: boolean
   tokens: Token[]
   totalStakedInUSD: number
-  doubleRewardToken: Token
   isStaking: boolean
   version: number
   stableSwapPoolName?: StableSwapPoolName
@@ -51,7 +50,6 @@ export type PoolCardTriProps = {
 const DefaultPoolCardtri = ({
   apr,
   chefVersion,
-  doubleRewards,
   inStaging,
   isLegacy,
   isPeriodFinished,
@@ -62,7 +60,9 @@ const DefaultPoolCardtri = ({
   enableClaimButton = false,
   enableModal = () => null,
   stableSwapPoolName,
-  nonTriAPRs
+  nonTriAPRs,
+  hasNonTriRewards,
+  noTriRewards
 }: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
   const history = useHistory()
   const { t } = useTranslation()
@@ -106,7 +106,7 @@ const DefaultPoolCardtri = ({
     <Wrapper
       bgColor1={backgroundColor1}
       bgColor2={backgroundColor2}
-      isDoubleRewards={doubleRewards}
+      isDoubleRewards={apr > 0 && hasNonTriRewards}
       currenciesQty={currenciesQty}
     >
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
@@ -141,7 +141,13 @@ const DefaultPoolCardtri = ({
         </AutoColumn>
         <AutoColumn>
           <TYPE.mutedSubHeader textAlign="end">APR</TYPE.mutedSubHeader>
-          <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
+          <PoolCardTriRewardText
+            apr={apr}
+            inStaging={inStaging}
+            nonTriAPRs={nonTriAPRs}
+            isLegacy={isLegacy}
+            noTriRewards={noTriRewards}
+          />
         </AutoColumn>
       </RowBetween>
     </Wrapper>
@@ -154,9 +160,10 @@ const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
   const { version } = props
 
   const stakingInfo = useSingleStableFarm(Number(version), props.stableSwapPoolName)
-  const { earnedAmount, doubleRewardAmount } = stakingInfo
+  const { earnedAmount, earnedNonTriRewards } = stakingInfo
 
-  const amountIsClaimable = isTokenAmountPositive(earnedAmount) || isTokenAmountPositive(doubleRewardAmount)
+  const amountIsClaimable =
+    isTokenAmountPositive(earnedAmount) || earnedNonTriRewards.some(({ amount }) => isTokenAmountPositive(amount))
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
   const enableModal = () => setShowClaimRewardModal(true)
@@ -178,9 +185,10 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
   const { version } = props
 
   const stakingInfo = useSingleFarm(Number(version))
-  const { earnedAmount, doubleRewardAmount } = stakingInfo
+  const { earnedAmount, earnedNonTriRewards } = stakingInfo
 
-  const amountIsClaimable = isTokenAmountPositive(earnedAmount) || isTokenAmountPositive(doubleRewardAmount)
+  const amountIsClaimable =
+    isTokenAmountPositive(earnedAmount) || earnedNonTriRewards.some(({ amount }) => isTokenAmountPositive(amount))
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
   const enableModal = () => setShowClaimRewardModal(true)

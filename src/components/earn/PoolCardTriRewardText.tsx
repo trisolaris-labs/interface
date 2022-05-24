@@ -8,9 +8,9 @@ import Popover from '../Popover'
 import { PoolCardTriProps } from './PoolCardTri'
 import styled from 'styled-components'
 import { Info } from 'react-feather'
-import { useAllTokens } from '../../hooks/Tokens'
 import _ from 'lodash'
 import CurrencyLogo from '../CurrencyLogo'
+import useGetTokenByAddress from '../../hooks/useGetTokenByAddress'
 
 const IconWrapper = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -26,23 +26,19 @@ const ContentWrapper = styled.div`
   width: fit-content;
 `
 
-type Props = Pick<PoolCardTriProps, 'apr' | 'inStaging' | 'nonTriAPRs' | 'isLegacy'>
+type Props = Pick<PoolCardTriProps, 'apr' | 'inStaging' | 'nonTriAPRs' | 'isLegacy' | 'noTriRewards'>
 
-export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLegacy }: Props) {
+export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLegacy, noTriRewards }: Props) {
   const [show, setShow] = useState(false)
   const open = useCallback(() => setShow(true), [setShow])
   const close = useCallback(() => setShow(false), [setShow])
-  const allTokens = useAllTokens()
-  const getTokenByAddress = useCallback(
-    address =>
-      _.find(allTokens, token => token.address.toLowerCase() === address.toLowerCase()) ??
-      new Token(ChainId.AURORA, address, 18),
-    [allTokens]
-  )
+  const getTokenByAddress = useGetTokenByAddress()
+
+  const baseRewardsTokens = noTriRewards ? [] : [{ token: TRI[ChainId.AURORA], apr }]
   const tooltipData = useMemo(
     () =>
-      [{ token: TRI[ChainId.AURORA], apr }].concat(
-        nonTriAPRs?.map(({ address, apr }) => ({
+      baseRewardsTokens.concat(
+        nonTriAPRs.map(({ address, apr }) => ({
           token: getTokenByAddress(address),
           apr
         })) ?? []
@@ -76,7 +72,7 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLe
   }
 
   const hasTriRewards = apr !== 0
-  const hasNonTriRewards = nonTriAPRs?.some(({ apr }) => apr > 0)
+  const hasNonTriRewards = nonTriAPRs.length > 0
   const hasOnlyTriRewards = hasTriRewards && !hasNonTriRewards
   const hasOnlyNonTriRewards = !hasTriRewards && hasNonTriRewards
   const hasMultipleNonTriRewards = hasNonTriRewards && Number(nonTriAPRs?.length) > 1
