@@ -21,7 +21,7 @@ function InfoBox() {
   return (
     <StyledContainer>
       <LargeHeaderWhite fontWeight={600} fontSize={36}>
-        𝜋Tri
+        pTri
       </LargeHeaderWhite>
       <FixedHeightRow marginTop="4px">
         <RowFixed>Total Staked</RowFixed>

@@ -42,8 +42,6 @@ function MigrateXtri() {
   const addTransaction = useTransactionAdder()
 
   const pTriContract = usePTriContract()
-  const pTriBalance = useTokenBalance(account ?? undefined, PTRI[ChainId.AURORA])!
-  const hasPTriBalance = JSBI.greaterThan(pTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
   const hasMigrated = migrateStatus === MIGRATION_STATUS.MIGRATED
 
   const migrate = useCallback(
@@ -76,8 +74,7 @@ function MigrateXtri() {
 
   return (
     <StyledContainer>
-      <LargeHeaderWhite fontWeight={600}>Introducing 𝜋Tri</LargeHeaderWhite>
-
+      <LargeHeaderWhite fontWeight={600}>Introducing pTri</LargeHeaderWhite>
       <div>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
         magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -107,7 +104,7 @@ function MigrateXtri() {
         </AutoColumn>
         <AutoColumn gap="lg">
           <StyledStepNumber>2</StyledStepNumber>
-          <Text>No we will migrate your tokens to 𝜋Tri </Text>
+          <Text>No we will migrate your tokens to pTri </Text>
           <ButtonConfirmed
             onClick={handleMigrate}
             disabled={approvalState !== ApprovalState.APPROVED || hasMigrated || !hasXTriBalance}

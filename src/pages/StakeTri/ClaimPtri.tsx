@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { ChainId, JSBI } from '@trisolaris/sdk'
 
-import { ButtonError, ButtonPrimary, ButtonGold } from '../../components/Button'
+import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 import { Text } from 'rebass'
 import { Dots } from '../Pool/styleds'
@@ -34,10 +34,6 @@ padding: 2rem;
 
 const StyledModalContainer = styled(AutoColumn)`
   padding: 20px;
-`
-
-const StyledButtonGold = styled(ButtonGold)`
-  background-color: #b59e5f;
 `
 
 enum ClaimType {
@@ -80,6 +76,7 @@ function ClaimPtri() {
       console.error(`Error Claiming: `, e)
     } finally {
       setPendingTx(null)
+      setOpenModal(false)
     }
   }
 
