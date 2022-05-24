@@ -21,8 +21,15 @@ import { BIG_INT_ZERO } from '../../constants'
 
 import { StyledContainer, StepsContainer, StyledStepNumber, StyledStepNumberDone } from './MigrateXtri.styles'
 
+enum MIGRATION_STATUS {
+  NOT_MIGRATED,
+  MIGRATING,
+  MIGRATED
+}
+
 function MigrateXtri() {
   const [pendingTx, setPendingTx] = useState(false)
+  const [migrateStatus, setMigrateStatus] = useState(MIGRATION_STATUS.NOT_MIGRATED)
   const { account } = useActiveWeb3React()
   const xTriBalance = useTokenBalance(account ?? undefined, XTRI[ChainId.AURORA])!
   const hasXTriBalance = JSBI.greaterThan(xTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
@@ -36,13 +43,14 @@ function MigrateXtri() {
 
   const pTriContract = usePTriContract()
   const pTriBalance = useTokenBalance(account ?? undefined, PTRI[ChainId.AURORA])!
-
   const hasPTriBalance = JSBI.greaterThan(pTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
+  const hasMigrated = migrateStatus === MIGRATION_STATUS.MIGRATED
 
   const migrate = useCallback(
     async (amount: CurrencyAmount | undefined) => {
       if (amount?.raw) {
         const tx = await pTriContract?.migrate(account, XTRI[ChainId.AURORA].address, amount.raw.toString())
+        await tx.wait()
         return addTransaction(tx, { summary: 'Migrated xtri' })
       }
     },
@@ -51,6 +59,9 @@ function MigrateXtri() {
 
   async function handleMigrate() {
     if (xTriBalance?.greaterThan(BIG_INT_ZERO)) {
+      if (migrateStatus === MIGRATION_STATUS.NOT_MIGRATED) {
+        setMigrateStatus(MIGRATION_STATUS.MIGRATING)
+      }
       try {
         setPendingTx(true)
         await migrate(xTriBalance)
@@ -58,6 +69,7 @@ function MigrateXtri() {
         console.error(`Error migrating`, e)
       } finally {
         setPendingTx(false)
+        setMigrateStatus(MIGRATION_STATUS.MIGRATED)
       }
     }
   }
@@ -98,18 +110,14 @@ function MigrateXtri() {
           <Text>No we will migrate your tokens to 𝜋Tri </Text>
           <ButtonConfirmed
             onClick={handleMigrate}
-            disabled={
-              approvalState !== ApprovalState.APPROVED ||
-              (hasPTriBalance && !hasXTriBalance) ||
-              JSBI.equal(xTriBalance?.raw, BIG_INT_ZERO)
-            }
-            confirmed={hasPTriBalance && !hasXTriBalance}
+            disabled={approvalState !== ApprovalState.APPROVED || hasMigrated || !hasXTriBalance}
+            confirmed={hasMigrated}
           >
-            {hasPTriBalance && !hasXTriBalance ? 'Migrated!' : 'Migrate'}
+            {hasMigrated ? 'Migrated!' : 'Migrate'}
           </ButtonConfirmed>
         </AutoColumn>
         <AutoColumn gap="lg">
-          <StyledStepNumberDone>{hasPTriBalance && 'Done!'}</StyledStepNumberDone>
+          <StyledStepNumberDone>{hasMigrated && <>Done!</>}</StyledStepNumberDone>
         </AutoColumn>
       </StepsContainer>
     </StyledContainer>
