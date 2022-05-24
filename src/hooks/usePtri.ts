@@ -11,9 +11,9 @@ import { TRI } from '../constants/tokens'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
 
 export enum stakeAmountCall {
-  TOTAL_ASSETS = 'totalAssets',
+  TOTAL_STAKED = 'internalTRIBalance',
   USER_BALANCE = 'balanceOf',
-  USER_CLAIMABLE = 'claimableRevenueAssets'
+  USER_CLAIMABLE = 'pendingReward'
 }
 
 export function usePtriStakeInfo() {
@@ -30,7 +30,7 @@ export function usePtriStakeInfo() {
   }
 
   const totalStakedCallResult: JSBI =
-    useSingleCallResult(piContract, stakeAmountCall.TOTAL_ASSETS)?.result?.[0] ?? BIG_INT_ZERO
+    useSingleCallResult(piContract, stakeAmountCall.TOTAL_STAKED)?.result?.[0] ?? BIG_INT_ZERO
   const totalStakedInUsd = getStakedInUsd(totalStakedCallResult)
 
   const userStakedCallResult: JSBI =
@@ -38,7 +38,10 @@ export function usePtriStakeInfo() {
   const userStakedInUsd = getStakedInUsd(userStakedCallResult)
 
   const userClaimableRewards: JSBI =
-    useSingleCallResult(piContract, stakeAmountCall.USER_CLAIMABLE, [account ?? undefined])?.result?.[0] ?? BIG_INT_ZERO
+    useSingleCallResult(piContract, stakeAmountCall.USER_CLAIMABLE, [
+      account ?? undefined,
+      STABLESWAP_POOLS.USDC_USDT_USN.lpToken.address
+    ])?.result?.[0] ?? BIG_INT_ZERO
 
   const userClaimableRewardsIn3pool = new TokenAmount(
     STABLESWAP_POOLS.USDC_USDT_USN.lpToken,
@@ -46,5 +49,9 @@ export function usePtriStakeInfo() {
   )
   const userClaimableRewardsInUsd = virtualPrice?.multiply(userClaimableRewardsIn3pool)
 
-  return { totalStakedInUsd, userStakedInUsd, userClaimableRewardsInUsd }
+  return {
+    totalStakedInUsd,
+    userStakedInUsd,
+    userClaimableRewardsInUsd
+  }
 }

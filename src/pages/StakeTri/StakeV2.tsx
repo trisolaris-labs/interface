@@ -12,7 +12,7 @@ function StakeV2() {
       <InfoBox />
       <MigrateXtri />
       <StakeBox />
-      <ClaimPtri />
+      <ClaimPtri /> 
     </PageWrapper>
   )
 }

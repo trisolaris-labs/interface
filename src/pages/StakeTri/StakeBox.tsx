@@ -86,7 +86,7 @@ function StakeBox() {
   const deposit = useCallback(
     async (amount: CurrencyAmount | undefined) => {
       if (amount?.raw) {
-        const tx = await pTriContract?.deposit(amount?.raw.toString(), account)
+        const tx = await pTriContract?.deposit(amount?.raw.toString())
         return addTransaction(tx, { summary: 'Deposited into Ptri' })
       }
     },
@@ -96,7 +96,7 @@ function StakeBox() {
   const withdraw = useCallback(
     async (amount: CurrencyAmount | undefined) => {
       if (amount?.raw) {
-        const tx = await pTriContract?.withdraw(amount?.raw.toString(), account, account)
+        const tx = await pTriContract?.withdraw(amount?.raw.toString())
         return addTransaction(tx, { summary: 'Withdraw pTri' })
       }
     },
