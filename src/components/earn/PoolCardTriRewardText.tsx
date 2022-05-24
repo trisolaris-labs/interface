@@ -26,16 +26,18 @@ const ContentWrapper = styled.div`
   width: fit-content;
 `
 
-type Props = Pick<PoolCardTriProps, 'apr' | 'inStaging' | 'nonTriAPRs' | 'isLegacy'>
+type Props = Pick<PoolCardTriProps, 'apr' | 'inStaging' | 'nonTriAPRs' | 'isLegacy' | 'noTriRewards'>
 
-export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLegacy }: Props) {
+export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLegacy, noTriRewards }: Props) {
   const [show, setShow] = useState(false)
   const open = useCallback(() => setShow(true), [setShow])
   const close = useCallback(() => setShow(false), [setShow])
   const getTokenByAddress = useGetTokenByAddress()
+
+  const baseRewardsTokens = noTriRewards ? [] : [{ token: TRI[ChainId.AURORA], apr }]
   const tooltipData = useMemo(
     () =>
-      [{ token: TRI[ChainId.AURORA], apr }].concat(
+      baseRewardsTokens.concat(
         nonTriAPRs.map(({ address, apr }) => ({
           token: getTokenByAddress(address),
           apr
