@@ -61,8 +61,7 @@ const DefaultPoolCardtri = ({
   enableModal = () => null,
   stableSwapPoolName,
   nonTriAPRs,
-  hasNonTriRewards,
-  noTriRewards
+  hasNonTriRewards
 }: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
   const history = useHistory()
   const { t } = useTranslation()
@@ -141,13 +140,7 @@ const DefaultPoolCardtri = ({
         </AutoColumn>
         <AutoColumn>
           <TYPE.mutedSubHeader textAlign="end">APR</TYPE.mutedSubHeader>
-          <PoolCardTriRewardText
-            apr={apr}
-            inStaging={inStaging}
-            nonTriAPRs={nonTriAPRs}
-            isLegacy={isLegacy}
-            noTriRewards={noTriRewards}
-          />
+          <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AutoColumn>
       </RowBetween>
     </Wrapper>

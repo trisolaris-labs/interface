@@ -26,18 +26,25 @@ const ContentWrapper = styled.div`
   width: fit-content;
 `
 
-type Props = Pick<PoolCardTriProps, 'apr' | 'inStaging' | 'nonTriAPRs' | 'isLegacy' | 'noTriRewards'>
+type Props = Pick<PoolCardTriProps, 'apr' | 'inStaging' | 'nonTriAPRs' | 'isLegacy'>
 
-export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLegacy, noTriRewards }: Props) {
+export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLegacy }: Props) {
   const [show, setShow] = useState(false)
   const open = useCallback(() => setShow(true), [setShow])
   const close = useCallback(() => setShow(false), [setShow])
   const getTokenByAddress = useGetTokenByAddress()
 
-  const baseRewardsTokens = noTriRewards ? [] : [{ token: TRI[ChainId.AURORA], apr }]
+  const hasTriRewards = apr !== 0
+  const hasNonTriRewards = nonTriAPRs.length > 0
+  const hasOnlyTriRewards = hasTriRewards && !hasNonTriRewards
+  const hasOnlyNonTriRewards = !hasTriRewards && hasNonTriRewards
+  const hasMultipleNonTriRewards = hasNonTriRewards && Number(nonTriAPRs?.length) > 1
+  const hasNoRewards = (!hasTriRewards && !hasNonTriRewards) || isLegacy
+
+  const baseRewardTokens = hasOnlyNonTriRewards ? [] : [{ token: TRI[ChainId.AURORA], apr }]
   const tooltipData = useMemo(
     () =>
-      baseRewardsTokens.concat(
+      baseRewardTokens.concat(
         nonTriAPRs.map(({ address, apr }) => ({
           token: getTokenByAddress(address),
           apr
@@ -70,13 +77,6 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLe
   if (inStaging) {
     return <TYPE.white textAlign="end">Coming Soon</TYPE.white>
   }
-
-  const hasTriRewards = apr !== 0
-  const hasNonTriRewards = nonTriAPRs.length > 0
-  const hasOnlyTriRewards = hasTriRewards && !hasNonTriRewards
-  const hasOnlyNonTriRewards = !hasTriRewards && hasNonTriRewards
-  const hasMultipleNonTriRewards = hasNonTriRewards && Number(nonTriAPRs?.length) > 1
-  const hasNoRewards = (!hasTriRewards && !hasNonTriRewards) || isLegacy
 
   if (hasNoRewards) {
     return (
