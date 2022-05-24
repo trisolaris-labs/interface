@@ -51,21 +51,10 @@ function MigrateXtri() {
 
   const hasMigrated = migrateStatus === MIGRATION_STATUS.MIGRATED
 
-  // const handleApprove = async () => {
-  //   setMigrateStatus(MIGRATION_STATUS.INITIATED)
-  //   try {
-  //     await handleApproval()
-  //   } finally {
-  //     if (approvalState !== ApprovalState.APPROVED) {
-  //       setMigrateStatus(MIGRATION_STATUS.NOT_MIGRATED)
-  //     }
-  //   }
-  // }
-
   const migrate = useCallback(
     async (amount: CurrencyAmount | undefined) => {
       if (amount?.raw) {
-        const tx = await pTriContract?.migrate(account, XTRI[ChainId.AURORA].address, amount.raw.toString())
+        const tx = await pTriContract?.migrate(XTRI[ChainId.AURORA].address, amount.raw.toString())
         await tx.wait()
         return addTransaction(tx, { summary: 'Migrated xtri' })
       }
