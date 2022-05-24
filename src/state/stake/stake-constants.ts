@@ -401,7 +401,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0xABE01A6b6922130C982E221681EB4C4aD07A21dA',
     allocPoint: 1,
     noTriRewards: true,
-    inStaging: false,
+    inStaging: true,
     doubleRewardToken: BBT[ChainId.AURORA]
   }),
   // Needed to add the this pool due to some functions and features breaking when jumping from ID 24 to 26.
