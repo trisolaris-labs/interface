@@ -15,12 +15,15 @@ import { usePtriStakeInfo } from '../../hooks/usePtri'
 import { TRI } from '../../constants/tokens'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 
+import { CardBackground } from './StakingAPRCard'
+
 export const StyledContainer = styled(AutoColumn)<{ disabled?: boolean }>`
-background: #0e3f69
-border-radius: 10px;
-width: 100%;
-padding: 2rem 2rem 1rem 2rem;
-height:100%;
+  background: #0e3f69
+  border-radius: 10px;
+  width: 100%;
+  padding: 2rem 2rem 1rem 2rem;
+  height: 100%;
+  position: relative;
 `
 
 const StyledStakedAmount = styled.span`

@@ -6,13 +6,12 @@ export const StyledContainer = styled(AutoColumn)<{ disabled?: boolean }>`
 background: #0e3f69
 border-radius: 10px;
 width: 100%;
-padding: 2rem;
+padding: 1rem 2rem;
+border: 1px solid #1350ff;
+box-shadow:0px 0px 8px 5px #1350ff;
 `
 
 export const StepsContainer = styled.div`
-  // display: grid;
-  // grid-template-columns: auto auto auto;
-  // grid-column-gap: 20px;
   display: flex;
   justify-content: space-around;
 `

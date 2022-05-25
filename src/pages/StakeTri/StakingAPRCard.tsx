@@ -12,7 +12,7 @@ const Card = styled(HighlightCard)`
   border: none;
 `
 
-const CardBackground = styled.span`
+export const CardBackground = styled.span`
   background: rgb(0, 20, 255);
   background: linear-gradient(
     90deg,

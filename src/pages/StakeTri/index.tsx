@@ -1,4 +1,4 @@
-import { ChainId } from '@trisolaris/sdk'
+import { ChainId, JSBI } from '@trisolaris/sdk'
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { DarkGreyCard } from '../../components/Card'
@@ -22,6 +22,7 @@ import { useWalletModalToggle } from '../../state/application/hooks'
 import { Dots } from '../../components/swap/styleds'
 import StakingAPRCard from './StakingAPRCard'
 import { PageWrapper } from '../../components/Page'
+import MigrateBanner from './MigrateBanner'
 
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
@@ -177,6 +178,7 @@ export default function StakeTri() {
 
   return (
     <PageWrapper gap="lg" justify="center">
+      {JSBI.greaterThan(xTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO) && <MigrateBanner />}
       <TopSection gap="md">
         <HighlightCard>
           <CardSection>

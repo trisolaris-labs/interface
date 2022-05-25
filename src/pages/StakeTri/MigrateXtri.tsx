@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react'
 
 import { ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
+import { Text } from 'rebass'
 
 import { AutoColumn } from '../../components/Column'
 import { ButtonConfirmed } from '../../components/Button'
 import { LargeHeaderWhite } from './StakeTriV1'
 import { RowBetween } from '../../components/Row'
 import { Dots } from '../../components/swap/styleds'
-import { Text } from 'rebass'
+import { TokenPairBackgroundColor } from '../../components/earn/PoolCardTri.styles'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
@@ -19,13 +20,8 @@ import { ApprovalState } from '../../hooks/useApproveCallback'
 import { XTRI, PTRI } from '../../constants/tokens'
 import { BIG_INT_ZERO } from '../../constants'
 
-import {
-  StyledContainer,
-  StepsContainer,
-  StyledStepNumber,
-  StyledStepNumberDone,
-  StyledAutoColumn
-} from './MigrateXtri.styles'
+import { StyledContainer, StepsContainer, StyledStepNumberDone, StyledAutoColumn } from './MigrateXtri.styles'
+import { TYPE } from '../../theme'
 
 enum MIGRATION_STATUS {
   NOT_MIGRATED,
@@ -82,15 +78,8 @@ function MigrateXtri() {
 
   return (
     <StyledContainer>
-      <LargeHeaderWhite fontWeight={600}>Introducing pTri</LargeHeaderWhite>
-    
-      <RowBetween />
       <StepsContainer>
         <StyledAutoColumn gap="lg">
-          <StyledStepNumber>1</StyledStepNumber>
-          <Text>
-            First, we need to approve migratting your XTRI to <span style={{ fontWeight: 600 }}>PTRI</span>
-          </Text>
           <ButtonConfirmed
             mr="0.5rem"
             onClick={handleApproval}
@@ -102,29 +91,27 @@ function MigrateXtri() {
             ) : approvalState === ApprovalState.APPROVED ? (
               'Approved'
             ) : (
-              'Approve'
+              'Approve Migrating'
             )}
           </ButtonConfirmed>
         </StyledAutoColumn>
-        {(approvalState === ApprovalState.APPROVED || migrateStatus >= MIGRATION_STATUS.MIGRATING) && (
-          <StyledAutoColumn gap="lg">
-            <StyledStepNumber>2</StyledStepNumber>
-            <Text>Now we need to migrate your tokens to pTri </Text>
-            <ButtonConfirmed
-              onClick={handleMigrate}
-              disabled={approvalState !== ApprovalState.APPROVED || hasMigrated || !hasXTriBalance}
-              confirmed={hasMigrated}
-            >
-              {hasMigrated ? (
-                'Migrated!'
-              ) : migrateStatus === MIGRATION_STATUS.MIGRATING ? (
-                <Dots>Migrating</Dots>
-              ) : (
-                'Migrate'
-              )}
-            </ButtonConfirmed>
-          </StyledAutoColumn>
-        )}
+
+        <StyledAutoColumn gap="lg">
+          <ButtonConfirmed
+            onClick={handleMigrate}
+            disabled={approvalState !== ApprovalState.APPROVED || hasMigrated || !hasXTriBalance}
+            confirmed={hasMigrated}
+          >
+            {hasMigrated ? (
+              'Migrated!'
+            ) : migrateStatus === MIGRATION_STATUS.MIGRATING ? (
+              <Dots>Migrating</Dots>
+            ) : (
+              'Migrate'
+            )}
+          </ButtonConfirmed>
+        </StyledAutoColumn>
+
         {hasMigrated && (
           <StyledAutoColumn gap="lg">
             <StyledStepNumberDone>Done!</StyledStepNumberDone>

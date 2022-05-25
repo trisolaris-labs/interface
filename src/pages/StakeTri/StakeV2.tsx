@@ -1,25 +1,37 @@
 import React from 'react'
 import styled from 'styled-components'
+import { JSBI, ChainId } from '@trisolaris/sdk'
+import { Text } from 'rebass'
+import { Link } from 'react-router-dom'
 
 import { PageWrapper } from '../../components/Page'
 import StakeBox from './StakeBox'
-import MigrateXtri from './MigrateXtri'
 import ClaimPtri from './ClaimPtri'
 import StatsBox from './StatsBox'
 import { ExternalLink } from '../../theme'
-import { Text } from 'rebass'
-
 import { StyledContainer } from './StatsBox'
+import MigrateBanner from './MigrateBanner'
 
-const StyledLearnMoreContainer = styled.div`
+import { useActiveWeb3React } from '../../hooks'
+import { useTokenBalance } from '../../state/wallet/hooks'
+
+import { XTRI } from '../../constants/tokens'
+import { BIG_INT_ZERO } from '../../constants'
+
+const StyledLinksContainer = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 `
 
 const StyledExternalLink = styled(ExternalLink)`
   font-weight: 600;
   color: ${({ theme }) => theme.primaryText1};
   margin: 2px 0 10px;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 `
 
 const StyledTextinfo = styled.div`
@@ -45,8 +57,13 @@ const AboutContainer = styled(StyledContainer)`
 `
 
 function StakeV2() {
+  const { account } = useActiveWeb3React()
+  const xTriBalance = useTokenBalance(account ?? undefined, XTRI[ChainId.AURORA])!
+  const hasXTriBalance = JSBI.greaterThan(xTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
+
   return (
     <PageWrapper gap="lg">
+      {hasXTriBalance && <MigrateBanner />}
       <TopContainer>
         <StatsBoxContainer>
           <StatsBox />
@@ -56,12 +73,14 @@ function StakeV2() {
             About pTRI
           </Text>
           <StyledTextinfo>pTri is the new Trisolaris revenue share Token.</StyledTextinfo>
-          <StyledLearnMoreContainer>
+          <StyledLinksContainer>
             <StyledExternalLink href=""> Learn about how it works ↗</StyledExternalLink>
-          </StyledLearnMoreContainer>
+            <StyledExternalLink as={Link} to="/stake">
+              Go to legacy Staking v1 ↗
+            </StyledExternalLink>
+          </StyledLinksContainer>
         </AboutContainer>
       </TopContainer>
-      <MigrateXtri />
       <StakeBox />
       <ClaimPtri />
     </PageWrapper>
