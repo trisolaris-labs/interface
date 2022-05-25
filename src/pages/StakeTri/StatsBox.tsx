@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { ChainId } from '@trisolaris/sdk'
 
-import { LargeHeaderWhite } from './StakeTriV1'
 import { AutoColumn } from '../../components/Column'
 import { FixedHeightRow } from '../../components/PositionCard/PositionCard.styles'
 import { RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import MultipleCurrencyLogo from '../../components/MultipleCurrencyLogo'
 import Toggle from '../../components/Toggle'
+import { TYPE } from '../../theme'
 
 import { usePtriStakeInfo } from '../../hooks/usePtri'
 
@@ -28,6 +28,10 @@ export const StyledContainer = styled(AutoColumn)<{ disabled?: boolean }>`
 
 const StyledStakedAmount = styled.span`
   margin-left: 5px;
+`
+
+const LargeHeaderWhite = styled(TYPE.largeHeader)`
+  color: white;
 `
 
 const PTRI_REWARDS_TOKEN = STABLESWAP_POOLS.USDC_USDT_USN.poolTokens

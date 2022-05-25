@@ -20,6 +20,7 @@ import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurren
 import { PTRI, TRI } from '../../constants/tokens'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { TYPE } from '../../theme'
+import { BIG_INT_ZERO } from '../../constants'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -139,8 +140,8 @@ function StakeBox() {
         id="stake-currency-input"
         onMax={() => handleBalanceClick(BalanceButtonValueEnum.MAX)}
         onClickBalanceButton={handleBalanceClick}
-        disableMaxButton={atMaxAmountInput}
-        disableHalfButton={atHalfAmountInput}
+        disableMaxButton={atMaxAmountInput || !balance?.greaterThan(BIG_INT_ZERO)}
+        disableHalfButton={atHalfAmountInput || !balance?.greaterThan(BIG_INT_ZERO)}
       />
 
       <ButtonsContainer>
