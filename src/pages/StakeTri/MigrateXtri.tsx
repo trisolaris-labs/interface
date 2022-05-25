@@ -27,7 +27,7 @@ enum MIGRATION_STATUS {
   MIGRATED
 }
 
-function MigrateXtri() {
+function MigrateXtri({ closeModal }: { closeModal: () => void }) {
   const { account } = useActiveWeb3React()
   const xTriBalance = useTokenBalance(account ?? undefined, XTRI[ChainId.AURORA])!
   const addTransaction = useTransactionAdder()
@@ -54,6 +54,9 @@ function MigrateXtri() {
     },
     [addTransaction, pTriContract]
   )
+
+
+  
 
   async function handleMigrate() {
     if (xTriBalance?.greaterThan(BIG_INT_ZERO)) {
@@ -87,34 +90,28 @@ function MigrateXtri() {
       </Text>
 
       <ButtonsContainer>
-        <ButtonConfirmed
-          mr="0.5rem"
-          onClick={handleApproval}
-          confirmed={approvalState === ApprovalState.APPROVED}
-          disabled={approvalState !== ApprovalState.NOT_APPROVED || pendingTx}
-        >
-          {approvalState === ApprovalState.PENDING ? (
-            <Dots>Approving</Dots>
-          ) : approvalState === ApprovalState.APPROVED ? (
-            'Approved'
-          ) : (
-            'Approve Migrating'
-          )}
-        </ButtonConfirmed>
+        {approvalState === ApprovalState.NOT_APPROVED ||
+          (approvalState === ApprovalState.PENDING && (
+            <ButtonConfirmed mr="0.5rem" onClick={handleApproval} disabled={pendingTx}>
+              {approvalState === ApprovalState.PENDING ? <Dots>Approving</Dots> : 'Approve Migrating xTRI'}
+            </ButtonConfirmed>
+          ))}
 
-        <ButtonConfirmed
-          onClick={handleMigrate}
-          disabled={approvalState !== ApprovalState.APPROVED || hasMigrated || !hasXTriBalance || pendingTx}
-          confirmed={hasMigrated}
-        >
-          {hasMigrated ? (
-            'Migrated!'
-          ) : migrateStatus === MIGRATION_STATUS.MIGRATING ? (
-            <Dots>Migrating</Dots>
-          ) : (
-            'Migrate'
-          )}
-        </ButtonConfirmed>
+        {approvalState === ApprovalState.APPROVED && (
+          <ButtonConfirmed
+            onClick={handleMigrate}
+            disabled={hasMigrated || !hasXTriBalance || pendingTx}
+            confirmed={hasMigrated}
+          >
+            {hasMigrated ? (
+              'Migrated!'
+            ) : migrateStatus === MIGRATION_STATUS.MIGRATING ? (
+              <Dots>Migrating</Dots>
+            ) : (
+              'Migrate'
+            )}
+          </ButtonConfirmed>
+        )}
       </ButtonsContainer>
     </StyledContainer>
   )

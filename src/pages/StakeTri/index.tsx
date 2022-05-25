@@ -76,8 +76,8 @@ function StakeTri() {
 
   return (
     <PageWrapper gap="lg">
-      <Modal isOpen={true} onDismiss={closeModal}>
-        <MigrateXtri />
+      <Modal isOpen={openModal} onDismiss={closeModal}>
+        <MigrateXtri closeModal={closeModal} />
       </Modal>
       <TopContainer>
         <StatsBoxContainer>
