@@ -76,7 +76,7 @@ function MigrateXtri({ closeModal }: { closeModal: () => void }) {
     if (migrateStatus === MIGRATION_STATUS.MIGRATED) {
       setTimeout(() => {
         closeModal()
-      }, 3500)
+      }, 2500)
     }
   }, [migrateStatus])
 
