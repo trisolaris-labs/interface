@@ -8,6 +8,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useFetchStakingInfoData } from '../../fetchers/farms'
 import { useMemo } from 'react'
 import useGetNonTriRewardsForPoolID from './useGetNonTriRewardsForPoolID'
+import { useTokenBalance } from '../wallet/hooks'
 
 // gets the staking info from the network for the active chain id
 export function useSingleFarm(version: number): StakingTri {
@@ -28,6 +29,7 @@ export function useSingleFarm(version: number): StakingTri {
   const [tokenA, tokenB] = tokens ?? []
   const [pairState, pair] = usePair(tokenA, tokenB)
   const earnedNonTriRewards = useGetNonTriRewardsForPoolID(version)
+  const totalStakedAmount = useTokenBalance(contract?.address, pair?.liquidityToken)
 
   const result = useMemo(() => {
     // Loading
@@ -65,9 +67,9 @@ export function useSingleFarm(version: number): StakingTri {
       ...activeFarms[version],
       tokens: tokens!,
       isPeriodFinished: false,
-      earnedAmount: earnedAmount,
+      earnedAmount,
       stakedAmount,
-      totalStakedAmount: tokenAmount,
+      totalStakedAmount: totalStakedAmount ?? tokenAmount,
       totalStakedInUSD: Math.round(totalStakedInUSD),
       totalRewardRate: Math.round(totalRewardRate),
       rewardRate: tokenAmount,
@@ -79,18 +81,25 @@ export function useSingleFarm(version: number): StakingTri {
     }
   }, [
     chainId,
-    userInfo,
-    pendingTri,
+    userInfo?.loading,
+    userInfo.error,
+    userInfo.result,
+    pendingTri?.loading,
+    pendingTri.error,
+    pendingTri.result,
+    earnedNonTriRewards?.loading,
+    earnedNonTriRewards.error,
+    earnedNonTriRewards.result,
     pairState,
-    tokens,
+    pair,
+    stakingInfoData,
+    version,
     tokenA,
     tokenB,
     activeFarms,
-    chefVersion,
-    earnedNonTriRewards,
-    pair,
-    stakingInfoData,
-    version
+    tokens,
+    totalStakedAmount,
+    chefVersion
   ])
 
   return result

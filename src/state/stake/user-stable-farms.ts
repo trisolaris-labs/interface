@@ -9,6 +9,7 @@ import { useMemo } from 'react'
 import { StableSwapPoolName } from '../stableswap/constants'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import useGetNonTriRewardsForPoolID from './useGetNonTriRewardsForPoolID'
+import { useTokenBalance } from '../wallet/hooks'
 
 // gets the staking info from the network for the active chain id
 export function useSingleStableFarm(version: number, stableSwapPoolName: StableSwapPoolName): StakingTri {
@@ -27,6 +28,7 @@ export function useSingleStableFarm(version: number, stableSwapPoolName: StableS
   const earnedNonTriRewards = useGetNonTriRewardsForPoolID(version)
   // get all the info from the staking rewards contracts
   const [stablePoolData] = useStablePoolsData(stableSwapPoolName)
+  const totalStakedAmount = useTokenBalance(contract?.address, stablePoolData.lpToken ?? tokenAmount.token)
 
   const result = useMemo(() => {
     // Loading
@@ -57,15 +59,16 @@ export function useSingleStableFarm(version: number, stableSwapPoolName: StableS
     return {
       ...activeFarms[version],
       isPeriodFinished: false,
-      earnedAmount: earnedAmount,
+      earnedAmount,
       stakedAmount,
-      totalStakedAmount: tokenAmount,
+      totalStakedAmount: totalStakedAmount ?? tokenAmount,
       totalStakedInUSD: Math.round(totalStakedInUSD),
       totalRewardRate: Math.round(totalRewardRate),
       rewardRate: tokenAmount,
       apr: Math.round(apr),
       nonTriAPRs: nonTriAPRs.map(data => ({ ...data, apr: Math.round(data.apr) })),
       earnedNonTriRewards: earnedNonTriRewards.result,
+      hasNonTriRewards: nonTriAPRs.length > 0,
       chefVersion
     }
   }, [
@@ -83,6 +86,7 @@ export function useSingleStableFarm(version: number, stableSwapPoolName: StableS
     stakingInfoData,
     version,
     activeFarms,
+    totalStakedAmount,
     chefVersion
   ])
 
