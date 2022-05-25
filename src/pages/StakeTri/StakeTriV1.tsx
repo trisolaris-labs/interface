@@ -22,11 +22,8 @@ import { useWalletModalToggle } from '../../state/application/hooks'
 import { Dots } from '../../components/swap/styleds'
 import StakingAPRCard from './StakingAPRCard'
 import { PageWrapper } from '../../components/Page'
-import MigrateBanner from './MigrateBanner'
 import { Text } from 'rebass'
 import { Link } from 'react-router-dom'
-
-import { StyledBannerContainer } from './MigrateBanner'
 
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
@@ -181,27 +178,8 @@ export default function StakeTri() {
   const { totalTriStaked } = useTriBarStats()
   const totalTriStakedFormatted = totalTriStaked?.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
-  const hasXtriBalance = JSBI.greaterThan(xTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
-  const hasPTriBalance = JSBI.greaterThan(pTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
-
   return (
     <PageWrapper gap="lg" justify="center">
-      {hasXtriBalance ? (
-        <MigrateBanner />
-      ) : (
-        hasPTriBalance && (
-          <StyledBannerContainer justify="center">
-            <TYPE.mediumHeader fontWeight={600} marginBottom="20px">
-              Enjoy the new pTRI staking
-            </TYPE.mediumHeader>
-
-            <Text marginBottom="20px">You now have pTRI tokens.</Text>
-            <ButtonPrimary padding="8px" as={Link} width="48%" to={`/stakev2`}>
-              Take me to pTRI staking
-            </ButtonPrimary>
-          </StyledBannerContainer>
-        )
-      )}
       <TopSection gap="md">
         <HighlightCard>
           <CardSection>
@@ -229,11 +207,9 @@ export default function StakeTri() {
           </CardSection>
         </HighlightCard>
       </TopSection>
-
       <TopSection gap="md">
         <StakingAPRCard />
       </TopSection>
-
       <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
         <DataRow style={{ gap: '10px', margin: 0 }}>
           <StakeTriDataCard label="Total TRI Staked">
@@ -256,7 +232,6 @@ export default function StakeTri() {
           </StakeTriDataCard>
         </DataRow>
       </AutoColumn>
-
       <AutoColumn style={{ width: '100%' }}>
         <DarkGreyCard>
           <AutoColumn gap="20px">

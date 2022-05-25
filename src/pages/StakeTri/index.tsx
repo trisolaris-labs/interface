@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { JSBI, ChainId } from '@trisolaris/sdk'
 import { Text } from 'rebass'
-import { Link } from 'react-router-dom'
 
 import { PageWrapper } from '../../components/Page'
 import StakeBox from './StakeBox'
@@ -10,12 +9,13 @@ import ClaimPtri from './ClaimPtri'
 import StatsBox from './StatsBox'
 import { ExternalLink } from '../../theme'
 import { StyledContainer } from './StatsBox'
-import MigrateBanner from './MigrateBanner'
+import MigrateXtri from './MigrateXtri'
+import Modal from '../../components/Modal'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 
-import { XTRI } from '../../constants/tokens'
+import { XTRI, PTRI } from '../../constants/tokens'
 import { BIG_INT_ZERO } from '../../constants'
 
 const StyledLinksContainer = styled.div`
@@ -59,11 +59,26 @@ const AboutContainer = styled(StyledContainer)`
 function StakeTri() {
   const { account } = useActiveWeb3React()
   const xTriBalance = useTokenBalance(account ?? undefined, XTRI[ChainId.AURORA])!
+  const pTriBalance = useTokenBalance(account ?? undefined, PTRI[ChainId.AURORA])!
+
+  const [openModal, setOpenModal] = useState(false)
+
   const hasXTriBalance = JSBI.greaterThan(xTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
+  const hasPtriBalance = JSBI.greaterThan(pTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
+
+  const closeModal = () => setOpenModal(false)
+
+  useEffect(() => {
+    if (hasXTriBalance && !openModal) {
+      setOpenModal(true)
+    }
+  }, [hasXTriBalance])
 
   return (
     <PageWrapper gap="lg">
-      {hasXTriBalance && <MigrateBanner />}
+      <Modal isOpen={true} onDismiss={closeModal}>
+        <MigrateXtri />
+      </Modal>
       <TopContainer>
         <StatsBoxContainer>
           <StatsBox />

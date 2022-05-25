@@ -1,26 +1,25 @@
 import React, { useState, useCallback } from 'react'
-import { Link } from 'react-router-dom'
 import { ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
+import { Text } from 'rebass'
 
+import { TYPE } from '../../theme'
+import { RowBetween } from '../../components/Row'
 import { ButtonConfirmed, ButtonPrimary } from '../../components/Button'
 import { Dots } from '../../components/swap/styleds'
-import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useApproveCallback } from '../../hooks/useApproveCallback'
 import { usePTriContract } from '../../hooks/useContract'
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import { tryParseAmount } from '../../state/stableswap/hooks'
 import useTimeout from '../../hooks/useTimeout'
 
 import { ApprovalState } from '../../hooks/useApproveCallback'
 import { XTRI, PTRI } from '../../constants/tokens'
 import { BIG_INT_ZERO } from '../../constants'
-import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 
-import { StyledContainer, StepsContainer, StyledStepNumberDone, StyledAutoColumn } from './MigrateXtri.styles'
+import { StyledContainer, ButtonsContainer } from './MigrateXtri.styles'
 
 enum MIGRATION_STATUS {
   NOT_MIGRATED,
@@ -28,12 +27,9 @@ enum MIGRATION_STATUS {
   MIGRATED
 }
 
-const INPUT_CHAR_LIMIT = 18
-
-function MigrateXtri({ showRedirectButton }: { showRedirectButton: boolean }) {
+function MigrateXtri() {
   const { account } = useActiveWeb3React()
   const xTriBalance = useTokenBalance(account ?? undefined, XTRI[ChainId.AURORA])!
-  const { getMaxInputAmount } = useCurrencyInputPanel()
   const addTransaction = useTransactionAdder()
   const pTriContract = usePTriContract()
 
@@ -45,38 +41,19 @@ function MigrateXtri({ showRedirectButton }: { showRedirectButton: boolean }) {
 
   const [pendingTx, setPendingTx] = useState(false)
   const [migrateStatus, setMigrateStatus] = useState(MIGRATION_STATUS.NOT_MIGRATED)
-  const [input, _setInput] = useState<string>('')
 
   const hasMigrated = migrateStatus === MIGRATION_STATUS.MIGRATED
-
-  const parsedAmount = tryParseAmount(input, xTriBalance?.currency)
 
   const migrate = useCallback(
     async (amount: CurrencyAmount | undefined) => {
       if (amount?.raw) {
         const tx = await pTriContract?.migrate(XTRI[ChainId.AURORA].address, amount.raw.toString())
+        addTransaction(tx, { summary: 'Migrated xtri' })
         await tx.wait()
-        return addTransaction(tx, { summary: 'Migrated xtri' })
       }
     },
     [addTransaction, pTriContract]
   )
-
-  function setInput(v: string) {
-    // Allows user to paste in long balances
-    const value = v.slice(0, INPUT_CHAR_LIMIT)
-    _setInput(value)
-  }
-
-  const handleBalanceClick = (value: BalanceButtonValueEnum) => {
-    const amount = getClickedAmount(value)
-    _setInput(amount)
-  }
-
-  const { atMaxAmount: atMaxAmountInput, atHalfAmount: atHalfAmountInput, getClickedAmount } = getMaxInputAmount({
-    amount: xTriBalance,
-    parsedAmount: parsedAmount
-  })
 
   async function handleMigrate() {
     if (xTriBalance?.greaterThan(BIG_INT_ZERO)) {
@@ -85,7 +62,7 @@ function MigrateXtri({ showRedirectButton }: { showRedirectButton: boolean }) {
         if (migrateStatus === MIGRATION_STATUS.NOT_MIGRATED) {
           setMigrateStatus(MIGRATION_STATUS.MIGRATING)
         }
-        await migrate(parsedAmount)
+        await migrate(xTriBalance)
         setMigrateStatus(MIGRATION_STATUS.MIGRATED)
       } catch (e) {
         console.error(`Error migrating`, e)
@@ -98,51 +75,47 @@ function MigrateXtri({ showRedirectButton }: { showRedirectButton: boolean }) {
 
   return (
     <StyledContainer>
-      <StakeInputPanel
-        value={input!}
-        onUserInput={setInput}
-        currency={XTRI[ChainId.AURORA]}
-        id="stake-currency-input"
-        onMax={() => handleBalanceClick(BalanceButtonValueEnum.MAX)}
-        onClickBalanceButton={handleBalanceClick}
-        disableMaxButton={atMaxAmountInput}
-        disableHalfButton={atHalfAmountInput}
-      />
+      <TYPE.mediumHeader fontWeight={600}>Migrate your xTRI</TYPE.mediumHeader>
+      <RowBetween />
+      <Text marginTop="10px">
+        You have xTRI available to migrate to the new <span style={{ fontWeight: 600 }}>pTRI</span>, Trisolaris Revenue
+        Share token.
+      </Text>
+      <Text marginTop="10px">
+        In order to continue making profits from staking, you need to migrate your current Stake in xTri into the new
+        pTri Staking.
+      </Text>
 
-      <StepsContainer>
-        <StyledAutoColumn gap="lg">
-          <ButtonConfirmed
-            mr="0.5rem"
-            onClick={handleApproval}
-            confirmed={approvalState === ApprovalState.APPROVED}
-            disabled={approvalState !== ApprovalState.NOT_APPROVED || pendingTx}
-          >
-            {approvalState === ApprovalState.PENDING ? (
-              <Dots>Approving</Dots>
-            ) : approvalState === ApprovalState.APPROVED ? (
-              'Approved'
-            ) : (
-              'Approve Migrating'
-            )}
-          </ButtonConfirmed>
-        </StyledAutoColumn>
+      <ButtonsContainer>
+        <ButtonConfirmed
+          mr="0.5rem"
+          onClick={handleApproval}
+          confirmed={approvalState === ApprovalState.APPROVED}
+          disabled={approvalState !== ApprovalState.NOT_APPROVED || pendingTx}
+        >
+          {approvalState === ApprovalState.PENDING ? (
+            <Dots>Approving</Dots>
+          ) : approvalState === ApprovalState.APPROVED ? (
+            'Approved'
+          ) : (
+            'Approve Migrating'
+          )}
+        </ButtonConfirmed>
 
-        <StyledAutoColumn gap="lg">
-          <ButtonConfirmed
-            onClick={handleMigrate}
-            disabled={approvalState !== ApprovalState.APPROVED || hasMigrated || !hasXTriBalance}
-            confirmed={hasMigrated}
-          >
-            {hasMigrated ? (
-              'Migrated!'
-            ) : migrateStatus === MIGRATION_STATUS.MIGRATING ? (
-              <Dots>Migrating</Dots>
-            ) : (
-              'Migrate'
-            )}
-          </ButtonConfirmed>
-        </StyledAutoColumn>
-      </StepsContainer>
+        <ButtonConfirmed
+          onClick={handleMigrate}
+          disabled={approvalState !== ApprovalState.APPROVED || hasMigrated || !hasXTriBalance || pendingTx}
+          confirmed={hasMigrated}
+        >
+          {hasMigrated ? (
+            'Migrated!'
+          ) : migrateStatus === MIGRATION_STATUS.MIGRATING ? (
+            <Dots>Migrating</Dots>
+          ) : (
+            'Migrate'
+          )}
+        </ButtonConfirmed>
+      </ButtonsContainer>
     </StyledContainer>
   )
 }
