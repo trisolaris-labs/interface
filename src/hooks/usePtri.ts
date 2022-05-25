@@ -23,35 +23,42 @@ export function usePtriStakeInfo() {
   const triPrice = getTriPrice()
   const [{ virtualPrice }] = useStablePoolsData(StableSwapPoolName.USDC_USDT_USN)
 
-  const getStakedInUsd = (stakedAmount: JSBI) => {
-    const stakeCallResultInItri = new TokenAmount(TRI[ChainId.AURORA], stakedAmount.toString())
-    const stakedInUsd = stakeCallResultInItri.multiply(triPrice ?? BIG_INT_ZERO).toFixed(2)
-    return stakedInUsd
+  const getStakedAmountsInTri = (stakedAmount: JSBI) => {
+    return new TokenAmount(TRI[ChainId.AURORA], stakedAmount.toString())
+  }
+
+  const getStakedAmountInUsd = (stakedAmount: TokenAmount) => {
+    return stakedAmount.multiply(triPrice ?? BIG_INT_ZERO).toFixed(2)
   }
 
   const totalStakedCallResult: JSBI =
     useSingleCallResult(piContract, stakeAmountCall.TOTAL_STAKED)?.result?.[0] ?? BIG_INT_ZERO
-  const totalStakedInUsd = getStakedInUsd(totalStakedCallResult)
+  const totalStakedAmount = getStakedAmountsInTri(totalStakedCallResult)
+  const totalStakedInUsd = getStakedAmountInUsd(totalStakedAmount)
 
   const userStakedCallResult: JSBI =
     useSingleCallResult(piContract, stakeAmountCall.USER_BALANCE, [account ?? undefined])?.result?.[0] ?? BIG_INT_ZERO
-  const userStakedInUsd = getStakedInUsd(userStakedCallResult)
+  const userStaked = getStakedAmountsInTri(userStakedCallResult)
+  const userStakedInUsd = getStakedAmountInUsd(userStaked)
 
-  const userClaimableRewards: JSBI =
+  const userClaimableRewardsCallResult: JSBI =
     useSingleCallResult(piContract, stakeAmountCall.USER_CLAIMABLE, [
       account ?? undefined,
       STABLESWAP_POOLS.USDC_USDT_USN.lpToken.address
     ])?.result?.[0] ?? BIG_INT_ZERO
 
-  const userClaimableRewardsIn3pool = new TokenAmount(
+  const userClaimableRewards = new TokenAmount(
     STABLESWAP_POOLS.USDC_USDT_USN.lpToken,
-    userClaimableRewards.toString()
+    userClaimableRewardsCallResult.toString()
   )
-  const userClaimableRewardsInUsd = virtualPrice?.multiply(userClaimableRewardsIn3pool)
+  const userClaimableRewardsInUsd = virtualPrice?.multiply(userClaimableRewards).toFixed(2)
 
   return {
+    totalStakedAmount,
     totalStakedInUsd,
+    userStaked,
     userStakedInUsd,
+    userClaimableRewards,
     userClaimableRewardsInUsd
   }
 }
