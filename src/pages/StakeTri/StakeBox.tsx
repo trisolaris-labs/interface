@@ -35,19 +35,6 @@ const ButtonsContainer = styled.div`
   display: flex;
 `
 
-const ReceiverAddressContainer = styled.div`
-  background: ${({ theme }) => theme.bg3};
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  padding: 1rem;
-`
-
-const ReceiverAddressInfo = styled.span`
-  margin-right: 5px;
-`
-
 function StakeBox() {
   const { account } = useActiveWeb3React()
   const pTriContract = usePTriContract()

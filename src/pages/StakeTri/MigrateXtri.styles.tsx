@@ -14,6 +14,7 @@ box-shadow:0px 0px 8px 5px #1350ff;
 export const StepsContainer = styled.div`
   display: flex;
   justify-content: space-around;
+  margin-top: 20px;
 `
 
 export const StyledStepNumber = styled.div`

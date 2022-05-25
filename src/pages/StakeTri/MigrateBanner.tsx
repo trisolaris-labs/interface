@@ -15,9 +15,10 @@ const StyledBannerContainer = styled(StyledContainer)`
   background: #3e6587;
 `
 
-const ButtonsContainer = styled.div`
+const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 20px;
 `
 
 function MigrateBanner() {
@@ -37,11 +38,11 @@ function MigrateBanner() {
         In order to continue making profits from staking, you need to migrate your current Stake in xTri into the new
         pTri Staking.
       </Text>
-      <ButtonsContainer>
+      <ButtonContainer>
         <ButtonPrimary onClick={() => setOpenModal(true)} maxWidth={200} padding="10px 50px">
           Migrate now
         </ButtonPrimary>
-      </ButtonsContainer>
+      </ButtonContainer>
     </StyledBannerContainer>
   )
 }

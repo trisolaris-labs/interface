@@ -1,51 +1,53 @@
 import React, { useState, useCallback } from 'react'
-
 import { ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
-import { Text } from 'rebass'
 
-import { AutoColumn } from '../../components/Column'
 import { ButtonConfirmed } from '../../components/Button'
-import { LargeHeaderWhite } from './StakeTriV1'
-import { RowBetween } from '../../components/Row'
 import { Dots } from '../../components/swap/styleds'
-import { TokenPairBackgroundColor } from '../../components/earn/PoolCardTri.styles'
+import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useApproveCallback } from '../../hooks/useApproveCallback'
 import { usePTriContract } from '../../hooks/useContract'
 import { useTransactionAdder } from '../../state/transactions/hooks'
+import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
+import { tryParseAmount } from '../../state/stableswap/hooks'
 
 import { ApprovalState } from '../../hooks/useApproveCallback'
 import { XTRI, PTRI } from '../../constants/tokens'
 import { BIG_INT_ZERO } from '../../constants'
+import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 
 import { StyledContainer, StepsContainer, StyledStepNumberDone, StyledAutoColumn } from './MigrateXtri.styles'
-import { TYPE } from '../../theme'
 
 enum MIGRATION_STATUS {
   NOT_MIGRATED,
-  INITIATED,
   MIGRATING,
   MIGRATED
 }
 
+const INPUT_CHAR_LIMIT = 18
+
 function MigrateXtri() {
-  const [pendingTx, setPendingTx] = useState(false)
-  const [migrateStatus, setMigrateStatus] = useState(MIGRATION_STATUS.NOT_MIGRATED)
   const { account } = useActiveWeb3React()
   const xTriBalance = useTokenBalance(account ?? undefined, XTRI[ChainId.AURORA])!
-  const hasXTriBalance = JSBI.greaterThan(xTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
+  const { getMaxInputAmount } = useCurrencyInputPanel()
+  const addTransaction = useTransactionAdder()
+  const pTriContract = usePTriContract()
 
+  const hasXTriBalance = JSBI.greaterThan(xTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
   const [approvalState, handleApproval] = useApproveCallback(
     hasXTriBalance ? xTriBalance : undefined,
     PTRI[ChainId.AURORA].address
   )
 
-  const addTransaction = useTransactionAdder()
-  const pTriContract = usePTriContract()
+  const [pendingTx, setPendingTx] = useState(false)
+  const [migrateStatus, setMigrateStatus] = useState(MIGRATION_STATUS.NOT_MIGRATED)
+  const [input, _setInput] = useState<string>('')
 
   const hasMigrated = migrateStatus === MIGRATION_STATUS.MIGRATED
+
+  const parsedAmount = tryParseAmount(input, xTriBalance?.currency)
 
   const migrate = useCallback(
     async (amount: CurrencyAmount | undefined) => {
@@ -58,6 +60,22 @@ function MigrateXtri() {
     [addTransaction, pTriContract]
   )
 
+  function setInput(v: string) {
+    // Allows user to paste in long balances
+    const value = v.slice(0, INPUT_CHAR_LIMIT)
+    _setInput(value)
+  }
+
+  const handleBalanceClick = (value: BalanceButtonValueEnum) => {
+    const amount = getClickedAmount(value)
+    _setInput(amount)
+  }
+
+  const { atMaxAmount: atMaxAmountInput, atHalfAmount: atHalfAmountInput, getClickedAmount } = getMaxInputAmount({
+    amount: xTriBalance,
+    parsedAmount: parsedAmount
+  })
+
   async function handleMigrate() {
     if (xTriBalance?.greaterThan(BIG_INT_ZERO)) {
       try {
@@ -65,7 +83,7 @@ function MigrateXtri() {
         if (migrateStatus === MIGRATION_STATUS.NOT_MIGRATED) {
           setMigrateStatus(MIGRATION_STATUS.MIGRATING)
         }
-        await migrate(xTriBalance)
+        await migrate(parsedAmount)
         setMigrateStatus(MIGRATION_STATUS.MIGRATED)
       } catch (e) {
         console.error(`Error migrating`, e)
@@ -78,6 +96,17 @@ function MigrateXtri() {
 
   return (
     <StyledContainer>
+      <StakeInputPanel
+        value={input!}
+        onUserInput={setInput}
+        currency={XTRI[ChainId.AURORA]}
+        id="stake-currency-input"
+        onMax={() => handleBalanceClick(BalanceButtonValueEnum.MAX)}
+        onClickBalanceButton={handleBalanceClick}
+        disableMaxButton={atMaxAmountInput}
+        disableHalfButton={atHalfAmountInput}
+      />
+
       <StepsContainer>
         <StyledAutoColumn gap="lg">
           <ButtonConfirmed
