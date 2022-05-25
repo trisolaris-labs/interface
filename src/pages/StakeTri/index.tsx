@@ -59,12 +59,10 @@ const AboutContainer = styled(StyledContainer)`
 function StakeTri() {
   const { account } = useActiveWeb3React()
   const xTriBalance = useTokenBalance(account ?? undefined, XTRI[ChainId.AURORA])!
-  const pTriBalance = useTokenBalance(account ?? undefined, PTRI[ChainId.AURORA])!
 
   const [openModal, setOpenModal] = useState(false)
 
   const hasXTriBalance = JSBI.greaterThan(xTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
-  const hasPtriBalance = JSBI.greaterThan(pTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
 
   const closeModal = () => setOpenModal(false)
 

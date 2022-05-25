@@ -1,10 +1,11 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
 import { Text } from 'rebass'
+import { CloseIcon } from '../../theme'
 
 import { TYPE } from '../../theme'
 import { RowBetween } from '../../components/Row'
-import { ButtonConfirmed, ButtonPrimary } from '../../components/Button'
+import { ButtonConfirmed } from '../../components/Button'
 import { Dots } from '../../components/swap/styleds'
 
 import { useActiveWeb3React } from '../../hooks'
@@ -12,8 +13,6 @@ import { useTokenBalance } from '../../state/wallet/hooks'
 import { useApproveCallback } from '../../hooks/useApproveCallback'
 import { usePTriContract } from '../../hooks/useContract'
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { tryParseAmount } from '../../state/stableswap/hooks'
-import useTimeout from '../../hooks/useTimeout'
 
 import { ApprovalState } from '../../hooks/useApproveCallback'
 import { XTRI, PTRI } from '../../constants/tokens'
@@ -55,9 +54,6 @@ function MigrateXtri({ closeModal }: { closeModal: () => void }) {
     [addTransaction, pTriContract]
   )
 
-
-  
-
   async function handleMigrate() {
     if (xTriBalance?.greaterThan(BIG_INT_ZERO)) {
       try {
@@ -76,10 +72,20 @@ function MigrateXtri({ closeModal }: { closeModal: () => void }) {
     }
   }
 
+  useEffect(() => {
+    if (migrateStatus === MIGRATION_STATUS.MIGRATED) {
+      setTimeout(() => {
+        closeModal()
+      }, 3500)
+    }
+  }, [migrateStatus])
+
   return (
     <StyledContainer>
-      <TYPE.mediumHeader fontWeight={600}>Migrate your xTRI</TYPE.mediumHeader>
-      <RowBetween />
+      <RowBetween>
+        <TYPE.mediumHeader fontWeight={600}>Migrate your xTRI</TYPE.mediumHeader>
+        <CloseIcon onClick={closeModal} />
+      </RowBetween>
       <Text marginTop="10px">
         You have xTRI available to migrate to the new <span style={{ fontWeight: 600 }}>pTRI</span>, Trisolaris Revenue
         Share token.
