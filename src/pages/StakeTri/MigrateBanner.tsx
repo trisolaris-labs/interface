@@ -11,7 +11,7 @@ import { ButtonPrimary } from '../../components/Button'
 import { CardBackground } from './StakingAPRCard'
 import { StyledContainer } from './MigrateXtri.styles'
 
-const StyledBannerContainer = styled(StyledContainer)`
+export const StyledBannerContainer = styled(StyledContainer)`
   background: #3e6587;
 `
 
@@ -26,7 +26,7 @@ function MigrateBanner() {
   return (
     <StyledBannerContainer>
       <Modal isOpen={openModal} onDismiss={() => setOpenModal(false)}>
-        <MigrateXtri />
+        <MigrateXtri showRedirectButton/>
       </Modal>
       <TYPE.mediumHeader fontWeight={600}>Migrate your xTRI</TYPE.mediumHeader>
       <RowBetween />

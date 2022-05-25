@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import { ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
 
-import { ButtonConfirmed } from '../../components/Button'
+import { ButtonConfirmed, ButtonPrimary } from '../../components/Button'
 import { Dots } from '../../components/swap/styleds'
 import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
 
@@ -12,6 +13,7 @@ import { usePTriContract } from '../../hooks/useContract'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import { tryParseAmount } from '../../state/stableswap/hooks'
+import useTimeout from '../../hooks/useTimeout'
 
 import { ApprovalState } from '../../hooks/useApproveCallback'
 import { XTRI, PTRI } from '../../constants/tokens'
@@ -28,7 +30,7 @@ enum MIGRATION_STATUS {
 
 const INPUT_CHAR_LIMIT = 18
 
-function MigrateXtri() {
+function MigrateXtri({ showRedirectButton }: { showRedirectButton: boolean }) {
   const { account } = useActiveWeb3React()
   const xTriBalance = useTokenBalance(account ?? undefined, XTRI[ChainId.AURORA])!
   const { getMaxInputAmount } = useCurrencyInputPanel()
@@ -140,12 +142,6 @@ function MigrateXtri() {
             )}
           </ButtonConfirmed>
         </StyledAutoColumn>
-
-        {hasMigrated && (
-          <StyledAutoColumn gap="lg">
-            <StyledStepNumberDone>Done!</StyledStepNumberDone>
-          </StyledAutoColumn>
-        )}
       </StepsContainer>
     </StyledContainer>
   )

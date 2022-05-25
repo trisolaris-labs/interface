@@ -5,7 +5,7 @@ import { DarkGreyCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import Row, { RowBetween } from '../../components/Row'
 import { BIG_INT_ZERO } from '../../constants'
-import { TRI, XTRI } from '../../constants/tokens'
+import { TRI, XTRI, PTRI } from '../../constants/tokens'
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { tryParseAmount } from '../../state/swap/hooks'
@@ -23,6 +23,10 @@ import { Dots } from '../../components/swap/styleds'
 import StakingAPRCard from './StakingAPRCard'
 import { PageWrapper } from '../../components/Page'
 import MigrateBanner from './MigrateBanner'
+import { Text } from 'rebass'
+import { Link } from 'react-router-dom'
+
+import { StyledBannerContainer } from './MigrateBanner'
 
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
@@ -70,6 +74,7 @@ export default function StakeTri() {
 
   const triBalance = useTokenBalance(account ?? undefined, TRI[chainId])!
   const xTriBalance = useTokenBalance(account ?? undefined, XTRI[chainId])!
+  const pTriBalance = useTokenBalance(account ?? undefined, PTRI[chainId])!
 
   const balance = isStaking ? triBalance : xTriBalance
   const parsedAmount = tryParseAmount(input, balance?.currency)
@@ -176,9 +181,27 @@ export default function StakeTri() {
   const { totalTriStaked } = useTriBarStats()
   const totalTriStakedFormatted = totalTriStaked?.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
+  const hasXtriBalance = JSBI.greaterThan(xTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
+  const hasPTriBalance = JSBI.greaterThan(pTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
+
   return (
     <PageWrapper gap="lg" justify="center">
-      {JSBI.greaterThan(xTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO) && <MigrateBanner />}
+      {hasXtriBalance ? (
+        <MigrateBanner />
+      ) : (
+        hasPTriBalance && (
+          <StyledBannerContainer justify="center">
+            <TYPE.mediumHeader fontWeight={600} marginBottom="20px">
+              Enjoy the new pTRI staking
+            </TYPE.mediumHeader>
+
+            <Text marginBottom="20px">You now have pTRI tokens.</Text>
+            <ButtonPrimary padding="8px" as={Link} width="48%" to={`/stakev2`}>
+              Take me to pTRI staking
+            </ButtonPrimary>
+          </StyledBannerContainer>
+        )
+      )}
       <TopSection gap="md">
         <HighlightCard>
           <CardSection>

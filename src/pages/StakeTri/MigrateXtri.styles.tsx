@@ -24,7 +24,7 @@ export const StyledStepNumber = styled.div`
 `
 
 export const StyledStepNumberDone = styled(StyledStepNumber)`
-  font-size: 3rem;
+  font-size: 2rem;
   align-self: center;
   min-width: 150px;
 `
