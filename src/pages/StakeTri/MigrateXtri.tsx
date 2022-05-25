@@ -87,10 +87,10 @@ function MigrateXtri({ closeModal }: { closeModal: () => void }) {
         <CloseIcon onClick={closeModal} />
       </RowBetween>
       <Text marginTop="10px">
-        You have xTRI available to migrate to the new <span style={{ fontWeight: 600 }}>pTRI</span>, Trisolaris Revenue
+        You have {xTriBalance.toFixed(2)} xTRI available to migrate to the new <span style={{ fontWeight: 600 }}>pTRI</span>, Trisolaris Revenue
         Share token.
       </Text>
-      <Text marginTop="10px">
+      <Text marginTop="15px">
         In order to continue making profits from staking, you need to migrate your current Stake in xTri into the new
         pTri Staking.
       </Text>
