@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import { AutoColumn } from '../../components/Column'
-import { RowBetween } from '../../components/Row'
+import { AutoRow, RowBetween } from '../../components/Row'
 import { CardSection, HighlightCard } from '../../components/earn/styled'
 import { ButtonPrimary } from '../../components/Button'
 import StakingModal from '../../components/earn/StakingModalTri'
@@ -120,6 +120,17 @@ export default function ManageImpl({
       ? `/add/${currency0 && currencyId(currency0)}/${currency1 && currencyId(currency1)}`
       : `/pool/stable/add/${stableSwapPoolName}`
 
+  function getTextAlignment(index: number) {
+    switch (true) {
+      case noTriRewards && index === 0:
+        return 'start'
+      case index === earnedNonTriRewards.length - 1:
+        return 'end'
+      default:
+        return 'center'
+    }
+  }
+
   return (
     <PageWrapper gap="lg" justify="center">
       <RowBetween style={{ gap: '24px' }}>
@@ -231,42 +242,39 @@ export default function ManageImpl({
             </CardSection>
           </Wrapper>
           <StyledBottomCard dim={stakedAmount?.equalTo(BIG_INT_ZERO)}>
-            <AutoColumn gap="sm">
-              <RowBetween>
-                {!noTriRewards ? <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black> : null}
-                {(isDualRewards && hasNonTriRewards) || noTriRewards ? (
-                  <TYPE.black>
-                    {t('earnPage.unclaimed')}{' '}
-                    {earnedNonTriRewards
-                      .filter(({ amount }) => amount.greaterThan(BIG_INT_ZERO))
-                      .map(({ amount, token }) => `${amount.toSignificant(4)} ${token.symbol}`)
-                      .join(', ')}
-                  </TYPE.black>
-                ) : null}
-              </RowBetween>
-              <RowBetween style={{ alignItems: 'baseline' }}>
-                {!noTriRewards ? (
+            <AutoRow justifyContent="space-between">
+              {!noTriRewards ? (
+                <AutoColumn>
+                  <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
                   <TYPE.largeHeader fontSize={36} fontWeight={600}>
                     <CountUp
                       enabled={earnedAmount?.greaterThan(BIG_INT_ZERO)}
                       value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
                     />
                   </TYPE.largeHeader>
-                ) : null}
-                {(isDualRewards && hasNonTriRewards) || noTriRewards
-                  ? earnedNonTriRewards
-                      .filter(({ amount }) => amount.greaterThan(BIG_INT_ZERO))
-                      .map(({ amount, token }) => (
-                        <TYPE.largeHeader fontSize={36} fontWeight={600} key={token.address}>
-                          <CountUp
-                            enabled={amount?.greaterThan(BIG_INT_ZERO)}
-                            value={parseFloat(amount?.toFixed(6) ?? '0')}
-                          />
-                        </TYPE.largeHeader>
-                      ))
-                  : null}
-              </RowBetween>
-            </AutoColumn>
+                </AutoColumn>
+              ) : null}
+              {(isDualRewards && hasNonTriRewards) || noTriRewards
+                ? earnedNonTriRewards.map(({ amount, token }, i) => (
+                    <AutoColumn key={token.address}>
+                      <TYPE.black>
+                        {t('earnPage.unclaimed')} {token?.symbol ?? ''}
+                      </TYPE.black>
+                      <TYPE.largeHeader
+                        fontSize={36}
+                        fontWeight={600}
+                        key={token.address}
+                        textAlign={getTextAlignment(i)}
+                      >
+                        <CountUp
+                          enabled={amount?.greaterThan(BIG_INT_ZERO)}
+                          value={parseFloat(amount?.toFixed(6) ?? '0')}
+                        />
+                      </TYPE.largeHeader>
+                    </AutoColumn>
+                  ))
+                : null}
+            </AutoRow>
           </StyledBottomCard>
         </BottomSection>
 
