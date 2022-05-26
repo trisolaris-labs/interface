@@ -145,7 +145,7 @@ function StakeBox() {
       />
 
       <ButtonsContainer>
-        {approvalState !== ApprovalState.APPROVED && isStaking && (
+        {approvalState !== ApprovalState.APPROVED && approvalState !== ApprovalState.UNKNOWN && isStaking && input && (
           <ApproveButton approvalState={approvalState} handleApproval={handleApproval} />
         )}
         <StakeButton

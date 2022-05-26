@@ -7,6 +7,8 @@ import { TYPE } from '../../theme'
 import { RowBetween } from '../../components/Row'
 import { ButtonConfirmed } from '../../components/Button'
 import { Dots } from '../../components/swap/styleds'
+import TransactionConfirmationModal from '../../components/TransactionConfirmationModal'
+import { TransactionErrorContent } from '../../components/TransactionConfirmationModal'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
@@ -40,6 +42,9 @@ function MigrateXtri({ closeModal }: { closeModal: () => void }) {
 
   const [pendingTx, setPendingTx] = useState(false)
   const [migrateStatus, setMigrateStatus] = useState(MIGRATION_STATUS.NOT_MIGRATED)
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false)
+  const [error, setError] = useState<any>(null)
+  const [txHash, setTxHash] = useState<string>("")
 
   const hasMigrated = migrateStatus === MIGRATION_STATUS.MIGRATED
 
@@ -48,7 +53,9 @@ function MigrateXtri({ closeModal }: { closeModal: () => void }) {
       if (amount?.raw) {
         const tx = await pTriContract?.migrate(XTRI[ChainId.AURORA].address, amount.raw.toString())
         addTransaction(tx, { summary: 'Migrated xtri' })
+
         await tx.wait()
+        setTxHash(tx.hash)
       }
     },
     [addTransaction, pTriContract]
@@ -65,6 +72,7 @@ function MigrateXtri({ closeModal }: { closeModal: () => void }) {
         setMigrateStatus(MIGRATION_STATUS.MIGRATED)
       } catch (e) {
         console.error(`Error migrating`, e)
+        setError(e)
         setMigrateStatus(MIGRATION_STATUS.NOT_MIGRATED)
       } finally {
         setPendingTx(false)
@@ -72,6 +80,7 @@ function MigrateXtri({ closeModal }: { closeModal: () => void }) {
     }
   }
 
+  console.log(error)
   useEffect(() => {
     if (migrateStatus === MIGRATION_STATUS.MIGRATED) {
       setTimeout(() => {
@@ -80,15 +89,32 @@ function MigrateXtri({ closeModal }: { closeModal: () => void }) {
     }
   }, [migrateStatus])
 
+  const confirmationContent = () =>
+    error?.code === 4001 ? (
+      <TransactionErrorContent onDismiss={() => setConfirmationModalOpen(false)} message="Transaction rejected." />
+    ) : (
+      <div>
+        <ButtonConfirmed onClick={handleMigrate} disabled={pendingTx}></ButtonConfirmed>
+      </div>
+    )
+
   return (
     <StyledContainer>
+      <TransactionConfirmationModal
+        isOpen={confirmationModalOpen}
+        onDismiss={() => setConfirmationModalOpen(false)}
+        attemptingTxn={pendingTx}
+        hash={txHash}
+        content={confirmationContent}
+        pendingText="pendingText"
+      />
       <RowBetween>
         <TYPE.mediumHeader fontWeight={600}>Migrate your xTRI</TYPE.mediumHeader>
         <CloseIcon onClick={closeModal} />
       </RowBetween>
       <Text marginTop="10px">
-        You have {xTriBalance.toFixed(2)} xTRI available to migrate to the new <span style={{ fontWeight: 600 }}>pTRI</span>, Trisolaris Revenue
-        Share token.
+        You have {xTriBalance.toFixed(2)} xTRI available to migrate to the new{' '}
+        <span style={{ fontWeight: 600 }}>pTRI</span>, Trisolaris Revenue Share token.
       </Text>
       <Text marginTop="15px">
         In order to continue making profits from staking, you need to migrate your current Stake in xTri into the new
@@ -96,16 +122,16 @@ function MigrateXtri({ closeModal }: { closeModal: () => void }) {
       </Text>
 
       <ButtonsContainer>
-        {approvalState === ApprovalState.NOT_APPROVED ||
-          (approvalState === ApprovalState.PENDING && (
-            <ButtonConfirmed mr="0.5rem" onClick={handleApproval} disabled={pendingTx}>
-              {approvalState === ApprovalState.PENDING ? <Dots>Approving</Dots> : 'Approve Migrating xTRI'}
-            </ButtonConfirmed>
-          ))}
+        {(approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING) && (
+          <ButtonConfirmed mr="0.5rem" onClick={handleApproval} disabled={pendingTx}>
+            {approvalState === ApprovalState.PENDING ? <Dots>Approving</Dots> : 'Approve Migrating xTRI'}
+          </ButtonConfirmed>
+        )}
 
-        {approvalState === ApprovalState.APPROVED && (
+        {(approvalState === ApprovalState.APPROVED || hasMigrated) && (
           <ButtonConfirmed
-            onClick={handleMigrate}
+            // onClick={handleMigrate}
+            onClick={() => setConfirmationModalOpen(true)}
             disabled={hasMigrated || !hasXTriBalance || pendingTx}
             confirmed={hasMigrated}
           >
