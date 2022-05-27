@@ -11,11 +11,12 @@ import { ExternalLink } from '../../theme'
 import { StyledContainer } from './StatsBox'
 import MigrateXtri from './MigrateXtri'
 import Modal from '../../components/Modal'
+import { ButtonConfirmed } from '../../components/Button'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 
-import { XTRI, PTRI } from '../../constants/tokens'
+import { XTRI } from '../../constants/tokens'
 import { BIG_INT_ZERO } from '../../constants'
 
 const StyledLinksContainer = styled.div`
@@ -62,13 +63,16 @@ function StakeTri() {
 
   const [openModal, setOpenModal] = useState(false)
 
-  const hasXTriBalance = JSBI.greaterThan(xTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
+  const hasXTriBalance = xTriBalance?.greaterThan(BIG_INT_ZERO)
 
   const closeModal = () => setOpenModal(false)
 
   useEffect(() => {
     if (hasXTriBalance && !openModal) {
       setOpenModal(true)
+    }
+    if (!hasXTriBalance) {
+      setOpenModal(false)
     }
   }, [hasXTriBalance])
 
@@ -89,6 +93,11 @@ function StakeTri() {
           <StyledLinksContainer>
             <StyledExternalLink href=""> Learn about how it works ↗</StyledExternalLink>
           </StyledLinksContainer>
+          {hasXTriBalance && (
+            <ButtonConfirmed padding={10} onClick={() => setOpenModal(true)}>
+              Migrate your xTRI
+            </ButtonConfirmed>
+          )}
         </AboutContainer>
       </TopContainer>
       <StakeBox />

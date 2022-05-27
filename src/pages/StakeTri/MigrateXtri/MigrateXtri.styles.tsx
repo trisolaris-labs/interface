@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { AutoColumn } from '../../components/Column'
+import { AutoColumn } from '../../../components/Column'
 
 export const StyledContainer = styled(AutoColumn)<{ disabled?: boolean }>`
 background: #0e3f69
