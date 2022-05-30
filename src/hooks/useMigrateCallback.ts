@@ -35,7 +35,7 @@ export function useMigrateCallback(
           throw new Error('Transaction rejected.')
         } else {
           console.error(`Migration failed`, error, 'migrate')
-          throw new Error(`Swap failed: ${error.message}`)
+          throw new Error(`Migration failed: ${error.message}`)
         }
       }
     }
