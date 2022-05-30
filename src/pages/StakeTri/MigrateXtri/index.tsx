@@ -29,7 +29,6 @@ enum MIGRATION_STATUS {
 }
 
 function MigrateXtri({ closeModal, xTriBalance }: { closeModal: () => void; xTriBalance: TokenAmount }) {
-  const { account } = useActiveWeb3React()
   const { xtriToTRIRatio } = useTriBarStats()
 
   const hasXTriBalance = xTriBalance?.greaterThan(BIG_INT_ZERO)
@@ -118,12 +117,14 @@ function MigrateXtri({ closeModal, xTriBalance }: { closeModal: () => void; xTri
             {approvalState === ApprovalState.PENDING ? <Dots>Approving</Dots> : 'Approve Migrating xTRI'}
           </ButtonConfirmed>
         )}
-        <ButtonConfirmed
-          onClick={onMigrateClick}
-          disabled={hasMigrated || !hasXTriBalance || pendingTx || approvalState !== ApprovalState.APPROVED}
-        >
-          {approvalState === ApprovalState.UNKNOWN ? <Dots>Checking Approval</Dots> : 'Migrate'}
-        </ButtonConfirmed>
+        {(approvalState === ApprovalState.APPROVED || approvalState === ApprovalState.UNKNOWN) && (
+          <ButtonConfirmed
+            onClick={onMigrateClick}
+            disabled={hasMigrated || !hasXTriBalance || pendingTx || approvalState !== ApprovalState.APPROVED}
+          >
+            {approvalState === ApprovalState.UNKNOWN ? <Dots>Checking Approval</Dots> : 'Migrate'}
+          </ButtonConfirmed>
+        )}
       </ButtonsContainer>
     </StyledContainer>
   )
