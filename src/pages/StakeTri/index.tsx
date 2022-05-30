@@ -71,15 +71,12 @@ function StakeTri() {
     if (hasXTriBalance && !openModal) {
       setOpenModal(true)
     }
-    if (!hasXTriBalance) {
-      setOpenModal(false)
-    }
   }, [hasXTriBalance])
 
   return (
     <PageWrapper gap="lg">
       <Modal isOpen={openModal} onDismiss={closeModal}>
-        <MigrateXtri closeModal={closeModal} />
+        <MigrateXtri closeModal={closeModal} xTriBalance={xTriBalance} />
       </Modal>
       <TopContainer>
         <StatsBoxContainer>

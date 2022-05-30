@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react'
-import { ChainId, JSBI } from '@trisolaris/sdk'
+import { ChainId, JSBI, TokenAmount } from '@trisolaris/sdk'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
 
 import { TYPE } from '../../../theme'
 import { RowBetween } from '../../../components/Row'
@@ -29,14 +28,11 @@ enum MIGRATION_STATUS {
   MIGRATED
 }
 
-function MigrateXtri({ closeModal }: { closeModal: () => void }) {
-  const theme = useContext(ThemeContext)
+function MigrateXtri({ closeModal, xTriBalance }: { closeModal: () => void; xTriBalance: TokenAmount }) {
   const { account } = useActiveWeb3React()
-  const xTriBalance = useTokenBalance(account ?? undefined, XTRI[ChainId.AURORA])!
-
   const { xtriToTRIRatio } = useTriBarStats()
 
-  const hasXTriBalance = JSBI.greaterThan(xTriBalance?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
+  const hasXTriBalance = xTriBalance?.greaterThan(BIG_INT_ZERO)
   const xTriBalanceInTRI = xTriBalance?.multiply(xtriToTRIRatio ?? JSBI.BigInt(1))
 
   const [approvalState, handleApproval] = useApproveCallback(
@@ -52,7 +48,6 @@ function MigrateXtri({ closeModal }: { closeModal: () => void }) {
   const [txHash, setTxHash] = useState<string | undefined>('')
 
   const hasMigrated = migrationStatus === MIGRATION_STATUS.MIGRATED
-
   async function handleMigrate() {
     if (xTriBalance?.greaterThan(BIG_INT_ZERO)) {
       try {
@@ -70,6 +65,7 @@ function MigrateXtri({ closeModal }: { closeModal: () => void }) {
   }
 
   function onDismiss() {
+    closeModal()
     setConfirmationModalOpen(false)
   }
 
@@ -122,12 +118,12 @@ function MigrateXtri({ closeModal }: { closeModal: () => void }) {
             {approvalState === ApprovalState.PENDING ? <Dots>Approving</Dots> : 'Approve Migrating xTRI'}
           </ButtonConfirmed>
         )}
-
-        {approvalState === ApprovalState.APPROVED && (
-          <ButtonConfirmed onClick={onMigrateClick} disabled={hasMigrated || !hasXTriBalance || pendingTx}>
-            Migrate
-          </ButtonConfirmed>
-        )}
+        <ButtonConfirmed
+          onClick={onMigrateClick}
+          disabled={hasMigrated || !hasXTriBalance || pendingTx || approvalState !== ApprovalState.APPROVED}
+        >
+          {approvalState === ApprovalState.UNKNOWN ? <Dots>Checking Approval</Dots> : 'Migrate'}
+        </ButtonConfirmed>
       </ButtonsContainer>
     </StyledContainer>
   )
