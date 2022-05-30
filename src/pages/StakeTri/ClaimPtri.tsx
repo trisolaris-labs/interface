@@ -9,7 +9,9 @@ import { Dots } from '../Pool/styleds'
 import Modal from '../../components/Modal'
 import PoolCardTriRewardText from '../../components/earn/PoolCardTriRewardText'
 import { TYPE } from '../../theme'
-// import TransactionConfirmationModal from '../../../components/TransactionConfirmationModal'
+import TransactionConfirmationModal from '../../components/TransactionConfirmationModal'
+import { RowBetween, RowFixed } from '../../components/Row'
+import MultipleCurrencyLogo from '../../components/MultipleCurrencyLogo'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
@@ -21,8 +23,8 @@ import { usePtriStakeInfo } from '../../hooks/usePtri'
 
 import { PTRI } from '../../constants/tokens'
 import { BIG_INT_ZERO } from '../../constants'
-import { MASTERCHEF_ADDRESS_V2 } from '../../state/stake/hooks-sushi'
-import { RowBetween } from '../../components/Row'
+import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
+
 import { parseUnits } from '@ethersproject/units'
 
 const ButtonsContainer = styled.div`
@@ -39,12 +41,15 @@ padding: 2rem;
 
 const StyledModalContainer = styled(AutoColumn)`
   padding: 20px;
+  width: 100%;
 `
 
 enum ClaimType {
   CLAIM,
   CLAIM_AND_STAKE
 }
+
+const threePool = STABLESWAP_POOLS.USDC_USDT_USN
 
 function ClaimPtri() {
   const { account } = useActiveWeb3React()
@@ -60,13 +65,16 @@ function ClaimPtri() {
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false)
   const [error, setError] = useState<any>(null)
   const [txHash, setTxHash] = useState<string | undefined>('')
+  const [claimType, setClaimType] = useState<ClaimType>(ClaimType.CLAIM)
+
+  const [confirmDepositModalOpen, setConfirmDepositModalOpen] = useState(false)
 
   const hasPTriBalance = pTriBalance?.greaterThan(BIG_INT_ZERO)
 
   const claim = useCallback(async () => {
     try {
       const tx = await pTriContract?.withdraw(0)
-      await tx.wait()
+      setTxHash(tx.hash)
       return addTransaction(tx, { summary: 'Claimed Ptri' })
     } catch (error) {
       if (error?.code === 4001) {
@@ -105,17 +113,35 @@ function ClaimPtri() {
     }
   }
 
+  function modalContent() {
+    return (
+      <StyledModalContainer gap={'md'}>
+        <TYPE.mediumHeader fontWeight={500}>Claiming rewards</TYPE.mediumHeader>
+        <AutoColumn justify="center" gap="md">
+          <RowFixed>
+            <TYPE.body fontWeight={600} fontSize={36} marginRight={15}>
+              {userClaimableRewards?.toFixed(2)}
+            </TYPE.body>
+            <MultipleCurrencyLogo currencies={threePool.poolTokens} size={24} separation={14}/>
+          </RowFixed>
+
+          <TYPE.body>Unclaimed rewards</TYPE.body>
+        </AutoColumn>
+
+        <ButtonPrimary disabled={!!pendingTx} onClick={() => handleClaim(ClaimType.CLAIM)} fontSize={14}>
+          Claim
+        </ButtonPrimary>
+      </StyledModalContainer>
+    )
+  }
+
+  function onClaim(claimType: ClaimType) {
+    setTxHash(undefined)
+    setConfirmationModalOpen(true)
+  }
+
   return (
     <StyledContainer>
-      {/* <TransactionConfirmationModal
-        isOpen={confirmationModalOpen}
-        onDismiss={setConfirmationModalOpen(false)}
-        attemptingTxn={pendingTx}
-        hash={txHash}
-        content={modalContent}
-        pendingText="Claiming rewards"
-      /> */}
-
       <Modal isOpen={openModal} onDismiss={() => setOpenModal(false)}>
         <StyledModalContainer>
           <Text marginBottom={20}>
@@ -129,7 +155,7 @@ function ClaimPtri() {
           <ButtonsContainer>
             <ButtonPrimary
               disabled={!hasPTriBalance || !!pendingTx}
-              onClick={() => handleClaim(ClaimType.CLAIM_AND_STAKE)}
+              onClick={() => onClaim(ClaimType.CLAIM_AND_STAKE)}
               marginRight={20}
               fontSize={14}
             >
@@ -137,7 +163,7 @@ function ClaimPtri() {
             </ButtonPrimary>
             <ButtonPrimary
               disabled={!hasPTriBalance || !!pendingTx}
-              onClick={() => handleClaim(ClaimType.CLAIM)}
+              onClick={() => onClaim(ClaimType.CLAIM)}
               fontSize={14}
             >
               {pendingTx === ClaimType.CLAIM ? <Dots>Claiming</Dots> : 'Just Claim anyway'}
@@ -145,16 +171,31 @@ function ClaimPtri() {
           </ButtonsContainer>
         </StyledModalContainer>
       </Modal>
+
+      <TransactionConfirmationModal
+        isOpen={confirmationModalOpen}
+        onDismiss={() => setConfirmationModalOpen(false)}
+        attemptingTxn={pendingTx === ClaimType.CLAIM}
+        hash={txHash}
+        content={modalContent}
+        pendingText="Claiming rewards"
+      />
+
+      <TransactionConfirmationModal
+        isOpen={confirmDepositModalOpen}
+        onDismiss={() => setConfirmDepositModalOpen(false)}
+        attemptingTxn={pendingTx === ClaimType.CLAIM_AND_STAKE}
+        hash={txHash}
+        content={modalContent}
+        pendingText="Depositing claimed rewards"
+      />
+
       <TYPE.mediumHeader marginBottom={15} justifySelf="center">
         Claim and stake for more rewards
       </TYPE.mediumHeader>
       <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid</Text>
       <ButtonsContainer>
-        <ButtonPrimary
-          disabled={!hasPTriBalance}
-          onClick={() => handleClaim(ClaimType.CLAIM_AND_STAKE)}
-          marginRight={20}
-        >
+        <ButtonPrimary disabled={!hasPTriBalance} onClick={() => setOpenModal(true)} marginRight={20}>
           {pendingTx === ClaimType.CLAIM_AND_STAKE ? <Dots>Claiming</Dots> : 'Claim and Stake'}
         </ButtonPrimary>
         <ButtonPrimary disabled={!hasPTriBalance} onClick={() => setOpenModal(true)}>
