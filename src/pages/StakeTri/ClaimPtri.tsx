@@ -9,7 +9,7 @@ import { Dots } from '../Pool/styleds'
 import Modal from '../../components/Modal'
 import PoolCardTriRewardText from '../../components/earn/PoolCardTriRewardText'
 import { TYPE } from '../../theme'
-import TransactionConfirmationModal from '../../components/TransactionConfirmationModal'
+import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import { RowBetween, RowFixed } from '../../components/Row'
 import MultipleCurrencyLogo from '../../components/MultipleCurrencyLogo'
 
@@ -63,8 +63,8 @@ function ClaimPtri() {
   const [pendingTx, setPendingTx] = useState<ClaimType | null>(null)
   const [openModal, setOpenModal] = useState(false)
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false)
-  const [error, setError] = useState<any>(null)
   const [txHash, setTxHash] = useState<string | undefined>('')
+  const [depositTxHash, setDepositTxHash] = useState<string | undefined>('')
   const [claimType, setClaimType] = useState<ClaimType>(ClaimType.CLAIM)
 
   const [confirmDepositModalOpen, setConfirmDepositModalOpen] = useState(false)
@@ -73,9 +73,11 @@ function ClaimPtri() {
 
   const claim = useCallback(async () => {
     try {
+      setPendingTx(ClaimType.CLAIM)
       const tx = await pTriContract?.withdraw(0)
       setTxHash(tx.hash)
-      return addTransaction(tx, { summary: 'Claimed Ptri' })
+      addTransaction(tx, { summary: 'Claimed Ptri' })
+      return tx
     } catch (error) {
       if (error?.code === 4001) {
         throw new Error('Transaction rejected.')
@@ -88,9 +90,14 @@ function ClaimPtri() {
 
   const claimAndStake = useCallback(async () => {
     try {
-      await claim()
+      setPendingTx(ClaimType.CLAIM)
+      const claimTx = await claim()
+      claimTx.wait()
+      setPendingTx(ClaimType.CLAIM_AND_STAKE)
+      setConfirmDepositModalOpen(true)
       const tx = await stakingContractv2?.deposit(poolId, parseUnits('1'), account)
-      addTransaction(tx, { summary: `Deposited rewards into USDT-USDC-USN Farm` })
+      setDepositTxHash(tx.hash)
+      return addTransaction(tx, { summary: `Deposited rewards into USDT-USDC-USN Farm` })
     } catch (error) {
       if (error?.code === 4001) {
         throw new Error('Transaction rejected.')
@@ -101,9 +108,9 @@ function ClaimPtri() {
     }
   }, [addTransaction, pTriContract])
 
-  async function handleClaim(claimType: ClaimType) {
+  async function handleClaim() {
     try {
-      setPendingTx(claimType)
+      setClaimType(claimType)
       const claimFn = claimType === ClaimType.CLAIM_AND_STAKE ? claimAndStake : claim
       await claimFn()
     } catch (e) {
@@ -113,33 +120,66 @@ function ClaimPtri() {
     }
   }
 
+  function confirmationHeader() {
+    return (
+      <AutoColumn justify="center" gap="md">
+        <RowFixed marginTop={20}>
+          <TYPE.body fontWeight={600} fontSize={36} marginRight={15}>
+            {userClaimableRewards?.toFixed(2)}
+          </TYPE.body>
+          <MultipleCurrencyLogo currencies={threePool.poolTokens} size={24} separation={14} />
+        </RowFixed>
+        <TYPE.body>Unclaimed rewards</TYPE.body>
+      </AutoColumn>
+    )
+  }
+
   function modalContent() {
     return (
-      <StyledModalContainer gap={'md'}>
-        <TYPE.mediumHeader fontWeight={500}>Claiming rewards</TYPE.mediumHeader>
-        <AutoColumn justify="center" gap="md">
-          <RowFixed>
-            <TYPE.body fontWeight={600} fontSize={36} marginRight={15}>
-              {userClaimableRewards?.toFixed(2)}
-            </TYPE.body>
-            <MultipleCurrencyLogo currencies={threePool.poolTokens} size={24} separation={14}/>
-          </RowFixed>
-
-          <TYPE.body>Unclaimed rewards</TYPE.body>
-        </AutoColumn>
-
-        <ButtonPrimary disabled={!!pendingTx} onClick={() => handleClaim(ClaimType.CLAIM)} fontSize={14}>
-          Claim
-        </ButtonPrimary>
-      </StyledModalContainer>
+      <ConfirmationModalContent
+        title={claimType === ClaimType.CLAIM ? 'Claiming rewards' : 'Claiming and Staking rewards'}
+        onDismiss={onDismiss}
+        topContent={confirmationHeader}
+        bottomContent={() => (
+          <AutoColumn>
+            {claimType === ClaimType.CLAIM_AND_STAKE && (
+              <>
+                <RowFixed>
+                  <Text fontWeight={500} fontSize={15} marginBottom="10px">
+                    Two transactions will be made:
+                  </Text>
+                </RowFixed>
+                <RowFixed>
+                  <Text fontWeight={400} fontSize={14} marginBottom="5px">
+                    1- Claiming pending rewards
+                  </Text>
+                </RowFixed>
+                <RowFixed fontWeight={400} fontSize={14}>
+                  <Text>2- Deposit claimed rewards into USDC-USDT-USN Farm</Text>
+                </RowFixed>
+              </>
+            )}
+            <ButtonPrimary disabled={!!pendingTx} onClick={() => handleClaim()} fontSize={16} marginTop={20}>
+              {claimType === ClaimType.CLAIM_AND_STAKE ? 'Claim and Stake' : 'Claim'}
+            </ButtonPrimary>
+          </AutoColumn>
+        )}
+      />
     )
   }
 
   function onClaim(claimType: ClaimType) {
+    setClaimType(claimType)
     setTxHash(undefined)
+    setDepositTxHash(undefined)
     setConfirmationModalOpen(true)
   }
 
+  function onDismiss() {
+    setConfirmationModalOpen(false)
+    setConfirmDepositModalOpen(false)
+    setOpenModal(false)
+  }
   return (
     <StyledContainer>
       <Modal isOpen={openModal} onDismiss={() => setOpenModal(false)}>
@@ -174,7 +214,7 @@ function ClaimPtri() {
 
       <TransactionConfirmationModal
         isOpen={confirmationModalOpen}
-        onDismiss={() => setConfirmationModalOpen(false)}
+        onDismiss={onDismiss}
         attemptingTxn={pendingTx === ClaimType.CLAIM}
         hash={txHash}
         content={modalContent}
@@ -183,9 +223,9 @@ function ClaimPtri() {
 
       <TransactionConfirmationModal
         isOpen={confirmDepositModalOpen}
-        onDismiss={() => setConfirmDepositModalOpen(false)}
+        onDismiss={onDismiss}
         attemptingTxn={pendingTx === ClaimType.CLAIM_AND_STAKE}
-        hash={txHash}
+        hash={depositTxHash}
         content={modalContent}
         pendingText="Depositing claimed rewards"
       />
@@ -195,7 +235,7 @@ function ClaimPtri() {
       </TYPE.mediumHeader>
       <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid</Text>
       <ButtonsContainer>
-        <ButtonPrimary disabled={!hasPTriBalance} onClick={() => setOpenModal(true)} marginRight={20}>
+        <ButtonPrimary disabled={!hasPTriBalance} onClick={() => onClaim(ClaimType.CLAIM_AND_STAKE)} marginRight={20}>
           {pendingTx === ClaimType.CLAIM_AND_STAKE ? <Dots>Claiming</Dots> : 'Claim and Stake'}
         </ButtonPrimary>
         <ButtonPrimary disabled={!hasPTriBalance} onClick={() => setOpenModal(true)}>
