@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { JSBI, ChainId } from '@trisolaris/sdk'
-import { Text } from 'rebass'
+import { ChainId } from '@trisolaris/sdk'
 
 import { PageWrapper } from '../../components/Page'
 import StakeBox from './StakeBox'
 import ClaimPtri from './ClaimPtri'
 import StatsBox from './StatsBox'
-import { ExternalLink } from '../../theme'
-import { StyledContainer } from './StatsBox'
+import { ExternalLink, TYPE } from '../../theme'
 import MigrateXtri from './MigrateXtri'
 import Modal from '../../components/Modal'
 import { ButtonConfirmed } from '../../components/Button'
@@ -16,14 +14,14 @@ import { ButtonConfirmed } from '../../components/Button'
 import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 
-import { XTRI } from '../../constants/tokens'
+import { USD_TLP, XTRI } from '../../constants/tokens'
 import { BIG_INT_ZERO } from '../../constants'
-
-const StyledLinksContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`
+import { LightCard } from '../../components/Card'
+import { AutoRow, RowBetween } from '../../components/Row'
+import { AutoColumn } from '../../components/Column'
+import { CardSection, HighlightCard } from '../../components/earn/styled'
+import { LargeHeaderWhite } from './StakeTriV1'
+import _ from 'lodash'
 
 const StyledExternalLink = styled(ExternalLink)`
   font-weight: 600;
@@ -39,27 +37,25 @@ const StyledTextinfo = styled.div`
   margin: 20px 0;
 `
 
-const TopContainer = styled.div`
+const TopContainer = styled(AutoRow)`
+  align-items: stretch;
   display: flex;
   justify-content: space-between;
+  margin: 0;
 `
 
-const StatsBoxContainer = styled.div`
-  flex: 1;
-  max-width: 55%;
-  width: 100%;
-  height: 100%;
+const AboutContainer = styled(AutoColumn)`
+  margin-right: 16px;
+  flex: 1 40%;
 `
 
-const AboutContainer = styled(StyledContainer)`
-  flex: 1;
-  max-width: 40%;
-  width: 100%;
+const StatsBoxContainer = styled(AutoColumn)`
+  flex: 1 50%;
 `
 
 function StakeTri() {
   const { account } = useActiveWeb3React()
-  const xTriBalance = useTokenBalance(account ?? undefined, XTRI[ChainId.AURORA])!
+  const xTriBalance = useTokenBalance(account ?? undefined, XTRI[ChainId.AURORA])
 
   const [openModal, setOpenModal] = useState(false)
 
@@ -71,31 +67,57 @@ function StakeTri() {
     if (hasXTriBalance && !openModal) {
       setOpenModal(true)
     }
-  }, [hasXTriBalance])
+  }, [hasXTriBalance, openModal])
 
   return (
     <PageWrapper gap="lg">
       <Modal isOpen={openModal} onDismiss={closeModal}>
-        <MigrateXtri closeModal={closeModal} xTriBalance={xTriBalance} />
+        {xTriBalance != null ? (
+          <MigrateXtri
+            closeModal={xTriBalance.greaterThan(BIG_INT_ZERO) ? null : closeModal}
+            xTriBalance={xTriBalance}
+          />
+        ) : null}
       </Modal>
+      {hasXTriBalance && (
+        <HighlightCard>
+          <CardSection>
+            <AutoColumn gap="md">
+              <RowBetween>
+                <LargeHeaderWhite fontWeight={600}>Migrate to pTRI</LargeHeaderWhite>
+              </RowBetween>
+              <RowBetween>
+                <TYPE.white fontSize={14}>
+                  xTRI has been deprecated. Please migrate to pTRI to continue earning rewards.
+                </TYPE.white>
+              </RowBetween>{' '}
+              <ButtonConfirmed padding={10} onClick={() => setOpenModal(true)}>
+                Migrate to pTRI
+              </ButtonConfirmed>
+            </AutoColumn>
+          </CardSection>
+        </HighlightCard>
+      )}
       <TopContainer>
+        <AboutContainer>
+          <LightCard>
+            <TYPE.largeHeader textAlign="center">pTRI</TYPE.largeHeader>
+            <StyledTextinfo>Stake your TRI tokens and receive pTRI.</StyledTextinfo>
+            <StyledTextinfo>
+              pTRI holders receive protocol revenue pro rata in the form of our{' '}
+              <StyledExternalLink
+                target="_blank"
+                href={`https://aurorascan.dev/token/${USD_TLP[ChainId.AURORA].address}`}
+              >
+                USD TLP
+              </StyledExternalLink>{' '}
+              token. <StyledExternalLink href=""> Learn more ↗</StyledExternalLink>
+            </StyledTextinfo>
+          </LightCard>
+        </AboutContainer>
         <StatsBoxContainer>
           <StatsBox />
         </StatsBoxContainer>
-        <AboutContainer>
-          <Text fontSize={24} fontWeight={500}>
-            About pTRI
-          </Text>
-          <StyledTextinfo>pTri is the new Trisolaris revenue share Token.</StyledTextinfo>
-          <StyledLinksContainer>
-            <StyledExternalLink href=""> Learn about how it works ↗</StyledExternalLink>
-          </StyledLinksContainer>
-          {hasXTriBalance && (
-            <ButtonConfirmed padding={10} onClick={() => setOpenModal(true)}>
-              Migrate your xTRI
-            </ButtonConfirmed>
-          )}
-        </AboutContainer>
       </TopContainer>
       <StakeBox />
       <ClaimPtri />

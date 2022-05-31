@@ -15,7 +15,7 @@ import { usePtriStakeInfo } from '../../hooks/usePtri'
 import { TRI } from '../../constants/tokens'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 
-import { CardBackground } from './StakingAPRCard'
+import { LightCard } from '../../components/Card'
 
 export const StyledContainer = styled(AutoColumn)<{ disabled?: boolean }>`
   background: #0e3f69
@@ -49,7 +49,7 @@ function StatsBox() {
   const [rewardsInTokens, setRewardsInTokens] = useState(true)
 
   return (
-    <StyledContainer>
+    <LightCard>
       <FixedHeightRow>
         <RowFixed>
           <LargeHeaderWhite fontWeight={500} fontSize={32}>
@@ -115,7 +115,7 @@ function StatsBox() {
           fontSize="12px"
         />
       </FixedHeightRow>
-    </StyledContainer>
+    </LightCard>
   )
 }
 

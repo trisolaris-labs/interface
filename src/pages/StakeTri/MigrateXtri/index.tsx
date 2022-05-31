@@ -28,7 +28,7 @@ enum MIGRATION_STATUS {
   MIGRATED
 }
 
-function MigrateXtri({ closeModal, xTriBalance }: { closeModal: () => void; xTriBalance: TokenAmount }) {
+function MigrateXtri({ closeModal, xTriBalance }: { closeModal: (() => void) | null; xTriBalance: TokenAmount }) {
   const { xtriToTRIRatio } = useTriBarStats()
 
   const hasXTriBalance = xTriBalance?.greaterThan(BIG_INT_ZERO)
@@ -64,7 +64,7 @@ function MigrateXtri({ closeModal, xTriBalance }: { closeModal: () => void; xTri
   }
 
   function onDismiss() {
-    closeModal()
+    closeModal?.()
     setConfirmationModalOpen(false)
   }
 
@@ -100,7 +100,7 @@ function MigrateXtri({ closeModal, xTriBalance }: { closeModal: () => void; xTri
 
       <RowBetween>
         <TYPE.mediumHeader fontWeight={600}>Migrate your xTRI</TYPE.mediumHeader>
-        <CloseIcon onClick={closeModal} />
+        {closeModal != null ? <CloseIcon onClick={closeModal} /> : null}
       </RowBetween>
       <Text marginTop="10px">
         You have {xTriBalance.toFixed(2)} xTRI available to migrate to the new{' '}
