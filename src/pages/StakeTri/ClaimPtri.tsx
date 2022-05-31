@@ -1,8 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { ChainId } from '@trisolaris/sdk'
 
-import { ButtonPrimary } from '../../components/Button'
+import { ButtonPrimary, ButtonGray } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 import { Text } from 'rebass'
 import { Dots } from '../Pool/styleds'
@@ -24,7 +23,6 @@ import { useFarms } from '../../state/stake/apr'
 import { useMasterChefV2Contract } from '../../state/stake/hooks-sushi'
 import { usePtriStakeInfo } from '../../hooks/usePtri'
 
-import { PTRI } from '../../constants/tokens'
 import { BIG_INT_ZERO } from '../../constants'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 
@@ -239,18 +237,24 @@ function ClaimPtri() {
         Claim and stake for more rewards
       </TYPE.mediumHeader>
       <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid</Text>
-      {!hasClaimableRewards && <Text fontWeight={500} marginTop={20} fontSize={15}>You don't have claimable rewards.</Text>}
+
       <ButtonsContainer>
-        <ButtonPrimary
-          disabled={!hasClaimableRewards}
-          onClick={() => onClaim(ClaimType.CLAIM_AND_STAKE)}
-          marginRight={20}
-        >
-          {pendingTx === ClaimType.CLAIM_AND_STAKE ? <Dots>Claiming</Dots> : 'Claim and Stake'}
-        </ButtonPrimary>
-        <ButtonPrimary disabled={!hasClaimableRewards} onClick={() => setOpenModal(true)}>
-          Claim
-        </ButtonPrimary>
+        {!hasClaimableRewards ? (
+          <ButtonPrimary disabled>You don't have rewards to claim.</ButtonPrimary>
+        ) : (
+          <>
+            <ButtonPrimary
+              disabled={!hasClaimableRewards}
+              onClick={() => onClaim(ClaimType.CLAIM_AND_STAKE)}
+              marginRight={20}
+            >
+              {pendingTx === ClaimType.CLAIM_AND_STAKE ? <Dots>Claiming</Dots> : 'Claim and Stake'}
+            </ButtonPrimary>
+            <ButtonPrimary disabled={!hasClaimableRewards} onClick={() => setOpenModal(true)}>
+              Claim
+            </ButtonPrimary>
+          </>
+        )}
       </ButtonsContainer>
     </StyledContainer>
   )
