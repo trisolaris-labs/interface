@@ -54,7 +54,6 @@ const threePool = STABLESWAP_POOLS.USDC_USDT_USN
 
 function ClaimPtri() {
   const { account } = useActiveWeb3React()
-  const pTriBalance = useTokenBalance(account ?? undefined, PTRI[ChainId.AURORA])!
   const pTriContract = usePTriContract()
   const addTransaction = useTransactionAdder()
   const stakingContractv2 = useMasterChefV2Contract()
@@ -68,10 +67,10 @@ function ClaimPtri() {
   const [depositTxHash, setDepositTxHash] = useState<string | undefined>('')
   const [claimType, setClaimType] = useState<ClaimType>(ClaimType.CLAIM)
   const [error, setError] = useState<any>(null)
-
   const [confirmDepositModalOpen, setConfirmDepositModalOpen] = useState(false)
 
-  const hasPTriBalance = pTriBalance?.greaterThan(BIG_INT_ZERO)
+  const hasClaimableRewards = userClaimableRewards?.greaterThan(BIG_INT_ZERO)
+
   const claim = useCallback(async () => {
     try {
       setPendingTx(ClaimType.CLAIM)
@@ -200,7 +199,7 @@ function ClaimPtri() {
 
           <ButtonsContainer>
             <ButtonPrimary
-              disabled={!hasPTriBalance || !!pendingTx}
+              disabled={!hasClaimableRewards || !!pendingTx}
               onClick={() => onClaim(ClaimType.CLAIM_AND_STAKE)}
               marginRight={20}
               fontSize={14}
@@ -208,7 +207,7 @@ function ClaimPtri() {
               {pendingTx === ClaimType.CLAIM_AND_STAKE ? <Dots>Claiming and Staking</Dots> : 'Claim and Stake'}
             </ButtonPrimary>
             <ButtonPrimary
-              disabled={!hasPTriBalance || !!pendingTx}
+              disabled={!hasClaimableRewards || !!pendingTx}
               onClick={() => onClaim(ClaimType.CLAIM)}
               fontSize={14}
             >
@@ -240,11 +239,16 @@ function ClaimPtri() {
         Claim and stake for more rewards
       </TYPE.mediumHeader>
       <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid</Text>
+      {!hasClaimableRewards && <Text fontWeight={500} marginTop={20} fontSize={15}>You don't have claimable rewards.</Text>}
       <ButtonsContainer>
-        <ButtonPrimary disabled={!hasPTriBalance} onClick={() => onClaim(ClaimType.CLAIM_AND_STAKE)} marginRight={20}>
+        <ButtonPrimary
+          disabled={!hasClaimableRewards}
+          onClick={() => onClaim(ClaimType.CLAIM_AND_STAKE)}
+          marginRight={20}
+        >
           {pendingTx === ClaimType.CLAIM_AND_STAKE ? <Dots>Claiming</Dots> : 'Claim and Stake'}
         </ButtonPrimary>
-        <ButtonPrimary disabled={!hasPTriBalance} onClick={() => setOpenModal(true)}>
+        <ButtonPrimary disabled={!hasClaimableRewards} onClick={() => setOpenModal(true)}>
           Claim
         </ButtonPrimary>
       </ButtonsContainer>
