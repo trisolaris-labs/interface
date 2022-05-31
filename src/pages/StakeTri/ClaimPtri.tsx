@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 
-import { ButtonPrimary, ButtonGray } from '../../components/Button'
+import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 import { Text } from 'rebass'
 import { Dots } from '../Pool/styleds'
@@ -16,12 +16,12 @@ import { RowBetween, RowFixed } from '../../components/Row'
 import MultipleCurrencyLogo from '../../components/MultipleCurrencyLogo'
 
 import { useActiveWeb3React } from '../../hooks'
-import { useTokenBalance } from '../../state/wallet/hooks'
 import { usePTriContract } from '../../hooks/useContract'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { useFarms } from '../../state/stake/apr'
 import { useMasterChefV2Contract } from '../../state/stake/hooks-sushi'
 import { usePtriStakeInfo } from '../../hooks/usePtri'
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 
 import { BIG_INT_ZERO } from '../../constants'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
@@ -56,7 +56,8 @@ function ClaimPtri() {
   const addTransaction = useTransactionAdder()
   const stakingContractv2 = useMasterChefV2Contract()
   const { userClaimableRewards } = usePtriStakeInfo()
-  const { apr, nonTriAPRs, poolId } = useFarms().filter(farm => farm.ID === 35)[0]
+  const { apr, nonTriAPRs, poolId, stakingRewardAddress } = useFarms().filter(farm => farm.ID === 35)[0]
+  const [approval, approveCallback] = useApproveCallback(userClaimableRewards, stakingRewardAddress)
 
   const [pendingTx, setPendingTx] = useState<ClaimType | null>(null)
   const [openModal, setOpenModal] = useState(false)
@@ -161,9 +162,26 @@ function ClaimPtri() {
                 </RowFixed>
               </>
             )}
-            <ButtonPrimary disabled={!!pendingTx} onClick={() => handleClaim()} fontSize={16} marginTop={20}>
-              {claimType === ClaimType.CLAIM_AND_STAKE ? 'Claim and Stake' : 'Claim'}
-            </ButtonPrimary>
+            {approval !== ApprovalState.APPROVED ? (
+              <ButtonPrimary
+                disabled={approval === ApprovalState.UNKNOWN}
+                onClick={approveCallback}
+                fontSize={16}
+                marginTop={20}
+              >
+                {approval === ApprovalState.UNKNOWN ? (
+                  <Dots>Checking Approval</Dots>
+                ) : approval === ApprovalState.PENDING ? (
+                  <Dots>Approving</Dots>
+                ) : (
+                  'Approve Depositing rewards'
+                )}
+              </ButtonPrimary>
+            ) : (
+              <ButtonPrimary disabled={!!pendingTx} onClick={() => handleClaim()} fontSize={16} marginTop={20}>
+                {claimType === ClaimType.CLAIM_AND_STAKE ? 'Claim and Stake' : 'Claim'}
+              </ButtonPrimary>
+            )}
           </AutoColumn>
         )}
       />
