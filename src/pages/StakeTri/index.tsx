@@ -67,7 +67,7 @@ function StakeTri() {
     if (hasXTriBalance && !openModal) {
       setOpenModal(true)
     }
-  }, [hasXTriBalance])
+  }, [hasXTriBalance, openModal])
 
   return (
     <PageWrapper gap="lg">
@@ -97,7 +97,7 @@ function StakeTri() {
         <AboutContainer>
           <LightCard>
             <TYPE.largeHeader textAlign="center">pTRI</TYPE.largeHeader>
-            <StyledTextinfo>Stake your TRI tokens and receive pTRI.</StyledTextinfo>
+            <StyledTextinfo>Stake your TRI tokens to receive pTRI 1:1.</StyledTextinfo>
             <StyledTextinfo>
               pTRI holders receive protocol revenue pro rata in the form of our{' '}
               <StyledExternalLink

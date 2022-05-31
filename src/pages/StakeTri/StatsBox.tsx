@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { ChainId } from '@trisolaris/sdk'
+import { ChainId, Token } from '@trisolaris/sdk'
 
 import { AutoColumn } from '../../components/Column'
 import { FixedHeightRow } from '../../components/PositionCard/PositionCard.styles'
@@ -12,7 +12,7 @@ import { TYPE } from '../../theme'
 
 import { usePtriStakeInfo } from '../../hooks/usePtri'
 
-import { TRI } from '../../constants/tokens'
+import { PTRI, TRI } from '../../constants/tokens'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 
 import { LightCard } from '../../components/Card'
@@ -30,14 +30,19 @@ const StyledStakedAmount = styled.span`
   margin-left: 5px;
 `
 
+const ToggleRow = styled(FixedHeightRow)`
+  justify-content: flex-end;
+`
+
 const PTRI_REWARDS_TOKEN = STABLESWAP_POOLS.USDC_USDT_USN.poolTokens
 
 function StatsBox() {
   const {
-    totalStakedAmount,
+    totalStaked,
     totalStakedInUsd,
     userStaked,
     userStakedInUsd,
+    userStakedPercentage,
     userClaimableRewards,
     userClaimableRewardsInUsd
   } = usePtriStakeInfo()
@@ -51,29 +56,15 @@ function StatsBox() {
           <TYPE.largeHeader>APR</TYPE.largeHeader>
         </RowFixed>
         <RowFixed>
-          <TYPE.largeHeader>XXX%</TYPE.largeHeader>
+          <TYPE.largeHeader>Coming Soon</TYPE.largeHeader>
         </RowFixed>
       </FixedHeightRow>
-
       <FixedHeightRow marginTop="20px">
-        <RowFixed>Total Staked</RowFixed>
+        <RowFixed>Your pTRI</RowFixed>
         <RowFixed>
           {rewardsInTokens ? (
             <>
-              <CurrencyLogo currency={TRI[ChainId.AURORA]} size="16px" />
-              <StyledStakedAmount>{totalStakedAmount.toFixed(2)}</StyledStakedAmount>
-            </>
-          ) : (
-            <span>${totalStakedInUsd}</span>
-          )}
-        </RowFixed>
-      </FixedHeightRow>
-      <FixedHeightRow marginTop="6px">
-        <RowFixed>Your deposits</RowFixed>
-        <RowFixed>
-          {rewardsInTokens ? (
-            <>
-              <CurrencyLogo currency={TRI[ChainId.AURORA]} size="16px" />
+              <CurrencyLogo currency={PTRI[ChainId.AURORA]} size="16px" />
               <StyledStakedAmount>{userStaked.toFixed(2)}</StyledStakedAmount>
             </>
           ) : (
@@ -82,11 +73,26 @@ function StatsBox() {
         </RowFixed>
       </FixedHeightRow>
       <FixedHeightRow marginTop="6px">
-        <RowFixed alignItems="center">Your rewards</RowFixed>
-        {/* <RowFixed>
-          <MultipleCurrencyLogo currencies={PTRI_REWARDS_TOKEN} size={16} />
-          <StyledStakedAmount>{userClaimableRewards.toFixed(2)}</StyledStakedAmount> / $ {userClaimableRewardsInUsd}
-        </RowFixed> */}
+        <RowFixed>Total pTRI</RowFixed>
+        <RowFixed>
+          {rewardsInTokens ? (
+            <>
+              <CurrencyLogo currency={PTRI[ChainId.AURORA]} size="16px" />
+              <StyledStakedAmount>{totalStaked.toFixed(2)}</StyledStakedAmount>
+            </>
+          ) : (
+            <span>${totalStakedInUsd}</span>
+          )}
+        </RowFixed>
+      </FixedHeightRow>
+      <FixedHeightRow marginTop="6px">
+        <RowFixed>Your Share</RowFixed>
+        <RowFixed>
+          <span>{userStakedPercentage.toSignificant(2)}%</span>
+        </RowFixed>
+      </FixedHeightRow>
+      <FixedHeightRow marginTop="6px">
+        <RowFixed alignItems="center">Your Rewards</RowFixed>
         <RowFixed>
           {rewardsInTokens ? (
             <>
@@ -98,15 +104,15 @@ function StatsBox() {
           )}
         </RowFixed>
       </FixedHeightRow>
-      <FixedHeightRow marginTop="20px">
-        <RowFixed>Show data in:</RowFixed>
+      <ToggleRow marginTop="20px">
+        <TYPE.small marginRight="0.5rem">Show data in</TYPE.small>
         <Toggle
           isActive={rewardsInTokens}
           toggle={() => setRewardsInTokens(!rewardsInTokens)}
           customToggleText={{ off: '$ USD', on: 'Tokens' }}
-          fontSize="12px"
+          fontSize="10px"
         />
-      </FixedHeightRow>
+      </ToggleRow>
     </LightCard>
   )
 }
