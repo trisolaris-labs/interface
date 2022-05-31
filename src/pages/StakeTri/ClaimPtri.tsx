@@ -9,7 +9,10 @@ import { Dots } from '../Pool/styleds'
 import Modal from '../../components/Modal'
 import PoolCardTriRewardText from '../../components/earn/PoolCardTriRewardText'
 import { TYPE } from '../../theme'
-import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
+import TransactionConfirmationModal, {
+  ConfirmationModalContent,
+  TransactionErrorContent
+} from '../../components/TransactionConfirmationModal'
 import { RowBetween, RowFixed } from '../../components/Row'
 import MultipleCurrencyLogo from '../../components/MultipleCurrencyLogo'
 
@@ -24,8 +27,6 @@ import { usePtriStakeInfo } from '../../hooks/usePtri'
 import { PTRI } from '../../constants/tokens'
 import { BIG_INT_ZERO } from '../../constants'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
-
-import { parseUnits } from '@ethersproject/units'
 
 const ButtonsContainer = styled.div`
   margin-top: 20px;
@@ -66,11 +67,11 @@ function ClaimPtri() {
   const [txHash, setTxHash] = useState<string | undefined>('')
   const [depositTxHash, setDepositTxHash] = useState<string | undefined>('')
   const [claimType, setClaimType] = useState<ClaimType>(ClaimType.CLAIM)
+  const [error, setError] = useState<any>(null)
 
   const [confirmDepositModalOpen, setConfirmDepositModalOpen] = useState(false)
 
   const hasPTriBalance = pTriBalance?.greaterThan(BIG_INT_ZERO)
-
   const claim = useCallback(async () => {
     try {
       setPendingTx(ClaimType.CLAIM)
@@ -82,8 +83,8 @@ function ClaimPtri() {
       if (error?.code === 4001) {
         throw new Error('Transaction rejected.')
       } else {
-        console.error(`Deposit failed`, error, 'deposit')
-        throw new Error(`Deposit failed: ${error.message}`)
+        console.error(`Claim failed`, error, 'Claim')
+        throw new Error(`Claim failed: ${error.message}`)
       }
     }
   }, [addTransaction, pTriContract])
@@ -95,18 +96,19 @@ function ClaimPtri() {
       claimTx.wait()
       setPendingTx(ClaimType.CLAIM_AND_STAKE)
       setConfirmDepositModalOpen(true)
-      const tx = await stakingContractv2?.deposit(poolId, parseUnits('1'), account)
+
+      const tx = await stakingContractv2?.deposit(poolId, userClaimableRewards.raw.toString(), account)
       setDepositTxHash(tx.hash)
       return addTransaction(tx, { summary: `Deposited rewards into USDT-USDC-USN Farm` })
     } catch (error) {
       if (error?.code === 4001) {
         throw new Error('Transaction rejected.')
       } else {
-        console.error(`Deposit failed`, error, 'deposit')
-        throw new Error(`Deposit failed: ${error.message}`)
+        console.error(`Claim and Stake failed`, error, 'Claim and Stake')
+        throw new Error(`Claim and Stake failed: ${error.message}`)
       }
     }
-  }, [addTransaction, pTriContract])
+  }, [addTransaction, pTriContract, userClaimableRewards])
 
   async function handleClaim() {
     try {
@@ -115,6 +117,7 @@ function ClaimPtri() {
       await claimFn()
     } catch (e) {
       console.error(`Error Claiming: `, e)
+      setError(e)
     } finally {
       setPendingTx(null)
     }
@@ -135,7 +138,9 @@ function ClaimPtri() {
   }
 
   function modalContent() {
-    return (
+    return error ? (
+      <TransactionErrorContent onDismiss={onDismiss} message={error.message} />
+    ) : (
       <ConfirmationModalContent
         title={claimType === ClaimType.CLAIM ? 'Claiming rewards' : 'Claiming and Staking rewards'}
         onDismiss={onDismiss}
@@ -173,6 +178,7 @@ function ClaimPtri() {
     setTxHash(undefined)
     setDepositTxHash(undefined)
     setConfirmationModalOpen(true)
+    setError(null)
   }
 
   function onDismiss() {
