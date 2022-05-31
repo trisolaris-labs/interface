@@ -30,10 +30,6 @@ const StyledStakedAmount = styled.span`
   margin-left: 5px;
 `
 
-const LargeHeaderWhite = styled(TYPE.largeHeader)`
-  color: white;
-`
-
 const PTRI_REWARDS_TOKEN = STABLESWAP_POOLS.USDC_USDT_USN.poolTokens
 
 function StatsBox() {
@@ -52,14 +48,10 @@ function StatsBox() {
     <LightCard>
       <FixedHeightRow>
         <RowFixed>
-          <LargeHeaderWhite fontWeight={500} fontSize={32}>
-            APR
-          </LargeHeaderWhite>
+          <TYPE.largeHeader>APR</TYPE.largeHeader>
         </RowFixed>
         <RowFixed>
-          <LargeHeaderWhite fontWeight={500} fontSize={32}>
-            XXX%
-          </LargeHeaderWhite>
+          <TYPE.largeHeader>XXX%</TYPE.largeHeader>
         </RowFixed>
       </FixedHeightRow>
 
