@@ -119,8 +119,8 @@ function StakeTri() {
           <StatsBox />
         </StatsBoxContainer>
       </TopContainer>
-      <StakeBox />
       <ClaimPtri />
+      <StakeBox />
     </PageWrapper>
   )
 }
