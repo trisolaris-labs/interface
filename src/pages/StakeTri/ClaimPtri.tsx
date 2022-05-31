@@ -73,9 +73,9 @@ function ClaimPtri() {
   const claim = useCallback(async () => {
     try {
       setPendingTx(ClaimType.CLAIM)
-      const tx = await pTriContract?.withdraw(0)
+      const tx = await pTriContract?.harvest(account)
       setTxHash(tx.hash)
-      addTransaction(tx, { summary: 'Claimed Ptri' })
+      addTransaction(tx, { summary: 'Claimed Rewards' })
       return tx
     } catch (error) {
       if (error?.code === 4001) {
