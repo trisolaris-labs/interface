@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useContext } from 'react'
-import styled, { ThemeContext } from 'styled-components'
-import { ChainId, CurrencyAmount } from '@trisolaris/sdk'
+import { ThemeContext } from 'styled-components'
+import { ChainId, CurrencyAmount, TokenAmount } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
 
 import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
@@ -13,7 +13,7 @@ import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent
 } from '../../components/TransactionConfirmationModal'
-import { ButtonPrimary } from '../../components/Button'
+import { ButtonLight, ButtonPrimary } from '../../components/Button'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { Text } from 'rebass'
 import MultipleCurrencyLogo from '../../components/MultipleCurrencyLogo'
@@ -31,20 +31,10 @@ import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButton
 import { TYPE } from '../../theme'
 import { BIG_INT_ZERO } from '../../constants'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
+import { DarkGreyCard } from '../../components/Card'
+import { useWalletModalToggle } from '../../state/application/hooks'
 
 const INPUT_CHAR_LIMIT = 18
-
-const StakeBoxContainer = styled.div`
-  background: #0e3f69;
-  padding: 2rem;
-  border-radius: 10px;
-  width: 100%;
-`
-
-const ButtonsContainer = styled.div`
-  margin-top: 20px;
-  display: flex;
-`
 
 const threePool = STABLESWAP_POOLS.USDC_USDT_USN
 
@@ -55,9 +45,10 @@ function StakeBox() {
   const addTransaction = useTransactionAdder()
   const { getMaxInputAmount } = useCurrencyInputPanel()
   const { userClaimableRewards } = usePtriStakeInfo()
+  const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
-  const triBalance = useTokenBalance(account ?? undefined, TRI[ChainId.AURORA])!
-  const pTriBalance = useTokenBalance(account ?? undefined, PTRI[ChainId.AURORA])!
+  const triBalance = useTokenBalance(account ?? undefined, TRI[ChainId.AURORA])
+  const pTriBalance = useTokenBalance(account ?? undefined, PTRI[ChainId.AURORA])
 
   const [input, _setInput] = useState<string>('')
   const [pendingTx, setPendingTx] = useState(false)
@@ -66,7 +57,7 @@ function StakeBox() {
   const [txHash, setTxHash] = useState<string | undefined>('')
   const [error, setError] = useState<any>(null)
 
-  const balance = isStaking ? triBalance : pTriBalance
+  const balance = (isStaking ? triBalance : pTriBalance) ?? new TokenAmount(TRI[ChainId.AURORA], '0')
 
   const parsedAmount = tryParseAmount(input, balance?.currency)
 
@@ -98,11 +89,11 @@ function StakeBox() {
           addTransaction(tx, { summary: `${isStaking ? 'Deposited into' : 'Withdraw'} Ptri` })
           return tx
         } catch (error) {
-          if (error?.code === 4001) {
+          if ((error as any)?.code === 4001) {
             throw new Error('Transaction rejected.')
           } else {
             console.error(`${call} failed`, error, call)
-            throw new Error(`${call} failed: ${error.message}`)
+            throw new Error(`${call} failed: ${(error as any).message}`)
           }
         }
       }
@@ -234,7 +225,7 @@ function StakeBox() {
   }
 
   return (
-    <StakeBoxContainer>
+    <div>
       <TransactionConfirmationModal
         isOpen={openModal}
         onDismiss={() => setOpenModal(false)}
@@ -243,48 +234,60 @@ function StakeBox() {
         content={modalContent}
         pendingText={isStaking ? 'Staking into pTRI' : 'Withdrawing from pTRI staking'}
       />
-      <RowBetween marginBottom={10}>
-        <AutoColumn gap="20px" justify="start">
-          <TYPE.mediumHeader>{isStaking ? 'Stake TRI' : 'Unstake pTRI'}</TYPE.mediumHeader>
-        </AutoColumn>
-        <AutoColumn gap="20px">
-          <RowBetween>
-            <Toggle
-              id="toggle-staking"
-              isActive={isStaking}
-              toggle={handleStakeToggle}
-              customToggleText={{ on: 'Stake', off: 'Unstake' }}
-              fontSize="14px"
+      <AutoColumn style={{ width: '100%' }}>
+        <DarkGreyCard>
+          <AutoColumn gap="20px">
+            <RowBetween marginBottom={10}>
+              <AutoColumn gap="20px" justify="start">
+                <TYPE.mediumHeader>{isStaking ? 'Stake TRI' : 'Unstake pTRI'}</TYPE.mediumHeader>
+              </AutoColumn>
+              <AutoColumn gap="20px">
+                <RowBetween>
+                  <Toggle
+                    id="toggle-staking"
+                    isActive={isStaking}
+                    toggle={handleStakeToggle}
+                    customToggleText={{ on: 'Stake', off: 'Unstake' }}
+                    fontSize="14px"
+                  />
+                </RowBetween>
+              </AutoColumn>
+            </RowBetween>
+
+            <StakeInputPanel
+              value={input}
+              onUserInput={setInput}
+              currency={isStaking ? TRI[ChainId.AURORA] : PTRI[ChainId.AURORA]}
+              id="stake-currency-input"
+              onMax={() => handleBalanceClick(BalanceButtonValueEnum.MAX)}
+              onClickBalanceButton={handleBalanceClick}
+              disableMaxButton={atMaxAmountInput || !balance?.greaterThan(BIG_INT_ZERO)}
+              disableHalfButton={atHalfAmountInput || !balance?.greaterThan(BIG_INT_ZERO)}
             />
-          </RowBetween>
-        </AutoColumn>
-      </RowBetween>
-
-      <StakeInputPanel
-        value={input!}
-        onUserInput={setInput}
-        currency={isStaking ? TRI[ChainId.AURORA] : PTRI[ChainId.AURORA]}
-        id="stake-currency-input"
-        onMax={() => handleBalanceClick(BalanceButtonValueEnum.MAX)}
-        onClickBalanceButton={handleBalanceClick}
-        disableMaxButton={atMaxAmountInput || !balance?.greaterThan(BIG_INT_ZERO)}
-        disableHalfButton={atHalfAmountInput || !balance?.greaterThan(BIG_INT_ZERO)}
-      />
-
-      <ButtonsContainer>
-        {approvalState !== ApprovalState.APPROVED && approvalState !== ApprovalState.UNKNOWN && isStaking && input && (
-          <ApproveButton approvalState={approvalState} handleApproval={handleApproval} />
-        )}
-        <StakeButton
-          balance={balance}
-          stakingAmount={parsedAmount}
-          approvalState={approvalState}
-          isStaking={isStaking}
-          pendingTx={pendingTx}
-          handleStakeAndUnstake={onStakeClick}
-        />
-      </ButtonsContainer>
-    </StakeBoxContainer>
+          </AutoColumn>
+          <div style={{ marginTop: '1rem' }}>
+            {account == null ? (
+              <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+            ) : (
+              <RowBetween>
+                {approvalState !== ApprovalState.APPROVED &&
+                  approvalState !== ApprovalState.UNKNOWN &&
+                  isStaking &&
+                  input && <ApproveButton approvalState={approvalState} handleApproval={handleApproval} />}
+                <StakeButton
+                  balance={balance}
+                  stakingAmount={parsedAmount}
+                  approvalState={approvalState}
+                  isStaking={isStaking}
+                  pendingTx={pendingTx}
+                  handleStakeAndUnstake={onStakeClick}
+                />
+              </RowBetween>
+            )}
+          </div>
+        </DarkGreyCard>
+      </AutoColumn>
+    </div>
   )
 }
 
