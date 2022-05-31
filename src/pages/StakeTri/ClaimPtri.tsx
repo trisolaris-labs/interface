@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 
-import { ButtonPrimary } from '../../components/Button'
+import { ButtonLight, ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 import { Text } from 'rebass'
 import { Dots } from '../Pool/styleds'
@@ -25,17 +25,11 @@ import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallbac
 
 import { BIG_INT_ZERO } from '../../constants'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
+import { GreyCard } from '../../components/Card'
 
 const ButtonsContainer = styled.div`
   margin-top: 20px;
   display: flex;
-`
-
-const StyledContainer = styled(AutoColumn)<{ disabled?: boolean }>`
-background: #0e3f69
-border-radius: 10px;
-width: 100%;
-padding: 2rem;
 `
 
 const StyledModalContainer = styled(AutoColumn)`
@@ -78,14 +72,14 @@ function ClaimPtri() {
       addTransaction(tx, { summary: 'Claimed Rewards' })
       return tx
     } catch (error) {
-      if (error?.code === 4001) {
+      if ((error as any)?.code === 4001) {
         throw new Error('Transaction rejected.')
       } else {
         console.error(`Claim failed`, error, 'Claim')
-        throw new Error(`Claim failed: ${error.message}`)
+        throw new Error(`Claim failed: ${(error as any).message}`)
       }
     }
-  }, [addTransaction, pTriContract])
+  }, [account, addTransaction, pTriContract])
 
   const claimAndStake = useCallback(async () => {
     try {
@@ -99,14 +93,14 @@ function ClaimPtri() {
       setDepositTxHash(tx.hash)
       return addTransaction(tx, { summary: `Deposited rewards into USDT-USDC-USN Farm` })
     } catch (error) {
-      if (error?.code === 4001) {
+      if ((error as any)?.code === 4001) {
         throw new Error('Transaction rejected.')
       } else {
         console.error(`Claim and Stake failed`, error, 'Claim and Stake')
-        throw new Error(`Claim and Stake failed: ${error.message}`)
+        throw new Error(`Claim and Stake failed: ${(error as any).message}`)
       }
     }
-  }, [addTransaction, pTriContract, userClaimableRewards])
+  }, [account, addTransaction, claim, poolId, stakingContractv2, userClaimableRewards.raw])
 
   async function handleClaim() {
     try {
@@ -202,7 +196,7 @@ function ClaimPtri() {
     setOpenModal(false)
   }
   return (
-    <StyledContainer>
+    <GreyCard>
       <Modal isOpen={openModal} onDismiss={() => setOpenModal(false)}>
         <StyledModalContainer>
           <Text marginBottom={20}>
@@ -252,29 +246,27 @@ function ClaimPtri() {
       />
 
       <TYPE.mediumHeader marginBottom={15} justifySelf="center">
-        Claim and stake for more rewards
+        Claim Protocol Revenue
       </TYPE.mediumHeader>
-      <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid</Text>
-
       <ButtonsContainer>
-        {!hasClaimableRewards ? (
-          <ButtonPrimary disabled>You don't have rewards to claim.</ButtonPrimary>
-        ) : (
+        {hasClaimableRewards ? (
           <>
-            <ButtonPrimary
+            <ButtonLight
               disabled={!hasClaimableRewards}
               onClick={() => onClaim(ClaimType.CLAIM_AND_STAKE)}
               marginRight={20}
             >
               {pendingTx === ClaimType.CLAIM_AND_STAKE ? <Dots>Claiming</Dots> : 'Claim and Stake'}
-            </ButtonPrimary>
-            <ButtonPrimary disabled={!hasClaimableRewards} onClick={() => setOpenModal(true)}>
+            </ButtonLight>
+            <ButtonLight disabled={!hasClaimableRewards} onClick={() => setOpenModal(true)}>
               Claim
-            </ButtonPrimary>
+            </ButtonLight>
           </>
+        ) : (
+          <ButtonPrimary disabled>You don&apos;t have rewards to claim. Please check back later.</ButtonPrimary>
         )}
       </ButtonsContainer>
-    </StyledContainer>
+    </GreyCard>
   )
 }
 
