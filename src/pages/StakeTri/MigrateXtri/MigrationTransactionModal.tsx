@@ -38,7 +38,7 @@ function MigrationTransactionModal({
         <RowBetween align="flex-end">
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={XTRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
-            <Text fontSize={24} fontWeight={500} color={theme.primary1}>
+            <Text fontSize={24} fontWeight={500}>
               {xTriBalance?.toFixed(2)}
             </Text>
           </RowFixed>

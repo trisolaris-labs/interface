@@ -67,17 +67,12 @@ function StakeTri() {
     if (hasXTriBalance && !openModal) {
       setOpenModal(true)
     }
-  }, [hasXTriBalance, openModal])
+  }, [hasXTriBalance])
 
   return (
     <PageWrapper gap="lg">
       <Modal isOpen={openModal} onDismiss={closeModal}>
-        {xTriBalance != null ? (
-          <MigrateXtri
-            closeModal={xTriBalance.greaterThan(BIG_INT_ZERO) ? null : closeModal}
-            xTriBalance={xTriBalance}
-          />
-        ) : null}
+        {xTriBalance != null && <MigrateXtri closeModal={closeModal} xTriBalance={xTriBalance} />}
       </Modal>
       {hasXTriBalance && (
         <HighlightCard>
