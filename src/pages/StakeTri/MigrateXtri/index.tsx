@@ -24,7 +24,7 @@ enum MIGRATION_STATUS {
   MIGRATED
 }
 
-function MigrateXtri({ closeModal, xTriBalance }: { closeModal: (() => void) | null; xTriBalance: TokenAmount }) {
+function MigrateXtri({ closeModal, xTriBalance }: { closeModal: () => void; xTriBalance: TokenAmount }) {
   const { xtriToTRIRatio } = useTriBarStats()
 
   const hasXTriBalance = xTriBalance?.greaterThan(BIG_INT_ZERO)

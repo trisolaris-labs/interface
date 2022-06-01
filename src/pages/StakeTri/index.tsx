@@ -67,7 +67,7 @@ function StakeTri() {
     if (hasXTriBalance && !openModal) {
       setOpenModal(true)
     }
-  }, [hasXTriBalance, openModal])
+  }, [hasXTriBalance])
 
   return (
     <PageWrapper gap="lg">
