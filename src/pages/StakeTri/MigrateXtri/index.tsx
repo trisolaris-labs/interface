@@ -95,15 +95,15 @@ function MigrateXtri({ closeModal, xTriBalance }: { closeModal: () => void; xTri
           pendingText="Migrating xTRI"
         />
 
-        <Text marginTop="10px">
+        <Text marginTop="15px">
           You have {xTriBalance.toFixed(2)} xTRI available to migrate to <strong>pTRI</strong>, Trisolaris&apos;s
           Revenue Share token.
         </Text>
-        <Text marginTop="15px">
+        <Text marginTop="10px">
           The Trisolaris protocol is improving our reward structure to share all protocol fees with TRI holders, in the
-          form of USD LP tokens. Migrate your current xTRI stake to pTRI to continue receiving protocol rewards. pTri
-          Staking.
+          form of USD LP tokens.
         </Text>
+        <Text marginTop="10px">Migrate your current xTRI stake to pTRI to continue receiving protocol rewards.</Text>
       </>
     )
   }

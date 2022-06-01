@@ -35,7 +35,6 @@ function MigrationTransactionModal({
     return (
       <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
         <TYPE.main>You will be unstaking your xTRI for TRI, then staking your TRI for pTRI.</TYPE.main>
-        <TYPE.main>1 pTRI = 1 TRI</TYPE.main>
         <TYPE.main>pTRI can be redeemed for the underlying TRI at any time.</TYPE.main>
         <RowBetween align="flex-end">
           <RowFixed gap={'0px'}>
