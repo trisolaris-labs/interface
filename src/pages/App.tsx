@@ -15,7 +15,6 @@ import {
   RedirectToAddLiquidity
 } from './AddLiquidity/redirects'
 import EarnTri from './EarnTri'
-import StakeTri from './StakeTri'
 import Manage from './EarnTri/Manage'
 import Pool from './Pool'
 import Buy from './Buy'
@@ -28,6 +27,7 @@ import StableSwapPoolAddLiquidity from './StableSwapPoolAddLiquidity'
 import StableSwapPoolRemoveLiquidity from './StableSwapPoolRemoveLiquidity'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 import ManageStable from './EarnTri/ManageStable'
+import StakeTri from './StakeTri'
 
 const AppWrapper = styled.div`
   display: flex;

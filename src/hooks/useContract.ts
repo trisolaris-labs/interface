@@ -23,10 +23,11 @@ import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
 import { AIRDROP_ADDRESS, BRIDGE_MIGRATOR_ADDRESS } from '../constants'
-import { PNG, TRI, USDC, WNEAR } from '../constants/tokens'
+import { PNG, PTRI, TRI, USDC, WNEAR } from '../constants/tokens'
 import { GOVERNANCE_ADDRESS } from '../constants'
 import { STAKING } from '../state/stake/stake-constants'
 import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
+import PTRI_ABI from '../constants/abis/pTri/ptri.json'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -169,4 +170,17 @@ export function useStableSwapLPTokenContract(
 
 export function useStableSwapMetaPool(address?: string, withSignerIfPossible = true): Contract | null {
   return useContract(address, STABLE_META_SWAP_ABI, withSignerIfPossible)
+}
+
+export function usePTriContract(withSignerIfPossible = true): Contract | null {
+  const { chainId, library } = useActiveWeb3React()
+  const pTriContract = useContract(PTRI[ChainId.AURORA].address, PTRI_ABI, withSignerIfPossible)
+
+  return useMemo(() => {
+    if (!library || !chainId) {
+      return null
+    }
+
+    return pTriContract
+  }, [library, chainId])
 }

@@ -95,5 +95,8 @@ module.exports = {
       'AAVE',
       'Aave Token'
     )
+  },
+  PTRI: {
+    [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4F0284Fd38df527CC70d0c53bC0BE67DECCcAF25', 18, 'pTRI', 'pTRI Token')
   }
 }
