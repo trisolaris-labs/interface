@@ -96,12 +96,13 @@ function MigrateXtri({ closeModal, xTriBalance }: { closeModal: () => void; xTri
         />
 
         <Text marginTop="10px">
-          You have {xTriBalance.toFixed(2)} xTRI available to migrate to the new{' '}
-          <span style={{ fontWeight: 600 }}>pTRI</span>, Trisolaris Revenue Share token.
+          You have {xTriBalance.toFixed(2)} xTRI available to migrate to <strong>pTRI</strong>, Trisolaris&apos;s
+          Revenue Share token.
         </Text>
         <Text marginTop="15px">
-          In order to continue making profits from staking, you need to migrate your current Stake in xTri into the new
-          pTri Staking.
+          The Trisolaris protocol is improving our reward structure to share all protocol fees with TRI holders, in the
+          form of USD LP tokens. Migrate your current xTRI stake to pTRI to continue receiving protocol rewards. pTri
+          Staking.
         </Text>
       </>
     )

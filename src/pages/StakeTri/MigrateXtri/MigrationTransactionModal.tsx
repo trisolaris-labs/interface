@@ -10,7 +10,7 @@ import { TransactionErrorContent, ConfirmationModalContent } from '../../../comp
 import { AutoColumn } from '../../../components/Column'
 import CurrencyLogo from '../../../components/CurrencyLogo'
 
-import { XTRI, PTRI } from '../../../constants/tokens'
+import { XTRI, PTRI, TRI } from '../../../constants/tokens'
 
 type MigrationTransactionModalProps = {
   errorMessage: string | undefined
@@ -34,7 +34,9 @@ function MigrationTransactionModal({
   function confirmationHeader() {
     return (
       <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
-        <TYPE.mediumHeader fontWeight={500}>Migrating</TYPE.mediumHeader>
+        <TYPE.main>You will be unstaking your xTRI for TRI, then staking your TRI for pTRI.</TYPE.main>
+        <TYPE.main>1 pTRI = 1 TRI</TYPE.main>
+        <TYPE.main>pTRI can be redeemed for the underlying TRI at any time.</TYPE.main>
         <RowBetween align="flex-end">
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={XTRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
@@ -45,6 +47,20 @@ function MigrationTransactionModal({
           <RowFixed gap={'0px'}>
             <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
               {XTRI[ChainId.AURORA].symbol}
+            </Text>
+          </RowFixed>
+        </RowBetween>
+        <RowFixed>To</RowFixed>
+        <RowBetween align="flex-end">
+          <RowFixed gap={'0px'}>
+            <CurrencyLogo currency={TRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
+            <Text fontSize={24} fontWeight={500}>
+              {xTriBalanceInTRI?.toFixed(2)}
+            </Text>
+          </RowFixed>
+          <RowFixed gap={'0px'}>
+            <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+              {TRI[ChainId.AURORA].symbol}
             </Text>
           </RowFixed>
         </RowBetween>

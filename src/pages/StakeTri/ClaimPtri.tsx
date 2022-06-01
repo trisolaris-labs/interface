@@ -124,7 +124,7 @@ function ClaimPtri() {
           </TYPE.body>
           <MultipleCurrencyLogo currencies={threePool.poolTokens} size={24} separation={14} />
         </RowFixed>
-        <TYPE.body>Unclaimed rewards</TYPE.body>
+        <TYPE.body>Claimable rewards</TYPE.body>
       </AutoColumn>
     )
   }
@@ -148,11 +148,11 @@ function ClaimPtri() {
                 </RowFixed>
                 <RowFixed>
                   <Text fontWeight={400} fontSize={14} marginBottom="5px">
-                    1- Claiming pending rewards
+                    1. Claim pending rewards
                   </Text>
                 </RowFixed>
                 <RowFixed fontWeight={400} fontSize={14}>
-                  <Text>2- Deposit claimed rewards into USDC-USDT-USN Farm</Text>
+                  <Text>2. Stake rewards into USDC/USDT/USN Farm</Text>
                 </RowFixed>
               </>
             )}
@@ -199,9 +199,7 @@ function ClaimPtri() {
     <GreyCard>
       <Modal isOpen={openModal} onDismiss={() => setOpenModal(false)}>
         <StyledModalContainer>
-          <Text marginBottom={20}>
-            If you only claim instead of claiming and staking, you will lose this potential profits:
-          </Text>
+          <Text marginBottom={20}>You can stake your claimed LP tokens to earn the following rewards:</Text>
           <RowBetween>
             <Text fontSize={14}>Current USDC-USDT-USN Farm APR:</Text>
             <PoolCardTriRewardText apr={apr} inStaging={false} nonTriAPRs={nonTriAPRs} />
@@ -221,7 +219,7 @@ function ClaimPtri() {
               onClick={() => onClaim(ClaimType.CLAIM)}
               fontSize={14}
             >
-              {pendingTx === ClaimType.CLAIM ? <Dots>Claiming</Dots> : 'Just Claim anyway'}
+              {pendingTx === ClaimType.CLAIM ? <Dots>Claiming</Dots> : 'Claim'}
             </ButtonPrimary>
           </ButtonsContainer>
         </StyledModalContainer>
@@ -242,7 +240,7 @@ function ClaimPtri() {
         attemptingTxn={pendingTx === ClaimType.CLAIM_AND_STAKE}
         hash={depositTxHash}
         content={modalContent}
-        pendingText="Depositing claimed rewards"
+        pendingText="Staking claimed rewards"
       />
 
       <TYPE.mediumHeader marginBottom={15} justifySelf="center">
