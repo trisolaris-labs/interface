@@ -47,14 +47,13 @@ export function usePtriStakeInfo() {
     userClaimableRewardsCallResult.toString()
   )
   const userClaimableRewardsInUsd = virtualPrice?.multiply(userClaimableRewards).toFixed(2)
-  const depositFee = JSBI.BigInt(
-    useSingleCallResult(ptriContract, stakeAmountCall.DEPOSIT_FEE)?.result?.[0] ?? BIG_INT_ZERO
+  const depositFee = new Percent(
+    JSBI.BigInt(useSingleCallResult(ptriContract, stakeAmountCall.DEPOSIT_FEE)?.result?.[0] ?? BIG_INT_ZERO),
+    (1e18).toString()
   )
-  const depositFeePercent = new Percent(depositFee, (1e18).toString())
 
   return {
-    depositFee,
-    depositFeePercent: depositFeePercent.greaterThan(BIG_INT_ZERO) ? depositFeePercent : null,
+    depositFee: depositFee.greaterThan(BIG_INT_ZERO) ? depositFee : null,
     totalStaked,
     totalStakedInUsd,
     userStaked,
