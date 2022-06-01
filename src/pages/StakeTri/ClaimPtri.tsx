@@ -91,7 +91,7 @@ function ClaimPtri() {
 
       const tx = await stakingContractv2?.deposit(poolId, userClaimableRewards.raw.toString(), account)
       setDepositTxHash(tx.hash)
-      return addTransaction(tx, { summary: `Deposited rewards into USDT-USDC-USN Farm` })
+      return addTransaction(tx, { summary: `Deposited rewards into USDT/USDC/USN Farm` })
     } catch (error) {
       if ((error as any)?.code === 4001) {
         throw new Error('Transaction rejected.')
@@ -201,7 +201,7 @@ function ClaimPtri() {
         <StyledModalContainer>
           <Text marginBottom={20}>You can stake your claimed LP tokens to earn the following rewards:</Text>
           <RowBetween>
-            <Text fontSize={14}>Current USDC-USDT-USN Farm APR:</Text>
+            <Text fontSize={14}>Current USDC/USDT/USN Farm APR:</Text>
             <PoolCardTriRewardText apr={apr} inStaging={false} nonTriAPRs={nonTriAPRs} />
           </RowBetween>
 

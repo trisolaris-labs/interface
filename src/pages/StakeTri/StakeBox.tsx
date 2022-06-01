@@ -202,7 +202,7 @@ function StakeBox() {
     return (
       <>
         <TYPE.italic fontSize={14} color={theme.text2} textAlign="left" padding={'12px 0 0 0'}>
-          By staking into pTRI you will get rewards in USDC-USDT-USN tokens, which you can then stake for more revenue.
+          By staking into pTRI you will get rewards in USDC/USDT/USN tokens, which you can then stake for more revenue.
         </TYPE.italic>
         <ButtonPrimary disabled={pendingTx} onClick={() => handleStakeAndUnstake()} fontSize={16} marginTop={20}>
           {isStaking ? 'Confirm Stake' : 'Confirm Unstake'}
