@@ -17,6 +17,7 @@ import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 
 import { LightCard } from '../../components/Card'
 import Popover from '../../components/Popover'
+import { addCommasToNumber } from '../../utils'
 
 export const StyledContainer = styled(AutoColumn)<{ disabled?: boolean }>`
   background: #0e3f69
@@ -93,10 +94,10 @@ function StatsBox() {
           {rewardsInTokens ? (
             <>
               <CurrencyLogo currency={PTRI[ChainId.AURORA]} size="16px" />
-              <StyledStakedAmount>{userStaked.toFixed(2)}</StyledStakedAmount>
+              <StyledStakedAmount>{addCommasToNumber(userStaked.toFixed(2))}</StyledStakedAmount>
             </>
           ) : (
-            <span>${userStakedInUsd}</span>
+            <span>${addCommasToNumber(userStakedInUsd)}</span>
           )}
         </RowFixed>
       </FixedHeightRow>
@@ -106,10 +107,10 @@ function StatsBox() {
           {rewardsInTokens ? (
             <>
               <CurrencyLogo currency={PTRI[ChainId.AURORA]} size="16px" />
-              <StyledStakedAmount>{totalStaked.toFixed(2)}</StyledStakedAmount>
+              <StyledStakedAmount>{addCommasToNumber(totalStaked.toFixed(2))}</StyledStakedAmount>
             </>
           ) : (
-            <span>${totalStakedInUsd}</span>
+            <span>${addCommasToNumber(totalStakedInUsd)}</span>
           )}
         </RowFixed>
       </FixedHeightRow>
@@ -125,10 +126,10 @@ function StatsBox() {
           {rewardsInTokens ? (
             <>
               <MultipleCurrencyLogo currencies={PTRI_REWARDS_TOKEN} size={16} />
-              <StyledStakedAmount>{userClaimableRewards.toFixed(2)}</StyledStakedAmount>
+              <StyledStakedAmount>{addCommasToNumber(userClaimableRewards.toFixed(2))}</StyledStakedAmount>
             </>
           ) : (
-            <span>${userClaimableRewardsInUsd}</span>
+            <span>${addCommasToNumber(userClaimableRewardsInUsd ?? '')}</span>
           )}
         </RowFixed>
       </FixedHeightRow>
