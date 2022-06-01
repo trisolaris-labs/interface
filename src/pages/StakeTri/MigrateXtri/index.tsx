@@ -117,7 +117,7 @@ function MigrateXtri({ closeModal, xTriBalance }: { closeModal: () => void; xTri
         <>
           {(approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING) && (
             <ButtonConfirmed mr="0.5rem" onClick={handleApproval} disabled={pendingTx}>
-              {approvalState === ApprovalState.PENDING ? <Dots>Approving</Dots> : 'Approve Migrating xTRI'}
+              {approvalState === ApprovalState.PENDING ? <Dots>Approving</Dots> : 'Approve xTRI Migration'}
             </ButtonConfirmed>
           )}
           {(approvalState === ApprovalState.APPROVED || approvalState === ApprovalState.UNKNOWN) && (
