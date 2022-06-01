@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useContext } from 'react'
-import { ThemeContext } from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { ChainId, CurrencyAmount, TokenAmount } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
 
@@ -17,7 +17,7 @@ import { ButtonLight, ButtonPrimary } from '../../components/Button'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { Text } from 'rebass'
 import MultipleCurrencyLogo from '../../components/MultipleCurrencyLogo'
-
+import { Info } from 'react-feather'
 import { tryParseAmount } from '../../state/stableswap/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
@@ -33,10 +33,20 @@ import { BIG_INT_ZERO } from '../../constants'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import { DarkGreyCard } from '../../components/Card'
 import { useWalletModalToggle } from '../../state/application/hooks'
+import Popover from '../../components/Popover'
 
 const INPUT_CHAR_LIMIT = 18
 
 const threePool = STABLESWAP_POOLS.USDC_USDT_USN
+
+const IconWrapper = styled.div`
+  ${({ theme }) => theme.flexColumnNoWrap};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.25rem;
+`
 
 function StakeBox() {
   const theme = useContext(ThemeContext)
@@ -44,7 +54,7 @@ function StakeBox() {
   const pTriContract = usePTriContract()
   const addTransaction = useTransactionAdder()
   const { getMaxInputAmount } = useCurrencyInputPanel()
-  const { userClaimableRewards } = usePtriStakeInfo()
+  const { depositFee, depositFeePercent, userClaimableRewards } = usePtriStakeInfo()
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
   const triBalance = useTokenBalance(account ?? undefined, TRI[ChainId.AURORA])
@@ -56,6 +66,9 @@ function StakeBox() {
   const [openModal, setOpenModal] = useState(false)
   const [txHash, setTxHash] = useState<string | undefined>('')
   const [error, setError] = useState<any>(null)
+  const [show, setShow] = useState(false)
+  const open = useCallback(() => setShow(true), [setShow])
+  const close = useCallback(() => setShow(false), [setShow])
 
   const balance = (isStaking ? triBalance : pTriBalance) ?? new TokenAmount(TRI[ChainId.AURORA], '0')
 
@@ -224,6 +237,26 @@ function StakeBox() {
     )
   }
 
+  const depositFeeCaption =
+    isStaking && depositFeePercent != null ? (
+      <Popover
+        content={
+          <TYPE.small>
+            <strong>{depositFeePercent.toSignificant(2)}%</strong> deposit fee is deducted when you deposit your TRI
+            tokens. The deposit fee may be modified at any time.
+          </TYPE.small>
+        }
+        show={show}
+      >
+        <IconWrapper onMouseEnter={open} onMouseLeave={close}>
+          <TYPE.small marginLeft="4px" marginRight="4px">
+            Deposit fee: <strong>{depositFeePercent.toSignificant(2)}%</strong>
+          </TYPE.small>
+          <Info size="10px" />
+        </IconWrapper>
+      </Popover>
+    ) : null
+
   return (
     <div>
       <TransactionConfirmationModal
@@ -239,7 +272,10 @@ function StakeBox() {
           <AutoColumn gap="20px">
             <RowBetween marginBottom={10}>
               <AutoColumn gap="20px" justify="start">
-                <TYPE.mediumHeader>{isStaking ? 'Stake TRI' : 'Unstake pTRI'}</TYPE.mediumHeader>
+                <TYPE.mediumHeader>
+                  {isStaking ? 'Stake TRI' : 'Unstake pTRI'}
+                  {depositFeeCaption}
+                </TYPE.mediumHeader>
               </AutoColumn>
               <AutoColumn gap="20px">
                 <RowBetween>
