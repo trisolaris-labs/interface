@@ -369,9 +369,10 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 17,
     tokens: [WNEAR[ChainId.AURORA], BBT[ChainId.AURORA]],
     lpAddress: '0xadAbA7E2bf88Bd10ACb782302A568294566236dC',
-    rewarderAddress: '0xABE01A6b6922130C982E221681EB4C4aD07A21dA',
+    rewarderAddress: '0x41A7e26a2cC7DaDc5A31fE9DD77c30Aeb029184d',
     allocPoint: 1,
-    inStaging: true
+    inStaging: false,
+    noTriRewards: true
   }),
   // Needed to add the this pool due to some functions and features breaking when jumping from ID 24 to 26.
   // TODO:  Will be replaced by stable farm pool in stable farms PR.
