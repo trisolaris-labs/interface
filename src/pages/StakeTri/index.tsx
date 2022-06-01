@@ -65,7 +65,7 @@ function StakeTri() {
 
   useEffect(() => {
     if (hasXTriBalance && !openModal) {
-      setOpenModal(true)
+      // setOpenModal(true)
     }
   }, [hasXTriBalance])
 
@@ -74,7 +74,7 @@ function StakeTri() {
       <Modal isOpen={openModal} onDismiss={closeModal}>
         {xTriBalance != null && <MigrateXtri closeModal={closeModal} xTriBalance={xTriBalance} />}
       </Modal>
-      {hasXTriBalance && (
+      {hasXTriBalance && false && (
         <HighlightCard>
           <CardSection>
             <AutoColumn gap="md">

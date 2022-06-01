@@ -34,6 +34,7 @@ import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import { DarkGreyCard } from '../../components/Card'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import Popover from '../../components/Popover'
+import _ from 'lodash'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -62,7 +63,8 @@ function StakeBox() {
 
   const [input, _setInput] = useState<string>('')
   const [pendingTx, setPendingTx] = useState(false)
-  const [isStaking, setIsStaking] = useState(true)
+  // const [isStaking, setIsStaking] = useState(true)
+  const [isStaking, setIsStaking] = [false, _.identity]
   const [openModal, setOpenModal] = useState(false)
   const [txHash, setTxHash] = useState<string | undefined>('')
   const [error, setError] = useState<any>(null)
