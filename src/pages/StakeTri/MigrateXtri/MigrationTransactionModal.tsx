@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ChainId, CurrencyAmount, Fraction } from '@trisolaris/sdk'
+import { ChainId, CurrencyAmount, Fraction, JSBI } from '@trisolaris/sdk'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 
@@ -11,6 +11,8 @@ import { AutoColumn } from '../../../components/Column'
 import CurrencyLogo from '../../../components/CurrencyLogo'
 
 import { XTRI, PTRI, TRI } from '../../../constants/tokens'
+import { usePtriStakeInfo } from '../../../hooks/usePtri'
+import { useTriBarStats } from '../../../state/stakeTri/hooks'
 
 type MigrationTransactionModalProps = {
   errorMessage: string | undefined
@@ -18,7 +20,6 @@ type MigrationTransactionModalProps = {
   handleMigrate: () => void
   pendingTx: boolean
   xTriBalance: CurrencyAmount | undefined
-  xTriBalanceInTRI: Fraction
 }
 
 function MigrationTransactionModal({
@@ -26,10 +27,22 @@ function MigrationTransactionModal({
   onDismiss,
   handleMigrate,
   pendingTx,
-  xTriBalance,
-  xTriBalanceInTRI
+  xTriBalance
 }: MigrationTransactionModalProps) {
   const theme = useContext(ThemeContext)
+  const { depositFee } = usePtriStakeInfo()
+  const { xtriToTRIRatio } = useTriBarStats()
+  const xTriBalanceInTRI = xTriBalance?.multiply(xtriToTRIRatio ?? JSBI.BigInt(1))
+
+  const pTRIAmount =
+    depositFee != null && xTriBalanceInTRI != null
+      ? xTriBalanceInTRI.subtract(
+          new Fraction(
+            JSBI.multiply(xTriBalanceInTRI.numerator, depositFee.numerator),
+            JSBI.multiply(xTriBalanceInTRI.denominator, depositFee.denominator)
+          )
+        )
+      : xTriBalanceInTRI
 
   function confirmationHeader() {
     return (
@@ -68,7 +81,7 @@ function MigrationTransactionModal({
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={PTRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
             <Text fontSize={24} fontWeight={500} color={theme.primary1}>
-              {xTriBalanceInTRI?.toFixed(2)}
+              {pTRIAmount?.toFixed(2)}
             </Text>
           </RowFixed>
           <RowFixed gap={'0px'}>
@@ -89,9 +102,16 @@ function MigrationTransactionModal({
       onDismiss={onDismiss}
       topContent={confirmationHeader}
       bottomContent={() => (
-        <ButtonConfirmed onClick={handleMigrate} disabled={pendingTx}>
-          Confirm
-        </ButtonConfirmed>
+        <>
+          {depositFee != null ? (
+            <TYPE.small textAlign="center">
+              A {depositFee.toSignificant(2)}% deposit fee is deducted when you deposit your TRI tokens.
+            </TYPE.small>
+          ) : null}
+          <ButtonConfirmed onClick={handleMigrate} disabled={pendingTx}>
+            Confirm
+          </ButtonConfirmed>
+        </>
       )}
     />
   )
