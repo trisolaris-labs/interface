@@ -14,8 +14,14 @@ type StakeButtonProps = {
   handleStakeAndUnstake: () => void
 }
 
-function StakeButton({ balance, stakingAmount, approvalState, isStaking, pendingTx, handleStakeAndUnstake }: StakeButtonProps) {
-    
+function StakeButton({
+  balance,
+  stakingAmount,
+  approvalState,
+  isStaking,
+  pendingTx,
+  handleStakeAndUnstake
+}: StakeButtonProps) {
   const insufficientFunds = (balance?.equalTo(BIG_INT_ZERO) ?? false) || stakingAmount?.greaterThan(balance)
   if (insufficientFunds && stakingAmount?.greaterThan(BIG_INT_ZERO)) {
     return (
