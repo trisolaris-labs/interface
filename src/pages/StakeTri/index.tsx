@@ -34,23 +34,33 @@ const StyledExternalLink = styled(ExternalLink)`
 `
 
 const StyledTextinfo = styled.div`
-  margin: 20px 0;
+  margin: 20px 0 10px;
 `
 
-const TopContainer = styled(AutoRow)`
+const TopContainer = styled.div`
   align-items: stretch;
   display: flex;
   justify-content: space-between;
   margin: 0;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  flex-direction:column;
+`};
 `
 
 const AboutContainer = styled(AutoColumn)`
   margin-right: 16px;
   flex: 1 40%;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  margin: 0 0 20px;
+  font-size: 14px;
+`};
 `
 
 const StatsBoxContainer = styled(AutoColumn)`
   flex: 1 50%;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  font-size: 14px;
+`};
 `
 
 function StakeTri() {
