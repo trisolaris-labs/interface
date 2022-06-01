@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { ChainId, Token } from '@trisolaris/sdk'
+import { ChainId } from '@trisolaris/sdk'
 
 import { AutoColumn } from '../../components/Column'
 import { FixedHeightRow } from '../../components/PositionCard/PositionCard.styles'
@@ -11,11 +11,12 @@ import Toggle from '../../components/Toggle'
 import { TYPE } from '../../theme'
 
 import { usePtriStakeInfo } from '../../hooks/usePtri'
-
-import { PTRI, TRI } from '../../constants/tokens'
+import { Info } from 'react-feather'
+import { PTRI } from '../../constants/tokens'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 
 import { LightCard } from '../../components/Card'
+import Popover from '../../components/Popover'
 
 export const StyledContainer = styled(AutoColumn)<{ disabled?: boolean }>`
   background: #0e3f69
@@ -34,6 +35,15 @@ const ToggleRow = styled(FixedHeightRow)`
   justify-content: flex-end;
 `
 
+const IconWrapper = styled.div`
+  ${({ theme }) => theme.flexColumnNoWrap};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.25rem;
+`
+
 const PTRI_REWARDS_TOKEN = STABLESWAP_POOLS.USDC_USDT_USN.poolTokens
 
 function StatsBox() {
@@ -46,6 +56,9 @@ function StatsBox() {
     userClaimableRewards,
     userClaimableRewardsInUsd
   } = usePtriStakeInfo()
+  const [show, setShow] = useState(false)
+  const open = useCallback(() => setShow(true), [setShow])
+  const close = useCallback(() => setShow(false), [setShow])
 
   const [rewardsInTokens, setRewardsInTokens] = useState(true)
 
@@ -53,14 +66,25 @@ function StatsBox() {
     <LightCard>
       <FixedHeightRow>
         <RowFixed>
-          <TYPE.largeHeader>APR</TYPE.largeHeader>
+          <Popover
+            content={
+              <>
+                <TYPE.main textAlign="center">
+                  Forecasted annualized return,
+                  <br /> based on the revenue collected over <br /> the previous seven days.
+                </TYPE.main>
+              </>
+            }
+            show={show}
+          >
+            <IconWrapper onMouseEnter={open} onMouseLeave={close}>
+              <TYPE.largeHeader marginRight="4px">APR</TYPE.largeHeader>
+              <Info size="18px" />
+            </IconWrapper>
+          </Popover>
         </RowFixed>
         <RowFixed>
           <TYPE.largeHeader>Coming Soon</TYPE.largeHeader>
-          <TYPE.main>
-            The APR (7D) metric shows an annualized return that is forecasted, based on the revenue collected over the
-            previous seven days.
-          </TYPE.main>
         </RowFixed>
       </FixedHeightRow>
       <FixedHeightRow marginTop="20px">
