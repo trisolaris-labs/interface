@@ -52,7 +52,7 @@ function MigrationTransactionModal({
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={XTRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
             <Text fontSize={24} fontWeight={500}>
-              {xTriBalance?.toSignificant(2)}
+              {xTriBalance?.toSignificant(10)}
             </Text>
           </RowFixed>
           <RowFixed gap={'0px'}>
@@ -66,7 +66,7 @@ function MigrationTransactionModal({
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={TRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
             <Text fontSize={24} fontWeight={500}>
-              {xTriBalanceInTRI?.toSignificant(2)}
+              {xTriBalanceInTRI?.toSignificant(10)}
             </Text>
           </RowFixed>
           <RowFixed gap={'0px'}>
@@ -80,7 +80,7 @@ function MigrationTransactionModal({
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={PTRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
             <Text fontSize={24} fontWeight={500} color={theme.primary1}>
-              {pTRIAmount?.toSignificant(2)}
+              {pTRIAmount?.toSignificant(10)}
             </Text>
           </RowFixed>
           <RowFixed gap={'0px'}>
