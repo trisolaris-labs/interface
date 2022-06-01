@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import { ChainId, CurrencyAmount, TokenAmount } from '@trisolaris/sdk'
+import { ChainId, CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
 
 import StakeInputPanel from '../../components/StakeTri/StakeInputPanel'
@@ -54,7 +54,7 @@ function StakeBox() {
   const pTriContract = usePTriContract()
   const addTransaction = useTransactionAdder()
   const { getMaxInputAmount } = useCurrencyInputPanel()
-  const { depositFee, depositFeePercent, userClaimableRewards } = usePtriStakeInfo()
+  const { depositFee, userClaimableRewards } = usePtriStakeInfo()
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
   const triBalance = useTokenBalance(account ?? undefined, TRI[ChainId.AURORA])
@@ -138,6 +138,17 @@ function StakeBox() {
     setOpenModal(true)
   }
 
+  const amountLessFee =
+    parsedAmount != null && depositFee != null && isStaking
+      ? CurrencyAmount.fromRawAmount(
+          PTRI[ChainId.AURORA],
+          JSBI.subtract(
+            parsedAmount.raw,
+            JSBI.divide(JSBI.multiply(parsedAmount.raw, depositFee.numerator), depositFee.denominator)
+          )
+        )
+      : parsedAmount
+
   function confirmationHeader() {
     return isStaking ? (
       <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
@@ -164,7 +175,7 @@ function StakeBox() {
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={PTRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
             <Text fontSize={24} fontWeight={500} color={theme.primary1}>
-              {parsedAmount?.toFixed(2)}
+              {amountLessFee?.toFixed(2)}
             </Text>
           </RowFixed>
           <RowFixed gap={'0px'}>
@@ -215,8 +226,14 @@ function StakeBox() {
     return (
       <>
         <TYPE.italic fontSize={14} color={theme.text2} textAlign="left" padding={'12px 0 0 0'}>
-          By staking into pTRI you will get rewards in USDC/USDT/USN tokens, which you can then stake for more revenue.
+          By staking in to pTRI, you will get rewards in USDC/USDT/USN LP tokens, which you can redeem for stable coins
+          or stake for more revenue.
         </TYPE.italic>
+        {depositFee != null ? (
+          <TYPE.small>
+            A {depositFee.toSignificant(2)}% deposit fee is deducted when you deposit your TRI tokens.
+          </TYPE.small>
+        ) : null}
         <ButtonPrimary disabled={pendingTx} onClick={() => handleStakeAndUnstake()} fontSize={16} marginTop={20}>
           {isStaking ? 'Confirm Stake' : 'Confirm Unstake'}
         </ButtonPrimary>
@@ -238,19 +255,21 @@ function StakeBox() {
   }
 
   const depositFeeCaption =
-    isStaking && depositFeePercent != null ? (
+    isStaking && depositFee != null ? (
       <Popover
         content={
-          <TYPE.small>
-            <strong>{depositFeePercent.toSignificant(2)}%</strong> deposit fee is deducted when you deposit your TRI
-            tokens. The deposit fee may be modified at any time.
-          </TYPE.small>
+          <>
+            <TYPE.small>
+              A {depositFee.toSignificant(2)}% deposit fee is deducted when you deposit your TRI tokens.
+            </TYPE.small>
+            <TYPE.small>The deposit fee may be modified at any time.</TYPE.small>
+          </>
         }
         show={show}
       >
         <IconWrapper onMouseEnter={open} onMouseLeave={close}>
           <TYPE.small marginLeft="4px" marginRight="4px">
-            Deposit fee: <strong>{depositFeePercent.toSignificant(2)}%</strong>
+            Deposit fee: <strong>{depositFee.toSignificant(2)}%</strong>
           </TYPE.small>
           <Info size="10px" />
         </IconWrapper>
