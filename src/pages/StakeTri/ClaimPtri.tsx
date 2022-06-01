@@ -156,7 +156,7 @@ function ClaimPtri() {
                 </RowFixed>
               </>
             )}
-            {approval !== ApprovalState.APPROVED ? (
+            {approval !== ApprovalState.APPROVED && claimType === ClaimType.CLAIM_AND_STAKE ? (
               <ButtonPrimary
                 disabled={approval === ApprovalState.UNKNOWN}
                 onClick={approveCallback}
