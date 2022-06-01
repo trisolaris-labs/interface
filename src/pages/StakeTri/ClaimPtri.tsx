@@ -25,7 +25,7 @@ import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallbac
 
 import { BIG_INT_ZERO } from '../../constants'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
-import { GreyCard } from '../../components/Card'
+import { DarkGreyCard } from '../../components/Card'
 
 const ButtonsContainer = styled.div`
   margin-top: 20px;
@@ -196,7 +196,7 @@ function ClaimPtri() {
     setOpenModal(false)
   }
   return (
-    <GreyCard>
+    <DarkGreyCard>
       <Modal isOpen={openModal} onDismiss={() => setOpenModal(false)}>
         <StyledModalContainer>
           <Text marginBottom={20}>You can stake your claimed LP tokens to earn the following rewards:</Text>
@@ -264,7 +264,7 @@ function ClaimPtri() {
           <ButtonPrimary disabled>You don&apos;t have rewards to claim. Please check back later.</ButtonPrimary>
         )}
       </ButtonsContainer>
-    </GreyCard>
+    </DarkGreyCard>
   )
 }
 
