@@ -97,16 +97,16 @@ function StakeTri() {
         <AboutContainer>
           <LightCard>
             <TYPE.largeHeader textAlign="center">pTRI</TYPE.largeHeader>
-            <StyledTextinfo>Stake your TRI tokens to receive pTRI 1:1.</StyledTextinfo>
+            <StyledTextinfo>Stake your TRI tokens to receive your share of protocol generated revenue.</StyledTextinfo>
             <StyledTextinfo>
-              pTRI holders receive protocol revenue pro rata in the form of our{' '}
+              A 0.05% fee is deducted from every swap and used to buy{' '}
               <StyledExternalLink
                 target="_blank"
                 href={`https://aurorascan.dev/token/${USD_TLP[ChainId.AURORA].address}`}
               >
                 USD TLP
               </StyledExternalLink>{' '}
-              token. <StyledExternalLink href=""> Learn more ↗</StyledExternalLink>
+              tokens which are distributed to all pTRI holders.
             </StyledTextinfo>
           </LightCard>
         </AboutContainer>
