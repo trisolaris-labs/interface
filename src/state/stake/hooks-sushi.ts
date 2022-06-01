@@ -9,6 +9,7 @@ import { AddressZero } from '@ethersproject/constants'
 import MASTERCHEF_ABI from '../../constants/abis/masterchef.json'
 import MASTERCHEF_V2_ABI from '../../constants/abis/masterchefv2.json'
 import COMPLEX_REWARDER_ABI from '../../constants/abis/complex-rewarder.json'
+import COMPLEX_N_REWARDER_ABI from '../../constants/abis/complex-n-rewarder.json'
 import { ChefVersions } from './stake-constants'
 
 export type AddressMap = { [chainId: number]: string }
@@ -96,6 +97,13 @@ export function useComplexRewarderContract(
   withSignerIfPossible?: boolean
 ): Contract | null {
   return useContract(address, COMPLEX_REWARDER_ABI, withSignerIfPossible)
+}
+
+export function useComplexNRewarderContract(
+  address: string | undefined,
+  withSignerIfPossible?: boolean
+): Contract | null {
+  return useContract(address, COMPLEX_N_REWARDER_ABI, withSignerIfPossible)
 }
 
 export function useChefContract(chef: Chef) {

@@ -70,9 +70,11 @@ export default function useFarmsSortAndFilter({
   const stablePoolsOrderSet = new Set(stablePoolsOrder)
 
   const nonDualRewardPools = farmArrsInOrder.filter(
-    farm => !farm.doubleRewards && !farm.noTriRewards && !stablePoolsOrderSet.has(farm.ID)
+    farm => !farm.hasNonTriRewards && !farm.noTriRewards && !stablePoolsOrderSet.has(farm.ID)
   )
-  const dualRewardPools = farmArrsInOrder.filter(farm => farm.doubleRewards && !stablePoolsOrderSet.has(farm.ID))
+  const dualRewardPools = farmArrsInOrder.filter(
+    farm => farm.hasNonTriRewards && !farm.noTriRewards && !stablePoolsOrderSet.has(farm.ID)
+  )
 
   const stablePoolFarms = farmArrsInOrder.filter(({ ID }) => stablePoolsOrderSet.has(ID))
 
