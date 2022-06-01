@@ -57,6 +57,10 @@ function StatsBox() {
         </RowFixed>
         <RowFixed>
           <TYPE.largeHeader>Coming Soon</TYPE.largeHeader>
+          <TYPE.main>
+            The APR (7D) metric shows an annualized return that is forecasted, based on the revenue collected over the
+            previous seven days.
+          </TYPE.main>
         </RowFixed>
       </FixedHeightRow>
       <FixedHeightRow marginTop="20px">

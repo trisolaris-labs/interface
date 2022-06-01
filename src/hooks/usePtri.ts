@@ -13,6 +13,7 @@ import { useTotalSupply } from '../data/TotalSupply'
 import { useTokenBalance } from '../state/wallet/hooks'
 
 export enum stakeAmountCall {
+  DEPOSIT_FEE = 'depositFeePercent',
   TOTAL_STAKED = 'internalTRIBalance',
   USER_BALANCE = 'balanceOf',
   USER_CLAIMABLE = 'pendingReward'
@@ -46,8 +47,14 @@ export function usePtriStakeInfo() {
     userClaimableRewardsCallResult.toString()
   )
   const userClaimableRewardsInUsd = virtualPrice?.multiply(userClaimableRewards).toFixed(2)
+  const depositFee = JSBI.BigInt(
+    useSingleCallResult(ptriContract, stakeAmountCall.DEPOSIT_FEE)?.result?.[0] ?? BIG_INT_ZERO
+  )
+  const depositFeePercent = new Percent(depositFee, (1e18).toString())
 
   return {
+    depositFee,
+    depositFeePercent: depositFeePercent.greaterThan(BIG_INT_ZERO) ? depositFeePercent : null,
     totalStaked,
     totalStakedInUsd,
     userStaked,
