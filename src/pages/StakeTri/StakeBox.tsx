@@ -86,7 +86,7 @@ function StakeBox() {
         try {
           const tx = await pTriContract?.[call](amount?.raw.toString())
           setTxHash(tx.hash)
-          addTransaction(tx, { summary: `${isStaking ? 'Deposited into' : 'Withdraw'} Ptri` })
+          addTransaction(tx, { summary: `${isStaking ? 'Deposited into' : 'Withdraw'} pTRI` })
           return tx
         } catch (error) {
           if ((error as any)?.code === 4001) {
