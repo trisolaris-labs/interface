@@ -159,7 +159,7 @@ function StakeBox() {
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={TRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
             <Text fontSize={24} fontWeight={500}>
-              {parsedAmount?.toFixed(2)}
+              {parsedAmount?.toSignificant(2)}
             </Text>
           </RowFixed>
           <RowFixed gap={'0px'}>
@@ -175,7 +175,7 @@ function StakeBox() {
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={PTRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
             <Text fontSize={24} fontWeight={500} color={theme.primary1}>
-              {amountLessFee?.toFixed(2)}
+              {amountLessFee?.toSignificant(2)}
             </Text>
           </RowFixed>
           <RowFixed gap={'0px'}>
@@ -195,7 +195,7 @@ function StakeBox() {
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={PTRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
             <Text fontSize={24} fontWeight={500} marginLeft={10}>
-              {parsedAmount?.toFixed(2)}
+              {parsedAmount?.toSignificant(2)}
             </Text>
           </RowFixed>
           <RowFixed gap={'0px'}>
@@ -209,7 +209,7 @@ function StakeBox() {
           <RowFixed gap={'0px'}>
             <MultipleCurrencyLogo currencies={threePool.poolTokens} size={24} separation={14} />
             <Text fontSize={24} fontWeight={500} marginLeft={10}>
-              {userClaimableRewards?.toFixed(2)}
+              {userClaimableRewards?.toSignificant(2)}
             </Text>
           </RowFixed>
           <RowFixed gap={'0px'}>

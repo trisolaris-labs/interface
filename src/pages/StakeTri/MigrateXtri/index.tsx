@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ChainId, TokenAmount } from '@trisolaris/sdk'
+import { ChainId, JSBI, TokenAmount } from '@trisolaris/sdk'
 import { Text } from 'rebass'
 
 import { ButtonConfirmed } from '../../../components/Button'
@@ -12,10 +12,12 @@ import MigrationTransactionModal from './MigrationTransactionModal'
 
 import { useApproveCallback } from '../../../hooks/useApproveCallback'
 import { useMigrateCallback } from '../../../hooks/useMigrateCallback'
+import { useTriBarStats } from '../../../state/stakeTri/hooks'
 
 import { ApprovalState } from '../../../hooks/useApproveCallback'
 import { PTRI } from '../../../constants/tokens'
 import { BIG_INT_ZERO } from '../../../constants'
+import { usePtriStakeInfo } from '../../../hooks/usePtri'
 
 enum MIGRATION_STATUS {
   NOT_MIGRATED,
@@ -24,6 +26,10 @@ enum MIGRATION_STATUS {
 }
 
 function MigrateXtri({ closeModal, xTriBalance }: { closeModal: () => void; xTriBalance: TokenAmount }) {
+  const { depositFee } = usePtriStakeInfo()
+  const { xtriToTRIRatio } = useTriBarStats()
+  const xTriBalanceInTRI = xTriBalance?.multiply(xtriToTRIRatio ?? JSBI.BigInt(1))
+
   const hasXTriBalance = xTriBalance?.greaterThan(BIG_INT_ZERO)
 
   const [approvalState, handleApproval] = useApproveCallback(
@@ -69,11 +75,13 @@ function MigrateXtri({ closeModal, xTriBalance }: { closeModal: () => void; xTri
   function modalContent() {
     return (
       <MigrationTransactionModal
+        depositFee={depositFee}
         errorMessage={error?.message}
         onDismiss={onDismiss}
         handleMigrate={handleMigrate}
         pendingTx={pendingTx}
         xTriBalance={xTriBalance}
+        xTriBalanceInTRI={xTriBalanceInTRI}
       />
     )
   }

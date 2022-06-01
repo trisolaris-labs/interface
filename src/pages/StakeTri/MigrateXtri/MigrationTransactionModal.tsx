@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ChainId, CurrencyAmount, Fraction, JSBI } from '@trisolaris/sdk'
+import { ChainId, CurrencyAmount, Fraction, JSBI, Percent } from '@trisolaris/sdk'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 
@@ -11,28 +11,27 @@ import { AutoColumn } from '../../../components/Column'
 import CurrencyLogo from '../../../components/CurrencyLogo'
 
 import { XTRI, PTRI, TRI } from '../../../constants/tokens'
-import { usePtriStakeInfo } from '../../../hooks/usePtri'
-import { useTriBarStats } from '../../../state/stakeTri/hooks'
 
 type MigrationTransactionModalProps = {
+  depositFee: Percent | null
   errorMessage: string | undefined
   onDismiss: () => void
   handleMigrate: () => void
   pendingTx: boolean
   xTriBalance: CurrencyAmount | undefined
+  xTriBalanceInTRI: Fraction
 }
 
 function MigrationTransactionModal({
+  depositFee,
   errorMessage,
   onDismiss,
   handleMigrate,
   pendingTx,
-  xTriBalance
+  xTriBalance,
+  xTriBalanceInTRI
 }: MigrationTransactionModalProps) {
   const theme = useContext(ThemeContext)
-  const { depositFee } = usePtriStakeInfo()
-  const { xtriToTRIRatio } = useTriBarStats()
-  const xTriBalanceInTRI = xTriBalance?.multiply(xtriToTRIRatio ?? JSBI.BigInt(1))
 
   const pTRIAmount =
     depositFee != null && xTriBalanceInTRI != null
@@ -53,7 +52,7 @@ function MigrationTransactionModal({
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={XTRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
             <Text fontSize={24} fontWeight={500}>
-              {xTriBalance?.toFixed(2)}
+              {xTriBalance?.toSignificant(2)}
             </Text>
           </RowFixed>
           <RowFixed gap={'0px'}>
@@ -67,7 +66,7 @@ function MigrationTransactionModal({
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={TRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
             <Text fontSize={24} fontWeight={500}>
-              {xTriBalanceInTRI?.toFixed(2)}
+              {xTriBalanceInTRI?.toSignificant(2)}
             </Text>
           </RowFixed>
           <RowFixed gap={'0px'}>
@@ -81,7 +80,7 @@ function MigrationTransactionModal({
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={PTRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
             <Text fontSize={24} fontWeight={500} color={theme.primary1}>
-              {pTRIAmount?.toFixed(2)}
+              {pTRIAmount?.toSignificant(2)}
             </Text>
           </RowFixed>
           <RowFixed gap={'0px'}>
