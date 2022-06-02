@@ -190,7 +190,6 @@ function StakeBox() {
         <TYPE.mediumHeader fontWeight={500} justifySelf="center">
           Withdrawing
         </TYPE.mediumHeader>
-        <TYPE.mediumHeader fontWeight={500}>Deposits in pTRI</TYPE.mediumHeader>
         <RowBetween align="flex-end">
           <RowFixed gap={'0px'}>
             <CurrencyLogo currency={PTRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
@@ -204,13 +203,35 @@ function StakeBox() {
             </Text>
           </RowFixed>
         </RowBetween>
-        <TYPE.mediumHeader fontWeight={500}>Unclaimed rewards</TYPE.mediumHeader>
+        <RowFixed marginTop={25}>
+          <TYPE.mediumHeader fontWeight={500}>You will receive:</TYPE.mediumHeader>
+        </RowFixed>
         <RowBetween align="flex-end">
           <RowFixed gap={'0px'}>
-            <MultipleCurrencyLogo currencies={threePool.poolTokens} size={24} separation={14} />
+            <CurrencyLogo currency={TRI[ChainId.AURORA]} size={'24px'} style={{ marginRight: '12px' }} />
             <Text fontSize={24} fontWeight={500} marginLeft={10}>
-              {userClaimableRewards?.toSignificant(10)}
+              {parsedAmount?.toSignificant(10)}
             </Text>
+          </RowFixed>
+          <RowFixed gap={'0px'}>
+            <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+              {TRI[ChainId.AURORA].symbol}
+            </Text>
+          </RowFixed>
+        </RowBetween>
+        <RowBetween align="flex-start" marginTop={10}>
+          <RowFixed gap={'0px'}>
+            <AutoColumn>
+              <RowFixed>
+                <MultipleCurrencyLogo currencies={threePool.poolTokens} size={24} separation={14} />
+                <Text fontSize={24} fontWeight={500} marginLeft={10}>
+                  {userClaimableRewards?.toSignificant(10)}
+                </Text>
+              </RowFixed>
+              <TYPE.italic fontSize={13} color={theme.text2} textAlign="left">
+                (From unclaimed rewards)
+              </TYPE.italic>
+            </AutoColumn>
           </RowFixed>
           <RowFixed gap={'0px'}>
             <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
@@ -225,16 +246,20 @@ function StakeBox() {
   function confirmationBottom() {
     return (
       <>
-        <TYPE.italic fontSize={14} color={theme.text2} textAlign="left" padding={'12px 0 0 0'}>
-          By staking in to pTRI, you will get rewards in USDC/USDT/USN LP tokens, which you can redeem for stable coins
-          or stake for more revenue.
-        </TYPE.italic>
-        {depositFee != null ? (
-          <TYPE.small>
-            A {depositFee.toSignificant(2)}% deposit fee is deducted when you deposit your TRI tokens.
-          </TYPE.small>
-        ) : null}
-        <ButtonPrimary disabled={pendingTx} onClick={() => handleStakeAndUnstake()} fontSize={16} marginTop={20}>
+        {isStaking && (
+          <div style={{marginBottom: "20px"}}>
+            <TYPE.italic fontSize={14} color={theme.text2} textAlign="left" padding={'12px 0 0 0'}>
+              By staking in to pTRI, you will get rewards in USDC/USDT/USN LP tokens, which you can redeem for stable
+              coins or stake for more revenue.
+            </TYPE.italic>
+            {depositFee != null ? (
+              <TYPE.small>
+                A {depositFee.toSignificant(2)}% deposit fee is deducted when you deposit your TRI tokens.
+              </TYPE.small>
+            ) : null}
+          </div>
+        )}
+        <ButtonPrimary disabled={pendingTx} onClick={() => handleStakeAndUnstake()} fontSize={16}>
           {isStaking ? 'Confirm Stake' : 'Confirm Unstake'}
         </ButtonPrimary>
       </>
