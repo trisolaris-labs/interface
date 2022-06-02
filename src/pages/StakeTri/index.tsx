@@ -6,7 +6,7 @@ import { PageWrapper } from '../../components/Page'
 import StakeBox from './StakeBox'
 import ClaimPtri from './ClaimPtri'
 import StatsBox from './StatsBox'
-import { ExternalLink, TYPE } from '../../theme'
+import { TYPE } from '../../theme'
 import MigrateXtri from './MigrateXtri'
 import Modal from '../../components/Modal'
 import { ButtonConfirmed } from '../../components/Button'
@@ -14,28 +14,13 @@ import { ButtonConfirmed } from '../../components/Button'
 import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 
-import { USD_TLP, XTRI } from '../../constants/tokens'
+import { XTRI } from '../../constants/tokens'
 import { BIG_INT_ZERO } from '../../constants'
-import { LightCard } from '../../components/Card'
-import { AutoRow, RowBetween } from '../../components/Row'
+import { RowBetween } from '../../components/Row'
 import { AutoColumn } from '../../components/Column'
 import { CardSection, HighlightCard } from '../../components/earn/styled'
 import { LargeHeaderWhite } from './StakeTriV1'
-import _ from 'lodash'
-
-const StyledExternalLink = styled(ExternalLink)`
-  font-weight: 600;
-  color: ${({ theme }) => theme.primaryText1};
-  margin: 2px 0 10px;
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
-`
-
-const StyledTextinfo = styled.div`
-  margin: 20px 0 10px;
-`
+import AboutContainer from './AboutContainer'
 
 const TopContainer = styled.div`
   align-items: stretch;
@@ -44,15 +29,6 @@ const TopContainer = styled.div`
   margin: 0;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
   flex-direction:column;
-`};
-`
-
-const AboutContainer = styled(AutoColumn)`
-  margin-right: 16px;
-  flex: 1 40%;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  margin: 0 0 20px;
-  font-size: 14px;
 `};
 `
 
@@ -106,28 +82,7 @@ function StakeTri() {
         </HighlightCard>
       )}
       <TopContainer>
-        <AboutContainer>
-          <LightCard>
-            <TYPE.largeHeader textAlign="center">pTRI</TYPE.largeHeader>
-            <StyledTextinfo>Stake your TRI tokens to receive your share of protocol generated revenue.</StyledTextinfo>
-            <StyledTextinfo>
-              A 0.05% fee is deducted from every swap and used to buy{' '}
-              <StyledExternalLink
-                target="_blank"
-                href={`https://aurorascan.dev/token/${USD_TLP[ChainId.AURORA].address}`}
-              >
-                USD TLP
-              </StyledExternalLink>{' '}
-              tokens which are distributed to all pTRI holders.
-            </StyledTextinfo>
-            <StyledExternalLink
-              href="https://medium.com/trisolaris-labs/ptri-the-first-step-of-trinomics-revamp-e4c7045e37b7"
-              target="_blank"
-            >
-              Learn more ↗
-            </StyledExternalLink>
-          </LightCard>
-        </AboutContainer>
+        <AboutContainer />
         <StatsBoxContainer>
           <StatsBox />
         </StatsBoxContainer>
