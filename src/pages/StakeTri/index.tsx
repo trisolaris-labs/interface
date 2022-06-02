@@ -77,6 +77,8 @@ function StakeTri() {
     if (hasXTriBalance && !openModal) {
       setOpenModal(true)
     }
+    // Should only track hasXTriBalance, otherwise modal will continually pop up
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasXTriBalance])
 
   return (
@@ -118,6 +120,12 @@ function StakeTri() {
               </StyledExternalLink>{' '}
               tokens which are distributed to all pTRI holders.
             </StyledTextinfo>
+            <StyledExternalLink
+              href="https://medium.com/trisolaris-labs/ptri-the-first-step-of-trinomics-revamp-e4c7045e37b7"
+              target="_blank"
+            >
+              Learn more ↗
+            </StyledExternalLink>
           </LightCard>
         </AboutContainer>
         <StatsBoxContainer>
