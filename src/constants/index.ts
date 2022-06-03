@@ -17,7 +17,8 @@ import {
   TRIPOLAR,
   PLY,
   ETHERNAL,
-  WBTC
+  WBTC,
+  ORBITAL
 } from './tokens'
 
 export const GAS_PRICE = 250
@@ -244,14 +245,16 @@ export const TOKEN_WARNING_MODAL_ALLOWLIST = new Set(
     SPOLAR[ChainId.AURORA],
     LUNAR[ChainId.AURORA],
     TRIPOLAR[ChainId.AURORA],
-    ETHERNAL[ChainId.AURORA]
+    ETHERNAL[ChainId.AURORA],
+    ORBITAL[ChainId.AURORA]
   ].map(({ address }) => address.toLowerCase())
 )
 
 export const CUSTOM_TOKEN_MAX_HOPS = {
   [TRIPOLAR[ChainId.AURORA].address]: 4,
   [XTRI[ChainId.AURORA].address]: 4,
-  [LUNAR[ChainId.AURORA].address]: 4
+  [LUNAR[ChainId.AURORA].address]: 4,
+  [ORBITAL[ChainId.AURORA].address]: 4
 }
 
 export const PRICE_IMPACT_NEGLIGIBLE_THRESHOLD = new Percent('1', '10000')
