@@ -16,7 +16,8 @@ import {
   USDC,
   TRIPOLAR,
   PLY,
-  ETHERNAL
+  ETHERNAL,
+  WBTC
 } from './tokens'
 
 export const GAS_PRICE = 250
@@ -60,7 +61,8 @@ const COMMON_BASES: ChainTokenList = {
     WNEAR[ChainId.AURORA],
     STNEAR[ChainId.AURORA],
     PLY[ChainId.AURORA],
-    AURORA[ChainId.AURORA]
+    AURORA[ChainId.AURORA],
+    WBTC[ChainId.AURORA]
   ]
 }
 
