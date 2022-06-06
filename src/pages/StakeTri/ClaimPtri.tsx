@@ -244,7 +244,7 @@ function ClaimPtri() {
       />
 
       <TYPE.mediumHeader marginBottom={15} justifySelf="center">
-        Claim Protocol Revenue
+        Claim Protocol Rewards
       </TYPE.mediumHeader>
       <ButtonsContainer>
         {hasClaimableRewards ? (
