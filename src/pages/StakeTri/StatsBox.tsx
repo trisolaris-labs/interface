@@ -132,7 +132,7 @@ function StatsBox() {
             {rewardsInTokens ? (
               <>
                 <MultipleCurrencyLogo currencies={PTRI_REWARDS_TOKEN} size={16} />
-                <StyledStakedAmount>{addCommasToNumber(userClaimableRewards.toFixed(2))}</StyledStakedAmount>
+                <StyledStakedAmount>{addCommasToNumber(userClaimableRewards.toSignificant(3))}</StyledStakedAmount>
               </>
             ) : (
               <span>${addCommasToNumber(userClaimableRewardsInUsd ?? '')}</span>

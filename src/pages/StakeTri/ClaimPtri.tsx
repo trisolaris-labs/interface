@@ -120,7 +120,7 @@ function ClaimPtri() {
       <AutoColumn justify="center" gap="md">
         <RowFixed marginTop={20}>
           <TYPE.body fontWeight={600} fontSize={36} marginRight={15}>
-            {userClaimableRewards?.toFixed(2)}
+            {userClaimableRewards?.toSignificant(3)}
           </TYPE.body>
           <MultipleCurrencyLogo currencies={threePool.poolTokens} size={24} separation={14} />
         </RowFixed>

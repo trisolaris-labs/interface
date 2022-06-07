@@ -46,7 +46,7 @@ export function usePtriStakeInfo() {
     STABLESWAP_POOLS.USDC_USDT_USN.lpToken,
     userClaimableRewardsCallResult.toString()
   )
-  const userClaimableRewardsInUsd = virtualPrice?.multiply(userClaimableRewards).toFixed(2)
+  const userClaimableRewardsInUsd = virtualPrice?.multiply(userClaimableRewards).toSignificant(3)
   const depositFee = new Percent(
     JSBI.BigInt(useSingleCallResult(ptriContract, stakeAmountCall.DEPOSIT_FEE)?.result?.[0] ?? BIG_INT_ZERO),
     (1e18).toString()
