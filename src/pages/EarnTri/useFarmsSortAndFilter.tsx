@@ -28,28 +28,38 @@ type FarmsSortAndFilterResult = {
 }
 
 type Props = {
-  poolsOrder: number[]
+  dualRewardsPoolsOrder: number[]
+  triOnlyPoolsOrder: number[]
+  ecosystemPoolsOrder: number[]
   legacyPoolsOrder: number[]
   stablePoolsOrder: number[]
 }
 
 export default function useFarmsSortAndFilter({
-  poolsOrder,
+  dualRewardsPoolsOrder,
+  triOnlyPoolsOrder,
+  ecosystemPoolsOrder,
   legacyPoolsOrder,
   stablePoolsOrder
 }: Props): FarmsSortAndFilterResult {
   const allFarmArrs = useFarms()
   const activeFarmsFilter = useIsFilterActiveFarms()
-  const allPools = poolsOrder.concat(stablePoolsOrder)
+  const allPools = dualRewardsPoolsOrder.concat(triOnlyPoolsOrder, ecosystemPoolsOrder, stablePoolsOrder)
 
   const [sortBy, setSortBy] = useState<SortingType>(SortingType.default)
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [isSortDescending, setIsSortDescending] = useState<boolean>(true)
 
+  const dualRewardsPoolsOrderSet = new Set(dualRewardsPoolsOrder)
+  const triOnlyPoolsOrderSet = new Set(triOnlyPoolsOrder)
+  const ecosystemPoolsOrderSet = new Set(ecosystemPoolsOrder)
+  const legacyPoolsOrderSet = new Set(legacyPoolsOrder)
+  const stablePoolsOrderSet = new Set(stablePoolsOrder)
+
   const farmArrs = useMemo(
     () =>
       allFarmArrs
-        .filter(farm => !legacyPoolsOrder.includes(farm.ID)) // Ignore legacy pools in sorting/filtering
+        .filter(farm => !legacyPoolsOrderSet.has(farm.ID)) // Ignore legacy pools in sorting/filtering
         .filter(farm => allPools.includes(farm.ID)), // Ignore pools that are not in the rendering list
     [allFarmArrs, legacyPoolsOrder, allPools]
   )
@@ -67,24 +77,18 @@ export default function useFarmsSortAndFilter({
         )
     }
   }, [allFarmArrs, farmArrs, isSortDescending, allPools, sortBy])
-  const stablePoolsOrderSet = new Set(stablePoolsOrder)
 
-  // @TODO: Remove hotfix when fix is done.
-  const nonDualRewardPools = farmArrsInOrder.filter(
-    farm => (!farm.hasNonTriRewards && !farm.noTriRewards && !stablePoolsOrderSet.has(farm.ID)) || farm.ID === 37
-  )
-  // @TODO: Remove hotfix when fix is done.
-  const dualRewardPools = farmArrsInOrder.filter(
-    farm => (farm.hasNonTriRewards && !farm.noTriRewards && !stablePoolsOrderSet.has(farm.ID)) || farm.ID === 38
-  )
+  const nonDualRewardPools = farmArrsInOrder.filter(farm => triOnlyPoolsOrderSet.has(farm.ID))
+
+  const dualRewardPools = farmArrsInOrder.filter(farm => dualRewardsPoolsOrderSet.has(farm.ID))
 
   const stablePoolFarms = farmArrsInOrder.filter(({ ID }) => stablePoolsOrderSet.has(ID))
 
   const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(nonDualRewardPools)
 
+  const nonTriFarms = farmArrsInOrder.filter(farm => ecosystemPoolsOrderSet.has(farm.ID))
+
   const legacyFarms = allFarmArrs.filter(farm => legacyPoolsOrder.includes(farm.ID))
-  // @TODO: Remove hotfix when fix is done.
-  const nonTriFarms = farmArrsInOrder.filter(farm => farm.noTriRewards && farm.ID !== 37 && farm.ID !== 38)
 
   function handleInput(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
     const input = event.target.value.toUpperCase()
