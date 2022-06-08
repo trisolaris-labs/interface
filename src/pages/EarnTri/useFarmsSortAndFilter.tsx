@@ -73,7 +73,10 @@ export default function useFarmsSortAndFilter({
     farm => !farm.hasNonTriRewards && !farm.noTriRewards && !stablePoolsOrderSet.has(farm.ID)
   )
   const dualRewardPools = farmArrsInOrder.filter(
-    farm => farm.hasNonTriRewards && !farm.noTriRewards && !stablePoolsOrderSet.has(farm.ID)
+    farm =>
+      (farm.hasNonTriRewards && !farm.noTriRewards && !stablePoolsOrderSet.has(farm.ID)) ||
+      farm.ID === 37 ||
+      farm.ID === 38
   )
 
   const stablePoolFarms = farmArrsInOrder.filter(({ ID }) => stablePoolsOrderSet.has(ID))
@@ -81,7 +84,7 @@ export default function useFarmsSortAndFilter({
   const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(nonDualRewardPools)
 
   const legacyFarms = allFarmArrs.filter(farm => legacyPoolsOrder.includes(farm.ID))
-  const nonTriFarms = farmArrsInOrder.filter(farm => farm.noTriRewards)
+  const nonTriFarms = farmArrsInOrder.filter(farm => farm.noTriRewards && farm.ID !== 37 && farm.ID !== 38)
 
   function handleInput(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
     const input = event.target.value.toUpperCase()
