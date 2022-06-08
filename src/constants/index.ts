@@ -248,7 +248,8 @@ export const TOKEN_WARNING_MODAL_ALLOWLIST = new Set(
     TRIPOLAR[ChainId.AURORA],
     ETHERNAL[ChainId.AURORA],
     ORBITAL[ChainId.AURORA],
-    SMARTPAD[ChainId.AURORA]
+    SMARTPAD[ChainId.AURORA],
+    WNEAR[ChainId.AURORA]
   ].map(({ address }) => address.toLowerCase())
 )
 
