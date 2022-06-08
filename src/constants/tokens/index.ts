@@ -156,6 +156,13 @@ export const LUNAR: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x25e801Eb75859Ba4052C4ac4233ceC0264eaDF8c', 18, 'LUNAR', 'Lunar'),
 }
 
+export const ORBITAL: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'ORBITAL', 'ORBITAL'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'ORBITAL', 'ORBITAL'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'ORBITAL', 'ORBITAL'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x3AC55eA8D2082fAbda674270cD2367dA96092889', 18, 'ORBITAL', 'ORBITAL'),
+}
+
 export const AUSDO: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 8, 'aUSDO', 'aUSDO'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 8, 'aUSDO', 'aUSDO'),
@@ -639,6 +646,13 @@ export const ETHERNAL: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x17cbd9C274e90C537790C51b4015a65cD015497e', 18, 'ETHERNAL', 'ETHERNAL'),
 }
 
+export const BRRR: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'BRRR', 'BRRR'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'BRRR', 'BRRR'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BRRR', 'BRRR'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0240aE04c9F47B91Cf47Ca2E7ef44c9De0D385Ac', 18, 'BRRR', 'BRRR'),
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),
@@ -653,9 +667,9 @@ export const PTRI: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0xe559092D2e80d9B1d91a641CE25bACC3cFdCF689', 18, 'pTRI', 'pTRI Token'),
 }
 
-export const ORBITAL: { [chainId in ChainId]: Token } = {
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'ORBITAL', 'ORBITAL'),
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'ORBITAL', 'ORBITAL'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'ORBITAL', 'ORBITAL'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x3AC55eA8D2082fAbda674270cD2367dA96092889', 18, 'ORBITAL', 'ORBITAL'),
+export const SMARTPAD: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'SmartPad token'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'SmartPad token'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'SmartPad token'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x34F291934b88c7870B7A17835B926B264fc13a81', 18, 'PAD', 'SmartPad token'),
 }
