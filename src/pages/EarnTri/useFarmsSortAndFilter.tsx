@@ -72,6 +72,7 @@ export default function useFarmsSortAndFilter({
   const nonDualRewardPools = farmArrsInOrder.filter(
     farm => !farm.hasNonTriRewards && !farm.noTriRewards && !stablePoolsOrderSet.has(farm.ID)
   )
+  // @TODO: Remove hotfix when fix is done.
   const dualRewardPools = farmArrsInOrder.filter(
     farm =>
       (farm.hasNonTriRewards && !farm.noTriRewards && !stablePoolsOrderSet.has(farm.ID)) ||
@@ -84,6 +85,7 @@ export default function useFarmsSortAndFilter({
   const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(nonDualRewardPools)
 
   const legacyFarms = allFarmArrs.filter(farm => legacyPoolsOrder.includes(farm.ID))
+    // @TODO: Remove hotfix when fix is done.
   const nonTriFarms = farmArrsInOrder.filter(farm => farm.noTriRewards && farm.ID !== 37 && farm.ID !== 38)
 
   function handleInput(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
