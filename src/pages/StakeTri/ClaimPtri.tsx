@@ -37,6 +37,22 @@ const StyledModalContainer = styled(AutoColumn)`
   width: 100%;
 `
 
+const ButtonTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 14px;
+  `};
+`
+
+const ButtonRewardsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 3px;
+`
+
 enum ClaimType {
   CLAIM,
   CLAIM_AND_STAKE
@@ -49,7 +65,7 @@ function ClaimPtri() {
   const pTriContract = usePTriContract()
   const addTransaction = useTransactionAdder()
   const stakingContractv2 = useMasterChefV2Contract()
-  const { userClaimableRewards } = usePtriStakeInfo()
+  const { userClaimableRewards, userClaimableRewardsInUsd } = usePtriStakeInfo()
   const { apr, nonTriAPRs, poolId, stakingRewardAddress } = useFarms().filter(farm => farm.ID === 35)[0]
   const [approval, approveCallback] = useApproveCallback(userClaimableRewards, stakingRewardAddress)
 
@@ -96,8 +112,8 @@ function ClaimPtri() {
       if ((error as any)?.code === 4001) {
         throw new Error('Transaction rejected.')
       } else {
-        console.error(`Claim and Stake failed`, error, 'Claim and Stake')
-        throw new Error(`Claim and Stake failed: ${(error as any).message}`)
+        console.error(`Claim and Compound failed`, error, 'Claim and Compound')
+        throw new Error(`Claim and Compound failed: ${(error as any).message}`)
       }
     }
   }, [account, addTransaction, claim, poolId, stakingContractv2, userClaimableRewards.raw])
@@ -134,7 +150,7 @@ function ClaimPtri() {
       <TransactionErrorContent onDismiss={onDismiss} message={error.message} />
     ) : (
       <ConfirmationModalContent
-        title={claimType === ClaimType.CLAIM ? 'Claiming rewards' : 'Claiming and Staking rewards'}
+        title={claimType === ClaimType.CLAIM ? 'Claiming rewards' : 'Claiming and Compounding rewards'}
         onDismiss={onDismiss}
         topContent={confirmationHeader}
         bottomContent={() => (
@@ -173,7 +189,7 @@ function ClaimPtri() {
               </ButtonPrimary>
             ) : (
               <ButtonPrimary disabled={!!pendingTx} onClick={() => handleClaim()} fontSize={16} marginTop={20}>
-                {claimType === ClaimType.CLAIM_AND_STAKE ? 'Claim and Stake' : 'Claim'}
+                {claimType === ClaimType.CLAIM_AND_STAKE ? 'Claim and Compound' : 'Claim'}
               </ButtonPrimary>
             )}
           </AutoColumn>
@@ -199,7 +215,7 @@ function ClaimPtri() {
     <DarkGreyCard>
       <Modal isOpen={openModal} onDismiss={() => setOpenModal(false)}>
         <StyledModalContainer>
-          <Text marginBottom={20}>You can stake your claimed LP tokens to earn the following rewards:</Text>
+          <Text marginBottom={20}>You can compound your claimed LP tokens to earn the following rewards:</Text>
           <RowBetween>
             <Text fontSize={14}>Current USDC/USDT/USN Farm APR:</Text>
             <PoolCardTriRewardText apr={apr} inStaging={false} nonTriAPRs={nonTriAPRs} />
@@ -209,15 +225,15 @@ function ClaimPtri() {
             <ButtonPrimary
               disabled={!hasClaimableRewards || !!pendingTx}
               onClick={() => onClaim(ClaimType.CLAIM_AND_STAKE)}
-              marginRight={20}
-              fontSize={14}
+              marginRight={10}
+              fontSize={13}
             >
-              {pendingTx === ClaimType.CLAIM_AND_STAKE ? <Dots>Claiming and Staking</Dots> : 'Claim and Stake'}
+              {pendingTx === ClaimType.CLAIM_AND_STAKE ? <Dots>Claiming and Compounding</Dots> : 'Claim and Compound'}
             </ButtonPrimary>
             <ButtonPrimary
               disabled={!hasClaimableRewards || !!pendingTx}
               onClick={() => onClaim(ClaimType.CLAIM)}
-              fontSize={14}
+              fontSize={13}
             >
               {pendingTx === ClaimType.CLAIM ? <Dots>Claiming</Dots> : 'Claim'}
             </ButtonPrimary>
@@ -254,10 +270,28 @@ function ClaimPtri() {
               onClick={() => onClaim(ClaimType.CLAIM_AND_STAKE)}
               marginRight={20}
             >
-              {pendingTx === ClaimType.CLAIM_AND_STAKE ? <Dots>Claiming</Dots> : 'Claim and Stake'}
+              <ButtonTextContainer>
+                <div>{pendingTx === ClaimType.CLAIM_AND_STAKE ? <Dots>Claiming</Dots> : 'Claim and Compound '}</div>
+                <div>
+                  {Number(userClaimableRewardsInUsd) > 0.01 && (
+                    <ButtonRewardsContainer>
+                      {userClaimableRewards.toFixed(2)}
+                      <MultipleCurrencyLogo currencies={threePool.poolTokens} size={16} />
+                    </ButtonRewardsContainer>
+                  )}
+                </div>
+              </ButtonTextContainer>
             </ButtonLight>
             <ButtonLight disabled={!hasClaimableRewards} onClick={() => setOpenModal(true)}>
-              Claim
+              <ButtonTextContainer>
+                Claim{' '}
+                {Number(userClaimableRewardsInUsd) > 0.01 && (
+                  <ButtonRewardsContainer>
+                    {userClaimableRewards.toFixed(2)}
+                    <MultipleCurrencyLogo currencies={threePool.poolTokens} size={16} />
+                  </ButtonRewardsContainer>
+                )}
+              </ButtonTextContainer>
             </ButtonLight>
           </>
         ) : (
