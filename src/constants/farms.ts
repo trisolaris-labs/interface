@@ -1,6 +1,6 @@
-export const DUAL_REWARDS_POOLS = [32, 33, 31, 8, 30, 7, 15, 19, 23, 27, 28, 29, 38]
+export const DUAL_REWARDS_POOLS = [32, 33, 31, 8, 30, 7, 15, 19, 23, 27, 28, 29, 38, 37]
 
-export const TRI_ONLY_REWARDS_POOLS = [5, 11, 0, 3, 4, 26, 37]
+export const TRI_ONLY_REWARDS_POOLS = [5, 11, 0, 3, 4, 26]
 
 export const ECOSYSTEM_POOLS = [20, 24, 34, 36]
 
