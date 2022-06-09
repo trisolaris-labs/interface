@@ -40,6 +40,8 @@ export default function Pool() {
           <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_USN} />
           <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT} />
           <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_UST_FRAX_USN} />
+          <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_NEW} />
+          <FullStablePositionCard poolName={StableSwapPoolName.NUSD_USDC_USDT} />
         </AutoColumn>
       </AutoColumn>
     </PageWrapper>

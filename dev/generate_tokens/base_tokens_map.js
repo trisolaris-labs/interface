@@ -100,6 +100,21 @@ module.exports = {
     [ChainId.AURORA]: new Token(ChainId.AURORA, '0xe559092D2e80d9B1d91a641CE25bACC3cFdCF689', 18, 'pTRI', 'pTRI Token')
   },
   SMARTPAD: {
-    [ChainId.AURORA]: new Token(ChainId.AURORA, '0x34F291934b88c7870B7A17835B926B264fc13a81', 18, 'PAD', 'SmartPad token')
+    [ChainId.AURORA]: new Token(
+      ChainId.AURORA,
+      '0x34F291934b88c7870B7A17835B926B264fc13a81',
+      18,
+      'PAD',
+      'SmartPad token'
+    )
+  },
+  NUSD: {
+    [ChainId.AURORA]: new Token(
+      ChainId.AURORA,
+      '0x07379565cD8B0CaE7c60Dc78e7f601b34AF2A21c',
+      18,
+      'nUSD',
+      'nUSD'
+    )
   }
 }
