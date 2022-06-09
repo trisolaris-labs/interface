@@ -8,14 +8,6 @@ import { PoolSection, DataRow } from './EarnTri.styles'
 import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter/EarnTriSortAndFilterContainer'
 import useFarmsSortAndFilter from './useFarmsSortAndFilter'
 
-import {
-  DUAL_REWARDS_POOLS,
-  TRI_ONLY_REWARDS_POOLS,
-  ECOSYSTEM_POOLS,
-  STABLE_POOLS,
-  LEGACY_POOLS
-} from '../../constants/farms'
-
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
 export default function EarnTri() {
@@ -31,13 +23,7 @@ export default function EarnTri() {
     onInputChange,
     isSortDescending,
     sortBy
-  } = useFarmsSortAndFilter({
-    dualRewardsPoolsOrder: DUAL_REWARDS_POOLS,
-    triOnlyPoolsOrder: TRI_ONLY_REWARDS_POOLS,
-    ecosystemPoolsOrder: ECOSYSTEM_POOLS,
-    legacyPoolsOrder: LEGACY_POOLS,
-    stablePoolsOrder: STABLE_POOLS
-  })
+  } = useFarmsSortAndFilter()
 
   return (
     <>
