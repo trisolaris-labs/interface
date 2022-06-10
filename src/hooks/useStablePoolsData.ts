@@ -33,6 +33,7 @@ export interface StablePoolDataType {
   swapFee: Percent
   tokens: TokenShareType[]
   totalLocked: TokenAmount | null
+  unwrappedTokens: Token[]
   virtualPrice: TokenAmount | null
   isPaused: boolean
   lpTokenPriceUSD: Price
@@ -154,6 +155,7 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
     name: poolName,
     friendlyName: pool.friendlyName,
     tokens,
+    unwrappedTokens: poolTokens,
     reserve: new TokenAmount(getTokenForStablePoolType(type), tokenBalancesUSDSum),
     totalLocked: totalLpTokenBalance,
     virtualPrice: virtualPrice,
