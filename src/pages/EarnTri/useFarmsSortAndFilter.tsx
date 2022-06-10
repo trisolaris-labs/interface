@@ -19,6 +19,12 @@ enum SortingType {
   default = 'Default'
 }
 
+const dualRewardsPoolsOrderSet = new Set(DUAL_REWARDS_POOLS)
+const triOnlyPoolsOrderSet = new Set(TRI_ONLY_REWARDS_POOLS)
+const ecosystemPoolsOrderSet = new Set(ECOSYSTEM_POOLS)
+const legacyPoolsOrderSet = new Set(LEGACY_POOLS)
+const stablePoolsOrderSet = new Set(STABLE_POOLS)
+
 type SearchableTokenProps = { symbol: string | undefined; name: string | undefined; address: string }
 
 type FarmsSortAndFilterResult = {
@@ -44,18 +50,12 @@ export default function useFarmsSortAndFilter(): FarmsSortAndFilterResult {
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [isSortDescending, setIsSortDescending] = useState<boolean>(true)
 
-  const dualRewardsPoolsOrderSet = new Set(DUAL_REWARDS_POOLS)
-  const triOnlyPoolsOrderSet = new Set(TRI_ONLY_REWARDS_POOLS)
-  const ecosystemPoolsOrderSet = new Set(ECOSYSTEM_POOLS)
-  const legacyPoolsOrderSet = new Set(LEGACY_POOLS)
-  const stablePoolsOrderSet = new Set(STABLE_POOLS)
-
   const farmArrs = useMemo(
     () =>
       allFarmArrs
         .filter(farm => !legacyPoolsOrderSet.has(farm.ID)) // Ignore legacy pools in sorting/filtering
         .filter(farm => allPools.includes(farm.ID)), // Ignore pools that are not in the rendering list
-    [allFarmArrs, LEGACY_POOLS, allPools]
+    [allFarmArrs, allPools]
   )
   const farmArrsInOrder = useMemo((): StakingTri[] => {
     switch (sortBy) {
