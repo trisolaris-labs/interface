@@ -9,8 +9,16 @@ import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter
 import useFarmsSortAndFilter from './useFarmsSortAndFilter'
 import Toggle from '../../components/Toggle'
 import { useShowLegacyFarms, useToggleShowLegacyFarms } from '../../state/user/hooks'
+import styled from 'styled-components'
 
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
+
+const TitleRow = styled(DataRow)`
+  align-items: baseline;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    flex-direction: row;
+  `};
+`
 
 export default function EarnTri() {
   const [showLegacyFarms, toggleShowLegacyFarms] = [useShowLegacyFarms(), useToggleShowLegacyFarms()]
@@ -151,14 +159,15 @@ export default function EarnTri() {
       </AutoColumn>
       {!hasSearchQuery && !activeFarmsFilter && (
         <AutoColumn gap="lg" style={{ width: '100%' }}>
-          <DataRow style={{ alignItems: 'baseline' }}>
+          <TitleRow>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
             <Toggle
               customToggleText={{ on: 'Show', off: 'Hide' }}
               isActive={showLegacyFarms}
               toggle={toggleShowLegacyFarms}
+              fontSize="12px"
             />
-          </DataRow>
+          </TitleRow>
           {showLegacyFarms ? (
             <PoolSection>
               {legacyFarms.map(farm => (
