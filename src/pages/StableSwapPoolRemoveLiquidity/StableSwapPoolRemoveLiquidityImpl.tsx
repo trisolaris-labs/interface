@@ -51,20 +51,24 @@ type Props = {
 export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props) {
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
   const [input, _setInput] = useState<string>('')
+  const isMetapool = isMetaPool(stableSwapPoolName)
+  const metapoolTokenIndex = isMetapool
+    ? STABLESWAP_POOLS[stableSwapPoolName].poolTokens.indexOf(STABLESWAP_POOLS[stableSwapPoolName].metapoolToken!)
+    : null
 
   // If this is `null`, withdraw all tokens evenly, otherwise withdraw to the selected token index
-  const [withdrawTokenIndex, setWithdrawTokenIndex] = useState<number | null>(isMetaPool(stableSwapPoolName) ? 0 : null)
+  const [withdrawTokenIndex, setWithdrawTokenIndex] = useState<number | null>(isMetapool ? metapoolTokenIndex : null)
   const withdrawTokenIndexRef = useRef(withdrawTokenIndex)
   const [poolData, userShareData] = useStablePoolsData(stableSwapPoolName)
   const { name, virtualPrice } = poolData
   const pool = STABLESWAP_POOLS[stableSwapPoolName]
   const { address, lpToken, metaSwapAddresses } = pool
-  const effectiveAddress = isMetaPool(stableSwapPoolName) ? metaSwapAddresses : address
+  const effectiveAddress = isMetapool ? metaSwapAddresses : address
   const currency = unwrappedToken(lpToken)
   const swapContract = useStableSwapContract(
     stableSwapPoolName,
     false, // require signer
-    isMetaPool(stableSwapPoolName) // if it's a metapool, use unwrapped tokens
+    isMetapool // if it's a metapool, use unwrapped tokens
   )
 
   const { account } = useActiveWeb3React()
@@ -99,7 +103,6 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const emptyAmounts = poolData.tokens.map(({ token }) => CurrencyAmount.fromRawAmount(token, BIG_INT_ZERO))
   const [estimatedAmounts, setEstimatedAmounts] = useState<CurrencyAmount[]>(emptyAmounts)
 
-  console.log(withdrawTokenIndex)
   const updateEstimatedAmounts = useCallback(async () => {
     if (withdrawTokenIndexRef.current !== withdrawTokenIndex || rawParsedAmountRef.current !== parsedAmountString) {
       withdrawTokenIndexRef.current = withdrawTokenIndex
