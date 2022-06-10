@@ -126,7 +126,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   const theme = useContext(ThemeContext)
 
   const [stablePoolData, userData] = useStablePoolsData(poolName)
-  const { disableAddLiquidity, name, tokens } = stablePoolData
+  const { disableAddLiquidity, name, tokens, friendlyName } = stablePoolData
   const { address: poolAddress, poolTokens: stablePoolTokens } = STABLESWAP_POOLS[poolName]
   const poolTokens = tokens.map(({ token }) => token)
 
@@ -183,7 +183,6 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   const poolTokensString = poolTokens
     .map((token, index, arr) => `${token.symbol}${index + 1 < arr.length ? '/' : ''}`)
     .join('')
-  const formattedPoolName = name.replace(/_/g, '/')
 
   return (
     <StyledPositionCard border={border} bgColor={backgroundColor1} id={`stableswap-position-card-${name}`}>
@@ -193,7 +192,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
           <RowFixed>
             <MultipleCurrencyLogo currencies={currencies} size={20} />
             <StyledPoolName fontWeight={500} fontSize={20} marginLeft={30}>
-              {formattedPoolName}
+              {friendlyName}
             </StyledPoolName>
           </RowFixed>
 
@@ -250,7 +249,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
                   <StyledContractAddress address={stablePoolData.lpToken?.address} />
                 </FixedHeightRow>
                 <FixedHeightRow>
-                  <StyledText>{formattedPoolName} Pool Contract</StyledText>
+                  <StyledText>{friendlyName} Pool Contract</StyledText>
                   <StyledContractAddress address={poolAddress} />
                 </FixedHeightRow>
               </AutoColumn>

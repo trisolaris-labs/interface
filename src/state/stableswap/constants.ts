@@ -46,6 +46,7 @@ export function getTokenForStablePoolType(poolType: StableSwapPoolTypes): Token 
 
 export type StableSwapPool = {
   name: StableSwapPoolName
+  friendlyName: string
   lpToken: Token
 
   // These are the tokens in the pool (don't put LP tokens here)
@@ -87,6 +88,7 @@ export type StableSwapPools = { [name in StableSwapPoolName]: StableSwapPool }
 export const STABLESWAP_POOLS: StableSwapPools = {
   [StableSwapPoolName.USDC_USDT]: {
     name: StableSwapPoolName.USDC_USDT,
+    friendlyName: 'USDC/USDT (Deprecated)',
     // @TODO Move the prod version of this token to the Tokens repo
     lpToken: new Token(
       ChainId.AURORA,
@@ -106,6 +108,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
   },
   [StableSwapPoolName.USDC_USDT_UST_FRAX_USN]: {
     name: StableSwapPoolName.USDC_USDT_UST_FRAX_USN,
+    friendlyName: 'USDC/USDT/UST/FRAX/USN',
     lpToken: new Token(
       ChainId.AURORA,
       '0x467171053355Da79409bf2F931D21ab1f24Fe0A6',
@@ -129,6 +132,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
   },
   [StableSwapPoolName.USDC_USDT_USN]: {
     name: StableSwapPoolName.USDC_USDT_USN,
+    friendlyName: 'USDC/USDT/USN',
     lpToken: new Token(ChainId.AURORA, '0x87BCC091d0A7F9352728100268Ac8D25729113bB', 18, 'USD TLP', 'USDC/USDT/USN'),
     poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA], USN[ChainId.AURORA]],
     address: '0x458459E48dbAC0C8Ca83F8D0b7b29FEfE60c3970',
@@ -139,6 +143,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
   },
   [StableSwapPoolName.USDC_USDT_NEW]: {
     name: StableSwapPoolName.USDC_USDT_NEW,
+    friendlyName: 'USDC/USDT',
     lpToken: new Token(
       ChainId.AURORA,
       '0x3fADE6094373f7A91A91D4607b226791fB3BCEAf',
@@ -155,6 +160,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
   },
   [StableSwapPoolName.NUSD_USDC_USDT]: {
     name: StableSwapPoolName.NUSD_USDC_USDT,
+    friendlyName: 'NUSD-USDC/USDT',
     lpToken: new Token(
       ChainId.AURORA,
       '0xffb69779f14E851A8c550Bf5bB1933c44BBDE129',

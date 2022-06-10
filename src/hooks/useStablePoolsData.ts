@@ -28,6 +28,7 @@ export interface StablePoolDataType {
   adminFee: Percent
   aParameter: JSBI
   name: string
+  friendlyName: string
   reserve: TokenAmount | null
   swapFee: Percent
   tokens: TokenShareType[]
@@ -151,6 +152,7 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
 
   const poolData = {
     name: poolName,
+    friendlyName: pool.friendlyName,
     tokens,
     reserve: new TokenAmount(getTokenForStablePoolType(type), tokenBalancesUSDSum),
     totalLocked: totalLpTokenBalance,
