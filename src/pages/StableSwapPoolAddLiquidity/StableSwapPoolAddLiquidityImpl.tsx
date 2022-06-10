@@ -39,7 +39,7 @@ import { RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { ButtonPrimary } from '../../components/Button'
 import { RowBetween } from '../../components/Row'
-import { JSBI } from '@trisolaris/sdk'
+import { JSBI, Rounding } from '@trisolaris/sdk'
 import { BIG_INT_ZERO, PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE } from '../../constants'
 import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
@@ -200,7 +200,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               {addCommasToNumber(minToMint?.toSignificant(6))}
             </Text>
           </RowFlat>
-          {usdEstimate && <span>(${addCommasToNumber(usdEstimate.toFixed(2))})</span>}
+          {usdEstimate && <span>(${addCommasToNumber(usdEstimate.toFixed(2, undefined, Rounding.ROUND_UP))})</span>}
           <StableSwapLiquiditySlippage
             bonus={isBonus}
             errorThreshold={PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE}
