@@ -53,7 +53,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const [input, _setInput] = useState<string>('')
 
   // If this is `null`, withdraw all tokens evenly, otherwise withdraw to the selected token index
-  const [withdrawTokenIndex, setWithdrawTokenIndex] = useState<number | null>(null)
+  const [withdrawTokenIndex, setWithdrawTokenIndex] = useState<number | null>(isMetaPool(stableSwapPoolName) ? 0 : null)
   const withdrawTokenIndexRef = useRef(withdrawTokenIndex)
   const [poolData, userShareData] = useStablePoolsData(stableSwapPoolName)
   const { name, virtualPrice } = poolData
@@ -99,6 +99,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const emptyAmounts = poolData.tokens.map(({ token }) => CurrencyAmount.fromRawAmount(token, BIG_INT_ZERO))
   const [estimatedAmounts, setEstimatedAmounts] = useState<CurrencyAmount[]>(emptyAmounts)
 
+  console.log(withdrawTokenIndex)
   const updateEstimatedAmounts = useCallback(async () => {
     if (withdrawTokenIndexRef.current !== withdrawTokenIndex || rawParsedAmountRef.current !== parsedAmountString) {
       withdrawTokenIndexRef.current = withdrawTokenIndex
