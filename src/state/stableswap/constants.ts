@@ -110,7 +110,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
   },
   [StableSwapPoolName.USDC_USDT_UST_FRAX_USN]: {
     name: StableSwapPoolName.USDC_USDT_UST_FRAX_USN,
-    friendlyName: 'USDC/USDT/UST/FRAX/USN',
+    friendlyName: 'USDC/USDT/UST/FRAX/USN (Deprecated)',
     lpToken: new Token(
       ChainId.AURORA,
       '0x467171053355Da79409bf2F931D21ab1f24Fe0A6',
