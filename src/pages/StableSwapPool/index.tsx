@@ -31,16 +31,21 @@ export default function Pool() {
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>
-              Stable Pools
+              Factory Pools
             </TYPE.mediumHeader>
           </TitleRow>
           <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_USN} />
           <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_NEW} />
+        </AutoColumn>
+        <AutoColumn gap="lg" style={{ width: '100%' }}>
+          <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
+            <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>Meta Pools</TYPE.mediumHeader>
+          </TitleRow>
           <FullStablePositionCard poolName={StableSwapPoolName.NUSD_USDC_USDT} />
         </AutoColumn>
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <TitleRow style={{ marginTop: '2.5rem' }} padding={'0'}>
-            <TYPE.mediumHeader style={{ justifySelf: 'flex-start' }}>Deprecated Stable Pools</TYPE.mediumHeader>
+            <TYPE.mediumHeader style={{ justifySelf: 'flex-start' }}>Deprecated Pools</TYPE.mediumHeader>
             <Toggle
               isActive={showDeprecatedPools}
               toggle={() => setShowDeprecatedPools(!showDeprecatedPools)}
