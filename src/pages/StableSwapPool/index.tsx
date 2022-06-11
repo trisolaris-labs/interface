@@ -35,7 +35,7 @@ export default function Pool() {
             </TYPE.mediumHeader>
           </TitleRow>
           <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_USN} />
-          <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_NEW} />
+          <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_V2} />
         </AutoColumn>
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
