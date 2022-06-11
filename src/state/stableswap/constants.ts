@@ -69,8 +69,6 @@ export type StableSwapPool = {
 
   // UI Gating
   disableAddLiquidity?: boolean
-
-  metapoolToken?: Token
 }
 
 export type StableSwapPoolsMap = {
@@ -187,8 +185,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     ],
     underlyingPool: StableSwapPoolName.USDC_USDT,
     isOutdated: false,
-    rewardPids: null,
-    metapoolToken: NUSD[ChainId.AURORA]
+    rewardPids: null
   }
 }
 

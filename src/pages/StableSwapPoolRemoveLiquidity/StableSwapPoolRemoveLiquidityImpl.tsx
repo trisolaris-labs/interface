@@ -51,24 +51,20 @@ type Props = {
 export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props) {
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
   const [input, _setInput] = useState<string>('')
-  const isMetapool = isMetaPool(stableSwapPoolName)
-  const metapoolTokenIndex = isMetapool
-    ? STABLESWAP_POOLS[stableSwapPoolName].poolTokens.indexOf(STABLESWAP_POOLS[stableSwapPoolName].metapoolToken!)
-    : null
 
   // If this is `null`, withdraw all tokens evenly, otherwise withdraw to the selected token index
-  const [withdrawTokenIndex, setWithdrawTokenIndex] = useState<number | null>(isMetapool ? metapoolTokenIndex : null)
+  const [withdrawTokenIndex, setWithdrawTokenIndex] = useState<number | null>(null)
   const withdrawTokenIndexRef = useRef(withdrawTokenIndex)
   const [poolData, userShareData] = useStablePoolsData(stableSwapPoolName)
-  const { name, virtualPrice } = poolData
+  const { name, unwrappedTokens, virtualPrice } = poolData
   const pool = STABLESWAP_POOLS[stableSwapPoolName]
   const { address, lpToken, metaSwapAddresses } = pool
-  const effectiveAddress = isMetapool ? metaSwapAddresses : address
+  const effectiveAddress = isMetaPool(stableSwapPoolName) ? metaSwapAddresses : address
   const currency = unwrappedToken(lpToken)
   const swapContract = useStableSwapContract(
     stableSwapPoolName,
     false, // require signer
-    isMetapool // if it's a metapool, use unwrapped tokens
+    isMetaPool(stableSwapPoolName) // if it's a metapool, use unwrapped tokens
   )
 
   const { account } = useActiveWeb3React()
@@ -81,26 +77,26 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
     async (tokenIndex: number) =>
       swapContract?.calculateRemoveLiquidityOneToken(parsedAmountString ?? '0', tokenIndex).then((response: BigInt) => {
         setEstimatedAmounts(
-          poolData.tokens.map(({ token }, i) =>
+          unwrappedTokens.map((token, i) =>
             CurrencyAmount.fromRawAmount(token, i === tokenIndex ? JSBI.BigInt(response) : BIG_INT_ZERO)
           )
         )
       }),
-    [parsedAmountString, poolData.tokens, swapContract]
+    [parsedAmountString, unwrappedTokens, swapContract]
   )
 
   const estimateRemoveLiquidity = useCallback(
     () =>
       swapContract?.calculateRemoveLiquidity(parsedAmountString ?? '0').then((response: BigInt[]) => {
         setEstimatedAmounts(
-          poolData.tokens.map(({ token }, i) => CurrencyAmount.fromRawAmount(token, JSBI.BigInt(response[i])))
+          unwrappedTokens.map((token, i) => CurrencyAmount.fromRawAmount(token, JSBI.BigInt(response[i])))
         )
       }),
-    [parsedAmountString, poolData.tokens, swapContract]
+    [parsedAmountString, unwrappedTokens, swapContract]
   )
 
   const [error, setError] = useState<TXError | null>(null)
-  const emptyAmounts = poolData.tokens.map(({ token }) => CurrencyAmount.fromRawAmount(token, BIG_INT_ZERO))
+  const emptyAmounts = unwrappedTokens.map(token => CurrencyAmount.fromRawAmount(token, BIG_INT_ZERO))
   const [estimatedAmounts, setEstimatedAmounts] = useState<CurrencyAmount[]>(emptyAmounts)
 
   const updateEstimatedAmounts = useCallback(async () => {

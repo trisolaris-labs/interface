@@ -23,7 +23,7 @@ import { StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/con
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import CurrencyLogo from '../../components/CurrencyLogo'
-import { TokenAmount } from '@trisolaris/sdk'
+import { Rounding, TokenAmount } from '@trisolaris/sdk'
 import { addCommasToNumber } from '../../utils'
 
 type Props = {
@@ -83,7 +83,9 @@ export default function StableSwapRemoveLiquidityInputPanel({
         <InputRow selected={true}>
           <NumericalInput className="token-amount-input" value={value} onUserInput={onUserInput} />
           {usdEstimate != null ? (
-            <span style={{ marginRight: '8px' }}>(${addCommasToNumber(usdEstimate.toFixed(2))})</span>
+            <span style={{ marginRight: '8px' }}>
+              (${addCommasToNumber(usdEstimate.toFixed(2, undefined, Rounding.ROUND_UP))})
+            </span>
           ) : null}
           <div>
             <Aligner>
