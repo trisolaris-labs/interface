@@ -28,3 +28,4 @@ export const removeSerializedPair = createAction<{ chainId: number; tokenAAddres
 )
 export const toggleURLWarning = createAction<void>('app/toggleURLWarning')
 export const toggleFilterActiveFarms = createAction<void>('user/toggleFilterActiveFarms')
+export const toggleShowLegacyFarms = createAction<void>('user/toggleShowLegacyFarms')
