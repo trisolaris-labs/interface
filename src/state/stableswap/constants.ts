@@ -21,7 +21,7 @@ export enum StableSwapPoolName {
   USDC_USDT = 'USDC_USDT',
   USDC_USDT_UST_FRAX_USN = 'USDC_USDT_UST_FRAX_USN',
   USDC_USDT_USN = 'USDC_USDT_USN',
-  USDC_USDT_NEW = 'USDC_USDT_NEW',
+  USDC_USDT_V2 = 'USDC_USDT_V2',
   NUSD_USDC_USDT = 'NUSD_USDC_USDT'
 }
 
@@ -104,7 +104,8 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     type: StableSwapPoolTypes.USD,
     route: 'usd',
     isOutdated: false,
-    rewardPids: null
+    rewardPids: null,
+    disableAddLiquidity: true
   },
   [StableSwapPoolName.USDC_USDT_UST_FRAX_USN]: {
     name: StableSwapPoolName.USDC_USDT_UST_FRAX_USN,
@@ -141,8 +142,8 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     isOutdated: false,
     rewardPids: null
   },
-  [StableSwapPoolName.USDC_USDT_NEW]: {
-    name: StableSwapPoolName.USDC_USDT_NEW,
+  [StableSwapPoolName.USDC_USDT_V2]: {
+    name: StableSwapPoolName.USDC_USDT_V2,
     friendlyName: 'USDC/USDT',
     lpToken: new Token(
       ChainId.AURORA,
