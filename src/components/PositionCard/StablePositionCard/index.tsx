@@ -209,7 +209,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
         {userData?.lpTokenBalance.greaterThan(BIG_INT_ZERO) ? (
           <AutoColumn gap="8px">
             <FixedHeightRow marginTop="4px">
-              <StyledText fontWeight={500}>User {poolTokensString} LP Balance</StyledText>
+              <StyledText fontWeight={500}>User {friendlyName} LP Balance</StyledText>
               <StyledText fontWeight={500}>{`$${userData?.usdBalance.toFixed(4)} (${userData?.lpTokenBalance.toFixed(
                 3
               )} LP tokens) `}</StyledText>
