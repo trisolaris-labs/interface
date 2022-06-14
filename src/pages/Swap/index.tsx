@@ -618,7 +618,7 @@ export default function Swap() {
                     </Text>
                   </ButtonError>
                 )}
-                {showApproveFlow && (
+                {!disableTradingUntilStableSwapRateIsCalculated && showApproveFlow && (
                   <Column style={{ marginTop: '1rem' }}>
                     <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />
                   </Column>
