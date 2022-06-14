@@ -113,6 +113,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
 
     if (
       priceImpact != null &&
+      !isBonus &&
       !confirmStableSwapAddLiquiditySlippage(
         priceImpact?.lessThan(JSBI.BigInt(0)) ? priceImpact?.multiply(JSBI.BigInt(-1)) : priceImpact, // Make +ve for comparison
         basisPointsToPercent(allowedSlippage) // Normalise user's slippage tolerance to compare to price impact percentage
