@@ -18,6 +18,7 @@ import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import { LightCard } from '../../components/Card'
 import Popover from '../../components/Popover'
 import { addCommasToNumber } from '../../utils'
+import usePTRIAPR from '../../hooks/usePTRIAPR'
 
 export const StyledLightCard = styled(LightCard)`
   display: flex;
@@ -65,6 +66,7 @@ function StatsBox() {
   const [show, setShow] = useState(false)
   const open = useCallback(() => setShow(true), [setShow])
   const close = useCallback(() => setShow(false), [setShow])
+  const apr = usePTRIAPR()
 
   const [rewardsInTokens, setRewardsInTokens] = useState(true)
 
@@ -90,7 +92,7 @@ function StatsBox() {
           </Popover>
         </RowFixed>
         <RowFixed>
-          <TYPE.largeHeader>Coming Soon</TYPE.largeHeader>
+          <TYPE.largeHeader>{apr != null ? `${apr.toFixed(2)}%` : '-'}</TYPE.largeHeader>
         </RowFixed>
       </FixedHeightRow>
       <StatsContainer>
