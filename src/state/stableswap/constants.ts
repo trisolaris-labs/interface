@@ -160,13 +160,13 @@ export const STABLESWAP_POOLS: StableSwapPools = {
   },
   [StableSwapPoolName.NUSD_USDC_USDT]: {
     name: StableSwapPoolName.NUSD_USDC_USDT,
-    friendlyName: 'NUSD-USDC/USDT',
+    friendlyName: 'nUSD-USDC/USDT',
     lpToken: new Token(
       ChainId.AURORA,
       '0xffb69779f14E851A8c550Bf5bB1933c44BBDE129',
       18,
-      'NUSD-USDC/USDT TLP',
-      'Trisolaris NUSD-USDC/USDT'
+      'nUSD-USDC/USDT TLP',
+      'Trisolaris nUSD-USDC/USDT'
     ),
     poolTokens: [NUSD[ChainId.AURORA], USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
     address: '0x3CE7AAD78B9eb47Fd2b487c463A17AAeD038B7EC', // MetaSwap
