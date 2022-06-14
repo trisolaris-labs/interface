@@ -382,7 +382,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                     <Text fontSize={20} fontWeight={500}>
                       {disableAddLiquidity
                         ? 'Adding liquidity is disabled'
-                        : ((isSlippageGreaterThanFivePercent && 'Slippage too high, contact us') || error) ??
+                        : ((isSlippageGreaterThanFivePercent && 'Slippage too high') || error) ??
                           t('addLiquidity.supply')}
                     </Text>
                   </ButtonError>
