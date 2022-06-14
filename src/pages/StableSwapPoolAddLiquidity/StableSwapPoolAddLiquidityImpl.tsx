@@ -368,7 +368,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                     isHighImpact={isHighImpact}
                     priceImpact={priceImpact}
                   />
-                  <AutoColumn>Min. LP Tokens: {addCommasToNumber(minToMint?.toFixed(2) ?? '-')}</AutoColumn>
+                  <AutoColumn>Min. LP Tokens: {addCommasToNumber(minToMint?.toFixed(4) ?? '-')}</AutoColumn>
                 </RowBetween>
                 <StableSwapPoolAddLiquidityApprovalsRow stableSwapPoolName={stableSwapPoolName}>
                   <ButtonError
