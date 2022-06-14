@@ -653,6 +653,13 @@ export const BRRR: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0240aE04c9F47B91Cf47Ca2E7ef44c9De0D385Ac', 18, 'BRRR', 'BRRR'),
 }
 
+export const NUSD: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'nUSD', 'nUSD'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'nUSD', 'nUSD'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'nUSD', 'nUSD'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x07379565cD8B0CaE7c60Dc78e7f601b34AF2A21c', 18, 'nUSD', 'nUSD'),
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),
@@ -672,11 +679,4 @@ export const SMARTPAD: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'SmartPad token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'SmartPad token'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x34F291934b88c7870B7A17835B926B264fc13a81', 18, 'PAD', 'SmartPad token'),
-}
-
-export const NUSD: { [chainId in ChainId]: Token } = {
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'nUSD', 'nUSD'),
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'nUSD', 'nUSD'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'nUSD', 'nUSD'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x07379565cD8B0CaE7c60Dc78e7f601b34AF2A21c', 18, 'nUSD', 'nUSD'),
 }

@@ -108,13 +108,4 @@ module.exports = {
       'SmartPad token'
     )
   },
-  NUSD: {
-    [ChainId.AURORA]: new Token(
-      ChainId.AURORA,
-      '0x07379565cD8B0CaE7c60Dc78e7f601b34AF2A21c',
-      18,
-      'nUSD',
-      'nUSD'
-    )
-  }
 }
