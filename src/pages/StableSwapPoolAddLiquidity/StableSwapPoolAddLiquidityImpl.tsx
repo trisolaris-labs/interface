@@ -201,7 +201,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               {addCommasToNumber(minToMint?.toSignificant(6))}
             </Text>
           </RowFlat>
-          {usdEstimate && <span>(${addCommasToNumber(usdEstimate.toFixed(2, undefined, Rounding.ROUND_UP))})</span>}
+          {usdEstimate && <span>(${addCommasToNumber(usdEstimate.toFixed(3, undefined, Rounding.ROUND_UP))})</span>}
           <StableSwapLiquiditySlippage
             bonus={isBonus}
             errorThreshold={PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE}
