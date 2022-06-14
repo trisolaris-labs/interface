@@ -21,6 +21,7 @@ import { AutoColumn } from '../../components/Column'
 import { CardSection, HighlightCard } from '../../components/earn/styled'
 import { LargeHeaderWhite } from './StakeTriV1'
 import AboutContainer from './AboutContainer'
+import PTRIRemittances from './PTRIRemittances'
 
 const TopContainer = styled.div`
   align-items: stretch;
@@ -89,6 +90,7 @@ function StakeTri() {
       </TopContainer>
       <ClaimPtri />
       <StakeBox />
+      <PTRIRemittances />
     </PageWrapper>
   )
 }
