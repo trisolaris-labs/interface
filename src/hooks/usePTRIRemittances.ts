@@ -9,10 +9,13 @@ export default function usePTRIRemittances() {
 
   return useMemo(
     () =>
-      aprData.map(({ convertedUsdcAmount, timestamp }) => ({
-        amount: CurrencyAmount.fromRawAmount(USD_TLP[ChainId.AURORA], JSBI.BigInt(convertedUsdcAmount)),
-        timestamp: new Date(timestamp * 1000)
-      })),
+      _(aprData)
+        .map(({ convertedUsdcAmount, timestamp }) => ({
+          amount: CurrencyAmount.fromRawAmount(USD_TLP[ChainId.AURORA], JSBI.BigInt(convertedUsdcAmount)),
+          timestamp: new Date(timestamp * 1000)
+        }))
+        .orderBy(({ timestamp }) => timestamp.valueOf(), 'desc')
+        .value(),
     [aprData]
   )
 }
