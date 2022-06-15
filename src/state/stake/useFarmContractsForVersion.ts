@@ -6,17 +6,12 @@ import { useCallback, useMemo } from 'react'
 import { usePairs } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 import { useBlockNumber } from '../application/hooks'
-import { useShowLegacyFarms } from '../user/hooks'
-import { LEGACY_POOLS } from '../../constants/farms'
 
 // gets the staking info from the network for the active chain id
 export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTriStakedAmounts[] {
   const { chainId, account } = useActiveWeb3React()
-  const showLegacyFarms = useShowLegacyFarms()
 
-  const activeFarms = STAKING[chainId ?? ChainId.AURORA].filter(
-    ({ ID }) => showLegacyFarms || !LEGACY_POOLS.includes(ID)
-  )
+  const activeFarms = STAKING[chainId ?? ChainId.AURORA]
   // TODO: Add code back when implementing solution for incorrect farms data.
   // Ignore all stable farms
 
