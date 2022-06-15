@@ -14,8 +14,7 @@ import {
   updateUserExpertMode,
   updateUserSlippageTolerance,
   toggleURLWarning,
-  toggleFilterActiveFarms,
-  toggleShowLegacyFarms
+  toggleFilterActiveFarms
 } from './actions'
 
 import { AppDispatch, AppState } from '../index'
@@ -233,13 +232,4 @@ export function useIsFilterActiveFarms(): boolean {
 export function useToggleFilterActiveFarms(): () => void {
   const dispatch = useDispatch()
   return useCallback(() => dispatch(toggleFilterActiveFarms()), [dispatch])
-}
-
-export function useShowLegacyFarms(): boolean {
-  return useSelector((state: AppState) => state.user.showLegacyFarms)
-}
-
-export function useToggleShowLegacyFarms(): () => void {
-  const dispatch = useDispatch()
-  return useCallback(() => dispatch(toggleShowLegacyFarms()), [dispatch])
 }

@@ -7,21 +7,10 @@ import { PoolSection, DataRow } from './EarnTri.styles'
 
 import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter/EarnTriSortAndFilterContainer'
 import useFarmsSortAndFilter from './useFarmsSortAndFilter'
-import Toggle from '../../components/Toggle'
-import { useShowLegacyFarms, useToggleShowLegacyFarms } from '../../state/user/hooks'
-import styled from 'styled-components'
 
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
-const TitleRow = styled(DataRow)`
-  align-items: baseline;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    flex-direction: row;
-  `};
-`
-
 export default function EarnTri() {
-  const [showLegacyFarms, toggleShowLegacyFarms] = [useShowLegacyFarms(), useToggleShowLegacyFarms()]
   const {
     activeFarmsFilter,
     dualRewardPools,
@@ -159,36 +148,28 @@ export default function EarnTri() {
       </AutoColumn>
       {!hasSearchQuery && !activeFarmsFilter && (
         <AutoColumn gap="lg" style={{ width: '100%' }}>
-          <TitleRow>
+          <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
-            <Toggle
-              customToggleText={{ on: 'Show', off: 'Hide' }}
-              isActive={showLegacyFarms}
-              toggle={toggleShowLegacyFarms}
-              fontSize="12px"
-            />
-          </TitleRow>
-          {showLegacyFarms ? (
-            <PoolSection>
-              {legacyFarms.map(farm => (
-                <MemoizedPoolCardTRI
-                  key={farm.ID}
-                  apr={farm.apr}
-                  nonTriAPRs={farm.nonTriAPRs}
-                  chefVersion={farm.chefVersion}
-                  isLegacy={true}
-                  isPeriodFinished={farm.isPeriodFinished}
-                  tokens={farm.tokens}
-                  totalStakedInUSD={farm.totalStakedInUSD}
-                  version={farm.ID}
-                  hasNonTriRewards={farm.hasNonTriRewards}
-                  inStaging={farm.inStaging}
-                  noTriRewards={farm.noTriRewards}
-                  isStaking={isTokenAmountPositive(farm.stakedAmount)}
-                />
-              ))}
-            </PoolSection>
-          ) : null}
+          </DataRow>
+          <PoolSection>
+            {legacyFarms.map(farm => (
+              <MemoizedPoolCardTRI
+                key={farm.ID}
+                apr={farm.apr}
+                nonTriAPRs={farm.nonTriAPRs}
+                chefVersion={farm.chefVersion}
+                isLegacy={true}
+                isPeriodFinished={farm.isPeriodFinished}
+                tokens={farm.tokens}
+                totalStakedInUSD={farm.totalStakedInUSD}
+                version={farm.ID}
+                hasNonTriRewards={farm.hasNonTriRewards}
+                inStaging={farm.inStaging}
+                noTriRewards={farm.noTriRewards}
+                isStaking={isTokenAmountPositive(farm.stakedAmount)}
+              />
+            ))}
+          </PoolSection>
         </AutoColumn>
       )}
     </>
