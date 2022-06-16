@@ -273,11 +273,11 @@ export default function Swap() {
   const stableswapPriceImpactWithoutFee = useMemo(
     () =>
       hasPriceImpact
-        ? new Percent('0', '1')
-        : new Percent(
+        ? new Percent(
             JSBI.multiply(JSBI.BigInt(-1), stableswapPriceImpact),
             JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
-          ),
+          )
+        : new Percent('0'),
     [hasPriceImpact, stableswapPriceImpact]
   )
 
@@ -618,7 +618,7 @@ export default function Swap() {
                     </Text>
                   </ButtonError>
                 )}
-                {showApproveFlow && (
+                {!disableTradingUntilStableSwapRateIsCalculated && showApproveFlow && (
                   <Column style={{ marginTop: '1rem' }}>
                     <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />
                   </Column>

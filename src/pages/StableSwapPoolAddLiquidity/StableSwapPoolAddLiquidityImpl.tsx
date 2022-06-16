@@ -22,12 +22,7 @@ import { useTranslation } from 'react-i18next'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import { StableSwapPoolName } from '../../state/stableswap/constants'
-import {
-  addCommasToNumber,
-  basisPointsToPercent,
-  divideCurrencyAmountByNumber,
-  replaceUnderscoresWithSlashes
-} from '../../utils'
+import { addCommasToNumber, basisPointsToPercent, divideCurrencyAmountByNumber } from '../../utils'
 import StableSwapPoolAddLiquidityApprovalsRow from './StableSwapPoolAddLiquidityApprovalsRow'
 import { TYPE } from '../../theme'
 import { HeadingContainer } from '../Swap/Swap.styles'
@@ -39,7 +34,7 @@ import { RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { ButtonPrimary } from '../../components/Button'
 import { RowBetween } from '../../components/Row'
-import { JSBI } from '@trisolaris/sdk'
+import { JSBI, Rounding } from '@trisolaris/sdk'
 import { BIG_INT_ZERO, PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE } from '../../constants'
 import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
@@ -57,7 +52,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   const { t } = useTranslation()
   const { account, chainId, library } = useActiveWeb3React()
   const [poolData, _userShareData] = useStablePoolsData(stableSwapPoolName)
-  const { disableAddLiquidity, name, virtualPrice } = poolData
+  const { disableAddLiquidity, friendlyName, virtualPrice } = poolData
   const [allowedSlippage] = useUserSlippageTolerance()
   const { isBonus, isHighImpact, minToMint, priceImpact } = useAddLiquidityPriceImpact(stableSwapPoolName, virtualPrice)
 
@@ -113,6 +108,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
 
     if (
       priceImpact != null &&
+      !isBonus &&
       !confirmStableSwapAddLiquiditySlippage(
         priceImpact?.lessThan(JSBI.BigInt(0)) ? priceImpact?.multiply(JSBI.BigInt(-1)) : priceImpact, // Make +ve for comparison
         basisPointsToPercent(allowedSlippage) // Normalise user's slippage tolerance to compare to price impact percentage
@@ -200,7 +196,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               {addCommasToNumber(minToMint?.toSignificant(6))}
             </Text>
           </RowFlat>
-          {usdEstimate && <span>(${addCommasToNumber(usdEstimate.toFixed(2))})</span>}
+          {usdEstimate && <span>(${addCommasToNumber(usdEstimate.toFixed(3, undefined, Rounding.ROUND_UP))})</span>}
           <StableSwapLiquiditySlippage
             bonus={isBonus}
             errorThreshold={PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE}
@@ -251,7 +247,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
             />
             <HeadingContainer>
               <AutoRow justify="center">
-                <TYPE.mediumHeader>{replaceUnderscoresWithSlashes(name)}</TYPE.mediumHeader>
+                <TYPE.mediumHeader>{friendlyName}</TYPE.mediumHeader>
                 <CaptionWithIcon>Stable pools on Trisolaris support uneven deposits</CaptionWithIcon>
               </AutoRow>
             </HeadingContainer>
@@ -367,7 +363,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                     isHighImpact={isHighImpact}
                     priceImpact={priceImpact}
                   />
-                  <AutoColumn>Min. LP Tokens: {addCommasToNumber(minToMint?.toFixed(2) ?? '-')}</AutoColumn>
+                  <AutoColumn>Min. LP Tokens: {addCommasToNumber(minToMint?.toFixed(4) ?? '-')}</AutoColumn>
                 </RowBetween>
                 <StableSwapPoolAddLiquidityApprovalsRow stableSwapPoolName={stableSwapPoolName}>
                   <ButtonError
@@ -381,7 +377,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                     <Text fontSize={20} fontWeight={500}>
                       {disableAddLiquidity
                         ? 'Adding liquidity is disabled'
-                        : ((isSlippageGreaterThanFivePercent && 'Slippage too high, contact us') || error) ??
+                        : ((isSlippageGreaterThanFivePercent && 'Slippage too high') || error) ??
                           t('addLiquidity.supply')}
                     </Text>
                   </ButtonError>

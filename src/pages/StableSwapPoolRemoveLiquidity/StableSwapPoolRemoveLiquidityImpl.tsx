@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
+import { CurrencyAmount, JSBI } from '@trisolaris/sdk'
 import React, { useEffect, useRef, useState, useContext, useCallback } from 'react'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { ButtonLight, ButtonConfirmed, ButtonError } from '../../components/Button'
@@ -33,7 +33,6 @@ import MultipleCurrencyLogo from '../../components/MultipleCurrencyLogo'
 import { ButtonPrimary } from '../../components/Button'
 import { useExpertModeManager } from '../../state/user/hooks'
 import Settings from '../../components/Settings'
-import { replaceUnderscoresWithSlashes } from '../../utils'
 import BackButton from '../../components/BackButton'
 import useRemoveLiquidityPriceImpact from '../../hooks/useRemoveLiquidityPriceImpact'
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
@@ -56,7 +55,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const [withdrawTokenIndex, setWithdrawTokenIndex] = useState<number | null>(null)
   const withdrawTokenIndexRef = useRef(withdrawTokenIndex)
   const [poolData, userShareData] = useStablePoolsData(stableSwapPoolName)
-  const { name, virtualPrice } = poolData
+  const { friendlyName, unwrappedTokens, virtualPrice } = poolData
   const pool = STABLESWAP_POOLS[stableSwapPoolName]
   const { address, lpToken, metaSwapAddresses } = pool
   const effectiveAddress = isMetaPool(stableSwapPoolName) ? metaSwapAddresses : address
@@ -77,26 +76,26 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
     async (tokenIndex: number) =>
       swapContract?.calculateRemoveLiquidityOneToken(parsedAmountString ?? '0', tokenIndex).then((response: BigInt) => {
         setEstimatedAmounts(
-          poolData.tokens.map(({ token }, i) =>
+          unwrappedTokens.map((token, i) =>
             CurrencyAmount.fromRawAmount(token, i === tokenIndex ? JSBI.BigInt(response) : BIG_INT_ZERO)
           )
         )
       }),
-    [parsedAmountString, poolData.tokens, swapContract]
+    [parsedAmountString, unwrappedTokens, swapContract]
   )
 
   const estimateRemoveLiquidity = useCallback(
     () =>
       swapContract?.calculateRemoveLiquidity(parsedAmountString ?? '0').then((response: BigInt[]) => {
         setEstimatedAmounts(
-          poolData.tokens.map(({ token }, i) => CurrencyAmount.fromRawAmount(token, JSBI.BigInt(response[i])))
+          unwrappedTokens.map((token, i) => CurrencyAmount.fromRawAmount(token, JSBI.BigInt(response[i])))
         )
       }),
-    [parsedAmountString, poolData.tokens, swapContract]
+    [parsedAmountString, unwrappedTokens, swapContract]
   )
 
   const [error, setError] = useState<TXError | null>(null)
-  const emptyAmounts = poolData.tokens.map(({ token }) => CurrencyAmount.fromRawAmount(token, BIG_INT_ZERO))
+  const emptyAmounts = unwrappedTokens.map(token => CurrencyAmount.fromRawAmount(token, BIG_INT_ZERO))
   const [estimatedAmounts, setEstimatedAmounts] = useState<CurrencyAmount[]>(emptyAmounts)
 
   const updateEstimatedAmounts = useCallback(async () => {
@@ -288,7 +287,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
           <AutoColumn gap="20px">
             <AutoRow justify="space-between">
               <BackButton fallbackPath="/pool/stable" />
-              <TYPE.mediumHeader>Remove Liquidity from {replaceUnderscoresWithSlashes(name)}</TYPE.mediumHeader>
+              <TYPE.mediumHeader>Remove Liquidity from {friendlyName}</TYPE.mediumHeader>
               <Settings />
             </AutoRow>
             <StableSwapRemoveLiquidityInputPanel

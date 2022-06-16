@@ -1,13 +1,13 @@
 import { ChainId, Token, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
-import { FRAX, USDC, USDT, WBTC, UST, USN } from '../../constants/tokens'
+import { FRAX, USDC, USDT, WBTC, UST, USN, NUSD } from '../../constants/tokens'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
 }
 
 export function isMetaPool(poolName?: StableSwapPoolName): boolean {
-  const metapools = new Set<StableSwapPoolName | undefined>()
+  const metapools = new Set<StableSwapPoolName | undefined>([StableSwapPoolName.NUSD_USDC_USDT])
 
   return metapools.has(poolName)
 }
@@ -20,7 +20,9 @@ export enum STABLE_SWAP_TYPES {
 export enum StableSwapPoolName {
   USDC_USDT = 'USDC_USDT',
   USDC_USDT_UST_FRAX_USN = 'USDC_USDT_UST_FRAX_USN',
-  USDC_USDT_USN = 'USDC_USDT_USN'
+  USDC_USDT_USN = 'USDC_USDT_USN',
+  USDC_USDT_V2 = 'USDC_USDT_V2',
+  NUSD_USDC_USDT = 'NUSD_USDC_USDT'
 }
 
 export enum StableSwapPoolTypes {
@@ -44,6 +46,7 @@ export function getTokenForStablePoolType(poolType: StableSwapPoolTypes): Token 
 
 export type StableSwapPool = {
   name: StableSwapPoolName
+  friendlyName: string
   lpToken: Token
 
   // These are the tokens in the pool (don't put LP tokens here)
@@ -85,6 +88,7 @@ export type StableSwapPools = { [name in StableSwapPoolName]: StableSwapPool }
 export const STABLESWAP_POOLS: StableSwapPools = {
   [StableSwapPoolName.USDC_USDT]: {
     name: StableSwapPoolName.USDC_USDT,
+    friendlyName: 'USDC/USDT (Deprecated)',
     // @TODO Move the prod version of this token to the Tokens repo
     lpToken: new Token(
       ChainId.AURORA,
@@ -100,10 +104,12 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     type: StableSwapPoolTypes.USD,
     route: 'usd',
     isOutdated: false,
-    rewardPids: null
+    rewardPids: null,
+    disableAddLiquidity: true
   },
   [StableSwapPoolName.USDC_USDT_UST_FRAX_USN]: {
     name: StableSwapPoolName.USDC_USDT_UST_FRAX_USN,
+    friendlyName: 'USDC/USDT/UST/FRAX/USN (Deprecated)',
     lpToken: new Token(
       ChainId.AURORA,
       '0x467171053355Da79409bf2F931D21ab1f24Fe0A6',
@@ -127,11 +133,58 @@ export const STABLESWAP_POOLS: StableSwapPools = {
   },
   [StableSwapPoolName.USDC_USDT_USN]: {
     name: StableSwapPoolName.USDC_USDT_USN,
+    friendlyName: 'USDC/USDT/USN',
     lpToken: new Token(ChainId.AURORA, '0x87BCC091d0A7F9352728100268Ac8D25729113bB', 18, 'USD TLP', 'USDC/USDT/USN'),
     poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA], USN[ChainId.AURORA]],
     address: '0x458459E48dbAC0C8Ca83F8D0b7b29FEfE60c3970',
     type: StableSwapPoolTypes.USD,
     route: 'usd',
+    isOutdated: false,
+    rewardPids: null
+  },
+  [StableSwapPoolName.USDC_USDT_V2]: {
+    name: StableSwapPoolName.USDC_USDT_V2,
+    friendlyName: 'USDC/USDT',
+    lpToken: new Token(
+      ChainId.AURORA,
+      '0x3fADE6094373f7A91A91D4607b226791fB3BCEAf',
+      18,
+      'USDC/USDT TLP',
+      'Trisolaris USDC/USDT'
+    ),
+    poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
+    address: '0x51d96EF6960cC7b4C884E1215564f926011A4064',
+    type: StableSwapPoolTypes.USD,
+    route: 'usd',
+    isOutdated: false,
+    rewardPids: null
+  },
+  [StableSwapPoolName.NUSD_USDC_USDT]: {
+    name: StableSwapPoolName.NUSD_USDC_USDT,
+    friendlyName: 'nUSD-USDC/USDT',
+    lpToken: new Token(
+      ChainId.AURORA,
+      '0xffb69779f14E851A8c550Bf5bB1933c44BBDE129',
+      18,
+      'nUSD-USDC/USDT TLP',
+      'Trisolaris nUSD-USDC/USDT'
+    ),
+    poolTokens: [NUSD[ChainId.AURORA], USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
+    address: '0x3CE7AAD78B9eb47Fd2b487c463A17AAeD038B7EC', // MetaSwap
+    metaSwapAddresses: '0xCCd87854f58773fe75CdDa542457aC48E46c2D65', // MetaSwapDeposit
+    type: StableSwapPoolTypes.USD,
+    route: 'usd',
+    underlyingPoolTokens: [
+      NUSD[ChainId.AURORA],
+      new Token(
+        ChainId.AURORA,
+        '0x3fADE6094373f7A91A91D4607b226791fB3BCEAf',
+        18,
+        'USDC/USDT TLP',
+        'Trisolaris USDC/USDT'
+      )
+    ],
+    underlyingPool: StableSwapPoolName.USDC_USDT,
     isOutdated: false,
     rewardPids: null
   }
