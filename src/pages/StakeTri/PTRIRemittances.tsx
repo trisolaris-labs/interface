@@ -31,7 +31,7 @@ export default function PTRIRemittances() {
         {remittanceData.map(({ amount, timestamp }) => (
           <Row key={timestamp.valueOf()}>
             <TYPE.main>{timestamp.toLocaleDateString()}</TYPE.main>
-            <TYPE.main>${addCommasToNumber(amount.toFixed(2))}</TYPE.main>
+            <TYPE.main>{addCommasToNumber(amount.toFixed(2))}</TYPE.main>
           </Row>
         ))}
       </AutoColumn>
