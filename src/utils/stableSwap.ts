@@ -6,3 +6,10 @@ export function getLpTokenUsdEstimate(virtualPrice: TokenAmount, amount: Currenc
     JSBI.divide(JSBI.multiply(virtualPrice.raw, amount.raw), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
   )
 }
+
+export function getMetaPoolLPTokenUsdEstimate(virtualPrice: TokenAmount, amount: CurrencyAmount, lpToken: Token) {
+  return new TokenAmount(
+    lpToken,
+    JSBI.divide(JSBI.multiply(virtualPrice.raw, amount.raw), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+  )
+}
