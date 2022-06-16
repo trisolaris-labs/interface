@@ -22,12 +22,7 @@ import { useTranslation } from 'react-i18next'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import { StableSwapPoolName } from '../../state/stableswap/constants'
-import {
-  addCommasToNumber,
-  basisPointsToPercent,
-  divideCurrencyAmountByNumber,
-  replaceUnderscoresWithSlashes
-} from '../../utils'
+import { addCommasToNumber, basisPointsToPercent, divideCurrencyAmountByNumber } from '../../utils'
 import StableSwapPoolAddLiquidityApprovalsRow from './StableSwapPoolAddLiquidityApprovalsRow'
 import { TYPE } from '../../theme'
 import { HeadingContainer } from '../Swap/Swap.styles'
@@ -57,7 +52,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   const { t } = useTranslation()
   const { account, chainId, library } = useActiveWeb3React()
   const [poolData, _userShareData] = useStablePoolsData(stableSwapPoolName)
-  const { disableAddLiquidity, name, virtualPrice } = poolData
+  const { disableAddLiquidity, friendlyName, virtualPrice } = poolData
   const [allowedSlippage] = useUserSlippageTolerance()
   const { isBonus, isHighImpact, minToMint, priceImpact } = useAddLiquidityPriceImpact(stableSwapPoolName, virtualPrice)
 
@@ -252,7 +247,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
             />
             <HeadingContainer>
               <AutoRow justify="center">
-                <TYPE.mediumHeader>{replaceUnderscoresWithSlashes(name)}</TYPE.mediumHeader>
+                <TYPE.mediumHeader>{friendlyName}</TYPE.mediumHeader>
                 <CaptionWithIcon>Stable pools on Trisolaris support uneven deposits</CaptionWithIcon>
               </AutoRow>
             </HeadingContainer>

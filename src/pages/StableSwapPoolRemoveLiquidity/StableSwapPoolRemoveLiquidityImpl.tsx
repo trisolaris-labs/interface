@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI, TokenAmount } from '@trisolaris/sdk'
+import { CurrencyAmount, JSBI } from '@trisolaris/sdk'
 import React, { useEffect, useRef, useState, useContext, useCallback } from 'react'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { ButtonLight, ButtonConfirmed, ButtonError } from '../../components/Button'
@@ -33,7 +33,6 @@ import MultipleCurrencyLogo from '../../components/MultipleCurrencyLogo'
 import { ButtonPrimary } from '../../components/Button'
 import { useExpertModeManager } from '../../state/user/hooks'
 import Settings from '../../components/Settings'
-import { replaceUnderscoresWithSlashes } from '../../utils'
 import BackButton from '../../components/BackButton'
 import useRemoveLiquidityPriceImpact from '../../hooks/useRemoveLiquidityPriceImpact'
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
@@ -56,7 +55,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const [withdrawTokenIndex, setWithdrawTokenIndex] = useState<number | null>(null)
   const withdrawTokenIndexRef = useRef(withdrawTokenIndex)
   const [poolData, userShareData] = useStablePoolsData(stableSwapPoolName)
-  const { name, unwrappedTokens, virtualPrice } = poolData
+  const { friendlyName, unwrappedTokens, virtualPrice } = poolData
   const pool = STABLESWAP_POOLS[stableSwapPoolName]
   const { address, lpToken, metaSwapAddresses } = pool
   const effectiveAddress = isMetaPool(stableSwapPoolName) ? metaSwapAddresses : address
@@ -288,7 +287,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
           <AutoColumn gap="20px">
             <AutoRow justify="space-between">
               <BackButton fallbackPath="/pool/stable" />
-              <TYPE.mediumHeader>Remove Liquidity from {replaceUnderscoresWithSlashes(name)}</TYPE.mediumHeader>
+              <TYPE.mediumHeader>Remove Liquidity from {friendlyName}</TYPE.mediumHeader>
               <Settings />
             </AutoRow>
             <StableSwapRemoveLiquidityInputPanel
