@@ -514,7 +514,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].lpToken.address,
     rewarderAddress: '0xf4ac19e819f5940E92543B544126E7F20b5f6978',
     allocPoint: 1,
-    inStaging: false,
+    inStaging: true,
     stableSwapPoolName: StableSwapPoolName.NUSD_USDC_USDT,
     friendlyFarmName: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].friendlyName
   })
