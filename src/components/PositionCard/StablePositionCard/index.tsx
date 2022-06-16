@@ -180,10 +180,6 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
     )
   }
 
-  const poolTokensString = poolTokens
-    .map((token, index, arr) => `${token.symbol}${index + 1 < arr.length ? '/' : ''}`)
-    .join('')
-
   return (
     <StyledPositionCard border={border} bgColor={backgroundColor1} id={`stableswap-position-card-${name}`}>
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
