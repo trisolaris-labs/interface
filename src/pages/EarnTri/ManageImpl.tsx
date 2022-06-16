@@ -60,7 +60,8 @@ export default function ManageImpl({
     totalRewardRate,
     totalStakedInUSD,
     earnedNonTriRewards,
-    hasNonTriRewards
+    hasNonTriRewards,
+    friendlyFarmName
   } = stakingInfo
   const isDualRewards = chefVersion === ChefVersions.V2
 
@@ -135,7 +136,7 @@ export default function ManageImpl({
     <PageWrapper gap="lg" justify="center">
       <RowBetween style={{ gap: '24px' }}>
         <TYPE.largeHeader>
-          {poolHandle} {t('earnPage.liquidityMining')}
+          {friendlyFarmName ?? poolHandle} {t('earnPage.liquidityMining')}
         </TYPE.largeHeader>
         <MultipleCurrencyLogo currencies={currencies} size={24} separation={20} margin />
       </RowBetween>
@@ -222,7 +223,7 @@ export default function ManageImpl({
                           {stakedAmount?.toSignificant(6) ?? '-'}
                         </TYPE.white>
                       </AutoColumn>
-                      <TYPE.white>TLP {poolHandle}</TYPE.white>
+                      <TYPE.white>TLP {friendlyFarmName ?? poolHandle}</TYPE.white>
                     </>
                   ) : (
                     // If MasterChefV1, show $ amount as primary text and TLP amount as secondary text
@@ -233,7 +234,7 @@ export default function ManageImpl({
                         </TYPE.white>
                       </AutoColumn>
                       <TYPE.white>
-                        {stakedAmount?.toSignificant(6) ?? '-'} TLP {poolHandle}
+                        {stakedAmount?.toSignificant(6) ?? '-'} TLP {friendlyFarmName ?? poolHandle}
                       </TYPE.white>
                     </>
                   )}

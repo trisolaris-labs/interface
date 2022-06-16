@@ -73,6 +73,7 @@ export type StakingTriFarms = {
   inStaging: boolean
   noTriRewards: boolean
   stableSwapPoolName: StableSwapPoolName | null
+  friendlyFarmName: string | null
 }
 
 export interface ExternalInfo {
@@ -116,7 +117,8 @@ const NULL_POOL: StakingTri = {
   inStaging: false,
   noTriRewards: false,
   earnedNonTriRewards: [],
-  stableSwapPoolName: null
+  stableSwapPoolName: null,
+  friendlyFarmName: null
 }
 const NULL_POOLS = [NULL_POOL]
 
@@ -513,7 +515,8 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0xf4ac19e819f5940E92543B544126E7F20b5f6978',
     allocPoint: 1,
     inStaging: false,
-    stableSwapPoolName: StableSwapPoolName.NUSD_USDC_USDT
+    stableSwapPoolName: StableSwapPoolName.NUSD_USDC_USDT,
+    friendlyFarmName: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].friendlyName
   })
 ]
 
