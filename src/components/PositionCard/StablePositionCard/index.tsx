@@ -19,7 +19,6 @@ import { StableSwapPoolName, STABLESWAP_POOLS } from '../../../state/stableswap/
 import useStablePoolsData from '../../../hooks/useStablePoolsData'
 import { BIG_INT_ZERO } from '../../../constants'
 import { useHistory } from 'react-router-dom'
-import _ from 'lodash'
 import CurrencyLogo from '../../CurrencyLogo'
 import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 
@@ -28,6 +27,7 @@ import { TYPE } from '../../../theme'
 import { HelpCircle } from 'lucide-react'
 import { MouseoverTooltip } from '../../Tooltip'
 import { useWindowSize } from '../../../hooks/useWindowSize'
+import { addCommasToNumber } from '../../../utils'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -97,12 +97,6 @@ font-size: 12px !important;
 `};
 `
 
-const StyledViewDetails = styled(StyledText)`
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-display:none;
-`};
-`
-
 interface PositionCardProps {
   pair: Pair
   showUnwrapped?: boolean
@@ -126,9 +120,8 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   const theme = useContext(ThemeContext)
 
   const [stablePoolData, userData] = useStablePoolsData(poolName)
-  const { disableAddLiquidity, name, tokens, friendlyName } = stablePoolData
+  const { disableAddLiquidity, name, friendlyName } = stablePoolData
   const { address: poolAddress, poolTokens: stablePoolTokens } = STABLESWAP_POOLS[poolName]
-  const poolTokens = tokens.map(({ token }) => token)
 
   const currencies = stablePoolTokens.map(token => unwrappedToken(token))
   const [showMore, setShowMore] = useState(false)
@@ -146,6 +139,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
     push(`${pathname}/remove/${name}`)
   }
 
+  const poolTVL = stablePoolData.totalLocked?.toFixed(0)
   const formattedPoolData = [
     {
       label: 'Virtual Price',
@@ -193,7 +187,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
           </RowFixed>
 
           <RowFixed justify="flex-end" gap="8px">
-            <StyledViewDetails fontWeight={500}>{showMore ? 'Hide Details' : 'View Details'}</StyledViewDetails>
+            <StyledText fontWeight={500}>TVL: {poolTVL != null ? `$${addCommasToNumber(poolTVL)}` : '-'}</StyledText>
             {showMore ? (
               <ChevronUp size="20" style={{ marginLeft: '10px' }} />
             ) : (
