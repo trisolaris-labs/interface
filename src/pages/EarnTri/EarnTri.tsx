@@ -69,6 +69,7 @@ export default function EarnTri() {
                   noTriRewards={farm.noTriRewards}
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
                   friendlyFarmName={farm.friendlyFarmName}
+                  isFeatured
                 />
               )
             )}
@@ -98,6 +99,7 @@ export default function EarnTri() {
                   noTriRewards={farm.noTriRewards}
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
                   friendlyFarmName={farm.friendlyFarmName}
+                  isFeatured
                 />
               ))}
             </PoolSection>
