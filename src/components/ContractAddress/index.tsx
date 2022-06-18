@@ -40,7 +40,6 @@ const ContractAddress = ({ token, address, ...rest }: { token?: Token; address?:
         onBlur={handleMouseLeave}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
-        style={{ marginLeft: '10px' }}
       >
         <StyledTooltip text={isCopied ? 'Copied!' : 'Copy address to clipboard'} placement="top" show={showTooltip}>
           {isCopied ? <Check size={14} /> : <Copy size={14} />}

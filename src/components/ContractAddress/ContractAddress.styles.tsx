@@ -25,6 +25,9 @@ export const StyledContractButton = styled.button`
     background-color: ${({ theme }) => darken(0.1, theme.bg6)};
   }
 
+  display:flex;
+  justify-content:center;
+  align-items:center;
   svg {
     margin-top: 2px;
   }
