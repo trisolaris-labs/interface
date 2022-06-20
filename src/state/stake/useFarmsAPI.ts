@@ -33,7 +33,8 @@ export function useFarmsAPI(): StakingTriFarms[] {
       inStaging,
       stableSwapPoolName,
       earnedNonTriRewards,
-      friendlyFarmName
+      friendlyFarmName,
+      isFeatured
     } = activeFarms[index]
     const { totalStakedInUSD, totalRewardRate, apr: _apr, nonTriAPRs: _nonTriAPRs = [] } =
       stakingInfoData?.[index] ?? {}
@@ -63,7 +64,8 @@ export function useFarmsAPI(): StakingTriFarms[] {
       nonTriAPRs,
       hasNonTriRewards: nonTriAPRs.some(({ apr }) => apr > 0),
       earnedNonTriRewards,
-      friendlyFarmName
+      friendlyFarmName,
+      isFeatured
     }
   })
 
