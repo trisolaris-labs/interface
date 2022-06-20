@@ -106,7 +106,7 @@ export default function ManageImpl({
       chefVersion: chefVersion
     }) ?? {}
 
-  const poolHandle = tokens.map(({ symbol }) => symbol).join('-')
+  const poolHandle = friendlyFarmName ?? tokens.map(({ symbol }) => symbol).join('-')
 
   const handleDepositClick = useCallback(() => {
     if (account) {
@@ -136,7 +136,7 @@ export default function ManageImpl({
     <PageWrapper gap="lg" justify="center">
       <RowBetween style={{ gap: '24px' }}>
         <TYPE.largeHeader>
-          {friendlyFarmName ?? poolHandle} {t('earnPage.liquidityMining')}
+          {poolHandle} {t('earnPage.liquidityMining')}
         </TYPE.largeHeader>
         <MultipleCurrencyLogo currencies={currencies} size={24} separation={20} margin />
       </RowBetween>
@@ -223,7 +223,7 @@ export default function ManageImpl({
                           {stakedAmount?.toSignificant(6) ?? '-'}
                         </TYPE.white>
                       </AutoColumn>
-                      <TYPE.white>TLP {friendlyFarmName ?? poolHandle}</TYPE.white>
+                      <TYPE.white>TLP {poolHandle}</TYPE.white>
                     </>
                   ) : (
                     // If MasterChefV1, show $ amount as primary text and TLP amount as secondary text
@@ -234,7 +234,7 @@ export default function ManageImpl({
                         </TYPE.white>
                       </AutoColumn>
                       <TYPE.white>
-                        {stakedAmount?.toSignificant(6) ?? '-'} TLP {friendlyFarmName ?? poolHandle}
+                        {stakedAmount?.toSignificant(6) ?? '-'} TLP {poolHandle}
                       </TYPE.white>
                     </>
                   )}

@@ -117,8 +117,7 @@ const DefaultPoolCardtri = ({
           <GetTokenLink tokens={tokens} />
           <MultipleCurrencyLogo currencies={currencies} size={20} />
           <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>
-            {friendlyFarmName ??
-              currencies.map((currency, index) => `${currency.symbol}${index < currencies.length - 1 ? '-' : ''}`)}
+            {friendlyFarmName ?? currencies.map(({ symbol }) => symbol).join('-')}
           </ResponsiveCurrencyLabel>
         </PairContainer>
         {isLegacy && !isStaking ? (
