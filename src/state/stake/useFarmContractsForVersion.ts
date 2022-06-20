@@ -1,11 +1,13 @@
 import { ChainId, JSBI, Token, TokenAmount } from '@trisolaris/sdk'
 import { useMasterChefV2ContractForVersion } from './hooks-sushi'
-import { ChefVersions, STAKING, StakingTri, StakingTriStakedAmounts } from './stake-constants'
+import { ChefVersions, dummyToken, STAKING, StakingTri, StakingTriStakedAmounts } from './stake-constants'
 import { useSingleContractMultipleData } from '../multicall/hooks'
 import { useCallback, useMemo } from 'react'
 import { usePairs } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 import { useBlockNumber } from '../application/hooks'
+
+import { STABLESWAP_POOLS } from '../stableswap/constants'
 
 // gets the staking info from the network for the active chain id
 export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTriStakedAmounts[] {
@@ -47,20 +49,26 @@ export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTr
 
     return lpAddresses.map((lpAddress, index) => {
       // User based info
+
       const userStaked = userInfo[index]
       const activeFarmID = getActiveFarmID(lpAddress)
+
+      const stablePoolFarm = activeFarms[activeFarmID].stableSwapPoolName
+      const stablePool = stablePoolFarm ? STABLESWAP_POOLS[stablePoolFarm] : null
+
       const [_pairState, pair] = pairs[index]
 
-      if (isLoading || pair == null) {
+      if (isLoading || (pair == null && !stablePool)) {
         return {
           ID: activeFarmID,
           stakedAmount: null
         }
       }
 
+      const lpToken = stablePool ? stablePool.lpToken : pair?.liquidityToken ?? dummyToken
       // check for account, if no account set to 0
       const userInfoPool = JSBI.BigInt(userStaked?.result?.['amount'] ?? 0)
-      const stakedAmount = new TokenAmount(pair.liquidityToken, JSBI.BigInt(userInfoPool))
+      const stakedAmount = new TokenAmount(lpToken, JSBI.BigInt(userInfoPool))
 
       return {
         ID: activeFarmID,
