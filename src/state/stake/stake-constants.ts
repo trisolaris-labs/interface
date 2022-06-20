@@ -73,6 +73,7 @@ export type StakingTriFarms = {
   inStaging: boolean
   noTriRewards: boolean
   stableSwapPoolName: StableSwapPoolName | null
+  friendlyFarmName: string | null
 }
 
 export interface ExternalInfo {
@@ -116,7 +117,8 @@ const NULL_POOL: StakingTri = {
   inStaging: false,
   noTriRewards: false,
   earnedNonTriRewards: [],
-  stableSwapPoolName: null
+  stableSwapPoolName: null,
+  friendlyFarmName: null
 }
 const NULL_POOLS = [NULL_POOL]
 
@@ -504,6 +506,17 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x71dBEB011EAC90C51b42854A77C45C1E53242698',
     rewarderAddress: '0x9a418aB67F94164EB931344A4EBF1F7bDd3E97aE',
     allocPoint: 1
+  }),
+  createMCV2Pool({
+    ID: 39,
+    poolId: 32,
+    tokens: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].poolTokens,
+    lpAddress: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].lpToken.address,
+    rewarderAddress: '0xf4ac19e819f5940E92543B544126E7F20b5f6978',
+    allocPoint: 1,
+    inStaging: true,
+    stableSwapPoolName: StableSwapPoolName.NUSD_USDC_USDT,
+    friendlyFarmName: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].friendlyName
   })
 ]
 

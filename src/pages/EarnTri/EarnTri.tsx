@@ -68,6 +68,7 @@ export default function EarnTri() {
                   inStaging={farm.inStaging}
                   noTriRewards={farm.noTriRewards}
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
+                  friendlyFarmName={farm.friendlyFarmName}
                 />
               )
             )}
@@ -96,6 +97,7 @@ export default function EarnTri() {
                   inStaging={farm.inStaging}
                   noTriRewards={farm.noTriRewards}
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
+                  friendlyFarmName={farm.friendlyFarmName}
                 />
               ))}
             </PoolSection>
@@ -124,6 +126,7 @@ export default function EarnTri() {
               inStaging={farm.inStaging}
               noTriRewards={farm.noTriRewards}
               isStaking={isTokenAmountPositive(farm.stakedAmount)}
+              friendlyFarmName={farm.friendlyFarmName}
             />
           ))}
         </PoolSection>
@@ -150,6 +153,7 @@ export default function EarnTri() {
                   inStaging={farm.inStaging}
                   noTriRewards={farm.noTriRewards}
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
+                  friendlyFarmName={farm.friendlyFarmName}
                 />
               ))}
             </PoolSection>
@@ -184,6 +188,7 @@ export default function EarnTri() {
                   inStaging={farm.inStaging}
                   noTriRewards={farm.noTriRewards}
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
+                  friendlyFarmName={farm.friendlyFarmName}
                 />
               ))}
             </PoolSection>

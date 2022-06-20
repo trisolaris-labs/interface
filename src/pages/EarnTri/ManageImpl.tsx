@@ -60,7 +60,8 @@ export default function ManageImpl({
     totalRewardRate,
     totalStakedInUSD,
     earnedNonTriRewards,
-    hasNonTriRewards
+    hasNonTriRewards,
+    friendlyFarmName
   } = stakingInfo
   const isDualRewards = chefVersion === ChefVersions.V2
 
@@ -105,7 +106,7 @@ export default function ManageImpl({
       chefVersion: chefVersion
     }) ?? {}
 
-  const poolHandle = tokens.map(({ symbol }) => symbol).join('-')
+  const poolHandle = friendlyFarmName ?? tokens.map(({ symbol }) => symbol).join('-')
 
   const handleDepositClick = useCallback(() => {
     if (account) {

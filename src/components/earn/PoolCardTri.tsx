@@ -45,6 +45,7 @@ export type PoolCardTriProps = {
   version: number
   stableSwapPoolName?: StableSwapPoolName
   nonTriAPRs: NonTriAPR[]
+  friendlyFarmName: string | null
 }
 
 const DefaultPoolCardtri = ({
@@ -61,7 +62,8 @@ const DefaultPoolCardtri = ({
   enableModal = () => null,
   stableSwapPoolName,
   nonTriAPRs,
-  hasNonTriRewards
+  hasNonTriRewards,
+  friendlyFarmName
 }: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
   const history = useHistory()
   const { t } = useTranslation()
@@ -115,7 +117,7 @@ const DefaultPoolCardtri = ({
           <GetTokenLink tokens={tokens} />
           <MultipleCurrencyLogo currencies={currencies} size={20} />
           <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>
-            {currencies.map((currency, index) => `${currency.symbol}${index < currencies.length - 1 ? '-' : ''}`)}
+            {friendlyFarmName ?? currencies.map(({ symbol }) => symbol).join('-')}
           </ResponsiveCurrencyLabel>
         </PairContainer>
         {isLegacy && !isStaking ? (
