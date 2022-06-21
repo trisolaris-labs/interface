@@ -247,7 +247,7 @@ function StakeBox() {
     return (
       <>
         {isStaking && (
-          <div style={{marginBottom: "20px"}}>
+          <div style={{ marginBottom: '20px' }}>
             <TYPE.italic fontSize={14} color={theme.text2} textAlign="left" padding={'12px 0 0 0'}>
               By staking in to pTRI, you will get rewards in USDC/USDT/USN LP tokens, which you can redeem for stable
               coins or stake for more revenue.
@@ -290,6 +290,7 @@ function StakeBox() {
             <TYPE.small>The deposit fee may be modified at any time.</TYPE.small>
           </>
         }
+        placement="bottom"
         show={show}
       >
         <IconWrapper onMouseEnter={open} onMouseLeave={close}>
