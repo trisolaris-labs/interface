@@ -74,6 +74,7 @@ export type StakingTriFarms = {
   noTriRewards: boolean
   stableSwapPoolName: StableSwapPoolName | null
   friendlyFarmName: string | null
+  isFeatured: boolean
 }
 
 export interface ExternalInfo {
@@ -118,7 +119,8 @@ const NULL_POOL: StakingTri = {
   noTriRewards: false,
   earnedNonTriRewards: [],
   stableSwapPoolName: null,
-  friendlyFarmName: null
+  friendlyFarmName: null,
+  isFeatured: false
 }
 const NULL_POOLS = [NULL_POOL]
 
@@ -241,7 +243,8 @@ const AURORA_POOLS: StakingTri[] = [
     tokens: [AURORA[ChainId.AURORA], WETH[ChainId.AURORA]],
     lpAddress: '0x5eeC60F348cB1D661E4A5122CF4638c7DB7A886e',
     rewarderAddress: '0x94669d7a170bfe62FAc297061663e0B48C63B9B5',
-    allocPoint: 1
+    allocPoint: 1,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 8,
@@ -249,7 +252,8 @@ const AURORA_POOLS: StakingTri[] = [
     tokens: [TRI[ChainId.AURORA], AURORA[ChainId.AURORA]],
     lpAddress: '0xd1654a7713617d41A8C9530Fb9B948d00e162194',
     rewarderAddress: '0x78EdEeFdF8c3ad827228d07018578E89Cf159Df1',
-    allocPoint: 1
+    allocPoint: 1,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 9,
@@ -301,7 +305,8 @@ const AURORA_POOLS: StakingTri[] = [
     tokens: [WNEAR[ChainId.AURORA], FLX[ChainId.AURORA]],
     lpAddress: '0x48887cEEA1b8AD328d5254BeF774Be91B90FaA09',
     rewarderAddress: '0x42b950FB4dd822ef04C4388450726EFbF1C3CF63',
-    allocPoint: 1
+    allocPoint: 1,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 16,
@@ -333,7 +338,8 @@ const AURORA_POOLS: StakingTri[] = [
     tokens: [WNEAR[ChainId.AURORA], STNEAR[ChainId.AURORA]],
     lpAddress: '0x47924Ae4968832984F4091EEC537dfF5c38948a4',
     rewarderAddress: '0xf267212F1D8888e0eD20BbB0c7C87A089cDe6E88',
-    allocPoint: 1
+    allocPoint: 1,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 20,
@@ -367,7 +373,8 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x6277f94a69Df5df0Bc58b25917B9ECEFBf1b846A',
     rewarderAddress: '0x170431D69544a1BC97855C6564E8460d39508844',
     allocPoint: 1,
-    inStaging: false
+    inStaging: false,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 24,
@@ -406,7 +413,8 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xbe753E99D0dBd12FB39edF9b884eBF3B1B09f26C',
     rewarderAddress: '0xfe9B7A3bf38cE0CA3D5fA25d371Ff5C6598663d4',
     allocPoint: 1,
-    inStaging: false
+    inStaging: false,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 28,
@@ -415,7 +423,8 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xbC0e71aE3Ef51ae62103E003A9Be2ffDe8421700',
     rewarderAddress: '0x87a03aFA70302a5a0F6156eBEd27f230ABF0e69C',
     allocPoint: 1,
-    inStaging: false
+    inStaging: false,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 29,
@@ -424,7 +433,8 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xbceA13f9125b0E3B66e979FedBCbf7A4AfBa6fd1',
     rewarderAddress: '0x1616B20534d1d1d731C31Ca325F4e909b8f3E0f0',
     allocPoint: 1,
-    inStaging: false
+    inStaging: false,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 30,
@@ -433,7 +443,8 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xBBf3D4281F10E537d5b13CA80bE22362310b2bf9',
     rewarderAddress: '0xDc6d09f5CC085E29972d192cB3AdCDFA6495a741',
     allocPoint: 1,
-    inStaging: false
+    inStaging: false,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 31,
@@ -442,7 +453,8 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x1e0e812FBcd3EB75D8562AD6F310Ed94D258D008',
     rewarderAddress: '0x34c58E960b80217fA3e0323d37563c762a131AD9',
     allocPoint: 1,
-    inStaging: false
+    inStaging: false,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 32,
@@ -451,7 +463,8 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0',
     rewarderAddress: '0x84C8B673ddBF0F647c350dEd488787d3102ebfa3',
     allocPoint: 1,
-    inStaging: false
+    inStaging: false,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 33,
@@ -460,7 +473,8 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x03B666f3488a7992b2385B12dF7f35156d7b29cD',
     rewarderAddress: '0x4e0152b260319e5131f853AeCB92c8f992AA0c97',
     allocPoint: 1,
-    inStaging: false
+    inStaging: false,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 34,
@@ -480,7 +494,8 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x78391f26397A099Ec9cC346A23f856d1284cBd06',
     allocPoint: 1,
     inStaging: false,
-    stableSwapPoolName: StableSwapPoolName.USDC_USDT_USN
+    stableSwapPoolName: StableSwapPoolName.USDC_USDT_USN,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 36,
@@ -497,7 +512,8 @@ const AURORA_POOLS: StakingTri[] = [
     tokens: [TRI[ChainId.AURORA], STNEAR[ChainId.AURORA]],
     lpAddress: '0x120e713AD36eCBff171FC8B7cf19FA8B6f6Ba50C',
     rewarderAddress: '0xD59c44fb39638209ec4ADD6DcD7A230a286055ee',
-    allocPoint: 1
+    allocPoint: 1,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 38,
@@ -505,7 +521,8 @@ const AURORA_POOLS: StakingTri[] = [
     tokens: [WNEAR[ChainId.AURORA], BRRR[ChainId.AURORA]],
     lpAddress: '0x71dBEB011EAC90C51b42854A77C45C1E53242698',
     rewarderAddress: '0x9a418aB67F94164EB931344A4EBF1F7bDd3E97aE',
-    allocPoint: 1
+    allocPoint: 1,
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 39,
@@ -516,7 +533,8 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     inStaging: true,
     stableSwapPoolName: StableSwapPoolName.NUSD_USDC_USDT,
-    friendlyFarmName: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].friendlyName
+    friendlyFarmName: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].friendlyName,
+    isFeatured: true
   })
 ]
 

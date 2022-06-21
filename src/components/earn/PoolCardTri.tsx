@@ -46,6 +46,7 @@ export type PoolCardTriProps = {
   stableSwapPoolName?: StableSwapPoolName
   nonTriAPRs: NonTriAPR[]
   friendlyFarmName: string | null
+  isFeatured?: boolean
 }
 
 const DefaultPoolCardtri = ({
@@ -63,7 +64,8 @@ const DefaultPoolCardtri = ({
   stableSwapPoolName,
   nonTriAPRs,
   hasNonTriRewards,
-  friendlyFarmName
+  friendlyFarmName,
+  isFeatured = false
 }: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
   const history = useHistory()
   const { t } = useTranslation()
@@ -107,7 +109,7 @@ const DefaultPoolCardtri = ({
     <Wrapper
       bgColor1={backgroundColor1}
       bgColor2={backgroundColor2}
-      isDoubleRewards={apr > 0 && hasNonTriRewards}
+      isFeatured={isFeatured}
       currenciesQty={currenciesQty}
     >
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
