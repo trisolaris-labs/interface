@@ -19,7 +19,6 @@ import { BIG_INT_ZERO } from '../../constants'
 import { RowBetween } from '../../components/Row'
 import { AutoColumn } from '../../components/Column'
 import { CardSection, HighlightCard } from '../../components/earn/styled'
-import { LargeHeaderWhite } from './StakeTriV1'
 import AboutContainer from './AboutContainer'
 import PTRIRemittances from './PTRIRemittances'
 
@@ -68,7 +67,9 @@ function StakeTri() {
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
-                <LargeHeaderWhite fontWeight={600}>Migrate to pTRI</LargeHeaderWhite>
+                <TYPE.largeHeader color="white" fontWeight={600}>
+                  Migrate to pTRI
+                </TYPE.largeHeader>
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
