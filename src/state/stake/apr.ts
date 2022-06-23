@@ -4,7 +4,6 @@ import { useFarmsAPI } from './useFarmsAPI'
 import { useActiveWeb3React } from '../../hooks'
 import { ChainId } from '@trisolaris/sdk'
 import { useFarmContractsForVersion } from './useFarmContractsForVersion'
-import { useFarmContractsForStableSwap } from './useFarmContractsForStableSwap'
 
 // gets the staking info from the network for the active chain id
 export function useFarms(): StakingTri[] {

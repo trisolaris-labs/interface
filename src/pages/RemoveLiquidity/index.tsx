@@ -20,10 +20,9 @@ import { ButtonPrimary, ButtonLight, ButtonError, ButtonConfirmed } from '../../
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import MinimalPositionCard from '../../components/PositionCard'
-import Row, { RowBetween, RowFixed } from '../../components/Row'
+import { RowBetween, RowFixed } from '../../components/Row'
 
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
-import useDebouncedChangeHandler from '../../utils/useDebouncedChangeHandler'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { usePairContract } from '../../hooks/useContract'
@@ -441,14 +440,6 @@ export default function RemoveLiquidity({
     currencyA?.symbol
   } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencyB?.symbol}`
 
-  const liquidityPercentChangeCallback = useCallback(
-    (value: number) => {
-      onUserInput(Field.LIQUIDITY_PERCENT, value.toString())
-    },
-    [onUserInput]
-  )
-
-  const oneCurrencyIsAVAX = currencyA === CETH || currencyB === CETH
   const oneCurrencyIsWETH = Boolean(
     chainId &&
       ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||

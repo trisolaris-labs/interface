@@ -37,7 +37,7 @@ function MigrateXtri({ closeModal, xTriBalance }: { closeModal: () => void; xTri
     PTRI[ChainId.AURORA].address
   )
 
-  const { callback: migrateCallback, error: migrationError, migrationStatus } = useMigrateCallback(xTriBalance)
+  const { callback: migrateCallback, migrationStatus } = useMigrateCallback(xTriBalance)
 
   const [pendingTx, setPendingTx] = useState(false)
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false)

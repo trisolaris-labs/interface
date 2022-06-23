@@ -87,8 +87,8 @@ export default function PurchaseForm({ initialValues, onSubmit, onReset, childre
   }
 
   const validateField = (name: string) => {
-    let formErrors = formState.errors
-    let validators = formState.validators[name]
+    const formErrors = formState.errors
+    const validators = formState.validators[name]
     const messages = validators.reduce<string[]>((result, validator) => {
       const value = formState.data[name]
       const err = validator(value)

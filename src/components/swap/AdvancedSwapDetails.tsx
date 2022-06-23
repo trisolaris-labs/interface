@@ -107,7 +107,6 @@ function TradeSummary({
 
 function StableTradeSummary({
   stableswapPriceImpactWithoutFee,
-  allowedSlippage,
   isRoutedViaStableSwap,
   isStableSwapPriceImpactSevere
 }: {

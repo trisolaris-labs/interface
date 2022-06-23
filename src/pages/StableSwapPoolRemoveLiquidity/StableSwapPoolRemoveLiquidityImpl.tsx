@@ -304,7 +304,6 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
             <div>
               <AutoRow justify="flex-start">
                 <StableSwapRemoveLiquidityTokenSelector
-                  stableSwapPoolName={stableSwapPoolName}
                   tokenIndex={withdrawTokenIndex}
                   onSelectTokenIndex={setWithdrawTokenIndex}
                 />

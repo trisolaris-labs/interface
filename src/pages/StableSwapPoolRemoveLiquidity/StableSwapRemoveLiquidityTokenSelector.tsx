@@ -1,28 +1,12 @@
 import React from 'react'
-import styled from 'styled-components'
 import { ButtonOutlined, ButtonSecondary } from '../../components/Button'
-import CurrencyLogo from '../../components/CurrencyLogo'
-import { StableSwapPoolName, STABLESWAP_POOLS } from '../../state/stableswap/constants'
-import { unwrappedToken } from '../../utils/wrappedCurrency'
-
-const CurrencySymbol = styled('span')`
-  margin-left: 4px;
-`
 
 type Props = {
-  stableSwapPoolName: StableSwapPoolName
   tokenIndex: number | null
   onSelectTokenIndex: (value: number | null) => void
 }
 
-export default function StableSwapRemoveLiquidityTokenSelector({
-  stableSwapPoolName,
-  tokenIndex,
-  onSelectTokenIndex
-}: Props) {
-  const { poolTokens } = STABLESWAP_POOLS[stableSwapPoolName]
-  const currencies = poolTokens.map(token => unwrappedToken(token))
-
+export default function StableSwapRemoveLiquidityTokenSelector({ tokenIndex, onSelectTokenIndex }: Props) {
   const AllButton = tokenIndex === null ? ButtonSecondary : ButtonOutlined
 
   return (

@@ -1,4 +1,4 @@
-import { ChainId, Currency, CurrencyAmount, Pair, Token, TokenAmount, Trade } from '@trisolaris/sdk'
+import { Currency, CurrencyAmount, Pair, Token, Trade } from '@trisolaris/sdk'
 import flatMap from 'lodash.flatmap'
 import { useMemo } from 'react'
 

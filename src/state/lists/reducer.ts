@@ -1,12 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { getVersionUpgrade, VersionUpgrade } from '@pangolindex/token-lists'
 import { TokenList } from '@pangolindex/token-lists/dist/types'
-import {
-  DEFAULT_LIST_OF_LISTS,
-  DEFAULT_TOKEN_LIST_URL,
-  STABLECOIN_TOKEN_LIST,
-  AURORA_LIST
-} from '../../constants/lists'
+import { DEFAULT_LIST_OF_LISTS, DEFAULT_TOKEN_LIST_URL, STABLECOIN_TOKEN_LIST } from '../../constants/lists'
 import { updateVersion } from '../global/actions'
 import { acceptListUpdate, addList, fetchTokenList, removeList, selectList, setDefaultList } from './actions'
 
@@ -105,7 +100,7 @@ export default createReducer(initialState, builder =>
         existingSelectedListUrl.push(url)
         state.selectedListUrl = existingSelectedListUrl
       } else {
-        let index = existingSelectedListUrl.indexOf(url)
+        const index = existingSelectedListUrl.indexOf(url)
 
         if (index !== -1) {
           if (existingSelectedListUrl?.length === 1) {
@@ -137,7 +132,7 @@ export default createReducer(initialState, builder =>
       }
 
       const existingList = ([] as string[]).concat(state.selectedListUrl || [])
-      let index = existingList.indexOf(url)
+      const index = existingList.indexOf(url)
 
       if (index !== -1) {
         if (existingList?.length === 1) {

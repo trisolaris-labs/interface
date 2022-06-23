@@ -23,15 +23,6 @@ import useTLP from '../../hooks/useTLP'
 import useCurrencyInputPanel from '../CurrencyInputPanel/useCurrencyInputPanel'
 import { getPairRenderOrder } from '../../utils/pools'
 
-const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
-  display: flex;
-  justify-content: space-between;
-  padding-right: 20px;
-  padding-left: 20px;
-
-  opacity: ${({ dim }) => (dim ? 0.5 : 1)};
-`
-
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
   padding: 1rem;
@@ -45,7 +36,7 @@ interface StakingModalProps {
 }
 
 export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiquidityUnstaked }: StakingModalProps) {
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
   // track and parse user input
   const [typedValue, setTypedValue] = useState('')

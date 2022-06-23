@@ -10,7 +10,6 @@ import ProgressCircles from '../ProgressSteps'
 import CurrencyInputPanel from '../CurrencyInputPanel'
 import { TokenAmount, Pair } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { useBridgeMigratorContract, usePairContract } from '../../hooks/useContract'
 import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
 import { splitSignature } from 'ethers/lib/utils'
@@ -20,7 +19,6 @@ import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
 import { useTranslation } from 'react-i18next'
 import { BRIDGE_MIGRATOR_ADDRESS } from '../../constants'
-import { divideCurrencyAmountByNumber } from '../../utils'
 import useCurrencyInputPanel from '../CurrencyInputPanel/useCurrencyInputPanel'
 
 const ContentWrapper = styled(AutoColumn)`
@@ -198,7 +196,7 @@ export default function BridgeMigratorModal({
           deadline: deadline.toNumber()
         })
       })
-      .catch(error => {
+      .catch(_error => {
         // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
         // if (error?.code !== 4001) {
         //   approveCallback()

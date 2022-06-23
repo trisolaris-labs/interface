@@ -1,5 +1,5 @@
 import React from 'react'
-import { JSBI, Price, Trade } from '@trisolaris/sdk'
+import { JSBI, Trade } from '@trisolaris/sdk'
 import { useContext } from 'react'
 import { Repeat } from 'react-feather'
 import { Text } from 'rebass'

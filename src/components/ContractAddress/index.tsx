@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Token } from '@trisolaris/sdk'
-import { Text } from 'rebass'
 import { Copy, Check } from 'lucide-react'
 
 import useCopyClipboard from '../../hooks/useCopyClipboard'

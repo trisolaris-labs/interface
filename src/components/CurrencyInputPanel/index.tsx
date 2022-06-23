@@ -16,7 +16,6 @@ import { useTranslation } from 'react-i18next'
 import { StableSwapSearchProps } from '../SearchModal/CurrencySearch'
 import BalanceButton, { Props as BalanceButtonProps } from '../BalanceButton'
 import BalanceButtonValueEnum from '../BalanceButton/BalanceButtonValueEnum'
-import { StableSwapPoolName } from '../../state/stableswap/constants'
 import DoubleCurrencyLogo from '../DoubleLogo'
 
 const InputRow = styled.div<{ selected: boolean }>`

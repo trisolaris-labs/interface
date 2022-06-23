@@ -6,6 +6,12 @@ coverage
 # Ignore all HTML files:
 *.html
 
+# Ignore all JSON files:
+*.json
+
+# Ignore generated tokens file
+src/constants/tokens/index.ts
+
 # *.test.ts
 *.svg
 

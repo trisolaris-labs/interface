@@ -1,4 +1,3 @@
-import React from 'react'
 import { CurrencyAmount, JSBI, Token, TokenAmount } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../constants'
 

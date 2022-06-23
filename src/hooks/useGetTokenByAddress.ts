@@ -2,7 +2,6 @@ import { Token, ChainId } from '@trisolaris/sdk'
 import _ from 'lodash'
 import { useCallback } from 'react'
 import { useAllTokens } from './Tokens'
-import React from 'react'
 
 export default function useGetTokenByAddress(): (address: string) => Token {
   const allTokens = useAllTokens()
