@@ -38,12 +38,12 @@ type EstimatedStableSwapCall = SuccessfulCall | FailedCall
 /**
  * Returns the swap calls that can be used to make the trade
  * @param trade trade to execute
- * @param allowedSlippage user allowed slippage
+ * @param _allowedSlippage user allowed slippage
  * @param recipientAddressOrName
  */
 function useStableSwapCallArguments(
   trade: StableSwapTrade | undefined, // trade to execute, required
-  allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE // in bips
+  _allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE // in bips
 ): StableSwapCall[] {
   let deadline = useTransactionDeadline()
 

@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { ChainId } from '@trisolaris/sdk'
 
-import { AutoColumn } from '../../components/Column'
 import { FixedHeightRow } from '../../components/PositionCard/PositionCard.styles'
 import { RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'

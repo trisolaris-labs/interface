@@ -121,10 +121,6 @@ export function useChefContract(chef: Chef) {
   }, [contracts, chef])
 }
 
-const CHEFS = {
-  [ChainId.AURORA]: [Chef.MASTERCHEF]
-}
-
 export function useChefContracts(chefs: Chef[]) {
   const masterChefContract = useMasterChefContract()
   const contracts = useMemo(

@@ -27,7 +27,7 @@ export default function Footer() {
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400}>
-              You'll receive
+              You{`&apos;`}ll receive
             </TYPE.black>
             <QuestionHelper text={'Premium'} />
           </RowFixed>

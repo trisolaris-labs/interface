@@ -2,7 +2,7 @@ import { ChainId } from '@trisolaris/sdk'
 import { STAKING, StakingTriFarms, tokenAmount } from './stake-constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useFetchStakingInfoData } from '../../fetchers/farms'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 
 // gets the staking info from the network for the active chain id
 export function useFarmsAPI(): StakingTriFarms[] {

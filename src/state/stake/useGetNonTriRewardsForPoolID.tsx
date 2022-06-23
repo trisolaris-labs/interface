@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { ChainId, TokenAmount, JSBI } from '@trisolaris/sdk'
 import _ from 'lodash'
 import { useActiveWeb3React } from '../../hooks'

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'
 import { useTranslation } from 'react-i18next'
-import { NavLink, Link as HistoryLink, useHistory } from 'react-router-dom'
+import { NavLink, Link as HistoryLink } from 'react-router-dom'
 import Settings from '../../components/Settings'
 
 import { ArrowLeft } from 'react-feather'

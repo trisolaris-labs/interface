@@ -1,4 +1,3 @@
-import { Pair } from '@trisolaris/sdk'
 import { darken } from 'polished'
 import React, { useState, useContext } from 'react'
 import { Text } from 'rebass'
@@ -13,7 +12,6 @@ import { useColorWithDefault } from '../../../hooks/useColor'
 import Card, { LightCard } from '../../Card'
 import { AutoColumn } from '../../Column'
 import { AutoRow, RowBetween, RowFixed } from '../../Row'
-import { useTranslation } from 'react-i18next'
 
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../../../state/stableswap/constants'
 import useStablePoolsData from '../../../hooks/useStablePoolsData'
@@ -97,12 +95,6 @@ font-size: 12px !important;
 `};
 `
 
-interface PositionCardProps {
-  pair: Pair
-  showUnwrapped?: boolean
-  border?: string
-}
-
 interface StablePositionCardProps {
   poolName: StableSwapPoolName
   showUnwrapped?: boolean
@@ -110,7 +102,6 @@ interface StablePositionCardProps {
 }
 
 export default function FullStablePositionCard({ poolName, border }: StablePositionCardProps) {
-  const { t } = useTranslation()
   const {
     location: { pathname },
     push

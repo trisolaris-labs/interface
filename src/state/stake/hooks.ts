@@ -1,5 +1,4 @@
 import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WETH } from '@trisolaris/sdk'
-import { BIG_INT_ZERO } from '../../constants'
 import { USDT, WBTC } from '../../constants/tokens'
 import { useActiveWeb3React } from '../../hooks'
 import { tryParseAmount } from '../swap/hooks'
@@ -93,55 +92,6 @@ export interface StakingInfo {
     totalStakedAmount: TokenAmount,
     totalRewardRate: TokenAmount
   ) => TokenAmount
-}
-
-const calculateTotalStakedAmountInAvaxFromPng = function(
-  amountStaked: JSBI,
-  amountAvailable: JSBI,
-  avaxPngPairReserveOfPng: JSBI,
-  avaxPngPairReserveOfWavax: JSBI,
-  reserveInPng: JSBI
-): TokenAmount {
-  if (JSBI.EQ(amountAvailable, BIG_INT_ZERO)) {
-    return new TokenAmount(WETH[ChainId.AVALANCHE], BIG_INT_ZERO)
-  }
-
-  const oneToken = JSBI.BigInt(1000000000000000000)
-  const avaxPngRatio = JSBI.divide(JSBI.multiply(oneToken, avaxPngPairReserveOfWavax), avaxPngPairReserveOfPng)
-  const valueOfPngInAvax = JSBI.divide(JSBI.multiply(reserveInPng, avaxPngRatio), oneToken)
-
-  return new TokenAmount(
-    WETH[ChainId.AVALANCHE],
-    JSBI.divide(
-      JSBI.multiply(
-        JSBI.multiply(amountStaked, valueOfPngInAvax),
-        JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
-      ),
-      amountAvailable
-    )
-  )
-}
-
-const calculateTotalStakedAmountInAvax = function(
-  amountStaked: JSBI,
-  amountAvailable: JSBI,
-  reserveInWavax: JSBI
-): TokenAmount {
-  if (JSBI.GT(amountAvailable, 0)) {
-    // take the total amount of LP tokens staked, multiply by AVAX value of all LP tokens, divide by all LP tokens
-    return new TokenAmount(
-      WETH[ChainId.AVALANCHE],
-      JSBI.divide(
-        JSBI.multiply(
-          JSBI.multiply(amountStaked, reserveInWavax),
-          JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the wavax they entitle owner to
-        ),
-        amountAvailable
-      )
-    )
-  } else {
-    return new TokenAmount(WETH[ChainId.AVALANCHE], BIG_INT_ZERO)
-  }
 }
 
 // based on typed value

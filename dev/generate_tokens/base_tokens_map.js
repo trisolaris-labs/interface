@@ -107,5 +107,5 @@ module.exports = {
       'PAD',
       'SmartPad token'
     )
-  },
+  }
 }

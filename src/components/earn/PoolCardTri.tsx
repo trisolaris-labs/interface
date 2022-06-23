@@ -63,7 +63,6 @@ const DefaultPoolCardtri = ({
   enableModal = () => null,
   stableSwapPoolName,
   nonTriAPRs,
-  hasNonTriRewards,
   friendlyFarmName,
   isFeatured = false
 }: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {

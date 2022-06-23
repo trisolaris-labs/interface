@@ -5,9 +5,8 @@ import contenthashToUri from './contenthashToUri'
 import { parseENSAddress } from './parseENSAddress'
 import uriToHttp from './uriToHttp'
 
-import schema from "../constants/tokens/tokenListValidationSchema.json"
+import schema from '../constants/tokens/tokenListValidationSchema.json'
 const tokenListValidator = new Ajv({ allErrors: true }).compile(schema)
-
 
 /**
  * Contains the logic for resolving a list URL to a validated token list

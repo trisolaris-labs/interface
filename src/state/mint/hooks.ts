@@ -52,7 +52,7 @@ export function useDerivedMintInfo(
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
 
   // error handling
-  let insufficientInput: boolean = false
+  let insufficientInput = false
 
   // tokens
   const currencies: { [field in Field]?: Currency } = useMemo(

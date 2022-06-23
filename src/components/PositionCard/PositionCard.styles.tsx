@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { darken } from 'polished'
 
-import { RowBetween } from "../Row"
+import { RowBetween } from '../Row'
 import Card, { LightCard } from '../Card'
 import { ButtonEmpty } from '../Button'
 
