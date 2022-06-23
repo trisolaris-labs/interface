@@ -268,22 +268,14 @@ export default function Swap() {
 
   const disableTradingUntilStableSwapRateIsCalculated = isStableSwap && isLoadingSwapResponse
 
-  const hasPriceImpact = isStableSwapHighPriceImpact(stableswapPriceImpact)
-
-  const stableswapPriceImpactWithoutFee = useMemo(
-    () =>
-      hasPriceImpact
-        ? new Percent(
-            JSBI.multiply(JSBI.BigInt(-1), stableswapPriceImpact),
-            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
-          )
-        : new Percent('0'),
-    [hasPriceImpact, stableswapPriceImpact]
+  const stableswapPriceImpactWithoutFee = new Percent(
+    JSBI.multiply(JSBI.BigInt(-1), stableswapPriceImpact),
+    JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
   )
 
   // warnings on slippage
   const defaultswapPriceImpactSeverity = warningSeverity(defaultswapPriceImpactWithoutFee)
-  const isStableSwapPriceImpactSevere = stableswapPriceImpactWithoutFee.greaterThan(PRICE_IMPACT_ERROR_THRESHOLD)
+  const isStableSwapPriceImpactSevere = isStableSwapHighPriceImpact(stableswapPriceImpact)
 
   const handleSwap = useCallback(() => {
     if (
