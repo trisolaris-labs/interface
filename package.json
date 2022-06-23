@@ -114,7 +114,7 @@
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "clean": "rm -rf node_modules && yarn install",
     "predeploy": "yarn clean && yarn build",
-    "deploy": "gh-pages -d build && yarn increment-version",
+    "deploy": "gh-pages -d build",
     "deploy-staging": "gcloud app deploy --project=trisolaris-ad-hoc",
     "increment-version": "npm version patch ; git push origin",
     "test": "jest --testPathPattern=/__tests__/",
