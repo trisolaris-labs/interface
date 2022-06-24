@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 
-import { StyledMenuButton } from '../../components/StyledMenu'
-
 export const WarningWrapper = styled.div`
   max-width: 420px;
   width: 100%;
@@ -45,11 +43,6 @@ export const HeadingContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
-
-export const StyledMetamaskButton = styled(StyledMenuButton)`
-  width: 35px;
-  margin-right: 10px;
 `
 
 export const HeaderButtonsContainer = styled.div`

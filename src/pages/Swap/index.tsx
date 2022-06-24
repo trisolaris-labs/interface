@@ -63,15 +63,12 @@ import {
   SwapContainer,
   IconContainer,
   HeadingContainer,
-  StyledMetamaskButton,
   HeaderButtonsContainer
 } from './Swap.styles'
 import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
 
-import MetamaskIcon from '../../assets/images/metamask.png'
-import { registerToken } from '../../utils/wallet'
-
+import AddToMetamaskButton from '../../components/AddToMetamask'
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
@@ -94,7 +91,7 @@ export default function Swap() {
     setDismissTokenWarning(true)
   }, [])
 
-  const { account, library } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -441,19 +438,7 @@ export default function Swap() {
                 <HeadingContainer>
                   <TYPE.largeHeader>Swap</TYPE.largeHeader>
                   <HeaderButtonsContainer>
-                    {library?.provider?.isMetaMask && currencies[Field.OUTPUT] && (
-                      <StyledMetamaskButton
-                        onClick={() => {
-                          registerToken(
-                            (currencies[Field.OUTPUT] as Token).address,
-                            currencies[Field.OUTPUT]?.symbol!,
-                            currencies[Field.OUTPUT]?.decimals!
-                          )
-                        }}
-                      >
-                        <img src={MetamaskIcon} alt={'Metamask logo'} style={{ width: '100%' }} />
-                      </StyledMetamaskButton>
-                    )}
+                    {currencies.OUTPUT && <AddToMetamaskButton token={currencies.OUTPUT as Token} />}
                     <Settings />
                   </HeaderButtonsContainer>
                 </HeadingContainer>
