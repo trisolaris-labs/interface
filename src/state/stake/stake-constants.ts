@@ -34,7 +34,8 @@ import {
   BRRR
 } from '../../constants/tokens'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
-import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
+import { MASTERCHEF_ADDRESS_V1 } from './hooks-sushi'
+import { NULL_POOL, createMCV1Pool, createMCV2Pool } from './pools/utils'
 
 export enum ChefVersions {
   V1,
@@ -93,36 +94,36 @@ export const dummyToken = new Token(ChainId.AURORA, ZERO_ADDRESS, 18, 'ZERO', 'Z
 
 const dummyAmount = new TokenAmount(dummyToken, '0')
 
-const NULL_POOL: StakingTri = {
-  ID: 0,
-  poolId: 0,
-  tokens: [
-    new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'ZERO'),
-    new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
-  ],
-  stakingRewardAddress: ZERO_ADDRESS,
-  lpAddress: ZERO_ADDRESS,
-  rewarderAddress: '',
-  isPeriodFinished: false,
-  stakedAmount: dummyAmount,
-  earnedAmount: dummyAmount,
-  totalStakedAmount: dummyAmount,
-  totalStakedInUSD: 0,
-  allocPoint: 0,
-  totalRewardRate: 1,
-  rewardRate: dummyAmount,
-  apr: 0,
-  nonTriAPRs: [],
-  chefVersion: ChefVersions.V1,
-  hasNonTriRewards: false,
-  inStaging: false,
-  noTriRewards: false,
-  earnedNonTriRewards: [],
-  stableSwapPoolName: null,
-  friendlyFarmName: null,
-  isFeatured: false
-}
-const NULL_POOLS = [NULL_POOL]
+// const NULL_POOL: StakingTri = {
+//   ID: 0,
+//   poolId: 0,
+//   tokens: [
+//     new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'ZERO'),
+//     new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'ZERO', 'ZERO')
+//   ],
+//   stakingRewardAddress: ZERO_ADDRESS,
+//   lpAddress: ZERO_ADDRESS,
+//   rewarderAddress: '',
+//   isPeriodFinished: false,
+//   stakedAmount: dummyAmount,
+//   earnedAmount: dummyAmount,
+//   totalStakedAmount: dummyAmount,
+//   totalStakedInUSD: 0,
+//   allocPoint: 0,
+//   totalRewardRate: 1,
+//   rewardRate: dummyAmount,
+//   apr: 0,
+//   nonTriAPRs: [],
+//   chefVersion: ChefVersions.V1,
+//   hasNonTriRewards: false,
+//   inStaging: false,
+//   noTriRewards: false,
+//   earnedNonTriRewards: [],
+//   stableSwapPoolName: null,
+//   friendlyFarmName: null,
+//   isFeatured: false
+// }
+// const NULL_POOLS = [NULL_POOL]
 
 /**
  * Creates a pool
@@ -134,35 +135,35 @@ function createPool(...poolData: Partial<StakingTri>[]): StakingTri {
   return _.defaultsDeep({}, ...poolData, NULL_POOL)
 }
 
-type TCreateMCPool = Omit<Partial<StakingTri>, 'stakingRewardAddress' | 'chefVersion'>
+// type TCreateMCPool = Omit<Partial<StakingTri>, 'stakingRewardAddress' | 'chefVersion'>
 
-/**
- * Creates a MasterChefV1 pool
- * Only set properties that are different than the `NULL_POOL`
- * @param poolData
- * @returns StakingTri
- */
-function createMCV1Pool(poolData: TCreateMCPool): StakingTri {
-  const masterchefV1Props = {
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V1[ChainId.AURORA],
-    chefVersion: ChefVersions.V1
-  }
-  return createPool(poolData, masterchefV1Props, NULL_POOL)
-}
+// /**
+//  * Creates a MasterChefV1 pool
+//  * Only set properties that are different than the `NULL_POOL`
+//  * @param poolData
+//  * @returns StakingTri
+//  */
+// function createMCV1Pool(poolData: TCreateMCPool): StakingTri {
+//   const masterchefV1Props = {
+//     stakingRewardAddress: MASTERCHEF_ADDRESS_V1[ChainId.AURORA],
+//     chefVersion: ChefVersions.V1
+//   }
+//   return createPool(poolData, masterchefV1Props, NULL_POOL)
+// }
 
-/**
- * Creates a MasterChefV2 pool
- * Only set properties that are different than the `NULL_POOL`
- * @param poolData
- * @returns StakingTri
- */
-function createMCV2Pool(poolData: TCreateMCPool): StakingTri {
-  const masterchefV2Props = {
-    stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
-    chefVersion: ChefVersions.V2
-  }
-  return createPool(poolData, masterchefV2Props, NULL_POOL)
-}
+// /**
+//  * Creates a MasterChefV2 pool
+//  * Only set properties that are different than the `NULL_POOL`
+//  * @param poolData
+//  * @returns StakingTri
+//  */
+// function createMCV2Pool(poolData: TCreateMCPool): StakingTri {
+//   const masterchefV2Props = {
+//     stakingRewardAddress: MASTERCHEF_ADDRESS_V2[ChainId.AURORA],
+//     chefVersion: ChefVersions.V2
+//   }
+//   return createPool(poolData, masterchefV2Props, NULL_POOL)
+// }
 
 export const rewardsPerSecond = JSBI.BigInt('10000000000000000000')
 export const totalAllocPoints = JSBI.BigInt('5')
