@@ -18,6 +18,10 @@ const StyledMetamaskButton = styled(StyledMenuButton)`
 function AddToMetamaskButton({ token }: { token: Token }) {
   const { library } = useActiveWeb3React()
 
+  if (!token) {
+    return null
+  }
+  
   const { symbol, address, decimals } = token
   return library?.provider?.isMetaMask ? (
     <StyledMetamaskButton onClick={() => registerToken(address, symbol!, decimals)}>
