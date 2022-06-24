@@ -3,6 +3,7 @@ import { Token } from '@trisolaris/sdk'
 import styled from 'styled-components'
 
 import { StyledMenuButton } from '../../components/StyledMenu'
+import { MouseoverTooltip } from '../Tooltip'
 
 import { useActiveWeb3React } from '../../hooks'
 
@@ -21,12 +22,14 @@ function AddToMetamaskButton({ token }: { token: Token }) {
   if (!token) {
     return null
   }
-  
+
   const { symbol, address, decimals } = token
   return library?.provider?.isMetaMask ? (
-    <StyledMetamaskButton onClick={() => registerToken(address, symbol!, decimals)}>
-      <img src={MetamaskIcon} alt={'Metamask logo'} style={{ width: '100%' }} />
-    </StyledMetamaskButton>
+    <MouseoverTooltip text={`Add ${symbol} to Metamask`}>
+      <StyledMetamaskButton onClick={() => registerToken(address, symbol!, decimals)}>
+        <img src={MetamaskIcon} alt={'Metamask logo'} style={{ width: '100%' }} />
+      </StyledMetamaskButton>
+    </MouseoverTooltip>
   ) : null
 }
 
