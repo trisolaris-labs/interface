@@ -43,7 +43,7 @@ import {
 } from '../../state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import useENS from '../../hooks/useENS'
-import { useIsSelectedAEBToken } from '../../state/lists/hooks'
+import { useIsSelectedAEBToken, WrappedTokenInfo } from '../../state/lists/hooks'
 
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 
@@ -57,9 +57,20 @@ import {
 
 import { ClickableText, Dots } from '../Pool/styleds'
 import { LinkStyledButton, TYPE } from '../../theme'
-import { WarningWrapper, Root, SwapContainer, IconContainer, HeadingContainer } from './Swap.styles'
+import {
+  WarningWrapper,
+  Root,
+  SwapContainer,
+  IconContainer,
+  HeadingContainer,
+  StyledMetamaskButton,
+  HeaderButtonsContainer
+} from './Swap.styles'
 import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
+
+import MetamaskIcon from '../../assets/images/metamask.png'
+import { registerToken } from '../../utils/wallet'
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -83,7 +94,7 @@ export default function Swap() {
     setDismissTokenWarning(true)
   }, [])
 
-  const { account } = useActiveWeb3React()
+  const { account, library } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -429,7 +440,22 @@ export default function Swap() {
               <AutoColumn gap={'md'}>
                 <HeadingContainer>
                   <TYPE.largeHeader>Swap</TYPE.largeHeader>
-                  <Settings />
+                  <HeaderButtonsContainer>
+                    {library?.provider?.isMetaMask && currencies[Field.OUTPUT] && (
+                      <StyledMetamaskButton
+                        onClick={() => {
+                          registerToken(
+                            (currencies[Field.OUTPUT] as Token).address,
+                            currencies[Field.OUTPUT]?.symbol!,
+                            currencies[Field.OUTPUT]?.decimals!
+                          )
+                        }}
+                      >
+                        <img src={MetamaskIcon} alt={'Metamask logo'} style={{ width: '100%' }} />
+                      </StyledMetamaskButton>
+                    )}
+                    <Settings />
+                  </HeaderButtonsContainer>
                 </HeadingContainer>
 
                 <CurrencyInputPanel
