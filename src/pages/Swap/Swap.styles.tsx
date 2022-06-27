@@ -44,3 +44,7 @@ export const HeadingContainer = styled.div`
   align-items: center;
   justify-content: space-between;
 `
+
+export const HeaderButtonsContainer = styled.div`
+  display: flex;
+`

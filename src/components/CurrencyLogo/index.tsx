@@ -7,7 +7,7 @@ import { WrappedTokenInfo } from '../../state/lists/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import Logo from '../Logo'
 
-const getTokenLogoURL = (address: string) => {
+export const getTokenLogoURL = (address: string) => {
   return [
     `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${address}/logo.svg`,
     `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${address}/logo.png`

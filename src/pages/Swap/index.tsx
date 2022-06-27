@@ -43,7 +43,7 @@ import {
 } from '../../state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import useENS from '../../hooks/useENS'
-import { useIsSelectedAEBToken } from '../../state/lists/hooks'
+import { useIsSelectedAEBToken, WrappedTokenInfo } from '../../state/lists/hooks'
 
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 
@@ -57,10 +57,18 @@ import {
 
 import { ClickableText, Dots } from '../Pool/styleds'
 import { LinkStyledButton, TYPE } from '../../theme'
-import { WarningWrapper, Root, SwapContainer, IconContainer, HeadingContainer } from './Swap.styles'
+import {
+  WarningWrapper,
+  Root,
+  SwapContainer,
+  IconContainer,
+  HeadingContainer,
+  HeaderButtonsContainer
+} from './Swap.styles'
 import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
 
+import AddToMetamaskButton from '../../components/AddToMetamask'
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
@@ -429,7 +437,10 @@ export default function Swap() {
               <AutoColumn gap={'md'}>
                 <HeadingContainer>
                   <TYPE.largeHeader>Swap</TYPE.largeHeader>
-                  <Settings />
+                  <HeaderButtonsContainer>
+                    {currencies.OUTPUT && <AddToMetamaskButton token={currencies.OUTPUT as Token} />}
+                    <Settings />
+                  </HeaderButtonsContainer>
                 </HeadingContainer>
 
                 <CurrencyInputPanel
