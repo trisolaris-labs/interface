@@ -13,10 +13,15 @@ import MetamaskIcon from '../../assets/images/metamask.png'
 
 const StyledMetamaskButton = styled(StyledMenuButton)`
   width: 35px;
-  margin-right: 10px;
+`
+const StyledMetamaskImg = styled.img`
+  width: 20px;
+  :hover {
+    cursor: pointer;
+  }
 `
 
-function AddToMetamaskButton({ token }: { token: Token }) {
+function AddToMetamaskButton({ token, noBackground, ...otherProps }: { token: Token; noBackground?: boolean }) {
   const { library } = useActiveWeb3React()
 
   if (!token) {
@@ -24,11 +29,21 @@ function AddToMetamaskButton({ token }: { token: Token }) {
   }
 
   const { symbol, address, decimals } = token
+
   return library?.provider?.isMetaMask ? (
     <MouseoverTooltip text={`Add ${symbol} to Metamask`}>
-      <StyledMetamaskButton onClick={() => registerToken(address, symbol!, decimals)}>
-        <img src={MetamaskIcon} alt={'Metamask logo'} style={{ width: '100%' }} />
-      </StyledMetamaskButton>
+      {noBackground ? (
+        <StyledMetamaskImg
+          src={MetamaskIcon}
+          alt={'Metamask logo'}
+          onClick={() => registerToken(address, symbol!, decimals)}
+          {...otherProps}
+        />
+      ) : (
+        <StyledMetamaskButton onClick={() => registerToken(address, symbol!, decimals)} {...otherProps}>
+          <img src={MetamaskIcon} alt={'Metamask logo'} style={{ width: '100%' }} />
+        </StyledMetamaskButton>
+      )}
     </MouseoverTooltip>
   ) : null
 }
