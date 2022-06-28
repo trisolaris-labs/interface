@@ -19,7 +19,8 @@ import {
   ETHERNAL,
   WBTC,
   ORBITAL,
-  SMARTPAD
+  SMARTPAD,
+  USP
 } from './tokens'
 
 export const GAS_PRICE = 250
@@ -249,7 +250,8 @@ export const TOKEN_WARNING_MODAL_ALLOWLIST = new Set(
     ETHERNAL[ChainId.AURORA],
     ORBITAL[ChainId.AURORA],
     SMARTPAD[ChainId.AURORA],
-    WNEAR[ChainId.AURORA]
+    WNEAR[ChainId.AURORA],
+    USP[ChainId.AURORA]
   ].map(({ address }) => address.toLowerCase())
 )
 
