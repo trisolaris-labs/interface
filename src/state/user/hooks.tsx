@@ -14,7 +14,8 @@ import {
   updateUserExpertMode,
   updateUserSlippageTolerance,
   toggleURLWarning,
-  toggleFilterActiveFarms
+  toggleFilterActiveFarms,
+  toggleFarmsView
 } from './actions'
 
 import { AppDispatch, AppState } from '../index'
@@ -232,4 +233,13 @@ export function useIsFilterActiveFarms(): boolean {
 export function useToggleFilterActiveFarms(): () => void {
   const dispatch = useDispatch()
   return useCallback(() => dispatch(toggleFilterActiveFarms()), [dispatch])
+}
+
+export function useIsFarmsGridView(): boolean {
+  return useSelector((state: AppState) => state.user.farmsGridView)
+}
+
+export function useToggleFarmsView(): () => void {
+  const dispatch = useDispatch()
+  return useCallback(() => dispatch(toggleFarmsView()), [dispatch])
 }

@@ -10,10 +10,9 @@ export const TopSection = styled(AutoColumn)`
   width: 100%;
 `
 
-export const PoolSection = styled.div`
+export const PoolSection = styled.div<{ gridView: boolean }>`
   display: grid;
-  // grid-template-columns: 1fr 1fr;
-  grid-template-columns: 1fr;
+  grid-template-columns: ${({ gridView }) => (gridView ? '1fr 1fr' : '1fr')};
   gap: 20px;
   width: 100%;
   justify-self: center;

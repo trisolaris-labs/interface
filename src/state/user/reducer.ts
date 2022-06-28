@@ -14,7 +14,8 @@ import {
   updateUserSlippageTolerance,
   updateUserDeadline,
   toggleURLWarning,
-  toggleFilterActiveFarms
+  toggleFilterActiveFarms,
+  toggleFarmsView
 } from './actions'
 
 const currentTimestamp = () => new Date().getTime()
@@ -50,6 +51,7 @@ export interface UserState {
   timestamp: number
   URLWarningVisible: boolean
   filterActiveFarms: boolean
+  farmsGridView: boolean
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -66,7 +68,8 @@ export const initialState: UserState = {
   pairs: {},
   timestamp: currentTimestamp(),
   URLWarningVisible: true,
-  filterActiveFarms: false
+  filterActiveFarms: false,
+  farmsGridView: true
 }
 
 export default createReducer(initialState, builder =>
@@ -140,6 +143,10 @@ export default createReducer(initialState, builder =>
     })
     .addCase(toggleFilterActiveFarms, state => {
       state.filterActiveFarms = !state.filterActiveFarms
+      state.timestamp = currentTimestamp()
+    })
+    .addCase(toggleFarmsView, state => {
+      state.farmsGridView = !state.farmsGridView
       state.timestamp = currentTimestamp()
     })
 )

@@ -10,6 +10,8 @@ import useFarmsSortAndFilter from './useFarmsSortAndFilter'
 import styled from 'styled-components'
 import Toggle from '../../components/Toggle'
 
+import { useIsFarmsGridView, useToggleFarmsView } from '../../state/user/hooks'
+
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
 const TitleRow = styled(DataRow)`
@@ -21,6 +23,9 @@ const TitleRow = styled(DataRow)`
 
 export default function EarnTri() {
   const [showLegacyFarms, setShowLegacyFarms] = useState(false)
+  const farmsGridView = useIsFarmsGridView()
+  const toggleFarmsView = useToggleFarmsView()
+
   const {
     activeFarmsFilter,
     dualRewardPools,
@@ -45,13 +50,20 @@ export default function EarnTri() {
         sortBy={sortBy}
       />
 
+      <Toggle
+        customToggleText={{ on: 'Grid', off: 'List' }}
+        isActive={farmsGridView}
+        toggle={() => toggleFarmsView()}
+        fontSize="12px"
+      />
+
       {!hasSearchQuery && !activeFarmsFilter && (
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Stable Pools</TYPE.mediumHeader>
           </DataRow>
 
-          <PoolSection>
+          <PoolSection gridView={farmsGridView}>
             {stablePoolFarms.map(farm =>
               farm.stableSwapPoolName == null ? null : (
                 <MemoizedPoolCardTRI
@@ -83,7 +95,7 @@ export default function EarnTri() {
             <DataRow style={{ alignItems: 'baseline' }}>
               <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Dual Rewards Pools</TYPE.mediumHeader>
             </DataRow>
-            <PoolSection>
+            <PoolSection gridView={farmsGridView}>
               {dualRewardPools.map(farm => (
                 <MemoizedPoolCardTRI
                   key={farm.ID}
@@ -113,7 +125,7 @@ export default function EarnTri() {
           </DataRow>
         )}
 
-        <PoolSection>
+        <PoolSection gridView={farmsGridView}>
           {filteredFarms.map(farm => (
             <MemoizedPoolCardTRI
               key={farm.ID}
@@ -141,7 +153,7 @@ export default function EarnTri() {
               <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Ecosystem Pools</TYPE.mediumHeader>
             </DataRow>
 
-            <PoolSection>
+            <PoolSection gridView={farmsGridView}>
               {nonTriFarms.map(farm => (
                 <MemoizedPoolCardTRI
                   key={farm.ID}
@@ -175,7 +187,7 @@ export default function EarnTri() {
             />
           </TitleRow>
           {showLegacyFarms ? (
-            <PoolSection>
+            <PoolSection gridView={farmsGridView}>
               {legacyFarms.map(farm => (
                 <MemoizedPoolCardTRI
                   key={farm.ID}
