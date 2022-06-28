@@ -10,6 +10,7 @@ import { ButtonGold } from '../../Button'
 import { AutoRow, RowBetween } from '../../Row'
 import ClaimRewardModal from './ClaimRewardModalTri'
 import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
+import CompactPoolCardTri from './CompactPoolCardTri'
 
 import { ChefVersions, NonTriAPR } from '../../../state/stake/stake-constants'
 import { useSingleFarm } from '../../../state/stake/user-farms'
@@ -173,7 +174,8 @@ const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
           stakingInfo={stakingInfo}
         />
       )}
-      <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+      <CompactPoolCardTri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+      {/* <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} /> */}
     </>
   )
 }
@@ -198,7 +200,8 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
           stakingInfo={stakingInfo}
         />
       )}
-      <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+      <CompactPoolCardTri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+      {/* <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} /> */}
     </>
   )
 }
@@ -207,7 +210,8 @@ const PoolCardTRI = (props: PoolCardTriProps) => {
   const { isStaking, stableSwapPoolName } = props
 
   if (!isStaking) {
-    return <DefaultPoolCardtri {...props} />
+    return <CompactPoolCardTri {...props} />
+    // <DefaultPoolCardtri {...props} />
   }
 
   return stableSwapPoolName == null ? (
