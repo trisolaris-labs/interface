@@ -63,12 +63,12 @@ import {
   SwapContainer,
   IconContainer,
   HeadingContainer,
-  HeaderButtonsContainer
+  HeaderButtonsContainer,
+  StyledAddToMetamaskButton
 } from './Swap.styles'
 import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
 
-import AddToMetamaskButton from '../../components/AddToMetamask'
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
@@ -438,7 +438,7 @@ export default function Swap() {
                 <HeadingContainer>
                   <TYPE.largeHeader>Swap</TYPE.largeHeader>
                   <HeaderButtonsContainer>
-                    {currencies.OUTPUT && <AddToMetamaskButton token={currencies.OUTPUT as Token} />}
+                    {currencies.OUTPUT && <StyledAddToMetamaskButton token={currencies.OUTPUT as Token} />}
                     <Settings />
                   </HeaderButtonsContainer>
                 </HeadingContainer>
