@@ -1,19 +1,18 @@
 import React, { useState } from 'react'
-import Modal from '../Modal'
-import { AutoColumn } from '../Column'
+import Modal from '../../Modal'
+import { AutoColumn } from '../../Column'
 import styled from 'styled-components'
-import { AutoRow, RowBetween } from '../Row'
-import { TYPE, CloseIcon } from '../../theme'
-import { ButtonError } from '../Button'
-import { SubmittedView, LoadingView } from '../ModalViews'
-import { useMasterChefContract, useMasterChefV2Contract } from '../../state/stake/hooks-sushi'
+import { AutoRow, RowBetween } from '../../Row'
+import { TYPE, CloseIcon } from '../../../theme'
+import { ButtonError } from '../../Button'
+import { useMasterChefContract, useMasterChefV2Contract } from '../../../state/stake/hooks-sushi'
+import { SubmittedView, LoadingView } from '../../ModalViews'
 import { TransactionResponse } from '@ethersproject/providers'
-import { useTransactionAdder } from '../../state/transactions/hooks'
-import FormattedCurrencyAmount from '../FormattedCurrencyAmount'
-import { useActiveWeb3React } from '../../hooks'
+import { useTransactionAdder } from '../../../state/transactions/hooks'
+import { useActiveWeb3React } from '../../../hooks'
 import { useTranslation } from 'react-i18next'
-import { StakingTri } from '../../state/stake/stake-constants'
-import { BIG_INT_ZERO } from '../../constants'
+import { StakingTri } from '../../../state/stake/stake-constants'
+import { BIG_INT_ZERO } from '../../../constants'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -26,7 +25,7 @@ interface StakingModalProps {
   stakingInfo: StakingTri
 }
 
-export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: StakingModalProps) {
+export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: StakingModalProps) {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
@@ -34,8 +33,9 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
   const addTransaction = useTransactionAdder()
   const [hash, setHash] = useState<string | undefined>()
   const [attempting, setAttempting] = useState(false)
+  const { chefVersion, earnedNonTriRewards, noTriRewards, poolId } = stakingInfo
 
-  function wrappedOndismiss() {
+  function wrappedOnDismiss() {
     setHash(undefined)
     setAttempting(false)
     onDismiss()
@@ -43,17 +43,16 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
 
   const stakingContract = useMasterChefContract()
   const stakingContractv2 = useMasterChefV2Contract()
-  const { chefVersion, earnedAmount, earnedNonTriRewards, noTriRewards, poolId, stakedAmount } = stakingInfo
 
-  async function onWithdraw() {
+  async function onClaimReward() {
     if (chefVersion == 0) {
-      if (stakingContract && stakedAmount != null) {
+      if (stakingContract && stakingInfo?.stakedAmount) {
         setAttempting(true)
         await stakingContract
-          .withdraw(poolId, stakedAmount?.raw.toString())
+          .harvest(poolId)
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              summary: t('earn.withdrawDepositedLiquidity')
+              summary: t('earn.claimAccumulated')
             })
             setHash(response.hash)
           })
@@ -63,13 +62,13 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
           })
       }
     } else {
-      if (stakingContractv2 && stakedAmount != null) {
+      if (stakingContractv2 && stakingInfo?.stakedAmount) {
         setAttempting(true)
         await stakingContractv2
-          .withdrawAndHarvest(poolId, stakedAmount?.raw.toString(), account)
+          .harvest(poolId, account)
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              summary: t('earn.withdrawDepositedLiquidity')
+              summary: t('earn.claimAccumulated')
             })
             setHash(response.hash)
           })
@@ -90,25 +89,17 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
   }
 
   return (
-    <Modal isOpen={isOpen} onDismiss={wrappedOndismiss} maxHeight={90}>
+    <Modal isOpen={isOpen} onDismiss={wrappedOnDismiss} maxHeight={90}>
       {!attempting && !hash && (
         <ContentWrapper gap="lg">
           <RowBetween>
-            <TYPE.mediumHeader>Withdraw</TYPE.mediumHeader>
-            <CloseIcon onClick={wrappedOndismiss} />
+            <TYPE.mediumHeader>{t('earn.claim')}</TYPE.mediumHeader>
+            <CloseIcon onClick={wrappedOnDismiss} />
           </RowBetween>
-          {stakedAmount && (
+          {stakingInfo.earnedAmount?.greaterThan(BIG_INT_ZERO) && (
             <AutoColumn justify="center" gap="md">
               <TYPE.body fontWeight={600} fontSize={36}>
-                {<FormattedCurrencyAmount currencyAmount={stakedAmount} />}
-              </TYPE.body>
-              <TYPE.body>{t('earn.depositedPglLiquidity')}</TYPE.body>
-            </AutoColumn>
-          )}
-          {earnedAmount?.greaterThan(BIG_INT_ZERO) && (
-            <AutoColumn justify="center" gap="md">
-              <TYPE.body fontWeight={600} fontSize={36}>
-                {<FormattedCurrencyAmount currencyAmount={earnedAmount} />}
+                {stakingInfo?.earnedAmount?.toSignificant(6)}
               </TYPE.body>
               <TYPE.body>{t('earn.unclaimed')}</TYPE.body>
             </AutoColumn>
@@ -121,7 +112,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
                   .map(({ amount, token }) => (
                     <AutoColumn justify="center" gap="md" key={token.address}>
                       <TYPE.body fontWeight={600} fontSize={36}>
-                        {<FormattedCurrencyAmount currencyAmount={amount} />}
+                        {amount?.toSignificant(6)}
                       </TYPE.body>
                       <TYPE.body>
                         {'Unclaimed'} {token.symbol}
@@ -131,17 +122,18 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               </AutoRow>
             </AutoColumn>
           )}
-          <TYPE.subHeader style={{ textAlign: 'center' }}>{t('earn.whenYouWithdrawWarning')}</TYPE.subHeader>
-          <ButtonError disabled={!!error} error={!!error && !!stakedAmount} onClick={onWithdraw}>
-            {error ?? t('earn.withdrawAndClaim')}
+          <TYPE.subHeader style={{ textAlign: 'center' }}>{t('earn.liquidityRemainsPool')}</TYPE.subHeader>
+          <ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onClaimReward}>
+            {error ?? t('earn.claim')}
           </ButtonError>
         </ContentWrapper>
       )}
       {attempting && !hash && (
-        <LoadingView onDismiss={wrappedOndismiss}>
+        <LoadingView onDismiss={wrappedOnDismiss}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.body fontSize={20}>{t('earn.withdrawingPgl', { amount: stakedAmount?.toSignificant(4) })}</TYPE.body>
-            <TYPE.body fontSize={20}>{t('earn.claimingPng', { amount: earnedAmount?.toSignificant(4) })}</TYPE.body>
+            <TYPE.body fontSize={20}>
+              {t('earn.claimingPng', { amount: stakingInfo?.earnedAmount?.toSignificant(6) })}
+            </TYPE.body>
             {chefVersion == 1 && (earnedNonTriRewards.length > 0 || noTriRewards) && (
               <TYPE.body fontSize={20}>
                 {'Claiming'}{' '}
@@ -155,10 +147,9 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
         </LoadingView>
       )}
       {hash && (
-        <SubmittedView onDismiss={wrappedOndismiss} hash={hash}>
+        <SubmittedView onDismiss={wrappedOnDismiss} hash={hash}>
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>{t('earn.transactionSubmitted')}</TYPE.largeHeader>
-            <TYPE.body fontSize={20}>{t('earn.withdrewPgl')}</TYPE.body>
             <TYPE.body fontSize={20}>{t('earn.claimedPng')}</TYPE.body>
           </AutoColumn>
         </SubmittedView>

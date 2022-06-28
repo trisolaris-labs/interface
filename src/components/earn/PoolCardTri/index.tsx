@@ -4,19 +4,19 @@ import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { Settings2 as ManageIcon } from 'lucide-react'
 
-import { TYPE } from '../../theme'
-import { AutoColumn } from '../Column'
-import { ButtonGold } from '../Button'
-import { AutoRow, RowBetween } from '../Row'
-import ClaimRewardModal from '../../components/earn/ClaimRewardModalTri'
-import MultipleCurrencyLogo from '../MultipleCurrencyLogo'
+import { TYPE } from '../../../theme'
+import { AutoColumn } from '../../Column'
+import { ButtonGold } from '../../Button'
+import { AutoRow, RowBetween } from '../../Row'
+import ClaimRewardModal from './ClaimRewardModalTri'
+import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 
-import { ChefVersions, NonTriAPR } from '../../state/stake/stake-constants'
-import { useSingleFarm } from '../../state/stake/user-farms'
-import { useColorForToken } from '../../hooks/useColor'
-import { currencyId } from '../../utils/currencyId'
-import { addCommasToNumber } from '../../utils'
-import { getPairRenderOrder, isTokenAmountPositive } from '../../utils/pools'
+import { ChefVersions, NonTriAPR } from '../../../state/stake/stake-constants'
+import { useSingleFarm } from '../../../state/stake/user-farms'
+import { useColorForToken } from '../../../hooks/useColor'
+import { currencyId } from '../../../utils/currencyId'
+import { addCommasToNumber } from '../../../utils'
+import { getPairRenderOrder, isTokenAmountPositive } from '../../../utils/pools'
 
 import {
   Wrapper,
@@ -26,9 +26,9 @@ import {
   StyledActionsContainer,
   Button
 } from './PoolCardTri.styles'
-import GetTokenLink from './FarmsPortfolio/GetTokenLink'
-import { StableSwapPoolName } from '../../state/stableswap/constants'
-import { useSingleStableFarm } from '../../state/stake/user-stable-farms'
+import GetTokenLink from '../FarmsPortfolio/GetTokenLink'
+import { StableSwapPoolName } from '../../../state/stableswap/constants'
+import { useSingleStableFarm } from '../../../state/stake/user-stable-farms'
 import PoolCardTriRewardText from './PoolCardTriRewardText'
 
 export type PoolCardTriProps = {
