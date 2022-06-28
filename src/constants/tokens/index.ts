@@ -667,6 +667,13 @@ export const SYN: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0xd80d8688b02B3FD3afb81cDb124F188BB5aD0445', 18, 'SYN', 'Synapse'),
 }
 
+export const USP: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USP', 'USP'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USP', 'USP'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USP', 'USP'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xa69d9Ba086D41425f35988613c156Db9a88a1A96', 18, 'USP', 'USP'),
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),
