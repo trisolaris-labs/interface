@@ -10,7 +10,7 @@ import useFarmsSortAndFilter from './useFarmsSortAndFilter'
 import styled from 'styled-components'
 import Toggle from '../../components/Toggle'
 
-import { useIsFarmsGridView, useToggleFarmsView } from '../../state/user/hooks'
+import { useIsFarmsGridView } from '../../state/user/hooks'
 
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
@@ -24,7 +24,6 @@ const TitleRow = styled(DataRow)`
 export default function EarnTri() {
   const [showLegacyFarms, setShowLegacyFarms] = useState(false)
   const farmsGridView = useIsFarmsGridView()
-  const toggleFarmsView = useToggleFarmsView()
 
   const {
     activeFarmsFilter,
@@ -48,13 +47,7 @@ export default function EarnTri() {
         isSortDescending={isSortDescending}
         onInputChange={onInputChange}
         sortBy={sortBy}
-      />
-
-      <Toggle
-        customToggleText={{ on: 'Grid', off: 'List' }}
-        isActive={farmsGridView}
-        toggle={() => toggleFarmsView()}
-        fontSize="12px"
+        farmsGridView={farmsGridView}
       />
 
       {!hasSearchQuery && !activeFarmsFilter && (
@@ -82,6 +75,7 @@ export default function EarnTri() {
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
                   friendlyFarmName={farm.friendlyFarmName}
                   isFeatured={farm.isFeatured}
+                  fullCard={farmsGridView}
                 />
               )
             )}
@@ -112,6 +106,7 @@ export default function EarnTri() {
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
                   friendlyFarmName={farm.friendlyFarmName}
                   isFeatured={farm.isFeatured}
+                  fullCard={farmsGridView}
                 />
               ))}
             </PoolSection>
@@ -142,6 +137,7 @@ export default function EarnTri() {
               isStaking={isTokenAmountPositive(farm.stakedAmount)}
               friendlyFarmName={farm.friendlyFarmName}
               isFeatured={farm.isFeatured}
+              fullCard={farmsGridView}
             />
           ))}
         </PoolSection>
@@ -169,6 +165,7 @@ export default function EarnTri() {
                   noTriRewards={farm.noTriRewards}
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
                   friendlyFarmName={farm.friendlyFarmName}
+                  fullCard={farmsGridView}
                 />
               ))}
             </PoolSection>
@@ -204,6 +201,7 @@ export default function EarnTri() {
                   noTriRewards={farm.noTriRewards}
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
                   friendlyFarmName={farm.friendlyFarmName}
+                  fullCard={farmsGridView}
                 />
               ))}
             </PoolSection>

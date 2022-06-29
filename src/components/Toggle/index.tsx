@@ -40,7 +40,7 @@ export interface ToggleProps {
   id?: string
   isActive: boolean
   toggle: () => void
-  customToggleText?: { on: string; off: string }
+  customToggleText?: { on: string | React.ReactElement; off: string | React.ReactElement }
   fontSize?: string
 }
 

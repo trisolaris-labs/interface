@@ -48,6 +48,7 @@ export type PoolCardTriProps = {
   nonTriAPRs: NonTriAPR[]
   friendlyFarmName: string | null
   isFeatured?: boolean
+  fullCard?: boolean
 }
 
 const DefaultPoolCardtri = ({
@@ -155,7 +156,7 @@ const DefaultPoolCardtri = ({
 type StablePoolCardTriProps = PoolCardTriProps & { stableSwapPoolName: StableSwapPoolName }
 
 const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
-  const { version } = props
+  const { version, fullCard } = props
 
   const stakingInfo = useSingleStableFarm(Number(version), props.stableSwapPoolName)
   const { earnedAmount, earnedNonTriRewards } = stakingInfo
@@ -174,14 +175,17 @@ const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
           stakingInfo={stakingInfo}
         />
       )}
-      <CompactPoolCardTri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
-      {/* <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} /> */}
+      {fullCard ? (
+        <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+      ) : (
+        <CompactPoolCardTri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+      )}
     </>
   )
 }
 
 const StakingPoolCardTRI = (props: PoolCardTriProps) => {
-  const { version } = props
+  const { version, fullCard } = props
 
   const stakingInfo = useSingleFarm(Number(version))
   const { earnedAmount, earnedNonTriRewards } = stakingInfo
@@ -200,18 +204,20 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
           stakingInfo={stakingInfo}
         />
       )}
-      <CompactPoolCardTri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
-      {/* <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} /> */}
+      {fullCard ? (
+        <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+      ) : (
+        <CompactPoolCardTri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+      )}
     </>
   )
 }
 
 const PoolCardTRI = (props: PoolCardTriProps) => {
-  const { isStaking, stableSwapPoolName } = props
+  const { isStaking, stableSwapPoolName, fullCard } = props
 
   if (!isStaking) {
-    return <CompactPoolCardTri {...props} />
-    // <DefaultPoolCardtri {...props} />
+    return fullCard ? <DefaultPoolCardtri {...props} /> : <CompactPoolCardTri {...props} />
   }
 
   return stableSwapPoolName == null ? (
