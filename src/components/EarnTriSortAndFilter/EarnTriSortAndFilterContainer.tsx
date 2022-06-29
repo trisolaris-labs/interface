@@ -12,7 +12,8 @@ import {
   StyledToggleContainer,
   StyledSortContainer,
   StyledSortOption,
-  StyledArrowContainer
+  StyledArrowContainer,
+  StyledFarmsViewContainer
 } from '../../pages/EarnTri/EarnTri.styles'
 import { SortingType } from './EarnTriSortAndFilterSortingType'
 import SortingArrow from './SortingArrow'
@@ -47,7 +48,7 @@ export default function EarnTriSortAndFilterContainer({
 
           <Toggle id="toggle-user-farms-toggle" isActive={activeFarmsFilter} toggle={toggleActiveFarms} />
         </StyledToggleContainer>
-        <StyledToggleContainer>
+        <StyledFarmsViewContainer>
           <Text fontWeight={400} fontSize={16} marginRight={10}>
             {`Layout:`}
           </Text>
@@ -59,7 +60,7 @@ export default function EarnTriSortAndFilterContainer({
             toggle={() => toggleFarmsView()}
             fontSize="12px"
           />
-        </StyledToggleContainer>
+        </StyledFarmsViewContainer>
 
         <StyledSortContainer>
           <Text fontWeight={400} fontSize={16}>

@@ -98,3 +98,9 @@ export const StyledSortOption = styled.span`
 export const StyledArrowContainer = styled.span`
   min-width: 1rem;
 `
+
+export const StyledFarmsViewContainer = styled(StyledToggleContainer)`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+  display:none;
+  `};
+`

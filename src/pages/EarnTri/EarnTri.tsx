@@ -11,6 +11,7 @@ import styled from 'styled-components'
 import Toggle from '../../components/Toggle'
 
 import { useIsFarmsGridView } from '../../state/user/hooks'
+import { isMobileOnly } from 'react-device-detect'
 
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
