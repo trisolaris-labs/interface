@@ -19,9 +19,9 @@ import PoolCardTriRewardText from './PoolCardTriRewardText'
 
 import { PoolCardTriProps } from '.'
 
-import { PairContainer, ResponsiveCurrencyLabel, TokenPairBackgroundColor, Button } from './PoolCardTri.styles'
+import {  ResponsiveCurrencyLabel, TokenPairBackgroundColor, Button } from './PoolCardTri.styles'
 
-import { CompactWrapper, CompactActionsContainer } from './CompactPoolCardTri.styles'
+import { CompactWrapper, CompactActionsContainer,CompactPairContainer} from './CompactPoolCardTri.styles'
 
 function CompactPoolCardTri({
   apr,
@@ -89,13 +89,13 @@ function CompactPoolCardTri({
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
 
       <AutoRow justifyContent="space-between">
-        <PairContainer>
+        <CompactPairContainer>
           <GetTokenLink tokens={tokens} />
           <MultipleCurrencyLogo currencies={currencies} size={20} />
           <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>
             {friendlyFarmName ?? currencies.map(({ symbol }) => symbol).join('-')}
           </ResponsiveCurrencyLabel>
-        </PairContainer>
+        </CompactPairContainer>
         <AutoColumn>
           <TYPE.mutedSubHeader>{t('earn.totalStaked')}</TYPE.mutedSubHeader>
           <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
