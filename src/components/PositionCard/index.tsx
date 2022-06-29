@@ -24,7 +24,7 @@ import { currencyId } from '../../utils/currencyId'
 import { BIG_INT_ZERO } from '../../constants'
 import { PositionCardProps } from './PositionCard.types'
 
-import { TokenPairBackgroundColor } from '../earn/PoolCardTri.styles'
+import { TokenPairBackgroundColor } from '../earn/PoolCardTri/PoolCardTri.styles'
 
 import { ManageButton, FixedHeightRow, StyledPositionCard, StyledAddToMetamaskButton } from './PositionCard.styles'
 

@@ -1,25 +1,27 @@
 import React, { useState, useCallback } from 'react'
-import useTransactionDeadline from '../../hooks/useTransactionDeadline'
-import Modal from '../Modal'
-import { AutoColumn } from '../Column'
+import useTransactionDeadline from '../../../hooks/useTransactionDeadline'
+import Modal from '../../Modal'
+import { AutoColumn } from '../../Column'
 import styled from 'styled-components'
-import { RowBetween } from '../Row'
-import { TYPE, CloseIcon } from '../../theme'
-import { ButtonConfirmed, ButtonError } from '../Button'
-import ProgressCircles from '../ProgressSteps'
-import CurrencyInputPanel from '../CurrencyInputPanel'
+import { RowBetween } from '../../Row'
+import { TYPE, CloseIcon } from '../../../theme'
+import { ButtonConfirmed, ButtonError } from '../../Button'
+import ProgressCircles from '../../ProgressSteps'
+import CurrencyInputPanel from '../../CurrencyInputPanel'
 import { TokenAmount, Pair, ChainId } from '@trisolaris/sdk'
-import { useActiveWeb3React } from '../../hooks'
-import { usePairContract, useStakingContract } from '../../hooks/useContract'
-import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
-import { splitSignature } from 'ethers/lib/utils'
-import { StakingInfo, useDerivedStakeInfo } from '../../state/stake/hooks'
-import { wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
+import { useActiveWeb3React } from '../../../hooks'
+import { useMasterChefContract, useMasterChefV2Contract } from '../../../state/stake/hooks-sushi'
+import { useApproveCallback, ApprovalState } from '../../../hooks/useApproveCallback'
+import { useDerivedStakeInfo } from '../../../state/stake/hooks'
+import { StakingTri } from '../../../state/stake/stake-constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { useTransactionAdder } from '../../state/transactions/hooks'
-import { LoadingView, SubmittedView } from '../ModalViews'
+import { useTransactionAdder } from '../../../state/transactions/hooks'
+import { LoadingView, SubmittedView } from '../../ModalViews'
 import { useTranslation } from 'react-i18next'
-import useCurrencyInputPanel from '../CurrencyInputPanel/useCurrencyInputPanel'
+import { parseUnits } from '@ethersproject/units'
+import useTLP from '../../../hooks/useTLP'
+import useCurrencyInputPanel from '../../CurrencyInputPanel/useCurrencyInputPanel'
+import { getPairRenderOrder } from '../../../utils/pools'
 
 const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
   display: flex;
@@ -38,7 +40,7 @@ const ContentWrapper = styled(AutoColumn)`
 interface StakingModalProps {
   isOpen: boolean
   onDismiss: () => void
-  stakingInfo: StakingInfo
+  stakingInfo: StakingTri
   userLiquidityUnstaked: TokenAmount | undefined
 }
 
@@ -47,17 +49,11 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
 
   // track and parse user input
   const [typedValue, setTypedValue] = useState('')
-  const { parsedAmount, error } = useDerivedStakeInfo(typedValue, stakingInfo.stakedAmount.token, userLiquidityUnstaked)
-  const parsedAmountWrapped = wrappedCurrencyAmount(parsedAmount, chainId)
-
-  let hypotheticalRewardRate: TokenAmount = new TokenAmount(stakingInfo.rewardRate.token, '0')
-  if (parsedAmountWrapped?.greaterThan('0')) {
-    hypotheticalRewardRate = stakingInfo.getHypotheticalRewardRate(
-      stakingInfo.stakedAmount.add(parsedAmountWrapped),
-      stakingInfo.totalStakedAmount.add(parsedAmountWrapped),
-      stakingInfo.totalRewardRate
-    )
-  }
+  const { parsedAmount, error } = useDerivedStakeInfo(
+    typedValue,
+    stakingInfo?.stakedAmount!.token,
+    userLiquidityUnstaked
+  )
 
   // state for pending and submitted txn views
   const addTransaction = useTransactionAdder()
@@ -75,7 +71,15 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
     new TokenAmount(stakingInfo.tokens[1], '0'),
     chainId ? chainId : ChainId.POLYGON
   )
-  const pairContract = usePairContract(dummyPair.liquidityToken.address)
+  const lpToken = useTLP({
+    lpAddress: stakingInfo.lpAddress,
+    token0: stakingInfo.tokens[0],
+    token1: stakingInfo.tokens[1]
+  })
+
+  const { tokens } = stakingInfo
+
+  const { tokens: orderedTokens } = getPairRenderOrder(tokens)
 
   // approval data for stake
   const deadline = useTransactionDeadline()
@@ -83,23 +87,33 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(parsedAmount, stakingInfo.stakingRewardAddress)
 
-  const stakingContract = useStakingContract(stakingInfo.stakingRewardAddress)
+  const stakingContract = useMasterChefContract()
+  const stakingContractv2 = useMasterChefV2Contract()
 
   async function onStake() {
     setAttempting(true)
-    if (stakingContract && parsedAmount && deadline) {
-      if (approval === ApprovalState.APPROVED) {
-        await stakingContract.stake(`0x${parsedAmount.raw.toString(16)}`, { gasLimit: 350000 })
-      } else if (signatureData) {
-        stakingContract
-          .stakeWithPermit(
-            `0x${parsedAmount.raw.toString(16)}`,
-            signatureData.deadline,
-            signatureData.v,
-            signatureData.r,
-            signatureData.s,
-            { gasLimit: 350000 }
-          )
+    if (stakingInfo.chefVersion == 0) {
+      if (stakingContract && parsedAmount && deadline) {
+        await stakingContract
+          .deposit(stakingInfo.poolId, parseUnits(typedValue))
+          .then((response: TransactionResponse) => {
+            addTransaction(response, {
+              summary: t('earn.depositLiquidity')
+            })
+            setHash(response.hash)
+          })
+          .catch((error: any) => {
+            setAttempting(false)
+            console.log(error)
+          })
+      } else {
+        setAttempting(false)
+        throw new Error(t('earn.attemptingToStakeError'))
+      }
+    } else {
+      if (stakingContractv2 && parsedAmount && deadline) {
+        await stakingContractv2
+          .deposit(stakingInfo.poolId, parseUnits(typedValue), account)
           .then((response: TransactionResponse) => {
             addTransaction(response, {
               summary: t('earn.depositLiquidity')
@@ -139,69 +153,6 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
     [getClickedAmount, onUserInput]
   )
 
-  async function onAttemptToApprove() {
-    if (!pairContract || !library || !deadline) throw new Error(t('earn.missingDependencies'))
-    const liquidityAmount = parsedAmount
-    if (!liquidityAmount) throw new Error(t('earn.missingLiquidityAmount'))
-
-    // try to gather a signature for permission
-    const nonce = await pairContract.nonces(account)
-
-    const EIP712Domain = [
-      { name: 'name', type: 'string' },
-      { name: 'version', type: 'string' },
-      { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' }
-    ]
-    const domain = {
-      name: 'Pangolin Liquidity',
-      version: '1',
-      chainId: chainId,
-      verifyingContract: pairContract.address
-    }
-    const Permit = [
-      { name: 'owner', type: 'address' },
-      { name: 'spender', type: 'address' },
-      { name: 'value', type: 'uint256' },
-      { name: 'nonce', type: 'uint256' },
-      { name: 'deadline', type: 'uint256' }
-    ]
-    const message = {
-      owner: account,
-      spender: stakingInfo.stakingRewardAddress,
-      value: liquidityAmount.raw.toString(),
-      nonce: nonce.toHexString(),
-      deadline: deadline.toNumber()
-    }
-    const data = JSON.stringify({
-      types: {
-        EIP712Domain,
-        Permit
-      },
-      domain,
-      primaryType: 'Permit',
-      message
-    })
-
-    library
-      .send('eth_signTypedData_v4', [account, data])
-      .then(splitSignature)
-      .then(signature => {
-        setSignatureData({
-          v: signature.v,
-          r: signature.r,
-          s: signature.s,
-          deadline: deadline.toNumber()
-        })
-      })
-      .catch(error => {
-        // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
-        if (error?.code !== 4001) {
-          approveCallback()
-        }
-      })
-  }
-
   return (
     <Modal isOpen={isOpen} onDismiss={wrappedOnDismiss} maxHeight={90}>
       {!attempting && !hash && (
@@ -216,15 +167,16 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
             onClickBalanceButton={handleMax}
             disableHalfButton={atHalfAmount}
             disableMaxButton={atMaxAmount}
-            currency={stakingInfo.stakedAmount.token}
+            currency={lpToken}
             pair={dummyPair}
             label={''}
             disableCurrencySelect={true}
             customBalanceText={t('earn.availableToDeposit')}
             id="stake-liquidity-token"
+            tokens={orderedTokens}
           />
 
-          <HypotheticalRewardRate dim={!hypotheticalRewardRate.greaterThan('0')}>
+          {/* <HypotheticalRewardRate dim={!hypotheticalRewardRate.greaterThan('0')}>
             <div>
               <TYPE.black fontWeight={600}>{t('earn.weeklyRewards')}</TYPE.black>
             </div>
@@ -233,12 +185,12 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
               {hypotheticalRewardRate.multiply((60 * 60 * 24 * 7).toString()).toSignificant(4, { groupSeparator: ',' })}{' '}
               {t('earn.pngWeek')}
             </TYPE.black>
-          </HypotheticalRewardRate>
+          </HypotheticalRewardRate> */}
 
           <RowBetween>
             <ButtonConfirmed
               mr="0.5rem"
-              onClick={onAttemptToApprove}
+              onClick={approveCallback}
               confirmed={approval === ApprovalState.APPROVED || signatureData !== null}
               disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
             >

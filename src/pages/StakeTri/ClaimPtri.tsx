@@ -6,7 +6,7 @@ import { AutoColumn } from '../../components/Column'
 import { Text } from 'rebass'
 import { Dots } from '../Pool/styleds'
 import Modal from '../../components/Modal'
-import PoolCardTriRewardText from '../../components/earn/PoolCardTriRewardText'
+import PoolCardTriRewardText from '../../components/earn/PoolCardTri/PoolCardTriRewardText'
 import { TYPE } from '../../theme'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,

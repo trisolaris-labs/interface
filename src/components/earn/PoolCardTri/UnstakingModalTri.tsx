@@ -1,18 +1,19 @@
 import React, { useState } from 'react'
-import Modal from '../Modal'
-import { AutoColumn } from '../Column'
+import Modal from '../../Modal'
+import { AutoColumn } from '../../Column'
 import styled from 'styled-components'
-import { AutoRow, RowBetween } from '../Row'
-import { TYPE, CloseIcon } from '../../theme'
-import { ButtonError } from '../Button'
-import { useMasterChefContract, useMasterChefV2Contract } from '../../state/stake/hooks-sushi'
-import { SubmittedView, LoadingView } from '../ModalViews'
+import { AutoRow, RowBetween } from '../../Row'
+import { TYPE, CloseIcon } from '../../../theme'
+import { ButtonError } from '../../Button'
+import { SubmittedView, LoadingView } from '../../ModalViews'
+import { useMasterChefContract, useMasterChefV2Contract } from '../../../state/stake/hooks-sushi'
 import { TransactionResponse } from '@ethersproject/providers'
-import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useActiveWeb3React } from '../../hooks'
+import { useTransactionAdder } from '../../../state/transactions/hooks'
+import FormattedCurrencyAmount from '../../FormattedCurrencyAmount'
+import { useActiveWeb3React } from '../../../hooks'
 import { useTranslation } from 'react-i18next'
-import { StakingTri } from '../../state/stake/stake-constants'
-import { BIG_INT_ZERO } from '../../constants'
+import { StakingTri } from '../../../state/stake/stake-constants'
+import { BIG_INT_ZERO } from '../../../constants'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -25,7 +26,7 @@ interface StakingModalProps {
   stakingInfo: StakingTri
 }
 
-export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: StakingModalProps) {
+export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: StakingModalProps) {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
@@ -33,9 +34,8 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
   const addTransaction = useTransactionAdder()
   const [hash, setHash] = useState<string | undefined>()
   const [attempting, setAttempting] = useState(false)
-  const { chefVersion, earnedNonTriRewards, noTriRewards, poolId } = stakingInfo
 
-  function wrappedOnDismiss() {
+  function wrappedOndismiss() {
     setHash(undefined)
     setAttempting(false)
     onDismiss()
@@ -43,16 +43,17 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
 
   const stakingContract = useMasterChefContract()
   const stakingContractv2 = useMasterChefV2Contract()
+  const { chefVersion, earnedAmount, earnedNonTriRewards, noTriRewards, poolId, stakedAmount } = stakingInfo
 
-  async function onClaimReward() {
+  async function onWithdraw() {
     if (chefVersion == 0) {
-      if (stakingContract && stakingInfo?.stakedAmount) {
+      if (stakingContract && stakedAmount != null) {
         setAttempting(true)
         await stakingContract
-          .harvest(poolId)
+          .withdraw(poolId, stakedAmount?.raw.toString())
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              summary: t('earn.claimAccumulated')
+              summary: t('earn.withdrawDepositedLiquidity')
             })
             setHash(response.hash)
           })
@@ -62,13 +63,13 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
           })
       }
     } else {
-      if (stakingContractv2 && stakingInfo?.stakedAmount) {
+      if (stakingContractv2 && stakedAmount != null) {
         setAttempting(true)
         await stakingContractv2
-          .harvest(poolId, account)
+          .withdrawAndHarvest(poolId, stakedAmount?.raw.toString(), account)
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              summary: t('earn.claimAccumulated')
+              summary: t('earn.withdrawDepositedLiquidity')
             })
             setHash(response.hash)
           })
@@ -89,17 +90,25 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
   }
 
   return (
-    <Modal isOpen={isOpen} onDismiss={wrappedOnDismiss} maxHeight={90}>
+    <Modal isOpen={isOpen} onDismiss={wrappedOndismiss} maxHeight={90}>
       {!attempting && !hash && (
         <ContentWrapper gap="lg">
           <RowBetween>
-            <TYPE.mediumHeader>{t('earn.claim')}</TYPE.mediumHeader>
-            <CloseIcon onClick={wrappedOnDismiss} />
+            <TYPE.mediumHeader>Withdraw</TYPE.mediumHeader>
+            <CloseIcon onClick={wrappedOndismiss} />
           </RowBetween>
-          {stakingInfo.earnedAmount?.greaterThan(BIG_INT_ZERO) && (
+          {stakedAmount && (
             <AutoColumn justify="center" gap="md">
               <TYPE.body fontWeight={600} fontSize={36}>
-                {stakingInfo?.earnedAmount?.toSignificant(6)}
+                {<FormattedCurrencyAmount currencyAmount={stakedAmount} />}
+              </TYPE.body>
+              <TYPE.body>{t('earn.depositedPglLiquidity')}</TYPE.body>
+            </AutoColumn>
+          )}
+          {earnedAmount?.greaterThan(BIG_INT_ZERO) && (
+            <AutoColumn justify="center" gap="md">
+              <TYPE.body fontWeight={600} fontSize={36}>
+                {<FormattedCurrencyAmount currencyAmount={earnedAmount} />}
               </TYPE.body>
               <TYPE.body>{t('earn.unclaimed')}</TYPE.body>
             </AutoColumn>
@@ -112,7 +121,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
                   .map(({ amount, token }) => (
                     <AutoColumn justify="center" gap="md" key={token.address}>
                       <TYPE.body fontWeight={600} fontSize={36}>
-                        {amount?.toSignificant(6)}
+                        {<FormattedCurrencyAmount currencyAmount={amount} />}
                       </TYPE.body>
                       <TYPE.body>
                         {'Unclaimed'} {token.symbol}
@@ -122,18 +131,17 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
               </AutoRow>
             </AutoColumn>
           )}
-          <TYPE.subHeader style={{ textAlign: 'center' }}>{t('earn.liquidityRemainsPool')}</TYPE.subHeader>
-          <ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onClaimReward}>
-            {error ?? t('earn.claim')}
+          <TYPE.subHeader style={{ textAlign: 'center' }}>{t('earn.whenYouWithdrawWarning')}</TYPE.subHeader>
+          <ButtonError disabled={!!error} error={!!error && !!stakedAmount} onClick={onWithdraw}>
+            {error ?? t('earn.withdrawAndClaim')}
           </ButtonError>
         </ContentWrapper>
       )}
       {attempting && !hash && (
-        <LoadingView onDismiss={wrappedOnDismiss}>
+        <LoadingView onDismiss={wrappedOndismiss}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.body fontSize={20}>
-              {t('earn.claimingPng', { amount: stakingInfo?.earnedAmount?.toSignificant(6) })}
-            </TYPE.body>
+            <TYPE.body fontSize={20}>{t('earn.withdrawingPgl', { amount: stakedAmount?.toSignificant(4) })}</TYPE.body>
+            <TYPE.body fontSize={20}>{t('earn.claimingPng', { amount: earnedAmount?.toSignificant(4) })}</TYPE.body>
             {chefVersion == 1 && (earnedNonTriRewards.length > 0 || noTriRewards) && (
               <TYPE.body fontSize={20}>
                 {'Claiming'}{' '}
@@ -147,9 +155,10 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
         </LoadingView>
       )}
       {hash && (
-        <SubmittedView onDismiss={wrappedOnDismiss} hash={hash}>
+        <SubmittedView onDismiss={wrappedOndismiss} hash={hash}>
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>{t('earn.transactionSubmitted')}</TYPE.largeHeader>
+            <TYPE.body fontSize={20}>{t('earn.withdrewPgl')}</TYPE.body>
             <TYPE.body fontSize={20}>{t('earn.claimedPng')}</TYPE.body>
           </AutoColumn>
         </SubmittedView>
