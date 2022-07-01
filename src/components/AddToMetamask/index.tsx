@@ -15,6 +15,7 @@ const StyledMetamaskButton = styled(StyledMenuButton)`
   width: 35px;
 `
 const StyledMetamaskImg = styled.img`
+ display:flex;
   width: 20px;
   :hover {
     cursor: pointer;

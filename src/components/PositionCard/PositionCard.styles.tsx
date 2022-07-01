@@ -29,4 +29,5 @@ export const StyledPositionCard = styled(LightCard)<{ bgColor: any }>`
 
 export const StyledAddToMetamaskButton = styled(AddToMetamaskButton)`
   margin-left: 5px;
+  width: 15px;
 `
