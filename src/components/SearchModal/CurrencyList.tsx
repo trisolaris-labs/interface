@@ -17,6 +17,7 @@ import { FadedSpan, MenuItem } from './styleds'
 import Loader from '../Loader'
 import { isTokenOnList } from '../../utils'
 import { useTranslation } from 'react-i18next'
+import AddToMetamaskButton from '../AddToMetamask'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === CETH ? 'ETH' : ''
@@ -57,14 +58,24 @@ const StyledRemoveTokenButton = styled(LinkStyledButton)`
   font-size: 12px;
 `
 
-function Balance({ balance }: { balance: CurrencyAmount }) {
-  return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
-}
-
 const TagContainer = styled.div`
   display: flex;
   justify-content: flex-end;
 `
+
+const LogoAndButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const StyledAddToMetamaskButton = styled(AddToMetamaskButton)`
+  width: 15px;
+  margin-left: 5px;
+`
+
+function Balance({ balance }: { balance: CurrencyAmount }) {
+  return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
+}
 
 function TokenTags({ currency }: { currency: Currency }) {
   if (!(currency instanceof WrappedTokenInfo)) {
@@ -128,7 +139,10 @@ function CurrencyRow({
       disabled={isSelected}
       selected={otherSelected}
     >
-      <CurrencyLogo currency={currency} size={'24px'} />
+      <LogoAndButtonContainer>
+        <CurrencyLogo currency={currency} size={'24px'} />
+        <StyledAddToMetamaskButton noBackground token={currency as Token} />
+      </LogoAndButtonContainer>
       <Column>
         <Text title={currency.name} fontWeight={500}>
           {currency.symbol}

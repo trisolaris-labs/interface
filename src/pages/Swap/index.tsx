@@ -63,8 +63,6 @@ import {
   SwapContainer,
   IconContainer,
   HeadingContainer,
-  HeaderButtonsContainer,
-  StyledAddToMetamaskButton
 } from './Swap.styles'
 import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
@@ -437,10 +435,7 @@ export default function Swap() {
               <AutoColumn gap={'md'}>
                 <HeadingContainer>
                   <TYPE.largeHeader>Swap</TYPE.largeHeader>
-                  <HeaderButtonsContainer>
-                    {currencies.OUTPUT && <StyledAddToMetamaskButton token={currencies.OUTPUT as Token} />}
-                    <Settings />
-                  </HeaderButtonsContainer>
+                  <Settings />
                 </HeadingContainer>
 
                 <CurrencyInputPanel
