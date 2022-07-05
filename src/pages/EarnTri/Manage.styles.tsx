@@ -75,7 +75,7 @@ export const DataRow = styled(RowBetween)`
 
 export const StyledAddToMetamaskButton = styled(AddToMetamaskButton)`
   width: 15px;
-  margin-left:10px;
+  margin-left: 5px;
 `
 
 export const RewardContainer = styled.div`
