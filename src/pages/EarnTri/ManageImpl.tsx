@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { ChainId } from '@trisolaris/sdk'
 
 import { AutoColumn } from '../../components/Column'
 import { AutoRow, RowBetween } from '../../components/Row'
@@ -27,6 +28,7 @@ import { getPairRenderOrder } from '../../utils/pools'
 import { TYPE } from '../../theme'
 import { BIG_INT_ZERO } from '../../constants'
 import { ChefVersions, StakingTri } from '../../state/stake/stake-constants'
+import { TRI } from '../../constants/tokens'
 
 import {
   PositionInfo,
@@ -36,7 +38,9 @@ import {
   PoolData,
   Wrapper,
   BackgroundColor,
-  DataRow
+  DataRow,
+  StyledAddToMetamaskButton,
+  RewardContainer
 } from './Manage.styles'
 import { StableSwapPoolName } from '../../state/stableswap/constants'
 
@@ -246,7 +250,10 @@ export default function ManageImpl({
             <AutoRow justifyContent="space-between">
               {!noTriRewards ? (
                 <AutoColumn>
-                  <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
+                  <RewardContainer>
+                    <TYPE.black>{t('earnPage.unclaimed')} TRI</TYPE.black>
+                    <StyledAddToMetamaskButton token={TRI[ChainId.AURORA]} noBackground />
+                  </RewardContainer>
                   <TYPE.largeHeader fontSize={36} fontWeight={600}>
                     <CountUp
                       enabled={earnedAmount?.greaterThan(BIG_INT_ZERO)}
@@ -258,9 +265,12 @@ export default function ManageImpl({
               {(isDualRewards && hasNonTriRewards) || noTriRewards
                 ? earnedNonTriRewards.map(({ amount, token }, i) => (
                     <AutoColumn key={token.address}>
-                      <TYPE.black>
-                        {t('earnPage.unclaimed')} {token?.symbol ?? ''}
-                      </TYPE.black>
+                      <RewardContainer>
+                        <TYPE.black>
+                          {t('earnPage.unclaimed')} {token?.symbol ?? ''}
+                        </TYPE.black>
+                        <StyledAddToMetamaskButton token={token} noBackground />
+                      </RewardContainer>
                       <TYPE.largeHeader
                         fontSize={36}
                         fontWeight={600}

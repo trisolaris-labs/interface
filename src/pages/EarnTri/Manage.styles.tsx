@@ -5,6 +5,7 @@ import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import { DarkGreyCard } from '../../components/Card'
 import { DataCard } from '../../components/earn/styled'
+import AddToMetamaskButton from '../../components/AddToMetamask'
 
 export const PositionInfo = styled(AutoColumn)<{ dim: any }>`
   position: relative;
@@ -70,4 +71,14 @@ export const DataRow = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
    gap: 12px;
  `};
+`
+
+export const StyledAddToMetamaskButton = styled(AddToMetamaskButton)`
+  width: 15px;
+  margin-left:10px;
+`
+
+export const RewardContainer = styled.div`
+  display: flex;
+  align-items: center;
 `
