@@ -258,7 +258,9 @@ export const TOKEN_WARNING_MODAL_ALLOWLIST = new Set(
 export const CUSTOM_TOKEN_MAX_HOPS = {
   [XTRI[ChainId.AURORA].address]: 4,
   [LUNAR[ChainId.AURORA].address]: 4,
-  [ORBITAL[ChainId.AURORA].address]: 4
+  [ORBITAL[ChainId.AURORA].address]: 4,
+  [USP[ChainId.AURORA].address]: 4,
+  [ETHERNAL[ChainId.AURORA].address]: 4
 }
 
 export const PRICE_IMPACT_NEGLIGIBLE_THRESHOLD = new Percent('1', '10000')
