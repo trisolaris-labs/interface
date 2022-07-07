@@ -5,6 +5,9 @@ import { Wrapper, StyledActionsContainer, PairContainer } from './PoolCardTri.st
 
 export const CompactWrapper = styled(Wrapper)`
   display: flex;
+  padding: 0.5rem;
+  box-shadow: ${({ isFeatured, theme }) =>
+    isFeatured ? `0px 0px 5px 2px ${theme.primary1}` : `0 2px 8px 0 ${theme.bg3}`};
 `
 
 export const CompactActionsContainer = styled(StyledActionsContainer)`

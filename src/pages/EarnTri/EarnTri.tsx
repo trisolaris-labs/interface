@@ -51,12 +51,12 @@ export default function EarnTri() {
       />
 
       {!hasSearchQuery && !activeFarmsFilter && (
-        <AutoColumn gap="lg" style={{ width: '100%' }}>
+        <AutoColumn gap="md" style={{ width: '100%' }}>
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Stable Pools</TYPE.mediumHeader>
           </DataRow>
 
-          <PoolSection gridView={farmsGridView}>
+          <PoolSection gap="md" gridView={farmsGridView}>
             {stablePoolFarms.map(farm =>
               farm.stableSwapPoolName == null ? null : (
                 <MemoizedPoolCardTRI
@@ -83,13 +83,13 @@ export default function EarnTri() {
         </AutoColumn>
       )}
 
-      <AutoColumn gap="lg" style={{ width: '100%' }}>
+      <AutoColumn gap="md" style={{ width: '100%' }}>
         {!hasSearchQuery && !activeFarmsFilter && (
           <>
             <DataRow style={{ alignItems: 'baseline' }}>
               <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Dual Rewards Pools</TYPE.mediumHeader>
             </DataRow>
-            <PoolSection gridView={farmsGridView}>
+            <PoolSection gap="md" gridView={farmsGridView}>
               {dualRewardPools.map(farm => (
                 <MemoizedPoolCardTRI
                   key={farm.ID}
@@ -113,14 +113,14 @@ export default function EarnTri() {
           </>
         )}
       </AutoColumn>
-      <AutoColumn gap="lg" style={{ width: '100%' }}>
+      <AutoColumn gap="md" style={{ width: '100%' }}>
         {!hasSearchQuery && !activeFarmsFilter && (
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>TRI Pools</TYPE.mediumHeader>
           </DataRow>
         )}
 
-        <PoolSection gridView={farmsGridView}>
+        <PoolSection gap="md" gridView={farmsGridView}>
           {filteredFarms.map(farm => (
             <MemoizedPoolCardTRI
               key={farm.ID}
@@ -142,14 +142,14 @@ export default function EarnTri() {
           ))}
         </PoolSection>
       </AutoColumn>
-      <AutoColumn gap="lg" style={{ width: '100%' }}>
+      <AutoColumn gap="md" style={{ width: '100%' }}>
         {!hasSearchQuery && !activeFarmsFilter && (
           <>
             <DataRow style={{ alignItems: 'baseline' }}>
               <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Ecosystem Pools</TYPE.mediumHeader>
             </DataRow>
 
-            <PoolSection gridView={farmsGridView}>
+            <PoolSection gap="md" gridView={farmsGridView}>
               {nonTriFarms.map(farm => (
                 <MemoizedPoolCardTRI
                   key={farm.ID}
@@ -173,7 +173,7 @@ export default function EarnTri() {
         )}
       </AutoColumn>
       {!hasSearchQuery && !activeFarmsFilter && (
-        <AutoColumn gap="lg" style={{ width: '100%' }}>
+        <AutoColumn gap="md" style={{ width: '100%' }}>
           <TitleRow>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
             <Toggle
@@ -184,7 +184,7 @@ export default function EarnTri() {
             />
           </TitleRow>
           {showLegacyFarms ? (
-            <PoolSection gridView={farmsGridView}>
+            <PoolSection gap="md" gridView={farmsGridView}>
               {legacyFarms.map(farm => (
                 <MemoizedPoolCardTRI
                   key={farm.ID}

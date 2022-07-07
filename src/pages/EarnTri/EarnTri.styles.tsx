@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { darken } from 'polished'
 
 import { SearchInput } from '../../components/SearchModal/styleds'
-import { AutoColumn } from '../../components/Column'
+import { AutoColumn, ColumnGap } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 
 export const TopSection = styled(AutoColumn)`
@@ -10,10 +10,10 @@ export const TopSection = styled(AutoColumn)`
   width: 100%;
 `
 
-export const PoolSection = styled.div<{ gridView: boolean }>`
+export const PoolSection = styled.div<{ gap?: ColumnGap; gridView: boolean }>`
   display: grid;
   grid-template-columns: ${({ gridView }) => (gridView ? '1fr 1fr' : '1fr')};
-  gap: 20px;
+  gap: ${({ gap = '20px' }) => (gap === 'sm' && '8px') || (gap === 'md' && '12px') || (gap === 'lg' && '24px') || gap};
   width: 100%;
   justify-self: center;
 
