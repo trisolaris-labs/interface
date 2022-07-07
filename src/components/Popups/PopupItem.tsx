@@ -7,6 +7,7 @@ import { PopupContent } from '../../state/application/actions'
 import { useRemovePopup } from '../../state/application/hooks'
 import ListUpdatePopup from './ListUpdatePopup'
 import TransactionPopup from './TransactionPopup'
+import CustomPopup from './CustomPopup'
 
 export const StyledClose = styled(X)`
   position: absolute;
@@ -82,6 +83,11 @@ export default function PopupItem({
       listUpdate: { listUrl, oldList, newList, auto }
     } = content
     popupContent = <ListUpdatePopup popKey={popKey} listUrl={listUrl} oldList={oldList} newList={newList} auto={auto} />
+  } else if ('customContent' in content) {
+    const {
+      customContent: { text, icon }
+    } = content
+    popupContent = <CustomPopup text={text} icon={icon} />
   }
 
   const faderStyle = useSpring({
