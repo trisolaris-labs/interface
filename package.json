@@ -71,6 +71,7 @@
     "luxon": "^1.25.0",
     "multicodec": "^2.0.0",
     "multihashes": "^3.0.1",
+    "node-fetch": "^3.2.6",
     "node-vibrant": "^3.1.5",
     "polished": "^3.3.2",
     "prettier": "^1.17.0",
@@ -125,9 +126,7 @@
     "integration-test-open": "start-server-and-test 'serve build -l 3000' http://localhost:3000 'cypress open'",
     "format": "prettier --write \"src/**/*.+(js|jsx|ts|tsx|json|css|md)\"",
     "prepare": "husky install",
-    "update-submodules": "git submodule init && git submodule update --remote",
-    "generate-tokens": "node dev/generate_tokens/index.js",
-    "build-tokens": "yarn update-submodules && yarn generate-tokens",
+    "build-tokens": "node dev/generate_tokens/index.js",
     "commit": "cz"
   },
   "eslintConfig": {
