@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import { TokenList } from '@pangolindex/token-lists'
+import { ICON_TYPES } from '../../components/Popups/CustomPopup'
 
 export type PopupContent =
   | {
@@ -15,6 +16,12 @@ export type PopupContent =
         oldList: TokenList
         newList: TokenList
         auto: boolean
+      }
+    }
+  | {
+      customContent: {
+        text: string,
+        icon: ICON_TYPES
       }
     }
 

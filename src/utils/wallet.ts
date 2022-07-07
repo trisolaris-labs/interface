@@ -39,6 +39,7 @@ export const registerToken = async (
       return wasAdded
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
+    throw new Error(`${(error as any).message}`)
   }
 }
