@@ -131,7 +131,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                     {token0Deposited?.toSignificant(6)}
                   </Text>
                   <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency0} />
-                  <StyledAddToMetamaskButton token={token0} noBackground />
+                  <StyledAddToMetamaskButton token={token0}  />
                 </RowFixed>
               ) : (
                 '-'
@@ -150,7 +150,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                     {token1Deposited?.toSignificant(6)}
                   </Text>
                   <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency1} />
-                  <StyledAddToMetamaskButton token={token1} noBackground />
+                  <StyledAddToMetamaskButton token={token1} />
                 </RowFixed>
               ) : (
                 '-'

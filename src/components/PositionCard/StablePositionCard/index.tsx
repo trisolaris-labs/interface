@@ -228,7 +228,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
                 <FixedHeightRow key={token.name}>
                   <CurrencyContainer>
                     <CurrencyLogo size="20px" currency={unwrappedToken(token)} />
-                    <StyledAddToMetamaskButton token={token} noBackground />
+                    <StyledAddToMetamaskButton token={token} />
                     {token.name}
                   </CurrencyContainer>
                   <StyledText fontWeight={500} marginLeft={'6px'}>
