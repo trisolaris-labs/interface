@@ -21,7 +21,7 @@ import { BIG_INT_ZERO } from '../../../constants'
 import { useHistory } from 'react-router-dom'
 import CurrencyLogo from '../../CurrencyLogo'
 import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
-import AddToMetamaskButton from '../../AddToMetamask'
+import AddToMetaMaskButton from '../../AddToMetaMask'
 
 import ContractAddress from '../../ContractAddress'
 import { TYPE } from '../../../theme'
@@ -98,7 +98,7 @@ font-size: 12px !important;
 `};
 `
 
-const StyledAddToMetamaskButton = styled(AddToMetamaskButton)`
+const StyledAddToMetamaskButton = styled(AddToMetaMaskButton)`
   margin: 0 5px;
   width: 15px;
 `
