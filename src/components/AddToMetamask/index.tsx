@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { StyledMenuButton } from '../StyledMenu'
 import { MouseoverTooltip } from '../Tooltip'
+import { LinkStyledButton } from '../../theme'
 
 import { useActiveWeb3React } from '../../hooks'
 
@@ -41,21 +42,24 @@ function AddToMetaMaskButton({
 
   const { symbol, address, decimals } = token
 
+  function addToken() {
+    registerToken(address, symbol!, decimals)
+  }
+
   return library?.provider?.isMetaMask ? (
-    <MouseoverTooltip text={`Add ${symbol} to Metamask`}>
-      {noBackground ? (
-        <StyledMetaMaskImg
-          src={MetaMaskIcon}
-          alt={'MetaMask logo'}
-          onClick={() => registerToken(address, symbol!, decimals)}
-          {...otherProps}
-        />
-      ) : (
-        <StyledMetaMaskButton onClick={() => registerToken(address, symbol!, decimals)} {...otherProps}>
-          <img src={MetaMaskIcon} alt={'Metamask logo'} style={{ width: '100%' }} />
-        </StyledMetaMaskButton>
-      )}
-    </MouseoverTooltip>
+    textOnly ? (
+      <LinkStyledButton onClick={addToken}>Add {symbol} to MetaMask</LinkStyledButton>
+    ) : (
+      <MouseoverTooltip text={`Add ${symbol} to Metamask`}>
+        {noBackground ? (
+          <StyledMetaMaskImg src={MetaMaskIcon} alt={'MetaMask logo'} onClick={addToken} {...otherProps} />
+        ) : (
+          <StyledMetaMaskButton onClick={addToken} {...otherProps}>
+            <img src={MetaMaskIcon} alt={'Metamask logo'} style={{ width: '100%' }} />
+          </StyledMetaMaskButton>
+        )}
+      </MouseoverTooltip>
+    )
   ) : null
 }
 

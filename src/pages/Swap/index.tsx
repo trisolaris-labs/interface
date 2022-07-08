@@ -26,6 +26,7 @@ import { DeprecatedWarning } from '../../components/Warning'
 import Settings from '../../components/Settings'
 import AppBody from '../AppBody'
 import Loader from '../../components/Loader'
+import AddToMetaMaskButton from '../../components/AddToMetaMask'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
@@ -491,6 +492,8 @@ export default function Swap() {
                   otherCurrency={currencies[Field.INPUT]}
                   id="swap-currency-output"
                 />
+
+                <AddToMetaMaskButton textOnly token={currencies.OUTPUT as Token} />
 
                 {recipient !== null && !showWrap ? (
                   <>
