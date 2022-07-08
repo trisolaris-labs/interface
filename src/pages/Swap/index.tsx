@@ -26,6 +26,7 @@ import { DeprecatedWarning } from '../../components/Warning'
 import Settings from '../../components/Settings'
 import AppBody from '../AppBody'
 import Loader from '../../components/Loader'
+import AddToMetaMaskButton from '../../components/AddToMetaMask'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
@@ -57,13 +58,7 @@ import {
 
 import { ClickableText, Dots } from '../Pool/styleds'
 import { LinkStyledButton, TYPE } from '../../theme'
-import {
-  WarningWrapper,
-  Root,
-  SwapContainer,
-  IconContainer,
-  HeadingContainer,
-} from './Swap.styles'
+import { WarningWrapper, Root, SwapContainer, IconContainer, HeadingContainer } from './Swap.styles'
 import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
 
@@ -486,6 +481,8 @@ export default function Swap() {
                   otherCurrency={currencies[Field.INPUT]}
                   id="swap-currency-output"
                 />
+
+                <AddToMetaMaskButton textOnly token={currencies.OUTPUT as Token} />
 
                 {recipient !== null && !showWrap ? (
                   <>
