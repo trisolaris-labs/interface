@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import AddToMetamaskButton from '../../components/AddToMetamask'
+
 
 export const WarningWrapper = styled.div`
   max-width: 420px;
