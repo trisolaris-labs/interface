@@ -15,6 +15,7 @@ export default function usePTRIRemittances() {
           timestamp: new Date(timestamp * 1000)
         }))
         .orderBy(({ timestamp }) => timestamp.valueOf(), 'desc')
+        .slice(0, 7)
         .value(),
     [aprData]
   )
