@@ -2,27 +2,25 @@ import React from 'react'
 import { Token } from '@trisolaris/sdk'
 import styled from 'styled-components'
 
-import { StyledMenuButton } from '../../components/StyledMenu'
+import { StyledMenuButton } from '../StyledMenu'
 import { MouseoverTooltip } from '../Tooltip'
+import { LinkStyledButton } from '../../theme'
 
 import { useActiveWeb3React } from '../../hooks'
 
 import { registerToken } from '../../utils/wallet'
 
-import MetamaskIcon from '../../assets/images/metamask.png'
+import MetaMaskIcon from '../../assets/images/metamask.png'
 
-const StyledMetamaskButton = styled(StyledMenuButton)`
-  width: 35px;
-`
-const StyledMetamaskImg = styled.img`
- display:flex;
+const StyledMetaMaskImg = styled.img`
+  display: flex;
   width: 20px;
   :hover {
     cursor: pointer;
   }
 `
 
-function AddToMetamaskButton({ token, noBackground, ...otherProps }: { token: Token; noBackground?: boolean }) {
+function AddToMetaMaskButton({ token, textOnly, ...otherProps }: { token: Token; textOnly?: boolean }) {
   const { library } = useActiveWeb3React()
 
   if (!token) {
@@ -31,22 +29,19 @@ function AddToMetamaskButton({ token, noBackground, ...otherProps }: { token: To
 
   const { symbol, address, decimals } = token
 
+  function addToken() {
+    registerToken(address, symbol!, decimals)
+  }
+
   return library?.provider?.isMetaMask ? (
-    <MouseoverTooltip text={`Add ${symbol} to Metamask`}>
-      {noBackground ? (
-        <StyledMetamaskImg
-          src={MetamaskIcon}
-          alt={'Metamask logo'}
-          onClick={() => registerToken(address, symbol!, decimals)}
-          {...otherProps}
-        />
-      ) : (
-        <StyledMetamaskButton onClick={() => registerToken(address, symbol!, decimals)} {...otherProps}>
-          <img src={MetamaskIcon} alt={'Metamask logo'} style={{ width: '100%' }} />
-        </StyledMetamaskButton>
-      )}
-    </MouseoverTooltip>
+    textOnly ? (
+      <LinkStyledButton onClick={addToken}>Add {symbol} to MetaMask</LinkStyledButton>
+    ) : (
+      <MouseoverTooltip text={`Add ${symbol} to Metamask`}>
+        <StyledMetaMaskImg src={MetaMaskIcon} alt={'MetaMask logo'} onClick={addToken} {...otherProps} />
+      </MouseoverTooltip>
+    )
   ) : null
 }
 
-export default AddToMetamaskButton
+export default AddToMetaMaskButton

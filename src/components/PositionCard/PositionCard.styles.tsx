@@ -4,7 +4,7 @@ import { darken } from 'polished'
 import { RowBetween } from '../Row'
 import Card, { LightCard } from '../Card'
 import { ButtonEmpty } from '../Button'
-import AddToMetamaskButton from '../AddToMetamask'
+import AddToMetaMaskButton from '../AddToMetaMask'
 
 export const ManageButton = styled(ButtonEmpty)`
   color: ${({ theme }) => theme.white};
@@ -27,7 +27,7 @@ export const StyledPositionCard = styled(LightCard)<{ bgColor: any }>`
   overflow: hidden;
 `
 
-export const StyledAddToMetamaskButton = styled(AddToMetamaskButton)`
+export const StyledAddToMetamaskButton = styled(AddToMetaMaskButton)`
   margin-left: 5px;
   width: 15px;
 `
