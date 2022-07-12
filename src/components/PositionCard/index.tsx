@@ -26,7 +26,7 @@ import { PositionCardProps } from './PositionCard.types'
 
 import { TokenPairBackgroundColor } from '../earn/PoolCardTri/PoolCardTri.styles'
 
-import { ManageButton, FixedHeightRow, StyledPositionCard, StyledAddToMetamaskButton } from './PositionCard.styles'
+import { ManageButton, FixedHeightRow, StyledPositionCard } from './PositionCard.styles'
 
 export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const { account } = useActiveWeb3React()
@@ -131,7 +131,6 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                     {token0Deposited?.toSignificant(6)}
                   </Text>
                   <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency0} />
-                  <StyledAddToMetamaskButton token={token0} noBackground />
                 </RowFixed>
               ) : (
                 '-'
@@ -150,7 +149,6 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                     {token1Deposited?.toSignificant(6)}
                   </Text>
                   <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency1} />
-                  <StyledAddToMetamaskButton token={token1} noBackground />
                 </RowFixed>
               ) : (
                 '-'

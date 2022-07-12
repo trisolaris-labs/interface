@@ -21,7 +21,6 @@ import { BIG_INT_ZERO } from '../../../constants'
 import { useHistory } from 'react-router-dom'
 import CurrencyLogo from '../../CurrencyLogo'
 import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
-import AddToMetamaskButton from '../../AddToMetamask'
 
 import ContractAddress from '../../ContractAddress'
 import { TYPE } from '../../../theme'
@@ -96,11 +95,6 @@ const StyledContractAddress = styled(ContractAddress)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
 font-size: 12px !important;
 `};
-`
-
-const StyledAddToMetamaskButton = styled(AddToMetamaskButton)`
-  margin: 0 5px;
-  width: 15px;
 `
 
 const CurrencyContainer = styled.div`
@@ -227,8 +221,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
               {stablePoolData.tokens.map(({ token, percent, value }) => (
                 <FixedHeightRow key={token.name}>
                   <CurrencyContainer>
-                    <CurrencyLogo size="20px" currency={unwrappedToken(token)} />
-                    <StyledAddToMetamaskButton token={token} noBackground />
+                    <CurrencyLogo size="20px" currency={unwrappedToken(token)} style={{ marginRight: '5px' }} />
                     {token.name}
                   </CurrencyContainer>
                   <StyledText fontWeight={500} marginLeft={'6px'}>
