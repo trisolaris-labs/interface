@@ -12,8 +12,7 @@ export const TopSection = styled(AutoColumn)`
 
 export const PoolSection = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: 1fr;
   width: 100%;
   justify-self: center;
 
@@ -97,4 +96,17 @@ export const StyledSortOption = styled.span`
 
 export const StyledArrowContainer = styled.span`
   min-width: 1rem;
+`
+
+export const PoolHeader = styled.div`
+  display: grid;
+  padding: 0 20px 10px;
+  grid-template-columns: 200px auto auto 110px;
+  width: 100%;
+`
+
+export const HeaderColumn = styled.div`
+  justify-content: center;
+  display: flex;
+  font-weight: 600;
 `
