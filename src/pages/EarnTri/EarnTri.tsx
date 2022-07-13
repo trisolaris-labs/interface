@@ -3,7 +3,7 @@ import { AutoColumn } from '../../components/Column'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
 import { TYPE } from '../../theme'
 import { isTokenAmountPositive } from '../../utils/pools'
-import { PoolSection, DataRow } from './EarnTri.styles'
+import { PoolSection, DataRow, PoolHeader, HeaderColumn } from './EarnTri.styles'
 
 import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter/EarnTriSortAndFilterContainer'
 import useFarmsSortAndFilter from './useFarmsSortAndFilter'
@@ -50,7 +50,11 @@ export default function EarnTri() {
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Stable Pools</TYPE.mediumHeader>
           </DataRow>
-
+          <PoolHeader>
+            <HeaderColumn>Pool</HeaderColumn>
+            <HeaderColumn>Liquidity</HeaderColumn>
+            <HeaderColumn>APR</HeaderColumn>
+          </PoolHeader>
           <PoolSection>
             {stablePoolFarms.map(farm =>
               farm.stableSwapPoolName == null ? null : (

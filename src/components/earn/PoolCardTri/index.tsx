@@ -19,12 +19,16 @@ import { addCommasToNumber } from '../../../utils'
 import { getPairRenderOrder, isTokenAmountPositive } from '../../../utils/pools'
 
 import {
-  Wrapper,
-  PairContainer,
   ResponsiveCurrencyLabel,
   TokenPairBackgroundColor,
-  StyledActionsContainer,
-  Button
+  Button,
+  Wrapper,
+  ActionsContainer,
+  StyledPairContainer,
+  StakedContainer,
+  AprContainer,
+  CardContainer,
+  CardExpandableContainer
 } from './PoolCardTri.styles'
 import SponsoredFarmLink from '../../SponsoredFarmLink'
 import { StableSwapPoolName } from '../../../state/stableswap/constants'
@@ -70,15 +74,21 @@ const DefaultPoolCardtri = ({
   const history = useHistory()
   const { t } = useTranslation()
 
+  const [showMore, setShowMore] = useState(false)
+
   const isDualRewards = chefVersion === ChefVersions.V2
 
   const { currencies, tokens } = getPairRenderOrder(_tokens)
 
   const backgroundColor1 = useColorForToken(tokens[0])
-  // Only override `backgroundColor2` if it's a dual rewards pool
+
   const backgroundColor2 = useColorForToken(tokens[tokens.length - 1], () => isDualRewards)
 
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
+
+  function onCardClick() {
+    setShowMore(!showMore)
+  }
 
   function renderManageOrDepositButton() {
     const sharedProps = {
@@ -111,42 +121,39 @@ const DefaultPoolCardtri = ({
       bgColor2={backgroundColor2}
       isFeatured={isFeatured}
       currenciesQty={currenciesQty}
+      onClick={onCardClick}
     >
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
-
-      <AutoRow justifyContent="space-between">
-        <PairContainer>
+      <CardContainer>
+        <StyledPairContainer>
           <SponsoredFarmLink tokens={tokens} farmID={version} />
           <MultipleCurrencyLogo currencies={currencies} size={20} />
           <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>
             {friendlyFarmName ?? currencies.map(({ symbol }) => symbol).join('-')}
           </ResponsiveCurrencyLabel>
-        </PairContainer>
+        </StyledPairContainer>
+        <StakedContainer>
+          <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
+        </StakedContainer>
+        <AprContainer>
+          <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
+        </AprContainer>
         {isLegacy && !isStaking ? (
           <Button disabled={true} isStaking={isStaking}>
             {t('earn.deposit')}
           </Button>
         ) : (
-          <StyledActionsContainer>
+          <ActionsContainer>
             {enableClaimButton && (
               <ButtonGold padding="8px" borderRadius="8px" maxWidth="65px" onClick={enableModal}>
                 Claim
               </ButtonGold>
             )}
             {renderManageOrDepositButton()}
-          </StyledActionsContainer>
+          </ActionsContainer>
         )}
-      </AutoRow>
-      <RowBetween>
-        <AutoColumn>
-          <TYPE.mutedSubHeader>{t('earn.totalStaked')}</TYPE.mutedSubHeader>
-          <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
-        </AutoColumn>
-        <AutoColumn>
-          <TYPE.mutedSubHeader textAlign="end">APR</TYPE.mutedSubHeader>
-          <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
-        </AutoColumn>
-      </RowBetween>
+      </CardContainer>
+      {showMore && <CardExpandableContainer>test</CardExpandableContainer>}
     </Wrapper>
   )
 }
