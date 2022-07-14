@@ -2,12 +2,10 @@ import React, { useState } from 'react'
 import { Token } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
-import { Settings2 as ManageIcon } from 'lucide-react'
+import { Settings2 as ManageIcon, ChevronDown, ChevronUp } from 'lucide-react'
 
 import { TYPE } from '../../../theme'
-import { AutoColumn } from '../../Column'
 import { ButtonGold } from '../../Button'
-import { AutoRow, RowBetween } from '../../Row'
 import ClaimRewardModal from './ClaimRewardModalTri'
 import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 
@@ -28,7 +26,10 @@ import {
   StakedContainer,
   AprContainer,
   CardContainer,
-  CardExpandableContainer
+  CardExpandableContainer,
+  DetailsContainer,
+  DetailsText,
+  StyledMutedSubHeader
 } from './PoolCardTri.styles'
 
 import GetTokenLink from '../FarmsPortfolio/GetTokenLink'
@@ -134,9 +135,11 @@ const DefaultPoolCardtri = ({
           </ResponsiveCurrencyLabel>
         </StyledPairContainer>
         <StakedContainer>
+          <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
           <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
         </StakedContainer>
         <AprContainer>
+          <StyledMutedSubHeader justifyContent="flex-end">APR</StyledMutedSubHeader>
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AprContainer>
         {isLegacy && !isStaking ? (
@@ -153,7 +156,19 @@ const DefaultPoolCardtri = ({
             {renderManageOrDepositButton()}
           </ActionsContainer>
         )}
+        <DetailsContainer>
+          {showMore ? (
+            <>
+              <DetailsText>Details</DetailsText> <ChevronUp size="15" />
+            </>
+          ) : (
+            <>
+              <DetailsText>Details</DetailsText> <ChevronDown size="15" />
+            </>
+          )}
+        </DetailsContainer>
       </CardContainer>
+
       {showMore && <CardExpandableContainer>test</CardExpandableContainer>}
     </Wrapper>
   )
