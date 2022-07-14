@@ -38,9 +38,8 @@ export const Wrapper = styled(Card)<{
   }
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-      grid-template-rows: auto 1fr;
-      padding: 1.1rem .75rem;
-`};
+        padding: 1.1rem .75rem;
+  `};
 `
 
 export const PairContainer = styled.div`
@@ -99,7 +98,9 @@ export const ActionsContainer = styled.div`
   min-width: 110px;
   justify-content: center;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-  order:2;
+  grid-column: span 3;
+  order: 2;
+  justify-content:flex-end;
   `};
 `
 
@@ -107,32 +108,69 @@ export const StyledPairContainer = styled(PairContainer)`
   min-width: 200px;
   max-width: 200px;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-  order:1;
+  grid-column: span 3;
+  order: 1;
   `};
 `
 
 export const StakedContainer = styled(AutoColumn)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
-  order:3;
-  margin-top:15px;
+  grid-column: span 2;
+  order: 3;
+  justify-self: flex-start;
+  min-width:100px;
   `};
 `
 
 export const AprContainer = styled(AutoColumn)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
-  order:4;
-  margin-top:15px;
+  grid-column: span 2;
+  order: 4;
+  justify-self:flex-start;
   `};
 `
 
 export const CardContainer = styled.div`
   display: grid;
-  grid-template-columns: 200px auto auto 110px;
+  grid-template-columns: 200px auto auto 110px 20px;
   width: 100%;
   align-items: center;
   justify-items: center;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap:12px;
+  `};
 `
 
 export const CardExpandableContainer = styled.div`
   margin-top: 10px;
+`
+
+export const DetailsContainer = styled.div`
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+  order:5;
+  grid-column: span 2;
+  `};
+`
+
+export const DetailsText = styled.span`
+  display: none;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    display:flex;
+    font-size: 14px;
+  `};
+`
+
+export const StyledMutedSubHeader = styled(TYPE.mutedSubHeader)`
+  display: NONE;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+  display:flex;
+  `};
 `
