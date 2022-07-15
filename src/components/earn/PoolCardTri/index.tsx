@@ -43,7 +43,7 @@ export type PoolCardTriProps = {
   totalStakedInUSD: number
   isStaking: boolean
   version: number
-  stableSwapPoolName?: StableSwapPoolName | null
+  stableSwapPoolName: StableSwapPoolName | null
   nonTriAPRs: NonTriAPR[]
   friendlyFarmName: string | null
   isFeatured?: boolean
