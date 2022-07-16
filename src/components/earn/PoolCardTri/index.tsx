@@ -28,7 +28,6 @@ import {
   CardContainer,
   CardExpandableContainer,
   DetailsContainer,
-  DetailsText,
   StyledMutedSubHeader
 } from './PoolCardTri.styles'
 
@@ -139,7 +138,7 @@ const DefaultPoolCardtri = ({
           <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
         </StakedContainer>
         <AprContainer>
-          <StyledMutedSubHeader justifyContent="flex-end">APR</StyledMutedSubHeader>
+          <StyledMutedSubHeader justifyContent="flex-start">APR</StyledMutedSubHeader>
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AprContainer>
         {isLegacy && !isStaking ? (
@@ -159,11 +158,11 @@ const DefaultPoolCardtri = ({
         <DetailsContainer>
           {showMore ? (
             <>
-              <DetailsText>Details</DetailsText> <ChevronUp size="15" />
+             <ChevronUp size="15" />
             </>
           ) : (
             <>
-              <DetailsText>Details</DetailsText> <ChevronDown size="15" />
+          <ChevronDown size="15" />
             </>
           )}
         </DetailsContainer>
