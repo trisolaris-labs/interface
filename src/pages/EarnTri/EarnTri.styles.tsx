@@ -100,8 +100,8 @@ export const StyledArrowContainer = styled.span`
 
 export const PoolHeader = styled.div`
   display: grid;
-  padding: 0 20px 10px;
-  grid-template-columns: 200px auto auto 110px;
+  padding: 0 20px 0px;
+  grid-template-columns: 200px 1fr 1fr 110px 20px;
   min-width: 100%;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display:none;

@@ -11,7 +11,7 @@ export const StyledExternalLink = styled(ExternalLink)`
   font-size: 0.75rem;
   margin: 0;
   position: absolute;
-  top: 7px;
+  top: 3px;
   left: 70px;
 
   :active {
