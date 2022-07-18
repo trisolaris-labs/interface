@@ -152,10 +152,7 @@ export const DetailsContainer = styled.div`
 `
 
 export const StyledMutedSubHeader = styled(TYPE.mutedSubHeader)`
-  display: none;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    display:flex;
-  `};
+  display: flex;
 `
 
 export const ExpandableActionsContainer = styled(FixedHeightRow)`
