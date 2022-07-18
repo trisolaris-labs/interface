@@ -5,6 +5,7 @@ import { TYPE } from '../../../theme'
 import Card from '../../Card'
 import { ButtonPrimary } from '../../Button'
 import { AutoColumn } from '../../Column'
+import { FixedHeightRow } from '../../PositionCard/PositionCard.styles'
 
 export const Wrapper = styled(Card)<{
   bgColor1: string | null
@@ -16,7 +17,7 @@ export const Wrapper = styled(Card)<{
   border-radius: 0px;
   gap: 12px;
   position: relative;
-  padding: 0.75rem 20px 0.75rem 20px;
+  padding: 0.6rem 20px 0.6rem 20px;
   display: grid;
   grid-auto-rows: auto;
 
@@ -96,9 +97,7 @@ export const ActionsContainer = styled.div`
   display: flex;
   min-width: 110px;
   justify-content: center;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-        display:none;
-  `};
+  height: 34px;
 `
 
 export const StyledPairContainer = styled(PairContainer)`
@@ -117,6 +116,13 @@ export const StakedContainer = styled(AutoColumn)`
   `};
 `
 
+export const ExpandableStakedContainer = styled(FixedHeightRow)`
+  display: none;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    display:flex;
+  `};
+`
+
 export const AprContainer = styled(AutoColumn)`
   min-width: 100px;
   justify-content: flex-start;
@@ -132,11 +138,6 @@ export const CardContainer = styled.div`
   align-items: center;
   justify-items: center;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    // display:flex;
-    // align-items: center;
-    // justify-content: space-between;
-    // flex-wrap: wrap;
-    // row-gap:12px;
     grid-template-columns: 200px  1fr 110px 0.25fr;
    `};
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -144,34 +145,28 @@ export const CardContainer = styled.div`
   `};
 `
 
-export const CardExpandableContainer = styled.div`
-  margin-top: 10px;
-`
-
 export const DetailsContainer = styled.div`
-  // margin-left: 15px;
-  // display: flex;
   align-items: center;
   position: absolute;
-  right:15px;
-  // ${({ theme }) => theme.mediaWidth.upToSmall`
-  // order:5;
-  // grid-column: span 2;
-  // `};
+  right: 15px;
 `
 
-// export const DetailsText = styled.span`
-//   display: none;
-
-//   ${({ theme }) => theme.mediaWidth.upToXxSmall`
-//     display:flex;
-//     font-size: 14px;
-//   `};
-// `
-
 export const StyledMutedSubHeader = styled(TYPE.mutedSubHeader)`
-  display: NONE;
+  display: none;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-  display:flex;
+    display:flex;
+  `};
+`
+
+export const ExpandableActionsContainer = styled(FixedHeightRow)`
+  display: none;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+   display:flex;
+   margin-top:10px;
+  `};
+`
+export const RowActionsContainer = styled.div`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        display:none;
   `};
 `

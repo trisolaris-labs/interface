@@ -3,6 +3,8 @@ import { Token } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { Settings2 as ManageIcon, ChevronDown, ChevronUp } from 'lucide-react'
+import { isMobileOnly } from 'react-device-detect'
+import { Text } from 'rebass'
 
 import { TYPE } from '../../../theme'
 import { ButtonGold } from '../../Button'
@@ -26,9 +28,11 @@ import {
   StakedContainer,
   AprContainer,
   CardContainer,
-  CardExpandableContainer,
   DetailsContainer,
-  StyledMutedSubHeader
+  StyledMutedSubHeader,
+  ExpandableStakedContainer,
+  ExpandableActionsContainer,
+  RowActionsContainer
 } from './PoolCardTri.styles'
 import SponsoredFarmLink from '../../SponsoredFarmLink'
 import { StableSwapPoolName } from '../../../state/stableswap/constants'
@@ -74,7 +78,7 @@ const DefaultPoolCardtri = ({
   const history = useHistory()
   const { t } = useTranslation()
 
-  const [showMore, setShowMore] = useState(false)
+  const [showMore, setShowMore] = useState(isMobileOnly && isStaking ? true : false)
 
   const isDualRewards = chefVersion === ChefVersions.V2
 
@@ -113,6 +117,23 @@ const DefaultPoolCardtri = ({
     )
   }
 
+  function renderActionsContainer() {
+    return isLegacy && !isStaking ? (
+      <Button disabled={true} isStaking={isStaking}>
+        {t('earn.deposit')}
+      </Button>
+    ) : (
+      <ActionsContainer>
+        {enableClaimButton && (
+          <ButtonGold padding="8px" borderRadius="8px" maxWidth="65px" onClick={enableModal}>
+            Claim
+          </ButtonGold>
+        )}
+        {renderManageOrDepositButton()}
+      </ActionsContainer>
+    )
+  }
+
   const currenciesQty = currencies.length
 
   return (
@@ -140,34 +161,32 @@ const DefaultPoolCardtri = ({
           <StyledMutedSubHeader justifyContent="flex-start">APR</StyledMutedSubHeader>
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AprContainer>
-        {isLegacy && !isStaking ? (
-          <Button disabled={true} isStaking={isStaking}>
-            {t('earn.deposit')}
-          </Button>
-        ) : (
-          <ActionsContainer>
-            {enableClaimButton && (
-              <ButtonGold padding="8px" borderRadius="8px" maxWidth="65px" onClick={enableModal}>
-                Claim
-              </ButtonGold>
-            )}
-            {renderManageOrDepositButton()}
-          </ActionsContainer>
-        )}
+        <RowActionsContainer>{renderActionsContainer()}</RowActionsContainer>
         <DetailsContainer>
           {showMore ? (
             <>
-             <ChevronUp size="15" />
+              <ChevronUp size="15" />
             </>
           ) : (
             <>
-          <ChevronDown size="15" />
+              <ChevronDown size="15" />
             </>
           )}
         </DetailsContainer>
       </CardContainer>
 
-      {showMore && <CardExpandableContainer>test</CardExpandableContainer>}
+      {showMore && (
+        <div>
+          <ExpandableStakedContainer>
+            <Text>{t('earn.totalStaked')}</Text>
+            <TYPE.white fontWeight={500}>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
+          </ExpandableStakedContainer>
+          <ExpandableActionsContainer>
+            <Text>Manage this Farm</Text>
+            {renderActionsContainer()}
+          </ExpandableActionsContainer>
+        </div>
+      )}
     </Wrapper>
   )
 }
