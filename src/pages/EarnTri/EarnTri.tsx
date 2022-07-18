@@ -50,12 +50,6 @@ export default function EarnTri() {
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Stable Pools</TYPE.mediumHeader>
           </DataRow>
-
-          <PoolHeader>
-            <HeaderColumn>Pool</HeaderColumn>
-            <HeaderColumn>Liquidity</HeaderColumn>
-            <HeaderColumn>APR</HeaderColumn>
-          </PoolHeader>
           <PoolSection>
             {stablePoolFarms.map(farm =>
               farm.stableSwapPoolName == null ? null : (
@@ -88,11 +82,7 @@ export default function EarnTri() {
             <DataRow style={{ alignItems: 'baseline' }}>
               <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Dual Rewards Pools</TYPE.mediumHeader>
             </DataRow>
-            <PoolHeader>
-              <HeaderColumn>Pool</HeaderColumn>
-              <HeaderColumn>Liquidity</HeaderColumn>
-              <HeaderColumn>APR</HeaderColumn>
-            </PoolHeader>
+
             <PoolSection>
               {dualRewardPools.map(farm => (
                 <MemoizedPoolCardTRI
@@ -124,11 +114,6 @@ export default function EarnTri() {
           </DataRow>
         )}
 
-        <PoolHeader>
-          <HeaderColumn>Pool</HeaderColumn>
-          <HeaderColumn>Liquidity</HeaderColumn>
-          <HeaderColumn>APR</HeaderColumn>
-        </PoolHeader>
         <PoolSection>
           {filteredFarms.map(farm => (
             <MemoizedPoolCardTRI
@@ -158,11 +143,6 @@ export default function EarnTri() {
               <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Ecosystem Pools</TYPE.mediumHeader>
             </DataRow>
 
-            <PoolHeader>
-              <HeaderColumn>Pool</HeaderColumn>
-              <HeaderColumn>Liquidity</HeaderColumn>
-              <HeaderColumn>APR</HeaderColumn>
-            </PoolHeader>
             <PoolSection>
               {nonTriFarms.map(farm => (
                 <MemoizedPoolCardTRI
