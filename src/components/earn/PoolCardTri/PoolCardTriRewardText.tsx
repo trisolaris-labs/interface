@@ -18,7 +18,6 @@ const IconWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-left: 0.25rem;
 `
 
 const ContentWrapper = styled.div`

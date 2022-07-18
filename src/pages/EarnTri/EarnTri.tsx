@@ -3,7 +3,7 @@ import { AutoColumn } from '../../components/Column'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
 import { TYPE } from '../../theme'
 import { isTokenAmountPositive } from '../../utils/pools'
-import { PoolSection, DataRow } from './EarnTri.styles'
+import { PoolSection, DataRow, PoolHeader, HeaderColumn } from './EarnTri.styles'
 
 import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter/EarnTriSortAndFilterContainer'
 import useFarmsSortAndFilter from './useFarmsSortAndFilter'
@@ -46,11 +46,10 @@ export default function EarnTri() {
       />
 
       {!hasSearchQuery && !activeFarmsFilter && (
-        <AutoColumn gap="lg" style={{ width: '100%' }}>
+        <AutoColumn gap="md" style={{ width: '100%' }}>
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Stable Pools</TYPE.mediumHeader>
           </DataRow>
-
           <PoolSection>
             {stablePoolFarms.map(farm =>
               farm.stableSwapPoolName == null ? null : (
@@ -77,12 +76,13 @@ export default function EarnTri() {
         </AutoColumn>
       )}
 
-      <AutoColumn gap="lg" style={{ width: '100%' }}>
+      <AutoColumn gap="md" style={{ width: '100%' }}>
         {!hasSearchQuery && !activeFarmsFilter && (
           <>
             <DataRow style={{ alignItems: 'baseline' }}>
               <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Dual Rewards Pools</TYPE.mediumHeader>
             </DataRow>
+
             <PoolSection>
               {dualRewardPools.map(farm => (
                 <MemoizedPoolCardTRI
@@ -107,7 +107,7 @@ export default function EarnTri() {
           </>
         )}
       </AutoColumn>
-      <AutoColumn gap="lg" style={{ width: '100%' }}>
+      <AutoColumn gap="md" style={{ width: '100%' }}>
         {!hasSearchQuery && !activeFarmsFilter && (
           <DataRow style={{ alignItems: 'baseline' }}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>TRI Pools</TYPE.mediumHeader>
@@ -136,7 +136,7 @@ export default function EarnTri() {
           ))}
         </PoolSection>
       </AutoColumn>
-      <AutoColumn gap="lg" style={{ width: '100%' }}>
+      <AutoColumn gap="md" style={{ width: '100%' }}>
         {!hasSearchQuery && !activeFarmsFilter && (
           <>
             <DataRow style={{ alignItems: 'baseline' }}>
@@ -167,7 +167,7 @@ export default function EarnTri() {
         )}
       </AutoColumn>
       {!hasSearchQuery && !activeFarmsFilter && (
-        <AutoColumn gap="lg" style={{ width: '100%' }}>
+        <AutoColumn gap="md" style={{ width: '100%' }}>
           <TitleRow>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Legacy Pools</TYPE.mediumHeader>
             <Toggle
