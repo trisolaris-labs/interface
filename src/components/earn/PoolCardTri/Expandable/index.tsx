@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Text } from 'rebass'
 import { Settings2 as ManageIcon } from 'lucide-react'
@@ -12,6 +12,7 @@ import CountUp from '../../../CountUp'
 import { RowBetween } from '../../../Row'
 import { TYPE } from '../../../../theme'
 import CurrencyLogo from '../../../CurrencyLogo'
+import ClaimRewardModal from '../ClaimRewardModalTri'
 import { FixedHeightRow } from '../../../PositionCard/PositionCard.styles'
 import { Button, StyledMutedSubHeader } from '../PoolCardTri.styles'
 
@@ -72,6 +73,8 @@ function Expandable({
   const history = useHistory()
   const { t } = useTranslation()
 
+  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
+
   const { chefVersion, earnedNonTriRewards, noTriRewards, poolId, earnedAmount } = stakingInfo ?? {}
 
   function renderManageOrDepositButton() {
@@ -114,8 +117,20 @@ function Expandable({
     )
   }
 
+  function handleClaimClick(event: React.MouseEvent) {
+    setShowClaimRewardModal(true)
+    event.stopPropagation()
+  }
+
   return (
     <div>
+      {stakingInfo && (
+        <ClaimRewardModal
+          isOpen={showClaimRewardModal}
+          onDismiss={() => setShowClaimRewardModal(false)}
+          stakingInfo={stakingInfo}
+        />
+      )}
       <TopContainer>
         <RewardsContainer>
           <StyledMutedSubHeader>Unclaimed rewards</StyledMutedSubHeader>
@@ -140,7 +155,13 @@ function Expandable({
                 </RewardRow>
               ))}
             </AutoColumn>
-            <ButtonGold padding="8px" borderRadius="8px" maxWidth="55px" height="85%">
+            <ButtonGold
+              padding="8px"
+              borderRadius="8px"
+              maxWidth="55px"
+              height="85%"
+              onClick={event => handleClaimClick(event)}
+            >
               Claim
             </ButtonGold>
           </RowBetween>
