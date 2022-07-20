@@ -16,6 +16,8 @@ import { useColorForToken } from '../../../hooks/useColor'
 import { addCommasToNumber } from '../../../utils'
 import { getPairRenderOrder, isTokenAmountPositive } from '../../../utils/pools'
 
+import { StakingTri } from '../../../state/stake/stake-constants'
+
 import {
   ResponsiveCurrencyLabel,
   TokenPairBackgroundColor,
@@ -50,6 +52,7 @@ export type PoolCardTriProps = {
   nonTriAPRs: NonTriAPR[]
   friendlyFarmName: string | null
   isFeatured?: boolean
+  stakingInfo?: StakingTri
 }
 
 const DefaultPoolCardtri = ({
@@ -68,7 +71,8 @@ const DefaultPoolCardtri = ({
   nonTriAPRs,
   hasNonTriRewards,
   friendlyFarmName,
-  isFeatured = false
+  isFeatured = false,
+  stakingInfo
 }: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
   const { t } = useTranslation()
 
@@ -139,6 +143,7 @@ const DefaultPoolCardtri = ({
           version={version}
           isLegacy={isLegacy}
           enableClaimButton={enableClaimButton}
+          stakingInfo={stakingInfo}
         />
       )}
     </Wrapper>
@@ -167,7 +172,12 @@ const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
           stakingInfo={stakingInfo}
         />
       )}
-      <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+      <DefaultPoolCardtri
+        {...props}
+        enableClaimButton={amountIsClaimable}
+        enableModal={enableModal}
+        stakingInfo={stakingInfo}
+      />
     </>
   )
 }
@@ -176,6 +186,7 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
   const { version } = props
 
   const stakingInfo = useSingleFarm(Number(version))
+
   const { earnedAmount, earnedNonTriRewards } = stakingInfo
 
   const amountIsClaimable =
@@ -192,7 +203,12 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
           stakingInfo={stakingInfo}
         />
       )}
-      <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+      <DefaultPoolCardtri
+        {...props}
+        enableClaimButton={amountIsClaimable}
+        enableModal={enableModal}
+        stakingInfo={stakingInfo}
+      />
     </>
   )
 }

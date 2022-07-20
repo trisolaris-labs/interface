@@ -1,25 +1,57 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Text } from 'rebass'
 import { Settings2 as ManageIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
+import { Currency, ChainId } from '@trisolaris/sdk'
 
 import { ButtonGold } from '../../../Button'
+import { AutoColumn } from '../../../Column'
+import CountUp from '../../../CountUp'
+import { RowBetween } from '../../../Row'
+import { TYPE } from '../../../../theme'
+import CurrencyLogo from '../../../CurrencyLogo'
+import { FixedHeightRow } from '../../../PositionCard/PositionCard.styles'
+import { Button, StyledMutedSubHeader } from '../PoolCardTri.styles'
 
 import { currencyId } from '../../../../utils/currencyId'
 
-import { TYPE } from '../../../../theme'
+import { StakingTri } from '../../../../state/stake/stake-constants'
+import { PoolCardTriProps } from '../'
+import { BIG_INT_ZERO } from '../../../../constants'
+import { TRI } from '../../../../constants/tokens'
 
-import { PoolCardTriProps } from '..'
+export const TopContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+export const ExpandableStakedContainer = styled(FixedHeightRow)`
+  display: none;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    display:flex;
+  `};
+`
 
-import {
-  Button,
-  ActionsContainer,
-  StyledMutedSubHeader,
-  ExpandableStakedContainer,
-  ExpandableActionsContainer
-} from '../PoolCardTri.styles'
-import { Currency } from '@trisolaris/sdk'
+export const ActionsContainer = styled.div`
+  display: flex;
+  min-width: 110px;
+  justify-content: center;
+  height: 34px;
+`
+
+export const RewardRow = styled(RowBetween)`
+  font-size: 14px;
+`
+
+const RewardsContainer = styled(AutoColumn)`
+  flex: 1;
+  max-width: 200px;
+`
+
+const StyledCurrencyLogo = styled(CurrencyLogo)`
+  margin-right: 5px;
+`
 
 function Expandable({
   totalStakedInUSDFriendly,
@@ -29,14 +61,18 @@ function Expandable({
   stableSwapPoolName,
   version,
   isLegacy,
-  enableClaimButton
+  enableClaimButton,
+  stakingInfo
 }: {
   totalStakedInUSDFriendly: string
   enableClaimButton?: boolean
   currencies: Currency[]
+  stakingInfo?: StakingTri
 } & Pick<PoolCardTriProps, 'isStaking' | 'isPeriodFinished' | 'stableSwapPoolName' | 'version' | 'isLegacy'>) {
   const history = useHistory()
   const { t } = useTranslation()
+
+  const { chefVersion, earnedNonTriRewards, noTriRewards, poolId, earnedAmount } = stakingInfo ?? {}
 
   function renderManageOrDepositButton() {
     const sharedProps = {
@@ -80,14 +116,40 @@ function Expandable({
 
   return (
     <div>
+      <TopContainer>
+        <RewardsContainer>
+          <StyledMutedSubHeader>Unclaimed rewards</StyledMutedSubHeader>
+          <RowBetween>
+            <AutoColumn>
+              {!noTriRewards && (
+                <RewardRow>
+                  <StyledCurrencyLogo currency={TRI[ChainId.AURORA]} size="14px" />
+                  <CountUp
+                    enabled={earnedAmount?.greaterThan(BIG_INT_ZERO) ?? false}
+                    value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
+                  />
+                </RewardRow>
+              )}
+              {earnedNonTriRewards?.map(({ amount, token }) => (
+                <RewardRow key={token.address}>
+                  <StyledCurrencyLogo currency={token} size="14px" />
+                  <CountUp
+                    enabled={amount?.greaterThan(BIG_INT_ZERO) ?? false}
+                    value={parseFloat(amount?.toFixed(6) ?? '0')}
+                  />
+                </RewardRow>
+              ))}
+            </AutoColumn>
+            <ButtonGold padding="8px" borderRadius="8px" maxWidth="55px" height="85%">
+              Claim
+            </ButtonGold>
+          </RowBetween>
+        </RewardsContainer>
+      </TopContainer>
       <ExpandableStakedContainer>
         <Text>{t('earn.totalStaked')}</Text>
         <TYPE.white fontWeight={500}>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
       </ExpandableStakedContainer>
-      <ExpandableActionsContainer>
-        <Text>Manage this Farm</Text>
-        {renderActionsContainer()}
-      </ExpandableActionsContainer>
     </div>
   )
 }
