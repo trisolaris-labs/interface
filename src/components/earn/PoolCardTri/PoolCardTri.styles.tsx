@@ -5,7 +5,6 @@ import { TYPE } from '../../../theme'
 import Card from '../../Card'
 import { ButtonPrimary } from '../../Button'
 import { AutoColumn } from '../../Column'
-import { FixedHeightRow } from '../../PositionCard/PositionCard.styles'
 
 export const Wrapper = styled(Card)<{
   bgColor1: string | null
@@ -93,13 +92,6 @@ export const TokenPairBackgroundColor = styled.span<{ bgColor1: string | null; b
   z-index: -1;
 `
 
-export const ActionsContainer = styled.div`
-  display: flex;
-  min-width: 110px;
-  justify-content: center;
-  height: 34px;
-`
-
 export const StyledPairContainer = styled(PairContainer)`
   max-width: 200px;
   justify-self: flex-start;
@@ -111,15 +103,8 @@ export const StyledPairContainer = styled(PairContainer)`
 export const StakedContainer = styled(AutoColumn)`
   min-width: 100px;
   justify-content: flex-start;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display:none;
-  `};
-`
-
-export const ExpandableStakedContainer = styled(FixedHeightRow)`
-  display: none;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    display:flex;
   `};
 `
 
@@ -155,13 +140,6 @@ export const StyledMutedSubHeader = styled(TYPE.mutedSubHeader)`
   display: flex;
 `
 
-export const ExpandableActionsContainer = styled(FixedHeightRow)`
-  display: none;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-   display:flex;
-   margin-top:10px;
-  `};
-`
 export const RowActionsContainer = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
         display:none;

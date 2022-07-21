@@ -1,0 +1,149 @@
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import { Text } from 'rebass'
+import { Settings2 as ManageIcon } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
+import { Currency, ChainId } from '@trisolaris/sdk'
+
+import { ButtonGold } from '../../../Button'
+import { AutoColumn } from '../../../Column'
+import CountUp from '../../../CountUp'
+import { RowBetween } from '../../../Row'
+import { TYPE } from '../../../../theme'
+import CurrencyLogo from '../../../CurrencyLogo'
+import ClaimRewardModal from '../ClaimRewardModalTri'
+import { FixedHeightRow } from '../../../PositionCard/PositionCard.styles'
+import { Button, StyledMutedSubHeader } from '../PoolCardTri.styles'
+
+import { currencyId } from '../../../../utils/currencyId'
+
+import { StakingTri } from '../../../../state/stake/stake-constants'
+import { PoolCardTriProps } from '../'
+import { BIG_INT_ZERO } from '../../../../constants'
+import { TRI } from '../../../../constants/tokens'
+
+export const TopContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+export const ExpandableStakedContainer = styled(FixedHeightRow)`
+  display: none;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    display:flex;
+  `};
+`
+
+export const ActionsContainer = styled.div`
+  display: flex;
+  min-width: 110px;
+  justify-content: center;
+  height: 34px;
+`
+
+export const RewardRow = styled(RowBetween)`
+  font-size: 14px;
+`
+
+const RewardsContainer = styled(AutoColumn)`
+  flex: 1;
+  max-width: 200px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    max-width:100%;
+  `};
+`
+
+const StyledCurrencyLogo = styled(CurrencyLogo)`
+  margin-right: 5px;
+`
+
+function Expandable({
+  totalStakedInUSDFriendly,
+  isStaking,
+  isPeriodFinished,
+  currencies,
+  stableSwapPoolName,
+  version,
+  isLegacy,
+  enableClaimButton,
+  stakingInfo
+}: {
+  totalStakedInUSDFriendly: string
+  enableClaimButton?: boolean
+  currencies: Currency[]
+  stakingInfo?: StakingTri
+} & Pick<PoolCardTriProps, 'isStaking' | 'isPeriodFinished' | 'stableSwapPoolName' | 'version' | 'isLegacy'>) {
+  const history = useHistory()
+  const { t } = useTranslation()
+
+  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
+
+  const { earnedNonTriRewards, noTriRewards, earnedAmount } = stakingInfo ?? {}
+
+  function handleClaimClick(event: React.MouseEvent) {
+    setShowClaimRewardModal(true)
+    event.stopPropagation()
+  }
+
+  return (
+    <div>
+      {stakingInfo && (
+        <ClaimRewardModal
+          isOpen={showClaimRewardModal}
+          onDismiss={() => setShowClaimRewardModal(false)}
+          stakingInfo={stakingInfo}
+        />
+      )}
+      <TopContainer>
+        <RewardsContainer>
+          <StyledMutedSubHeader>Unclaimed rewards</StyledMutedSubHeader>
+          <RowBetween>
+            <AutoColumn>
+              {enableClaimButton ? (
+                <>
+                  {!noTriRewards && (
+                    <RewardRow>
+                      <StyledCurrencyLogo currency={TRI[ChainId.AURORA]} size="14px" />
+                      <CountUp
+                        enabled={earnedAmount?.greaterThan(BIG_INT_ZERO) ?? false}
+                        value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
+                      />
+                    </RewardRow>
+                  )}
+                  {earnedNonTriRewards?.map(({ amount, token }) => (
+                    <RewardRow key={token.address}>
+                      <StyledCurrencyLogo currency={token} size="14px" />
+                      <CountUp
+                        enabled={amount?.greaterThan(BIG_INT_ZERO) ?? false}
+                        value={parseFloat(amount?.toFixed(6) ?? '0')}
+                      />
+                    </RewardRow>
+                  ))}
+                </>
+              ) : (
+                <TYPE.mutedSubHeader>Not Staking</TYPE.mutedSubHeader>
+              )}
+            </AutoColumn>
+            <ButtonGold
+              padding="8px"
+              borderRadius="8px"
+              maxWidth="55px"
+              height="85%"
+              onClick={event => handleClaimClick(event)}
+              disabled={!enableClaimButton}
+            >
+              Claim
+            </ButtonGold>
+          </RowBetween>
+        </RewardsContainer>
+      </TopContainer>
+      <ExpandableStakedContainer>
+        <Text>{t('earn.totalStaked')}</Text>
+        <TYPE.white fontWeight={500}>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
+      </ExpandableStakedContainer>
+    </div>
+  )
+}
+
+export default Expandable
