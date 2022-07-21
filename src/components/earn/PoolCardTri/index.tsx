@@ -119,7 +119,7 @@ const DefaultPoolCardtri = ({
           <StyledMutedSubHeader justifyContent="flex-start">APR</StyledMutedSubHeader>
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AprContainer>
-        <RowActionsContainer></RowActionsContainer>
+       
         <DetailsContainer>
           {showMore ? (
             <>

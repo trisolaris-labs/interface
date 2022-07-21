@@ -48,6 +48,10 @@ export const RewardRow = styled(RowBetween)`
 const RewardsContainer = styled(AutoColumn)`
   flex: 1;
   max-width: 200px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    max-width:100%;
+  `};
 `
 
 const StyledCurrencyLogo = styled(CurrencyLogo)`
@@ -75,47 +79,7 @@ function Expandable({
 
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
-  const { chefVersion, earnedNonTriRewards, noTriRewards, poolId, earnedAmount } = stakingInfo ?? {}
-
-  function renderManageOrDepositButton() {
-    const sharedProps = {
-      marginLeft: '0.5rem',
-      onClick: () => {
-        history.push(
-          stableSwapPoolName
-            ? `/tri/${stableSwapPoolName}/${version}`
-            : `/tri/${currencyId(currencies[0])}/${currencyId(currencies[1])}/${version}`
-        )
-      }
-    }
-
-    return isStaking ? (
-      <Button isStaking={true} {...sharedProps}>
-        <ManageIcon size={20} />
-      </Button>
-    ) : (
-      <Button disabled={isPeriodFinished} isStaking={false} {...sharedProps}>
-        {t('earn.deposit')}
-      </Button>
-    )
-  }
-
-  function renderActionsContainer() {
-    return isLegacy && !isStaking ? (
-      <Button disabled={true} isStaking={isStaking}>
-        {t('earn.deposit')}
-      </Button>
-    ) : (
-      <ActionsContainer>
-        {enableClaimButton && (
-          <ButtonGold padding="8px" borderRadius="8px" maxWidth="65px">
-            Claim
-          </ButtonGold>
-        )}
-        {renderManageOrDepositButton()}
-      </ActionsContainer>
-    )
-  }
+  const { earnedNonTriRewards, noTriRewards, earnedAmount } = stakingInfo ?? {}
 
   function handleClaimClick(event: React.MouseEvent) {
     setShowClaimRewardModal(true)
