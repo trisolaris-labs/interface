@@ -136,24 +136,30 @@ function Expandable({
           <StyledMutedSubHeader>Unclaimed rewards</StyledMutedSubHeader>
           <RowBetween>
             <AutoColumn>
-              {!noTriRewards && (
-                <RewardRow>
-                  <StyledCurrencyLogo currency={TRI[ChainId.AURORA]} size="14px" />
-                  <CountUp
-                    enabled={earnedAmount?.greaterThan(BIG_INT_ZERO) ?? false}
-                    value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
-                  />
-                </RewardRow>
+              {enableClaimButton ? (
+                <>
+                  {!noTriRewards && (
+                    <RewardRow>
+                      <StyledCurrencyLogo currency={TRI[ChainId.AURORA]} size="14px" />
+                      <CountUp
+                        enabled={earnedAmount?.greaterThan(BIG_INT_ZERO) ?? false}
+                        value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
+                      />
+                    </RewardRow>
+                  )}
+                  {earnedNonTriRewards?.map(({ amount, token }) => (
+                    <RewardRow key={token.address}>
+                      <StyledCurrencyLogo currency={token} size="14px" />
+                      <CountUp
+                        enabled={amount?.greaterThan(BIG_INT_ZERO) ?? false}
+                        value={parseFloat(amount?.toFixed(6) ?? '0')}
+                      />
+                    </RewardRow>
+                  ))}
+                </>
+              ) : (
+                <TYPE.mutedSubHeader>Not Staking</TYPE.mutedSubHeader>
               )}
-              {earnedNonTriRewards?.map(({ amount, token }) => (
-                <RewardRow key={token.address}>
-                  <StyledCurrencyLogo currency={token} size="14px" />
-                  <CountUp
-                    enabled={amount?.greaterThan(BIG_INT_ZERO) ?? false}
-                    value={parseFloat(amount?.toFixed(6) ?? '0')}
-                  />
-                </RewardRow>
-              ))}
             </AutoColumn>
             <ButtonGold
               padding="8px"
@@ -161,6 +167,7 @@ function Expandable({
               maxWidth="55px"
               height="85%"
               onClick={event => handleClaimClick(event)}
+              disabled={!enableClaimButton}
             >
               Claim
             </ButtonGold>
