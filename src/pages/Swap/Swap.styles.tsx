@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 
-
-
 export const WarningWrapper = styled.div`
   max-width: 420px;
   width: 100%;
@@ -49,8 +47,4 @@ export const HeadingContainer = styled.div`
 
 export const HeaderButtonsContainer = styled.div`
   display: flex;
-`
-
-export const StyledAddToMetamaskButton = styled(AddToMetamaskButton)`
-  margin-right: 10px;
 `
