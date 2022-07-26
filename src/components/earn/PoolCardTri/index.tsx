@@ -93,6 +93,7 @@ const DefaultPoolCardtri = ({
   }
 
   const currenciesQty = currencies.length
+  const farmName = friendlyFarmName ?? currencies.map(({ symbol }) => symbol).join('-')
 
   return (
     <Wrapper
@@ -107,9 +108,7 @@ const DefaultPoolCardtri = ({
         <StyledPairContainer>
           <GetTokenLink tokens={tokens} />
           <MultipleCurrencyLogo currencies={currencies} size={20} />
-          <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>
-            {friendlyFarmName ?? currencies.map(({ symbol }) => symbol).join('-')}
-          </ResponsiveCurrencyLabel>
+          <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>{farmName}</ResponsiveCurrencyLabel>
         </StyledPairContainer>
         <StakedContainer>
           <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
@@ -119,7 +118,7 @@ const DefaultPoolCardtri = ({
           <StyledMutedSubHeader justifyContent="flex-start">APR</StyledMutedSubHeader>
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AprContainer>
-       
+
         <DetailsContainer>
           {showMore ? (
             <>
@@ -144,6 +143,7 @@ const DefaultPoolCardtri = ({
           isLegacy={isLegacy}
           enableClaimButton={enableClaimButton}
           stakingInfo={stakingInfo}
+          farmName={farmName}
         />
       )}
     </Wrapper>

@@ -35,6 +35,8 @@ export default function EarnTri() {
     sortBy
   } = useFarmsSortAndFilter()
 
+  console.log(dualRewardPools)
+
   return (
     <>
       <EarnTriSortAndFilterContainer

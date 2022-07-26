@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import { Text } from 'rebass'
-import { Settings2 as ManageIcon } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
 import { Currency, ChainId } from '@trisolaris/sdk'
 
 import { ButtonGold } from '../../../Button'
@@ -11,52 +9,28 @@ import { AutoColumn } from '../../../Column'
 import CountUp from '../../../CountUp'
 import { RowBetween } from '../../../Row'
 import { TYPE } from '../../../../theme'
-import CurrencyLogo from '../../../CurrencyLogo'
-import ClaimRewardModal from '../ClaimRewardModalTri'
-import { FixedHeightRow } from '../../../PositionCard/PositionCard.styles'
-import { Button, StyledMutedSubHeader } from '../PoolCardTri.styles'
 
-import { currencyId } from '../../../../utils/currencyId'
+import ClaimRewardModal from '../ClaimRewardModalTri'
+
+import { StyledMutedSubHeader } from '../PoolCardTri.styles'
 
 import { StakingTri } from '../../../../state/stake/stake-constants'
 import { PoolCardTriProps } from '../'
 import { BIG_INT_ZERO } from '../../../../constants'
 import { TRI } from '../../../../constants/tokens'
 
-export const TopContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-export const ExpandableStakedContainer = styled(FixedHeightRow)`
-  display: none;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    display:flex;
-  `};
-`
+import { currencyId } from '../../../../utils/currencyId'
+import { addCommasToNumber } from '../../../../utils'
 
-export const ActionsContainer = styled.div`
-  display: flex;
-  min-width: 110px;
-  justify-content: center;
-  height: 34px;
-`
-
-export const RewardRow = styled(RowBetween)`
-  font-size: 14px;
-`
-
-const RewardsContainer = styled(AutoColumn)`
-  flex: 1;
-  max-width: 200px;
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    max-width:100%;
-  `};
-`
-
-const StyledCurrencyLogo = styled(CurrencyLogo)`
-  margin-right: 5px;
-`
+import {
+  TopContainer,
+  RewardRow,
+  RewardsContainer,
+  StyledCurrencyLogo,
+  OtherDataAndLinksContainer,
+  StyledLink,
+  ExpandableStakedContainer
+} from './Expandable.styles'
 
 function Expandable({
   totalStakedInUSDFriendly,
@@ -67,24 +41,31 @@ function Expandable({
   version,
   isLegacy,
   enableClaimButton,
-  stakingInfo
+  stakingInfo,
+  farmName
 }: {
   totalStakedInUSDFriendly: string
   enableClaimButton?: boolean
   currencies: Currency[]
   stakingInfo?: StakingTri
+  farmName: string
 } & Pick<PoolCardTriProps, 'isStaking' | 'isPeriodFinished' | 'stableSwapPoolName' | 'version' | 'isLegacy'>) {
-  const history = useHistory()
   const { t } = useTranslation()
 
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
-  const { earnedNonTriRewards, noTriRewards, earnedAmount } = stakingInfo ?? {}
+  const { earnedNonTriRewards, noTriRewards, earnedAmount, totalRewardRate } = stakingInfo ?? {}
 
   function handleClaimClick(event: React.MouseEvent) {
     setShowClaimRewardModal(true)
     event.stopPropagation()
   }
+
+  const lpLink = stableSwapPoolName
+    ? `/pool/stable/add/${stableSwapPoolName}`
+    : `/add/${currencyId(currencies[0])}/${currencyId(currencies[1])}`
+
+  const totalRewardRateFriendly = totalRewardRate ? addCommasToNumber(totalRewardRate.toString()) : 'n/a'
 
   return (
     <div>
@@ -137,6 +118,13 @@ function Expandable({
             </ButtonGold>
           </RowBetween>
         </RewardsContainer>
+        <OtherDataAndLinksContainer>
+          <div>Pool rate: {totalRewardRateFriendly}</div>
+          <StyledLink onClick={event => event.stopPropagation()} to={lpLink} target="_blank" rel="noopener noreferrer">
+            Get {farmName} TLP
+            <ArrowUpRight size={14} />
+          </StyledLink>
+        </OtherDataAndLinksContainer>
       </TopContainer>
       <ExpandableStakedContainer>
         <Text>{t('earn.totalStaked')}</Text>
