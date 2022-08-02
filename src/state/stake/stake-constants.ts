@@ -31,7 +31,8 @@ import {
   BSTN,
   KSW,
   SMARTPAD,
-  BRRR
+  BRRR,
+  USN
 } from '../../constants/tokens'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
@@ -535,6 +536,14 @@ const AURORA_POOLS: StakingTri[] = [
     stableSwapPoolName: StableSwapPoolName.NUSD_USDC_USDT,
     friendlyFarmName: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].friendlyName,
     isFeatured: true
+  }),
+  createMCV2Pool({
+    ID: 40,
+    poolId: 33,
+    tokens: [WNEAR[ChainId.AURORA], USN[ChainId.AURORA]],
+    lpAddress: '0xA36DF7c571bEbA7B3fB89F25dFc990EAC75F525A',
+    rewarderAddress: ZERO_ADDRESS,
+    inStaging: true
   })
 ]
 
