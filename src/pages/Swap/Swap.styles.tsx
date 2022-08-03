@@ -56,4 +56,6 @@ export const StyledAddToMetaMaskButton = styled(AddToMetaMaskButton)<{ swapDetai
   position: absolute;
   top: ${({ swapDetailsOpen }) => (swapDetailsOpen ? '' : '440px')};
   bottom: ${({ swapDetailsOpen }) => (swapDetailsOpen ? '-30px' : '')};
+  color: ${({ theme }) => theme.white}
+  text-decoration: underline;
 `
