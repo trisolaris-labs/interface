@@ -20,7 +20,8 @@ import {
   WBTC,
   ORBITAL,
   SMARTPAD,
-  USP
+  USP,
+  BINARIS
 } from './tokens'
 
 export const GAS_PRICE = 250
@@ -65,7 +66,9 @@ const COMMON_BASES: ChainTokenList = {
     STNEAR[ChainId.AURORA],
     PLY[ChainId.AURORA],
     AURORA[ChainId.AURORA],
-    WBTC[ChainId.AURORA]
+    WBTC[ChainId.AURORA],
+    USP[ChainId.AURORA],
+    BINARIS[ChainId.AURORA]
   ]
 }
 
@@ -258,7 +261,9 @@ export const TOKEN_WARNING_MODAL_ALLOWLIST = new Set(
 export const CUSTOM_TOKEN_MAX_HOPS = {
   [XTRI[ChainId.AURORA].address]: 4,
   [LUNAR[ChainId.AURORA].address]: 4,
-  [ORBITAL[ChainId.AURORA].address]: 4
+  [ORBITAL[ChainId.AURORA].address]: 4,
+  [USP[ChainId.AURORA].address]: 4,
+  [ETHERNAL[ChainId.AURORA].address]: 4
 }
 
 export const PRICE_IMPACT_NEGLIGIBLE_THRESHOLD = new Percent('1', '10000')

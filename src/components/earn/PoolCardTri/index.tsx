@@ -43,7 +43,7 @@ export type PoolCardTriProps = {
   totalStakedInUSD: number
   isStaking: boolean
   version: number
-  stableSwapPoolName?: StableSwapPoolName
+  stableSwapPoolName: StableSwapPoolName | null
   nonTriAPRs: NonTriAPR[]
   friendlyFarmName: string | null
   isFeatured?: boolean
@@ -154,6 +154,7 @@ const DefaultPoolCardtri = ({
 type StablePoolCardTriProps = PoolCardTriProps & { stableSwapPoolName: StableSwapPoolName }
 
 const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
+
   const { version } = props
 
   const stakingInfo = useSingleStableFarm(Number(version), props.stableSwapPoolName)

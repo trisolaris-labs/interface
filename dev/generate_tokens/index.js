@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { ChainId, Token } = require('@trisolaris/sdk')
-const { readdir, readFile, writeFile } = require('fs')
+const { writeFile } = require('fs')
 const path = require('path')
 const _ = require('lodash')
+// eslint-disable-next-line no-new-func
+const importDynamic = new Function('modulePath', 'return import(modulePath)')
+
+const fetch = async (...args) => (await importDynamic('node-fetch')).default(...args)
 
 const TOKEN_MAP = require('./base_tokens_map')
 const { createXChainToken } = require('./utils')
 
 const TOKENS_FOLDER_PATH = path.join(__dirname, '../../src/constants/tokens')
-const TOKEN_SUBMODULE_TOKENLISTS_PATH = path.join(__dirname, '../../tokens/lists')
+const TOKENS_URL = 'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/lists/1313161554/list.json'
 
 // This kicks it all off
 init()
@@ -121,26 +125,8 @@ function createMergedTokenMap(allTokens) {
 
 // @returns Array<Token>
 async function getAllTokensFromTokenLists() {
-  const chainIDs = await getTokenListChainIDs()
-  const allTokens = await _.attempt(async () =>
-    (await Promise.all(chainIDs.map(getTokenListForChainID))).map(JSON.parse).map(({ tokens }) => tokens)
-  )
+  const response = await fetch(TOKENS_URL)
+  const { tokens } = await response.json()
 
-  return _.flatten(allTokens)
-}
-
-async function getTokenListForChainID(chainID) {
-  return new Promise((resolve, reject) =>
-    readFile(`${TOKEN_SUBMODULE_TOKENLISTS_PATH}/${chainID}/list.json`, 'utf-8', (err, data) =>
-      err ? reject(err) : resolve(data)
-    )
-  )
-}
-
-async function getTokenListChainIDs() {
-  return new Promise((resolve, reject) =>
-    readdir(TOKEN_SUBMODULE_TOKENLISTS_PATH, { withFileTypes: true }, (err, dirent) =>
-      err ? reject(err) : resolve(dirent.filter(dir => dir.isDirectory()).map(({ name }) => name))
-    )
-  )
+  return tokens.flat()
 }

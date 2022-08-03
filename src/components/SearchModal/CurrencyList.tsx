@@ -57,14 +57,14 @@ const StyledRemoveTokenButton = styled(LinkStyledButton)`
   font-size: 12px;
 `
 
-function Balance({ balance }: { balance: CurrencyAmount }) {
-  return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
-}
-
 const TagContainer = styled.div`
   display: flex;
   justify-content: flex-end;
 `
+
+function Balance({ balance }: { balance: CurrencyAmount }) {
+  return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
+}
 
 function TokenTags({ currency }: { currency: Currency }) {
   if (!(currency instanceof WrappedTokenInfo)) {

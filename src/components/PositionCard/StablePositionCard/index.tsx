@@ -21,7 +21,6 @@ import { BIG_INT_ZERO } from '../../../constants'
 import { useHistory } from 'react-router-dom'
 import CurrencyLogo from '../../CurrencyLogo'
 import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
-import AddToMetamaskButton from '../../AddToMetamask'
 
 import ContractAddress from '../../ContractAddress'
 import { TYPE } from '../../../theme'
@@ -98,8 +97,10 @@ font-size: 12px !important;
 `};
 `
 
-const StyledAddToMetamaskButton = styled(AddToMetamaskButton)`
-  margin-right: 5px;`
+const CurrencyContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 interface PositionCardProps {
   pair: Pair
@@ -219,11 +220,10 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
               </TYPE.subHeader>
               {stablePoolData.tokens.map(({ token, percent, value }) => (
                 <FixedHeightRow key={token.name}>
-                  <div>
-                    <StyledAddToMetamaskButton token={token} noBackground />
-                    <CurrencyLogo size="20px" style={{ marginRight: '8px' }} currency={unwrappedToken(token)} />
+                  <CurrencyContainer>
+                    <CurrencyLogo size="20px" currency={unwrappedToken(token)} style={{ marginRight: '5px' }} />
                     {token.name}
-                  </div>
+                  </CurrencyContainer>
                   <StyledText fontWeight={500} marginLeft={'6px'}>
                     {`${value.toSignificant(4)} (${percent.toFixed(2)}%)`}
                   </StyledText>
