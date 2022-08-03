@@ -10,21 +10,21 @@ import { registerToken } from '../../utils/wallet'
 function AddToMetaMaskButton({ token, ...otherProps }: { token: Token }) {
   const { library } = useActiveWeb3React()
 
-  if (!token) {
+  if (!token || token?.symbol == null || library?.provider?.isMetaMask == null) {
     return null
   }
 
   const { symbol, address, decimals } = token
 
   function addToken() {
-    registerToken(address, symbol!, decimals)
+    registerToken(address, symbol, decimals)
   }
 
-  return library?.provider?.isMetaMask ? (
+  return (
     <LinkStyledButton onClick={addToken} {...otherProps}>
       Add {symbol} to MetaMask
     </LinkStyledButton>
-  ) : null
+  )
 }
 
 export default AddToMetaMaskButton

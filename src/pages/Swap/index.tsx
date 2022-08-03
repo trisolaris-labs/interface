@@ -645,7 +645,7 @@ export default function Swap() {
           )}
           <StyledAddToMetaMaskButton
             token={currencies.OUTPUT as Token}
-            swapDetailsOpen={!!trade || !!stableswapTrade}
+            swapDetailsOpen={trade != null || stableswapTrade != null}
           />
         </SwapContainer>
       </Root>
