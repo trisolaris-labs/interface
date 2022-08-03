@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import AddToMetaMaskButton from '../../components/AddToMetaMask'
+
 export const WarningWrapper = styled.div`
   max-width: 420px;
   width: 100%;
@@ -24,6 +26,7 @@ export const SwapContainer = styled.div`
   justify-content: center;
   max-width: 420px;
   height: 100%;
+  position: relative;
 `
 
 export const IconContainer = styled.div`
@@ -47,4 +50,10 @@ export const HeadingContainer = styled.div`
 
 export const HeaderButtonsContainer = styled.div`
   display: flex;
+`
+
+export const StyledAddToMetaMaskButton = styled(AddToMetaMaskButton)<{ swapDetailsOpen: boolean }>`
+  position: absolute;
+  top: ${({ swapDetailsOpen }) => (swapDetailsOpen ? '' : '440px')};
+  bottom: ${({ swapDetailsOpen }) => (swapDetailsOpen ? '-30px' : '')};
 `

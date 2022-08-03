@@ -26,7 +26,6 @@ import { DeprecatedWarning } from '../../components/Warning'
 import Settings from '../../components/Settings'
 import AppBody from '../AppBody'
 import Loader from '../../components/Loader'
-import AddToMetaMaskButton from '../../components/AddToMetaMask'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
@@ -65,6 +64,7 @@ import {
   IconContainer,
   HeadingContainer,
   HeaderButtonsContainer,
+  StyledAddToMetaMaskButton
 } from './Swap.styles'
 import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
@@ -491,8 +491,6 @@ export default function Swap() {
                   id="swap-currency-output"
                 />
 
-                <AddToMetaMaskButton token={currencies.OUTPUT as Token} />
-
                 {recipient !== null && !showWrap ? (
                   <>
                     <AutoRow justify="space-between" style={{ padding: '0 1rem' }}>
@@ -645,6 +643,10 @@ export default function Swap() {
               isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
             />
           )}
+          <StyledAddToMetaMaskButton
+            token={currencies.OUTPUT as Token}
+            swapDetailsOpen={!!trade || !!stableswapTrade}
+          />
         </SwapContainer>
       </Root>
     </>

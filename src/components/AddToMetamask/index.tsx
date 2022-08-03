@@ -21,7 +21,9 @@ function AddToMetaMaskButton({ token, ...otherProps }: { token: Token }) {
   }
 
   return library?.provider?.isMetaMask ? (
-    <LinkStyledButton onClick={addToken}>Add {symbol} to MetaMask</LinkStyledButton>
+    <LinkStyledButton onClick={addToken} {...otherProps}>
+      Add {symbol} to MetaMask
+    </LinkStyledButton>
   ) : null
 }
 
