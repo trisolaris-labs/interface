@@ -455,7 +455,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x34c58E960b80217fA3e0323d37563c762a131AD9',
     allocPoint: 1,
     inStaging: false,
-    isFeatured: true
+    isFeatured: false
   }),
   createMCV2Pool({
     ID: 32,
@@ -465,7 +465,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x84C8B673ddBF0F647c350dEd488787d3102ebfa3',
     allocPoint: 1,
     inStaging: false,
-    isFeatured: true
+    isFeatured: false
   }),
   createMCV2Pool({
     ID: 33,
@@ -475,7 +475,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x4e0152b260319e5131f853AeCB92c8f992AA0c97',
     allocPoint: 1,
     inStaging: false,
-    isFeatured: true
+    isFeatured: false
   }),
   createMCV2Pool({
     ID: 34,
