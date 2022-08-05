@@ -33,7 +33,8 @@ import {
   SMARTPAD,
   BRRR,
   USN,
-  REF
+  REF,
+  META
 } from '../../constants/tokens'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
@@ -551,6 +552,13 @@ const AURORA_POOLS: StakingTri[] = [
     tokens: [TRI[ChainId.AURORA], REF[ChainId.AURORA]],
     lpAddress: '0x53b65177803993C84F31AF4aE7E52FEB171b3b84',
     isFeatured: true,
+    inStaging: true
+  }),
+  createMCV2Pool({
+    ID: 42,
+    poolId: 35,
+    tokens: [STNEAR[ChainId.AURORA], META[ChainId.AURORA]],
+    lpAddress: '0x25bED9DDD30c21a698ba0654f8Da0F381CA1A67b',
     inStaging: true
   })
 ]
