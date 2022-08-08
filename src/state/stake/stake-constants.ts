@@ -543,8 +543,7 @@ const AURORA_POOLS: StakingTri[] = [
     ID: 40,
     poolId: 33,
     tokens: [WNEAR[ChainId.AURORA], USN[ChainId.AURORA]],
-    lpAddress: '0xA36DF7c571bEbA7B3fB89F25dFc990EAC75F525A',
-    inStaging: true
+    lpAddress: '0xA36DF7c571bEbA7B3fB89F25dFc990EAC75F525A'
   }),
   createMCV2Pool({
     ID: 41,
