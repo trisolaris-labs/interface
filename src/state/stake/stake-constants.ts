@@ -556,8 +556,7 @@ const AURORA_POOLS: StakingTri[] = [
     ID: 42,
     poolId: 35,
     tokens: [STNEAR[ChainId.AURORA], META[ChainId.AURORA]],
-    lpAddress: '0x25bED9DDD30c21a698ba0654f8Da0F381CA1A67b',
-    inStaging: true
+    lpAddress: '0x25bED9DDD30c21a698ba0654f8Da0F381CA1A67b'
   })
 ]
 
