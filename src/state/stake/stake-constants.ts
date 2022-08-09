@@ -550,8 +550,7 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 34,
     tokens: [TRI[ChainId.AURORA], REF[ChainId.AURORA]],
     lpAddress: '0x53b65177803993C84F31AF4aE7E52FEB171b3b84',
-    isFeatured: true,
-    inStaging: true
+    isFeatured: true
   }),
   createMCV2Pool({
     ID: 42,
