@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { darken } from 'polished'
 
-import { ExternalLink } from '../../../../theme'
+import { ExternalLink } from '../../theme'
 
 export const StyledExternalLink = styled(ExternalLink)`
   z-index: 1;
