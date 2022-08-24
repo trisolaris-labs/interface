@@ -31,7 +31,11 @@ import {
   BSTN,
   KSW,
   SMARTPAD,
-  BRRR
+  BRRR,
+  USN,
+  REF,
+  META,
+  PLY
 } from '../../constants/tokens'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
@@ -454,7 +458,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x34c58E960b80217fA3e0323d37563c762a131AD9',
     allocPoint: 1,
     inStaging: false,
-    isFeatured: true
+    isFeatured: false
   }),
   createMCV2Pool({
     ID: 32,
@@ -464,7 +468,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x84C8B673ddBF0F647c350dEd488787d3102ebfa3',
     allocPoint: 1,
     inStaging: false,
-    isFeatured: true
+    isFeatured: false
   }),
   createMCV2Pool({
     ID: 33,
@@ -474,7 +478,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x4e0152b260319e5131f853AeCB92c8f992AA0c97',
     allocPoint: 1,
     inStaging: false,
-    isFeatured: true
+    isFeatured: false
   }),
   createMCV2Pool({
     ID: 34,
@@ -535,6 +539,36 @@ const AURORA_POOLS: StakingTri[] = [
     stableSwapPoolName: StableSwapPoolName.NUSD_USDC_USDT,
     friendlyFarmName: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].friendlyName,
     isFeatured: true
+  }),
+  createMCV2Pool({
+    ID: 40,
+    poolId: 33,
+    tokens: [WNEAR[ChainId.AURORA], USN[ChainId.AURORA]],
+    lpAddress: '0xA36DF7c571bEbA7B3fB89F25dFc990EAC75F525A'
+  }),
+  createMCV2Pool({
+    ID: 41,
+    poolId: 34,
+    tokens: [TRI[ChainId.AURORA], REF[ChainId.AURORA]],
+    lpAddress: '0x53b65177803993C84F31AF4aE7E52FEB171b3b84',
+    isFeatured: true,
+    rewarderAddress: '0xD61a0095E287b899D5A3ADf40e51d97237BBaB6B'
+  }),
+  createMCV2Pool({
+    ID: 42,
+    poolId: 35,
+    tokens: [STNEAR[ChainId.AURORA], META[ChainId.AURORA]],
+    lpAddress: '0x25bED9DDD30c21a698ba0654f8Da0F381CA1A67b',
+    rewarderAddress: '0xE3185567D1C5dcA2483485a1A5BC42fE0740acB3'
+  }),
+  createMCV2Pool({
+    ID: 43,
+    poolId: 36,
+    tokens: [WNEAR[ChainId.AURORA], PLY[ChainId.AURORA]],
+    lpAddress: '0x044b6b0cd3bb13d2b9057781df4459c66781dce7',
+    rewarderAddress: '0x09c9d464b58d96837f8d8b6f4d9fe4ad408d3a4f',
+    isFeatured: true,
+    inStaging: true
   })
 ]
 

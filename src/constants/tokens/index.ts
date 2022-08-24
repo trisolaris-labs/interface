@@ -674,6 +674,20 @@ export const USP: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0xa69d9Ba086D41425f35988613c156Db9a88a1A96', 18, 'USP', 'USP'),
 }
 
+export const ABBNB: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'abBNB', 'BNB - Allbridge'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'abBNB', 'BNB - Allbridge'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'abBNB', 'BNB - Allbridge'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xb14674C7264eC7d948B904Aab2c0E0F906F6e762', 18, 'abBNB', 'BNB - Allbridge'),
+}
+
+export const BINARIS: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'BINARIS', 'BINARIS'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'BINARIS', 'BINARIS'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BINARIS', 'BINARIS'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xafE0d6ca6AAbB43CDA024895D203120831Ba0370', 18, 'BINARIS', 'BINARIS'),
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),

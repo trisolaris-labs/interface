@@ -20,7 +20,8 @@ import {
   WBTC,
   ORBITAL,
   SMARTPAD,
-  USP
+  USP,
+  BINARIS
 } from './tokens'
 
 export const GAS_PRICE = 250
@@ -65,7 +66,9 @@ const COMMON_BASES: ChainTokenList = {
     STNEAR[ChainId.AURORA],
     PLY[ChainId.AURORA],
     AURORA[ChainId.AURORA],
-    WBTC[ChainId.AURORA]
+    WBTC[ChainId.AURORA],
+    USP[ChainId.AURORA],
+    BINARIS[ChainId.AURORA]
   ]
 }
 

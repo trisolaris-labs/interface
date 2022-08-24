@@ -40,7 +40,7 @@ export function useFarmsAPI(): StakingTriFarms[] {
       stakingInfoData?.[index] ?? {}
 
     const apr = Math.round(_apr ?? 0)
-    const nonTriAPRs = _nonTriAPRs.map(data => ({ ...data, apr: Math.round(data.apr) }))
+    const nonTriAPRs = _nonTriAPRs.filter(({ apr }) => apr > 0).map(data => ({ ...data, apr: Math.round(data.apr) }))
 
     return {
       ID,

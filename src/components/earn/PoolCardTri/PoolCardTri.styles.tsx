@@ -1,9 +1,11 @@
 import styled from 'styled-components'
-import { lighten, darken } from 'polished'
+import { lighten } from 'polished'
 
 import { TYPE } from '../../../theme'
 import Card from '../../Card'
 import { ButtonPrimary } from '../../Button'
+import { AutoColumn } from '../../Column'
+import { FixedHeightRow } from '../../PositionCard/PositionCard.styles'
 
 export const Wrapper = styled(Card)<{
   bgColor1: string | null
@@ -11,22 +13,32 @@ export const Wrapper = styled(Card)<{
   isFeatured?: boolean
   currenciesQty: number
 }>`
-  border: ${({ isFeatured, theme }) => (isFeatured ? `1px solid ${theme.primary1}` : `1px solid ${theme.bg3};`)};
-  border-radius: 10px;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
+  border: ${({ theme }) => `1px solid ${theme.bg3};`};
+  border-radius: 0px;
   gap: 12px;
-  box-shadow: ${({ isFeatured, theme }) =>
-    isFeatured ? `0px 0px 8px 5px ${theme.primary1}` : `0 2px 8px 0 ${theme.bg3}`};
   position: relative;
+  padding: 0.6rem 20px 0.6rem 20px;
+  display: grid;
+  grid-auto-rows: auto;
 
-  padding-left: ${({ currenciesQty }) => (currenciesQty > 3 ? '10px' : '20px')};
-  padding-right: ${({ currenciesQty }) => (currenciesQty > 3 ? '10px' : '20px')};
+  overflow: hidden;
+  &:first-child {
+    border-radius: 10px 10px 0 0;
+  }
+  &:last-child {
+    border-radius: 0 0 10px 10px;
+  }
+
+  &:hover {
+    background: #12141a36;
+    cursor: pointer;
+    box-shadow: ${({ theme }) => `1px solid ${theme.bg3};`};
+  }
+
   ${({ theme }) => theme.mediaWidth.upToSmall`
-      grid-template-rows: auto 1fr;
-      padding: 1.1rem .75rem;
-`};
+        padding-left: 10px;
+        padding-right: 10px;
+    `};
 `
 
 export const PairContainer = styled.div`
@@ -38,8 +50,9 @@ export const ResponsiveCurrencyLabel = styled(TYPE.white)<{ currenciesQty: numbe
   font-size: ${({ currenciesQty }) => `${currenciesQty > 3 ? '14px' : '16px'} !important;`}
   margin-left: 0.5rem !important;
   max-width: 150px;
+  justify-self:flex-start;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-      font-size: 14 !important;
+      font-size: 14px !important;
       max-width: 200px;
   `};
 `
@@ -65,16 +78,11 @@ export const Button = styled(ButtonPrimary)<{ isStaking: boolean }>`
     `};
 `
 
-export const StyledActionsContainer = styled.div`
-  display: flex;
-`
-
 export const TokenPairBackgroundColor = styled.span<{ bgColor1: string | null; bgColor2?: string | null }>`
   background: ${({ theme, bgColor1, bgColor2 }) =>
     `linear-gradient(90deg, ${bgColor1 ?? theme.blue1} 0%, ${bgColor2 ?? 'grey'} 90%);`};
   background-size: cover;
   mix-blend-mode: overlay;
-  border-radius: 10px;
   width: 100%;
   height: 100%;
   opacity: 0.5;
@@ -83,4 +91,79 @@ export const TokenPairBackgroundColor = styled.span<{ bgColor1: string | null; b
   left: 0;
   user-select: none;
   z-index: -1;
+`
+
+export const ActionsContainer = styled.div`
+  display: flex;
+  min-width: 110px;
+  justify-content: center;
+  height: 34px;
+`
+
+export const StyledPairContainer = styled(PairContainer)`
+  max-width: 200px;
+  justify-self: flex-start;
+  ${({ theme }) => theme.mediaWidth.upToXxSmall`
+  order: 1;
+  `};
+`
+
+export const StakedContainer = styled(AutoColumn)`
+  min-width: 100px;
+  justify-content: flex-start;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    display:none;
+  `};
+`
+
+export const ExpandableStakedContainer = styled(FixedHeightRow)`
+  display: none;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    display:flex;
+  `};
+`
+
+export const AprContainer = styled(AutoColumn)`
+  min-width: 100px;
+  justify-content: flex-start;
+  ${({ theme }) => theme.mediaWidth.upToXxSmall`
+    order: 4;
+  `};
+`
+
+export const CardContainer = styled.div`
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr 110px 20px;
+  width: 100%;
+  align-items: center;
+  justify-items: center;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    grid-template-columns: 200px  1fr 110px 0.25fr;
+   `};
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    grid-template-columns: 185px  1fr 0.25fr;
+  `};
+`
+
+export const DetailsContainer = styled.div`
+  align-items: center;
+  position: absolute;
+  right: 15px;
+`
+
+export const StyledMutedSubHeader = styled(TYPE.mutedSubHeader)`
+  display: flex;
+`
+
+export const ExpandableActionsContainer = styled(FixedHeightRow)`
+  display: none;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+   display:flex;
+   margin-top:10px;
+  `};
+`
+export const RowActionsContainer = styled.div`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        display:none;
+  `};
 `

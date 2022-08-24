@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { darken } from 'polished'
 
-import { ExternalLink } from '../../../../theme'
+import { ExternalLink } from '../../theme'
 
 export const StyledExternalLink = styled(ExternalLink)`
   z-index: 1;
@@ -11,7 +11,7 @@ export const StyledExternalLink = styled(ExternalLink)`
   font-size: 0.75rem;
   margin: 0;
   position: absolute;
-  top: 7px;
+  top: 3px;
   left: 70px;
 
   :active {
