@@ -34,8 +34,7 @@ import {
   ExpandableActionsContainer,
   RowActionsContainer
 } from './PoolCardTri.styles'
-
-import GetTokenLink from '../FarmsPortfolio/GetTokenLink'
+import SponsoredFarmLink from '../../SponsoredFarmLink'
 import { StableSwapPoolName } from '../../../state/stableswap/constants'
 import { useSingleStableFarm } from '../../../state/stake/user-stable-farms'
 import PoolCardTriRewardText from './PoolCardTriRewardText'
@@ -148,7 +147,7 @@ const DefaultPoolCardtri = ({
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
       <CardContainer>
         <StyledPairContainer>
-          <GetTokenLink tokens={tokens} />
+          <SponsoredFarmLink tokens={tokens} farmID={version} />
           <MultipleCurrencyLogo currencies={currencies} size={20} />
           <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>
             {friendlyFarmName ?? currencies.map(({ symbol }) => symbol).join('-')}
@@ -195,7 +194,6 @@ const DefaultPoolCardtri = ({
 type StablePoolCardTriProps = PoolCardTriProps & { stableSwapPoolName: StableSwapPoolName }
 
 const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
-
   const { version } = props
 
   const stakingInfo = useSingleStableFarm(Number(version), props.stableSwapPoolName)

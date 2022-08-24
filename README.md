@@ -49,6 +49,15 @@ To have the interface default to a different network when a wallet is not connec
 2. Change `REACT_APP_NETWORK_ID` to `"{YOUR_NETWORK_ID}"`
 3. Change `REACT_APP_NETWORK_URL` to your JSON-RPC provider
 
+### Deploying to production
+
+1. Create PR that includes `npm version patch`
+2. Merge PR to `main` branch
+3. Deploy to Staging
+4. Deploy to Prod
+
+Note: If a feature is going directly to prod, please make a PR that includes `npm version patch` as its final diff. Deploy to production after this PR has been merged to `main` branch
+
 ## Attribution
 
 This code was adapted from this Uniswap repo: [uniswap-interface](https://github.com/Uniswap/uniswap-interface).
