@@ -1,6 +1,6 @@
 import { STNEAR, AUSDO } from '../../constants/tokens'
 
-export const getTokenList = [
+export const SPONSORED_TOKENS = [
   { token: STNEAR, link: 'https://metapool.app/dapp/mainnet/metapool-aurora/' },
   {
     token: AUSDO,

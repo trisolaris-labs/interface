@@ -1,13 +1,13 @@
 import React from 'react'
 import { Token, ChainId } from '@trisolaris/sdk'
 
-import { getTokenList, FARMS_CUSTOM_HEADING } from './SponsoredFarmLink.constants'
+import { SPONSORED_TOKENS, FARMS_CUSTOM_HEADING } from './SponsoredFarmLink.constants'
 
 import { StyledExternalLink } from './SponsoredFarmLink.styles'
 
 const SponsoredFarmLink = ({ tokens, farmID }: { tokens: Token[]; farmID: number }) => {
-  const foundToken = getTokenList.find(tokenListToken =>
-    tokens.some(cardToken => tokenListToken.token[ChainId.AURORA] === cardToken)
+  const foundToken = SPONSORED_TOKENS.find(sponsoredToken =>
+    tokens.some(cardToken => sponsoredToken.token[ChainId.AURORA] === cardToken)
   )
   const customSponsoredFarm = FARMS_CUSTOM_HEADING[farmID]
 
