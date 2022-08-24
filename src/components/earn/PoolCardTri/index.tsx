@@ -3,7 +3,6 @@ import { Token } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { Settings2 as ManageIcon, ChevronDown, ChevronUp } from 'lucide-react'
-import { isMobileOnly } from 'react-device-detect'
 import { Text } from 'rebass'
 
 import { TYPE } from '../../../theme'
@@ -78,7 +77,7 @@ const DefaultPoolCardtri = ({
   const history = useHistory()
   const { t } = useTranslation()
 
-  const [showMore, setShowMore] = useState(isMobileOnly && isStaking ? true : false)
+  const [showMore, setShowMore] = useState(false)
 
   const isDualRewards = chefVersion === ChefVersions.V2
 
@@ -162,17 +161,7 @@ const DefaultPoolCardtri = ({
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AprContainer>
         <RowActionsContainer>{renderActionsContainer()}</RowActionsContainer>
-        <DetailsContainer>
-          {showMore ? (
-            <>
-              <ChevronUp size="15" />
-            </>
-          ) : (
-            <>
-              <ChevronDown size="15" />
-            </>
-          )}
-        </DetailsContainer>
+        <DetailsContainer>{showMore ? <ChevronUp size="15" /> : <ChevronDown size="15" />}</DetailsContainer>
       </CardContainer>
 
       {showMore && (
