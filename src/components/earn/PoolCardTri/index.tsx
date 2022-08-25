@@ -7,7 +7,6 @@ import { TYPE } from '../../../theme'
 
 import ClaimRewardModal from './ClaimRewardModalTri'
 import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
-import Expandable from './Expandable'
 import { ButtonGold } from '../../Button'
 import CountUp from '../../CountUp'
 import { RowBetween } from '../../Row'
@@ -187,20 +186,7 @@ const DefaultPoolCardtri = ({
         <DetailsContainer>{showMore ? <ChevronUp size="15" /> : <ChevronDown size="15" />}</DetailsContainer>
       </CardContainer>
 
-      {showMore && (
-        <Expandable
-          totalStakedInUSDFriendly={totalStakedInUSDFriendly}
-          isStaking={isStaking}
-          isPeriodFinished={isPeriodFinished}
-          currencies={currencies}
-          stableSwapPoolName={stableSwapPoolName}
-          version={version}
-          isLegacy={isLegacy}
-          enableClaimButton={enableClaimButton}
-          stakingInfo={stakingInfo}
-          farmName={farmName}
-        />
-      )}
+      {showMore && <div></div>}
     </Wrapper>
   )
 }
