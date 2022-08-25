@@ -5,8 +5,9 @@ import { TYPE } from '../../../theme'
 import Card from '../../Card'
 import { ButtonPrimary } from '../../Button'
 import { AutoColumn } from '../../Column'
-import { RowBetween } from '../../Row'
 import CurrencyLogo from '../../CurrencyLogo'
+import { RowBetween } from '../../Row'
+import { ButtonGold } from '../../Button'
 
 export const Wrapper = styled(Card)<{
   bgColor1: string | null
@@ -18,7 +19,7 @@ export const Wrapper = styled(Card)<{
   border-radius: 0px;
   gap: 12px;
   position: relative;
-  padding: 12px 20px 12px 20px;
+  padding: 10px 20px 10px 20px;
   display: grid;
   grid-auto-rows: auto;
 
@@ -97,9 +98,6 @@ export const TokenPairBackgroundColor = styled.span<{ bgColor1: string | null; b
 export const StyledPairContainer = styled(PairContainer)`
   max-width: 200px;
   justify-self: flex-start;
-  ${({ theme }) => theme.mediaWidth.upToXxSmall`
-  order: 1;
-  `};
 `
 
 export const StakedContainer = styled(AutoColumn)`
@@ -113,9 +111,9 @@ export const StakedContainer = styled(AutoColumn)`
 export const AprContainer = styled(AutoColumn)`
   min-width: 100px;
   justify-content: flex-start;
-  ${({ theme }) => theme.mediaWidth.upToXxSmall`
-    order: 4;
-  `};
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  display:none;
+`};
 `
 
 export const CardContainer = styled.div`
@@ -128,7 +126,11 @@ export const CardContainer = styled.div`
     grid-template-columns: 200px  1fr 110px 0.25fr;
    `};
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    grid-template-columns: 185px  1fr 0.25fr;
+    // grid-template-columns: 180px  82.5px 65px;
+    grid-template-columns: 180px  auto 75px;
+  `};
+  ${({ theme }) => theme.mediaWidth.upToXxSmall`
+  grid-template-columns: 170px 80px 55px
   `};
 `
 
@@ -136,16 +138,13 @@ export const DetailsContainer = styled.div`
   align-items: center;
   position: absolute;
   right: 15px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  right:7.5px;
+  `};
 `
 
 export const StyledMutedSubHeader = styled(TYPE.mutedSubHeader)`
   display: flex;
-`
-
-export const RowActionsContainer = styled.div`
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-        display:none;
-  `};
 `
 
 export const RewardColumn = styled.div`
@@ -173,4 +172,25 @@ export const StyledRewardAmount = styled.span`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+`
+
+export const StyledLongClaimableHeader = styled(TYPE.mutedSubHeader)`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+display:none;
+`};
+`
+
+export const StyledShortClaimableHeader = styled(TYPE.mutedSubHeader)`
+  display: none;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  display:block;
+  `};
+`
+
+export const StyledRewardsAmountContainer = styled(RowBetween)`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  flex-direction: column;
+  align-items:flex-start;
+
+`};
 `

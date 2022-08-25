@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Token, ChainId } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { ChevronDown, ChevronUp } from 'lucide-react'
+import { isMobileOnly } from 'react-device-detect'
 
 import { TYPE } from '../../../theme'
 
@@ -9,7 +10,6 @@ import ClaimRewardModal from './ClaimRewardModalTri'
 import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 import { ButtonGold } from '../../Button'
 import CountUp from '../../CountUp'
-import { RowBetween } from '../../Row'
 import SponsoredFarmLink from '../../SponsoredFarmLink'
 import PoolCardTriRewardText from './PoolCardTriRewardText'
 
@@ -39,7 +39,10 @@ import {
   RewardColumn,
   RewardsContainer,
   StyledCurrencyLogo,
-  StyledRewardAmount
+  StyledRewardAmount,
+  StyledLongClaimableHeader,
+  StyledShortClaimableHeader,
+  StyledRewardsAmountContainer
 } from './PoolCardTri.styles'
 
 export type PoolCardTriProps = {
@@ -126,7 +129,7 @@ const DefaultPoolCardtri = ({
       <CardContainer>
         <StyledPairContainer>
           <SponsoredFarmLink tokens={tokens} farmID={version} />
-          <MultipleCurrencyLogo currencies={currencies} size={20} />
+          <MultipleCurrencyLogo currencies={currencies} size={isMobileOnly ? 18 : 20} />
           <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>{farmName}</ResponsiveCurrencyLabel>
         </StyledPairContainer>
         <StakedContainer>
@@ -138,9 +141,10 @@ const DefaultPoolCardtri = ({
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AprContainer>
         <RewardsContainer>
-          <StyledMutedSubHeader>Claimable rewards</StyledMutedSubHeader>
+          <StyledLongClaimableHeader>Claimable rewards</StyledLongClaimableHeader>
+          <StyledShortClaimableHeader>Rewards</StyledShortClaimableHeader>
 
-          <RowBetween>
+          <StyledRewardsAmountContainer>
             {enableClaimButton ? (
               <>
                 {!noTriRewards && (
@@ -171,15 +175,17 @@ const DefaultPoolCardtri = ({
             ) : (
               <TYPE.body>-</TYPE.body>
             )}
-          </RowBetween>
+          </StyledRewardsAmountContainer>
         </RewardsContainer>
         <ButtonGold
           padding="8px"
           borderRadius="8px"
-          maxWidth="74px"
+          maxWidth={isMobileOnly ? '55px' : '74px'}
           height="30px"
           onClick={event => handleClaimClick(event)}
           disabled={!enableClaimButton}
+          justifySelf="start"
+          fontSize={isMobileOnly ? '14px' : '16px'}
         >
           Claim
         </ButtonGold>
