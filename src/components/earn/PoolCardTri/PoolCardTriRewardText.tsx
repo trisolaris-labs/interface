@@ -104,12 +104,12 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLe
     <Popover content={tooltipContent} show={show}>
       <IconWrapper onMouseEnter={open} onMouseLeave={close}>
         {tooltipData.map(({ token }) => (
-          <CurrencyLogo alt="" currency={token} key={token.address} size={'16px'} style={{ marginRight: '4px' }} />
+          <CurrencyLogo alt="" currency={token} key={token.address} size={'14px'} style={{ marginRight: '4px' }} />
         ))}
         <TYPE.white marginRight="4px" textAlign="end">
           {totalAPR}%
         </TYPE.white>
-        <Info size="16px" />
+        <Info size="14px" />
       </IconWrapper>
     </Popover>
   )

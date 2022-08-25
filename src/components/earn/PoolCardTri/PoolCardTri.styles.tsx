@@ -5,7 +5,8 @@ import { TYPE } from '../../../theme'
 import Card from '../../Card'
 import { ButtonPrimary } from '../../Button'
 import { AutoColumn } from '../../Column'
-import { FixedHeightRow } from '../../PositionCard/PositionCard.styles'
+import { RowBetween } from '../../Row'
+import CurrencyLogo from '../../CurrencyLogo'
 
 export const Wrapper = styled(Card)<{
   bgColor1: string | null
@@ -17,7 +18,7 @@ export const Wrapper = styled(Card)<{
   border-radius: 0px;
   gap: 12px;
   position: relative;
-  padding: 0.6rem 20px 0.6rem 20px;
+  padding: 12px 20px 12px 20px;
   display: grid;
   grid-auto-rows: auto;
 
@@ -93,13 +94,6 @@ export const TokenPairBackgroundColor = styled.span<{ bgColor1: string | null; b
   z-index: -1;
 `
 
-export const ActionsContainer = styled.div`
-  display: flex;
-  min-width: 110px;
-  justify-content: center;
-  height: 34px;
-`
-
 export const StyledPairContainer = styled(PairContainer)`
   max-width: 200px;
   justify-self: flex-start;
@@ -111,15 +105,8 @@ export const StyledPairContainer = styled(PairContainer)`
 export const StakedContainer = styled(AutoColumn)`
   min-width: 100px;
   justify-content: flex-start;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display:none;
-  `};
-`
-
-export const ExpandableStakedContainer = styled(FixedHeightRow)`
-  display: none;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    display:flex;
   `};
 `
 
@@ -133,7 +120,7 @@ export const AprContainer = styled(AutoColumn)`
 
 export const CardContainer = styled.div`
   display: grid;
-  grid-template-columns: 200px 1fr 1fr 110px 20px;
+  grid-template-columns: 200px 110px 110px 160px 80px;
   width: 100%;
   align-items: center;
   justify-items: center;
@@ -155,15 +142,35 @@ export const StyledMutedSubHeader = styled(TYPE.mutedSubHeader)`
   display: flex;
 `
 
-export const ExpandableActionsContainer = styled(FixedHeightRow)`
-  display: none;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-   display:flex;
-   margin-top:10px;
-  `};
-`
 export const RowActionsContainer = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
         display:none;
   `};
+`
+
+export const RewardColumn = styled.div`
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+`
+
+export const RewardsContainer = styled(AutoColumn)`
+  flex: 1;
+  max-width: 200px;
+  justify-self: start;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    max-width:100%;
+  `};
+`
+
+export const StyledCurrencyLogo = styled(CurrencyLogo)`
+  margin-right: 5px;
+`
+
+export const StyledRewardAmount = styled.span`
+  max-width: 60px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `

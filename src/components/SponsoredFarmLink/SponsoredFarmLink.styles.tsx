@@ -8,10 +8,10 @@ export const StyledExternalLink = styled(ExternalLink)`
   text-decoration: underline;
   color: ${({ theme }) => theme.text2};
   font-weight: 400;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   margin: 0;
   position: absolute;
-  top: 3px;
+  top: 4.5px;
   left: 70px;
 
   :active {
