@@ -126,7 +126,6 @@ export const CardContainer = styled.div`
     grid-template-columns: 200px  1fr 110px 0.25fr;
    `};
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    // grid-template-columns: 180px  82.5px 65px;
     grid-template-columns: 180px  auto 75px;
   `};
   ${({ theme }) => theme.mediaWidth.upToXxSmall`
