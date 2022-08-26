@@ -129,7 +129,7 @@ export const CardContainer = styled.div`
     grid-template-columns: 180px  auto 75px;
   `};
   ${({ theme }) => theme.mediaWidth.upToXxSmall`
-  grid-template-columns: 170px 80px 55px
+    grid-template-columns: 170px 80px 55px
   `};
 `
 
@@ -138,7 +138,7 @@ export const DetailsContainer = styled.div`
   position: absolute;
   right: 15px;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  right:7.5px;
+    right:7.5px;
   `};
 `
 
@@ -190,6 +190,5 @@ export const StyledRewardsAmountContainer = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
   flex-direction: column;
   align-items:flex-start;
-
 `};
 `

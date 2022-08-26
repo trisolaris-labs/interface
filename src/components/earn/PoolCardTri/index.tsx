@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Token, ChainId } from '@trisolaris/sdk'
+import { Token, ChainId, TokenAmount } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { isMobileOnly } from 'react-device-detect'
@@ -13,7 +13,7 @@ import CountUp from '../../CountUp'
 import SponsoredFarmLink from '../../SponsoredFarmLink'
 import PoolCardTriRewardText from './PoolCardTriRewardText'
 
-import { ChefVersions, NonTriAPR } from '../../../state/stake/stake-constants'
+import { ChefVersions, EarnedNonTriRewards, NonTriAPR } from '../../../state/stake/stake-constants'
 import { useSingleFarm } from '../../../state/stake/user-farms'
 import { useColorForToken } from '../../../hooks/useColor'
 import { useSingleStableFarm } from '../../../state/stake/user-stable-farms'
@@ -61,7 +61,12 @@ export type PoolCardTriProps = {
   nonTriAPRs: NonTriAPR[]
   friendlyFarmName: string | null
   isFeatured?: boolean
-  stakingInfo?: StakingTri
+}
+
+type ExtendedPoolCardTriProps = PoolCardTriProps & {
+  earnedNonTriRewards?: EarnedNonTriRewards[]
+  noTriRewards?: boolean
+  earnedAmount?: TokenAmount
 }
 
 const DefaultPoolCardtri = ({
@@ -69,26 +74,23 @@ const DefaultPoolCardtri = ({
   chefVersion,
   inStaging,
   isLegacy,
-  isPeriodFinished,
   tokens: _tokens,
   totalStakedInUSD,
-  isStaking,
   version,
   enableClaimButton = false,
-  stableSwapPoolName,
   nonTriAPRs,
   friendlyFarmName,
   isFeatured = false,
-  stakingInfo
-}: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
+  earnedNonTriRewards,
+  noTriRewards,
+  earnedAmount,
+  enableModal = () => null
+}: { enableClaimButton?: boolean; enableModal?: () => void } & ExtendedPoolCardTriProps) => {
   const { t } = useTranslation()
 
   const [showMore, setShowMore] = useState(false)
-  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
   const isDualRewards = chefVersion === ChefVersions.V2
-
-  const { earnedNonTriRewards, noTriRewards, earnedAmount } = stakingInfo ?? {}
 
   const { currencies, tokens } = getPairRenderOrder(_tokens)
 
@@ -103,7 +105,7 @@ const DefaultPoolCardtri = ({
   }
 
   function handleClaimClick(event: React.MouseEvent) {
-    setShowClaimRewardModal(true)
+    enableModal()
     event.stopPropagation()
   }
 
@@ -118,13 +120,6 @@ const DefaultPoolCardtri = ({
       currenciesQty={currenciesQty}
       onClick={onCardClick}
     >
-      {stakingInfo && (
-        <ClaimRewardModal
-          isOpen={showClaimRewardModal}
-          onDismiss={() => setShowClaimRewardModal(false)}
-          stakingInfo={stakingInfo}
-        />
-      )}
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
       <CardContainer>
         <StyledPairContainer>
@@ -191,8 +186,6 @@ const DefaultPoolCardtri = ({
         </ButtonGold>
         <DetailsContainer>{showMore ? <ChevronUp size="15" /> : <ChevronDown size="15" />}</DetailsContainer>
       </CardContainer>
-
-      {showMore && <div></div>}
     </Wrapper>
   )
 }
@@ -203,7 +196,7 @@ const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
   const { version } = props
 
   const stakingInfo = useSingleStableFarm(Number(version), props.stableSwapPoolName)
-  const { earnedAmount, earnedNonTriRewards } = stakingInfo
+  const { earnedNonTriRewards, noTriRewards, earnedAmount, poolId, stakedAmount, chefVersion } = stakingInfo
 
   const amountIsClaimable =
     isTokenAmountPositive(earnedAmount) || earnedNonTriRewards.some(({ amount }) => isTokenAmountPositive(amount))
@@ -216,14 +209,21 @@ const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
         <ClaimRewardModal
           isOpen={showClaimRewardModal}
           onDismiss={() => setShowClaimRewardModal(false)}
-          stakingInfo={stakingInfo}
+          chefVersion={chefVersion}
+          earnedNonTriRewards={earnedNonTriRewards}
+          noTriRewards={noTriRewards}
+          poolId={poolId}
+          earnedAmount={earnedAmount}
+          stakedAmount={stakedAmount}
         />
       )}
       <DefaultPoolCardtri
         {...props}
         enableClaimButton={amountIsClaimable}
         enableModal={enableModal}
-        stakingInfo={stakingInfo}
+        earnedNonTriRewards={earnedNonTriRewards}
+        noTriRewards={noTriRewards}
+        earnedAmount={earnedAmount}
       />
     </>
   )
@@ -234,8 +234,7 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
 
   const stakingInfo = useSingleFarm(Number(version))
 
-  const { earnedAmount, earnedNonTriRewards } = stakingInfo
-
+  const { earnedNonTriRewards, noTriRewards, earnedAmount, poolId, stakedAmount, chefVersion } = stakingInfo
   const amountIsClaimable =
     isTokenAmountPositive(earnedAmount) || earnedNonTriRewards.some(({ amount }) => isTokenAmountPositive(amount))
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
@@ -247,14 +246,21 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
         <ClaimRewardModal
           isOpen={showClaimRewardModal}
           onDismiss={() => setShowClaimRewardModal(false)}
-          stakingInfo={stakingInfo}
+          chefVersion={chefVersion}
+          earnedNonTriRewards={earnedNonTriRewards}
+          noTriRewards={noTriRewards}
+          poolId={poolId}
+          earnedAmount={earnedAmount}
+          stakedAmount={stakedAmount}
         />
       )}
       <DefaultPoolCardtri
         {...props}
         enableClaimButton={amountIsClaimable}
         enableModal={enableModal}
-        stakingInfo={stakingInfo}
+        earnedNonTriRewards={earnedNonTriRewards}
+        noTriRewards={noTriRewards}
+        earnedAmount={earnedAmount}
       />
     </>
   )
