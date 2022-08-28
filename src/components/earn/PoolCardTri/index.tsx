@@ -32,7 +32,9 @@ import {
   CardContainer,
   DetailsContainer,
   StyledMutedSubHeader,
-  PoolTypeContainer
+  PoolTypeContainer,
+  StakedMobilecontainer,
+  StyledMultipleCurrencyLogo
 } from './PoolCardTri.styles'
 
 export type PoolCardTriProps = {
@@ -116,7 +118,7 @@ const DefaultPoolCardtri = ({
       <CardContainer>
         <StyledPairContainer>
           <SponsoredFarmLink tokens={tokens} farmID={version} />
-          <MultipleCurrencyLogo currencies={currencies} size={isMobile ? 18 : 20} />
+          <StyledMultipleCurrencyLogo currencies={currencies}/>
           <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>{farmName}</ResponsiveCurrencyLabel>
         </StyledPairContainer>
         <AprContainer>
@@ -131,7 +133,7 @@ const DefaultPoolCardtri = ({
           <StyledMutedSubHeader>Pool Type</StyledMutedSubHeader>
           <TYPE.white>{poolType}</TYPE.white>
         </PoolTypeContainer>
-        {enableClaimButton && (
+        {enableClaimButton ? (
           <ButtonGold
             padding="8px"
             borderRadius="8px"
@@ -143,6 +145,11 @@ const DefaultPoolCardtri = ({
           >
             Claim
           </ButtonGold>
+        ) : (
+          <StakedMobilecontainer>
+            <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
+            <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
+          </StakedMobilecontainer>
         )}
         <DetailsContainer>{showMore ? <ChevronUp size="15" /> : <ChevronDown size="15" />}</DetailsContainer>
       </CardContainer>

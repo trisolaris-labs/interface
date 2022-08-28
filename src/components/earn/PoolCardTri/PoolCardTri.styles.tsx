@@ -7,6 +7,7 @@ import { ButtonPrimary } from '../../Button'
 import { AutoColumn } from '../../Column'
 import CurrencyLogo from '../../CurrencyLogo'
 import { RowBetween } from '../../Row'
+import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 
 export const Wrapper = styled(Card)<{
   bgColor1: string | null
@@ -101,7 +102,7 @@ export const StyledPairContainer = styled(PairContainer)`
 
 export const CardContainer = styled.div`
   display: grid;
-  grid-template-columns: 220px auto 110px 160px 80px;
+  grid-template-columns: 220px auto 110px 150px 100px;
   width: 100%;
   align-items: center;
   justify-items: center;
@@ -109,10 +110,10 @@ export const CardContainer = styled.div`
     grid-template-columns: 220px auto auto 80px;
  `};
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    grid-template-columns: 180px  auto 75px;
+    grid-template-columns: 180px  auto 85px;
   `};
   ${({ theme }) => theme.mediaWidth.upToXxSmall`
-    grid-template-columns: 150px 85px 70px
+    grid-template-columns: 150px 79px 90px
   `};
 `
 
@@ -182,9 +183,9 @@ export const StakedContainer = styled(AutoColumn)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display:none;
   `};
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    display:none;
-  `};
+  // ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  //   grid-column-start:3;
+  // `};
 `
 
 export const AprContainer = styled(AutoColumn)`
@@ -205,5 +206,37 @@ export const PoolTypeContainer = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display:none;
+  `};
+`
+
+export const StakedMobilecontainer = styled(AutoColumn)`
+  display: none;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    display:grid;
+    grid-column-start:3;
+    font-size:14px;
+    max-width:80px;
+    justify-self:start;
+  `};
+`
+
+export const StyledMultipleCurrencyLogo = styled(MultipleCurrencyLogo)`
+  img {
+    width: 20px;
+    height: 20px;
+  }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    img {
+      width: 18px;
+      height: 18px;
+    }
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToXxSmall`
+    img {
+      width: 16px;
+      height: 16px;
+    }
   `};
 `

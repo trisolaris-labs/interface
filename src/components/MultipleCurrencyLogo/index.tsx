@@ -32,13 +32,14 @@ export default function MultipleCurrencyLogo({
   currencies,
   size = 16,
   margin = false,
-  separation
+  separation,
+  ...rest
 }: MultipleCurrencyLogoProps) {
   const currenciesQty = currencies.length
   const logosSeparation = separation ?? 10
 
   return (
-    <Wrapper sizeraw={size} margin={margin}>
+    <Wrapper sizeraw={size} margin={margin} {...rest}>
       {currenciesQty > 2 ? (
         <>
           <HigherLogo currency={currencies[0]} size={size.toString() + 'px'} order={currenciesQty} />
