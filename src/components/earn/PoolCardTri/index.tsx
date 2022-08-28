@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Token, TokenAmount } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { ChevronDown, ChevronUp } from 'lucide-react'
-import { isMobileOnly } from 'react-device-detect'
+import { isMobile } from 'react-device-detect'
 
 import { TYPE } from '../../../theme'
 
@@ -11,7 +11,6 @@ import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 import { ButtonGold } from '../../Button'
 import SponsoredFarmLink from '../../SponsoredFarmLink'
 import PoolCardTriRewardText from './PoolCardTriRewardText'
-import ClaimableRewards from './ClaimableRewards'
 
 import { ChefVersions, EarnedNonTriRewards, NonTriAPR, PoolType } from '../../../state/stake/stake-constants'
 import { useSingleFarm } from '../../../state/stake/user-farms'
@@ -117,7 +116,7 @@ const DefaultPoolCardtri = ({
       <CardContainer>
         <StyledPairContainer>
           <SponsoredFarmLink tokens={tokens} farmID={version} />
-          <MultipleCurrencyLogo currencies={currencies} size={isMobileOnly ? 18 : 20} />
+          <MultipleCurrencyLogo currencies={currencies} size={isMobile ? 18 : 20} />
           <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>{farmName}</ResponsiveCurrencyLabel>
         </StyledPairContainer>
         <AprContainer>
@@ -132,16 +131,15 @@ const DefaultPoolCardtri = ({
           <StyledMutedSubHeader>Pool Type</StyledMutedSubHeader>
           <TYPE.white>{poolType}</TYPE.white>
         </PoolTypeContainer>
-
         {enableClaimButton && (
           <ButtonGold
             padding="8px"
             borderRadius="8px"
-            maxWidth={isMobileOnly ? '55px' : '74px'}
+            maxWidth={isMobile ? '55px' : '74px'}
             height="30px"
             onClick={handleClaimClick}
             justifySelf="start"
-            fontSize={isMobileOnly ? '14px' : '16px'}
+            fontSize={isMobile ? '14px' : '16px'}
           >
             Claim
           </ButtonGold>

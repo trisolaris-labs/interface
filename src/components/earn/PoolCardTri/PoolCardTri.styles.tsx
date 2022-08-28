@@ -99,28 +99,15 @@ export const StyledPairContainer = styled(PairContainer)`
   justify-self: flex-start;
 `
 
-export const StakedContainer = styled(AutoColumn)`
-  min-width: 100px;
-  justify-content: flex-start;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    display:none;
-  `};
-`
-
-export const AprContainer = styled(AutoColumn)`
-  min-width: 50px;
-  justify-content: flex-start;
-`
-
 export const CardContainer = styled.div`
   display: grid;
-  grid-template-columns: 200px 110px 110px 160px 80px;
+  grid-template-columns: 220px auto 110px 160px 80px;
   width: 100%;
   align-items: center;
   justify-items: center;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    grid-template-columns: 200px  1fr 110px 0.25fr;
-   `};
+    grid-template-columns: 220px auto auto 80px;
+ `};
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     grid-template-columns: 180px  auto 75px;
   `};
@@ -171,27 +158,52 @@ export const StyledRewardAmount = styled.span`
 
 export const StyledLongClaimableHeader = styled(TYPE.mutedSubHeader)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-display:none;
-`};
+    display:none;
+  `};
 `
 
 export const StyledShortClaimableHeader = styled(TYPE.mutedSubHeader)`
   display: none;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  display:block;
+    display:block;
   `};
 `
 
 export const StyledRewardsAmountContainer = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  flex-direction: column;
-  align-items:flex-start;
-`};
+    flex-direction: column;
+    align-items:flex-start;
+  `};
 `
+
+export const StakedContainer = styled(AutoColumn)`
+  min-width: 100px;
+  justify-content: flex-start;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    display:none;
+  `};
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    display:none;
+  `};
+`
+
+export const AprContainer = styled(AutoColumn)`
+  min-width: 50px;
+  justify-content: flex-start;
+  justify-self: start;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    justify-self: center;
+  `};
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    justify-self: start;
+  `};
+`
+
 export const PoolTypeContainer = styled.div`
   min-width: 100px;
   justify-content: flex-start;
+
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  display:none;
+    display:none;
   `};
 `
