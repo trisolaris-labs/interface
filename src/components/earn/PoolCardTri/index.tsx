@@ -32,7 +32,7 @@ import {
   AprContainer,
   CardContainer,
   DetailsContainer,
-  StyledMutedSubHeader
+  StyledMutedSubHeader,
 } from './PoolCardTri.styles'
 
 export type PoolCardTriProps = {
@@ -117,34 +117,28 @@ const DefaultPoolCardtri = ({
           <MultipleCurrencyLogo currencies={currencies} size={isMobileOnly ? 18 : 20} />
           <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>{farmName}</ResponsiveCurrencyLabel>
         </StyledPairContainer>
-        <StakedContainer>
-          <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
-          <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
-        </StakedContainer>
         <AprContainer>
           <StyledMutedSubHeader justifyContent="flex-start">APR</StyledMutedSubHeader>
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AprContainer>
+        <StakedContainer>
+          <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
+          <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
+        </StakedContainer>
+
         {enableClaimButton && (
-          <ClaimableRewards
-            enableClaimButton={enableClaimButton}
-            earnedNonTriRewards={earnedNonTriRewards}
-            noTriRewards={noTriRewards}
-            earnedAmount={earnedAmount}
-          />
+          <ButtonGold
+            padding="8px"
+            borderRadius="8px"
+            maxWidth={isMobileOnly ? '55px' : '74px'}
+            height="30px"
+            onClick={handleClaimClick}
+            justifySelf="start"
+            fontSize={isMobileOnly ? '14px' : '16px'}
+          >
+            Claim
+          </ButtonGold>
         )}
-        <ButtonGold
-          padding="8px"
-          borderRadius="8px"
-          maxWidth={isMobileOnly ? '55px' : '74px'}
-          height="30px"
-          onClick={handleClaimClick}
-          disabled={!enableClaimButton}
-          justifySelf="start"
-          fontSize={isMobileOnly ? '14px' : '16px'}
-        >
-          Claim
-        </ButtonGold>
         <DetailsContainer>{showMore ? <ChevronUp size="15" /> : <ChevronDown size="15" />}</DetailsContainer>
       </CardContainer>
     </Wrapper>

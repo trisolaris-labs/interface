@@ -7,7 +7,6 @@ import { ButtonPrimary } from '../../Button'
 import { AutoColumn } from '../../Column'
 import CurrencyLogo from '../../CurrencyLogo'
 import { RowBetween } from '../../Row'
-import { ButtonGold } from '../../Button'
 
 export const Wrapper = styled(Card)<{
   bgColor1: string | null
@@ -109,11 +108,8 @@ export const StakedContainer = styled(AutoColumn)`
 `
 
 export const AprContainer = styled(AutoColumn)`
-  min-width: 100px;
+  min-width: 50px;
   justify-content: flex-start;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  display:none;
-`};
 `
 
 export const CardContainer = styled.div`
@@ -129,7 +125,7 @@ export const CardContainer = styled.div`
     grid-template-columns: 180px  auto 75px;
   `};
   ${({ theme }) => theme.mediaWidth.upToXxSmall`
-    grid-template-columns: 170px 80px 55px
+    grid-template-columns: 150px 85px 70px
   `};
 `
 
@@ -191,4 +187,11 @@ export const StyledRewardsAmountContainer = styled(RowBetween)`
   flex-direction: column;
   align-items:flex-start;
 `};
+`
+export const PoolTypeContainer = styled.div`
+  min-width: 100px;
+  justify-content: flex-start;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  display:none;
+  `};
 `

@@ -25,6 +25,20 @@ const ContentWrapper = styled.div`
   width: fit-content;
 `
 
+const Logoscontainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const AprContainer = styled.div`
+  display: flex;
+  align-items: center;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    flex-direction: column;
+    align-items: flex-start;
+  `};
+`
+
 type Props = Pick<PoolCardTriProps, 'apr' | 'inStaging' | 'nonTriAPRs' | 'isLegacy'>
 
 export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLegacy }: Props) {
@@ -103,13 +117,19 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLe
   return (
     <Popover content={tooltipContent} show={show}>
       <IconWrapper onMouseEnter={open} onMouseLeave={close}>
-        {tooltipData.map(({ token }) => (
-          <CurrencyLogo alt="" currency={token} key={token.address} size={'14px'} style={{ marginRight: '4px' }} />
-        ))}
-        <TYPE.white marginRight="4px" textAlign="end">
-          {totalAPR}%
-        </TYPE.white>
-        <Info size="14px" />
+        <AprContainer>
+          <Logoscontainer>
+            {tooltipData.map(({ token }) => (
+              <CurrencyLogo alt="" currency={token} key={token.address} size={'14px'} style={{ marginRight: '4px' }} />
+            ))}
+          </Logoscontainer>
+          <AutoRow alignItems="center">
+            <TYPE.white marginRight="4px" textAlign="end">
+              {totalAPR}%
+            </TYPE.white>
+            <Info size="14px" />
+          </AutoRow>
+        </AprContainer>
       </IconWrapper>
     </Popover>
   )
