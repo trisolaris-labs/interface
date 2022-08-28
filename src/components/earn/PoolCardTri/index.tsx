@@ -13,7 +13,7 @@ import SponsoredFarmLink from '../../SponsoredFarmLink'
 import PoolCardTriRewardText from './PoolCardTriRewardText'
 import ClaimableRewards from './ClaimableRewards'
 
-import { ChefVersions, EarnedNonTriRewards, NonTriAPR } from '../../../state/stake/stake-constants'
+import { ChefVersions, EarnedNonTriRewards, NonTriAPR, PoolType } from '../../../state/stake/stake-constants'
 import { useSingleFarm } from '../../../state/stake/user-farms'
 import { useColorForToken } from '../../../hooks/useColor'
 import { useSingleStableFarm } from '../../../state/stake/user-stable-farms'
@@ -33,6 +33,7 @@ import {
   CardContainer,
   DetailsContainer,
   StyledMutedSubHeader,
+  PoolTypeContainer
 } from './PoolCardTri.styles'
 
 export type PoolCardTriProps = {
@@ -51,6 +52,7 @@ export type PoolCardTriProps = {
   nonTriAPRs: NonTriAPR[]
   friendlyFarmName: string | null
   isFeatured?: boolean
+  poolType: PoolType
 }
 
 type ExtendedPoolCardTriProps = PoolCardTriProps & {
@@ -74,6 +76,7 @@ const DefaultPoolCardtri = ({
   earnedNonTriRewards,
   noTriRewards,
   earnedAmount,
+  poolType,
   enableModal = () => null
 }: { enableClaimButton?: boolean; enableModal?: () => void } & ExtendedPoolCardTriProps) => {
   const { t } = useTranslation()
@@ -125,6 +128,10 @@ const DefaultPoolCardtri = ({
           <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
           <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
         </StakedContainer>
+        <PoolTypeContainer>
+          <StyledMutedSubHeader>Pool Type</StyledMutedSubHeader>
+          <TYPE.white>{poolType}</TYPE.white>
+        </PoolTypeContainer>
 
         {enableClaimButton && (
           <ButtonGold

@@ -69,6 +69,7 @@ export default function EarnTri() {
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
                   friendlyFarmName={farm.friendlyFarmName}
                   isFeatured={farm.isFeatured}
+                  poolType={farm.poolType}
                 />
               )
             )}
@@ -101,6 +102,7 @@ export default function EarnTri() {
                   friendlyFarmName={farm.friendlyFarmName}
                   isFeatured={farm.isFeatured}
                   stableSwapPoolName={farm.stableSwapPoolName}
+                  poolType={farm.poolType}
                 />
               ))}
             </PoolSection>
@@ -132,6 +134,7 @@ export default function EarnTri() {
               friendlyFarmName={farm.friendlyFarmName}
               isFeatured={farm.isFeatured}
               stableSwapPoolName={farm.stableSwapPoolName}
+              poolType={farm.poolType}
             />
           ))}
         </PoolSection>
@@ -160,6 +163,7 @@ export default function EarnTri() {
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
                   friendlyFarmName={farm.friendlyFarmName}
                   stableSwapPoolName={farm.stableSwapPoolName}
+                  poolType={farm.poolType}
                 />
               ))}
             </PoolSection>
@@ -196,6 +200,7 @@ export default function EarnTri() {
                   isStaking={isTokenAmountPositive(farm.stakedAmount)}
                   friendlyFarmName={farm.friendlyFarmName}
                   stableSwapPoolName={farm.stableSwapPoolName}
+                  poolType={farm.poolType}
                 />
               ))}
             </PoolSection>
