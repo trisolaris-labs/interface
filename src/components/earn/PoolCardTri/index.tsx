@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Token, ChainId, TokenAmount } from '@trisolaris/sdk'
+import { Token, TokenAmount } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { isMobileOnly } from 'react-device-detect'
@@ -9,9 +9,9 @@ import { TYPE } from '../../../theme'
 import ClaimRewardModal from './ClaimRewardModalTri'
 import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 import { ButtonGold } from '../../Button'
-import CountUp from '../../CountUp'
 import SponsoredFarmLink from '../../SponsoredFarmLink'
 import PoolCardTriRewardText from './PoolCardTriRewardText'
+import ClaimableRewards from './ClaimableRewards'
 
 import { ChefVersions, EarnedNonTriRewards, NonTriAPR } from '../../../state/stake/stake-constants'
 import { useSingleFarm } from '../../../state/stake/user-farms'
@@ -21,9 +21,6 @@ import { useSingleStableFarm } from '../../../state/stake/user-stable-farms'
 import { addCommasToNumber } from '../../../utils'
 import { getPairRenderOrder, isTokenAmountPositive } from '../../../utils/pools'
 
-import { BIG_INT_ZERO } from '../../../constants'
-import { TRI } from '../../../constants/tokens'
-import { StakingTri } from '../../../state/stake/stake-constants'
 import { StableSwapPoolName } from '../../../state/stableswap/constants'
 
 import {
@@ -35,14 +32,7 @@ import {
   AprContainer,
   CardContainer,
   DetailsContainer,
-  StyledMutedSubHeader,
-  RewardColumn,
-  RewardsContainer,
-  StyledCurrencyLogo,
-  StyledRewardAmount,
-  StyledLongClaimableHeader,
-  StyledShortClaimableHeader,
-  StyledRewardsAmountContainer
+  StyledMutedSubHeader
 } from './PoolCardTri.styles'
 
 export type PoolCardTriProps = {
@@ -135,49 +125,20 @@ const DefaultPoolCardtri = ({
           <StyledMutedSubHeader justifyContent="flex-start">APR</StyledMutedSubHeader>
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AprContainer>
-        <RewardsContainer>
-          <StyledLongClaimableHeader>Claimable rewards</StyledLongClaimableHeader>
-          <StyledShortClaimableHeader>Rewards</StyledShortClaimableHeader>
-
-          <StyledRewardsAmountContainer>
-            {enableClaimButton ? (
-              <>
-                {!noTriRewards && (
-                  <RewardColumn>
-                    <StyledCurrencyLogo currency={TRI[ChainId.AURORA]} size="14px" />
-                    <StyledRewardAmount>
-                      <CountUp
-                        enabled={earnedAmount?.greaterThan(BIG_INT_ZERO) ?? false}
-                        value={parseFloat(earnedAmount?.toFixed(6) ?? '0')}
-                        decimalPlaces={2}
-                      />
-                    </StyledRewardAmount>
-                  </RewardColumn>
-                )}
-                {earnedNonTriRewards?.map(({ amount, token }) => (
-                  <RewardColumn key={token.address}>
-                    <StyledCurrencyLogo currency={token} size="14px" />
-                    <StyledRewardAmount>
-                      <CountUp
-                        enabled={amount?.greaterThan(BIG_INT_ZERO) ?? false}
-                        value={parseFloat(amount?.toFixed(6) ?? '0')}
-                        decimalPlaces={2}
-                      />
-                    </StyledRewardAmount>
-                  </RewardColumn>
-                ))}
-              </>
-            ) : (
-              <TYPE.body>-</TYPE.body>
-            )}
-          </StyledRewardsAmountContainer>
-        </RewardsContainer>
+        {enableClaimButton && (
+          <ClaimableRewards
+            enableClaimButton={enableClaimButton}
+            earnedNonTriRewards={earnedNonTriRewards}
+            noTriRewards={noTriRewards}
+            earnedAmount={earnedAmount}
+          />
+        )}
         <ButtonGold
           padding="8px"
           borderRadius="8px"
           maxWidth={isMobileOnly ? '55px' : '74px'}
           height="30px"
-          onClick={event => handleClaimClick(event)}
+          onClick={handleClaimClick}
           disabled={!enableClaimButton}
           justifySelf="start"
           fontSize={isMobileOnly ? '14px' : '16px'}
