@@ -8,6 +8,7 @@ import { AutoColumn } from '../../Column'
 import CurrencyLogo from '../../CurrencyLogo'
 import { RowBetween } from '../../Row'
 import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
+import ClaimableRewards from './ClaimableRewards'
 
 export const Wrapper = styled(Card)<{
   bgColor1: string | null
@@ -103,6 +104,7 @@ export const StyledPairContainer = styled(PairContainer)`
 export const CardContainer = styled.div`
   display: grid;
   grid-template-columns: 220px auto 110px 150px 100px;
+  row-gap: 20px;
   width: 100%;
   align-items: center;
   justify-items: center;
@@ -247,4 +249,16 @@ export const ButtonWrapper = styled.div`
     font-size: 14px;
     max-width: 55px;
   `};
+`
+
+export const StyledClaimableRewards = styled(ClaimableRewards)`
+  grid-row: 2;
+  grid-column: 1 2;
+`
+
+export const DepositsContainer = styled(AutoColumn)`
+  grid-row: 2;
+  grid-column-start: span 2;
+  grid-column-end: 4;
+  justify-self: start;
 `
