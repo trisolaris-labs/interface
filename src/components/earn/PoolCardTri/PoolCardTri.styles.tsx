@@ -240,3 +240,14 @@ export const StyledMultipleCurrencyLogo = styled(MultipleCurrencyLogo)`
     }
   `};
 `
+
+export const ButtonWrapper = styled.div`
+  font-size: 16px;
+  width: 100%;
+  max-width: 74px;
+  justify-self: start;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    font-size: 14px;
+    max-width: 55px;
+  `};
+`

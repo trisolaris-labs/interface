@@ -33,7 +33,7 @@ const Logoscontainer = styled.div`
 const AprContainer = styled.div`
   display: flex;
   align-items: center;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
     flex-direction: column;
     align-items: flex-start;
   `};

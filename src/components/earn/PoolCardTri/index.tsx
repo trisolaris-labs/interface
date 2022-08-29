@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Token, TokenAmount } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { ChevronDown, ChevronUp } from 'lucide-react'
-import { isMobile } from 'react-device-detect'
 
 import { TYPE } from '../../../theme'
 
@@ -33,7 +32,8 @@ import {
   StyledMutedSubHeader,
   PoolTypeContainer,
   StakedMobilecontainer,
-  StyledMultipleCurrencyLogo
+  StyledMultipleCurrencyLogo,
+  ButtonWrapper
 } from './PoolCardTri.styles'
 
 export type PoolCardTriProps = {
@@ -132,24 +132,18 @@ const DefaultPoolCardtri = ({
           <StyledMutedSubHeader>Pool Type</StyledMutedSubHeader>
           <TYPE.white>{poolType}</TYPE.white>
         </PoolTypeContainer>
-        {enableClaimButton ? (
-          <ButtonGold
-            padding="8px"
-            borderRadius="8px"
-            maxWidth={isMobile ? '55px' : '74px'}
-            height="30px"
-            onClick={handleClaimClick}
-            justifySelf="start"
-            fontSize={isMobile ? '14px' : '16px'}
-          >
-            Claim
-          </ButtonGold>
-        ) : (
-          <StakedMobilecontainer>
-            <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
-            <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
-          </StakedMobilecontainer>
-        )}
+        <ButtonWrapper>
+          {enableClaimButton ? (
+            <ButtonGold padding="8px" borderRadius="8px" height="30px" onClick={handleClaimClick} justifySelf="start">
+              Claim
+            </ButtonGold>
+          ) : (
+            <StakedMobilecontainer>
+              <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
+              <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
+            </StakedMobilecontainer>
+          )}
+        </ButtonWrapper>
         <DetailsContainer>{showMore ? <ChevronUp size="15" /> : <ChevronDown size="15" />}</DetailsContainer>
       </CardContainer>
     </Wrapper>
