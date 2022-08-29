@@ -7,7 +7,6 @@ import { isMobile } from 'react-device-detect'
 import { TYPE } from '../../../theme'
 
 import ClaimRewardModal from './ClaimRewardModalTri'
-import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 import { ButtonGold } from '../../Button'
 import SponsoredFarmLink from '../../SponsoredFarmLink'
 import PoolCardTriRewardText from './PoolCardTriRewardText'
@@ -118,7 +117,7 @@ const DefaultPoolCardtri = ({
       <CardContainer>
         <StyledPairContainer>
           <SponsoredFarmLink tokens={tokens} farmID={version} />
-          <StyledMultipleCurrencyLogo currencies={currencies}/>
+          <StyledMultipleCurrencyLogo currencies={currencies} />
           <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>{farmName}</ResponsiveCurrencyLabel>
         </StyledPairContainer>
         <AprContainer>
