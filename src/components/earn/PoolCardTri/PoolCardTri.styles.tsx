@@ -20,7 +20,7 @@ export const Wrapper = styled(Card)<{
   border-radius: 0px;
   gap: 12px;
   position: relative;
-  padding: 10px 20px 10px 20px;
+  padding: 10px 20px 16px 20px;
   display: grid;
   grid-auto-rows: auto;
 
@@ -123,8 +123,10 @@ export const DetailsContainer = styled.div`
   align-items: center;
   position: absolute;
   right: 15px;
+  top: 20px;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    right:7.5px;
+    right:10px;
+    top: 25px;
   `};
 `
 

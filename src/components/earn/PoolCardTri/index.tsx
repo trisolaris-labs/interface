@@ -163,17 +163,21 @@ const DefaultPoolCardtri = ({
               earnedNonTriRewards={earnedNonTriRewards}
             />
             <DepositsContainer>
-              {enableClaimButton && (
-                <>
-                  <StyledMutedSubHeader>Your deposits</StyledMutedSubHeader>
-                  <AutoRow>
-                    <TYPE.white fontWeight={500} marginRight={10}>
-                      ~{addCommasToNumber(userStakedInUSD ?? '')}
-                    </TYPE.white>
-                    /<TYPE.white marginLeft={10}>{stakedAmount?.toSignificant(6)} TLP</TYPE.white>
-                  </AutoRow>
-                </>
-              )}
+              <>
+                <StyledMutedSubHeader>Your deposits</StyledMutedSubHeader>
+                <AutoRow>
+                  {enableClaimButton ? (
+                    <>
+                      <TYPE.white fontWeight={500} marginRight={10}>
+                        ~{addCommasToNumber(userStakedInUSD ?? '')}
+                      </TYPE.white>
+                      / <TYPE.white marginLeft={10}>{stakedAmount?.toSignificant(6)} TLP</TYPE.white>
+                    </>
+                  ) : (
+                    <TYPE.white fontWeight={500}>$0</TYPE.white>
+                  )}
+                </AutoRow>
+              </>
             </DepositsContainer>
           </>
         )}
