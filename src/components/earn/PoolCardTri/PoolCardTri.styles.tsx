@@ -10,6 +10,7 @@ import { RowBetween } from '../../Row'
 import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 import ClaimableRewards from './ClaimableRewards'
 
+
 export const Wrapper = styled(Card)<{
   bgColor1: string | null
   bgColor2?: string | null
@@ -144,6 +145,7 @@ export const RewardsContainer = styled(AutoColumn)`
   flex: 1;
   max-width: 200px;
   justify-self: start;
+  row-gap: 8px;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     max-width:100%;
@@ -263,4 +265,14 @@ export const DepositsContainer = styled(AutoColumn)`
   grid-column-start: span 2;
   grid-column-end: 4;
   justify-self: start;
+  row-gap: 8px;
+`
+
+export const StakeContainer = styled(AutoColumn)`
+  grid-row: 2;
+  grid-column-end: 6;
+  grid-column-start: 4;
+  width: 100%;
+  padding: 0 24px;
+  row-gap: 8px;
 `
