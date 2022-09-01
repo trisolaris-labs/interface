@@ -1,19 +1,16 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Token, TokenAmount } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
 import { ChevronDown, ChevronUp } from 'lucide-react'
-import { useHistory } from 'react-router-dom'
 
 import { TYPE } from '../../../theme'
 
 import ClaimRewardModal from './ClaimRewardModalTri'
-import { ButtonGold, ButtonPrimary } from '../../Button'
+import { ButtonGold } from '../../Button'
 import SponsoredFarmLink from '../../SponsoredFarmLink'
 import PoolCardTriRewardText from './PoolCardTriRewardText'
-import StakingModal from './StakingModalTri'
-import UnstakingModal from './UnstakingModalTri'
-import Toggle from '../../Toggle'
 import { AutoRow } from '../../Row'
+import ManageStake from './ManageStake'
 
 import { ChefVersions, EarnedNonTriRewards, NonTriAPR, PoolType } from '../../../state/stake/stake-constants'
 import { useSingleFarm } from '../../../state/stake/user-farms'
@@ -21,15 +18,11 @@ import { useColorForToken } from '../../../hooks/useColor'
 import { useSingleStableFarm } from '../../../state/stake/user-stable-farms'
 import useUserFarmStatistics from '../../../state/stake/useUserFarmStatistics'
 import useTLP from '../../../hooks/useTLP'
-import { useTokenBalance } from '../../../state/wallet/hooks'
-import { useActiveWeb3React } from '../../../hooks'
-import { useWalletModalToggle } from '../../../state/application/hooks'
 
 import { addCommasToNumber } from '../../../utils'
 import { getPairRenderOrder, isTokenAmountPositive } from '../../../utils/pools'
 
 import { StableSwapPoolName } from '../../../state/stableswap/constants'
-import { BIG_INT_ZERO } from '../../../constants'
 
 import {
   ResponsiveCurrencyLabel,
@@ -76,10 +69,7 @@ type ExtendedPoolCardTriProps = PoolCardTriProps & {
   stakedAmount?: TokenAmount | null
   userStakedInUSD?: string | null
   enableClaimButton?: boolean
-  userLiquidityUnstaked?: TokenAmount
-  enableModal?: () => void
-  enableDepositModal?: () => void
-  enableWithdrawModal?: () => void
+  enableClaimModal?: () => void
 }
 
 const DefaultPoolCardtri = ({
@@ -100,17 +90,12 @@ const DefaultPoolCardtri = ({
   poolType,
   stakedAmount,
   userStakedInUSD,
-  userLiquidityUnstaked,
   stableSwapPoolName,
-  enableModal = () => null,
-  enableDepositModal = () => null,
-  enableWithdrawModal = () => null
+  enableClaimModal = () => null
 }: ExtendedPoolCardTriProps) => {
   const { t } = useTranslation()
-  const history = useHistory()
 
   const [showMore, setShowMore] = useState(false)
-  const [isStaking, setIsStaking] = useState(false)
 
   const isDualRewards = chefVersion === ChefVersions.V2
 
@@ -125,51 +110,12 @@ const DefaultPoolCardtri = ({
   const currenciesQty = currencies.length
   const farmName = friendlyFarmName ?? currencies.map(({ symbol }) => symbol).join('-')
 
-  const addLpLink = stableSwapPoolName
-    ? `/pool/stable/add/${stableSwapPoolName}`
-    : `add/${tokens[0].address}/${tokens[1].address}`
-
-  const removeLpLink = stableSwapPoolName
-    ? `/pool/stable/remove/${stableSwapPoolName}`
-    : `remove/${tokens[0].address}/${tokens[1].address}`
-
-  useEffect(() => {
-    if (enableClaimButton && !isStaking) {
-      setIsStaking(enableClaimButton)
-    }
-  }, [enableClaimButton])
-
   function onCardClick() {
     setShowMore(!showMore)
   }
 
   function handleClaimClick(event: React.MouseEvent) {
-    enableModal()
-    event.stopPropagation()
-  }
-
-  function handleDepositClick(event: React.MouseEvent) {
-    enableDepositModal()
-    event.stopPropagation()
-  }
-
-  function handleWithDrawClick(event: React.MouseEvent) {
-    enableWithdrawModal()
-    event.stopPropagation()
-  }
-
-  function handleToggle(event: React.MouseEvent) {
-    setIsStaking(!isStaking)
-    event.stopPropagation()
-  }
-
-  function handleAddLp(event: React.MouseEvent) {
-    history.push(addLpLink)
-    event.stopPropagation()
-  }
-
-  function handleRemoveLp(event: React.MouseEvent) {
-    history.push(removeLpLink)
+    enableClaimModalF()
     event.stopPropagation()
   }
 
@@ -239,43 +185,7 @@ const DefaultPoolCardtri = ({
               </>
             </DepositsContainer>
             <StakeContainer>
-              <AutoRow justifyContent="space-between">
-                <StyledMutedSubHeader>Manage</StyledMutedSubHeader>
-                <Toggle
-                  customToggleText={{ on: 'Pool', off: 'Stake' }}
-                  isActive={!isStaking}
-                  toggle={handleToggle}
-                  fontSize="12px"
-                  padding="2px 6px"
-                />
-              </AutoRow>
-              <AutoRow justifyContent="space-between">
-                <ButtonPrimary
-                  borderRadius="8px"
-                  disabled={
-                    isStaking && (userLiquidityUnstaked == null || userLiquidityUnstaked?.equalTo(BIG_INT_ZERO))
-                  }
-                  width="98px"
-                  padding="5px"
-                  fontSize="14px"
-                  onClick={isStaking ? handleDepositClick : handleAddLp}
-                >
-                  {isStaking ? t('earnPage.depositPglTokens') : 'Add LP'}
-                </ButtonPrimary>
-                <ButtonPrimary
-                  disabled={
-                    (isStaking && (stakedAmount == null || stakedAmount?.equalTo(BIG_INT_ZERO))) ||
-                    (!isStaking && userLiquidityUnstaked?.equalTo(BIG_INT_ZERO))
-                  }
-                  padding="5px"
-                  borderRadius="8px"
-                  width="98px"
-                  onClick={isStaking ? handleWithDrawClick : handleRemoveLp}
-                  fontSize="14px"
-                >
-                  {isStaking ? 'Withdraw' : 'Remove LP'}
-                </ButtonPrimary>
-              </AutoRow>
+              <ManageStake />
             </StakeContainer>
           </>
         )}
@@ -288,8 +198,6 @@ type StablePoolCardTriProps = PoolCardTriProps & { stableSwapPoolName: StableSwa
 
 const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
   const { version, stableSwapPoolName } = props
-  const { account } = useActiveWeb3React()
-  const toggleWalletModal = useWalletModalToggle()
 
   const stakingInfo = useSingleStableFarm(Number(version), stableSwapPoolName)
   const {
@@ -317,25 +225,11 @@ const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
     }) ?? {}
 
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
-  const [showStakingModal, setShowStakingModal] = useState(false)
-  const [showUnstakingModal, setShowUnstakingModal] = useState(false)
-
-  const stakedAmountToken = stakedAmount?.token
-
-  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakedAmountToken)
 
   const amountIsClaimable =
     isTokenAmountPositive(earnedAmount) || earnedNonTriRewards.some(({ amount }) => isTokenAmountPositive(amount))
 
-  const enableModal = () => setShowClaimRewardModal(true)
-
-  const enableDepositModal = useCallback(() => {
-    if (account) {
-      setShowStakingModal(true)
-    } else {
-      toggleWalletModal()
-    }
-  }, [account, toggleWalletModal])
+  const enableClaimModal = () => setShowClaimRewardModal(true)
 
   return (
     <>
@@ -351,33 +245,15 @@ const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
           stakedAmount={stakedAmount}
         />
       )}
-      {showStakingModal && stakingInfo && (
-        <StakingModal
-          isOpen={showStakingModal}
-          onDismiss={() => setShowStakingModal(false)}
-          stakingInfo={stakingInfo}
-          userLiquidityUnstaked={userLiquidityUnstaked}
-        />
-      )}
-      {showUnstakingModal && stakingInfo && (
-        <UnstakingModal
-          isOpen={showUnstakingModal}
-          onDismiss={() => setShowUnstakingModal(false)}
-          stakingInfo={stakingInfo}
-        />
-      )}
       <DefaultPoolCardtri
         {...props}
         enableClaimButton={amountIsClaimable}
-        enableModal={enableModal}
+        enableClaimModal={enableClaimModal}
         earnedNonTriRewards={earnedNonTriRewards}
         noTriRewards={noTriRewards}
         earnedAmount={earnedAmount}
         stakedAmount={stakedAmount}
         userStakedInUSD={userLPAmountUSDFormatted}
-        userLiquidityUnstaked={userLiquidityUnstaked}
-        enableDepositModal={enableDepositModal}
-        enableWithdrawModal={() => setShowUnstakingModal(true)}
         stableSwapPoolName={stableSwapPoolName}
       />
     </>
@@ -387,9 +263,7 @@ const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
 const StakingPoolCardTRI = (props: PoolCardTriProps) => {
   const { version } = props
 
-  const { account } = useActiveWeb3React()
   const stakingInfo = useSingleFarm(Number(version))
-  const toggleWalletModal = useWalletModalToggle()
 
   const {
     earnedNonTriRewards,
@@ -416,24 +290,11 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
     }) ?? {}
 
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
-  const [showStakingModal, setShowStakingModal] = useState(false)
-  const [showUnstakingModal, setShowUnstakingModal] = useState(false)
-
-  const stakedAmountToken = stakedAmount?.token
-  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakedAmountToken)
 
   const amountIsClaimable =
     isTokenAmountPositive(earnedAmount) || earnedNonTriRewards.some(({ amount }) => isTokenAmountPositive(amount))
 
-  const enableModal = () => setShowClaimRewardModal(true)
-
-  const enableDepositModal = useCallback(() => {
-    if (account) {
-      setShowStakingModal(true)
-    } else {
-      toggleWalletModal()
-    }
-  }, [account, toggleWalletModal])
+  const enableClaimModal = () => setShowClaimRewardModal(true)
 
   return (
     <>
@@ -449,33 +310,15 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
           stakedAmount={stakedAmount}
         />
       )}
-      {showStakingModal && stakingInfo && (
-        <StakingModal
-          isOpen={showStakingModal}
-          onDismiss={() => setShowStakingModal(false)}
-          stakingInfo={stakingInfo}
-          userLiquidityUnstaked={userLiquidityUnstaked}
-        />
-      )}
-      {showUnstakingModal && stakingInfo && (
-        <UnstakingModal
-          isOpen={showUnstakingModal}
-          onDismiss={() => setShowUnstakingModal(false)}
-          stakingInfo={stakingInfo}
-        />
-      )}
       <DefaultPoolCardtri
         {...props}
         enableClaimButton={amountIsClaimable}
-        enableModal={enableModal}
+        enableClaimModal={enableClaimModal}
         earnedNonTriRewards={earnedNonTriRewards}
         noTriRewards={noTriRewards}
         earnedAmount={earnedAmount}
         stakedAmount={stakedAmount}
         userStakedInUSD={userLPAmountUSDFormatted}
-        userLiquidityUnstaked={userLiquidityUnstaked}
-        enableDepositModal={enableDepositModal}
-        enableWithdrawModal={() => setShowUnstakingModal(true)}
       />
     </>
   )
