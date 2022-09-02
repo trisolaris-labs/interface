@@ -708,3 +708,17 @@ export const SMARTPAD: { [chainId in ChainId]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'SmartPad token'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x34F291934b88c7870B7A17835B926B264fc13a81', 18, 'PAD', 'SmartPad token'),
 }
+
+export const AUUSDC: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 8, 'auUSDC', 'Aurigami USDC'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 8, 'auUSDC', 'Aurigami USDC'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 8, 'auUSDC', 'Aurigami USDC'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4f0d864b1ABf4B701799a0b30b57A22dFEB5917b', 8, 'auUSDC', 'Aurigami USDC'),
+}
+
+export const AUUSDT: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 8, 'auUSDT', 'Aurigami USDT'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 8, 'auUSDT', 'Aurigami USDT'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 8, 'auUSDT', 'Aurigami USDT'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xaD5A2437Ff55ed7A8Cad3b797b3eC7c5a19B1c54', 8, 'auUSDT', 'Aurigami USDT'),
+}

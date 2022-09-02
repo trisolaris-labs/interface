@@ -108,4 +108,22 @@ module.exports = {
       'SmartPad token'
     )
   },
+  AUUSDC: {
+    [ChainId.AURORA]: new Token(
+      ChainId.AURORA,
+      '0x4f0d864b1ABf4B701799a0b30b57A22dFEB5917b',
+      8,
+      'auUSDC',
+      'Aurigami USDC'
+    )
+  },
+  AUUSDT: {
+    [ChainId.AURORA]: new Token(
+      ChainId.AURORA,
+      '0xaD5A2437Ff55ed7A8Cad3b797b3eC7c5a19B1c54',
+      8,
+      'auUSDT',
+      'Aurigami USDT'
+    )
+  }
 }
