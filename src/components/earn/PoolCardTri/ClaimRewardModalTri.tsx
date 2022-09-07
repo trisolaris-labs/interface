@@ -97,8 +97,7 @@ export default function ClaimRewardModal({
   let error: string | undefined
   if (!account) {
     error = t('earn.connectWallet')
-  }
-  if (!stakedAmount) {
+  } else if (!stakedAmount) {
     error = error ?? t('earn.enterAmount')
   }
 
