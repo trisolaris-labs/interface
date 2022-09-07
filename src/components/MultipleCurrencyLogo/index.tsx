@@ -15,6 +15,7 @@ interface MultipleCurrencyLogoProps {
   size?: number
   currencies: Currency[]
   separation?: number
+  className?: string
 }
 
 const HigherLogo = styled(CurrencyLogo)<{ order: number }>`
@@ -33,13 +34,13 @@ export default function MultipleCurrencyLogo({
   size = 16,
   margin = false,
   separation,
-  ...rest
+  className
 }: MultipleCurrencyLogoProps) {
   const currenciesQty = currencies.length
   const logosSeparation = separation ?? 10
 
   return (
-    <Wrapper sizeraw={size} margin={margin} {...rest}>
+    <Wrapper sizeraw={size} margin={margin} className={className}>
       {currenciesQty > 2 ? (
         <>
           <HigherLogo currency={currencies[0]} size={size.toString() + 'px'} order={currenciesQty} />
