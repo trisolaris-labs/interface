@@ -183,9 +183,6 @@ export const StakedContainer = styled(AutoColumn)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display:none;
   `};
-  // ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  //   grid-column-start:3;
-  // `};
 `
 
 export const AprContainer = styled(AutoColumn)`

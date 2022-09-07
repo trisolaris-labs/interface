@@ -46,7 +46,7 @@ export enum ChefVersions {
 }
 
 export enum PoolType {
-  TRI_ONLY = 'Tri Pool',
+  TRI_ONLY = 'TRI Pool',
   DUAL_REWARDS = 'Dual Rewards',
   ECOSYSTEM = 'Ecosystem',
   STABLE = 'Stable Pool',

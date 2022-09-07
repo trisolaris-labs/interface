@@ -25,7 +25,7 @@ const ContentWrapper = styled.div`
   width: fit-content;
 `
 
-const Logoscontainer = styled.div`
+const LogosContainer = styled.div`
   display: flex;
   align-items: center;
 `
@@ -118,11 +118,11 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLe
     <Popover content={tooltipContent} show={show}>
       <IconWrapper onMouseEnter={open} onMouseLeave={close}>
         <AprContainer>
-          <Logoscontainer>
+          <LogosContainer>
             {tooltipData.map(({ token }) => (
               <CurrencyLogo alt="" currency={token} key={token.address} size={'14px'} style={{ marginRight: '4px' }} />
             ))}
-          </Logoscontainer>
+          </LogosContainer>
           <AutoRow alignItems="center">
             <TYPE.white marginRight="4px" textAlign="end">
               {totalAPR}%
