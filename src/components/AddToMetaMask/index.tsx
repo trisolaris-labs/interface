@@ -1,5 +1,5 @@
 import React from 'react'
-import { Token } from '@trisolaris/sdk'
+import { Token, CETH } from '@trisolaris/sdk'
 
 import { LinkStyledButton } from '../../theme'
 
@@ -10,7 +10,7 @@ import { registerToken } from '../../utils/wallet'
 function AddToMetaMaskButton({ token, ...otherProps }: { token: Token }) {
   const { library } = useActiveWeb3React()
 
-  if (!token || token?.symbol == null || library?.provider?.isMetaMask == null) {
+  if (!token || token?.symbol == null || library?.provider?.isMetaMask == null || token === CETH) {
     return null
   }
 
