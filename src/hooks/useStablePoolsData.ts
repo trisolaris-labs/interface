@@ -8,13 +8,13 @@ import {
   StableSwapPoolName,
   STABLESWAP_POOLS
 } from '../state/stableswap/constants'
-import { useStableSwapContract, useStableSwapMetaPool } from './useContract'
+import { useStableSwapContract, useStableSwapMetaPool, useAuTokenContract } from './useContract'
 import { ChainId, Fraction, JSBI, Percent, Price, Token, TokenAmount } from '@trisolaris/sdk'
 import { useSingleCallResult, useSingleContractMultipleData } from '../state/multicall/hooks'
 import { useTokenBalance } from '../state/wallet/hooks'
 import { useTotalSupply } from '../data/TotalSupply'
 import { BIG_INT_ZERO, ZERO_ADDRESS } from '../constants'
-import { USDC } from '../constants/tokens'
+import { USDC, AUUSDC, AUUSDT, USDT } from '../constants/tokens'
 
 const STABLE_POOL_CONTRACT_DECIMALS = 18
 interface TokenShareType {
@@ -54,6 +54,32 @@ export type PoolDataHookReturnType = [StablePoolDataType, UserShareType | null]
 
 export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDataHookReturnType {
   const { account } = useActiveWeb3React()
+
+  ////// WIP
+
+  const auUSDTContract = useAuTokenContract(AUUSDT[ChainId.AURORA].address)
+  const auUSDTBalanceResult =
+    useSingleCallResult(auUSDTContract, 'balanceOf', ['0x85BD2E6Ab9D510C9c8a1B4B50B7Ace28528Bb385'])?.result?.[0] ??
+    BIG_INT_ZERO
+  const auUSDTBalance = JSBI.BigInt(auUSDTBalanceResult)
+
+  // auUDST (8 decimals) scaled to 18 decimals:
+  const auUSDTBalanceScaled = JSBI.multiply(auUSDTBalance, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(10)))
+  // console.log(auUSDTBalanceScaled.toString()) // 51668548420000000000
+
+  const exchangeRateStoredResult =
+    useSingleCallResult(auUSDTContract, 'exchangeRateStored')?.result?.[0] ?? BIG_INT_ZERO
+  const exchangeRateStored = JSBI.BigInt(exchangeRateStoredResult)
+  // console.log(exchangeRateStored.toString()) // 202878860304926  18 decimals
+
+  const multipliedBalance = JSBI.multiply(auUSDTBalanceScaled, exchangeRateStored)
+  // console.log(multipliedBalance.toString()) //10482456217059484995516920000000000
+
+  const calculatedBalance = JSBI.divide(multipliedBalance, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+  // console.log(calculatedBalance.toString())  // 10482456217059484
+
+  console.log(new TokenAmount(new Token(ChainId.AURORA, ZERO_ADDRESS, 18), calculatedBalance).toExact())
+  ////
 
   const pool = STABLESWAP_POOLS[poolName]
   const { disableAddLiquidity, lpToken, poolTokens, type, underlyingPoolTokens } = pool
