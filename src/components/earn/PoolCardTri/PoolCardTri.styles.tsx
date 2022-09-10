@@ -5,7 +5,9 @@ import { TYPE } from '../../../theme'
 import Card from '../../Card'
 import { ButtonPrimary } from '../../Button'
 import { AutoColumn } from '../../Column'
-import { FixedHeightRow } from '../../PositionCard/PositionCard.styles'
+import CurrencyLogo from '../../CurrencyLogo'
+import { RowBetween } from '../../Row'
+import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 
 export const Wrapper = styled(Card)<{
   bgColor1: string | null
@@ -17,7 +19,7 @@ export const Wrapper = styled(Card)<{
   border-radius: 0px;
   gap: 12px;
   position: relative;
-  padding: 0.6rem 20px 0.6rem 20px;
+  padding: 10px 20px 10px 20px;
   display: grid;
   grid-auto-rows: auto;
 
@@ -93,18 +95,85 @@ export const TokenPairBackgroundColor = styled.span<{ bgColor1: string | null; b
   z-index: -1;
 `
 
-export const ActionsContainer = styled.div`
-  display: flex;
-  min-width: 110px;
-  justify-content: center;
-  height: 34px;
-`
-
 export const StyledPairContainer = styled(PairContainer)`
   max-width: 200px;
   justify-self: flex-start;
+`
+
+export const CardContainer = styled.div`
+  display: grid;
+  grid-template-columns: 220px auto 110px 150px 100px;
+  width: 100%;
+  align-items: center;
+  justify-items: center;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    grid-template-columns: 220px auto auto 80px;
+ `};
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    grid-template-columns: 180px  auto 85px;
+  `};
   ${({ theme }) => theme.mediaWidth.upToXxSmall`
-  order: 1;
+    grid-template-columns: 150px 79px 90px
+  `};
+`
+
+export const DetailsContainer = styled.div`
+  align-items: center;
+  position: absolute;
+  right: 15px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    right:7.5px;
+  `};
+`
+
+export const StyledMutedSubHeader = styled(TYPE.mutedSubHeader)`
+  display: flex;
+`
+
+export const RewardColumn = styled.div`
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+`
+
+export const RewardsContainer = styled(AutoColumn)`
+  flex: 1;
+  max-width: 200px;
+  justify-self: start;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    max-width:100%;
+  `};
+`
+
+export const StyledCurrencyLogo = styled(CurrencyLogo)`
+  margin-right: 5px;
+`
+
+export const StyledRewardAmount = styled.span`
+  max-width: 60px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
+
+export const StyledLongClaimableHeader = styled(TYPE.mutedSubHeader)`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    display:none;
+  `};
+`
+
+export const StyledShortClaimableHeader = styled(TYPE.mutedSubHeader)`
+  display: none;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    display:block;
+  `};
+`
+
+export const StyledRewardsAmountContainer = styled(RowBetween)`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    flex-direction: column;
+    align-items:flex-start;
   `};
 `
 
@@ -116,54 +185,66 @@ export const StakedContainer = styled(AutoColumn)`
   `};
 `
 
-export const ExpandableStakedContainer = styled(FixedHeightRow)`
-  display: none;
+export const AprContainer = styled(AutoColumn)`
+  min-width: 50px;
+  justify-content: flex-start;
+  justify-self: start;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    display:flex;
+    justify-self: center;
+  `};
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    justify-self: start;
   `};
 `
 
-export const AprContainer = styled(AutoColumn)`
+export const PoolTypeContainer = styled.div`
   min-width: 100px;
   justify-content: flex-start;
-  ${({ theme }) => theme.mediaWidth.upToXxSmall`
-    order: 4;
-  `};
-`
 
-export const CardContainer = styled.div`
-  display: grid;
-  grid-template-columns: 200px 1fr 1fr 110px 20px;
-  width: 100%;
-  align-items: center;
-  justify-items: center;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    grid-template-columns: 200px  1fr 110px 0.25fr;
-   `};
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    grid-template-columns: 185px  1fr 0.25fr;
+    display:none;
   `};
 `
 
-export const DetailsContainer = styled.div`
-  align-items: center;
-  position: absolute;
-  right: 15px;
-`
-
-export const StyledMutedSubHeader = styled(TYPE.mutedSubHeader)`
-  display: flex;
-`
-
-export const ExpandableActionsContainer = styled(FixedHeightRow)`
+export const StakedMobilecontainer = styled(AutoColumn)`
   display: none;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-   display:flex;
-   margin-top:10px;
+    display:grid;
+    grid-column-start:3;
+    font-size:14px;
+    max-width:80px;
+    justify-self:start;
   `};
 `
-export const RowActionsContainer = styled.div`
+
+export const StyledMultipleCurrencyLogo = styled(MultipleCurrencyLogo)`
+  img {
+    width: 20px;
+    height: 20px;
+  }
+
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-        display:none;
+    img {
+      width: 18px;
+      height: 18px;
+    }
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToXxSmall`
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  `};
+`
+
+export const ButtonWrapper = styled.div`
+  font-size: 16px;
+  width: 100%;
+  max-width: 74px;
+  justify-self: start;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    font-size: 14px;
+    max-width: 55px;
   `};
 `
