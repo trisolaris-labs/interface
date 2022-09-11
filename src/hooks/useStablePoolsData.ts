@@ -39,6 +39,7 @@ export interface StablePoolDataType {
   lpTokenPriceUSD: Price
   lpToken: Token | null
   disableAddLiquidity: boolean
+  totalLockedInUsd: TokenAmount | null
 }
 
 export interface UserShareType {
@@ -55,31 +56,11 @@ export type PoolDataHookReturnType = [StablePoolDataType, UserShareType | null]
 export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDataHookReturnType {
   const { account } = useActiveWeb3React()
 
-  ////// WIP
-
+  const auUSDCContract = useAuTokenContract(AUUSDC[ChainId.AURORA].address)
   const auUSDTContract = useAuTokenContract(AUUSDT[ChainId.AURORA].address)
-  const auUSDTBalanceResult =
-    useSingleCallResult(auUSDTContract, 'balanceOf', ['0x85BD2E6Ab9D510C9c8a1B4B50B7Ace28528Bb385'])?.result?.[0] ??
-    BIG_INT_ZERO
-  const auUSDTBalance = JSBI.BigInt(auUSDTBalanceResult)
 
-  // auUDST (8 decimals) scaled to 18 decimals:
-  const auUSDTBalanceScaled = JSBI.multiply(auUSDTBalance, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(10)))
-  // console.log(auUSDTBalanceScaled.toString()) // 51668548420000000000
-
-  const exchangeRateStoredResult =
-    useSingleCallResult(auUSDTContract, 'exchangeRateStored')?.result?.[0] ?? BIG_INT_ZERO
-  const exchangeRateStored = JSBI.BigInt(exchangeRateStoredResult)
-  // console.log(exchangeRateStored.toString()) // 202878860304926  18 decimals
-
-  const multipliedBalance = JSBI.multiply(auUSDTBalanceScaled, exchangeRateStored)
-  // console.log(multipliedBalance.toString()) //10482456217059484995516920000000000
-
-  const calculatedBalance = JSBI.divide(multipliedBalance, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
-  // console.log(calculatedBalance.toString())  // 10482456217059484
-
-  console.log(new TokenAmount(new Token(ChainId.AURORA, ZERO_ADDRESS, 18), calculatedBalance).toExact())
-  ////
+  const auUSDCExchangeRate = JSBI.BigInt(useSingleCallResult(auUSDCContract, 'exchangeRateStored')?.result?.[0] ?? 0)
+  const auUSDTExchangeRate = JSBI.BigInt(useSingleCallResult(auUSDTContract, 'exchangeRateStored')?.result?.[0] ?? 0)
 
   const pool = STABLESWAP_POOLS[poolName]
   const { disableAddLiquidity, lpToken, poolTokens, type, underlyingPoolTokens } = pool
@@ -119,10 +100,13 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
   const tokenBalancesSum = sumAllJSBI(tokenBalances)
 
   const poolPresentationTokenDecimals = getTokenForStablePoolType(type).decimals
-  const decimalDelta = JSBI.exponentiate(
-    JSBI.BigInt(10),
-    JSBI.BigInt(Math.abs(poolPresentationTokenDecimals - STABLE_POOL_CONTRACT_DECIMALS))
-  )
+  const decimalDelta =
+    pool.name === StableSwapPoolName.AUUSDC_AUUSDT
+      ? JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+      : JSBI.exponentiate(
+          JSBI.BigInt(10),
+          JSBI.BigInt(Math.abs(poolPresentationTokenDecimals - STABLE_POOL_CONTRACT_DECIMALS))
+        )
   const presentationTokenHasMoreDecimals = poolPresentationTokenDecimals > STABLE_POOL_CONTRACT_DECIMALS
   const presentationTokenHasLessDecimals = poolPresentationTokenDecimals < STABLE_POOL_CONTRACT_DECIMALS
 
@@ -131,6 +115,14 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
     const effectiveToken = isMetaSwap && i === arr.length - 1 ? getTokenForStablePoolType(type) : token
     const balance = tokenBalances[i]
     const tokenAmount = new TokenAmount(effectiveToken, balance)
+
+    if (pool.name === StableSwapPoolName.AUUSDC_AUUSDT) {
+      const tokenXExchangeRate = JSBI.multiply(
+        JSBI.BigInt(balance),
+        token === AUUSDC[ChainId.AURORA] ? auUSDCExchangeRate : auUSDTExchangeRate
+      )
+      return tokenXExchangeRate
+    }
 
     if (token.decimals > STABLE_POOL_CONTRACT_DECIMALS) {
       return JSBI.divide(tokenAmount.raw, decimalDelta)
@@ -191,11 +183,16 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
     lpTokenPriceUSD,
     lpToken,
     isPaused,
-    disableAddLiquidity: disableAddLiquidity ?? false
+    disableAddLiquidity: disableAddLiquidity ?? false,
+    totalLockedInUsd:
+      pool.name === StableSwapPoolName.AUUSDC_AUUSDT
+        ? new TokenAmount(USDC[ChainId.AURORA], tokenBalancesUSDSum)
+        : totalLpTokenBalance
   }
 
   // User Data
   const userShare = calculatePctOfTotalShare(userLPTokenBalance, totalLpTokenBalance)
+
   const userPoolTokenBalances = tokenBalances.map(balance => userShare.multiply(balance).quotient)
 
   const userPoolTokenBalancesUSD = tokenBalancesUSD.map(balance => userShare.multiply(balance).quotient)

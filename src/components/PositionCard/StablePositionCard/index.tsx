@@ -144,7 +144,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
     push(`${pathname}/remove/${name}`)
   }
 
-  const poolTVL = stablePoolData.totalLocked?.toFixed(0)
+  const poolTVL = stablePoolData.totalLockedInUsd?.toFixed(0)
   const formattedPoolData = [
     {
       label: 'Virtual Price',
