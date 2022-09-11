@@ -40,6 +40,7 @@ export interface StablePoolDataType {
   lpToken: Token | null
   disableAddLiquidity: boolean
   totalLockedInUsd: TokenAmount | null
+  avgExchangeRate: JSBI | null
 }
 
 export interface UserShareType {
@@ -187,7 +188,11 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
     totalLockedInUsd:
       pool.name === StableSwapPoolName.AUUSDC_AUUSDT
         ? new TokenAmount(USDC[ChainId.AURORA], tokenBalancesUSDSum)
-        : totalLpTokenBalance
+        : totalLpTokenBalance,
+    avgExchangeRate:
+      pool.name === StableSwapPoolName.AUUSDC_AUUSDT
+        ? JSBI.divide(JSBI.ADD(auUSDCExchangeRate, auUSDTExchangeRate), JSBI.BigInt(2))
+        : null
   }
 
   // User Data

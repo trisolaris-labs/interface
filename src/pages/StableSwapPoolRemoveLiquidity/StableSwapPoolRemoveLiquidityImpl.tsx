@@ -55,7 +55,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const [withdrawTokenIndex, setWithdrawTokenIndex] = useState<number | null>(null)
   const withdrawTokenIndexRef = useRef(withdrawTokenIndex)
   const [poolData, userShareData] = useStablePoolsData(stableSwapPoolName)
-  const { friendlyName, unwrappedTokens, virtualPrice } = poolData
+  const { friendlyName, unwrappedTokens, virtualPrice, avgExchangeRate } = poolData
   const pool = STABLESWAP_POOLS[stableSwapPoolName]
   const { address, lpToken, metaSwapAddresses } = pool
   const effectiveAddress = isMetaPool(stableSwapPoolName) ? metaSwapAddresses : address
@@ -258,7 +258,9 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
 
   const hasZeroInput = JSBI.equal(parsedAmount?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
   const usdEstimate =
-    virtualPrice != null && parsedAmount != null ? getLpTokenUsdEstimate(virtualPrice, parsedAmount, lpToken) : null
+    virtualPrice != null && parsedAmount != null
+      ? getLpTokenUsdEstimate(virtualPrice, parsedAmount, lpToken, avgExchangeRate)
+      : null
 
   const insufficientBalanceError =
     parsedAmount != null &&

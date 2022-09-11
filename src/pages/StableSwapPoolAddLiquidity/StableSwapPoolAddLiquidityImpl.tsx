@@ -156,9 +156,11 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     .join('')}`
 
   const modalHeader = () => {
-    const { virtualPrice, lpToken } = poolData
+    const { virtualPrice, lpToken, avgExchangeRate } = poolData
     const usdEstimate =
-      virtualPrice && minToMint && lpToken ? getLpTokenUsdEstimate(virtualPrice, minToMint, lpToken) : null
+      virtualPrice && minToMint && lpToken
+        ? getLpTokenUsdEstimate(virtualPrice, minToMint, lpToken, avgExchangeRate)
+        : null
 
     if (!minToMint) {
       return null
