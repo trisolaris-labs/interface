@@ -15,6 +15,7 @@ import { useTokenBalance } from '../state/wallet/hooks'
 import { useTotalSupply } from '../data/TotalSupply'
 import { BIG_INT_ZERO, ZERO_ADDRESS } from '../constants'
 import { USDC, AUUSDC, AUUSDT, USDT } from '../constants/tokens'
+import { getAuLpSupplyInUsd } from '../utils/stableSwap'
 
 const STABLE_POOL_CONTRACT_DECIMALS = 18
 interface TokenShareType {
@@ -40,7 +41,7 @@ export interface StablePoolDataType {
   lpToken: Token | null
   disableAddLiquidity: boolean
   totalLockedInUsd: TokenAmount | null
-  avgExchangeRate: JSBI | null
+  avgExchangeRate: JSBI
 }
 
 export interface UserShareType {
@@ -62,6 +63,7 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
 
   const auUSDCExchangeRate = JSBI.BigInt(useSingleCallResult(auUSDCContract, 'exchangeRateStored')?.result?.[0] ?? 0)
   const auUSDTExchangeRate = JSBI.BigInt(useSingleCallResult(auUSDTContract, 'exchangeRateStored')?.result?.[0] ?? 0)
+  const avgExchangeRate = JSBI.divide(JSBI.ADD(auUSDCExchangeRate, auUSDTExchangeRate), JSBI.BigInt(2))
 
   const pool = STABLESWAP_POOLS[poolName]
   const { disableAddLiquidity, lpToken, poolTokens, type, underlyingPoolTokens } = pool
@@ -187,12 +189,9 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
     disableAddLiquidity: disableAddLiquidity ?? false,
     totalLockedInUsd:
       pool.name === StableSwapPoolName.AUUSDC_AUUSDT
-        ? new TokenAmount(USDC[ChainId.AURORA], tokenBalancesUSDSum)
+        ? getAuLpSupplyInUsd(totalLpTokenBalance, avgExchangeRate)
         : totalLpTokenBalance,
-    avgExchangeRate:
-      pool.name === StableSwapPoolName.AUUSDC_AUUSDT
-        ? JSBI.divide(JSBI.ADD(auUSDCExchangeRate, auUSDTExchangeRate), JSBI.BigInt(2))
-        : null
+    avgExchangeRate: avgExchangeRate
   }
 
   // User Data

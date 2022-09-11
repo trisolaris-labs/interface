@@ -42,7 +42,7 @@ import { AddRemoveTabs } from '../../components/NavigationTabs'
 import confirmStableSwapAddLiquiditySlippage from './confirmStableSwapAddLiquiditySlippage'
 import Card from '../../components/Card'
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
-import { getLpTokenUsdEstimate } from '../../utils/stableSwap'
+import { getAuLpSupplyInUsd, getLpTokenUsdEstimate } from '../../utils/stableSwap'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -52,7 +52,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   const { t } = useTranslation()
   const { account, chainId, library } = useActiveWeb3React()
   const [poolData, _userShareData] = useStablePoolsData(stableSwapPoolName)
-  const { disableAddLiquidity, friendlyName, virtualPrice } = poolData
+  const { disableAddLiquidity, friendlyName, virtualPrice, name } = poolData
   const [allowedSlippage] = useUserSlippageTolerance()
   const { isBonus, isHighImpact, minToMint, priceImpact } = useAddLiquidityPriceImpact(stableSwapPoolName, virtualPrice)
 
@@ -159,7 +159,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     const { virtualPrice, lpToken, avgExchangeRate } = poolData
     const usdEstimate =
       virtualPrice && minToMint && lpToken
-        ? getLpTokenUsdEstimate(virtualPrice, minToMint, lpToken, avgExchangeRate)
+        ? getLpTokenUsdEstimate(virtualPrice, minToMint, lpToken, name, avgExchangeRate)
         : null
 
     if (!minToMint) {

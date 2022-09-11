@@ -37,7 +37,7 @@ import BackButton from '../../components/BackButton'
 import useRemoveLiquidityPriceImpact from '../../hooks/useRemoveLiquidityPriceImpact'
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
 import { useStableSwapContract } from '../../hooks/useContract'
-import { getLpTokenUsdEstimate } from '../../utils/stableSwap'
+import { getLpTokenUsdEstimate, getAuLpSupplyInUsd } from '../../utils/stableSwap'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -259,7 +259,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const hasZeroInput = JSBI.equal(parsedAmount?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
   const usdEstimate =
     virtualPrice != null && parsedAmount != null
-      ? getLpTokenUsdEstimate(virtualPrice, parsedAmount, lpToken, avgExchangeRate)
+      ? getLpTokenUsdEstimate(virtualPrice, parsedAmount, lpToken, pool.name, avgExchangeRate)
       : null
 
   const insufficientBalanceError =
