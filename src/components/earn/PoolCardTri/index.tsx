@@ -115,7 +115,7 @@ const DefaultPoolCardtri = ({
   }
 
   function handleClaimClick(event: React.MouseEvent) {
-    enableClaimModalF()
+    enableClaimModal()
     event.stopPropagation()
   }
 

@@ -688,6 +688,20 @@ export const BINARIS: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0xafE0d6ca6AAbB43CDA024895D203120831Ba0370', 18, 'BINARIS', 'BINARIS'),
 }
 
+export const AUUSDT: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 8, 'auUSDT', 'auUSDT'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 8, 'auUSDT', 'auUSDT'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 8, 'auUSDT', 'auUSDT'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xaD5A2437Ff55ed7A8Cad3b797b3eC7c5a19B1c54', 8, 'auUSDT', 'auUSDT'),
+}
+
+export const AUUSDC: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 8, 'auUSDC', 'auUSDC'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 8, 'auUSDC', 'auUSDC'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 8, 'auUSDC', 'auUSDC'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4f0d864b1ABf4B701799a0b30b57A22dFEB5917b', 8, 'auUSDC', 'auUSDC'),
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),
