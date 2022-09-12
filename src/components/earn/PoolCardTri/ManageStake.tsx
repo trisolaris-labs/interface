@@ -30,6 +30,7 @@ type ManageStakeProps = {
   lpAddress: string
   chefVersion: ChefVersions
   poolId: number
+  lpToken: Token
 }
 
 function ManageStake({
@@ -39,7 +40,8 @@ function ManageStake({
   tokens,
   lpAddress,
   chefVersion,
-  poolId
+  poolId,
+  lpToken
 }: ManageStakeProps) {
   const { account } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
@@ -50,8 +52,7 @@ function ManageStake({
   const [showUnstakingModal, setShowUnstakingModal] = useState(false)
   const [toggleIsStaking, setToggleIsStaking] = useState(isStaking)
 
-  const stakedAmountToken = stakedAmount?.token ?? new Token(ChainId.AURORA, ZERO_ADDRESS, 18)
-  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakedAmountToken)
+  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, lpToken)
 
   const stakingRewardAddress =
     chefVersion === ChefVersions.V1 ? MASTERCHEF_ADDRESS_V1[ChainId.AURORA] : MASTERCHEF_ADDRESS_V2[ChainId.AURORA]
@@ -99,12 +100,12 @@ function ManageStake({
 
   return (
     <>
-      {showStakingModal && stakedAmount && (
+      {showStakingModal && (
         <StakingModal
           isOpen={showStakingModal}
           onDismiss={() => setShowStakingModal(false)}
           userLiquidityUnstaked={userLiquidityUnstaked}
-          stakedToken={stakedAmountToken}
+          stakedToken={lpToken}
           tokens={tokens}
           lpAddress={lpAddress}
           chefVersion={chefVersion}
@@ -136,9 +137,9 @@ function ManageStake({
           width="98px"
           padding="5px"
           fontSize="14px"
-          onClick={isStaking ? handleDepositClick : handleAddLp}
+          onClick={toggleIsStaking ? handleDepositClick : handleAddLp}
         >
-          {isStaking ? t('earnPage.depositPglTokens') : 'Add LP'}
+          {toggleIsStaking ? t('earnPage.depositPglTokens') : 'Add LP'}
         </ButtonPrimary>
         <ButtonPrimary
           disabled={

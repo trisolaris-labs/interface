@@ -56,6 +56,9 @@ export default function StakingModal({
   // track and parse user input
   const [typedValue, setTypedValue] = useState('')
   const { parsedAmount, error } = useDerivedStakeInfo(typedValue, stakedToken, userLiquidityUnstaked)
+  // console.log(typedValue)
+  // console.log(stakedToken)
+  // console.log(userLiquidityUnstaked)
 
   // state for pending and submitted txn views
   const addTransaction = useTransactionAdder()

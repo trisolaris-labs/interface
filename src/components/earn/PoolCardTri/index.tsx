@@ -72,6 +72,7 @@ type ExtendedPoolCardTriProps = PoolCardTriProps & {
   userStakedInUSD?: string | null
   enableClaimButton?: boolean
   enableClaimModal?: () => void
+  lpToken: Token
 }
 
 const DefaultPoolCardtri = ({
@@ -95,6 +96,7 @@ const DefaultPoolCardtri = ({
   stableSwapPoolName,
   lpAddress,
   poolId,
+  lpToken,
   enableClaimModal = () => null
 }: ExtendedPoolCardTriProps) => {
   const { t } = useTranslation()
@@ -197,6 +199,7 @@ const DefaultPoolCardtri = ({
                 lpAddress={lpAddress}
                 chefVersion={chefVersion}
                 poolId={poolId}
+                lpToken={lpToken}
               />
             </StakeContainer>
           </>
@@ -206,10 +209,10 @@ const DefaultPoolCardtri = ({
   )
 }
 
-type StablePoolCardTriProps = PoolCardTriProps & { stableSwapPoolName: StableSwapPoolName }
+type StablePoolCardTriProps = PoolCardTriProps & { stableSwapPoolName: StableSwapPoolName; lpToken: Token }
 
 const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
-  const { version, stableSwapPoolName } = props
+  const { version, stableSwapPoolName, lpToken } = props
 
   const stakingInfo = useSingleStableFarm(Number(version), stableSwapPoolName)
   const {
@@ -223,10 +226,10 @@ const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
     lpAddress,
     tokens
   } = stakingInfo
-  const token0 = tokens[0]
-  const token1 = tokens[1]
+  // const token0 = tokens[0]
+  // const token1 = tokens[1]
 
-  const lpToken = useTLP({ lpAddress, token0, token1 })
+  // const lpToken = useTLP({ lpAddress, token0, token1 })
 
   const { userLPAmountUSDFormatted } =
     useUserFarmStatistics({
@@ -272,8 +275,8 @@ const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
   )
 }
 
-const StakingPoolCardTRI = (props: PoolCardTriProps) => {
-  const { version } = props
+const StakingPoolCardTRI = (props: PoolCardTriProps & { lpToken: Token }) => {
+  const { version, lpToken } = props
 
   const stakingInfo = useSingleFarm(Number(version))
 
@@ -288,10 +291,10 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
     lpAddress,
     tokens
   } = stakingInfo
-  const token0 = tokens[0]
-  const token1 = tokens[1]
+  // const token0 = tokens[0]
+  // const token1 = tokens[1]
 
-  const lpToken = useTLP({ lpAddress, token0, token1 })
+  // const lpToken = useTLP({ lpAddress, token0, token1 })
 
   const { userLPAmountUSDFormatted } =
     useUserFarmStatistics({
@@ -337,16 +340,19 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
 }
 
 const PoolCardTRI = (props: PoolCardTriProps) => {
-  const { isStaking, stableSwapPoolName } = props
+  const { isStaking, stableSwapPoolName, lpAddress, tokens } = props
+  const token0 = tokens[0]
+  const token1 = tokens[1]
+  const lpToken = useTLP({ lpAddress, token0, token1 })
 
   if (!isStaking) {
-    return <DefaultPoolCardtri {...props} />
+    return <DefaultPoolCardtri {...props} lpToken={lpToken} />
   }
 
   return stableSwapPoolName == null ? (
-    <StakingPoolCardTRI {...props} />
+    <StakingPoolCardTRI {...props} lpToken={lpToken} />
   ) : (
-    <StableStakingPoolCardTRI {...props} stableSwapPoolName={stableSwapPoolName} />
+    <StableStakingPoolCardTRI {...props} stableSwapPoolName={stableSwapPoolName} lpToken={lpToken} />
   )
 }
 
