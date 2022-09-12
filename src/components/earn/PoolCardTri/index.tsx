@@ -60,6 +60,8 @@ export type PoolCardTriProps = {
   friendlyFarmName: string | null
   isFeatured?: boolean
   poolType: PoolType
+  lpAddress: string
+  poolId: number
 }
 
 type ExtendedPoolCardTriProps = PoolCardTriProps & {
@@ -91,6 +93,8 @@ const DefaultPoolCardtri = ({
   stakedAmount,
   userStakedInUSD,
   stableSwapPoolName,
+  lpAddress,
+  poolId,
   enableClaimModal = () => null
 }: ExtendedPoolCardTriProps) => {
   const { t } = useTranslation()
@@ -185,7 +189,15 @@ const DefaultPoolCardtri = ({
               </>
             </DepositsContainer>
             <StakeContainer>
-              <ManageStake />
+              <ManageStake
+                stakedAmount={stakedAmount}
+                isStaking={enableClaimButton}
+                stableSwapPoolName={stableSwapPoolName}
+                tokens={tokens}
+                lpAddress={lpAddress}
+                chefVersion={chefVersion}
+                poolId={poolId}
+              />
             </StakeContainer>
           </>
         )}

@@ -186,12 +186,12 @@ export default function ManageImpl({
 
       {stakingInfo != null ? (
         <>
-          <StakingModal
+          {/* <StakingModal
             isOpen={showStakingModal}
             onDismiss={() => setShowStakingModal(false)}
             stakingInfo={stakingInfo}
             userLiquidityUnstaked={userLiquidityUnstaked}
-          />
+          /> */}
           <UnstakingModal
             isOpen={showUnstakingModal}
             onDismiss={() => setShowUnstakingModal(false)}

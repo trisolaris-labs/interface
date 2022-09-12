@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
-import { TokenAmount, Token } from '@trisolaris/sdk'
+import { TokenAmount, Token, ChainId } from '@trisolaris/sdk'
 import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { ButtonPrimary } from '../../Button'
 import Toggle from '../../Toggle'
@@ -14,27 +15,46 @@ import { useWalletModalToggle } from '../../../state/application/hooks'
 
 import { BIG_INT_ZERO } from '../../../constants'
 
-import { StyledMutedSubHeader } from './PoolCardTri.styles'
 import { StableSwapPoolName } from '../../../state/stableswap/constants'
+import { ChefVersions } from '../../../state/stake/stake-constants'
+import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from '../../../state/stake/hooks-sushi'
+import { ZERO_ADDRESS } from '../../../constants'
 
-type StakeBoxProps = {
-  stakedAmount: TokenAmount
+import { StyledMutedSubHeader } from './PoolCardTri.styles'
+
+type ManageStakeProps = {
+  stakedAmount: TokenAmount | null | undefined
   isStaking: boolean
-  stableSwapPoolName?: StableSwapPoolName
+  stableSwapPoolName?: StableSwapPoolName | null
   tokens: Token[]
+  lpAddress: string
+  chefVersion: ChefVersions
+  poolId: number
 }
 
-function ManageStake({ stakedAmount, isStaking, stableSwapPoolName, tokens }: StakeBoxProps) {
+function ManageStake({
+  stakedAmount,
+  isStaking,
+  stableSwapPoolName,
+  tokens,
+  lpAddress,
+  chefVersion,
+  poolId
+}: ManageStakeProps) {
   const { account } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
   const history = useHistory()
+  const { t } = useTranslation()
 
   const [showStakingModal, setShowStakingModal] = useState(false)
   const [showUnstakingModal, setShowUnstakingModal] = useState(false)
   const [toggleIsStaking, setToggleIsStaking] = useState(isStaking)
 
-  const stakedAmountToken = stakedAmount?.token
+  const stakedAmountToken = stakedAmount?.token ?? new Token(ChainId.AURORA, ZERO_ADDRESS, 18)
   const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakedAmountToken)
+
+  const stakingRewardAddress =
+    chefVersion === ChefVersions.V1 ? MASTERCHEF_ADDRESS_V1[ChainId.AURORA] : MASTERCHEF_ADDRESS_V2[ChainId.AURORA]
 
   const enableDepositModal = useCallback(() => {
     if (account) {
@@ -79,21 +99,26 @@ function ManageStake({ stakedAmount, isStaking, stableSwapPoolName, tokens }: St
 
   return (
     <>
-      {showStakingModal && (
+      {showStakingModal && stakedAmount && (
         <StakingModal
           isOpen={showStakingModal}
           onDismiss={() => setShowStakingModal(false)}
-          stakingInfo={stakingInfo}
           userLiquidityUnstaked={userLiquidityUnstaked}
+          stakedToken={stakedAmountToken}
+          tokens={tokens}
+          lpAddress={lpAddress}
+          chefVersion={chefVersion}
+          stakingRewardAddress={stakingRewardAddress}
+          poolId={poolId}
         />
       )}
-      {showUnstakingModal && (
+      {/* {showUnstakingModal && (
         <UnstakingModal
           isOpen={showUnstakingModal}
           onDismiss={() => setShowUnstakingModal(false)}
           stakingInfo={stakingInfo}
         />
-      )}
+      )} */}
       <AutoRow justifyContent="space-between">
         <StyledMutedSubHeader>Manage</StyledMutedSubHeader>
         <Toggle
