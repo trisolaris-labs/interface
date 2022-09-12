@@ -222,14 +222,8 @@ const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
     poolId,
     stakedAmount,
     chefVersion,
-    totalStakedInUSD,
-    lpAddress,
-    tokens
+    totalStakedInUSD
   } = stakingInfo
-  // const token0 = tokens[0]
-  // const token1 = tokens[1]
-
-  // const lpToken = useTLP({ lpAddress, token0, token1 })
 
   const { userLPAmountUSDFormatted } =
     useUserFarmStatistics({
@@ -287,14 +281,8 @@ const StakingPoolCardTRI = (props: PoolCardTriProps & { lpToken: Token }) => {
     poolId,
     stakedAmount,
     chefVersion,
-    totalStakedInUSD,
-    lpAddress,
-    tokens
+    totalStakedInUSD
   } = stakingInfo
-  // const token0 = tokens[0]
-  // const token1 = tokens[1]
-
-  // const lpToken = useTLP({ lpAddress, token0, token1 })
 
   const { userLPAmountUSDFormatted } =
     useUserFarmStatistics({
