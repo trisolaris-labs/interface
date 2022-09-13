@@ -13,8 +13,8 @@ import FormattedCurrencyAmount from '../../FormattedCurrencyAmount'
 import { useActiveWeb3React } from '../../../hooks'
 import { useTranslation } from 'react-i18next'
 import { ChefVersions, EarnedNonTriRewards, StakingTri } from '../../../state/stake/stake-constants'
-import { BIG_INT_ZERO } from '../../../constants'
-import { TokenAmount } from '@trisolaris/sdk'
+import { BIG_INT_ZERO, ZERO_ADDRESS } from '../../../constants'
+import { ChainId, Token, TokenAmount } from '@trisolaris/sdk'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -25,11 +25,11 @@ interface UnStakingModalProps {
   isOpen: boolean
   onDismiss: () => void
   chefVersion: ChefVersions
-  earnedAmount: TokenAmount
+  earnedAmount?: TokenAmount
   earnedNonTriRewards: EarnedNonTriRewards[]
   noTriRewards: boolean
   poolId: number
-  stakedAmount: TokenAmount | null | undefined
+  stakedAmount?: TokenAmount | null
 }
 
 export default function UnstakingModal({

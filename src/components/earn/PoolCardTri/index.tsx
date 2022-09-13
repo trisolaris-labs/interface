@@ -87,7 +87,7 @@ const DefaultPoolCardtri = ({
   nonTriAPRs,
   friendlyFarmName,
   isFeatured = false,
-  earnedNonTriRewards,
+  earnedNonTriRewards = [],
   noTriRewards,
   earnedAmount,
   poolType,
@@ -200,6 +200,9 @@ const DefaultPoolCardtri = ({
                 chefVersion={chefVersion}
                 poolId={poolId}
                 lpToken={lpToken}
+                noTriRewards={noTriRewards}
+                earnedNonTriRewards={earnedNonTriRewards}
+                earnedAmount={earnedAmount}
               />
             </StakeContainer>
           </>

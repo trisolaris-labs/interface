@@ -16,7 +16,7 @@ import { useWalletModalToggle } from '../../../state/application/hooks'
 import { BIG_INT_ZERO } from '../../../constants'
 
 import { StableSwapPoolName } from '../../../state/stableswap/constants'
-import { ChefVersions } from '../../../state/stake/stake-constants'
+import { ChefVersions, EarnedNonTriRewards } from '../../../state/stake/stake-constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from '../../../state/stake/hooks-sushi'
 import { ZERO_ADDRESS } from '../../../constants'
 
@@ -31,6 +31,9 @@ type ManageStakeProps = {
   chefVersion: ChefVersions
   poolId: number
   lpToken: Token
+  noTriRewards: boolean
+  earnedNonTriRewards: EarnedNonTriRewards[]
+  earnedAmount?: TokenAmount
 }
 
 function ManageStake({
@@ -41,7 +44,10 @@ function ManageStake({
   lpAddress,
   chefVersion,
   poolId,
-  lpToken
+  lpToken,
+  noTriRewards,
+  earnedNonTriRewards,
+  earnedAmount
 }: ManageStakeProps) {
   const { account } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
@@ -113,13 +119,18 @@ function ManageStake({
           poolId={poolId}
         />
       )}
-      {/* {showUnstakingModal && (
+      {showUnstakingModal && (
         <UnstakingModal
           isOpen={showUnstakingModal}
           onDismiss={() => setShowUnstakingModal(false)}
-          stakingInfo={stakingInfo}
+          chefVersion={chefVersion}
+          earnedAmount={earnedAmount}
+          earnedNonTriRewards={earnedNonTriRewards}
+          noTriRewards={noTriRewards}
+          poolId={poolId}
+          stakedAmount={stakedAmount}
         />
-      )} */}
+      )}
       <AutoRow justifyContent="space-between">
         <StyledMutedSubHeader>Manage</StyledMutedSubHeader>
         <Toggle
