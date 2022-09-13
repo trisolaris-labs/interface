@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { lighten } from 'polished'
 
 import { TYPE } from '../../../theme'
@@ -9,7 +9,6 @@ import CurrencyLogo from '../../CurrencyLogo'
 import { RowBetween } from '../../Row'
 import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 import ClaimableRewards from './ClaimableRewards'
-
 
 export const Wrapper = styled(Card)<{
   bgColor1: string | null
@@ -40,7 +39,7 @@ export const Wrapper = styled(Card)<{
   }
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-        padding-left: 10px;
+        padding-left: 8px;
         padding-right: 10px;
     `};
 `
@@ -58,6 +57,10 @@ export const ResponsiveCurrencyLabel = styled(TYPE.white)<{ currenciesQty: numbe
   ${({ theme }) => theme.mediaWidth.upToSmall`
       font-size: 14px !important;
       max-width: 200px;
+  `};
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall<{ currenciesQty: number }>`
+    font-size: ${({ currenciesQty }) => `${currenciesQty >= 3 && '13px'} !important;`}
+    margin-left: 2.5px !important;
   `};
 `
 
@@ -113,7 +116,7 @@ export const CardContainer = styled.div`
     grid-template-columns: 220px auto auto 80px;
  `};
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    grid-template-columns: 180px  auto 85px;
+    grid-template-columns: 167.5px  auto 92px;
   `};
   ${({ theme }) => theme.mediaWidth.upToXxSmall`
     grid-template-columns: 150px 79px 90px
@@ -186,8 +189,20 @@ export const StyledRewardsAmountContainer = styled(RowBetween)`
 export const StakedContainer = styled(AutoColumn)`
   min-width: 100px;
   justify-content: flex-start;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall<{ showMore: boolean; hide: boolean }>`
     display:none;
+    ${({ showMore, hide }) =>
+      !hide &&
+      showMore &&
+      `
+      display: grid;
+      grid-row: 2;
+      grid-column: 1/2;
+      justify-self: start;
+      padding-left: 12px;
+      align-self: start;
+      row-gap:8px;
+    `}
   `};
 `
 
@@ -203,12 +218,23 @@ export const AprContainer = styled(AutoColumn)`
   `};
 `
 
-export const PoolTypeContainer = styled.div`
+export const PoolTypeContainer = styled(AutoColumn)`
   min-width: 100px;
   justify-content: flex-start;
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall<{ showMore: boolean }>`
     display:none;
+    ${({ showMore }) =>
+      showMore &&
+      `
+      display: grid;
+      grid-row: 3;
+      grid-column: 1/2;
+      justify-self: start;
+      padding-left: 12px;
+      align-self: start;
+      grid-row-gap: 10px;
+      `}
   `};
 `
 
@@ -257,7 +283,11 @@ export const ButtonWrapper = styled.div`
 
 export const StyledClaimableRewards = styled(ClaimableRewards)`
   grid-row: 2;
-  grid-column: 1 2;
+  grid-column: 1/2;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    grid-row: 2;
+    grid-column: 2/3;
+  `};
 `
 
 export const DepositsContainer = styled(AutoColumn)`
@@ -266,6 +296,13 @@ export const DepositsContainer = styled(AutoColumn)`
   grid-column-end: 4;
   justify-self: start;
   row-gap: 8px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    grid-row: 2;
+    grid-column: 3/4;
+  `};
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 14px;
+  `};
 `
 
 export const StakeContainer = styled(AutoColumn)`
@@ -275,4 +312,34 @@ export const StakeContainer = styled(AutoColumn)`
   width: 100%;
   padding: 0 24px;
   row-gap: 8px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    grid-column: 2/4
+    grid-row: 3;
+    padding: 0px;
+    button {
+      width: 82px;
+      font-size: 13px;
+    }
+  `};
+`
+
+export const UserStakedInUsd = styled(TYPE.white)`
+  fontweight: 500;
+  margin-right: 10px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    margin: 0;
+  `};
+`
+
+export const UserStakedInTLP = styled(TYPE.white)`
+  margin-left: 10px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    margin: 0;
+  `};
+`
+
+export const PoolTypeHeader = styled(TYPE.mutedSubHeader)`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    line-height:20px;
+  `};
 `

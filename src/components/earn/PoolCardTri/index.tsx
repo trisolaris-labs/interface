@@ -40,7 +40,10 @@ import {
   ButtonWrapper,
   StyledClaimableRewards,
   DepositsContainer,
-  StakeContainer
+  StakeContainer,
+  UserStakedInUsd,
+  UserStakedInTLP,
+  PoolTypeHeader
 } from './PoolCardTri.styles'
 
 export type PoolCardTriProps = {
@@ -144,12 +147,12 @@ const DefaultPoolCardtri = ({
           <StyledMutedSubHeader justifyContent="flex-start">APR</StyledMutedSubHeader>
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AprContainer>
-        <StakedContainer>
+        <StakedContainer showMore={showMore} hide={!enableClaimButton}>
           <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
           <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
         </StakedContainer>
-        <PoolTypeContainer>
-          <StyledMutedSubHeader>Pool Type</StyledMutedSubHeader>
+        <PoolTypeContainer showMore={showMore}>
+          <PoolTypeHeader>Pool Type</PoolTypeHeader>
           <TYPE.white>{poolType}</TYPE.white>
         </PoolTypeContainer>
         <ButtonWrapper>
@@ -179,10 +182,8 @@ const DefaultPoolCardtri = ({
                 <AutoRow>
                   {enableClaimButton ? (
                     <>
-                      <TYPE.white fontWeight={500} marginRight={10}>
-                        ~{addCommasToNumber(userStakedInUSD ?? '')}
-                      </TYPE.white>
-                      / <TYPE.white marginLeft={10}>{stakedAmount?.toSignificant(6)} TLP</TYPE.white>
+                      <UserStakedInUsd>~{addCommasToNumber(userStakedInUSD ?? '')}</UserStakedInUsd>/{' '}
+                      <UserStakedInTLP>{stakedAmount?.toSignificant(6)} TLP</UserStakedInTLP>
                     </>
                   ) : (
                     <TYPE.white fontWeight={500}>$0</TYPE.white>

@@ -23,16 +23,18 @@ type ClaimableRewardsProps = {
   noTriRewards: boolean
   earnedAmount?: TokenAmount
   earnedNonTriRewards?: EarnedNonTriRewards[]
+  className?: string
 }
 
 function ClaimableRewards({
   enableClaimButton,
   noTriRewards,
   earnedAmount,
-  earnedNonTriRewards
+  earnedNonTriRewards,
+  className
 }: ClaimableRewardsProps) {
   return (
-    <RewardsContainer>
+    <RewardsContainer className={className}>
       <StyledLongClaimableHeader>Claimable rewards</StyledLongClaimableHeader>
       <StyledShortClaimableHeader>Rewards</StyledShortClaimableHeader>
 
