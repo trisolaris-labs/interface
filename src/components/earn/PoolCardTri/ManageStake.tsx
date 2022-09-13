@@ -155,7 +155,7 @@ function ManageStake({
         <ButtonPrimary
           disabled={
             (toggleIsStaking && (stakedAmount == null || stakedAmount?.equalTo(BIG_INT_ZERO))) ||
-            (!isStaking && userLiquidityUnstaked?.equalTo(BIG_INT_ZERO))
+            (!toggleIsStaking && userLiquidityUnstaked?.equalTo(BIG_INT_ZERO))
           }
           padding="5px"
           borderRadius="8px"
