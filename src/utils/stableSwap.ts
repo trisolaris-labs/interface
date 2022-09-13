@@ -1,6 +1,6 @@
 import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount } from '@trisolaris/sdk'
 import { USDC } from '../constants/tokens'
-import { StableSwapPoolName } from '../state/stableswap/constants'
+import { StableSwapPoolName, StableSwapPoolTypes } from '../state/stableswap/constants'
 
 export function getLpTokenUsdEstimate(
   virtualPrice: TokenAmount,
@@ -25,4 +25,29 @@ export function getAuLpSupplyInUsd(lpBalance: CurrencyAmount, avgExchangeRate: J
       JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
     )
   )
+}
+
+export function getBalanceConversionForStablePoolType(
+  poolType: StableSwapPoolTypes,
+  balance: JSBI,
+  token: Token,
+  exchangeRate: JSBI
+): TokenAmount {
+  if (
+    poolType === StableSwapPoolTypes.BTC ||
+    poolType === StableSwapPoolTypes.ETH ||
+    poolType === StableSwapPoolTypes.USD
+  ) {
+    return new TokenAmount(token, balance)
+  } else if (poolType === StableSwapPoolTypes.AURIGAMI) {
+    return new TokenAmount(
+      token,
+      JSBI.divide(
+        JSBI.multiply(JSBI.BigInt(balance), exchangeRate),
+        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+      )
+    )
+  } else {
+    throw new Error('[getTokenForStablePoolType] Error getting tokenAmount conversion')
+  }
 }

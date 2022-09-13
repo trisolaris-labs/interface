@@ -6,6 +6,7 @@ import {
   getTokenForStablePoolType,
   isMetaPool,
   StableSwapPoolName,
+  StableSwapPoolTypes,
   STABLESWAP_POOLS
 } from '../state/stableswap/constants'
 import { useStableSwapContract, useStableSwapMetaPool, useAuTokenContract } from './useContract'
@@ -15,7 +16,7 @@ import { useTokenBalance } from '../state/wallet/hooks'
 import { useTotalSupply } from '../data/TotalSupply'
 import { BIG_INT_ZERO, ZERO_ADDRESS } from '../constants'
 import { USDC, AUUSDC, AUUSDT, USDT } from '../constants/tokens'
-import { getAuLpSupplyInUsd } from '../utils/stableSwap'
+import { getAuLpSupplyInUsd, getBalanceConversionForStablePoolType } from '../utils/stableSwap'
 
 const STABLE_POOL_CONTRACT_DECIMALS = 18
 interface TokenShareType {
@@ -103,29 +104,21 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
   const tokenBalancesSum = sumAllJSBI(tokenBalances)
 
   const poolPresentationTokenDecimals = getTokenForStablePoolType(type).decimals
-  const decimalDelta =
-    pool.name === StableSwapPoolName.AUUSDC_AUUSDT
-      ? JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
-      : JSBI.exponentiate(
-          JSBI.BigInt(10),
-          JSBI.BigInt(Math.abs(poolPresentationTokenDecimals - STABLE_POOL_CONTRACT_DECIMALS))
-        )
+
+  const decimalDelta = JSBI.exponentiate(
+    JSBI.BigInt(10),
+    JSBI.BigInt(Math.abs(poolPresentationTokenDecimals - STABLE_POOL_CONTRACT_DECIMALS))
+  )
   const presentationTokenHasMoreDecimals = poolPresentationTokenDecimals > STABLE_POOL_CONTRACT_DECIMALS
   const presentationTokenHasLessDecimals = poolPresentationTokenDecimals < STABLE_POOL_CONTRACT_DECIMALS
 
   const tokenBalancesUSD = effectivePoolTokens.map((token, i, arr) => {
     // use another token to estimate USD price of meta LP tokens
     const effectiveToken = isMetaSwap && i === arr.length - 1 ? getTokenForStablePoolType(type) : token
-    const balance = tokenBalances[i]
-    const tokenAmount = new TokenAmount(effectiveToken, balance)
 
-    if (pool.name === StableSwapPoolName.AUUSDC_AUUSDT) {
-      const tokenXExchangeRate = JSBI.multiply(
-        JSBI.BigInt(balance),
-        token === AUUSDC[ChainId.AURORA] ? auUSDCExchangeRate : auUSDTExchangeRate
-      )
-      return tokenXExchangeRate
-    }
+    const balance = tokenBalances[i]
+
+    const tokenAmount = getBalanceConversionForStablePoolType(type, balance, effectiveToken, avgExchangeRate)
 
     if (token.decimals > STABLE_POOL_CONTRACT_DECIMALS) {
       return JSBI.divide(tokenAmount.raw, decimalDelta)
@@ -188,9 +181,10 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
     isPaused,
     disableAddLiquidity: disableAddLiquidity ?? false,
     totalLockedInUsd:
-      pool.name === StableSwapPoolName.AUUSDC_AUUSDT
+      type === StableSwapPoolTypes.AURIGAMI
         ? getAuLpSupplyInUsd(totalLpTokenBalance, avgExchangeRate)
         : totalLpTokenBalance,
+    // getBalanceConversionForStablePoolType(type, totalLpTokenBalance.raw, lpToken, avgExchangeRate),
     avgExchangeRate: avgExchangeRate
   }
 
