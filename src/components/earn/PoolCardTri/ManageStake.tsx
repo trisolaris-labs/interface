@@ -144,7 +144,7 @@ function ManageStake({
       <AutoRow justifyContent="space-between">
         <ButtonPrimary
           borderRadius="8px"
-          disabled={isStaking && (userLiquidityUnstaked == null || userLiquidityUnstaked?.equalTo(BIG_INT_ZERO))}
+          disabled={toggleIsStaking && (userLiquidityUnstaked == null || userLiquidityUnstaked?.equalTo(BIG_INT_ZERO))}
           width="98px"
           padding="5px"
           fontSize="14px"
@@ -154,16 +154,16 @@ function ManageStake({
         </ButtonPrimary>
         <ButtonPrimary
           disabled={
-            (isStaking && (stakedAmount == null || stakedAmount?.equalTo(BIG_INT_ZERO))) ||
+            (toggleIsStaking && (stakedAmount == null || stakedAmount?.equalTo(BIG_INT_ZERO))) ||
             (!isStaking && userLiquidityUnstaked?.equalTo(BIG_INT_ZERO))
           }
           padding="5px"
           borderRadius="8px"
           width="98px"
-          onClick={isStaking ? handleWithDrawClick : handleRemoveLp}
+          onClick={toggleIsStaking ? handleWithDrawClick : handleRemoveLp}
           fontSize="14px"
         >
-          {isStaking ? 'Withdraw' : 'Remove LP'}
+          {toggleIsStaking ? 'Withdraw' : 'Remove LP'}
         </ButtonPrimary>
       </AutoRow>
     </>
