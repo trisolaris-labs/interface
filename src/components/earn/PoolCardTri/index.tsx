@@ -147,11 +147,11 @@ const DefaultPoolCardtri = ({
           <StyledMutedSubHeader justifyContent="flex-start">APR</StyledMutedSubHeader>
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AprContainer>
-        <StakedContainer showMore={showMore} hide={!enableClaimButton}>
+        <StakedContainer isExpanded={showMore} show={enableClaimButton}>
           <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
           <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
         </StakedContainer>
-        <PoolTypeContainer showMore={showMore}>
+        <PoolTypeContainer isExpanded={showMore} isStaking={enableClaimButton}>
           <PoolTypeHeader>Pool Type</PoolTypeHeader>
           <TYPE.white>{poolType}</TYPE.white>
         </PoolTypeContainer>
@@ -175,15 +175,16 @@ const DefaultPoolCardtri = ({
               noTriRewards={noTriRewards}
               earnedAmount={earnedAmount}
               earnedNonTriRewards={earnedNonTriRewards}
+              isStaking={enableClaimButton}
             />
-            <DepositsContainer>
+            <DepositsContainer isStaking={enableClaimButton}>
               <>
                 <StyledMutedSubHeader>Your deposits</StyledMutedSubHeader>
                 <AutoRow>
                   {enableClaimButton ? (
                     <>
                       <UserStakedInUsd>~{addCommasToNumber(userStakedInUSD ?? '')}</UserStakedInUsd>/{' '}
-                      <UserStakedInTLP>{stakedAmount?.toSignificant(6)} TLP</UserStakedInTLP>
+                      <UserStakedInTLP>{stakedAmount?.toSignificant(2)} TLP</UserStakedInTLP>
                     </>
                   ) : (
                     <TYPE.white fontWeight={500}>$0</TYPE.white>
@@ -191,7 +192,7 @@ const DefaultPoolCardtri = ({
                 </AutoRow>
               </>
             </DepositsContainer>
-            <StakeContainer>
+            <StakeContainer isStaking={enableClaimButton}>
               <ManageStake
                 stakedAmount={stakedAmount}
                 isStaking={enableClaimButton}

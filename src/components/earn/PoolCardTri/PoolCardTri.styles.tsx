@@ -189,11 +189,11 @@ export const StyledRewardsAmountContainer = styled(RowBetween)`
 export const StakedContainer = styled(AutoColumn)`
   min-width: 100px;
   justify-content: flex-start;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall<{ showMore: boolean; hide: boolean }>`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall<{ isExpanded: boolean; show: boolean }>`
     display:none;
-    ${({ showMore, hide }) =>
-      !hide &&
-      showMore &&
+    ${({ isExpanded, show }) =>
+      show &&
+      isExpanded &&
       `
       display: grid;
       grid-row: 2;
@@ -222,13 +222,13 @@ export const PoolTypeContainer = styled(AutoColumn)`
   min-width: 100px;
   justify-content: flex-start;
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall<{ showMore: boolean }>`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall<{ isExpanded: boolean; isStaking: boolean }>`
     display:none;
-    ${({ showMore }) =>
-      showMore &&
+    grid-row: ${({ isStaking }) => (isStaking ? 3 : 2)};
+    ${({ isExpanded }) =>
+      isExpanded &&
       `
       display: grid;
-      grid-row: 3;
       grid-column: 1/2;
       justify-self: start;
       padding-left: 12px;
@@ -284,9 +284,10 @@ export const ButtonWrapper = styled.div`
 export const StyledClaimableRewards = styled(ClaimableRewards)`
   grid-row: 2;
   grid-column: 1/2;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall<{ isStaking: boolean }>`
     grid-row: 2;
     grid-column: 2/3;
+    display: ${({ isStaking }) => (isStaking ? 'grid' : 'none')};
   `};
 `
 
@@ -296,12 +297,11 @@ export const DepositsContainer = styled(AutoColumn)`
   grid-column-end: 4;
   justify-self: start;
   row-gap: 8px;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall<{ isStaking: boolean }>`
+    font-size: 14px;
     grid-row: 2;
     grid-column: 3/4;
-  `};
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    font-size: 14px;
+    display: ${({ isStaking }) => (isStaking ? 'grid' : 'none')};
   `};
 `
 
@@ -312,9 +312,9 @@ export const StakeContainer = styled(AutoColumn)`
   width: 100%;
   padding: 0 24px;
   row-gap: 8px;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall<{ isStaking: boolean }>`
     grid-column: 2/4
-    grid-row: 3;
+    grid-row: ${({ isStaking }) => (isStaking ? 3 : 2)};
     padding: 0px;
     button {
       width: 82px;
