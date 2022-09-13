@@ -18,7 +18,6 @@ import { BIG_INT_ZERO } from '../../../constants'
 import { StableSwapPoolName } from '../../../state/stableswap/constants'
 import { ChefVersions, EarnedNonTriRewards } from '../../../state/stake/stake-constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from '../../../state/stake/hooks-sushi'
-import { ZERO_ADDRESS } from '../../../constants'
 
 import { StyledMutedSubHeader } from './PoolCardTri.styles'
 
