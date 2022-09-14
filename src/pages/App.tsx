@@ -15,7 +15,6 @@ import {
   RedirectToAddLiquidity
 } from './AddLiquidity/redirects'
 import EarnTri from './EarnTri'
-import Manage from './EarnTri/Manage'
 import Pool from './Pool'
 import Buy from './Buy'
 import PoolFinder from './PoolFinder'
@@ -26,7 +25,6 @@ import StableSwapPool from './StableSwapPool'
 import StableSwapPoolAddLiquidity from './StableSwapPoolAddLiquidity'
 import StableSwapPoolRemoveLiquidity from './StableSwapPoolRemoveLiquidity'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
-import ManageStable from './EarnTri/ManageStable'
 import StakeTri from './StakeTri'
 
 const AppWrapper = styled.div`
@@ -104,8 +102,6 @@ export default function App() {
               <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
-              <Route exact strict path="/tri/:currencyIdA/:currencyIdB/:version" component={Manage} />
-              <Route exact strict path="/tri/:stableSwapPoolName/:version" component={ManageStable} />
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>
