@@ -255,7 +255,6 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 1,
     tokens: [TRI[ChainId.AURORA], AURORA[ChainId.AURORA]],
     lpAddress: '0xd1654a7713617d41A8C9530Fb9B948d00e162194',
-    rewarderAddress: '0x78EdEeFdF8c3ad827228d07018578E89Cf159Df1',
     allocPoint: 1,
     isFeatured: true
   }),
