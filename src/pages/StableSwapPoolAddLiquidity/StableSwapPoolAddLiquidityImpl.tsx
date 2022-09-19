@@ -42,7 +42,7 @@ import { AddRemoveTabs } from '../../components/NavigationTabs'
 import confirmStableSwapAddLiquiditySlippage from './confirmStableSwapAddLiquiditySlippage'
 import Card from '../../components/Card'
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
-import { getAuLpSupplyInUsd, getLpTokenUsdEstimate } from '../../utils/stableSwap'
+import { getLpTokenUsdEstimate } from '../../utils/stableSwap'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -156,11 +156,8 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     .join('')}`
 
   const modalHeader = () => {
-    const { virtualPrice, lpToken, avgExchangeRate } = poolData
-    const usdEstimate =
-      virtualPrice && minToMint && lpToken
-        ? getLpTokenUsdEstimate(virtualPrice, minToMint, lpToken, name, avgExchangeRate)
-        : null
+    const { virtualPrice, lpToken, lpTokenPriceUSDC } = poolData
+    const usdEstimate = virtualPrice && minToMint && lpToken ? getLpTokenUsdEstimate(lpTokenPriceUSDC, minToMint) : null
 
     if (!minToMint) {
       return null

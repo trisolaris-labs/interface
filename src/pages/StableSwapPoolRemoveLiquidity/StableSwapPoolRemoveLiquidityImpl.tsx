@@ -37,7 +37,7 @@ import BackButton from '../../components/BackButton'
 import useRemoveLiquidityPriceImpact from '../../hooks/useRemoveLiquidityPriceImpact'
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
 import { useStableSwapContract } from '../../hooks/useContract'
-import { getLpTokenUsdEstimate, getAuLpSupplyInUsd } from '../../utils/stableSwap'
+import { getLpTokenUsdEstimate } from '../../utils/stableSwap'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -55,7 +55,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
   const [withdrawTokenIndex, setWithdrawTokenIndex] = useState<number | null>(null)
   const withdrawTokenIndexRef = useRef(withdrawTokenIndex)
   const [poolData, userShareData] = useStablePoolsData(stableSwapPoolName)
-  const { friendlyName, unwrappedTokens, virtualPrice, avgExchangeRate } = poolData
+  const { friendlyName, unwrappedTokens, virtualPrice, lpTokenPriceUSDC } = poolData
   const pool = STABLESWAP_POOLS[stableSwapPoolName]
   const { address, lpToken, metaSwapAddresses } = pool
   const effectiveAddress = isMetaPool(stableSwapPoolName) ? metaSwapAddresses : address
@@ -258,9 +258,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
 
   const hasZeroInput = JSBI.equal(parsedAmount?.raw ?? BIG_INT_ZERO, BIG_INT_ZERO)
   const usdEstimate =
-    virtualPrice != null && parsedAmount != null
-      ? getLpTokenUsdEstimate(virtualPrice, parsedAmount, lpToken, pool.name, avgExchangeRate)
-      : null
+    virtualPrice != null && parsedAmount != null ? getLpTokenUsdEstimate(lpTokenPriceUSDC, parsedAmount) : null
 
   const insufficientBalanceError =
     parsedAmount != null &&

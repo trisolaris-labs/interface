@@ -84,12 +84,22 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
     }
     // handle usdc
     if (wrapped.equals(USDC)) {
-      return new Price(USDC, USDC, '1', '1')
+      return new Price(
+        USDC,
+        USDC,
+        JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(wrapped.decimals))),
+        '1'
+      )
     }
 
     // handle usdt
     if (wrapped.equals(USDT)) {
-      return new Price(USDT, USDT, '1', '1')
+      return new Price(
+        USDT,
+        USDT,
+        JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(wrapped.decimals))),
+        '1'
+      )
     }
 
     // handle Aurigami exchange rates

@@ -1,4 +1,4 @@
-import { Pair } from '@trisolaris/sdk'
+import { JSBI, Pair } from '@trisolaris/sdk'
 import { darken } from 'polished'
 import React, { useState, useContext } from 'react'
 import { Text } from 'rebass'
@@ -144,8 +144,8 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
     push(`${pathname}/remove/${name}`)
   }
 
-  // const poolTVL = stablePoolData.totalLockedInUsd?.toFixed(0)
-  const poolTVL = stablePoolData.totalLocked?.toFixed(0)
+  const reserve = stablePoolData.reserve
+  const poolTVL = reserve?.greaterThan(JSBI.BigInt(1000)) ? reserve?.toFixed(0) : reserve?.toFixed(2) // Avoid rounding down on small tvl numbers
 
   const formattedPoolData = [
     {
