@@ -6,18 +6,16 @@ import {
   getTokenForStablePoolType,
   isMetaPool,
   StableSwapPoolName,
-  StableSwapPoolTypes,
   STABLESWAP_POOLS
 } from '../state/stableswap/constants'
-import { useStableSwapContract, useStableSwapMetaPool, useAuTokenContract } from './useContract'
-import { ChainId, JSBI, Percent, Price, Token, TokenAmount, WETH } from '@trisolaris/sdk'
+import { useStableSwapContract, useStableSwapMetaPool } from './useContract'
+import { ChainId, JSBI, Percent, Token, TokenAmount } from '@trisolaris/sdk'
 import { useSingleCallResult, useSingleContractMultipleData } from '../state/multicall/hooks'
 import { useTokenBalance } from '../state/wallet/hooks'
 import { useTotalSupply } from '../data/TotalSupply'
 import { BIG_INT_ZERO, ZERO_ADDRESS } from '../constants'
-import { USDC, AUUSDC, AUUSDT, USDT } from '../constants/tokens'
+import { USDC } from '../constants/tokens'
 import useGetTokenPrice from './useGetTokenPrice'
-import { dummyToken, tokenAmount } from '../state/stake/stake-constants'
 
 const STABLE_POOL_CONTRACT_DECIMALS = 18
 interface TokenShareType {
@@ -42,7 +40,6 @@ export interface StablePoolDataType {
   lpTokenPriceUSDC: TokenAmount
   lpToken: Token | null
   disableAddLiquidity: boolean
-  avgExchangeRate: JSBI
 }
 
 export interface UserShareType {
@@ -58,17 +55,6 @@ export type PoolDataHookReturnType = [StablePoolDataType, UserShareType | null]
 
 export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDataHookReturnType {
   const { account } = useActiveWeb3React()
-
-  const auUSDCContract = useAuTokenContract(AUUSDC[ChainId.AURORA].address)
-  const auUSDTContract = useAuTokenContract(AUUSDT[ChainId.AURORA].address)
-
-  const auUSDCExchangeRate: JSBI = JSBI.BigInt(
-    useSingleCallResult(auUSDCContract, 'exchangeRateStored')?.result?.[0] ?? 0
-  )
-  const auUSDTExchangeRate: JSBI = JSBI.BigInt(
-    useSingleCallResult(auUSDTContract, 'exchangeRateStored')?.result?.[0] ?? 0
-  )
-  const avgExchangeRate = JSBI.divide(JSBI.ADD(auUSDCExchangeRate, auUSDTExchangeRate), JSBI.BigInt(2))
 
   const pool = STABLESWAP_POOLS[poolName]
   const { disableAddLiquidity, lpToken, poolTokens, type, underlyingPoolTokens } = pool
@@ -207,8 +193,7 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
     lpTokenPriceUSDC,
     lpToken,
     isPaused,
-    disableAddLiquidity: disableAddLiquidity ?? false,
-    avgExchangeRate: avgExchangeRate
+    disableAddLiquidity: disableAddLiquidity ?? false
   }
 
   // User Data
