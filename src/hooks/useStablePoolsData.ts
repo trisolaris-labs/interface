@@ -15,7 +15,7 @@ import { useSingleCallResult, useSingleContractMultipleData } from '../state/mul
 import { useTokenBalance } from '../state/wallet/hooks'
 import { useTotalSupply } from '../data/TotalSupply'
 import { BIG_INT_ZERO, ZERO_ADDRESS } from '../constants'
-import { USDC, AUUSDC, AUUSDT } from '../constants/tokens'
+import { USDC, AUUSDC, AUUSDT, USDT } from '../constants/tokens'
 import useGetTokenPrice from './useGetTokenPrice'
 import { dummyToken, tokenAmount } from '../state/stake/stake-constants'
 
@@ -143,11 +143,13 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
     const balance = tokenBalances[i]
     const tokenPrice = tokenPrices[i]
 
-    // WIP: exp to 1e18 for non auriagami tokens, until figuring out working with Price
-    const poolAssetPrice =
-      pool.name === StableSwapPoolName.AUUSDC_AUUSDT
-        ? JSBI.multiply(tokenPrice?.raw.numerator ?? JSBI.BigInt(1), decimalDelta)
-        : JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+    const poolAssetPrice = JSBI.divide(
+      JSBI.multiply(
+        tokenPrice?.adjusted.numerator ?? JSBI.BigInt(1),
+        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+      ),
+      tokenPrice?.adjusted.denominator ?? JSBI.BigInt(1)
+    )
 
     const tokenBalanceNormalized = normalizeTokenBalance(token, balance)
 

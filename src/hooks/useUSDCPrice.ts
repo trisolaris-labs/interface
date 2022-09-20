@@ -88,7 +88,7 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
         USDC,
         USDC,
         JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(wrapped.decimals))),
-        '1'
+        JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(wrapped.decimals)))
       )
     }
 
@@ -96,9 +96,9 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
     if (wrapped.equals(USDT)) {
       return new Price(
         USDT,
-        USDT,
+        USDC,
         JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(wrapped.decimals))),
-        '1'
+        JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(wrapped.decimals)))
       )
     }
 
