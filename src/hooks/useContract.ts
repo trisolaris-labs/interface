@@ -28,6 +28,7 @@ import { GOVERNANCE_ADDRESS } from '../constants'
 import { STAKING } from '../state/stake/stake-constants'
 import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import PTRI_ABI from '../constants/abis/pTri/ptri.json'
+import AURIGAMI_ERC20_ABI from '../constants/abis/aurigami/AuErc20.json'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -183,4 +184,8 @@ export function usePTriContract(withSignerIfPossible = true): Contract | null {
 
     return pTriContract
   }, [library, chainId])
+}
+
+export function useAurigamiTokenContract(address?: string, withSignerIfPossible = true): Contract | null {
+  return useContract(address, AURIGAMI_ERC20_ABI, withSignerIfPossible)
 }

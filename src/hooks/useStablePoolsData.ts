@@ -15,6 +15,7 @@ import { useTokenBalance } from '../state/wallet/hooks'
 import { useTotalSupply } from '../data/TotalSupply'
 import { BIG_INT_ZERO, ZERO_ADDRESS } from '../constants'
 import { USDC } from '../constants/tokens'
+import useStableSwapUSDReferencePrices from './useStableSwapUSDReferencePrices'
 
 const STABLE_POOL_CONTRACT_DECIMALS = 18
 interface TokenShareType {
@@ -99,6 +100,10 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
   )
   const presentationTokenHasMoreDecimals = poolPresentationTokenDecimals > STABLE_POOL_CONTRACT_DECIMALS
   const presentationTokenHasLessDecimals = poolPresentationTokenDecimals < STABLE_POOL_CONTRACT_DECIMALS
+
+  const blah = useStableSwapUSDReferencePrices()
+
+  console.log('blah: ', blah)
 
   const tokenBalancesUSD = effectivePoolTokens.map((token, i, arr) => {
     // use another token to estimate USD price of meta LP tokens

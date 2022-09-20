@@ -4,12 +4,13 @@ import SWAP_FLASH_LOAN_ABI from '../constants/abis/stableswap/swapFlashLoan.json
 import LPTOKEN_UNGUARDED_ABI from '../constants/abis/stableswap/lpToken.json'
 import { useActiveWeb3React } from '.'
 import { StableSwapPoolName, StableSwapPoolTypes, STABLESWAP_POOLS } from '../state/stableswap/constants'
-import { useMultipleContractSingleData } from '../state/multicall/hooks'
+import { useMultipleContractSingleData, useSingleCallResult } from '../state/multicall/hooks'
 import { Interface } from '@ethersproject/abi'
 import { ChainId, JSBI, WETH } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../constants'
-import { WBTC } from '../constants/tokens'
+import { AUUSDC, WBTC } from '../constants/tokens'
 import useUSDCPrice from './useUSDCPrice'
+import useAurigamiTokenExchangeRate from './useAurigamiTokenExchangeRate'
 
 type StableSwapPoolStatuses = {
   [poolName in StableSwapPoolName]?: {
@@ -42,6 +43,9 @@ export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
 
   const btcPrice = useUSDCPrice(WBTC[chainId ?? ChainId.AURORA])
   const ethPrice = useUSDCPrice(WETH[chainId ?? ChainId.AURORA])
+  const auUSDCPrice = useAurigamiTokenExchangeRate(AUUSDC[chainId ?? ChainId.AURORA].address)
+
+  console.log('auUSDCPrice: ', auUSDCPrice)
 
   const tvlsUSD = useMemo(() => {
     return stableSwapPools.map((pool, i) => {
@@ -55,6 +59,9 @@ export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
         case StableSwapPoolTypes.ETH:
           tokenValue = JSBI.toNumber(JSBI.BigInt(ethPrice ?? 0))
           break
+        case StableSwapPoolTypes.AURIGAMI_STABLE_DEBT:
+          tokenValue = JSBI.toNumber(JSBI.BigInt(auUSDCPrice ?? 0))
+          break
         default:
           tokenValue = 1 // USD
       }
@@ -64,7 +71,7 @@ export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
         JSBI.exponentiate(JSBI.BigInt('10'), JSBI.BigInt('2')) // 1e18
       )
     })
-  }, [btcPrice, ethPrice, stableSwapPools, tvls])
+  }, [auUSDCPrice, btcPrice, ethPrice, stableSwapPools, tvls])
 
   return useMemo(
     () =>

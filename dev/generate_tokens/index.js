@@ -18,62 +18,66 @@ const TOKENS_URL = 'https://raw.githubusercontent.com/trisolaris-labs/tokens/mas
 init()
 
 async function init() {
-  const allTokens = await getAllTokensFromTokenLists()
+  try {
+    const allTokens = await getAllTokensFromTokenLists()
 
-  const mergedTokenMap = createMergedTokenMap(allTokens)
+    const mergedTokenMap = createMergedTokenMap(allTokens)
 
-  const generatedFileWarningMessage =
-    '/**********************************************************************************************' +
-    '\n * THIS FILE IS GENERATED' +
-    '\n *' +
-    '\n * DO NOT MODIFY THIS FILE MANUALLY -- IT WILL BE OVERWRITTEN' +
-    '\n *' +
-    '\n * THIS FILE UPDATES BASED ON THE `master` BRANCH OF https://github.com/trisolaris-labs/tokens/' +
-    '\n * RUN `yarn build-tokens` TO UPDATE THIS FILE' +
-    '\n **********************************************************************************************/'
+    const generatedFileWarningMessage =
+      '/**********************************************************************************************' +
+      '\n * THIS FILE IS GENERATED' +
+      '\n *' +
+      '\n * DO NOT MODIFY THIS FILE MANUALLY -- IT WILL BE OVERWRITTEN' +
+      '\n *' +
+      '\n * THIS FILE UPDATES BASED ON THE `master` BRANCH OF https://github.com/trisolaris-labs/tokens/' +
+      '\n * RUN `yarn build-tokens` TO UPDATE THIS FILE' +
+      '\n **********************************************************************************************/'
 
-  const imports = "\n\nimport { ChainId, Token } from '@trisolaris/sdk'"
+    const imports = "\n\nimport { ChainId, Token } from '@trisolaris/sdk'"
 
-  const tokens = _.map(mergedTokenMap, (tokenObj, symbol) => {
-    // Removes extra whitespace and replaces spaces with `_`
-    const formattedSymbol = symbol
-      .toUpperCase()
-      .trim()
-      .replace(/\W+/g, '_')
-    const token =
-      `\n\nexport const ${formattedSymbol}: { [chainId in ChainId]: Token } = {` +
-      `${_.map(tokenObj, (token, chainID) => {
-        let chainEnumString = null
+    const tokens = _.map(mergedTokenMap, (tokenObj, symbol) => {
+      // Removes extra whitespace and replaces spaces with `_`
+      const formattedSymbol = symbol
+        .toUpperCase()
+        .trim()
+        .replace(/\W+/g, '_')
+      const token =
+        `\n\nexport const ${formattedSymbol}: { [chainId in ChainId]: Token } = {` +
+        `${_.map(tokenObj, (token, chainID) => {
+          let chainEnumString = null
 
-        switch (Number(chainID)) {
-          case ChainId.FUJI: {
-            chainEnumString = 'ChainId.FUJI'
-            break
+          switch (Number(chainID)) {
+            case ChainId.FUJI: {
+              chainEnumString = 'ChainId.FUJI'
+              break
+            }
+            case ChainId.AVALANCHE: {
+              chainEnumString = 'ChainId.AVALANCHE'
+              break
+            }
+            case ChainId.POLYGON: {
+              chainEnumString = 'ChainId.POLYGON'
+              break
+            }
+            case ChainId.AURORA: {
+              chainEnumString = 'ChainId.AURORA'
+              break
+            }
+            default:
+              throw new Error('ChainID not found: ' + chainID)
           }
-          case ChainId.AVALANCHE: {
-            chainEnumString = 'ChainId.AVALANCHE'
-            break
-          }
-          case ChainId.POLYGON: {
-            chainEnumString = 'ChainId.POLYGON'
-            break
-          }
-          case ChainId.AURORA: {
-            chainEnumString = 'ChainId.AURORA'
-            break
-          }
-          default:
-            throw new Error('ChainID not found: ' + chainID)
-        }
 
-        return `\n  [${chainEnumString}]: new Token(${chainEnumString}, '${token.address}', ${token.decimals}, '${token.symbol}', '${token.name}'),`
-      }).join('')}` +
-      '\n}'
+          return `\n  [${chainEnumString}]: new Token(${chainEnumString}, '${token.address}', ${token.decimals}, '${token.symbol}', '${token.name}'),`
+        }).join('')}` +
+        '\n}'
 
-    return token
-  })
+      return token
+    })
 
-  await createTokenFile(generatedFileWarningMessage + imports + tokens.join(''))
+    await createTokenFile(generatedFileWarningMessage + imports + tokens.join(''))
+  } catch (e) {
+    console.error('Error generating tokens: ', e)
+  }
 }
 
 async function createTokenFile(contents) {

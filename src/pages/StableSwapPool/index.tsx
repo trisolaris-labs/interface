@@ -20,7 +20,6 @@ const TitleRow = styled(RowBetween)`
     flex-direction: column;
   `};
 `
-
 export default function Pool() {
   const [showDeprecatedPools, setShowDeprecatedPools] = useState(false)
 
@@ -36,6 +35,7 @@ export default function Pool() {
           </TitleRow>
           <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_USN} />
           <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_V2} />
+          <FullStablePositionCard poolName={StableSwapPoolName.AUUSDC_AUUSDT} />
         </AutoColumn>
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
