@@ -246,18 +246,14 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 0,
     tokens: [AURORA[ChainId.AURORA], WETH[ChainId.AURORA]],
     lpAddress: '0x5eeC60F348cB1D661E4A5122CF4638c7DB7A886e',
-    rewarderAddress: '0x94669d7a170bfe62FAc297061663e0B48C63B9B5',
-    allocPoint: 1,
-    isFeatured: true
+    allocPoint: 1
   }),
   createMCV2Pool({
     ID: 8,
     poolId: 1,
     tokens: [TRI[ChainId.AURORA], AURORA[ChainId.AURORA]],
     lpAddress: '0xd1654a7713617d41A8C9530Fb9B948d00e162194',
-    rewarderAddress: '0x78EdEeFdF8c3ad827228d07018578E89Cf159Df1',
-    allocPoint: 1,
-    isFeatured: true
+    allocPoint: 1
   }),
   createMCV2Pool({
     ID: 9,
@@ -565,9 +561,9 @@ const AURORA_POOLS: StakingTri[] = [
     ID: 43,
     poolId: 36,
     tokens: [WNEAR[ChainId.AURORA], PLY[ChainId.AURORA]],
-    lpAddress: '0x044b6b0cd3bb13d2b9057781df4459c66781dce7',
+    lpAddress: '0x044b6B0CD3Bb13D2b9057781Df4459C66781dCe7',
     rewarderAddress: '0xF1469a96be8C82E5D5a9B0010eDeC77BdB319448',
-    isFeatured: true,
+    isFeatured: true
   })
 ]
 
