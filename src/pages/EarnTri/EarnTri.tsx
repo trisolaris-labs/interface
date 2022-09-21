@@ -68,6 +68,8 @@ export default function EarnTri() {
                     friendlyFarmName={farm.friendlyFarmName}
                     isFeatured={farm.isFeatured}
                     poolType={farm.poolType}
+                    lpAddress={farm.lpAddress}
+                    poolId={farm.poolId}
                   />
                 )
               )}
@@ -110,6 +112,8 @@ export default function EarnTri() {
                   friendlyFarmName={farm.friendlyFarmName}
                   stableSwapPoolName={farm.stableSwapPoolName}
                   poolType={farm.poolType}
+                  lpAddress={farm.lpAddress}
+                  poolId={farm.poolId}
                 />
               ))}
             </>
