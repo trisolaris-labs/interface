@@ -41,6 +41,7 @@ export const Wrapper = styled(Card)<{
   ${({ theme }) => theme.mediaWidth.upToSmall`
         padding-left: 8px;
         padding-right: 10px;
+        min-height: 73px;
     `};
 `
 
