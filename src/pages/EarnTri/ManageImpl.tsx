@@ -186,17 +186,17 @@ export default function ManageImpl({
 
       {stakingInfo != null ? (
         <>
-          <StakingModal
+          {/* <StakingModal
             isOpen={showStakingModal}
             onDismiss={() => setShowStakingModal(false)}
             stakingInfo={stakingInfo}
             userLiquidityUnstaked={userLiquidityUnstaked}
-          />
-          <UnstakingModal
+          /> */}
+          {/* <UnstakingModal
             isOpen={showUnstakingModal}
             onDismiss={() => setShowUnstakingModal(false)}
             stakingInfo={stakingInfo}
-          />
+          /> */}
         </>
       ) : null}
       {/* Deleting ClaimRewardModal but keeping Manage component until all functionality is migrated to New Farm UI  */}

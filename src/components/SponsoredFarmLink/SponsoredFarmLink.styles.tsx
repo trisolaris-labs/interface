@@ -24,6 +24,9 @@ export const StyledExternalLink = styled(ExternalLink)`
   }
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-  left:55px;
-`};
+    left:55px;
+  `};
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    left:45px;
+  `};
 `

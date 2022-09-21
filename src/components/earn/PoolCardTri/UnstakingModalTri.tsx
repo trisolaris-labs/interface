@@ -12,21 +12,36 @@ import { useTransactionAdder } from '../../../state/transactions/hooks'
 import FormattedCurrencyAmount from '../../FormattedCurrencyAmount'
 import { useActiveWeb3React } from '../../../hooks'
 import { useTranslation } from 'react-i18next'
-import { StakingTri } from '../../../state/stake/stake-constants'
-import { BIG_INT_ZERO } from '../../../constants'
+import { ChefVersions, EarnedNonTriRewards, StakingTri } from '../../../state/stake/stake-constants'
+import { BIG_INT_ZERO, ZERO_ADDRESS } from '../../../constants'
+import { ChainId, Token, TokenAmount } from '@trisolaris/sdk'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
   padding: 1rem;
 `
 
-interface StakingModalProps {
+interface UnStakingModalProps {
   isOpen: boolean
   onDismiss: () => void
-  stakingInfo: StakingTri
+  chefVersion: ChefVersions
+  earnedAmount?: TokenAmount
+  earnedNonTriRewards: EarnedNonTriRewards[]
+  noTriRewards: boolean
+  poolId: number
+  stakedAmount?: TokenAmount | null
 }
 
-export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: StakingModalProps) {
+export default function UnstakingModal({
+  isOpen,
+  onDismiss,
+  chefVersion,
+  earnedAmount,
+  earnedNonTriRewards,
+  noTriRewards,
+  poolId,
+  stakedAmount
+}: UnStakingModalProps) {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
@@ -43,7 +58,6 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
 
   const stakingContract = useMasterChefContract()
   const stakingContractv2 = useMasterChefV2Contract()
-  const { chefVersion, earnedAmount, earnedNonTriRewards, noTriRewards, poolId, stakedAmount } = stakingInfo
 
   async function onWithdraw() {
     if (chefVersion == 0) {
@@ -85,7 +99,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
   if (!account) {
     error = t('earn.connectWallet')
   }
-  if (!stakingInfo?.stakedAmount) {
+  if (!stakedAmount) {
     error = error ?? t('earn.enterAmount')
   }
 

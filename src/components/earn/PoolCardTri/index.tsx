@@ -9,11 +9,15 @@ import ClaimRewardModal from './ClaimRewardModalTri'
 import { ButtonGold } from '../../Button'
 import SponsoredFarmLink from '../../SponsoredFarmLink'
 import PoolCardTriRewardText from './PoolCardTriRewardText'
+import { AutoRow } from '../../Row'
+import ManageStake from './ManageStake'
 
 import { ChefVersions, EarnedNonTriRewards, NonTriAPR, PoolType } from '../../../state/stake/stake-constants'
 import { useSingleFarm } from '../../../state/stake/user-farms'
 import { useColorForToken } from '../../../hooks/useColor'
 import { useSingleStableFarm } from '../../../state/stake/user-stable-farms'
+import useUserFarmStatistics from '../../../state/stake/useUserFarmStatistics'
+import useTLP from '../../../hooks/useTLP'
 
 import { addCommasToNumber } from '../../../utils'
 import { getPairRenderOrder, isTokenAmountPositive } from '../../../utils/pools'
@@ -33,7 +37,13 @@ import {
   PoolTypeContainer,
   StakedMobilecontainer,
   StyledMultipleCurrencyLogo,
-  ButtonWrapper
+  ButtonWrapper,
+  StyledClaimableRewards,
+  DepositsContainer,
+  StakeContainer,
+  UserStakedInUsd,
+  UserStakedInTLP,
+  PoolTypeHeader
 } from './PoolCardTri.styles'
 
 export type PoolCardTriProps = {
@@ -53,12 +63,19 @@ export type PoolCardTriProps = {
   friendlyFarmName: string | null
   isFeatured?: boolean
   poolType: PoolType
+  lpAddress: string
+  poolId: number
 }
 
 type ExtendedPoolCardTriProps = PoolCardTriProps & {
   earnedNonTriRewards?: EarnedNonTriRewards[]
   noTriRewards?: boolean
   earnedAmount?: TokenAmount
+  stakedAmount?: TokenAmount | null
+  userStakedInUSD?: string | null
+  enableClaimButton?: boolean
+  enableClaimModal?: () => void
+  lpToken: Token
 }
 
 const DefaultPoolCardtri = ({
@@ -73,12 +90,18 @@ const DefaultPoolCardtri = ({
   nonTriAPRs,
   friendlyFarmName,
   isFeatured = false,
-  earnedNonTriRewards,
+  earnedNonTriRewards = [],
   noTriRewards,
   earnedAmount,
   poolType,
-  enableModal = () => null
-}: { enableClaimButton?: boolean; enableModal?: () => void } & ExtendedPoolCardTriProps) => {
+  stakedAmount,
+  userStakedInUSD,
+  stableSwapPoolName,
+  lpAddress,
+  poolId,
+  lpToken,
+  enableClaimModal = () => null
+}: ExtendedPoolCardTriProps) => {
   const { t } = useTranslation()
 
   const [showMore, setShowMore] = useState(false)
@@ -93,17 +116,17 @@ const DefaultPoolCardtri = ({
 
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
 
+  const currenciesQty = currencies.length
+  const farmName = friendlyFarmName ?? currencies.map(({ symbol }) => symbol).join('-')
+
   function onCardClick() {
     setShowMore(!showMore)
   }
 
   function handleClaimClick(event: React.MouseEvent) {
-    enableModal()
+    enableClaimModal()
     event.stopPropagation()
   }
-
-  const currenciesQty = currencies.length
-  const farmName = friendlyFarmName ?? currencies.map(({ symbol }) => symbol).join('-')
 
   return (
     <Wrapper
@@ -124,12 +147,12 @@ const DefaultPoolCardtri = ({
           <StyledMutedSubHeader justifyContent="flex-start">APR</StyledMutedSubHeader>
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AprContainer>
-        <StakedContainer>
+        <StakedContainer isExpanded={showMore} show={enableClaimButton}>
           <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
           <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
         </StakedContainer>
-        <PoolTypeContainer>
-          <StyledMutedSubHeader>Pool Type</StyledMutedSubHeader>
+        <PoolTypeContainer isExpanded={showMore} isStaking={enableClaimButton}>
+          <PoolTypeHeader>Pool Type</PoolTypeHeader>
           <TYPE.white>{poolType}</TYPE.white>
         </PoolTypeContainer>
         <ButtonWrapper>
@@ -145,24 +168,83 @@ const DefaultPoolCardtri = ({
           )}
         </ButtonWrapper>
         <DetailsContainer>{showMore ? <ChevronUp size="15" /> : <ChevronDown size="15" />}</DetailsContainer>
+        {showMore && (
+          <>
+            <StyledClaimableRewards
+              enableClaimButton={enableClaimButton}
+              noTriRewards={noTriRewards}
+              earnedAmount={earnedAmount}
+              earnedNonTriRewards={earnedNonTriRewards}
+              isStaking={enableClaimButton}
+            />
+            <DepositsContainer isStaking={enableClaimButton}>
+              <>
+                <StyledMutedSubHeader>Your deposits</StyledMutedSubHeader>
+                <AutoRow>
+                  {enableClaimButton ? (
+                    <>
+                      <UserStakedInUsd>~{addCommasToNumber(userStakedInUSD ?? '')}</UserStakedInUsd>/{' '}
+                      <UserStakedInTLP>{stakedAmount?.toSignificant(2)} TLP</UserStakedInTLP>
+                    </>
+                  ) : (
+                    <TYPE.white fontWeight={500}>$0</TYPE.white>
+                  )}
+                </AutoRow>
+              </>
+            </DepositsContainer>
+            <StakeContainer isStaking={enableClaimButton}>
+              <ManageStake
+                stakedAmount={stakedAmount}
+                isStaking={enableClaimButton}
+                stableSwapPoolName={stableSwapPoolName}
+                tokens={tokens}
+                lpAddress={lpAddress}
+                chefVersion={chefVersion}
+                poolId={poolId}
+                lpToken={lpToken}
+                noTriRewards={noTriRewards}
+                earnedNonTriRewards={earnedNonTriRewards}
+                earnedAmount={earnedAmount}
+              />
+            </StakeContainer>
+          </>
+        )}
       </CardContainer>
     </Wrapper>
   )
 }
 
-type StablePoolCardTriProps = PoolCardTriProps & { stableSwapPoolName: StableSwapPoolName }
+type StablePoolCardTriProps = PoolCardTriProps & { stableSwapPoolName: StableSwapPoolName; lpToken: Token }
 
 const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
-  const { version } = props
+  const { version, stableSwapPoolName, lpToken } = props
 
-  const stakingInfo = useSingleStableFarm(Number(version), props.stableSwapPoolName)
-  const { earnedNonTriRewards, noTriRewards, earnedAmount, poolId, stakedAmount, chefVersion } = stakingInfo
+  const stakingInfo = useSingleStableFarm(Number(version), stableSwapPoolName)
+  const {
+    earnedNonTriRewards,
+    noTriRewards,
+    earnedAmount,
+    poolId,
+    stakedAmount,
+    chefVersion,
+    totalStakedInUSD
+  } = stakingInfo
+
+  const { userLPAmountUSDFormatted } =
+    useUserFarmStatistics({
+      lpToken,
+      userLPStakedAmount: stakedAmount,
+      totalPoolAmountUSD: totalStakedInUSD,
+      chefVersion: chefVersion
+    }) ?? {}
+
+  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
   const amountIsClaimable =
     isTokenAmountPositive(earnedAmount) || earnedNonTriRewards.some(({ amount }) => isTokenAmountPositive(amount))
-  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
-  const enableModal = () => setShowClaimRewardModal(true)
+  const enableClaimModal = () => setShowClaimRewardModal(true)
+
   return (
     <>
       {showClaimRewardModal && stakingInfo && (
@@ -180,26 +262,48 @@ const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
       <DefaultPoolCardtri
         {...props}
         enableClaimButton={amountIsClaimable}
-        enableModal={enableModal}
+        enableClaimModal={enableClaimModal}
         earnedNonTriRewards={earnedNonTriRewards}
         noTriRewards={noTriRewards}
         earnedAmount={earnedAmount}
+        stakedAmount={stakedAmount}
+        userStakedInUSD={userLPAmountUSDFormatted}
+        stableSwapPoolName={stableSwapPoolName}
       />
     </>
   )
 }
 
-const StakingPoolCardTRI = (props: PoolCardTriProps) => {
-  const { version } = props
+const StakingPoolCardTRI = (props: PoolCardTriProps & { lpToken: Token }) => {
+  const { version, lpToken } = props
 
   const stakingInfo = useSingleFarm(Number(version))
 
-  const { earnedNonTriRewards, noTriRewards, earnedAmount, poolId, stakedAmount, chefVersion } = stakingInfo
-  const amountIsClaimable =
-    isTokenAmountPositive(earnedAmount) || earnedNonTriRewards.some(({ amount }) => isTokenAmountPositive(amount))
+  const {
+    earnedNonTriRewards,
+    noTriRewards,
+    earnedAmount,
+    poolId,
+    stakedAmount,
+    chefVersion,
+    totalStakedInUSD
+  } = stakingInfo
+
+  const { userLPAmountUSDFormatted } =
+    useUserFarmStatistics({
+      lpToken,
+      userLPStakedAmount: stakedAmount,
+      totalPoolAmountUSD: totalStakedInUSD,
+      chefVersion: chefVersion
+    }) ?? {}
+
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
-  const enableModal = () => setShowClaimRewardModal(true)
+  const amountIsClaimable =
+    isTokenAmountPositive(earnedAmount) || earnedNonTriRewards.some(({ amount }) => isTokenAmountPositive(amount))
+
+  const enableClaimModal = () => setShowClaimRewardModal(true)
+
   return (
     <>
       {showClaimRewardModal && stakingInfo && (
@@ -217,26 +321,31 @@ const StakingPoolCardTRI = (props: PoolCardTriProps) => {
       <DefaultPoolCardtri
         {...props}
         enableClaimButton={amountIsClaimable}
-        enableModal={enableModal}
+        enableClaimModal={enableClaimModal}
         earnedNonTriRewards={earnedNonTriRewards}
         noTriRewards={noTriRewards}
         earnedAmount={earnedAmount}
+        stakedAmount={stakedAmount}
+        userStakedInUSD={userLPAmountUSDFormatted}
       />
     </>
   )
 }
 
 const PoolCardTRI = (props: PoolCardTriProps) => {
-  const { isStaking, stableSwapPoolName } = props
+  const { isStaking, stableSwapPoolName, lpAddress, tokens } = props
+  const token0 = tokens[0]
+  const token1 = tokens[1]
+  const lpToken = useTLP({ lpAddress, token0, token1 })
 
   if (!isStaking) {
-    return <DefaultPoolCardtri {...props} />
+    return <DefaultPoolCardtri {...props} lpToken={lpToken} />
   }
 
   return stableSwapPoolName == null ? (
-    <StakingPoolCardTRI {...props} />
+    <StakingPoolCardTRI {...props} lpToken={lpToken} />
   ) : (
-    <StableStakingPoolCardTRI {...props} stableSwapPoolName={stableSwapPoolName} />
+    <StableStakingPoolCardTRI {...props} stableSwapPoolName={stableSwapPoolName} lpToken={lpToken} />
   )
 }
 

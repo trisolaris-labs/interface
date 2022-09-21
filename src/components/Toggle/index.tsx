@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { darken } from 'polished'
 
-const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean; fontSize?: string }>`
+const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean; fontSize?: string; padding?: string }>`
   padding: 0.25rem 0.5rem;
   border-radius: 14px;
   background: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.primary1 : theme.text4) : 'none')};
@@ -11,7 +11,7 @@ const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean; fo
   font-size: 1rem;
   font-weight: 400;
 
-  padding: 0.35rem 0.6rem;
+  padding: ${({ padding }) => (padding ? padding : '0.35rem 0.6rem')};
   border-radius: 12px;
   background: ${({ theme, isActive }) => (isActive ? theme.primary1 : 'none')};
   color: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.white : theme.text2) : theme.text2)};
@@ -39,19 +39,28 @@ const StyledToggle = styled.button<{ isActive?: boolean; activeElement?: boolean
 export interface ToggleProps {
   id?: string
   isActive: boolean
-  toggle: () => void
+  toggle: (event: React.MouseEvent) => void
   customToggleText?: { on: string; off: string }
   fontSize?: string
+  padding?: string
 }
 
-export default function Toggle({ id, isActive, toggle, customToggleText, fontSize, ...otherProps }: ToggleProps) {
+export default function Toggle({
+  id,
+  isActive,
+  toggle,
+  customToggleText,
+  fontSize,
+  padding,
+  ...otherProps
+}: ToggleProps) {
   const { t } = useTranslation()
   return (
     <StyledToggle id={id} isActive={isActive} onClick={toggle} {...otherProps}>
-      <ToggleElement isActive={isActive} isOnSwitch={true} fontSize={fontSize}>
+      <ToggleElement isActive={isActive} isOnSwitch={true} fontSize={fontSize} padding={padding}>
         {customToggleText?.on ?? t('toggle.on')}
       </ToggleElement>
-      <ToggleElement isActive={!isActive} isOnSwitch={false} fontSize={fontSize}>
+      <ToggleElement isActive={!isActive} isOnSwitch={false} fontSize={fontSize} padding={padding}>
         {customToggleText?.off ?? t('toggle.off')}
       </ToggleElement>
     </StyledToggle>

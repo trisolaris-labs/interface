@@ -8,12 +8,12 @@ import { TYPE, CloseIcon } from '../../../theme'
 import { ButtonConfirmed, ButtonError } from '../../Button'
 import ProgressCircles from '../../ProgressSteps'
 import CurrencyInputPanel from '../../CurrencyInputPanel'
-import { TokenAmount, Pair, ChainId } from '@trisolaris/sdk'
+import { TokenAmount, Pair, ChainId, Token } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../../hooks'
 import { useMasterChefContract, useMasterChefV2Contract } from '../../../state/stake/hooks-sushi'
 import { useApproveCallback, ApprovalState } from '../../../hooks/useApproveCallback'
 import { useDerivedStakeInfo } from '../../../state/stake/hooks'
-import { StakingTri } from '../../../state/stake/stake-constants'
+import { ChefVersions } from '../../../state/stake/stake-constants'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../../ModalViews'
@@ -23,15 +23,6 @@ import useTLP from '../../../hooks/useTLP'
 import useCurrencyInputPanel from '../../CurrencyInputPanel/useCurrencyInputPanel'
 import { getPairRenderOrder } from '../../../utils/pools'
 
-const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
-  display: flex;
-  justify-content: space-between;
-  padding-right: 20px;
-  padding-left: 20px;
-
-  opacity: ${({ dim }) => (dim ? 0.5 : 1)};
-`
-
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
   padding: 1rem;
@@ -40,20 +31,31 @@ const ContentWrapper = styled(AutoColumn)`
 interface StakingModalProps {
   isOpen: boolean
   onDismiss: () => void
-  stakingInfo: StakingTri
   userLiquidityUnstaked: TokenAmount | undefined
+  stakedToken: Token
+  tokens: Token[]
+  lpAddress: string
+  chefVersion: ChefVersions
+  stakingRewardAddress: string
+  poolId: number
 }
 
-export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiquidityUnstaked }: StakingModalProps) {
-  const { account, chainId, library } = useActiveWeb3React()
+export default function StakingModal({
+  isOpen,
+  onDismiss,
+  userLiquidityUnstaked,
+  stakedToken,
+  tokens,
+  lpAddress,
+  chefVersion,
+  stakingRewardAddress,
+  poolId
+}: StakingModalProps) {
+  const { account, chainId } = useActiveWeb3React()
 
   // track and parse user input
   const [typedValue, setTypedValue] = useState('')
-  const { parsedAmount, error } = useDerivedStakeInfo(
-    typedValue,
-    stakingInfo?.stakedAmount!.token,
-    userLiquidityUnstaked
-  )
+  const { parsedAmount, error } = useDerivedStakeInfo(typedValue, stakedToken, userLiquidityUnstaked)
 
   // state for pending and submitted txn views
   const addTransaction = useTransactionAdder()
@@ -67,17 +69,15 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
 
   // pair contract for this token to be staked
   const dummyPair = new Pair(
-    new TokenAmount(stakingInfo.tokens[0], '0'),
-    new TokenAmount(stakingInfo.tokens[1], '0'),
+    new TokenAmount(tokens[0], '0'),
+    new TokenAmount(tokens[1], '0'),
     chainId ? chainId : ChainId.POLYGON
   )
   const lpToken = useTLP({
-    lpAddress: stakingInfo.lpAddress,
-    token0: stakingInfo.tokens[0],
-    token1: stakingInfo.tokens[1]
+    lpAddress: lpAddress,
+    token0: tokens[0],
+    token1: tokens[1]
   })
-
-  const { tokens } = stakingInfo
 
   const { tokens: orderedTokens } = getPairRenderOrder(tokens)
 
@@ -85,17 +85,17 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   const deadline = useTransactionDeadline()
   const { t } = useTranslation()
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
-  const [approval, approveCallback] = useApproveCallback(parsedAmount, stakingInfo.stakingRewardAddress)
+  const [approval, approveCallback] = useApproveCallback(parsedAmount, stakingRewardAddress)
 
   const stakingContract = useMasterChefContract()
   const stakingContractv2 = useMasterChefV2Contract()
 
   async function onStake() {
     setAttempting(true)
-    if (stakingInfo.chefVersion == 0) {
+    if (chefVersion == 0) {
       if (stakingContract && parsedAmount && deadline) {
         await stakingContract
-          .deposit(stakingInfo.poolId, parseUnits(typedValue))
+          .deposit(poolId, parseUnits(typedValue))
           .then((response: TransactionResponse) => {
             addTransaction(response, {
               summary: t('earn.depositLiquidity')
@@ -113,7 +113,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
     } else {
       if (stakingContractv2 && parsedAmount && deadline) {
         await stakingContractv2
-          .deposit(stakingInfo.poolId, parseUnits(typedValue), account)
+          .deposit(poolId, parseUnits(typedValue), account)
           .then((response: TransactionResponse) => {
             addTransaction(response, {
               summary: t('earn.depositLiquidity')
@@ -175,18 +175,6 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
             id="stake-liquidity-token"
             tokens={orderedTokens}
           />
-
-          {/* <HypotheticalRewardRate dim={!hypotheticalRewardRate.greaterThan('0')}>
-            <div>
-              <TYPE.black fontWeight={600}>{t('earn.weeklyRewards')}</TYPE.black>
-            </div>
-
-            <TYPE.black>
-              {hypotheticalRewardRate.multiply((60 * 60 * 24 * 7).toString()).toSignificant(4, { groupSeparator: ',' })}{' '}
-              {t('earn.pngWeek')}
-            </TYPE.black>
-          </HypotheticalRewardRate> */}
-
           <RowBetween>
             <ButtonConfirmed
               mr="0.5rem"
