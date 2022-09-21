@@ -1,4 +1,3 @@
-import { Pair } from '@trisolaris/sdk'
 import { darken } from 'polished'
 import React, { useState, useContext } from 'react'
 import { Text } from 'rebass'
@@ -102,12 +101,6 @@ const CurrencyContainer = styled.div`
   align-items: center;
 `
 
-interface PositionCardProps {
-  pair: Pair
-  showUnwrapped?: boolean
-  border?: string
-}
-
 interface StablePositionCardProps {
   poolName: StableSwapPoolName
   showUnwrapped?: boolean
@@ -145,13 +138,6 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   }
 
   const poolTVL = stablePoolData.totalLocked?.toFixed(0)
-  const formattedPoolData = [
-    {
-      label: 'Virtual Price',
-      value: stablePoolData.virtualPrice == null ? '-' : `$${stablePoolData.virtualPrice?.toFixed(6)}`,
-      tooltipData: 'Average dollar value of pool token.'
-    }
-  ]
 
   const handleCardClick = () => {
     setShowMore(!showMore)
@@ -233,8 +219,11 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
               <TYPE.subHeader fontSize={16} fontWeight={600} marginTop="8px">
                 Pool Info
               </TYPE.subHeader>
-              {formattedPoolData.map(({ label, value, tooltipData }) => renderRow({ label, value, tooltipData }))}
-
+              {renderRow({
+                label: 'Virtual Price',
+                value: stablePoolData.virtualPrice?.toFixed(6) ?? '-',
+                tooltipData: 'Value of LP relative to underlying assets.'
+              })}
               <TYPE.subHeader fontSize={16} fontWeight={600} marginTop="8px">
                 Contracts
               </TYPE.subHeader>
