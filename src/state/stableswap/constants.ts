@@ -1,4 +1,4 @@
-import { ChainId, Token, WETH } from '@trisolaris/sdk'
+import { ChainId, Token, TokenAmount, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
 import { FRAX, USDC, USDT, WBTC, UST, USN, NUSD, AUUSDC, AUUSDT } from '../../constants/tokens'
 
@@ -30,6 +30,7 @@ export enum StableSwapPoolTypes {
   BTC,
   ETH,
   USD,
+  AURIGAMI,
   OTHER
 }
 
@@ -39,6 +40,8 @@ export function getTokenForStablePoolType(poolType: StableSwapPoolTypes): Token 
   } else if (poolType === StableSwapPoolTypes.ETH) {
     return WETH[ChainId.AURORA]
   } else if (poolType === StableSwapPoolTypes.USD) {
+    return USDC[ChainId.AURORA]
+  } else if (poolType === StableSwapPoolTypes.AURIGAMI) {
     return USDC[ChainId.AURORA]
   } else {
     throw new Error('[getTokenForStablePoolType] Error getting token')
@@ -201,7 +204,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     ),
     poolTokens: [AUUSDC[ChainId.AURORA], AUUSDT[ChainId.AURORA]],
     address: '0x46F27692de8aA76E86e7E665e573828b9ddcB2b8',
-    type: StableSwapPoolTypes.USD,
+    type: StableSwapPoolTypes.AURIGAMI,
     route: 'usd',
     isOutdated: false,
     rewardPids: null

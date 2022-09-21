@@ -1,8 +1,9 @@
-import { CurrencyAmount, JSBI, Token, TokenAmount } from '@trisolaris/sdk'
+import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount } from '@trisolaris/sdk'
+import { USDC } from '../constants/tokens'
 
-export function getLpTokenUsdEstimate(virtualPrice: TokenAmount, amount: CurrencyAmount, lpToken: Token) {
+export function getLpTokenUsdEstimate(lpTokenPriceUSDC: TokenAmount, amount: CurrencyAmount) {
   return new TokenAmount(
-    lpToken,
-    JSBI.divide(JSBI.multiply(virtualPrice.raw, amount.raw), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+    USDC[ChainId.AURORA],
+    JSBI.divide(JSBI.multiply(lpTokenPriceUSDC.raw, amount.raw), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
   )
 }

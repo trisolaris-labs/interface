@@ -1,12 +1,14 @@
 // TODO: Actually calculate price
 
-import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from '@trisolaris/sdk'
+import { ChainId, Currency, currencyEquals, JSBI, Price, TokenAmount, WETH } from '@trisolaris/sdk'
 import { useMemo } from 'react'
 import { BIG_INT_ZERO } from '../constants'
-import { USDC as usdcDef, USDT as usdtDef } from '../constants/tokens'
+import { AUUSDC as auUsdcDef, AUUSDT as auUsdtDef, USDC as usdcDef, USDT as usdtDef } from '../constants/tokens'
 import { PairState, usePairs } from '../data/Reserves'
 import { useActiveWeb3React } from '.'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
+import { useAuTokenContract } from './useContract'
+import { useSingleCallResult } from '../state/multicall/hooks'
 
 /**
  * Returns the price in USDC of the input currency
@@ -18,6 +20,18 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
 
   const USDC = chainId ? usdcDef[chainId] : usdcDef[ChainId.AURORA]
   const USDT = chainId ? usdtDef[chainId] : usdtDef[ChainId.AURORA]
+  const AUUSDT = chainId ? auUsdtDef[chainId] : auUsdtDef[ChainId.AURORA]
+  const AUUSDC = chainId ? auUsdcDef[chainId] : auUsdcDef[ChainId.AURORA]
+
+  const auUSDCContract = useAuTokenContract(AUUSDC.address)
+  const auUSDTContract = useAuTokenContract(AUUSDT.address)
+
+  const auUSDCExchangeRate: JSBI = JSBI.BigInt(
+    useSingleCallResult(auUSDCContract, 'exchangeRateStored')?.result?.[0] ?? 0
+  )
+  const auUSDTExchangeRate: JSBI = JSBI.BigInt(
+    useSingleCallResult(auUSDTContract, 'exchangeRateStored')?.result?.[0] ?? 0
+  )
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
@@ -33,6 +47,26 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
   const [[currencyEthState, currencyEth], [usdcPairState, usdcPair], [usdcEthPairState, usdcEthPair]] = usePairs(
     tokenPairs
   )
+
+  const calculateAuUSDCExchangeRate = useMemo(() => {
+    return JSBI.divide(
+      JSBI.multiply(
+        JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(8))), // need to escalate up/down the amount to 1e8 to calculate * exchange rato
+        auUSDCExchangeRate
+      ),
+      JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+    )
+  }, [auUSDCExchangeRate])
+
+  const calculateAuUSDTExchangeRate = useMemo(() => {
+    return JSBI.divide(
+      JSBI.multiply(
+        JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(8))), // need to escalate up/down the amount to 1e8 to calculate * exchange rato
+        auUSDTExchangeRate
+      ),
+      JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)))
+    )
+  }, [auUSDTExchangeRate])
 
   return useMemo(() => {
     if (!currency || !wrapped || !chainId) {
@@ -50,12 +84,33 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
     }
     // handle usdc
     if (wrapped.equals(USDC)) {
-      return new Price(USDC, USDC, '1', '1')
+      return new Price(
+        USDC,
+        USDC,
+        JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(wrapped.decimals))),
+        JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(wrapped.decimals)))
+      )
     }
 
     // handle usdt
     if (wrapped.equals(USDT)) {
-      return new Price(USDT, USDT, '1', '1')
+      return new Price(
+        USDT,
+        USDC,
+        JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(wrapped.decimals))),
+        JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(wrapped.decimals)))
+      )
+    }
+
+    // handle Aurigami exchange rates
+    if (wrapped.equals(AUUSDC) || wrapped.equals(AUUSDT)) {
+      const exchangeRate = wrapped.equals(AUUSDC) ? calculateAuUSDCExchangeRate : calculateAuUSDTExchangeRate
+      return new Price(
+        wrapped,
+        USDC,
+        JSBI.multiply(JSBI.BigInt(1), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(wrapped.decimals))),
+        exchangeRate
+      )
     }
 
     const currencyEthPairWETHAmount = currencyEth?.reserveOf(WETH[chainId])
