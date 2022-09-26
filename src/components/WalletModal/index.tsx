@@ -283,23 +283,24 @@ export default function WalletModal({
     const chainID: ChainId = NETWORK_CHAIN_ID
     const provider = await injected.getProvider()
     try {
-      await provider.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: CHAIN_PARAMS[chainID].chainId }]
-      })
-    } catch (switchError) {
-      // This error code indicates that the chain has not been added to MetaMask.
-      if ((switchError as any)?.code === 4902) {
-        try {
-          await provider.request({
-            method: 'wallet_addEthereumChain',
-            params: [CHAIN_PARAMS[chainID]]
-          })
-        } catch (addError) {
-          console.log(addError)
+      try {
+        await provider.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: CHAIN_PARAMS[chainID].chainId }]
+        })
+      } catch (e) {
+        // This error code indicates that the chain has not been added to MetaMask.
+        if ((e as any)?.code !== 4902) {
+          throw e
         }
+
+        await provider.request({
+          method: 'wallet_addEthereumChain',
+          params: [CHAIN_PARAMS[chainID]]
+        })
       }
-      console.log(switchError)
+    } catch (e) {
+      console.error(e)
     }
   }
 
