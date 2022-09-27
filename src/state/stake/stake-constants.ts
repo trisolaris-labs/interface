@@ -573,8 +573,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x606201CFd3c515F2Ce7F992Af9cdD2162c16bFda',
     isFeatured: true,
     inStaging: true,
-    stableSwapPoolName: StableSwapPoolName.AUUSDC_AUUSDT,
-    friendlyFarmName: STABLESWAP_POOLS[StableSwapPoolName.AUUSDC_AUUSDT].friendlyName
+    stableSwapPoolName: StableSwapPoolName.AUUSDC_AUUSDT
   })
 ]
 
