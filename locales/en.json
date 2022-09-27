@@ -53,7 +53,7 @@
     "withdrawingPgl": "Withdrawing {{ amount }} TLP",
     "claimingPng": "Claiming {{ amount }} TRI",
     "claimingAurora": "Claiming {{ amount }} AURORA",
-    "claimedPng": "Claimed TRI!",
+    "claimedPng": "Claimed TRI",
     "manage": "Manage",
     "deposit": "Deposit",
     "poolRate": "Pool rate",
@@ -77,7 +77,7 @@
     "depositedPglLiquidity": "Deposited TLP liquidity:",
     "whenYouWithdrawWarning": "When you withdraw, your TRI is claimed and your Trisolaris Liquidity tokens, TLP, are returned to you. You will no longer earn TLP rewards on this liquidity. Your original token liquidity will remain in its liquidity pool.",
     "withdrawAndClaim": "Withdraw & Claim",
-    "withdrewPgl": "Withdrew TLP!",
+    "withdrewPgl": "Withdrew TLP",
     "approve": "Approve",
     "poolWeight": "Pool Weight"
   },
