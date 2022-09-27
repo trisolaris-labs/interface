@@ -23,22 +23,14 @@ export default function useTriPrice(): Result {
   )
   const latestBlock = useBlockNumber()
 
-  const [wnearUsdcContractReserves, wnearTriContractReserves] = [
-    wnearUsdcContractCall.result,
-    wnearTriContractCall.result
-  ]
+  const [pool1ContractReserves, pool2ContractReserves] = [wnearUsdcContractCall.result, wnearTriContractCall.result]
 
-  const wnearUSDCPairReserves__usdc: BigNumber = wnearUsdcContractReserves?.[0] ?? null
-  const wnearUSDCPairReserves__wnear: BigNumber = wnearUsdcContractReserves?.[1] ?? null
-  const wnearTriPairReserves__wnear: BigNumber = wnearTriContractReserves?.[0] ?? null
-  const wnearTriPairReserves__tri: BigNumber = wnearTriContractReserves?.[1] ?? null
+  const pool1ReservesUSDC: BigNumber = pool1ContractReserves?.[0] ?? null
+  const pool1ReservesWNEAR: BigNumber = pool1ContractReserves?.[1] ?? null
+  const pool2ReservesWNEAR: BigNumber = pool2ContractReserves?.[0] ?? null
+  const pool2ReservesTRI: BigNumber = pool2ContractReserves?.[1] ?? null
 
-  const isLoading = [
-    wnearUSDCPairReserves__usdc,
-    wnearUSDCPairReserves__wnear,
-    wnearTriPairReserves__wnear,
-    wnearTriPairReserves__tri
-  ].some(v => v == null)
+  const isLoading = [pool1ReservesUSDC, pool1ReservesWNEAR, pool2ReservesWNEAR, pool2ReservesTRI].some(v => v == null)
 
   const getTriPrice = useCallback(() => {
     if (isLoading) {
@@ -49,31 +41,26 @@ export default function useTriPrice(): Result {
     // TRI and wNEAR use 18 decimals
     // Multiply USDC balance by 10^(18-6) to normalize
     const normalizedUSDCRatio = JSBI.multiply(
-      JSBI.BigInt(wnearUSDCPairReserves__usdc),
-      JSBI.BigInt(10 ** (TRI[ChainId.AURORA].decimals - USDC[ChainId.AURORA].decimals))
+      JSBI.BigInt(pool1ReservesUSDC),
+      JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(TRI[ChainId.AURORA].decimals - USDC[ChainId.AURORA].decimals))
     )
 
     // USDC/NEAR
-    const usdcToWnearRatio = new Fraction(normalizedUSDCRatio, wnearUSDCPairReserves__wnear.toString())
+    const usdcToWnearRatio = new Fraction(normalizedUSDCRatio, pool1ReservesWNEAR.toString())
 
     // TRI/NEAR
-    const WnearToTriRatio = new Fraction(wnearTriPairReserves__tri.toString(), wnearTriPairReserves__wnear.toString())
+    const WnearToTriRatio = new Fraction(pool2ReservesTRI.toString(), pool2ReservesWNEAR.toString())
 
     // USDC/NEAR / TRI/NEAR => USDC/TRI
     // Price is USDC/TRI (where TRI = 1)
     const result = usdcToWnearRatio.divide(WnearToTriRatio)
 
     return result
-  }, [
-    isLoading,
-    wnearUSDCPairReserves__usdc,
-    wnearUSDCPairReserves__wnear,
-    wnearTriPairReserves__wnear,
-    wnearTriPairReserves__tri,
-    latestBlock
-  ])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, pool1ReservesUSDC, pool1ReservesWNEAR, pool2ReservesWNEAR, pool2ReservesTRI, latestBlock])
 
-  const triPriceFriendly = useMemo(() => getTriPrice()?.toFixed(2) ?? null, [getTriPrice, latestBlock])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const triPriceFriendly = useMemo(() => getTriPrice()?.toFixed(3) ?? null, [getTriPrice, latestBlock])
 
   return { getTriPrice, triPriceFriendly }
 }
