@@ -24,6 +24,7 @@ export function useFarmsAPI(): StakingTriFarms[] {
     const {
       chefVersion,
       tokens,
+      isPeriodFinished,
       ID,
       poolId,
       stakingRewardAddress,
@@ -49,7 +50,7 @@ export function useFarmsAPI(): StakingTriFarms[] {
       lpAddress,
       rewarderAddress,
       tokens,
-      isPeriodFinished: false,
+      isPeriodFinished,
       earnedAmount: tokenAmount,
       totalStakedAmount: tokenAmount,
       totalStakedInUSD: Math.round(totalStakedInUSD ?? 0),
