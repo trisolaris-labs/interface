@@ -573,6 +573,15 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x606201CFd3c515F2Ce7F992Af9cdD2162c16bFda',
     isFeatured: true,
     stableSwapPoolName: StableSwapPoolName.AUUSDC_AUUSDT
+  }),
+  createMCV2Pool({
+    ID: 45,
+    poolId: 38,
+    tokens: [WNEAR[ChainId.AURORA], TRI[ChainId.AURORA]],
+    lpAddress: '0x84b123875F0F36B966d0B6Ca14b31121bd9676AD',
+    rewarderAddress: '0x7b0C1534ba1c2945fED6f906A538a63E5EE3418D',
+    isFeatured: true,
+    inStaging: true
   })
 ]
 
