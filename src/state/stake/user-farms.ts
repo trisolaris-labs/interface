@@ -14,7 +14,7 @@ import { useTokenBalance } from '../wallet/hooks'
 export function useSingleFarm(version: number): StakingTri {
   const { chainId, account } = useActiveWeb3React()
   const activeFarms = STAKING[chainId ?? ChainId.AURORA]
-  const { chefVersion, poolId, isPeriodFinished } = activeFarms[version]
+  const { chefVersion, poolId } = activeFarms[version]
 
   const stakingInfoData = useFetchStakingInfoData()
 
@@ -66,7 +66,6 @@ export function useSingleFarm(version: number): StakingTri {
     return {
       ...activeFarms[version],
       tokens: tokens!,
-      isPeriodFinished,
       earnedAmount,
       stakedAmount,
       totalStakedAmount: totalStakedAmount ?? tokenAmount,
