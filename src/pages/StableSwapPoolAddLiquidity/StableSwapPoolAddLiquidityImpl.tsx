@@ -52,7 +52,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   const { t } = useTranslation()
   const { account, chainId, library } = useActiveWeb3React()
   const [poolData, _userShareData] = useStablePoolsData(stableSwapPoolName)
-  const { disableAddLiquidity, friendlyName, virtualPrice } = poolData
+  const { disableAddLiquidity, friendlyName, virtualPrice, name } = poolData
   const [allowedSlippage] = useUserSlippageTolerance()
   const { isBonus, isHighImpact, minToMint, priceImpact } = useAddLiquidityPriceImpact(stableSwapPoolName, virtualPrice)
 
@@ -156,9 +156,8 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     .join('')}`
 
   const modalHeader = () => {
-    const { virtualPrice, lpToken } = poolData
-    const usdEstimate =
-      virtualPrice && minToMint && lpToken ? getLpTokenUsdEstimate(virtualPrice, minToMint, lpToken) : null
+    const { virtualPrice, lpToken, lpTokenPriceUSDC } = poolData
+    const usdEstimate = virtualPrice && minToMint && lpToken ? getLpTokenUsdEstimate(lpTokenPriceUSDC, minToMint) : null
 
     if (!minToMint) {
       return null

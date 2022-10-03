@@ -263,20 +263,16 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 0,
     tokens: [AURORA[ChainId.AURORA], WETH[ChainId.AURORA]],
     lpAddress: '0x5eeC60F348cB1D661E4A5122CF4638c7DB7A886e',
-    rewarderAddress: '0x94669d7a170bfe62FAc297061663e0B48C63B9B5',
     allocPoint: 1,
-    isFeatured: true,
-    poolType: PoolType.DUAL_REWARDS
+    poolType: PoolType.TRI_ONLY
   }),
   createMCV2Pool({
     ID: 8,
     poolId: 1,
     tokens: [TRI[ChainId.AURORA], AURORA[ChainId.AURORA]],
     lpAddress: '0xd1654a7713617d41A8C9530Fb9B948d00e162194',
-    rewarderAddress: '0x78EdEeFdF8c3ad827228d07018578E89Cf159Df1',
     allocPoint: 1,
-    isFeatured: true,
-    poolType: PoolType.DUAL_REWARDS
+    poolType: PoolType.TRI_ONLY
   }),
   createMCV2Pool({
     ID: 9,
@@ -540,7 +536,7 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 28,
     tokens: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT_USN].poolTokens,
     lpAddress: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT_USN].lpToken.address,
-    rewarderAddress: '0x78391f26397A099Ec9cC346A23f856d1284cBd06',
+    rewarderAddress: '0x34998bb1b4721f0418B22aae5a252C3167F1e7bF',
     allocPoint: 1,
     inStaging: false,
     stableSwapPoolName: StableSwapPoolName.USDC_USDT_USN,
@@ -618,10 +614,19 @@ const AURORA_POOLS: StakingTri[] = [
     ID: 43,
     poolId: 36,
     tokens: [WNEAR[ChainId.AURORA], PLY[ChainId.AURORA]],
-    lpAddress: '0x044b6b0cd3bb13d2b9057781df4459c66781dce7',
+    lpAddress: '0x044b6B0CD3Bb13D2b9057781Df4459C66781dCe7',
     rewarderAddress: '0xF1469a96be8C82E5D5a9B0010eDeC77BdB319448',
+    isFeatured: true
+  }),
+  createMCV2Pool({
+    ID: 44,
+    poolId: 37,
+    tokens: STABLESWAP_POOLS[StableSwapPoolName.AUUSDC_AUUSDT].poolTokens,
+    lpAddress: '0x2e5F03c34A771F50C97E8f77EF801C426636e5Cd',
+    rewarderAddress: '0x606201CFd3c515F2Ce7F992Af9cdD2162c16bFda',
     isFeatured: true,
-    poolType: PoolType.DUAL_REWARDS
+    poolType: PoolType.STABLE,
+    stableSwapPoolName: StableSwapPoolName.AUUSDC_AUUSDT
   })
 ]
 

@@ -1,6 +1,6 @@
-import { ChainId, Token, WETH } from '@trisolaris/sdk'
+import { ChainId, Token, TokenAmount, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
-import { FRAX, USDC, USDT, WBTC, UST, USN, NUSD } from '../../constants/tokens'
+import { FRAX, USDC, USDT, WBTC, UST, USN, NUSD, AUUSDC, AUUSDT } from '../../constants/tokens'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
@@ -22,13 +22,15 @@ export enum StableSwapPoolName {
   USDC_USDT_UST_FRAX_USN = 'USDC_USDT_UST_FRAX_USN',
   USDC_USDT_USN = 'USDC_USDT_USN',
   USDC_USDT_V2 = 'USDC_USDT_V2',
-  NUSD_USDC_USDT = 'NUSD_USDC_USDT'
+  NUSD_USDC_USDT = 'NUSD_USDC_USDT',
+  AUUSDC_AUUSDT = 'AUUSDC_AUUSDT'
 }
 
 export enum StableSwapPoolTypes {
   BTC,
   ETH,
   USD,
+  AURIGAMI,
   OTHER
 }
 
@@ -38,6 +40,8 @@ export function getTokenForStablePoolType(poolType: StableSwapPoolTypes): Token 
   } else if (poolType === StableSwapPoolTypes.ETH) {
     return WETH[ChainId.AURORA]
   } else if (poolType === StableSwapPoolTypes.USD) {
+    return USDC[ChainId.AURORA]
+  } else if (poolType === StableSwapPoolTypes.AURIGAMI) {
     return USDC[ChainId.AURORA]
   } else {
     throw new Error('[getTokenForStablePoolType] Error getting token')
@@ -185,6 +189,23 @@ export const STABLESWAP_POOLS: StableSwapPools = {
       )
     ],
     underlyingPool: StableSwapPoolName.USDC_USDT,
+    isOutdated: false,
+    rewardPids: null
+  },
+  [StableSwapPoolName.AUUSDC_AUUSDT]: {
+    name: StableSwapPoolName.AUUSDC_AUUSDT,
+    friendlyName: 'auUSDC/auUSDT',
+    lpToken: new Token(
+      ChainId.AURORA,
+      '0x2e5F03c34A771F50C97E8f77EF801C426636e5Cd',
+      18,
+      'auUSDC/auUSDT TLP',
+      'Trisolaris auUSDC/auUSDT TLP'
+    ),
+    poolTokens: [AUUSDC[ChainId.AURORA], AUUSDT[ChainId.AURORA]],
+    address: '0x46F27692de8aA76E86e7E665e573828b9ddcB2b8',
+    type: StableSwapPoolTypes.AURIGAMI,
+    route: 'usd',
     isOutdated: false,
     rewardPids: null
   }
