@@ -20,7 +20,7 @@ export const Wrapper = styled(Card)<{
   border-radius: 0px;
   gap: 12px;
   position: relative;
-  padding: 10px 20px 16px 20px;
+  padding: 12px 20px 12px 20px;
   display: grid;
   grid-auto-rows: auto;
 
@@ -30,6 +30,9 @@ export const Wrapper = styled(Card)<{
   }
   &:last-child {
     border-radius: 0 0 10px 10px;
+  }
+  &:only-child {
+    border-radius: 10px;
   }
 
   &:hover {
