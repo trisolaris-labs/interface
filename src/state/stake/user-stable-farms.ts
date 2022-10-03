@@ -58,7 +58,6 @@ export function useSingleStableFarm(version: number, stableSwapPoolName: StableS
 
     return {
       ...activeFarms[version],
-      isPeriodFinished: false,
       earnedAmount,
       stakedAmount,
       totalStakedAmount: totalStakedAmount ?? tokenAmount,
