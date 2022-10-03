@@ -107,5 +107,8 @@ module.exports = {
       'PAD',
       'SmartPad token'
     )
+  },
+  AXLUSDC: {
+    [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4268B8F0B87b6Eae5d897996E6b845ddbD99Adf3', 6, 'axlUSDC', 'axlUSDC')
   }
 }

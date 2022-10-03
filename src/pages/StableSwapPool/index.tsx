@@ -43,6 +43,7 @@ export default function Pool() {
             <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>Meta Pools</TYPE.mediumHeader>
           </TitleRow>
           <FullStablePositionCard poolName={StableSwapPoolName.NUSD_USDC_USDT} />
+          <FullStablePositionCard poolName={StableSwapPoolName.AXLUSD_USDC_USDT_USN} />
         </AutoColumn>
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <TitleRow style={{ marginTop: '2.5rem' }} padding={'0'}>

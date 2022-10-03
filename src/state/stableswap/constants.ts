@@ -1,13 +1,16 @@
 import { ChainId, Token, TokenAmount, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
-import { FRAX, USDC, USDT, WBTC, UST, USN, NUSD, AUUSDC, AUUSDT } from '../../constants/tokens'
+import { FRAX, USDC, USDT, WBTC, UST, USN, NUSD, AUUSDC, AUUSDT, AXLUSDC } from '../../constants/tokens'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
 }
 
 export function isMetaPool(poolName?: StableSwapPoolName): boolean {
-  const metapools = new Set<StableSwapPoolName | undefined>([StableSwapPoolName.NUSD_USDC_USDT])
+  const metapools = new Set<StableSwapPoolName | undefined>([
+    StableSwapPoolName.NUSD_USDC_USDT,
+    StableSwapPoolName.AXLUSD_USDC_USDT_USN
+  ])
 
   return metapools.has(poolName)
 }
@@ -23,7 +26,8 @@ export enum StableSwapPoolName {
   USDC_USDT_USN = 'USDC_USDT_USN',
   USDC_USDT_V2 = 'USDC_USDT_V2',
   NUSD_USDC_USDT = 'NUSD_USDC_USDT',
-  AUUSDC_AUUSDT = 'AUUSDC_AUUSDT'
+  AUUSDC_AUUSDT = 'AUUSDC_AUUSDT',
+  AXLUSD_USDC_USDT_USN = 'AXLUSD_USDC_USDT_USN'
 }
 
 export enum StableSwapPoolTypes {
@@ -206,6 +210,29 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     address: '0x46F27692de8aA76E86e7E665e573828b9ddcB2b8',
     type: StableSwapPoolTypes.AURIGAMI,
     route: 'usd',
+    isOutdated: false,
+    rewardPids: null
+  },
+  [StableSwapPoolName.AXLUSD_USDC_USDT_USN]: {
+    name: StableSwapPoolName.AXLUSD_USDC_USDT_USN,
+    friendlyName: 'axlUSDC-USDC/USDT/USN',
+    lpToken: new Token(
+      ChainId.AURORA,
+      '0x62A0C1Bb3ff819d7ad8B1d69C2270f473aeF6f55',
+      18,
+      'axlUSDC-USDC/USDT/USN TLP',
+      'Trisolaris axlUSDC-USDC/USDT/USN'
+    ),
+    poolTokens: [AXLUSDC[ChainId.AURORA], USDC[ChainId.AURORA], USDT[ChainId.AURORA], USN[ChainId.AURORA]],
+    address: '0xc6618d97b96187Cc06C61A32964f2f5D8690aDda', // MetaSwap
+    metaSwapAddresses: '0x7825C8FD39f0173A019e6fE4440E1BD9C25BA12c', // MetaSwapDeposit
+    type: StableSwapPoolTypes.USD,
+    route: 'usd',
+    underlyingPoolTokens: [
+      AXLUSDC[ChainId.AURORA],
+      new Token(ChainId.AURORA, '0x87BCC091d0A7F9352728100268Ac8D25729113bB', 18, 'USD TLP', 'USDC/USDT/USN')
+    ],
+    underlyingPool: StableSwapPoolName.USDC_USDT,
     isOutdated: false,
     rewardPids: null
   }

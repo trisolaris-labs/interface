@@ -757,3 +757,10 @@ export const SMARTPAD: { [chainId in ChainId]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'SmartPad token'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x34F291934b88c7870B7A17835B926B264fc13a81', 18, 'PAD', 'SmartPad token'),
 }
+
+export const AXLUSDC: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 6, 'axlUSDC', 'axlUSDC'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'axlUSDC', 'axlUSDC'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 6, 'axlUSDC', 'axlUSDC'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4268B8F0B87b6Eae5d897996E6b845ddbD99Adf3', 6, 'axlUSDC', 'axlUSDC'),
+}
