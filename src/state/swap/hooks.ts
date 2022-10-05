@@ -178,14 +178,10 @@ export function useDerivedSwapInfo(
       find(STABLESWAP_POOLS, pool => {
         return (
           Boolean(
-            pool.poolTokens?.find(
-              stableToken => stableToken?.name?.toLowerCase() === currencies[Field.INPUT]?.name?.toLowerCase()
-            )
+            pool.poolTokens?.find(stableToken => stableToken?.address === (currencies[Field.INPUT] as Token)?.address)
           ) &&
           Boolean(
-            pool.poolTokens?.find(
-              stableToken => stableToken?.name?.toLowerCase() === currencies[Field.OUTPUT]?.name?.toLowerCase()
-            )
+            pool.poolTokens?.find(stableToken => stableToken?.address === (currencies[Field.OUTPUT] as Token)?.address)
           )
         )
       })
