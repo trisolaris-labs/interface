@@ -18,6 +18,8 @@ import { useColorForToken } from '../../../hooks/useColor'
 import { useSingleStableFarm } from '../../../state/stake/user-stable-farms'
 import useUserFarmStatistics from '../../../state/stake/useUserFarmStatistics'
 import useTLP from '../../../hooks/useTLP'
+import { useTokenBalance } from '../../../state/wallet/hooks'
+import { useActiveWeb3React } from '../../../hooks'
 
 import { addCommasToNumber } from '../../../utils'
 import { getPairRenderOrder, isTokenAmountPositive } from '../../../utils/pools'
@@ -103,6 +105,10 @@ const DefaultPoolCardtri = ({
   enableClaimModal = () => null
 }: ExtendedPoolCardTriProps) => {
   const { t } = useTranslation()
+
+  const { account } = useActiveWeb3React()
+
+  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, lpToken)
 
   const [showMore, setShowMore] = useState(false)
 
@@ -205,6 +211,8 @@ const DefaultPoolCardtri = ({
                 noTriRewards={noTriRewards}
                 earnedNonTriRewards={earnedNonTriRewards}
                 earnedAmount={earnedAmount}
+                userLiquidityUnstaked={userLiquidityUnstaked}
+                account={account}
               />
             </StakeContainer>
           </>
