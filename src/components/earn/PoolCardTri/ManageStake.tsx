@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { TokenAmount, Token, ChainId } from '@trisolaris/sdk'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -9,7 +9,6 @@ import { AutoRow } from '../../Row'
 import StakingModal from './StakingModalTri'
 import UnstakingModal from './UnstakingModalTri'
 
-import { useTokenBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 
@@ -33,6 +32,8 @@ type ManageStakeProps = {
   noTriRewards: boolean
   earnedNonTriRewards: EarnedNonTriRewards[]
   earnedAmount?: TokenAmount
+  userLiquidityUnstaked?: TokenAmount
+  account?: string | null
 }
 
 function ManageStake({
@@ -46,18 +47,19 @@ function ManageStake({
   lpToken,
   noTriRewards,
   earnedNonTriRewards,
-  earnedAmount
+  earnedAmount,
+  userLiquidityUnstaked,
+  account
 }: ManageStakeProps) {
-  const { account } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
   const history = useHistory()
   const { t } = useTranslation()
 
+  const userHasLiquidity = userLiquidityUnstaked?.greaterThan(BIG_INT_ZERO)
+
   const [showStakingModal, setShowStakingModal] = useState(false)
   const [showUnstakingModal, setShowUnstakingModal] = useState(false)
-  const [toggleIsStaking, setToggleIsStaking] = useState(isStaking)
-
-  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, lpToken)
+  const [toggleIsStaking, setToggleIsStaking] = useState(isStaking || userHasLiquidity)
 
   const stakingRewardAddress =
     chefVersion === ChefVersions.V1 ? MASTERCHEF_ADDRESS_V1[ChainId.AURORA] : MASTERCHEF_ADDRESS_V2[ChainId.AURORA]
@@ -94,6 +96,12 @@ function ManageStake({
     history.push(removeLpLink)
     event.stopPropagation()
   }
+
+  useEffect(() => {
+    if (userHasLiquidity && !toggleIsStaking) {
+      setToggleIsStaking(true)
+    }
+  }, [userHasLiquidity])
 
   const addLpLink = stableSwapPoolName
     ? `/pool/stable/add/${stableSwapPoolName}`
@@ -143,7 +151,7 @@ function ManageStake({
       <AutoRow justifyContent="space-between">
         <ButtonPrimary
           borderRadius="8px"
-          disabled={toggleIsStaking && (userLiquidityUnstaked == null || userLiquidityUnstaked?.equalTo(BIG_INT_ZERO))}
+          disabled={toggleIsStaking && !userHasLiquidity}
           width="98px"
           padding="5px"
           fontSize="14px"
@@ -154,7 +162,7 @@ function ManageStake({
         <ButtonPrimary
           disabled={
             (toggleIsStaking && (stakedAmount == null || stakedAmount?.equalTo(BIG_INT_ZERO))) ||
-            (!toggleIsStaking && userLiquidityUnstaked?.equalTo(BIG_INT_ZERO))
+            (!toggleIsStaking && !userHasLiquidity)
           }
           padding="5px"
           borderRadius="8px"
