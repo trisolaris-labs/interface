@@ -11,6 +11,7 @@ import { Info } from 'react-feather'
 import _ from 'lodash'
 import CurrencyLogo from '../../CurrencyLogo'
 import useGetTokenByAddress from '../../../hooks/useGetTokenByAddress'
+import { NonTriAPR } from '../../../state/stake/stake-constants'
 
 const IconWrapper = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -39,9 +40,9 @@ const AprContainer = styled.div`
   `};
 `
 
-type Props = Pick<PoolCardTriProps, 'apr' | 'inStaging' | 'nonTriAPRs' | 'isLegacy'>
+type Props = { isLegacy?: boolean; apr: number; inStaging: boolean; nonTriAPRs: NonTriAPR[] }
 
-export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLegacy }: Props) {
+export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLegacy = false }: Props) {
   const [show, setShow] = useState(false)
   const open = useCallback(() => setShow(true), [setShow])
   const close = useCallback(() => setShow(false), [setShow])
