@@ -54,7 +54,6 @@ export type PoolCardTriProps = {
   chefVersion: ChefVersions
   inStaging: boolean
   noTriRewards: boolean
-  isLegacy?: boolean
   isPeriodFinished: boolean
   tokens: Token[]
   totalStakedInUSD: number
@@ -84,7 +83,6 @@ const DefaultPoolCardtri = ({
   apr,
   chefVersion,
   inStaging,
-  isLegacy,
   tokens: _tokens,
   totalStakedInUSD,
   version,
@@ -133,6 +131,8 @@ const DefaultPoolCardtri = ({
     enableClaimModal()
     event.stopPropagation()
   }
+
+  const isLegacy = poolType === PoolType.LEGACY
 
   return (
     <Wrapper
@@ -213,6 +213,7 @@ const DefaultPoolCardtri = ({
                 earnedAmount={earnedAmount}
                 userLiquidityUnstaked={userLiquidityUnstaked}
                 account={account}
+                isLegacy={isLegacy}
               />
             </StakeContainer>
           </>

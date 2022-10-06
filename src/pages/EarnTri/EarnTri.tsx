@@ -9,6 +9,7 @@ import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter
 import useFarmsSortAndFilter from './useFarmsSortAndFilter'
 import styled from 'styled-components'
 import Toggle from '../../components/Toggle'
+import { PoolType } from '../../state/stake/stake-constants'
 
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
@@ -113,7 +114,6 @@ export default function EarnTri() {
                   apr={farm.apr}
                   nonTriAPRs={farm.nonTriAPRs}
                   chefVersion={farm.chefVersion}
-                  isLegacy={true}
                   isPeriodFinished={farm.isPeriodFinished}
                   tokens={farm.tokens}
                   totalStakedInUSD={farm.totalStakedInUSD}

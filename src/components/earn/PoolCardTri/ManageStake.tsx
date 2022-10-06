@@ -34,6 +34,7 @@ type ManageStakeProps = {
   earnedAmount?: TokenAmount
   userLiquidityUnstaked?: TokenAmount
   account?: string | null
+  isLegacy: boolean
 }
 
 function ManageStake({
@@ -49,7 +50,8 @@ function ManageStake({
   earnedNonTriRewards,
   earnedAmount,
   userLiquidityUnstaked,
-  account
+  account,
+  isLegacy
 }: ManageStakeProps) {
   const toggleWalletModal = useWalletModalToggle()
   const history = useHistory()
@@ -151,7 +153,7 @@ function ManageStake({
       <AutoRow justifyContent="space-between">
         <ButtonPrimary
           borderRadius="8px"
-          disabled={toggleIsStaking && !userHasLiquidity}
+          disabled={(toggleIsStaking && !userHasLiquidity) || (toggleIsStaking && isLegacy)}
           width="98px"
           padding="5px"
           fontSize="14px"
