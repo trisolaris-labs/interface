@@ -95,6 +95,28 @@ export default function EarnTri() {
                   poolId={farm.poolId}
                 />
               ))}
+              {filteredFarms.map(farm => (
+                <MemoizedPoolCardTRI
+                  key={farm.ID}
+                  apr={farm.apr}
+                  nonTriAPRs={farm.nonTriAPRs}
+                  chefVersion={farm.chefVersion}
+                  isPeriodFinished={farm.isPeriodFinished}
+                  tokens={farm.tokens}
+                  totalStakedInUSD={farm.totalStakedInUSD}
+                  version={farm.ID}
+                  hasNonTriRewards={farm.hasNonTriRewards}
+                  inStaging={farm.inStaging}
+                  noTriRewards={farm.noTriRewards}
+                  isStaking={isTokenAmountPositive(farm.stakedAmount)}
+                  friendlyFarmName={farm.friendlyFarmName}
+                  isFeatured={farm.isFeatured}
+                  stableSwapPoolName={farm.stableSwapPoolName}
+                  poolType={farm.poolType}
+                  lpAddress={farm.lpAddress}
+                  poolId={farm.poolId}
+                />
+              ))}
               {nonTriFarms.map(farm => (
                 <MemoizedPoolCardTRI
                   key={farm.ID}
@@ -118,28 +140,6 @@ export default function EarnTri() {
               ))}
             </>
           )}
-          {filteredFarms.map(farm => (
-            <MemoizedPoolCardTRI
-              key={farm.ID}
-              apr={farm.apr}
-              nonTriAPRs={farm.nonTriAPRs}
-              chefVersion={farm.chefVersion}
-              isPeriodFinished={farm.isPeriodFinished}
-              tokens={farm.tokens}
-              totalStakedInUSD={farm.totalStakedInUSD}
-              version={farm.ID}
-              hasNonTriRewards={farm.hasNonTriRewards}
-              inStaging={farm.inStaging}
-              noTriRewards={farm.noTriRewards}
-              isStaking={isTokenAmountPositive(farm.stakedAmount)}
-              friendlyFarmName={farm.friendlyFarmName}
-              isFeatured={farm.isFeatured}
-              stableSwapPoolName={farm.stableSwapPoolName}
-              poolType={farm.poolType}
-              lpAddress={farm.lpAddress}
-              poolId={farm.poolId}
-            />
-          ))}
         </PoolSection>
       </AutoColumn>
       {!hasSearchQuery && !activeFarmsFilter && (
