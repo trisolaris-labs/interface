@@ -20,7 +20,6 @@ const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean; fo
   position:relative;
   :hover {
     user-select: ${({ isOnSwitch }) => (isOnSwitch ? 'none' : 'initial')};
-    color: ${({ theme }) => theme.text3};
   }
 
 `
