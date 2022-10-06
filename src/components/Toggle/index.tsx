@@ -10,7 +10,7 @@ const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean; fo
   font-size: 1rem;
   font-weight: 400;
 
-  padding: 0.35rem 0.6rem;
+  padding: 0.35rem 0.7rem;
   border-radius: 12px;
   color: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.white : theme.text2) : theme.text2)};
   font-size: ${({ fontSize }) => (fontSize ? fontSize : '1rem')};
