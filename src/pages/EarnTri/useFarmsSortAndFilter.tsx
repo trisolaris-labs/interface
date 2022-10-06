@@ -19,32 +19,26 @@ enum SortingType {
   default = 'Default'
 }
 
-const dualRewardsPoolsOrderSet = new Set(DUAL_REWARDS_POOLS)
-const triOnlyPoolsOrderSet = new Set(TRI_ONLY_REWARDS_POOLS)
-const ecosystemPoolsOrderSet = new Set(ECOSYSTEM_POOLS)
 const legacyPoolsOrderSet = new Set(LEGACY_POOLS)
-const stablePoolsOrderSet = new Set(STABLE_POOLS)
 
 type SearchableTokenProps = { symbol: string | undefined; name: string | undefined; address: string }
 
 type FarmsSortAndFilterResult = {
   activeFarmsFilter: boolean
-  dualRewardPools: StakingTri[]
   filteredFarms: StakingTri[]
-  stablePoolFarms: StakingTri[]
   handleSort: (sortingType: SortingType) => void
   hasSearchQuery: boolean
   isSortDescending: boolean
   legacyFarms: StakingTri[]
-  nonTriFarms: StakingTri[]
   onInputChange: (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
   sortBy: SortingType
+  allFarms: StakingTri[]
 }
 
 export default function useFarmsSortAndFilter(): FarmsSortAndFilterResult {
   const allFarmArrs = useFarms()
   const activeFarmsFilter = useIsFilterActiveFarms()
-  const allPools = DUAL_REWARDS_POOLS.concat(TRI_ONLY_REWARDS_POOLS, ECOSYSTEM_POOLS, STABLE_POOLS)
+  const allPools = STABLE_POOLS.concat(DUAL_REWARDS_POOLS, TRI_ONLY_REWARDS_POOLS, ECOSYSTEM_POOLS)
 
   const [sortBy, setSortBy] = useState<SortingType>(SortingType.default)
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -72,15 +66,7 @@ export default function useFarmsSortAndFilter(): FarmsSortAndFilterResult {
     }
   }, [allFarmArrs, farmArrs, isSortDescending, allPools, sortBy])
 
-  const nonDualRewardPools = farmArrsInOrder.filter(farm => triOnlyPoolsOrderSet.has(farm.ID))
-
-  const dualRewardPools = farmArrsInOrder.filter(farm => dualRewardsPoolsOrderSet.has(farm.ID))
-
-  const stablePoolFarms = farmArrsInOrder.filter(({ ID }) => stablePoolsOrderSet.has(ID))
-
-  const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(nonDualRewardPools)
-
-  const nonTriFarms = farmArrsInOrder.filter(farm => ecosystemPoolsOrderSet.has(farm.ID))
+  const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(farmArrs)
 
   const legacyFarms = allFarmArrs.filter(farm => legacyPoolsOrderSet.has(farm.ID))
 
@@ -118,24 +104,22 @@ export default function useFarmsSortAndFilter(): FarmsSortAndFilterResult {
   }, [activeFarmsFilter, currentFarms, searchQuery])
 
   useEffect(() => {
-    const farmsToCompare = searchQuery.length || activeFarmsFilter ? farmArrsInOrder : nonDualRewardPools
+    const farmsToCompare = searchQuery.length || activeFarmsFilter ? farmArrsInOrder : farmArrs
 
     if (!isEqual(currentFarms, farmsToCompare)) {
       setCurrentFarms(farmsToCompare)
     }
-  }, [activeFarmsFilter, currentFarms, farmArrs, farmArrsInOrder, nonDualRewardPools, searchQuery.length])
+  }, [activeFarmsFilter, currentFarms, farmArrs, farmArrsInOrder, searchQuery.length])
 
   return {
     activeFarmsFilter,
-    dualRewardPools,
     filteredFarms,
     handleSort,
     hasSearchQuery: searchQuery.length > 0,
     legacyFarms,
-    nonTriFarms,
     onInputChange: handleInput,
     isSortDescending,
     sortBy,
-    stablePoolFarms
+    allFarms: farmArrsInOrder
   }
 }

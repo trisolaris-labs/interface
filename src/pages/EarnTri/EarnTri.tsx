@@ -23,16 +23,14 @@ export default function EarnTri() {
   const [showLegacyFarms, setShowLegacyFarms] = useState(false)
   const {
     activeFarmsFilter,
-    dualRewardPools,
-    stablePoolFarms,
     filteredFarms,
     handleSort,
     hasSearchQuery,
     legacyFarms,
-    nonTriFarms,
     onInputChange,
     isSortDescending,
-    sortBy
+    sortBy,
+    allFarms
   } = useFarmsSortAndFilter()
 
   return (
@@ -49,75 +47,7 @@ export default function EarnTri() {
         <PoolSection>
           {!hasSearchQuery && !activeFarmsFilter && (
             <>
-              {stablePoolFarms.map(farm =>
-                farm.stableSwapPoolName == null ? null : (
-                  <MemoizedPoolCardTRI
-                    key={farm.ID}
-                    apr={farm.apr}
-                    nonTriAPRs={farm.nonTriAPRs}
-                    chefVersion={farm.chefVersion}
-                    isPeriodFinished={farm.isPeriodFinished}
-                    tokens={farm.tokens}
-                    stableSwapPoolName={farm.stableSwapPoolName}
-                    totalStakedInUSD={farm.totalStakedInUSD}
-                    version={farm.ID}
-                    hasNonTriRewards={farm.hasNonTriRewards}
-                    inStaging={farm.inStaging}
-                    noTriRewards={farm.noTriRewards}
-                    isStaking={isTokenAmountPositive(farm.stakedAmount)}
-                    friendlyFarmName={farm.friendlyFarmName}
-                    isFeatured={farm.isFeatured}
-                    poolType={farm.poolType}
-                    lpAddress={farm.lpAddress}
-                    poolId={farm.poolId}
-                  />
-                )
-              )}
-              {dualRewardPools.map(farm => (
-                <MemoizedPoolCardTRI
-                  key={farm.ID}
-                  apr={farm.apr}
-                  nonTriAPRs={farm.nonTriAPRs}
-                  chefVersion={farm.chefVersion}
-                  isPeriodFinished={farm.isPeriodFinished}
-                  tokens={farm.tokens}
-                  totalStakedInUSD={farm.totalStakedInUSD}
-                  version={farm.ID}
-                  hasNonTriRewards={farm.hasNonTriRewards}
-                  inStaging={farm.inStaging}
-                  noTriRewards={farm.noTriRewards}
-                  isStaking={isTokenAmountPositive(farm.stakedAmount)}
-                  friendlyFarmName={farm.friendlyFarmName}
-                  isFeatured={farm.isFeatured}
-                  stableSwapPoolName={farm.stableSwapPoolName}
-                  poolType={farm.poolType}
-                  lpAddress={farm.lpAddress}
-                  poolId={farm.poolId}
-                />
-              ))}
-              {filteredFarms.map(farm => (
-                <MemoizedPoolCardTRI
-                  key={farm.ID}
-                  apr={farm.apr}
-                  nonTriAPRs={farm.nonTriAPRs}
-                  chefVersion={farm.chefVersion}
-                  isPeriodFinished={farm.isPeriodFinished}
-                  tokens={farm.tokens}
-                  totalStakedInUSD={farm.totalStakedInUSD}
-                  version={farm.ID}
-                  hasNonTriRewards={farm.hasNonTriRewards}
-                  inStaging={farm.inStaging}
-                  noTriRewards={farm.noTriRewards}
-                  isStaking={isTokenAmountPositive(farm.stakedAmount)}
-                  friendlyFarmName={farm.friendlyFarmName}
-                  isFeatured={farm.isFeatured}
-                  stableSwapPoolName={farm.stableSwapPoolName}
-                  poolType={farm.poolType}
-                  lpAddress={farm.lpAddress}
-                  poolId={farm.poolId}
-                />
-              ))}
-              {nonTriFarms.map(farm => (
+              {allFarms.map(farm => (
                 <MemoizedPoolCardTRI
                   key={farm.ID}
                   apr={farm.apr}
@@ -140,6 +70,28 @@ export default function EarnTri() {
               ))}
             </>
           )}
+          {(hasSearchQuery || activeFarmsFilter) &&
+            filteredFarms.map(farm => (
+              <MemoizedPoolCardTRI
+                key={farm.ID}
+                apr={farm.apr}
+                nonTriAPRs={farm.nonTriAPRs}
+                chefVersion={farm.chefVersion}
+                isPeriodFinished={farm.isPeriodFinished}
+                tokens={farm.tokens}
+                totalStakedInUSD={farm.totalStakedInUSD}
+                version={farm.ID}
+                hasNonTriRewards={farm.hasNonTriRewards}
+                inStaging={farm.inStaging}
+                noTriRewards={farm.noTriRewards}
+                isStaking={isTokenAmountPositive(farm.stakedAmount)}
+                friendlyFarmName={farm.friendlyFarmName}
+                stableSwapPoolName={farm.stableSwapPoolName}
+                poolType={farm.poolType}
+                lpAddress={farm.lpAddress}
+                poolId={farm.poolId}
+              />
+            ))}
         </PoolSection>
       </AutoColumn>
       {!hasSearchQuery && !activeFarmsFilter && (
