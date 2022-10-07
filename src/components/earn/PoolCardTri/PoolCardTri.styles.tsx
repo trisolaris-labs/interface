@@ -111,7 +111,7 @@ export const StyledPairContainer = styled(PairContainer)`
 
 export const CardContainer = styled.div`
   display: grid;
-  grid-template-columns: 220px auto 110px 150px 100px;
+  grid-template-columns: 220px auto 110px 140px 100px;
   row-gap: 20px;
   width: 100%;
   align-items: center;
