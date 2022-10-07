@@ -66,7 +66,6 @@ export function useSingleFarm(version: number): StakingTri {
     return {
       ...activeFarms[version],
       tokens: tokens!,
-      isPeriodFinished: false,
       earnedAmount,
       stakedAmount,
       totalStakedAmount: totalStakedAmount ?? tokenAmount,
