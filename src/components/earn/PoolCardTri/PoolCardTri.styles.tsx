@@ -312,7 +312,7 @@ export const StakeContainer = styled(AutoColumn)`
   grid-column-end: 6;
   grid-column-start: 4;
   width: 100%;
-  padding: 0 24px;
+  padding: 0 0 0 20px;
   row-gap: 8px;
   ${({ theme }) => theme.mediaWidth.upToSmall<{ isStaking: boolean }>`
     grid-column: 2/4
