@@ -12,6 +12,8 @@ import _ from 'lodash'
 import CurrencyLogo from '../../CurrencyLogo'
 import useGetTokenByAddress from '../../../hooks/useGetTokenByAddress'
 
+import { roundApr } from '../../../utils'
+
 const IconWrapper = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
   display: flex;
@@ -100,7 +102,7 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLe
   }
 
   // If multiple rewards, render aggregate APR, token logos, and tooltip
-  const totalAPR = (nonTriAPRs ?? []).reduce((acc, { apr: nonTriAPR }) => acc + nonTriAPR, apr)
+  const totalAPR = roundApr((nonTriAPRs ?? []).reduce((acc, { apr: nonTriAPR }) => acc + nonTriAPR, apr))
   return (
     <Popover content={tooltipContent} show={show}>
       <IconWrapper onMouseEnter={open} onMouseLeave={close}>
