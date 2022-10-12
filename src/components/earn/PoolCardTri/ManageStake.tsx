@@ -75,28 +75,28 @@ function ManageStake({
   }, [account, toggleWalletModal])
 
   function handleDepositClick(event: React.MouseEvent) {
-    enableDepositModal()
     event.stopPropagation()
+    enableDepositModal()
   }
 
   function handleWithDrawClick(event: React.MouseEvent) {
-    setShowUnstakingModal(true)
     event.stopPropagation()
+    setShowUnstakingModal(true)
   }
 
   function handleToggle(event: React.MouseEvent) {
-    setToggleIsStaking(!toggleIsStaking)
     event.stopPropagation()
+    setToggleIsStaking(!toggleIsStaking)
   }
 
   function handleAddLp(event: React.MouseEvent) {
-    history.push(addLpLink)
     event.stopPropagation()
+    history.push(addLpLink)
   }
 
   function handleRemoveLp(event: React.MouseEvent) {
-    history.push(removeLpLink)
     event.stopPropagation()
+    history.push(removeLpLink)
   }
 
   useEffect(() => {
