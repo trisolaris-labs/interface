@@ -137,6 +137,6 @@ export function replaceUnderscoresWithSlashes(value: string) {
   return value.replace(/_/g, '/')
 }
 
-export function roundApr(apr: number) {
-  return apr > 1 ? Math.round(apr) : +apr?.toFixed(2)
+export function roundDecimal(apr: number) {
+  return apr >= 1 ? Math.round(apr) : +apr.toFixed(2)
 }

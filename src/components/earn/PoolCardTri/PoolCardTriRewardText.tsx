@@ -12,7 +12,7 @@ import _ from 'lodash'
 import CurrencyLogo from '../../CurrencyLogo'
 import useGetTokenByAddress from '../../../hooks/useGetTokenByAddress'
 
-import { roundApr } from '../../../utils'
+import { roundDecimal } from '../../../utils'
 
 const IconWrapper = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -102,7 +102,7 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLe
   }
 
   // If multiple rewards, render aggregate APR, token logos, and tooltip
-  const totalAPR = roundApr((nonTriAPRs ?? []).reduce((acc, { apr: nonTriAPR }) => acc + nonTriAPR, apr))
+  const totalAPR = (nonTriAPRs ?? []).reduce((acc, { apr: nonTriAPR }) => acc + nonTriAPR, apr)
   return (
     <Popover content={tooltipContent} show={show}>
       <IconWrapper onMouseEnter={open} onMouseLeave={close}>
@@ -110,7 +110,7 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLe
           <CurrencyLogo alt="" currency={token} key={token.address} size={'16px'} style={{ marginRight: '4px' }} />
         ))}
         <TYPE.white marginRight="4px" textAlign="end">
-          {totalAPR}%
+          {roundDecimal(totalAPR)}%
         </TYPE.white>
         <Info size="16px" />
       </IconWrapper>

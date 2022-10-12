@@ -4,7 +4,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useFetchStakingInfoData } from '../../fetchers/farms'
 import React, { useRef } from 'react'
 
-import { roundApr } from '../../utils'
+import { roundDecimal } from '../../utils'
 
 // gets the staking info from the network for the active chain id
 export function useFarmsAPI(): StakingTriFarms[] {
@@ -26,8 +26,8 @@ export function useFarmsAPI(): StakingTriFarms[] {
     const { totalStakedInUSD, totalRewardRate, apr: _apr, nonTriAPRs: _nonTriAPRs = [] } =
       stakingInfoData?.[index] ?? {}
 
-    const apr = roundApr(_apr ?? 0)
-    const nonTriAPRs = _nonTriAPRs.filter(({ apr }) => apr > 0).map(data => ({ ...data, apr: roundApr(data.apr) }))
+    const apr = roundDecimal(_apr ?? 0)
+    const nonTriAPRs = _nonTriAPRs.filter(({ apr }) => apr > 0).map(data => ({ ...data, apr: roundDecimal(data.apr) }))
 
     return {
       ...activeFarms[index],
