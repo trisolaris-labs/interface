@@ -13,6 +13,8 @@ import CurrencyLogo from '../../CurrencyLogo'
 import useGetTokenByAddress from '../../../hooks/useGetTokenByAddress'
 import { NonTriAPR } from '../../../state/stake/stake-constants'
 
+import { roundDecimal } from '../../../utils'
+
 const IconWrapper = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
   display: flex;
@@ -126,7 +128,7 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLe
           </LogosContainer>
           <AutoRow alignItems="center">
             <TYPE.white marginRight="4px" textAlign="end">
-              {totalAPR}%
+              {roundDecimal(totalAPR)}%
             </TYPE.white>
             <Info size="14px" />
           </AutoRow>

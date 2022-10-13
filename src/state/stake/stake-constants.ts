@@ -598,9 +598,7 @@ const AURORA_POOLS: StakingTri[] = [
     poolId: 34,
     tokens: [TRI[ChainId.AURORA], REF[ChainId.AURORA]],
     lpAddress: '0x53b65177803993C84F31AF4aE7E52FEB171b3b84',
-    isFeatured: true,
-    rewarderAddress: '0xD61a0095E287b899D5A3ADf40e51d97237BBaB6B',
-    poolType: PoolType.DUAL_REWARDS
+    poolType: PoolType.LEGACY
   }),
   createMCV2Pool({
     ID: 42,
@@ -636,7 +634,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x84b123875F0F36B966d0B6Ca14b31121bd9676AD',
     rewarderAddress: '0x7b0C1534ba1c2945fED6f906A538a63E5EE3418D',
     isFeatured: true,
-    poolType: PoolType.DUAL_REWARDS,
+    poolType: PoolType.DUAL_REWARDS
   })
 ]
 

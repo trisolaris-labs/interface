@@ -6,22 +6,22 @@ import { darken } from 'polished'
 const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean; fontSize?: string; padding?: string }>`
   padding: 0.25rem 0.5rem;
   border-radius: 14px;
-  background: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.primary1 : theme.text4) : 'none')};
   color: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.white : theme.text2) : theme.text3)};
   font-size: 1rem;
   font-weight: 400;
 
-  padding: ${({ padding }) => padding ?? '0.35rem 0.6rem'};
+  padding: 0.35rem 0.7rem;
   border-radius: 12px;
-  background: ${({ theme, isActive }) => (isActive ? theme.primary1 : 'none')};
   color: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.white : theme.text2) : theme.text2)};
   font-size: ${({ fontSize }) => (fontSize ? fontSize : '1rem')};
   font-weight: ${({ isOnSwitch }) => (isOnSwitch ? '500' : '400')};
+
+
+  position:relative;
   :hover {
     user-select: ${({ isOnSwitch }) => (isOnSwitch ? 'none' : 'initial')};
-    background: ${({ theme, isActive }) => (isActive ? darken(0.12, theme.primary1) : 'none')};
-    color: ${({ theme }) => theme.text3};
   }
+
 `
 
 const StyledToggle = styled.button<{ isActive?: boolean; activeElement?: boolean }>`
@@ -33,6 +33,21 @@ const StyledToggle = styled.button<{ isActive?: boolean; activeElement?: boolean
   cursor: pointer;
   outline: none;
   padding: 0;
+
+  position: relative;
+  &:before {
+    transition: 0.3s;
+    content: '';
+    display: block;
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: ${({ theme }) => theme.primary1};
+    left: ${({ isActive }) => (isActive ? 0 : '50%')};
+    border-radius: 14px;
+  }
 `
 
 export interface ToggleProps {
