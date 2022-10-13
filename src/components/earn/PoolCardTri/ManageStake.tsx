@@ -84,8 +84,7 @@ function ManageStake({
     setShowUnstakingModal(true)
   }
 
-  function handleToggle(event: React.MouseEvent) {
-    event.stopPropagation()
+  function handleToggle() {
     setToggleIsStaking(!toggleIsStaking)
   }
 
@@ -148,6 +147,7 @@ function ManageStake({
           toggle={handleToggle}
           fontSize="12px"
           padding="2px 6px"
+          stopPropagation
         />
       </AutoRow>
       <AutoRow justifyContent="space-between">

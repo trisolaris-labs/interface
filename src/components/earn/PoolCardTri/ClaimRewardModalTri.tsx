@@ -75,22 +75,20 @@ export default function ClaimRewardModal({
             console.log(error)
           })
       }
-    } else {
-      if (stakingContractv2 && stakedAmount) {
-        setAttempting(true)
-        await stakingContractv2
-          .harvest(poolId, account)
-          .then((response: TransactionResponse) => {
-            addTransaction(response, {
-              summary: t('earn.claimAccumulated')
-            })
-            setHash(response.hash)
+    } else if (stakingContractv2 && stakedAmount) {
+      setAttempting(true)
+      await stakingContractv2
+        .harvest(poolId, account)
+        .then((response: TransactionResponse) => {
+          addTransaction(response, {
+            summary: t('earn.claimAccumulated')
           })
-          .catch((error: any) => {
-            setAttempting(false)
-            console.log(error)
-          })
-      }
+          setHash(response.hash)
+        })
+        .catch((error: any) => {
+          setAttempting(false)
+          console.log(error)
+        })
     }
   }
 

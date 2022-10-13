@@ -38,10 +38,11 @@ const StyledToggle = styled.button<{ isActive?: boolean; activeElement?: boolean
 export interface ToggleProps {
   id?: string
   isActive: boolean
-  toggle: (event: React.MouseEvent) => void
+  toggle: () => void
   customToggleText?: { on: string; off: string }
   fontSize?: string
   padding?: string
+  stopPropagation?: boolean
 }
 
 export default function Toggle({
@@ -51,11 +52,20 @@ export default function Toggle({
   customToggleText,
   fontSize,
   padding,
+  stopPropagation,
   ...otherProps
 }: ToggleProps) {
   const { t } = useTranslation()
   return (
-    <StyledToggle id={id} isActive={isActive} onClick={toggle} {...otherProps}>
+    <StyledToggle
+      id={id}
+      isActive={isActive}
+      onClick={(e: React.MouseEvent) => {
+        stopPropagation && e.stopPropagation()
+        toggle()
+      }}
+      {...otherProps}
+    >
       <ToggleElement isActive={isActive} isOnSwitch={true} fontSize={fontSize} padding={padding}>
         {customToggleText?.on ?? t('toggle.on')}
       </ToggleElement>
