@@ -588,7 +588,6 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0xa904CC86e3AB79Ae44caa7F13BDC13FFAcbbFF35',
     rewarderAddress: '0xd3Faa39C97Af70ADff9851e0e70A08FcfeCaBCC4',
     isFeatured: true,
-    inStaging: true
   })
 ]
 
