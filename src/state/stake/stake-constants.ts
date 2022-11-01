@@ -595,7 +595,7 @@ const AURORA_POOLS: StakingTri[] = [
     tokens: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT_V2].poolTokens,
     lpAddress: '0x3fADE6094373f7A91A91D4607b226791fB3BCEAf',
     isFeatured: true,
-    stableSwapPoolName: StableSwapPoolName.AUUSDC_AUUSDT
+    stableSwapPoolName: StableSwapPoolName.USDC_USDT_V2
   })
 ]
 
