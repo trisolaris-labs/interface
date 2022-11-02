@@ -737,6 +737,13 @@ export const SD: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x078E103d5F9629aC48B8563Fa2BFcD2f6d5Fde84', 18, 'SD', 'Stader'),
 }
 
+export const AXLUSDC: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 6, 'axlUSDC', 'Axelar Wrapped USDC'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'axlUSDC', 'Axelar Wrapped USDC'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 6, 'axlUSDC', 'Axelar Wrapped USDC'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4268B8F0B87b6Eae5d897996E6b845ddbD99Adf3', 6, 'axlUSDC', 'Axelar Wrapped USDC'),
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),

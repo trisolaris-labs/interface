@@ -495,8 +495,7 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x34998bb1b4721f0418B22aae5a252C3167F1e7bF',
     allocPoint: 1,
     inStaging: false,
-    stableSwapPoolName: StableSwapPoolName.USDC_USDT_USN,
-    isFeatured: true
+    stableSwapPoolName: StableSwapPoolName.USDC_USDT_USN
   }),
   createMCV2Pool({
     ID: 36,
@@ -595,8 +594,7 @@ const AURORA_POOLS: StakingTri[] = [
     tokens: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT_V2].poolTokens,
     lpAddress: '0x3fADE6094373f7A91A91D4607b226791fB3BCEAf',
     isFeatured: true,
-    stableSwapPoolName: StableSwapPoolName.USDC_USDT_V2,
-    inStaging: true
+    stableSwapPoolName: StableSwapPoolName.USDC_USDT_V2
   })
 ]
 
