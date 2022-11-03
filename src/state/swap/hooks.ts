@@ -30,6 +30,8 @@ import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useTranslation } from 'react-i18next'
 import { find } from 'lodash'
 import { STABLESWAP_POOLS } from '../stableswap/constants'
+import { STNEAR } from '../../constants/tokens'
+import { unwrappedToken } from '../../utils/wrappedCurrency'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap)
@@ -246,14 +248,26 @@ export function useDerivedSwapInfo(
     inputError = t('swapHooks.insufficient') + amountIn.currency.symbol + t('swapHooks.balance')
   }
 
+  const parsedV2Trade =
+    currencies.INPUT?.symbol === STNEAR[ChainId.AURORA].symbol ||
+    currencies.OUTPUT?.symbol === STNEAR[ChainId.AURORA].symbol
+      ? undefined
+      : v2Trade
+
+  const parsedV1Trade =
+    currencies.INPUT?.symbol === STNEAR[ChainId.AURORA].symbol ||
+    currencies.OUTPUT?.symbol === STNEAR[ChainId.AURORA].symbol
+      ? undefined
+      : v1Trade
+
   return {
     isStableSwap,
     currencies,
     currencyBalances,
     parsedAmount,
-    v2Trade: v2Trade ?? undefined,
+    v2Trade: parsedV2Trade ?? undefined,
     inputError,
-    v1Trade
+    v1Trade: parsedV1Trade
   }
 }
 
