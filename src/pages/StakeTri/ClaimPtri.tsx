@@ -58,7 +58,7 @@ enum ClaimType {
   CLAIM_AND_STAKE
 }
 
-const twoPool = STABLESWAP_POOLS.USDC_USDT
+const twoPool = STABLESWAP_POOLS.USDC_USDT_V2
 
 function ClaimPtri() {
   const { account } = useActiveWeb3React()
@@ -213,7 +213,7 @@ function ClaimPtri() {
   }
   return (
     <DarkGreyCard>
-      <Modal isOpen={true} onDismiss={() => setOpenModal(false)}>
+      <Modal isOpen={openModal} onDismiss={() => setOpenModal(false)}>
         <StyledModalContainer>
           <Text marginBottom={20}>You can compound your claimed LP tokens to earn the following rewards:</Text>
           <RowBetween>
