@@ -37,7 +37,7 @@ import Popover from '../../components/Popover'
 
 const INPUT_CHAR_LIMIT = 18
 
-const threePool = STABLESWAP_POOLS.USDC_USDT_USN
+const twoPool = STABLESWAP_POOLS.USDC_USDT_V2
 
 const IconWrapper = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -223,9 +223,9 @@ function StakeBox() {
           <RowFixed gap={'0px'}>
             <AutoColumn>
               <RowFixed>
-                <MultipleCurrencyLogo currencies={threePool.poolTokens} size={24} separation={14} />
+                <MultipleCurrencyLogo currencies={twoPool.poolTokens} size={24} separation={14} />
                 <Text fontSize={24} fontWeight={500} marginLeft={10}>
-                  {userClaimableRewards?.toSignificant(10)}
+                  {userClaimableRewards?.toSignificant(3)}
                 </Text>
               </RowFixed>
               <TYPE.italic fontSize={13} color={theme.text2} textAlign="left">
@@ -235,7 +235,7 @@ function StakeBox() {
           </RowFixed>
           <RowFixed gap={'0px'}>
             <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
-              {threePool.lpToken.symbol}
+              {twoPool.lpToken.symbol}
             </Text>
           </RowFixed>
         </RowBetween>
@@ -249,8 +249,8 @@ function StakeBox() {
         {isStaking && (
           <div style={{ marginBottom: '20px' }}>
             <TYPE.italic fontSize={14} color={theme.text2} textAlign="left" padding={'12px 0 0 0'}>
-              By staking in to pTRI, you will get rewards in USDC/USDT/USN LP tokens, which you can redeem for stable
-              coins or stake for more revenue.
+              By staking in to pTRI, you will get rewards in USDC/USDT LP tokens, which you can redeem for stable coins
+              or stake for more revenue.
             </TYPE.italic>
             {depositFee != null ? (
               <TYPE.small>

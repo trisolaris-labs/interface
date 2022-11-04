@@ -58,7 +58,7 @@ enum ClaimType {
   CLAIM_AND_STAKE
 }
 
-const threePool = STABLESWAP_POOLS.USDC_USDT_USN
+const twoPool = STABLESWAP_POOLS.USDC_USDT
 
 function ClaimPtri() {
   const { account } = useActiveWeb3React()
@@ -66,7 +66,7 @@ function ClaimPtri() {
   const addTransaction = useTransactionAdder()
   const stakingContractv2 = useMasterChefV2Contract()
   const { userClaimableRewards, userClaimableRewardsInUsd } = usePtriStakeInfo()
-  const { apr, nonTriAPRs, poolId, stakingRewardAddress } = useFarms().filter(farm => farm.ID === 35)[0]
+  const { apr, nonTriAPRs, poolId, stakingRewardAddress } = useFarms().filter(farm => farm.ID === 47)[0]
   const [approval, approveCallback] = useApproveCallback(userClaimableRewards, stakingRewardAddress)
 
   const [pendingTx, setPendingTx] = useState<ClaimType | null>(null)
@@ -107,7 +107,7 @@ function ClaimPtri() {
 
       const tx = await stakingContractv2?.deposit(poolId, userClaimableRewards.raw.toString(), account)
       setDepositTxHash(tx.hash)
-      return addTransaction(tx, { summary: `Deposited rewards into USDT/USDC/USN Farm` })
+      return addTransaction(tx, { summary: `Deposited rewards into USDC/USDT Farm` })
     } catch (error) {
       if ((error as any)?.code === 4001) {
         throw new Error('Transaction rejected.')
@@ -138,7 +138,7 @@ function ClaimPtri() {
           <TYPE.body fontWeight={600} fontSize={36} marginRight={15}>
             {userClaimableRewards?.toSignificant(3)}
           </TYPE.body>
-          <MultipleCurrencyLogo currencies={threePool.poolTokens} size={24} separation={14} />
+          <MultipleCurrencyLogo currencies={twoPool.poolTokens} size={24} separation={14} />
         </RowFixed>
         <TYPE.body>Claimable rewards</TYPE.body>
       </AutoColumn>
@@ -168,7 +168,7 @@ function ClaimPtri() {
                   </Text>
                 </RowFixed>
                 <RowFixed fontWeight={400} fontSize={14}>
-                  <Text>2. Stake rewards into USDC/USDT/USN Farm</Text>
+                  <Text>2. Stake rewards into USDC/USDT Farm</Text>
                 </RowFixed>
               </>
             )}
@@ -217,7 +217,7 @@ function ClaimPtri() {
         <StyledModalContainer>
           <Text marginBottom={20}>You can compound your claimed LP tokens to earn the following rewards:</Text>
           <RowBetween>
-            <Text fontSize={14}>Current USDC/USDT/USN Farm APR:</Text>
+            <Text fontSize={14}>Current USDC/USDT Farm APR:</Text>
             <PoolCardTriRewardText apr={apr} inStaging={false} nonTriAPRs={nonTriAPRs} />
           </RowBetween>
 
@@ -276,7 +276,7 @@ function ClaimPtri() {
                   {Number(userClaimableRewardsInUsd) > 0.01 && (
                     <ButtonRewardsContainer>
                       {userClaimableRewards.toFixed(2)}
-                      <MultipleCurrencyLogo currencies={threePool.poolTokens} size={16} />
+                      <MultipleCurrencyLogo currencies={twoPool.poolTokens} size={16} />
                     </ButtonRewardsContainer>
                   )}
                 </div>
@@ -288,7 +288,7 @@ function ClaimPtri() {
                 {Number(userClaimableRewardsInUsd) > 0.01 && (
                   <ButtonRewardsContainer>
                     {userClaimableRewards.toFixed(2)}
-                    <MultipleCurrencyLogo currencies={threePool.poolTokens} size={16} />
+                    <MultipleCurrencyLogo currencies={twoPool.poolTokens} size={16} />
                   </ButtonRewardsContainer>
                 )}
               </ButtonTextContainer>
