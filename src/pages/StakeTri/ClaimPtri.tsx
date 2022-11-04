@@ -213,12 +213,16 @@ function ClaimPtri() {
   }
   return (
     <DarkGreyCard>
-      <Modal isOpen={openModal} onDismiss={() => setOpenModal(false)}>
+      <Modal isOpen={true} onDismiss={() => setOpenModal(false)}>
         <StyledModalContainer>
           <Text marginBottom={20}>You can compound your claimed LP tokens to earn the following rewards:</Text>
           <RowBetween>
-            <Text fontSize={14}>Current USDC/USDT Farm APR:</Text>
-            <PoolCardTriRewardText apr={apr} inStaging={false} nonTriAPRs={nonTriAPRs} />
+            <div>
+              <Text fontSize={14}>Current USDC/USDT Farm APR:</Text>
+            </div>
+            <div>
+              <PoolCardTriRewardText apr={apr} inStaging={false} nonTriAPRs={nonTriAPRs} />
+            </div>
           </RowBetween>
 
           <ButtonsContainer>
