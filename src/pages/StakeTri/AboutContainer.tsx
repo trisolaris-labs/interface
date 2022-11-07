@@ -31,7 +31,7 @@ const DynamicAPRContainer = styled.span`
   top: 0.1rem;
 `
 
-const { lpToken: USD_TLP } = STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT_USN]
+const { lpToken: USD_TLP } = STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT_V2]
 
 export default function AboutContainer() {
   const farmsData = useFarmsAPI()

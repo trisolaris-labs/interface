@@ -51,7 +51,7 @@ const StatsContainer = styled.div`
   `};
 `
 
-const PTRI_REWARDS_TOKEN = STABLESWAP_POOLS.USDC_USDT_USN.poolTokens
+const PTRI_REWARDS_TOKEN = STABLESWAP_POOLS.USDC_USDT_V2.poolTokens
 
 function StatsBox() {
   const {
