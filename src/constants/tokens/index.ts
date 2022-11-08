@@ -1821,3 +1821,34 @@ export const USDC_USDT_V2: { [chainId in ChainId]: Token } = {
     'Trisolaris USDC/USDT'
   )
 }
+
+export const AXLUSDC_USDC_USDT: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(
+    ChainId.POLYGON,
+    '0x0000000000000000000000000000000000000000',
+    18,
+    'axlUSDC-USDC/USDT TLP',
+    'Trisolaris axlUSDC-USDC/USDT'
+  ),
+  [ChainId.FUJI]: new Token(
+    ChainId.FUJI,
+    '0x0000000000000000000000000000000000000000',
+    18,
+    'axlUSDC-USDC/USDT TLP',
+    'Trisolaris axlUSDC-USDC/USDT'
+  ),
+  [ChainId.AVALANCHE]: new Token(
+    ChainId.AVALANCHE,
+    '0x0000000000000000000000000000000000000000',
+    18,
+    'axlUSDC-USDC/USDT TLP',
+    'Trisolaris axlUSDC-USDC/USDT'
+  ),
+  [ChainId.AURORA]: new Token(
+    ChainId.AURORA,
+    '0x08A8d7dD6E20997680DFd7a5fc7929309c299D72',
+    18,
+    'axlUSDC-USDC/USDT TLP',
+    'Trisolaris axlUSDC-USDC/USDT'
+  )
+}

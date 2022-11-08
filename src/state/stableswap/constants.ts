@@ -1,13 +1,29 @@
 import { ChainId, Token, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
-import { FRAX, USDC, USDT, WBTC, UST, USN, NUSD, AUUSDC, AUUSDT, USDC_USDT_V2 } from '../../constants/tokens'
+import {
+  FRAX,
+  USDC,
+  USDT,
+  WBTC,
+  UST,
+  USN,
+  NUSD,
+  AUUSDC,
+  AUUSDT,
+  USDC_USDT_V2,
+  AXLUSDC_USDC_USDT,
+  AXLUSDC
+} from '../../constants/tokens'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
 }
 
 export function isMetaPool(poolName?: StableSwapPoolName): boolean {
-  const metapools = new Set<StableSwapPoolName | undefined>([StableSwapPoolName.NUSD_USDC_USDT])
+  const metapools = new Set<StableSwapPoolName | undefined>([
+    StableSwapPoolName.NUSD_USDC_USDT,
+    StableSwapPoolName.AXLUSDC_USDC_USDT
+  ])
 
   return metapools.has(poolName)
 }
@@ -23,7 +39,8 @@ export enum StableSwapPoolName {
   USDC_USDT_USN = 'USDC_USDT_USN',
   USDC_USDT_V2 = 'USDC_USDT_V2',
   NUSD_USDC_USDT = 'NUSD_USDC_USDT',
-  AUUSDC_AUUSDT = 'AUUSDC_AUUSDT'
+  AUUSDC_AUUSDT = 'AUUSDC_AUUSDT',
+  AXLUSDC_USDC_USDT = 'AXLUSDC_USDC_USDT'
 }
 
 export enum StableSwapPoolTypes {
@@ -191,6 +208,20 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     address: '0x46F27692de8aA76E86e7E665e573828b9ddcB2b8',
     type: StableSwapPoolTypes.AURIGAMI,
     route: 'usd',
+    isOutdated: false,
+    rewardPids: null
+  },
+  [StableSwapPoolName.AXLUSDC_USDC_USDT]: {
+    name: StableSwapPoolName.AXLUSDC_USDC_USDT,
+    friendlyName: 'axlUSDC-USDC/USDT',
+    lpToken: AXLUSDC_USDC_USDT[ChainId.AURORA],
+    poolTokens: [AXLUSDC[ChainId.AURORA], USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
+    address: '0xB8e6c85f18525573AaaBdC11a665a5dB4357F54a', // MetaSwap
+    metaSwapAddresses: '0xf27FCca3092a8A08d178f064Bf14dB59E99F012C', // MetaSwapDeposit
+    type: StableSwapPoolTypes.USD,
+    route: 'usd',
+    underlyingPoolTokens: [AXLUSDC[ChainId.AURORA], USDC_USDT_V2[ChainId.AURORA]],
+    underlyingPool: StableSwapPoolName.USDC_USDT_V2,
     isOutdated: false,
     rewardPids: null
   }
