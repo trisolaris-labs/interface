@@ -1,6 +1,6 @@
-import { ChainId, Token, TokenAmount, WETH } from '@trisolaris/sdk'
+import { ChainId, Token, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
-import { FRAX, USDC, USDT, WBTC, UST, USN, NUSD, AUUSDC, AUUSDT } from '../../constants/tokens'
+import { FRAX, USDC, USDT, WBTC, UST, USN, NUSD, AUUSDC, AUUSDT, USDC_USDT_V2 } from '../../constants/tokens'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
@@ -149,13 +149,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
   [StableSwapPoolName.USDC_USDT_V2]: {
     name: StableSwapPoolName.USDC_USDT_V2,
     friendlyName: 'USDC/USDT',
-    lpToken: new Token(
-      ChainId.AURORA,
-      '0x3fADE6094373f7A91A91D4607b226791fB3BCEAf',
-      18,
-      'USDC/USDT TLP',
-      'Trisolaris USDC/USDT'
-    ),
+    lpToken: USDC_USDT_V2[ChainId.AURORA],
     poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
     address: '0x51d96EF6960cC7b4C884E1215564f926011A4064',
     type: StableSwapPoolTypes.USD,
@@ -178,16 +172,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     metaSwapAddresses: '0xCCd87854f58773fe75CdDa542457aC48E46c2D65', // MetaSwapDeposit
     type: StableSwapPoolTypes.USD,
     route: 'usd',
-    underlyingPoolTokens: [
-      NUSD[ChainId.AURORA],
-      new Token(
-        ChainId.AURORA,
-        '0x3fADE6094373f7A91A91D4607b226791fB3BCEAf',
-        18,
-        'USDC/USDT TLP',
-        'Trisolaris USDC/USDT'
-      )
-    ],
+    underlyingPoolTokens: [NUSD[ChainId.AURORA], USDC_USDT_V2[ChainId.AURORA]],
     underlyingPool: StableSwapPoolName.USDC_USDT,
     isOutdated: false,
     rewardPids: null

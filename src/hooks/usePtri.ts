@@ -26,7 +26,7 @@ export function usePtriStakeInfo() {
   const ptriContract = usePTriContract()
   const { getTriPrice } = useTriPrice()
   const triPrice = getTriPrice()
-  const [{ virtualPrice }] = useStablePoolsData(StableSwapPoolName.USDC_USDT_USN)
+  const [{ virtualPrice }] = useStablePoolsData(StableSwapPoolName.USDC_USDT_V2)
 
   const totalStaked = useTotalSupply(PTRI[ChainId.AURORA]) ?? NULL_PTRI_AMOUNT
   const totalStakedInUsd = totalStaked.multiply(triPrice ?? BIG_INT_ZERO).toFixed(2)
@@ -39,11 +39,11 @@ export function usePtriStakeInfo() {
   const userClaimableRewardsCallResult: JSBI =
     useSingleCallResult(ptriContract, stakeAmountCall.USER_CLAIMABLE, [
       account ?? undefined,
-      STABLESWAP_POOLS.USDC_USDT_USN.lpToken.address
+      STABLESWAP_POOLS.USDC_USDT_V2.lpToken.address
     ])?.result?.[0] ?? BIG_INT_ZERO
 
   const userClaimableRewards = new TokenAmount(
-    STABLESWAP_POOLS.USDC_USDT_USN.lpToken,
+    STABLESWAP_POOLS.USDC_USDT_V2.lpToken,
     userClaimableRewardsCallResult.toString()
   )
   const userClaimableRewardsInUsd = virtualPrice?.multiply(userClaimableRewards).toSignificant(3)

@@ -107,5 +107,14 @@ module.exports = {
       'PAD',
       'SmartPad token'
     )
+  },
+  USDC_USDT_V2: {
+    [ChainId.AURORA]: new Token(
+      ChainId.AURORA,
+      '0x3fADE6094373f7A91A91D4607b226791fB3BCEAf',
+      18,
+      'USDC/USDT TLP',
+      'Trisolaris USDC/USDT'
+    )
   }
 }
