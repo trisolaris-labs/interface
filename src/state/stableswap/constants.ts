@@ -216,8 +216,8 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     friendlyName: 'axlUSDC-USDC/USDT',
     lpToken: AXLUSDC_USDC_USDT[ChainId.AURORA],
     poolTokens: [AXLUSDC[ChainId.AURORA], USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
-    address: '0xa2887F7F9CEbD438c679A105d31ABbe94dF72cc0', // MetaSwap
-    metaSwapAddresses: '0x85D2cA6C45f15DF8cA07e6481dD2162628Bb314d', // MetaSwapDeposit
+    address: '0xa2887F7F9CEbD438c679A105d31ABbe94dF72cc0',
+    metaSwapAddresses: '0x85D2cA6C45f15DF8cA07e6481dD2162628Bb314d',
     type: StableSwapPoolTypes.USD,
     route: 'usd',
     underlyingPoolTokens: [AXLUSDC[ChainId.AURORA], USDC_USDT_V2[ChainId.AURORA]],
