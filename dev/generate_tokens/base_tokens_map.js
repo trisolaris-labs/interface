@@ -120,7 +120,7 @@ module.exports = {
   AXLUSDC_USDC_USDT: {
     [ChainId.AURORA]: new Token(
       ChainId.AURORA,
-      '0x08A8d7dD6E20997680DFd7a5fc7929309c299D72',
+      '0x4F13347Fa5eCC4D6a12e7f4F2803616cC0c60E25',
       18,
       'axlUSDC-USDC/USDT TLP',
       'Trisolaris axlUSDC-USDC/USDT'
