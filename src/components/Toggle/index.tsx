@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import { darken } from 'polished'
 
 const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean; fontSize?: string; padding?: string }>`
-  padding: 0.25rem 0.5rem;
   border-radius: 14px;
   color: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.white : theme.text2) : theme.text3)};
   font-size: 1rem;
@@ -16,12 +15,14 @@ const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean; fo
   font-size: ${({ fontSize }) => (fontSize ? fontSize : '1rem')};
   font-weight: ${({ isOnSwitch }) => (isOnSwitch ? '500' : '400')};
 
-
-  position:relative;
+  position: relative;
   :hover {
     user-select: ${({ isOnSwitch }) => (isOnSwitch ? 'none' : 'initial')};
   }
 
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  padding: 0.25rem 0.4rem;
+`};
 `
 
 const StyledToggle = styled.button<{ isActive?: boolean; activeElement?: boolean }>`
