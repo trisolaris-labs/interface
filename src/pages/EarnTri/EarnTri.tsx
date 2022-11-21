@@ -48,7 +48,8 @@ export default function EarnTri() {
       <Select
         options={[
           { label: 'hola', value: 'hola' },
-          { label: 'chau', value: 'chau' }
+          { label: 'chau', value: 'chau' },
+          { label: 'bueno', value: 'bueno' }
         ]}
       />
 

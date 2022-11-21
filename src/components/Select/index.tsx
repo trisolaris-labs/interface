@@ -41,6 +41,7 @@ const DropDownContainer = styled.div<{ isOpen: boolean }>`
   width: 100%;
   position: relative;
   background: ${({ theme }) => theme.bg1};
+  border: none;
   border-radius: 16px;
   height: 40px;
   min-width: 136px;
@@ -63,7 +64,7 @@ const DropDownContainer = styled.div<{ isOpen: boolean }>`
         height: auto;
         transform: scaleY(1);
         opacity: 1;
-        border: 1px solid ${({ theme }) => theme.bg1};
+        border: none;
         border-top-width: 0;
         border-radius: 0 0 16px 16px;
       }
