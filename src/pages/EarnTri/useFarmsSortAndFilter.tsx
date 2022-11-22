@@ -13,10 +13,10 @@ import {
   LEGACY_POOLS
 } from '../../constants/farms'
 
-enum SortingType {
-  liquidity = 'Liquidity',
-  totalApr = 'Total APR',
-  default = 'Default'
+export enum SortingType {
+  liquidity = 'liquidity',
+  totalApr = 'totalApr',
+  default = 'default'
 }
 
 const legacyPoolsOrderSet = new Set(LEGACY_POOLS)
@@ -76,9 +76,7 @@ export default function useFarmsSortAndFilter(): FarmsSortAndFilterResult {
   }
 
   function handleSort(sortingType: SortingType) {
-    if (sortingType === sortBy) {
-      setIsSortDescending(!isSortDescending)
-    } else {
+    if (sortingType !== sortBy) {
       setSortBy(sortingType)
     }
   }

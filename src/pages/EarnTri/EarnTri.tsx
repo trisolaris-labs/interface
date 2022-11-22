@@ -3,14 +3,12 @@ import { AutoColumn } from '../../components/Column'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
 import { TYPE } from '../../theme'
 import { isTokenAmountPositive } from '../../utils/pools'
-import { PoolSection, DataRow, PoolHeader, HeaderColumn } from './EarnTri.styles'
+import { PoolSection, DataRow } from './EarnTri.styles'
 
 import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter/EarnTriSortAndFilterContainer'
 import useFarmsSortAndFilter from './useFarmsSortAndFilter'
 import styled from 'styled-components'
 import Toggle from '../../components/Toggle'
-import { PoolType } from '../../state/stake/stake-constants'
-import Select from '../../components/Select'
 
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
@@ -31,7 +29,6 @@ export default function EarnTri() {
     legacyFarms,
     onInputChange,
     isSortDescending,
-    sortBy,
     allFarms
   } = useFarmsSortAndFilter()
 
@@ -42,7 +39,6 @@ export default function EarnTri() {
         handleSort={handleSort}
         isSortDescending={isSortDescending}
         onInputChange={onInputChange}
-        sortBy={sortBy}
       />
 
       <AutoColumn gap="md" style={{ width: '100%' }}>

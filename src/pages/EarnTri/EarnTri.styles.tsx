@@ -78,7 +78,10 @@ export const StyledToggleContainer = styled.div`
   `};
 `
 
-export const StyledSortContainer = styled.div``
+export const StyledSortContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 export const StyledSortOption = styled.span`
   display: inline-flex;
