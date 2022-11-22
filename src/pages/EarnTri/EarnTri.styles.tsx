@@ -78,7 +78,10 @@ export const StyledToggleContainer = styled.div`
   `};
 `
 
-export const StyledSortContainer = styled.div``
+export const StyledSortContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 export const StyledSortOption = styled.span`
   display: inline-flex;
@@ -92,10 +95,6 @@ export const StyledSortOption = styled.span`
     cursor: pointer;
     color: ${({ theme }) => darken(0.1, theme.text1)};
   }
-`
-
-export const StyledArrowContainer = styled.span`
-  min-width: 1rem;
 `
 
 export const PoolHeader = styled.div`
