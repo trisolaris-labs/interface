@@ -10,12 +10,9 @@ import {
   StyledSearchInput,
   StyledFiltersContainer,
   StyledToggleContainer,
-  StyledSortContainer,
-  StyledSortOption,
-  StyledArrowContainer
+  StyledSortContainer
 } from '../../pages/EarnTri/EarnTri.styles'
 
-import SortingArrow from './SortingArrow'
 import { SortingType } from '../../pages/EarnTri/useFarmsSortAndFilter'
 
 const SORT_OPTIONS = [
@@ -27,12 +24,10 @@ const SORT_OPTIONS = [
 export default function EarnTriSortAndFilterContainer({
   activeFarmsFilter,
   handleSort,
-  isSortDescending,
   onInputChange
 }: {
   activeFarmsFilter: boolean
   handleSort: (sortingType: SortingType) => void
-  isSortDescending: boolean
   onInputChange: (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
 }) {
   const { t } = useTranslation()

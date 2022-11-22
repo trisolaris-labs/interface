@@ -28,7 +28,6 @@ export default function EarnTri() {
     hasSearchQuery,
     legacyFarms,
     onInputChange,
-    isSortDescending,
     allFarms
   } = useFarmsSortAndFilter()
 
@@ -37,7 +36,6 @@ export default function EarnTri() {
       <EarnTriSortAndFilterContainer
         activeFarmsFilter={activeFarmsFilter}
         handleSort={handleSort}
-        isSortDescending={isSortDescending}
         onInputChange={onInputChange}
       />
 

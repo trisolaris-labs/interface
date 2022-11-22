@@ -28,7 +28,6 @@ type FarmsSortAndFilterResult = {
   filteredFarms: StakingTri[]
   handleSort: (sortingType: SortingType) => void
   hasSearchQuery: boolean
-  isSortDescending: boolean
   legacyFarms: StakingTri[]
   onInputChange: (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
   sortBy: SortingType
@@ -42,7 +41,6 @@ export default function useFarmsSortAndFilter(): FarmsSortAndFilterResult {
 
   const [sortBy, setSortBy] = useState<SortingType>(SortingType.default)
   const [searchQuery, setSearchQuery] = useState<string>('')
-  const [isSortDescending, setIsSortDescending] = useState<boolean>(true)
 
   const farmArrs = useMemo(
     () =>
@@ -56,15 +54,15 @@ export default function useFarmsSortAndFilter(): FarmsSortAndFilterResult {
       case SortingType.default:
         return allPools.map(index => allFarmArrs[index])
       case SortingType.liquidity:
-        return _.orderBy(farmArrs, 'totalStakedInUSD', isSortDescending ? 'desc' : 'asc')
+        return _.orderBy(farmArrs, 'totalStakedInUSD', 'desc')
       case SortingType.totalApr:
         return _.orderBy(
           farmArrs,
           ({ apr: triAPR, nonTriAPRs }) => nonTriAPRs.reduce((acc: number, { apr }) => acc + apr, triAPR ?? 0),
-          isSortDescending ? 'desc' : 'asc'
+          'desc'
         )
     }
-  }, [allFarmArrs, farmArrs, isSortDescending, allPools, sortBy])
+  }, [allFarmArrs, farmArrs, allPools, sortBy])
 
   const [currentFarms, setCurrentFarms] = useState<StakingTri[]>(farmArrs)
 
@@ -116,7 +114,6 @@ export default function useFarmsSortAndFilter(): FarmsSortAndFilterResult {
     hasSearchQuery: searchQuery.length > 0,
     legacyFarms,
     onInputChange: handleInput,
-    isSortDescending,
     sortBy,
     allFarms: farmArrsInOrder
   }

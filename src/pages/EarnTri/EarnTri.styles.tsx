@@ -97,10 +97,6 @@ export const StyledSortOption = styled.span`
   }
 `
 
-export const StyledArrowContainer = styled.span`
-  min-width: 1rem;
-`
-
 export const PoolHeader = styled.div`
   display: grid;
   padding: 0 20px 0px;
