@@ -17,20 +17,12 @@ export type OptionProps = {
 type SelectProps = {
   options: OptionProps[]
   onOptionChange?: (option: OptionProps) => void
-  placeHolderText?: string
   defaultOptionIndex?: number
   className?: string
 }
 
-const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
-  options,
-  onOptionChange,
-  defaultOptionIndex = 0,
-  placeHolderText,
-  className
-}) => {
+export default function Select({ options, onOptionChange, defaultOptionIndex = 0, className }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [optionSelected, setOptionSelected] = useState(false)
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(defaultOptionIndex)
 
   const node = useRef<HTMLDivElement>()
@@ -44,7 +36,6 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
   const onOptionClicked = (selectedIndex: number) => () => {
     setSelectedOptionIndex(selectedIndex)
     setIsOpen(false)
-    setOptionSelected(true)
 
     if (onOptionChange) {
       onOptionChange(options[selectedIndex])
@@ -54,16 +45,13 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
   useEffect(() => {
     if (defaultOptionIndex) {
       setSelectedOptionIndex(defaultOptionIndex - 1)
-      setOptionSelected(true)
     }
   }, [defaultOptionIndex])
 
   return (
     <DropDownContainer isOpen={isOpen} className={className} ref={node as any}>
       <DropDownHeader onClick={toggling}>
-        <Text color={!optionSelected && placeHolderText ? 'text' : undefined}>
-          {!optionSelected && placeHolderText ? placeHolderText : options[selectedOptionIndex].label}
-        </Text>
+        <Text>{options[selectedOptionIndex].label}</Text>
       </DropDownHeader>
       <div onClick={toggling}>
         <ChevronDown />
@@ -83,5 +71,3 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
     </DropDownContainer>
   )
 }
-
-export default Select
