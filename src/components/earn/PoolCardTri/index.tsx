@@ -45,7 +45,8 @@ import {
   StakeContainer,
   UserStakedInUsd,
   UserStakedInTLP,
-  PoolTypeHeader
+  PoolTypeHeader,
+  MobilePoolTypeContainer
 } from './PoolCardTri.styles'
 
 export type PoolCardTriProps = {
@@ -148,6 +149,7 @@ const DefaultPoolCardtri = ({
           <SponsoredFarmLink tokens={tokens} farmID={version} />
           <StyledMultipleCurrencyLogo currencies={currencies} />
           <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>{farmName}</ResponsiveCurrencyLabel>
+          {!showMore && <MobilePoolTypeContainer>{poolType}</MobilePoolTypeContainer>}
         </StyledPairContainer>
         <AprContainer>
           <StyledMutedSubHeader justifyContent="flex-start">APR</StyledMutedSubHeader>

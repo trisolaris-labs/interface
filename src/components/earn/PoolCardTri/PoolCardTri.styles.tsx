@@ -349,3 +349,12 @@ export const PoolTypeHeader = styled(TYPE.mutedSubHeader)`
     line-height:20px;
   `};
 `
+
+export const MobilePoolTypeContainer = styled(TYPE.italic)`
+  position: absolute;
+  display: none;
+  bottom: 8px;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    display:block;
+  `};
+`
