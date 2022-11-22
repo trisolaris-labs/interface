@@ -4,6 +4,8 @@ import { Text } from 'rebass'
 import Toggle from '../Toggle'
 import { useToggleFilterActiveFarms } from '../../state/user/hooks'
 
+import Select from '../Select'
+
 import {
   StyledSearchInput,
   StyledFiltersContainer,
@@ -42,6 +44,16 @@ export default function EarnTriSortAndFilterContainer({
 
           <Toggle id="toggle-user-farms-toggle" isActive={activeFarmsFilter} toggle={toggleActiveFarms} />
         </StyledToggleContainer>
+        <Select
+          options={[
+            { label: 'All pools', value: 'allPools' },
+            { label: 'Stable Pools', value: 'stable' },
+            { label: 'Dual Reward pools', value: 'dualRewards' },
+            { label: 'Tri only pools', value: 'triOnly' },
+            { label: 'Ecosystem pools', value: 'ecosystem' },
+            { label: 'Legacy pools', value: 'legacy' }
+          ]}
+        />
         <StyledSortContainer>
           <Text fontWeight={400} fontSize={16}>
             Sort by:{' '}

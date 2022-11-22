@@ -45,14 +45,6 @@ export default function EarnTri() {
         sortBy={sortBy}
       />
 
-      <Select
-        options={[
-          { label: 'hola', value: 'hola' },
-          { label: 'chau', value: 'chau' },
-          { label: 'bueno', value: 'bueno' }
-        ]}
-      />
-
       <AutoColumn gap="md" style={{ width: '100%' }}>
         <PoolSection>
           {!hasSearchQuery && !activeFarmsFilter && (

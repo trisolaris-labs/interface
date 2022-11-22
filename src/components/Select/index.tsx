@@ -1,9 +1,11 @@
 import React, { useRef } from 'react'
 import { useState, useEffect } from 'react'
 import styled, { css } from 'styled-components'
-import { ChevronDown } from 'react-feather'
+import { ChevronDown, Check } from 'lucide-react'
 import { Text } from 'rebass'
+
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
+import { RowBetween } from '../Row'
 
 const DropDownHeader = styled.div`
   width: 100%;
@@ -88,6 +90,7 @@ const DropDownList = styled.ul`
 const ListItem = styled.li`
   list-style: none;
   padding: 8px 16px;
+  position: relative;
   &:hover {
     background: ${({ theme }) => theme.primary1};
   }
@@ -154,13 +157,14 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
       </div>
       <DropDownListContainer>
         <DropDownList>
-          {options.map((option, index) =>
-            placeHolderText || index !== selectedOptionIndex ? (
-              <ListItem onClick={onOptionClicked(index)} key={option.label}>
+          {options.map((option, index) => (
+            <ListItem onClick={onOptionClicked(index)} key={option.label}>
+              <RowBetween>
                 <Text>{option.label}</Text>
-              </ListItem>
-            ) : null
-          )}
+                {index === selectedOptionIndex && <Check />}
+              </RowBetween>
+            </ListItem>
+          ))}
         </DropDownList>
       </DropDownListContainer>
     </DropDownContainer>
