@@ -24,11 +24,13 @@ const SORT_OPTIONS = [
 export default function EarnTriSortAndFilterContainer({
   activeFarmsFilter,
   handleSort,
-  onInputChange
+  onInputChange,
+  isStaking
 }: {
   activeFarmsFilter: boolean
   handleSort: (sortingType: SortingType) => void
   onInputChange: (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
+  isStaking: boolean
 }) {
   const { t } = useTranslation()
   const toggleActiveFarms = useToggleFilterActiveFarms()
@@ -37,13 +39,15 @@ export default function EarnTriSortAndFilterContainer({
     <>
       <StyledSearchInput placeholder={t('earnPage.farmsSearchPlaceholder')} onChange={onInputChange} />
       <StyledFiltersContainer>
-        <StyledToggleContainer>
-          <Text fontWeight={400} fontSize={16} marginRight={20}>
-            {`${t('earnPage.filterUserPools')}: `}
-          </Text>
+        {isStaking && (
+          <StyledToggleContainer>
+            <Text fontWeight={400} fontSize={16} marginRight={20}>
+              {`${t('earnPage.filterUserPools')}: `}
+            </Text>
 
-          <Toggle id="toggle-user-farms-toggle" isActive={activeFarmsFilter} toggle={toggleActiveFarms} />
-        </StyledToggleContainer>
+            <Toggle id="toggle-user-farms-toggle" isActive={activeFarmsFilter} toggle={toggleActiveFarms} />
+          </StyledToggleContainer>
+        )}
         <StyledSortContainer>
           <Text fontWeight={400} fontSize={16} marginRight={20}>
             Sort by:
