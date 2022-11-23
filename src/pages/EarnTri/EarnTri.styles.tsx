@@ -62,6 +62,7 @@ export const StyledFiltersContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  min-height: 35px;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
   flex-direction: column;
