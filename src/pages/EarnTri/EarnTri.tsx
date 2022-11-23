@@ -28,7 +28,8 @@ export default function EarnTri() {
     hasSearchQuery,
     legacyFarms,
     onInputChange,
-    allFarms
+    allFarms,
+    isStaking
   } = useFarmsSortAndFilter()
 
   return (
@@ -37,6 +38,7 @@ export default function EarnTri() {
         activeFarmsFilter={activeFarmsFilter}
         handleSort={handleSort}
         onInputChange={onInputChange}
+        isStaking={isStaking}
       />
 
       <AutoColumn gap="md" style={{ width: '100%' }}>

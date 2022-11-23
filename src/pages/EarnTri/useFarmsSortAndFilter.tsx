@@ -32,6 +32,7 @@ type FarmsSortAndFilterResult = {
   onInputChange: (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
   sortBy: SortingType
   allFarms: StakingTri[]
+  isStaking: boolean
 }
 
 export default function useFarmsSortAndFilter(): FarmsSortAndFilterResult {
@@ -87,17 +88,21 @@ export default function useFarmsSortAndFilter(): FarmsSortAndFilterResult {
     )
   }
 
+  const stakedFarms = useMemo(() => {
+    return currentFarms.filter(farm => isTokenAmountPositive(farm.stakedAmount))
+  }, [currentFarms])
+
+  const farmsToFilter = activeFarmsFilter ? stakedFarms : currentFarms
+
   const filteredFarms = useMemo(() => {
-    return currentFarms
-      .filter(farm => (activeFarmsFilter ? isTokenAmountPositive(farm.stakedAmount) : farm))
-      .filter(
-        farm =>
-          farm.tokens.some(({ symbol, name, address }) =>
-            farmTokensIncludesQuery({ symbol, name, address }, searchQuery)
-          ) ||
-          (searchQuery.length > 5 && farm.lpAddress.toUpperCase().includes(searchQuery))
-      )
-  }, [activeFarmsFilter, currentFarms, searchQuery])
+    return farmsToFilter.filter(
+      farm =>
+        farm.tokens.some(({ symbol, name, address }) =>
+          farmTokensIncludesQuery({ symbol, name, address }, searchQuery)
+        ) ||
+        (searchQuery.length > 5 && farm.lpAddress.toUpperCase().includes(searchQuery))
+    )
+  }, [searchQuery, farmsToFilter])
 
   useEffect(() => {
     const farmsToCompare = searchQuery.length || activeFarmsFilter ? farmArrsInOrder : farmArrs
@@ -115,6 +120,7 @@ export default function useFarmsSortAndFilter(): FarmsSortAndFilterResult {
     legacyFarms,
     onInputChange: handleInput,
     sortBy,
-    allFarms: farmArrsInOrder
+    allFarms: farmArrsInOrder,
+    isStaking: stakedFarms.length > 0
   }
 }
