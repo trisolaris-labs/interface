@@ -39,6 +39,12 @@ export default function EarnTriSortAndFilterContainer({
     <>
       <StyledSearchInput placeholder={t('earnPage.farmsSearchPlaceholder')} onChange={onInputChange} />
       <StyledFiltersContainer>
+        <StyledSortContainer>
+          <Text fontWeight={400} fontSize={16} marginRight={20}>
+            Sort by:
+          </Text>
+          <Select options={SORT_OPTIONS} onOptionChange={(option: OptionProps) => handleSort(option.value)} />
+        </StyledSortContainer>
         {isStaking && (
           <StyledToggleContainer>
             <Text fontWeight={400} fontSize={16} marginRight={20}>
@@ -48,12 +54,6 @@ export default function EarnTriSortAndFilterContainer({
             <Toggle id="toggle-user-farms-toggle" isActive={activeFarmsFilter} toggle={toggleActiveFarms} />
           </StyledToggleContainer>
         )}
-        <StyledSortContainer>
-          <Text fontWeight={400} fontSize={16} marginRight={20}>
-            Sort by:
-          </Text>
-          <Select options={SORT_OPTIONS} onOptionChange={(option: OptionProps) => handleSort(option.value)} />
-        </StyledSortContainer>
       </StyledFiltersContainer>
     </>
   )
