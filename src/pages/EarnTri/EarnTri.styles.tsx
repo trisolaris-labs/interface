@@ -62,7 +62,6 @@ export const StyledFiltersContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  min-height: 35px;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
   flex-direction: column;
@@ -75,7 +74,7 @@ export const StyledToggleContainer = styled.div`
   flex-direction: row;
   align-items: center;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-   margin-bottom: 1rem;
+   margin-top: 1rem;
   `};
 `
 
