@@ -17,7 +17,7 @@ import { SortingType } from '../../pages/EarnTri/useFarmsSortAndFilter'
 
 const SORT_OPTIONS = [
   { label: 'Pool type', value: 'default' },
-  { label: 'Liquidity', value: 'liquidity' },
+  { label: 'Total Staked', value: 'liquidity' },
   { label: 'APR', value: 'totalApr' }
 ]
 

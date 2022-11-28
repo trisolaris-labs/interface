@@ -60,7 +60,7 @@
     "earnUpTo": "Earn up to (yearly)",
     "yourRate": "Your rate",
     "totalDeposited": "Total deposited",
-    "totalStaked": "Total staked",
+    "totalStaked": "Total Staked",
     "depositLiquidity": "Deposit liquidity",
     "attemptingToStakeError": "Attempting to stake without approval or a signature. Please contact support.",
     "transactionSubmitted": "Transaction Submitted",
