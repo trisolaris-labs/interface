@@ -11,8 +11,9 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { useActiveWeb3React } from '../../../hooks'
 import { useTranslation } from 'react-i18next'
-import { StakingTri } from '../../../state/stake/stake-constants'
+import { ChefVersions, EarnedNonTriRewards } from '../../../state/stake/stake-constants'
 import { BIG_INT_ZERO } from '../../../constants'
+import { TokenAmount } from '@trisolaris/sdk'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -22,10 +23,24 @@ const ContentWrapper = styled(AutoColumn)`
 interface StakingModalProps {
   isOpen: boolean
   onDismiss: () => void
-  stakingInfo: StakingTri
+  chefVersion: ChefVersions
+  earnedNonTriRewards?: EarnedNonTriRewards[]
+  noTriRewards?: boolean
+  poolId?: number
+  earnedAmount?: TokenAmount
+  stakedAmount?: TokenAmount | null
 }
 
-export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: StakingModalProps) {
+export default function ClaimRewardModal({
+  isOpen,
+  onDismiss,
+  chefVersion,
+  earnedNonTriRewards = [],
+  noTriRewards,
+  poolId,
+  stakedAmount,
+  earnedAmount
+}: StakingModalProps) {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
@@ -33,7 +48,6 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
   const addTransaction = useTransactionAdder()
   const [hash, setHash] = useState<string | undefined>()
   const [attempting, setAttempting] = useState(false)
-  const { chefVersion, earnedNonTriRewards, noTriRewards, poolId } = stakingInfo
 
   function wrappedOnDismiss() {
     setHash(undefined)
@@ -46,36 +60,30 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
 
   async function onClaimReward() {
     if (chefVersion == 0) {
-      if (stakingContract && stakingInfo?.stakedAmount) {
-        setAttempting(true)
-        await stakingContract
-          .harvest(poolId)
-          .then((response: TransactionResponse) => {
-            addTransaction(response, {
-              summary: t('earn.claimAccumulated')
-            })
-            setHash(response.hash)
+      if (stakingContract && stakedAmount) {
+        try {
+          setAttempting(true)
+          const response: TransactionResponse = await stakingContract.harvest(poolId)
+          addTransaction(response, {
+            summary: t('earn.claimAccumulated')
           })
-          .catch((error: any) => {
-            setAttempting(false)
-            console.log(error)
-          })
+          setHash(response.hash)
+        } catch (error) {
+          setAttempting(false)
+          console.log(error)
+        }
       }
-    } else {
-      if (stakingContractv2 && stakingInfo?.stakedAmount) {
+    } else if (stakingContractv2 && stakedAmount) {
+      try {
         setAttempting(true)
-        await stakingContractv2
-          .harvest(poolId, account)
-          .then((response: TransactionResponse) => {
-            addTransaction(response, {
-              summary: t('earn.claimAccumulated')
-            })
-            setHash(response.hash)
-          })
-          .catch((error: any) => {
-            setAttempting(false)
-            console.log(error)
-          })
+        const response: TransactionResponse = await stakingContractv2.harvest(poolId, account)
+        addTransaction(response, {
+          summary: t('earn.claimAccumulated')
+        })
+        setHash(response.hash)
+      } catch (error) {
+        setAttempting(false)
+        console.log(error)
       }
     }
   }
@@ -83,8 +91,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
   let error: string | undefined
   if (!account) {
     error = t('earn.connectWallet')
-  }
-  if (!stakingInfo?.stakedAmount) {
+  } else if (!stakedAmount) {
     error = error ?? t('earn.enterAmount')
   }
 
@@ -96,10 +103,10 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
             <TYPE.mediumHeader>{t('earn.claim')}</TYPE.mediumHeader>
             <CloseIcon onClick={wrappedOnDismiss} />
           </RowBetween>
-          {stakingInfo.earnedAmount?.greaterThan(BIG_INT_ZERO) && (
+          {earnedAmount?.greaterThan(BIG_INT_ZERO) && (
             <AutoColumn justify="center" gap="md">
               <TYPE.body fontWeight={600} fontSize={36}>
-                {stakingInfo?.earnedAmount?.toSignificant(6)}
+                {earnedAmount?.toSignificant(6)}
               </TYPE.body>
               <TYPE.body>{t('earn.unclaimed')}</TYPE.body>
             </AutoColumn>
@@ -123,7 +130,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
             </AutoColumn>
           )}
           <TYPE.subHeader style={{ textAlign: 'center' }}>{t('earn.liquidityRemainsPool')}</TYPE.subHeader>
-          <ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onClaimReward}>
+          <ButtonError disabled={!!error} error={!!error && !!stakedAmount} onClick={onClaimReward}>
             {error ?? t('earn.claim')}
           </ButtonError>
         </ContentWrapper>
@@ -131,10 +138,8 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
       {attempting && !hash && (
         <LoadingView onDismiss={wrappedOnDismiss}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.body fontSize={20}>
-              {t('earn.claimingPng', { amount: stakingInfo?.earnedAmount?.toSignificant(6) })}
-            </TYPE.body>
-            {chefVersion == 1 && (earnedNonTriRewards.length > 0 || noTriRewards) && (
+            <TYPE.body fontSize={20}>{t('earn.claimingPng', { amount: earnedAmount?.toSignificant(6) })}</TYPE.body>
+            {chefVersion == 1 && (earnedNonTriRewards?.length > 0 || noTriRewards) && (
               <TYPE.body fontSize={20}>
                 {'Claiming'}{' '}
                 {earnedNonTriRewards

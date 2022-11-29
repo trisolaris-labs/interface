@@ -270,6 +270,14 @@ export const ButtonGold = styled(Base)`
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.gold)};
     background-color: ${({ theme }) => darken(0.1, theme.gold)};
   }
+  &:disabled {
+    background-color: ${({ theme, altDisabledStyle }) => (altDisabledStyle ? theme.primary1 : theme.bg3)};
+    color: ${({ theme, altDisabledStyle }) => (altDisabledStyle ? 'white' : theme.text3)};
+    cursor: auto;
+    box-shadow: none;
+    border: 1px solid transparent;
+    outline: none;
+    opacity: ${({ altDisabledStyle }) => (altDisabledStyle ? '0.7' : '1')};
 `
 
 export function ButtonConfirmed({

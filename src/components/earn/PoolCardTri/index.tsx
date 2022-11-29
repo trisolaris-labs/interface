@@ -1,35 +1,53 @@
 import React, { useState } from 'react'
-import { Token } from '@trisolaris/sdk'
+import { Token, TokenAmount } from '@trisolaris/sdk'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
-import { Settings2 as ManageIcon } from 'lucide-react'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 
 import { TYPE } from '../../../theme'
-import { AutoColumn } from '../../Column'
-import { ButtonGold } from '../../Button'
-import { AutoRow, RowBetween } from '../../Row'
-import ClaimRewardModal from './ClaimRewardModalTri'
-import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 
-import { ChefVersions, NonTriAPR } from '../../../state/stake/stake-constants'
+import ClaimRewardModal from './ClaimRewardModalTri'
+import { ButtonGold } from '../../Button'
+import SponsoredFarmLink from '../../SponsoredFarmLink'
+import PoolCardTriRewardText from './PoolCardTriRewardText'
+import { AutoRow } from '../../Row'
+import ManageStake from './ManageStake'
+
+import { ChefVersions, EarnedNonTriRewards, NonTriAPR, PoolType } from '../../../state/stake/stake-constants'
 import { useSingleFarm } from '../../../state/stake/user-farms'
 import { useColorForToken } from '../../../hooks/useColor'
-import { currencyId } from '../../../utils/currencyId'
+import { useSingleStableFarm } from '../../../state/stake/user-stable-farms'
+import useUserFarmStatistics from '../../../state/stake/useUserFarmStatistics'
+import useTLP from '../../../hooks/useTLP'
+import { useTokenBalance } from '../../../state/wallet/hooks'
+import { useActiveWeb3React } from '../../../hooks'
+
 import { addCommasToNumber } from '../../../utils'
 import { getPairRenderOrder, isTokenAmountPositive } from '../../../utils/pools'
 
+import { StableSwapPoolName } from '../../../state/stableswap/constants'
+
 import {
-  Wrapper,
-  PairContainer,
   ResponsiveCurrencyLabel,
   TokenPairBackgroundColor,
-  StyledActionsContainer,
-  Button
+  Wrapper,
+  StyledPairContainer,
+  StakedContainer,
+  AprContainer,
+  CardContainer,
+  DetailsContainer,
+  StyledMutedSubHeader,
+  PoolTypeContainer,
+  StakedMobilecontainer,
+  StyledMultipleCurrencyLogo,
+  ButtonWrapper,
+  StyledClaimableRewards,
+  DepositsContainer,
+  StakeContainer,
+  UserStakedInUsd,
+  UserStakedInTLP,
+  PoolTypeHeader,
+  MobilePoolTypeContainer
 } from './PoolCardTri.styles'
-import SponsoredFarmLink from '../../SponsoredFarmLink'
-import { StableSwapPoolName } from '../../../state/stableswap/constants'
-import { useSingleStableFarm } from '../../../state/stake/user-stable-farms'
-import PoolCardTriRewardText from './PoolCardTriRewardText'
 
 export type PoolCardTriProps = {
   apr: number
@@ -37,7 +55,6 @@ export type PoolCardTriProps = {
   chefVersion: ChefVersions
   inStaging: boolean
   noTriRewards: boolean
-  isLegacy?: boolean
   isPeriodFinished: boolean
   tokens: Token[]
   totalStakedInUSD: number
@@ -47,63 +64,76 @@ export type PoolCardTriProps = {
   nonTriAPRs: NonTriAPR[]
   friendlyFarmName: string | null
   isFeatured?: boolean
+  poolType: PoolType
+  lpAddress: string
+  poolId: number
+}
+
+type ExtendedPoolCardTriProps = PoolCardTriProps & {
+  earnedNonTriRewards?: EarnedNonTriRewards[]
+  noTriRewards?: boolean
+  earnedAmount?: TokenAmount
+  stakedAmount?: TokenAmount | null
+  userStakedInUSD?: string | null
+  enableClaimButton?: boolean
+  enableClaimModal?: () => void
+  lpToken: Token
 }
 
 const DefaultPoolCardtri = ({
   apr,
   chefVersion,
   inStaging,
-  isLegacy,
-  isPeriodFinished,
   tokens: _tokens,
   totalStakedInUSD,
-  isStaking,
   version,
   enableClaimButton = false,
-  enableModal = () => null,
-  stableSwapPoolName,
   nonTriAPRs,
-  hasNonTriRewards,
   friendlyFarmName,
-  isFeatured = false
-}: { enableClaimButton?: boolean; enableModal?: () => void } & PoolCardTriProps) => {
-  const history = useHistory()
+  isFeatured = false,
+  earnedNonTriRewards = [],
+  noTriRewards,
+  earnedAmount,
+  poolType,
+  stakedAmount,
+  userStakedInUSD,
+  stableSwapPoolName,
+  lpAddress,
+  poolId,
+  lpToken,
+  enableClaimModal = () => null
+}: ExtendedPoolCardTriProps) => {
   const { t } = useTranslation()
+
+  const { account } = useActiveWeb3React()
+
+  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, lpToken)
+
+  const [showMore, setShowMore] = useState(false)
 
   const isDualRewards = chefVersion === ChefVersions.V2
 
   const { currencies, tokens } = getPairRenderOrder(_tokens)
 
   const backgroundColor1 = useColorForToken(tokens[0])
-  // Only override `backgroundColor2` if it's a dual rewards pool
+
   const backgroundColor2 = useColorForToken(tokens[tokens.length - 1], () => isDualRewards)
 
   const totalStakedInUSDFriendly = addCommasToNumber(totalStakedInUSD.toString())
 
-  function renderManageOrDepositButton() {
-    const sharedProps = {
-      marginLeft: '0.5rem',
-      onClick: () => {
-        history.push(
-          stableSwapPoolName
-            ? `/tri/${stableSwapPoolName}/${version}`
-            : `/tri/${currencyId(currencies[0])}/${currencyId(currencies[1])}/${version}`
-        )
-      }
-    }
+  const currenciesQty = currencies.length
+  const farmName = friendlyFarmName ?? currencies.map(({ symbol }) => symbol).join('-')
 
-    return isStaking ? (
-      <Button isStaking={true} {...sharedProps}>
-        <ManageIcon size={20} />
-      </Button>
-    ) : (
-      <Button disabled={isPeriodFinished} isStaking={false} {...sharedProps}>
-        {t('earn.deposit')}
-      </Button>
-    )
+  function onCardClick() {
+    setShowMore(!showMore)
   }
 
-  const currenciesQty = currencies.length
+  function handleClaimClick(event: React.MouseEvent) {
+    enableClaimModal()
+    event.stopPropagation()
+  }
+
+  const isLegacy = poolType === PoolType.LEGACY
 
   return (
     <Wrapper
@@ -111,109 +141,222 @@ const DefaultPoolCardtri = ({
       bgColor2={backgroundColor2}
       isFeatured={isFeatured}
       currenciesQty={currenciesQty}
+      onClick={onCardClick}
     >
       <TokenPairBackgroundColor bgColor1={backgroundColor1} bgColor2={backgroundColor2} />
-
-      <AutoRow justifyContent="space-between">
-        <PairContainer>
+      <CardContainer>
+        <StyledPairContainer>
           <SponsoredFarmLink tokens={tokens} farmID={version} />
-          <MultipleCurrencyLogo currencies={currencies} size={20} />
-          <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>
-            {friendlyFarmName ?? currencies.map(({ symbol }) => symbol).join('-')}
-          </ResponsiveCurrencyLabel>
-        </PairContainer>
-        {isLegacy && !isStaking ? (
-          <Button disabled={true} isStaking={isStaking}>
-            {t('earn.deposit')}
-          </Button>
-        ) : (
-          <StyledActionsContainer>
-            {enableClaimButton && (
-              <ButtonGold padding="8px" borderRadius="8px" maxWidth="65px" onClick={enableModal}>
-                Claim
-              </ButtonGold>
-            )}
-            {renderManageOrDepositButton()}
-          </StyledActionsContainer>
-        )}
-      </AutoRow>
-      <RowBetween>
-        <AutoColumn>
-          <TYPE.mutedSubHeader>{t('earn.totalStaked')}</TYPE.mutedSubHeader>
-          <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
-        </AutoColumn>
-        <AutoColumn>
-          <TYPE.mutedSubHeader textAlign="end">APR</TYPE.mutedSubHeader>
+          <StyledMultipleCurrencyLogo currencies={currencies} />
+          <ResponsiveCurrencyLabel currenciesQty={currenciesQty}>{farmName}</ResponsiveCurrencyLabel>
+          {!showMore && <MobilePoolTypeContainer>{poolType}</MobilePoolTypeContainer>}
+        </StyledPairContainer>
+        <AprContainer>
+          <StyledMutedSubHeader justifyContent="flex-start">APR</StyledMutedSubHeader>
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
-        </AutoColumn>
-      </RowBetween>
+        </AprContainer>
+        <StakedContainer isExpanded={showMore} show={enableClaimButton}>
+          <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
+          <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
+        </StakedContainer>
+        <PoolTypeContainer isExpanded={showMore} isStaking={enableClaimButton}>
+          <PoolTypeHeader>Pool Type</PoolTypeHeader>
+          <TYPE.white>{poolType}</TYPE.white>
+        </PoolTypeContainer>
+        <ButtonWrapper>
+          {enableClaimButton ? (
+            <ButtonGold padding="8px" borderRadius="8px" height="30px" onClick={handleClaimClick} justifySelf="start">
+              Claim
+            </ButtonGold>
+          ) : (
+            <StakedMobilecontainer>
+              <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
+              <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
+            </StakedMobilecontainer>
+          )}
+        </ButtonWrapper>
+        <DetailsContainer>{showMore ? <ChevronUp size="15" /> : <ChevronDown size="15" />}</DetailsContainer>
+        {showMore && (
+          <>
+            <StyledClaimableRewards
+              enableClaimButton={enableClaimButton}
+              noTriRewards={noTriRewards}
+              earnedAmount={earnedAmount}
+              earnedNonTriRewards={earnedNonTriRewards}
+              isStaking={enableClaimButton}
+            />
+            <DepositsContainer isStaking={enableClaimButton}>
+              <>
+                <StyledMutedSubHeader>Your deposits</StyledMutedSubHeader>
+                <AutoRow>
+                  {enableClaimButton ? (
+                    <>
+                      <UserStakedInUsd>~{addCommasToNumber(userStakedInUSD ?? '')}</UserStakedInUsd>/{' '}
+                      <UserStakedInTLP>{stakedAmount?.toSignificant(2)} TLP</UserStakedInTLP>
+                    </>
+                  ) : (
+                    <TYPE.white fontWeight={500}>$0</TYPE.white>
+                  )}
+                </AutoRow>
+              </>
+            </DepositsContainer>
+            <StakeContainer isStaking={enableClaimButton}>
+              <ManageStake
+                stakedAmount={stakedAmount}
+                isStaking={enableClaimButton}
+                stableSwapPoolName={stableSwapPoolName}
+                tokens={tokens}
+                lpAddress={lpAddress}
+                chefVersion={chefVersion}
+                poolId={poolId}
+                lpToken={lpToken}
+                noTriRewards={noTriRewards}
+                earnedNonTriRewards={earnedNonTriRewards}
+                earnedAmount={earnedAmount}
+                userLiquidityUnstaked={userLiquidityUnstaked}
+                account={account}
+                isLegacy={isLegacy}
+              />
+            </StakeContainer>
+          </>
+        )}
+      </CardContainer>
     </Wrapper>
   )
 }
 
-type StablePoolCardTriProps = PoolCardTriProps & { stableSwapPoolName: StableSwapPoolName }
+type StablePoolCardTriProps = PoolCardTriProps & { stableSwapPoolName: StableSwapPoolName; lpToken: Token }
 
 const StableStakingPoolCardTRI = (props: StablePoolCardTriProps) => {
-  const { version } = props
+  const { version, stableSwapPoolName, lpToken } = props
 
-  const stakingInfo = useSingleStableFarm(Number(version), props.stableSwapPoolName)
-  const { earnedAmount, earnedNonTriRewards } = stakingInfo
+  const stakingInfo = useSingleStableFarm(Number(version), stableSwapPoolName)
+  const {
+    earnedNonTriRewards,
+    noTriRewards,
+    earnedAmount,
+    poolId,
+    stakedAmount,
+    chefVersion,
+    totalStakedInUSD
+  } = stakingInfo
+
+  const { userLPAmountUSDFormatted } =
+    useUserFarmStatistics({
+      lpToken,
+      userLPStakedAmount: stakedAmount,
+      totalPoolAmountUSD: totalStakedInUSD,
+      chefVersion: chefVersion
+    }) ?? {}
+
+  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
   const amountIsClaimable =
     isTokenAmountPositive(earnedAmount) || earnedNonTriRewards.some(({ amount }) => isTokenAmountPositive(amount))
-  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
-  const enableModal = () => setShowClaimRewardModal(true)
+  const enableClaimModal = () => setShowClaimRewardModal(true)
+
   return (
     <>
       {showClaimRewardModal && stakingInfo && (
         <ClaimRewardModal
           isOpen={showClaimRewardModal}
           onDismiss={() => setShowClaimRewardModal(false)}
-          stakingInfo={stakingInfo}
+          chefVersion={chefVersion}
+          earnedNonTriRewards={earnedNonTriRewards}
+          noTriRewards={noTriRewards}
+          poolId={poolId}
+          earnedAmount={earnedAmount}
+          stakedAmount={stakedAmount}
         />
       )}
-      <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+      <DefaultPoolCardtri
+        {...props}
+        enableClaimButton={amountIsClaimable}
+        enableClaimModal={enableClaimModal}
+        earnedNonTriRewards={earnedNonTriRewards}
+        noTriRewards={noTriRewards}
+        earnedAmount={earnedAmount}
+        stakedAmount={stakedAmount}
+        userStakedInUSD={userLPAmountUSDFormatted}
+        stableSwapPoolName={stableSwapPoolName}
+      />
     </>
   )
 }
 
-const StakingPoolCardTRI = (props: PoolCardTriProps) => {
-  const { version } = props
+const StakingPoolCardTRI = (props: PoolCardTriProps & { lpToken: Token }) => {
+  const { version, lpToken } = props
 
   const stakingInfo = useSingleFarm(Number(version))
-  const { earnedAmount, earnedNonTriRewards } = stakingInfo
+
+  const {
+    earnedNonTriRewards,
+    noTriRewards,
+    earnedAmount,
+    poolId,
+    stakedAmount,
+    chefVersion,
+    totalStakedInUSD
+  } = stakingInfo
+
+  const { userLPAmountUSDFormatted } =
+    useUserFarmStatistics({
+      lpToken,
+      userLPStakedAmount: stakedAmount,
+      totalPoolAmountUSD: totalStakedInUSD,
+      chefVersion: chefVersion
+    }) ?? {}
+
+  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
   const amountIsClaimable =
     isTokenAmountPositive(earnedAmount) || earnedNonTriRewards.some(({ amount }) => isTokenAmountPositive(amount))
-  const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
 
-  const enableModal = () => setShowClaimRewardModal(true)
+  const enableClaimModal = () => setShowClaimRewardModal(true)
+
   return (
     <>
       {showClaimRewardModal && stakingInfo && (
         <ClaimRewardModal
           isOpen={showClaimRewardModal}
           onDismiss={() => setShowClaimRewardModal(false)}
-          stakingInfo={stakingInfo}
+          chefVersion={chefVersion}
+          earnedNonTriRewards={earnedNonTriRewards}
+          noTriRewards={noTriRewards}
+          poolId={poolId}
+          earnedAmount={earnedAmount}
+          stakedAmount={stakedAmount}
         />
       )}
-      <DefaultPoolCardtri {...props} enableClaimButton={amountIsClaimable} enableModal={enableModal} />
+      <DefaultPoolCardtri
+        {...props}
+        enableClaimButton={amountIsClaimable}
+        enableClaimModal={enableClaimModal}
+        earnedNonTriRewards={earnedNonTriRewards}
+        noTriRewards={noTriRewards}
+        earnedAmount={earnedAmount}
+        stakedAmount={stakedAmount}
+        userStakedInUSD={userLPAmountUSDFormatted}
+      />
     </>
   )
 }
 
 const PoolCardTRI = (props: PoolCardTriProps) => {
-  const { isStaking, stableSwapPoolName } = props
+  const { isStaking, stableSwapPoolName, lpAddress, tokens } = props
+  const token0 = tokens[0]
+  const token1 = tokens[1]
+  const lpToken = useTLP({ lpAddress, token0, token1 })
 
   if (!isStaking) {
-    return <DefaultPoolCardtri {...props} />
+    return <DefaultPoolCardtri {...props} lpToken={lpToken} />
   }
 
   return stableSwapPoolName == null ? (
-    <StakingPoolCardTRI {...props} />
+    <StakingPoolCardTRI {...props} lpToken={lpToken} />
   ) : (
-    <StableStakingPoolCardTRI {...props} stableSwapPoolName={stableSwapPoolName} />
+    <StableStakingPoolCardTRI {...props} stableSwapPoolName={stableSwapPoolName} lpToken={lpToken} />
   )
 }
 

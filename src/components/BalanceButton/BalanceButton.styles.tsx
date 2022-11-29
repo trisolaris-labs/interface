@@ -19,6 +19,13 @@ const StyledBalanceButton = styled(ButtonSecondary)`
   :focus {
     border: 1px solid ${({ theme }) => theme.primary1};
     outline: none;
+    box-shadow: none;
+  }
+  :active {
+    box-shadow: 0 0 0 1pt #1350ff;
+  }
+  :focus-visible {
+    box-shadow: 0 0 0 1pt #1350ff;
   }
 `
 

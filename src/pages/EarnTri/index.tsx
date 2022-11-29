@@ -5,7 +5,7 @@ import EarnTri from './EarnTri'
 
 export default function Earn() {
   return (
-    <PageWrapper gap="lg" justify="center">
+    <PageWrapper gap="md" justify="center">
       <FarmBanner />
       <EarnTri />
     </PageWrapper>

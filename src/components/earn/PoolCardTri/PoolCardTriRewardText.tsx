@@ -11,6 +11,7 @@ import { Info } from 'react-feather'
 import _ from 'lodash'
 import CurrencyLogo from '../../CurrencyLogo'
 import useGetTokenByAddress from '../../../hooks/useGetTokenByAddress'
+import { NonTriAPR } from '../../../state/stake/stake-constants'
 
 import { roundDecimal } from '../../../utils'
 
@@ -20,7 +21,6 @@ const IconWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-left: 0.25rem;
 `
 
 const ContentWrapper = styled.div`
@@ -28,9 +28,23 @@ const ContentWrapper = styled.div`
   width: fit-content;
 `
 
-type Props = Pick<PoolCardTriProps, 'apr' | 'inStaging' | 'nonTriAPRs' | 'isLegacy'>
+const LogosContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
 
-export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLegacy }: Props) {
+const AprContainer = styled.div`
+  display: flex;
+  align-items: center;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    flex-direction: column;
+    align-items: flex-start;
+  `};
+`
+
+type Props = { isLegacy?: boolean; apr: number; inStaging: boolean; nonTriAPRs: NonTriAPR[] }
+
+export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLegacy = false }: Props) {
   const [show, setShow] = useState(false)
   const open = useCallback(() => setShow(true), [setShow])
   const close = useCallback(() => setShow(false), [setShow])
@@ -106,13 +120,19 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLe
   return (
     <Popover content={tooltipContent} show={show}>
       <IconWrapper onMouseEnter={open} onMouseLeave={close}>
-        {tooltipData.map(({ token }) => (
-          <CurrencyLogo alt="" currency={token} key={token.address} size={'16px'} style={{ marginRight: '4px' }} />
-        ))}
-        <TYPE.white marginRight="4px" textAlign="end">
-          {roundDecimal(totalAPR)}%
-        </TYPE.white>
-        <Info size="16px" />
+        <AprContainer>
+          <LogosContainer>
+            {tooltipData.map(({ token }) => (
+              <CurrencyLogo alt="" currency={token} key={token.address} size={'14px'} style={{ marginRight: '4px' }} />
+            ))}
+          </LogosContainer>
+          <AutoRow alignItems="center">
+            <TYPE.white marginRight="4px" textAlign="end">
+              {roundDecimal(totalAPR)}%
+            </TYPE.white>
+            <Info size="14px" />
+          </AutoRow>
+        </AprContainer>
       </IconWrapper>
     </Popover>
   )
