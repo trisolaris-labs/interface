@@ -318,7 +318,7 @@ export const StakeContainer = styled(AutoColumn)`
     grid-column: 2/4
     grid-row: ${({ isStaking }) => (isStaking ? 3 : 2)};
     padding: 0px;
-    max-width: 250px;
+
     justify-self: end;
   `};
   ${({ theme }) => theme.mediaWidth.upToExtraSmall<{ isStaking: boolean }>`
