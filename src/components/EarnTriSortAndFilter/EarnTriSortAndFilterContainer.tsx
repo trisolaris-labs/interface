@@ -45,6 +45,13 @@ export default function EarnTriSortAndFilterContainer({
           </Text>
           <Select options={SORT_OPTIONS} onOptionChange={(option: OptionProps) => handleSort(option.value)} />
         </StyledSortContainer>
+        <StyledToggleContainer>
+          <Text fontWeight={400} fontSize={16} marginRight={20}>
+            {`${t('earnPage.filterUserPools')}: `}
+          </Text>
+
+          <Toggle id="toggle-user-farms-toggle" isActive={activeFarmsFilter} toggle={toggleActiveFarms} />
+        </StyledToggleContainer>
       </StyledFiltersContainer>
     </>
   )
