@@ -192,7 +192,7 @@ const DefaultPoolCardtri = ({
                   {enableClaimButton ? (
                     <>
                       <UserStakedInUsd>~{addCommasToNumber(userStakedInUSD ?? '')}</UserStakedInUsd>/{' '}
-                      <UserStakedInTLP>{stakedAmount?.toSignificant(2)} TLP</UserStakedInTLP>
+                      <UserStakedInTLP>{stakedAmount?.toSignificant(6)} TLP</UserStakedInTLP>
                     </>
                   ) : (
                     <TYPE.white fontWeight={500}>$0</TYPE.white>
