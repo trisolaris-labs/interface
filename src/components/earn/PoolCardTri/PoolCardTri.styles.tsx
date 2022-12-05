@@ -44,7 +44,7 @@ export const Wrapper = styled(Card)<{
   ${({ theme }) => theme.mediaWidth.upToSmall`
         padding-left: 8px;
         padding-right: 10px;
-        min-height: 73px;
+        min-height: 39px;
     `};
 `
 
@@ -107,6 +107,7 @@ export const TokenPairBackgroundColor = styled.span<{ bgColor1: string | null; b
 export const StyledPairContainer = styled(PairContainer)`
   max-width: 200px;
   justify-self: flex-start;
+  align-self: center;
 `
 
 export const CardContainer = styled.div`
@@ -114,11 +115,12 @@ export const CardContainer = styled.div`
   grid-template-columns: 220px auto 110px 140px 100px;
   row-gap: 20px;
   width: 100%;
-  align-items: center;
+  align-items: start;
   justify-items: center;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     grid-template-columns: 1fr 1fr 92px;
+    grid-template-rows: 53px;
   `};
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     grid-template-columns: 167.5px  auto 92px;
@@ -141,6 +143,9 @@ export const DetailsContainer = styled.div`
 
 export const StyledMutedSubHeader = styled(TYPE.mutedSubHeader)`
   display: flex;
+  ${({ theme }) => theme.mediaWidth.upToXxSmall`
+    font-size: 13px !important;
+  `};
 `
 
 export const RewardColumn = styled.div`
@@ -171,16 +176,16 @@ export const StyledRewardAmount = styled.span`
   text-overflow: ellipsis;
 `
 
-export const StyledLongClaimableHeader = styled(TYPE.mutedSubHeader)`
+export const StyledLongClaimableHeader = styled(StyledMutedSubHeader)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display:none;
   `};
 `
 
-export const StyledShortClaimableHeader = styled(TYPE.mutedSubHeader)`
+export const StyledShortClaimableHeader = styled(StyledMutedSubHeader)`
   display: none;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    display:block;
+    display:flex;
   `};
 `
 
@@ -215,6 +220,7 @@ export const AprContainer = styled(AutoColumn)`
   min-width: 50px;
   justify-content: flex-start;
   justify-self: start;
+
   ${({ theme }) => theme.mediaWidth.upToSmall`
     justify-self: start;
   `};
@@ -277,6 +283,7 @@ export const ButtonWrapper = styled.div`
   width: 100%;
   max-width: 74px;
   justify-self: start;
+  align-self: center;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     font-size: 14px;
     max-width: 55px;
@@ -290,6 +297,7 @@ export const StyledClaimableRewards = styled(ClaimableRewards)`
     grid-row: 2;
     grid-column: 2/3;
     display: ${({ isStaking }) => (isStaking ? 'grid' : 'none')};
+    align-self: start;
   `};
 `
 
@@ -344,9 +352,9 @@ export const UserStakedInTLP = styled(TYPE.white)`
   `};
 `
 
-export const PoolTypeHeader = styled(TYPE.mutedSubHeader)`
+export const PoolTypeHeader = styled(StyledMutedSubHeader)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    line-height:20px;
+    line-height:23px;
   `};
 `
 
