@@ -1,10 +1,14 @@
-import { STNEAR, AUSDO } from '../../constants/tokens'
+import { STNEAR, AUSDO, NEARX } from '../../constants/tokens'
 
 export const SPONSORED_TOKENS = [
   { token: STNEAR, link: 'https://metapool.app/dapp/mainnet/metapool-aurora/' },
   {
     token: AUSDO,
     link: 'https://v3.oin.finance/'
+  },
+  {
+    token: NEARX,
+    link: 'https://near.staderlabs.com/lt/near?tab=Stake'
   }
 ]
 
