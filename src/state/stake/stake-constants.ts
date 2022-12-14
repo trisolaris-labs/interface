@@ -530,7 +530,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     inStaging: false,
     noTriRewards: true,
-    poolType: PoolType.ECOSYSTEM
+    poolType: PoolType.LEGACY
   }),
   createMCV2Pool({
     ID: 35,
