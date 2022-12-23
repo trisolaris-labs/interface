@@ -215,7 +215,10 @@ export default function WalletModal({
               id={`connect-${key}`}
               key={key}
               active={
-                (option.connector && option.name === SUPPORTED_WALLETS.BRAVE.name && isBraveWallet()) ??
+                (option.connector &&
+                  option.name === SUPPORTED_WALLETS.BRAVE.name &&
+                  isBraveWallet() &&
+                  option.connector === connector) ??
                 option.connector === connector
               }
               color={option.color}
@@ -277,7 +280,10 @@ export default function WalletModal({
             }}
             key={key}
             active={
-              (option.connector && option.name === SUPPORTED_WALLETS.BRAVE.name && isBraveWallet()) ??
+              (option.connector &&
+                option.name === SUPPORTED_WALLETS.BRAVE.name &&
+                isBraveWallet() &&
+                option.connector === connector) ??
               option.connector === connector
             }
             color={option.color}
