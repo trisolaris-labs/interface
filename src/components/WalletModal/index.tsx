@@ -206,6 +206,10 @@ export default function WalletModal({
       const option = SUPPORTED_WALLETS[key]
       // check for mobile options
       if (isMobile) {
+        // Don't list Brave wallet as option if not using Brave
+        if (option.name === 'Brave Wallet' && !isBraveWallet()) {
+          return null
+        }
         return (
           option.name !== SUPPORTED_WALLETS.INJECTED.name && (
             <Option
