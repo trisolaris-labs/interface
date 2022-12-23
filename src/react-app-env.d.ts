@@ -8,7 +8,8 @@ declare module 'fortmatic'
 
 interface Window {
   ethereum?: {
-    isMetaMask?: true
+    isMetaMask?: boolean
+    isBraveWallet?: boolean
     on?: (...args: any[]) => void
     removeListener?: (...args: any[]) => void
   }
