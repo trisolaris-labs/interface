@@ -140,3 +140,11 @@ export function replaceUnderscoresWithSlashes(value: string) {
 export function roundDecimal(apr: number) {
   return apr >= 1 ? Math.round(apr) : +apr.toFixed(2)
 }
+
+export function isMetamask() {
+  return !!(window?.ethereum && window?.ethereum.isMetaMask)
+}
+
+export function isBraveWallet() {
+  return !!(window?.ethereum && window?.ethereum.isBraveWallet)
+}

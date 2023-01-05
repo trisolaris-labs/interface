@@ -20,6 +20,7 @@ import Option from './Option'
 import PendingView from './PendingView'
 import { useTranslation } from 'react-i18next'
 import { ChainId } from '@trisolaris/sdk'
+import { isBraveWallet, isMetamask } from '../../utils'
 
 const WALLET_TUTORIAL = 'https://metamask.io/faqs'
 
@@ -201,11 +202,14 @@ export default function WalletModal({
 
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
-    const isMetamask = window.ethereum && window.ethereum.isMetaMask
     return Object.keys(SUPPORTED_WALLETS).map(key => {
       const option = SUPPORTED_WALLETS[key]
       // check for mobile options
       if (isMobile) {
+        // Don't list Brave wallet as option if not using Brave
+        if (option.name === 'Brave Wallet' && !isBraveWallet()) {
+          return null
+        }
         return (
           option.name !== SUPPORTED_WALLETS.INJECTED.name && (
             <Option
@@ -214,7 +218,13 @@ export default function WalletModal({
               }}
               id={`connect-${key}`}
               key={key}
-              active={option.connector && option.connector === connector}
+              active={
+                (option.connector &&
+                  option.name === SUPPORTED_WALLETS.BRAVE.name &&
+                  isBraveWallet() &&
+                  option.connector === connector) ??
+                option.connector === connector
+              }
               color={option.color}
               link={option.href}
               header={option.name}
@@ -246,16 +256,22 @@ export default function WalletModal({
           }
         }
         // don't return metamask if injected provider isn't metamask
-        else if (option.name === 'MetaMask' && !isMetamask) {
+        else if (option.name === 'MetaMask' && !isMetamask()) {
           return null
         }
         // likewise for generic
-        else if (option.name === 'Injected' && isMetamask) {
+        else if (option.name === 'Injected' && isMetamask()) {
           return null
         }
       }
 
       // return rest of options
+
+      // Don't list Brave wallet as option if not using Brave
+      if (option.name === 'Brave Wallet' && !isBraveWallet()) {
+        return null
+      }
+
       return (
         !isMobile &&
         !option.mobileOnly && (
@@ -267,7 +283,13 @@ export default function WalletModal({
                 : !option.href && tryActivation(option.connector)
             }}
             key={key}
-            active={option.connector === connector}
+            active={
+              (option.connector &&
+                option.name === SUPPORTED_WALLETS.BRAVE.name &&
+                isBraveWallet() &&
+                option.connector === connector) ??
+              option.connector === connector
+            }
             color={option.color}
             link={option.href}
             header={option.name}
@@ -305,7 +327,6 @@ export default function WalletModal({
   }
 
   function getModalContent() {
-    const isMetamask = window.ethereum && window.ethereum.isMetaMask
     if (error) {
       return (
         <UpperSection>
@@ -321,7 +342,7 @@ export default function WalletModal({
             {error instanceof UnsupportedChainIdError ? (
               <>
                 <h5>{`${t('Please connect to')}:`}</h5>
-                {isMetamask && <ButtonLight onClick={addNetwork}>{t('walletModal.switchNetwork')}</ButtonLight>}
+                {isMetamask() && <ButtonLight onClick={addNetwork}>{t('walletModal.switchNetwork')}</ButtonLight>}
               </>
             ) : (
               t('walletModal.errorConnectingRefresh')

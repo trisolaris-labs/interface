@@ -1,6 +1,6 @@
 import { ChainId, JSBI, Percent, Token, WETH as _WETH } from '@trisolaris/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import { injected, walletlink, walletconnect } from '../connectors'
+import { injected, walletlink, walletconnect, brave} from '../connectors'
 import {
   DAI,
   TRI,
@@ -122,6 +122,14 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Easy-to-use browser extension.',
     href: null,
     color: '#E8831D'
+  },
+  BRAVE: {
+    connector: brave,
+    name: 'Brave Wallet',
+    iconName: 'brave.png',
+    description: 'Brave wallet',
+    href: null,
+    color: '##fc5404'
   },
   WALLET_LINK: {
     connector: walletlink,

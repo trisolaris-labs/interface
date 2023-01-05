@@ -4,7 +4,7 @@ import styled, { ThemeContext } from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
 import { AppDispatch } from '../../state'
 import { clearAllTransactions } from '../../state/transactions/actions'
-import { shortenAddress } from '../../utils'
+import { isBraveWallet, isMetamask, shortenAddress } from '../../utils'
 import { AutoRow } from '../Row'
 import Copy from './Copy'
 import Transaction from './Transaction'
@@ -13,7 +13,7 @@ import { SUPPORTED_WALLETS } from '../../constants'
 import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { getEtherscanLink } from '../../utils'
-import { injected, walletlink } from '../../connectors'
+import { brave, injected, walletlink } from '../../connectors'
 import Identicon from '../Identicon'
 import { ButtonSecondary } from '../Button'
 import { ExternalLink as LinkIcon } from 'react-feather'
@@ -225,14 +225,15 @@ export default function AccountDetails({
   const dispatch = useDispatch<AppDispatch>()
 
   function formatConnectorName() {
-    const { ethereum } = window
-    const isMetaMask = !!(ethereum && ethereum.isMetaMask)
-    const name = Object.keys(SUPPORTED_WALLETS)
-      .filter(
-        k =>
-          SUPPORTED_WALLETS[k].connector === connector && (connector !== injected || isMetaMask === (k === 'METAMASK'))
-      )
-      .map(k => SUPPORTED_WALLETS[k].name)[0]
+    const name = isBraveWallet()
+      ? SUPPORTED_WALLETS.BRAVE.name
+      : Object.keys(SUPPORTED_WALLETS)
+          .filter(
+            k =>
+              SUPPORTED_WALLETS[k].connector === connector &&
+              (connector !== injected || isMetamask() === (k === 'METAMASK'))
+          )
+          .map(k => SUPPORTED_WALLETS[k].name)[0]
     return <WalletName>{t('accountDetails.connectedWith') + name}</WalletName>
   }
 
@@ -270,7 +271,7 @@ export default function AccountDetails({
               <AccountGroupingRow>
                 {formatConnectorName()}
                 <div>
-                  {connector !== injected && (
+                  {connector !== injected && !isBraveWallet() && (
                     <WalletAction
                       style={{ fontSize: '.825rem', fontWeight: 400, marginRight: '8px' }}
                       onClick={() => {

@@ -26,6 +26,10 @@ export const injected = new InjectedConnector({
   supportedChainIds: [1313161554]
 })
 
+export const brave = new InjectedConnector({
+  supportedChainIds: [1313161554]
+})
+
 export const walletlink = new WalletLinkConnector({
   url: NETWORK_URL,
   appName: 'Trisolaris',
