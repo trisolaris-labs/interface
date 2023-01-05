@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.js": "./static/js/main.0896ffdc.chunk.js",
-    "runtime-main.js": "./static/js/runtime-main.79cd1088.js",
+    "main.js": "./static/js/main.e7fcd9cd.chunk.js",
+    "runtime-main.js": "./static/js/runtime-main.07002464.js",
     "static/css/2.5aa401b8.chunk.css": "./static/css/2.5aa401b8.chunk.css",
-    "static/js/2.74c5aa76.chunk.js": "./static/js/2.74c5aa76.chunk.js",
-    "static/js/3.4fb576c5.chunk.js": "./static/js/3.4fb576c5.chunk.js",
-    "static/js/4.7462b8ba.chunk.js": "./static/js/4.7462b8ba.chunk.js",
-    "static/js/5.92f62d97.chunk.js": "./static/js/5.92f62d97.chunk.js",
-    "static/js/6.25bc06cd.chunk.js": "./static/js/6.25bc06cd.chunk.js",
+    "static/js/2.27b2309d.chunk.js": "./static/js/2.27b2309d.chunk.js",
+    "static/js/3.728af85c.chunk.js": "./static/js/3.728af85c.chunk.js",
+    "static/js/4.eba0b977.chunk.js": "./static/js/4.eba0b977.chunk.js",
+    "static/js/5.1c898ecc.chunk.js": "./static/js/5.1c898ecc.chunk.js",
+    "static/js/6.6a2331c7.chunk.js": "./static/js/6.6a2331c7.chunk.js",
     "index.html": "./index.html",
-    "precache-manifest.4c82d4d703a5d9834c1ebf115505d352.js": "./precache-manifest.4c82d4d703a5d9834c1ebf115505d352.js",
+    "precache-manifest.f677dff29e1ac34dad3e5726937faa30.js": "./precache-manifest.f677dff29e1ac34dad3e5726937faa30.js",
     "service-worker.js": "./service-worker.js",
-    "static/js/2.74c5aa76.chunk.js.LICENSE.txt": "./static/js/2.74c5aa76.chunk.js.LICENSE.txt",
-    "static/js/3.4fb576c5.chunk.js.LICENSE.txt": "./static/js/3.4fb576c5.chunk.js.LICENSE.txt",
+    "static/js/2.27b2309d.chunk.js.LICENSE.txt": "./static/js/2.27b2309d.chunk.js.LICENSE.txt",
+    "static/js/3.728af85c.chunk.js.LICENSE.txt": "./static/js/3.728af85c.chunk.js.LICENSE.txt",
     "static/media/inter.css": "./static/media/Inter.var.8dd26c3d.woff2",
     "static/media/arrow-down-blue.svg": "./static/media/arrow-down-blue.cd061363.svg",
     "static/media/arrow-down-grey.svg": "./static/media/arrow-down-grey.c0dedd2f.svg",
@@ -21,6 +21,7 @@
     "static/media/avalanche_token_round.png": "./static/media/avalanche_token_round.3e178e42.png",
     "static/media/big_unicorn.png": "./static/media/big_unicorn.02ff316b.png",
     "static/media/blue-loader.svg": "./static/media/blue-loader.904b44c2.svg",
+    "static/media/brave.png": "./static/media/brave.2320cb6a.png",
     "static/media/circle-grey.svg": "./static/media/circle-grey.ed2a1dad.svg",
     "static/media/circle.svg": "./static/media/circle.2d975615.svg",
     "static/media/coinbaseWalletIcon.svg": "./static/media/coinbaseWalletIcon.62578f59.svg",
@@ -48,9 +49,9 @@
     "static/media/xl_uni.png": "./static/media/xl_uni.ed12c533.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.79cd1088.js",
+    "static/js/runtime-main.07002464.js",
     "static/css/2.5aa401b8.chunk.css",
-    "static/js/2.74c5aa76.chunk.js",
-    "static/js/main.0896ffdc.chunk.js"
+    "static/js/2.27b2309d.chunk.js",
+    "static/js/main.e7fcd9cd.chunk.js"
   ]
 }
