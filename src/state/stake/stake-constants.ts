@@ -541,8 +541,7 @@ const AURORA_POOLS: StakingTri[] = [
     allocPoint: 1,
     inStaging: false,
     stableSwapPoolName: StableSwapPoolName.USDC_USDT_USN,
-    isFeatured: true,
-    poolType: PoolType.ECOSYSTEM
+    poolType: PoolType.LEGACY
   }),
   createMCV2Pool({
     ID: 36,
