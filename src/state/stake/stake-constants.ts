@@ -662,8 +662,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x4bf2892EBd69173B9Ac98EE6899DE047583d24C6',
     rewarderAddress: '0x758E9fEF9E9F1a2fe55F14F33Bf5C6A96d84201b',
     allocPoint: 1,
-    poolType: PoolType.ECOSYSTEM,
-    inStaging: true
+    poolType: PoolType.ECOSYSTEM
   })
 ]
 
