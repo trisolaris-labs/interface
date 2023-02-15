@@ -38,7 +38,7 @@ export default function AboutContainer() {
   const { apr, inStaging, nonTriAPRs } = farmsData.filter(item => item.lpAddress === USD_TLP.address)?.[0]
 
   const usdTLPLink = (
-    <StyledExternalLink target="_blank" href={`https://aurorascan.dev/token/${USD_TLP.address}`}>
+    <StyledExternalLink target="_blank" href={`https://explorer.aurora.dev/token/${USD_TLP.address}`}>
       USD TLP
     </StyledExternalLink>
   )

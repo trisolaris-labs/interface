@@ -194,7 +194,7 @@ export const CHAIN_PARAMS = {
       decimals: 18
     },
     rpcUrls: ['https://mainnet.aurora.dev'],
-    blockExplorerUrls: ['https://aurorascan.dev/']
+    blockExplorerUrls: ['https://explorer.aurora.dev/']
   }
 }
 
@@ -216,7 +216,7 @@ export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
   [ChainId.FUJI]: 'https://cchain.explorer.avax-test.network',
   [ChainId.AVALANCHE]: 'https://cchain.explorer.avax.network',
   [ChainId.POLYGON]: 'https://polygonscan.com/',
-  [ChainId.AURORA]: 'https://aurorascan.dev'
+  [ChainId.AURORA]: 'https://explorer.aurora.dev'
 }
 //TODO NEED TO CHANGE WITH CORRECT EXPLORER LINK
 
