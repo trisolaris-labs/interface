@@ -333,8 +333,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x48887cEEA1b8AD328d5254BeF774Be91B90FaA09',
     rewarderAddress: '0x42b950FB4dd822ef04C4388450726EFbF1C3CF63',
     allocPoint: 1,
-    isFeatured: true,
-    poolType: PoolType.DUAL_REWARDS
+    poolType: PoolType.LEGACY
   }),
   createMCV2Pool({
     ID: 16,
