@@ -22,6 +22,6 @@ type FARMS_CUSTOM_HEADING_TYPE = {
 export const FARMS_CUSTOM_HEADING: FARMS_CUSTOM_HEADING_TYPE = {
   43: {
     customText: 'Deposit in Aurigami',
-    customLink: 'https://app.aurigami.finance/wallet/rewards'
+    customLink: 'https://app.aurigami.finance/'
   }
 }
