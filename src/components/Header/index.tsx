@@ -28,8 +28,7 @@ import {
   IconWrapper,
   StyledHomeNavLink,
   HomeContainer,
-  StyledBridgesMenu,
-  StyledGovernanceMenu
+  StyledBridgesMenu
 } from './Header.styles'
 import useEmbeddedSwapUI from '../../hooks/useEmbeddedSwapUI'
 import { StyledExternalLink } from '../BridgesMenu/BridgesMenu.styles'
@@ -131,7 +130,6 @@ export default function Header() {
             {t('header.farm')}
           </StyledNavLink>
           <StyledBridgesMenu />
-          <StyledGovernanceMenu />
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
