@@ -26,6 +26,7 @@ import StableSwapPoolAddLiquidity from './StableSwapPoolAddLiquidity'
 import StableSwapPoolRemoveLiquidity from './StableSwapPoolRemoveLiquidity'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 import StakeTri from './StakeTri'
+import Landing from './Landing'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -102,6 +103,7 @@ export default function App() {
               <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+              <Route exact strict path="/" component={Landing} />
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>
