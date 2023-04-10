@@ -1,19 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useHistory } from 'react-router-dom'
 
-import { PageWrapper } from '../../components/Page'
-import { TYPE } from '../../theme'
+import { ButtonEmpty, ButtonNone } from '../../components/Button'
+import { AutoColumn } from '../../components/Column'
 
 import Hero from '../../assets/images/hero.webp'
 import Swap from '../../assets/images/swap.webp'
 import Farm from '../../assets/images/farm.webp'
-import { AutoColumn } from '../../components/Column'
+
+import { TYPE } from '../../theme'
 
 const HeroSection = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     flex-direction: column;
@@ -36,8 +38,8 @@ const StyledImg = styled.img`
 
 const Container = styled.div`
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  margin: -40px 0px auto;
+  padding: 0 20px;
 `
 
 const ListSection = styled.div`
@@ -72,23 +74,42 @@ const TitleSection = styled.div`
 `
 
 const StyledInfoTitle = styled(TYPE.body)`
-  color: #6fa52e;
+  color: ${({ theme }) => theme.auroraGreen};
 `
 
-const AstronautsSection = styled.div`
+const CallToActionSection = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  padding-bottom: 20px;
+  border-bottom: 1px solid white;
 `
 
 const TinyAstronaut = styled.div`
   max-width: 150px;
   height: auto;
+  margin-right: 20px;
   ${({ theme }) => theme.mediaWidth.upToSmall`
   flex-direction: column;
 `};
 `
 
+const CallToAction = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const StyledArrow = styled.span`
+  font-size: 18px;
+`
+
+const StyledCallToActionButton = styled(ButtonNone)`
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.bg3};
+  }
+`
+
 function Landing() {
+  const history = useHistory()
   return (
     <Container>
       <HeroSection>
@@ -121,14 +142,35 @@ function Landing() {
           </ListSection>
         </TitleSection>
       </HeroSection>
-      <AstronautsSection>
-        <TinyAstronaut>
-          <StyledImg src={Swap} alt="Trisolaris Astronaut buying coins" />
-        </TinyAstronaut>
-        <TinyAstronaut>
-          <StyledImg src={Farm} alt="Trisolaris Astronaut farming" />
-        </TinyAstronaut>
-      </AstronautsSection>
+      <CallToActionSection>
+        <StyledCallToActionButton onClick={() => history.push('/swap')}>
+          <CallToAction>
+            <TinyAstronaut>
+              <StyledImg src={Swap} alt="Trisolaris Astronaut buying coins" />
+            </TinyAstronaut>
+            <AutoColumn gap="sm">
+              <TYPE.largeHeader>
+                Start Buying <StyledArrow>↗</StyledArrow>
+              </TYPE.largeHeader>
+              <TYPE.body>Most options. Cheapest fees.</TYPE.body>
+            </AutoColumn>
+          </CallToAction>
+        </StyledCallToActionButton>
+
+        <StyledCallToActionButton onClick={() => history.push('/farm')}>
+          <CallToAction>
+            <TinyAstronaut>
+              <StyledImg src={Farm} alt="Trisolaris Astronaut farming" />
+            </TinyAstronaut>
+            <AutoColumn gap="sm">
+              <TYPE.largeHeader>
+                Start Earning <StyledArrow>↗</StyledArrow>
+              </TYPE.largeHeader>
+              <TYPE.body>Best Yields. Most Partnerships.</TYPE.body>
+            </AutoColumn>
+          </CallToAction>
+        </StyledCallToActionButton>
+      </CallToActionSection>
     </Container>
   )
 }
