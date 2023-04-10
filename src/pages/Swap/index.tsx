@@ -23,6 +23,7 @@ import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import spacemenAndPlanets from '../../assets/svg/spacemen_and_planets.svg'
 import { DeprecatedWarning } from '../../components/Warning'
+import CoingeckoPriceChart from '../../components/CoingeckoPriceChart'
 import Settings from '../../components/Settings'
 import AppBody from '../AppBody'
 import Loader from '../../components/Loader'
@@ -412,7 +413,11 @@ export default function Swap() {
 
       <Root>
         <IconContainer>
-          <img height="500px" src={spacemenAndPlanets} />
+          {formattedAmounts[Field.INPUT] && formattedAmounts[Field.OUTPUT] ? (
+            <CoingeckoPriceChart currency={currencies[Field.INPUT]} />
+          ) : (
+            <img height="500px" src={spacemenAndPlanets} />
+          )}
         </IconContainer>
         <SwapContainer>
           <AppBody>
