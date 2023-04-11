@@ -1,112 +1,38 @@
 import React from 'react'
-import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
-import { ButtonEmpty, ButtonNone } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 
 import Hero from '../../assets/images/hero.webp'
 import Swap from '../../assets/images/swap.webp'
 import Farm from '../../assets/images/farm.webp'
+import Electric from '../../assets/images/electric.svg'
+import Dragonfly from '../../assets/images/dragonfly.svg'
+import Jump from '../../assets/images/jump.svg'
+import Lemniscap from '../../assets/images/lemniscap.svg'
+import Ethereal from '../../assets/images/ethereal.svg'
 
 import { TYPE } from '../../theme'
-
-const HeroSection = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    flex-direction: column;
-  `};
-`
-
-const HeroImg = styled.div`
-  max-width: 40%;
-  min-width: 450px;
-  min-height: 450px;
-  height: auto;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-  flex-direction: column;
-`};
-`
-
-const StyledImg = styled.img`
-  width: 100%;
-`
-
-const Container = styled.div`
-  max-width: 1200px;
-  margin: -40px 0px auto;
-  padding: 0 20px;
-`
-
-const ListSection = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-`
-const ListItem = styled.div`
-  flex: 0 1 calc(33.33% - 20px);
-  padding: 0px 20px 20px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-//   ${({ theme }) => theme.mediaWidth.upToSmall`
-//   flex: 0 1 100%;
-// `};
-`
-
-const StyledHeroTitle = styled.h1`
-  font-size: 30px;
-  margin-bottom: 20px;
-  font-weight: 500;
-`
-
-const TitleSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-
-const StyledInfoTitle = styled(TYPE.body)`
-  color: ${({ theme }) => theme.auroraGreen};
-`
-
-const CallToActionSection = styled.div`
-  display: flex;
-  justify-content: space-around;
-  padding-bottom: 20px;
-  border-bottom: 1px solid white;
-`
-
-const TinyAstronaut = styled.div`
-  max-width: 150px;
-  height: auto;
-  margin-right: 20px;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-  flex-direction: column;
-`};
-`
-
-const CallToAction = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const StyledArrow = styled.span`
-  font-size: 18px;
-`
-
-const StyledCallToActionButton = styled(ButtonNone)`
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.bg3};
-  }
-`
+import {
+  HeroSection,
+  HeroImg,
+  StyledImg,
+  Container,
+  ListSection,
+  ListItem,
+  StyledHeroTitle,
+  TitleSection,
+  StyledInfoTitle,
+  CallToActionSection,
+  TinyAstronaut,
+  CallToAction,
+  FarmCallToAction,
+  StyledArrow,
+  StyledCallToActionButton,
+  InvestorsSection,
+  InvestorLogo,
+  StyledListInfo
+} from './Landing.styles'
 
 function Landing() {
   const history = useHistory()
@@ -121,23 +47,27 @@ function Landing() {
           <ListSection>
             <ListItem>
               <StyledInfoTitle>STAKERS EARNED</StyledInfoTitle>
-              <TYPE.largeHeader>$1.25M+</TYPE.largeHeader>
+              <StyledListInfo>$1.25M+</StyledListInfo>
             </ListItem>
             <ListItem>
-              <StyledInfoTitle>LP's Earned</StyledInfoTitle>
-              <TYPE.largeHeader>$6.25M+</TYPE.largeHeader>
+              <StyledInfoTitle>LP's EARNED</StyledInfoTitle>
+              <StyledListInfo>$6.25M+</StyledListInfo>
             </ListItem>
             <ListItem>
               <StyledInfoTitle>LIFETIME VOLUME</StyledInfoTitle>
-              <TYPE.largeHeader>$2.5B+</TYPE.largeHeader>
+              <StyledListInfo>$2.5B+</StyledListInfo>
             </ListItem>
             <ListItem>
               <StyledInfoTitle>TOKENS LISTED</StyledInfoTitle>
-              <TYPE.largeHeader>50+</TYPE.largeHeader>
+              <StyledListInfo>50+</StyledListInfo>
             </ListItem>
             <ListItem>
-              <StyledInfoTitle>GAS FEES</StyledInfoTitle>
-              <TYPE.largeHeader>$0-0.01</TYPE.largeHeader>
+              <StyledInfoTitle>
+                GAS
+                <br />
+                FEES
+              </StyledInfoTitle>
+              <StyledListInfo>$0-0.01</StyledListInfo>
             </ListItem>
           </ListSection>
         </TitleSection>
@@ -158,7 +88,7 @@ function Landing() {
         </StyledCallToActionButton>
 
         <StyledCallToActionButton onClick={() => history.push('/farm')}>
-          <CallToAction>
+          <FarmCallToAction>
             <TinyAstronaut>
               <StyledImg src={Farm} alt="Trisolaris Astronaut farming" />
             </TinyAstronaut>
@@ -168,9 +98,29 @@ function Landing() {
               </TYPE.largeHeader>
               <TYPE.body>Best Yields. Most Partnerships.</TYPE.body>
             </AutoColumn>
-          </CallToAction>
+          </FarmCallToAction>
         </StyledCallToActionButton>
       </CallToActionSection>
+      <AutoColumn justify="center">
+        <StyledHeroTitle>INVESTORS</StyledHeroTitle>
+        <InvestorsSection>
+          <InvestorLogo>
+            <StyledImg src={Electric} alt="Electric Capital logo" />
+          </InvestorLogo>
+          <InvestorLogo>
+            <StyledImg src={Dragonfly} alt="Dragonfly logo" />
+          </InvestorLogo>
+          <InvestorLogo>
+            <StyledImg src={Jump} alt="Jump Crypto logo" />
+          </InvestorLogo>
+          <InvestorLogo>
+            <StyledImg src={Lemniscap} alt="Lemniscap logo" />
+          </InvestorLogo>
+          <InvestorLogo>
+            <StyledImg src={Ethereal} alt="Ethereal Ventures logo" />
+          </InvestorLogo>
+        </InvestorsSection>
+      </AutoColumn>
     </Container>
   )
 }
