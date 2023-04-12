@@ -20,7 +20,6 @@ export const HeroImg = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     max-width: 400px;
     flex-direction: column;
-    // min-width: 100%;
     min-height:auto;
 `};
 `
@@ -75,10 +74,6 @@ export const TitleSection = styled.div`
 
 export const StyledInfoTitle = styled(TYPE.body)`
   color: ${({ theme }) => theme.auroraGreen};
-  ${({ theme }) => theme.mediaWidth.upToLarge`
-    width: 50%;
-    white-space: normal;
-  `};
 `
 
 export const CallToActionSection = styled.div`
@@ -86,6 +81,7 @@ export const CallToActionSection = styled.div`
   justify-content: space-around;
   padding-bottom: 20px;
   border-bottom: 1px solid white;
+  margin-top: 20px;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     flex-direction: column;
   `};
@@ -131,9 +127,18 @@ export const InvestorsSection = styled.div`
   flex-wrap: wrap;
   gap: 50px;
 `
+
 export const InvestorLogo = styled.div<{}>`
-  max-width: 180px;
-  flex: 1 0 20%;
+  max-width: 90px;
+  flex: 1 0 30%;
+  &:first-child {
+    max-width: 200px;
+    flex: 1 0 40%;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+         max-width: 90%;
+         flex: 1 0 60%;
+    `};
+  }
 `
 
 export const StyledListInfo = styled.h1`
@@ -141,5 +146,41 @@ export const StyledListInfo = styled.h1`
   font-size: 24px;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     font-size: 16px;
+  `};
+`
+
+export const AuroraPlusSection = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-left: 5%;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    justify-content: center;
+    margin-left: 0px;
+ `};
+`
+
+export const AuroraPlusLogoContainer = styled.div`
+  margin-left: 20px;
+  display: flex;
+  max-width: 100px;
+  img {
+    border-radius: 50px;
+  }
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    margin-left: 10px;
+ `};
+`
+
+export const AuroraPlusTitle = styled.h1`
+  font-size: 20px;
+  font-weight: 400;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+        font-size:14px;
   `};
 `

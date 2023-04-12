@@ -2,6 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { AutoColumn } from '../../components/Column'
+import { ExternalLink } from '../../theme'
 
 import Hero from '../../assets/images/hero.webp'
 import Swap from '../../assets/images/swap.webp'
@@ -11,6 +12,7 @@ import Dragonfly from '../../assets/images/dragonfly.svg'
 import Jump from '../../assets/images/jump.svg'
 import Lemniscap from '../../assets/images/lemniscap.svg'
 import Ethereal from '../../assets/images/ethereal.svg'
+import AuroraPlus from '../../assets/images/auroraplus.svg'
 
 import { TYPE } from '../../theme'
 import {
@@ -31,7 +33,10 @@ import {
   StyledCallToActionButton,
   InvestorsSection,
   InvestorLogo,
-  StyledListInfo
+  StyledListInfo,
+  AuroraPlusSection,
+  AuroraPlusLogoContainer,
+  AuroraPlusTitle
 } from './Landing.styles'
 
 function Landing() {
@@ -46,32 +51,52 @@ function Landing() {
           <StyledHeroTitle>The first and top DEX on the Aurora Network</StyledHeroTitle>
           <ListSection>
             <ListItem>
-              <StyledInfoTitle>STAKERS EARNED</StyledInfoTitle>
+              <StyledInfoTitle>
+                STAKERS
+                <br />
+                EARNED
+              </StyledInfoTitle>
               <StyledListInfo>$1.25M+</StyledListInfo>
             </ListItem>
             <ListItem>
-              <StyledInfoTitle>LP's EARNED</StyledInfoTitle>
+              <StyledInfoTitle>
+                LP's
+                <br />
+                EARNED
+              </StyledInfoTitle>
               <StyledListInfo>$6.25M+</StyledListInfo>
             </ListItem>
             <ListItem>
-              <StyledInfoTitle>LIFETIME VOLUME</StyledInfoTitle>
+              <StyledInfoTitle>
+                LIFETIME
+                <br />
+                VOLUME
+              </StyledInfoTitle>
               <StyledListInfo>$2.5B+</StyledListInfo>
             </ListItem>
             <ListItem>
-              <StyledInfoTitle>TOKENS LISTED</StyledInfoTitle>
+              <StyledInfoTitle>
+                TOKENS <br /> LISTED
+              </StyledInfoTitle>
               <StyledListInfo>50+</StyledListInfo>
             </ListItem>
             <ListItem>
               <StyledInfoTitle>
-                GAS
-                <br />
-                FEES
+                GAS <br /> FEES
               </StyledInfoTitle>
               <StyledListInfo>$0-0.01</StyledListInfo>
             </ListItem>
           </ListSection>
         </TitleSection>
       </HeroSection>
+      <AuroraPlusSection>
+        <AuroraPlusTitle>Get 50 free tx/month:</AuroraPlusTitle>
+        <AuroraPlusLogoContainer>
+          <ExternalLink href="https://aurora.plus/">
+            <StyledImg src={AuroraPlus} alt="Aurora Plus logo" />
+          </ExternalLink>
+        </AuroraPlusLogoContainer>
+      </AuroraPlusSection>
       <CallToActionSection>
         <StyledCallToActionButton onClick={() => history.push('/swap')}>
           <CallToAction>
