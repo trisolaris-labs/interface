@@ -87,7 +87,8 @@ export function colors(darkMode: boolean): Colors {
     gold: '#FFD700',
     metallicGold: '#D4AF37',
 
-    avaxRed: '#e60063'
+    avaxRed: '#e60063',
+    auroraGreen: '#78d64b'
 
     // dont wanna forget these blue yet
     // blue4: darkMode ? '#153d6f70' : '#C4D9F8',

@@ -280,6 +280,29 @@ export const ButtonGold = styled(Base)`
     opacity: ${({ altDisabledStyle }) => (altDisabledStyle ? '0.7' : '1')};
 `
 
+export const ButtonNone = styled(Base)`
+  background-color: transparent;
+  width: auto;
+
+  &:focus {
+    text-decoration: none;
+    box-shadow: none;
+  }
+  &:hover {
+    text-decoration: none;
+    color: ${({ theme }) => darken(0.2, theme.text1)};
+    box-shadow: none;
+  }
+  &:active {
+    text-decoration: none;
+    box-shadow: none;
+  }
+  &:disabled {
+    opacity: 50%;
+    cursor: auto;
+  }
+`
+
 export function ButtonConfirmed({
   confirmed,
   altDisabledStyle,

@@ -50,6 +50,7 @@ export interface Colors {
   metallicGold: Color
 
   avaxRed: Color
+  auroraGreen: Color
 }
 
 export interface Grids {
