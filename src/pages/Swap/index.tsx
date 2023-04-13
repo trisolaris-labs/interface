@@ -14,7 +14,7 @@ import Column, { AutoColumn } from '../../components/Column'
 import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
-import { AutoRow, RowBetween } from '../../components/Row'
+import { AutoRow, RowBetween, RowFixed } from '../../components/Row'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
 import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
@@ -27,6 +27,7 @@ import CoingeckoPriceChart from '../../components/CoingeckoPriceChart'
 import Settings from '../../components/Settings'
 import AppBody from '../AppBody'
 import Loader from '../../components/Loader'
+import { BarChart2 } from 'lucide-react'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
@@ -65,10 +66,12 @@ import {
   IconContainer,
   HeadingContainer,
   HeaderButtonsContainer,
-  StyledAddToMetaMaskButton
+  StyledAddToMetaMaskButton,
+  ChartBtnContainer
 } from './Swap.styles'
 import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
+import Modal from '../../components/Modal'
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -215,6 +218,8 @@ export default function Swap() {
     swapErrorMessage: undefined,
     txHash: undefined
   })
+
+  const [showChartModal, setShowChartModal] = useState<boolean>(false)
 
   const formattedAmounts = {
     [independentField]: typedValue,
@@ -413,11 +418,7 @@ export default function Swap() {
 
       <Root>
         <IconContainer>
-          {formattedAmounts[Field.INPUT] && formattedAmounts[Field.OUTPUT] ? (
-            <CoingeckoPriceChart currency={currencies[Field.INPUT]} />
-          ) : (
-            <img height="500px" src={spacemenAndPlanets} />
-          )}
+          <img height="500px" src={spacemenAndPlanets} />
         </IconContainer>
         <SwapContainer>
           <AppBody>
@@ -439,6 +440,9 @@ export default function Swap() {
                 stableswapPriceImpactWithoutFee={stableswapPriceImpactWithoutFee}
                 isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
               />
+              <Modal isOpen={showChartModal} onDismiss={() => setShowChartModal(false)} minHeight={50}>
+                <CoingeckoPriceChart currency={currencies[Field.INPUT]} />
+              </Modal>
               <AutoColumn gap={'md'}>
                 <HeadingContainer>
                   <TYPE.largeHeader>Swap</TYPE.largeHeader>
@@ -463,6 +467,15 @@ export default function Swap() {
                   otherCurrency={currencies[Field.OUTPUT]}
                   id="swap-currency-input"
                 />
+
+                {formattedAmounts[Field.INPUT] && (
+                  <LinkStyledButton onClick={() => setShowChartModal(true)}>
+                    <ChartBtnContainer>
+                      Open {currencies[Field.INPUT]?.symbol} chart <BarChart2 size={16}/>
+                    </ChartBtnContainer>
+                  </LinkStyledButton>
+                )}
+
                 <AutoColumn justify="space-between">
                   <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
                     <ChevronWrapper height={30} width={30} clickable>

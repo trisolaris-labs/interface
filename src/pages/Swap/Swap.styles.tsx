@@ -59,3 +59,11 @@ export const StyledAddToMetaMaskButton = styled(AddToMetaMaskButton)<{ swapDetai
   color: ${({ theme }) => theme.white}
   text-decoration: underline;
 `
+
+export const ChartBtnContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: white;
+  text-decoration: underline;
+`
