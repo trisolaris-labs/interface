@@ -38,7 +38,6 @@ const CoinGeckoWidget: React.FC<Props> = ({ currency }) => {
           widget.setAttribute('currency', 'usd')
           widget.setAttribute('height', '500')
           widget.setAttribute('locale', 'en')
-          widget.setAttribute('background-color', '#00050F')
           containerRef.current.appendChild(widget)
         }
       }, 1000) // Add a 1000ms (1 second) delay

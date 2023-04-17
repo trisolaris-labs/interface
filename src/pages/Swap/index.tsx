@@ -58,7 +58,7 @@ import {
 } from '../../constants'
 
 import { ClickableText, Dots } from '../Pool/styleds'
-import { LinkStyledButton, TYPE } from '../../theme'
+import { CloseIcon, LinkStyledButton, TYPE } from '../../theme'
 import {
   WarningWrapper,
   Root,
@@ -67,11 +67,13 @@ import {
   HeadingContainer,
   HeaderButtonsContainer,
   StyledAddToMetaMaskButton,
-  ChartBtnContainer
+  ChartBtnContainer,
+  ModalContainer
 } from './Swap.styles'
 import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
 import Modal from '../../components/Modal'
+import { ModalContentWrapper } from '../../components/Settings/Settings.styles'
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -440,8 +442,14 @@ export default function Swap() {
                 stableswapPriceImpactWithoutFee={stableswapPriceImpactWithoutFee}
                 isStableSwapPriceImpactSevere={isStableSwapPriceImpactSevere}
               />
-              <Modal isOpen={showChartModal} onDismiss={() => setShowChartModal(false)} minHeight={50}>
-                <CoingeckoPriceChart currency={currencies[Field.INPUT]} />
+              <Modal isOpen={showChartModal} onDismiss={() => setShowChartModal(false)} maxHeight={90}>
+                <ModalContainer>
+                  <RowBetween>
+                    <TYPE.mediumHeader>{currencies[Field.INPUT]?.symbol} chart</TYPE.mediumHeader>
+                    <CloseIcon onClick={() => setShowChartModal(false)} />
+                  </RowBetween>
+                  <CoingeckoPriceChart currency={currencies[Field.INPUT]} />
+                </ModalContainer>
               </Modal>
               <AutoColumn gap={'md'}>
                 <HeadingContainer>
@@ -471,7 +479,7 @@ export default function Swap() {
                 {formattedAmounts[Field.INPUT] && (
                   <LinkStyledButton onClick={() => setShowChartModal(true)}>
                     <ChartBtnContainer>
-                      Open {currencies[Field.INPUT]?.symbol} chart <BarChart2 size={16}/>
+                      Open {currencies[Field.INPUT]?.symbol} chart <BarChart2 size={16} />
                     </ChartBtnContainer>
                   </LinkStyledButton>
                 )}
