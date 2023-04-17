@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import AddToMetaMaskButton from '../../components/AddToMetaMask'
+import { AutoColumn } from '../../components/Column'
 
 export const WarningWrapper = styled.div`
   max-width: 420px;
@@ -58,4 +59,17 @@ export const StyledAddToMetaMaskButton = styled(AddToMetaMaskButton)<{ swapDetai
   bottom: ${({ swapDetailsOpen }) => (swapDetailsOpen ? '-30px' : '')};
   color: ${({ theme }) => theme.white}
   text-decoration: underline;
+`
+
+export const ChartBtnContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: white;
+  text-decoration: underline;
+`
+
+export const ModalContainer = styled(AutoColumn)`
+  width: 100%;
+  padding: 1rem;
 `
