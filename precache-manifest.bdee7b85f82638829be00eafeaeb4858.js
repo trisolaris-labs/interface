@@ -1,47 +1,47 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "bb505f9db19935029d6ff663dcc5559c",
+    "revision": "977db04053273cc5a53533b3ae8e080a",
     "url": "./index.html"
   },
   {
-    "revision": "f745a6034fd160a2cc97",
+    "revision": "d2551855fd1938dfc12a",
     "url": "./static/css/2.5aa401b8.chunk.css"
   },
   {
-    "revision": "f745a6034fd160a2cc97",
-    "url": "./static/js/2.27b2309d.chunk.js"
+    "revision": "d2551855fd1938dfc12a",
+    "url": "./static/js/2.1d0adab4.chunk.js"
   },
   {
     "revision": "a32244f47834ec82243e4c40c5167288",
-    "url": "./static/js/2.27b2309d.chunk.js.LICENSE.txt"
+    "url": "./static/js/2.1d0adab4.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "9883228c1d2e3c213d67",
-    "url": "./static/js/3.728af85c.chunk.js"
+    "revision": "7ba0de17a1bc369d4640",
+    "url": "./static/js/3.e22f0e4d.chunk.js"
   },
   {
     "revision": "cce47455db60d20b3fbfd0c194f3c073",
-    "url": "./static/js/3.728af85c.chunk.js.LICENSE.txt"
+    "url": "./static/js/3.e22f0e4d.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "101f0554bc031d45cc7e",
-    "url": "./static/js/4.eba0b977.chunk.js"
+    "revision": "713b1cb4377514e9510a",
+    "url": "./static/js/4.83f44db4.chunk.js"
   },
   {
-    "revision": "30816a719f54dbe8f9b9",
-    "url": "./static/js/5.1c898ecc.chunk.js"
+    "revision": "c1a6089f6a03e663def2",
+    "url": "./static/js/5.7ca8fe98.chunk.js"
   },
   {
-    "revision": "80184a1ae1b69ca2aef8",
-    "url": "./static/js/6.6a2331c7.chunk.js"
+    "revision": "31af75d7a1387b19b8e5",
+    "url": "./static/js/6.e5f92718.chunk.js"
   },
   {
-    "revision": "c8f293a70b7680aac28e",
-    "url": "./static/js/main.1a66bb36.chunk.js"
+    "revision": "b1d8ffba06fbaf6debcb",
+    "url": "./static/js/main.a8c21f0d.chunk.js"
   },
   {
-    "revision": "d7a99d0223a0c5ff1097",
-    "url": "./static/js/runtime-main.07002464.js"
+    "revision": "f74e3df0cea6953ec0d8",
+    "url": "./static/js/runtime-main.cd1a4330.js"
   },
   {
     "revision": "661569afe57a38e1529a775a465da20b",
@@ -216,6 +216,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "./static/media/arrow-right.d285b6cf.svg"
   },
   {
+    "revision": "fc3fb34e1f7e1fa23cbf9b80a3feb2a6",
+    "url": "./static/media/auroraplus.fc3fb34e.svg"
+  },
+  {
     "revision": "3e178e42816f3a75106145e15f5522b4",
     "url": "./static/media/avalanche_token_round.3e178e42.png"
   },
@@ -244,6 +248,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "./static/media/coinbaseWalletIcon.62578f59.svg"
   },
   {
+    "revision": "c9db47ed7095c2187f1e0a7cc2b323b0",
+    "url": "./static/media/dragonfly.c9db47ed.svg"
+  },
+  {
     "revision": "b20914ec5482543a0b1b2c6d5509ab96",
     "url": "./static/media/dropdown-blue.b20914ec.svg"
   },
@@ -254,6 +262,30 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "b96d70e10dd30a64a0d122603577c8ae",
     "url": "./static/media/dropup-blue.b96d70e1.svg"
+  },
+  {
+    "revision": "77d4dcc57029d4d53afd28e28fac3401",
+    "url": "./static/media/electric.77d4dcc5.svg"
+  },
+  {
+    "revision": "059e853fc089c9a1b63899375b8e3538",
+    "url": "./static/media/ethereal.059e853f.svg"
+  },
+  {
+    "revision": "542b89d343bef28e9211497bd70adec0",
+    "url": "./static/media/farm.542b89d3.webp"
+  },
+  {
+    "revision": "65f7d3d504aeedb997beeb965afee3f4",
+    "url": "./static/media/hero.65f7d3d5.webp"
+  },
+  {
+    "revision": "c98dc05a4756b096fcf02a8f20462886",
+    "url": "./static/media/jump.c98dc05a.svg"
+  },
+  {
+    "revision": "c32fa8e16aa15c40a4846d768c26b193",
+    "url": "./static/media/lemniscap.c32fa8e1.svg"
   },
   {
     "revision": "50c67f3cdd04281013ef95e92fc7244e",
@@ -310,6 +342,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "be00fc4a29d03016e78b28c9943e3f51",
     "url": "./static/media/spinner.be00fc4a.svg"
+  },
+  {
+    "revision": "8743cff0f6231852663084506d2dc26e",
+    "url": "./static/media/swap.8743cff0.webp"
   },
   {
     "revision": "41584879f23f0e1a529b5cf021686cf5",
