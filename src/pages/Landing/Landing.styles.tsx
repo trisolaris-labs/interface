@@ -59,9 +59,14 @@ export const StyledHeroTitle = styled.h1`
   font-size: 30px;
   margin-bottom: 20px;
   font-weight: 500;
+  text-shadow: 0 0 10px #fff;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     font-size: 24px;
   `};
+`
+
+export const InvestorsTitle = styled(StyledHeroTitle)`
+  text-shadow: none;
 `
 
 export const TitleSection = styled.div`
@@ -100,6 +105,7 @@ export const TinyAstronaut = styled.div`
 export const CallToAction = styled.div`
   display: flex;
   align-items: center;
+  padding: 0px 40px;
 `
 
 export const FarmCallToAction = styled(CallToAction)`
