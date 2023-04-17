@@ -36,7 +36,8 @@ import {
   StyledListInfo,
   AuroraPlusSection,
   AuroraPlusLogoContainer,
-  AuroraPlusTitle
+  AuroraPlusTitle,
+  InvestorsTitle
 } from './Landing.styles'
 
 function Landing() {
@@ -127,7 +128,7 @@ function Landing() {
         </StyledCallToActionButton>
       </CallToActionSection>
       <AutoColumn justify="center">
-        <StyledHeroTitle>INVESTORS</StyledHeroTitle>
+        <InvestorsTitle>INVESTORS</InvestorsTitle>
         <InvestorsSection>
           <InvestorLogo>
             <StyledImg src={Electric} alt="Electric Capital logo" />
