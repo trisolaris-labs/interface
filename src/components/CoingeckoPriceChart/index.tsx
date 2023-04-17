@@ -29,21 +29,15 @@ const CoinGeckoWidget: React.FC<Props> = ({ currency }) => {
 
   useEffect(() => {
     if (coin) {
-      const timer = setTimeout(() => {
-        if (containerRef.current) {
-          containerRef.current.innerHTML = '' // Clear the container
+      if (containerRef.current) {
+        containerRef.current.innerHTML = '' // Clear the container
 
-          const widget = document.createElement('coingecko-coin-price-chart-widget')
-          widget.setAttribute('coin-id', coin.api_symbol)
-          widget.setAttribute('currency', 'usd')
-          widget.setAttribute('height', '500')
-          widget.setAttribute('locale', 'en')
-          containerRef.current.appendChild(widget)
-        }
-      }, 1000) // Add a 1000ms (1 second) delay
-
-      return () => {
-        clearTimeout(timer)
+        const widget = document.createElement('coingecko-coin-price-chart-widget')
+        widget.setAttribute('coin-id', coin.api_symbol)
+        widget.setAttribute('currency', 'usd')
+        widget.setAttribute('height', '500')
+        widget.setAttribute('locale', 'en')
+        containerRef.current.appendChild(widget)
       }
     }
   }, [coin])
