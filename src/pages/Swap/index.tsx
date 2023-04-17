@@ -74,6 +74,7 @@ import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../sta
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
 import Modal from '../../components/Modal'
 import { ModalContentWrapper } from '../../components/Settings/Settings.styles'
+import useCoinSearch from '../../fetchers/coingecko-api-id'
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -128,6 +129,7 @@ export default function Swap() {
     parsedAmount: stableswapParsedAmount,
     stableswapTrade
   } = useDerivedStableSwapInfo()
+  const { coin } = useCoinSearch(currencies[Field.INPUT]?.symbol)
 
   const [showInverted, setShowInverted] = useState<boolean>(false)
 
@@ -145,6 +147,7 @@ export default function Swap() {
   }
   const trade = showWrap ? undefined : tradesByVersion[toggledVersion]
   const defaultTrade = showWrap ? undefined : tradesByVersion[DEFAULT_VERSION]
+  const [isCoingeckoApiIDFound, setCoingeckoApiIDFound] = useState(false)
 
   const betterTradeLinkVersion: Version | undefined = undefined
 
@@ -152,13 +155,13 @@ export default function Swap() {
     () =>
       showWrap
         ? {
-            [Field.INPUT]: defaultswapParsedAmount,
-            [Field.OUTPUT]: defaultswapParsedAmount
-          }
+          [Field.INPUT]: defaultswapParsedAmount,
+          [Field.OUTPUT]: defaultswapParsedAmount
+        }
         : {
-            [Field.INPUT]: independentField === Field.INPUT ? defaultswapParsedAmount : trade?.inputAmount,
-            [Field.OUTPUT]: independentField === Field.OUTPUT ? defaultswapParsedAmount : trade?.outputAmount
-          },
+          [Field.INPUT]: independentField === Field.INPUT ? defaultswapParsedAmount : trade?.inputAmount,
+          [Field.OUTPUT]: independentField === Field.OUTPUT ? defaultswapParsedAmount : trade?.outputAmount
+        },
     [defaultswapParsedAmount, independentField, showWrap, trade]
   )
 
@@ -179,13 +182,13 @@ export default function Swap() {
   if (isRoutedViaStableSwap) {
     parsedAmounts = showWrap
       ? {
-          [Field.INPUT]: stableswapParsedAmount,
-          [Field.OUTPUT]: stableswapParsedAmount
-        }
+        [Field.INPUT]: stableswapParsedAmount,
+        [Field.OUTPUT]: stableswapParsedAmount
+      }
       : {
-          [Field.INPUT]: independentField === Field.INPUT ? stableswapParsedAmount : stableswapTrade?.inputAmount,
-          [Field.OUTPUT]: independentField === Field.OUTPUT ? stableswapParsedAmount : stableswapTrade?.outputAmount
-        }
+        [Field.INPUT]: independentField === Field.INPUT ? stableswapParsedAmount : stableswapTrade?.inputAmount,
+        [Field.OUTPUT]: independentField === Field.OUTPUT ? stableswapParsedAmount : stableswapTrade?.outputAmount
+      }
   }
 
   const swapInputError = isRoutedViaStableSwap ? stableswapInputError : defaultswapInputError
@@ -321,8 +324,8 @@ export default function Swap() {
             recipient === null
               ? 'Swap w/o Send'
               : (recipientAddress ?? recipient) === account
-              ? 'Swap w/o Send + recipient'
-              : 'Swap w/ Send',
+                ? 'Swap w/o Send + recipient'
+                : 'Swap w/ Send',
           label: [trade?.inputAmount?.currency?.symbol, trade?.outputAmount?.currency?.symbol, Version.v2].join('/')
         })
       })
@@ -404,6 +407,7 @@ export default function Swap() {
     return highImpactTrade ? `${t('swapPage.swap')} ${t('swapPage.anyway')}` : t('swapPage.swap')
   }
 
+
   return (
     <>
       <TokenWarningModal
@@ -448,7 +452,7 @@ export default function Swap() {
                     <TYPE.mediumHeader>{currencies[Field.INPUT]?.symbol} chart</TYPE.mediumHeader>
                     <CloseIcon onClick={() => setShowChartModal(false)} />
                   </RowBetween>
-                  <CoingeckoPriceChart currency={currencies[Field.INPUT]} />
+                  <CoingeckoPriceChart coin={coin} />
                 </ModalContainer>
               </Modal>
               <AutoColumn gap={'md'}>
@@ -476,13 +480,14 @@ export default function Swap() {
                   id="swap-currency-input"
                 />
 
-                {formattedAmounts[Field.INPUT] && (
-                  <LinkStyledButton onClick={() => setShowChartModal(true)}>
-                    <ChartBtnContainer>
-                      Open {currencies[Field.INPUT]?.symbol} chart <BarChart2 size={16} />
-                    </ChartBtnContainer>
-                  </LinkStyledButton>
-                )}
+                {formattedAmounts[Field.INPUT] && coin &&
+                  (
+                    <LinkStyledButton onClick={() => setShowChartModal(true)}>
+                      <ChartBtnContainer>
+                        Open {currencies[Field.INPUT]?.symbol} chart <BarChart2 size={16} />
+                      </ChartBtnContainer>
+                    </LinkStyledButton>
+                  )}
 
                 <AutoColumn justify="space-between">
                   <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
@@ -568,8 +573,8 @@ export default function Swap() {
                       (wrapType === WrapType.WRAP
                         ? t('swapPage.wrap')
                         : wrapType === WrapType.UNWRAP
-                        ? t('swapPage.unwrap')
-                        : null)}
+                          ? t('swapPage.unwrap')
+                          : null)}
                   </ButtonPrimary>
                 ) : noRoute && userHasSpecifiedInputOutput ? (
                   <GreyCard style={{ textAlign: 'center' }}>

@@ -1,10 +1,10 @@
 import { Currency } from '@trisolaris/sdk'
 import React, { useEffect, useRef } from 'react'
-import useCoinSearch from '../../fetchers/coingecko-api-id'
+import useCoinSearch, { Coin } from '../../fetchers/coingecko-api-id'
 import styled from 'styled-components'
 
 type Props = {
-  currency: Currency | undefined
+  coin: Coin | undefined
 }
 
 // NOTE - Can't style rendered coingecko script tag, cause it's external zzz
@@ -12,8 +12,7 @@ const CoingeckoContainer = styled.div`
   padding-top: 20px;
 `
 
-const CoinGeckoWidget: React.FC<Props> = ({ currency }) => {
-  const { coin } = useCoinSearch(currency?.symbol)
+const CoinGeckoWidget: React.FC<Props> = ({ coin }) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
