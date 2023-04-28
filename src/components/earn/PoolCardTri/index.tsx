@@ -154,7 +154,7 @@ const DefaultPoolCardtri = ({
           <PoolCardTriRewardText apr={apr} inStaging={inStaging} nonTriAPRs={nonTriAPRs} isLegacy={isLegacy} />
         </AprContainer>
         <StakedContainer isExpanded={isExpanded} show={enableClaimButton}>
-          <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
+          <StyledMutedSubHeader>{t('earn.totalStaked') as string}</StyledMutedSubHeader>
           <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
         </StakedContainer>
         <PoolTypeContainer isExpanded={isExpanded} isStaking={enableClaimButton}>
@@ -168,7 +168,7 @@ const DefaultPoolCardtri = ({
             </ButtonGold>
           ) : (
             <StakedMobilecontainer>
-              <StyledMutedSubHeader>{t('earn.totalStaked')}</StyledMutedSubHeader>
+              <StyledMutedSubHeader>{t('earn.totalStaked') as string}</StyledMutedSubHeader>
               <TYPE.white>{`$${totalStakedInUSDFriendly}`}</TYPE.white>
             </StakedMobilecontainer>
           )}

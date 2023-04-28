@@ -264,7 +264,7 @@ export default function AccountDetails({
         <CloseIcon onClick={toggleWalletModal}>
           <CloseColor />
         </CloseIcon>
-        <HeaderRow>{t('accountDetails.account')}</HeaderRow>
+        <HeaderRow>{t('accountDetails.account') as string}</HeaderRow>
         <AccountSection>
           <YourAccount>
             <InfoCard>
@@ -278,7 +278,7 @@ export default function AccountDetails({
                         ;(connector as any).close()
                       }}
                     >
-                      {t('accountDetails.disconnect')}
+                      {t('accountDetails.disconnect') as string}
                     </WalletAction>
                   )}
                   <WalletAction
@@ -287,7 +287,7 @@ export default function AccountDetails({
                       openOptions()
                     }}
                   >
-                    {t('accountDetails.change')}
+                    {t('accountDetails.change') as string}
                   </WalletAction>
                 </div>
               </AccountGroupingRow>
@@ -317,7 +317,7 @@ export default function AccountDetails({
                       <div>
                         {account && (
                           <Copy toCopy={account}>
-                            <span style={{ marginLeft: '4px' }}>{t('accountDetails.copy')}</span>
+                            <span style={{ marginLeft: '4px' }}>{t('accountDetails.copy') as string}</span>
                           </Copy>
                         )}
                         {chainId && account && (
@@ -327,7 +327,7 @@ export default function AccountDetails({
                             href={chainId && getEtherscanLink(chainId, ENSName, 'address')}
                           >
                             <LinkIcon size={16} />
-                            <span style={{ marginLeft: '4px' }}>{t('accountDetails.viewExplorer')}</span>
+                            <span style={{ marginLeft: '4px' }}>{t('accountDetails.viewExplorer') as string}</span>
                           </AddressLink>
                         )}
                       </div>
@@ -339,7 +339,7 @@ export default function AccountDetails({
                       <div>
                         {account && (
                           <Copy toCopy={account}>
-                            <span style={{ marginLeft: '4px' }}>{t('accountDetails.copy')}</span>
+                            <span style={{ marginLeft: '4px' }}>{t('accountDetails.copy') as string}</span>
                           </Copy>
                         )}
                         {chainId && account && (
@@ -349,7 +349,7 @@ export default function AccountDetails({
                             href={getEtherscanLink(chainId, account, 'address')}
                           >
                             <LinkIcon size={16} />
-                            <span style={{ marginLeft: '4px' }}>{t('accountDetails.viewExplorer')}</span>
+                            <span style={{ marginLeft: '4px' }}>{t('accountDetails.viewExplorer') as string}</span>
                           </AddressLink>
                         )}
                       </div>
@@ -364,15 +364,17 @@ export default function AccountDetails({
       {!!pendingTransactions.length || !!confirmedTransactions.length ? (
         <LowerSection>
           <AutoRow mb={'1rem'} style={{ justifyContent: 'space-between' }}>
-            <TYPE.body>{t('accountDetails.recentTransactions')}</TYPE.body>
-            <LinkStyledButton onClick={clearAllTransactionsCallback}>{t('accountDetails.clearAll')}</LinkStyledButton>
+            <TYPE.body>{t('accountDetails.recentTransactions') as string}</TYPE.body>
+            <LinkStyledButton onClick={clearAllTransactionsCallback}>
+              {t('accountDetails.clearAll') as string}
+            </LinkStyledButton>
           </AutoRow>
           {renderTransactions(pendingTransactions)}
           {renderTransactions(confirmedTransactions)}
         </LowerSection>
       ) : (
         <LowerSection>
-          <TYPE.body color={theme.text1}>{t('accountDetails.transactionAppear')}</TYPE.body>
+          <TYPE.body color={theme.text1}>{t('accountDetails.transactionAppear') as string}</TYPE.body>
         </LowerSection>
       )}
     </>

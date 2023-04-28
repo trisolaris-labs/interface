@@ -121,11 +121,11 @@ export function useDerivedBurnInfo(
 
   let error: string | undefined
   if (!account) {
-    error = t('burnHooks.connectWallet')
+    error = t('burnHooks.connectWallet') as string
   }
 
   if (!parsedAmounts[Field.LIQUIDITY] || !parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]) {
-    error = error ?? t('burnHooks.enterAmount')
+    error = error ?? (t('burnHooks.enterAmount') as string)
   }
 
   return { pair, parsedAmounts, error }

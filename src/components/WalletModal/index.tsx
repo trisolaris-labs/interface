@@ -185,11 +185,6 @@ export default function WalletModal({
     setPendingWallet(connector) // set wallet for pending view
     setWalletView(WALLET_VIEWS.PENDING)
 
-    // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
-    if (connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
-      connector.walletConnectProvider = undefined
-    }
-
     connector &&
       activate(connector, undefined, true).catch(error => {
         if (error instanceof UnsupportedChainIdError) {
@@ -335,17 +330,19 @@ export default function WalletModal({
           </CloseIcon>
           <HeaderRow>
             {error instanceof UnsupportedChainIdError
-              ? t('walletModal.wrongNetwork')
-              : t('walletModal.errorConnecting')}
+              ? (t('walletModal.wrongNetwork') as string)
+              : (t('walletModal.errorConnecting') as string)}
           </HeaderRow>
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
               <>
-                <h5>{`${t('Please connect to')}:`}</h5>
-                {isMetamask() && <ButtonLight onClick={addNetwork}>{t('walletModal.switchNetwork')}</ButtonLight>}
+                <h5>{`${t('Please connect to') as string}:`}</h5>
+                {isMetamask() && (
+                  <ButtonLight onClick={addNetwork}>{t('walletModal.switchNetwork') as string}</ButtonLight>
+                )}
               </>
             ) : (
-              t('walletModal.errorConnectingRefresh')
+              (t('walletModal.errorConnectingRefresh') as string)
             )}
           </ContentWrapper>
         </UpperSection>
@@ -380,7 +377,7 @@ export default function WalletModal({
           </HeaderRow>
         ) : (
           <HeaderRow>
-            <HoverText>{t('walletModal.connectToWallet')}</HoverText>
+            <HoverText>{t('walletModal.connectToWallet') as string}</HoverText>
           </HeaderRow>
         )}
         <ContentWrapper>
@@ -396,8 +393,8 @@ export default function WalletModal({
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>
-              <span>{t('walletModal.newToAvalanche')} &nbsp;</span>{' '}
-              <ExternalLink href={WALLET_TUTORIAL}>{t('walletModal.learnMoreWallet')}</ExternalLink>
+              <span>{t('walletModal.newToAvalanche') as string} &nbsp;</span>{' '}
+              <ExternalLink href={WALLET_TUTORIAL}>{t('walletModal.learnMoreWallet') as string}</ExternalLink>
             </Blurb>
           )}
         </ContentWrapper>

@@ -83,10 +83,10 @@ export default function Toggle({
       {...otherProps}
     >
       <ToggleElement isActive={isActive} isOnSwitch={true} fontSize={fontSize} padding={padding}>
-        {customToggleText?.on ?? t('toggle.on')}
+        {customToggleText?.on ?? (t('toggle.on') as string)}
       </ToggleElement>
       <ToggleElement isActive={!isActive} isOnSwitch={false} fontSize={fontSize} padding={padding}>
-        {customToggleText?.off ?? t('toggle.off')}
+        {customToggleText?.off ?? (t('toggle.off') as string)}
       </ToggleElement>
     </StyledToggle>
   )

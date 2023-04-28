@@ -1,5 +1,15 @@
 import { Currency, CETH, Token } from '@trisolaris/sdk'
-import React, { KeyboardEvent, RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  KeyboardEvent,
+  RefObject,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  ChangeEvent
+} from 'react'
 import ReactGA from 'react-ga'
 import { useTranslation } from 'react-i18next'
 import { FixedSizeList } from 'react-window'
@@ -148,7 +158,7 @@ export function CurrencySearch({
 
   // manage focus on modal show
   const inputRef = useRef<HTMLInputElement>()
-  const handleInput = useCallback(event => {
+  const handleInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value
     const checksummedInput = isAddress(input)
     setSearchQuery(checksummedInput || input)
@@ -181,7 +191,7 @@ export function CurrencySearch({
       <PaddedColumn gap="14px">
         <RowBetween>
           <Text fontWeight={500} fontSize={16}>
-            {t('searchModal.selectToken')}
+            {t('searchModal.selectToken') as string}
             <QuestionHelper text={t('searchModal.findToken')} />
           </Text>
           <CloseIcon onClick={onDismiss} />
@@ -189,7 +199,7 @@ export function CurrencySearch({
         <StyledSearchInput
           type="text"
           id="token-search-input"
-          placeholder={t('searchModal.tokenSearchPlaceholder')}
+          placeholder={t('searchModal.tokenSearchPlaceholder') as string}
           value={searchQuery}
           ref={inputRef as RefObject<HTMLInputElement>}
           onChange={handleInput}
@@ -200,7 +210,7 @@ export function CurrencySearch({
         )}
         <RowBetween>
           <Text fontSize={14} fontWeight={500}>
-            {t('searchModal.tokenName')}
+            {t('searchModal.tokenName') as string}
           </Text>
           <SortButton ascending={invertSearchOrder} toggleSortOrder={() => setInvertSearchOrder(iso => !iso)} />
         </RowBetween>
@@ -212,7 +222,7 @@ export function CurrencySearch({
         <AutoSizer disableWidth>
           {({ height }) => (
             <CurrencyList
-              height={height}
+              height={height!}
               showETH={isStableSwap ? false : showETH}
               currencies={filteredSortedTokens}
               onCurrencySelect={handleCurrencySelect}
@@ -232,7 +242,7 @@ export function CurrencySearch({
             onClick={onChangeList}
             id="currency-search-change-list-button"
           >
-            {t('searchModal.manageTokenLists')}
+            {t('searchModal.manageTokenLists') as string}
           </LinkStyledButton>
         ) : (
           <RowBetween>
@@ -253,7 +263,7 @@ export function CurrencySearch({
               onClick={onChangeList}
               id="currency-search-change-list-button"
             >
-              {selectedListInfo.current ? t('searchModal.change') : t('searchModal.selectList')}
+              {selectedListInfo.current ? (t('searchModal.change') as string) : (t('searchModal.selectList') as string)}
             </LinkStyledButton>
           </RowBetween>
         )}

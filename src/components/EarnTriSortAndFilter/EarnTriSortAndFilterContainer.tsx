@@ -37,7 +37,7 @@ export default function EarnTriSortAndFilterContainer({
 
   return (
     <>
-      <StyledSearchInput placeholder={t('earnPage.farmsSearchPlaceholder')} onChange={onInputChange} />
+      <StyledSearchInput placeholder={t('earnPage.farmsSearchPlaceholder') as string} onChange={onInputChange} />
       <StyledFiltersContainer>
         <StyledSortContainer>
           <Text fontWeight={400} fontSize={16} marginRight={20}>

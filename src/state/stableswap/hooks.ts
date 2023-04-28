@@ -255,19 +255,19 @@ export function useDerivedStableSwapInfo(): {
 
   switch (true) {
     case !account: {
-      inputError = t('swapHooks.connectWallet')
+      inputError = t('swapHooks.connectWallet') as string
       break
     }
     case !parsedAmount: {
-      inputError = inputError ?? t('swapHooks.enterAmount')
+      inputError = inputError ?? (t('swapHooks.enterAmount') as string)
       break
     }
     case !currencies[Field.INPUT] || !currencies[Field.OUTPUT]: {
-      inputError = inputError ?? t('swapHooks.selectToken')
+      inputError = inputError ?? (t('swapHooks.selectToken') as string)
       break
     }
     case !to || !isAddress(to): {
-      inputError = inputError ?? t('swapHooks.enterRecipient')
+      inputError = inputError ?? (t('swapHooks.enterRecipient') as string)
       break
     }
     case parsedAmount == null || amountIn == null || parsedAmount.greaterThan(amountIn ?? BIG_INT_ZERO): {

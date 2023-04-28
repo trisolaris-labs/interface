@@ -48,7 +48,7 @@ function TradeSummary({
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              {isExactIn ? t('swap.minimumReceived') : t('swap.maximumSold')}
+              {isExactIn ? (t('swap.minimumReceived') as string) : (t('swap.maximumSold') as string)}
             </TYPE.black>
             {/* <QuestionHelper text={t('swap.transactionRevertHelper')} /> */}
           </RowFixed>
@@ -61,7 +61,7 @@ function TradeSummary({
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              {t('swap.priceImpact')}
+              {t('swap.priceImpact') as string}
             </TYPE.black>
             {/* <QuestionHelper text={t('swap.priceImpactHelper')} /> */}
           </RowFixed>
@@ -76,7 +76,7 @@ function TradeSummary({
           <RowBetween>
             <RowFixed>
               <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-                {t('swap.liquidityProviderFee')}
+                {t('swap.liquidityProviderFee') as string}
               </TYPE.black>
               {/* <QuestionHelper text={t('swap.liquidityProviderHelper')} /> */}
             </RowFixed>
@@ -89,7 +89,7 @@ function TradeSummary({
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              {t('swap.routedViaAmmType')}
+              {t('swap.routedViaAmmType') as string}
             </TYPE.black>
           </RowFixed>
           <TYPE.black
@@ -133,7 +133,7 @@ function StableTradeSummary({
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              {t('swap.minimumReceived')}
+              {t('swap.minimumReceived') as string}
             </TYPE.black>
           </RowFixed>
           <RowFixed>
@@ -145,7 +145,7 @@ function StableTradeSummary({
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              {t('swap.priceImpact')}
+              {t('swap.priceImpact') as string}
             </TYPE.black>
           </RowFixed>
           <FormattedPriceImpact
@@ -158,7 +158,7 @@ function StableTradeSummary({
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              {t('swap.routedViaAmmType')}
+              {t('swap.routedViaAmmType') as string}
             </TYPE.black>
           </RowFixed>
           <TYPE.black
@@ -212,7 +212,7 @@ export function AdvancedSwapDetails({
               <AutoColumn style={{ padding: '0 24px' }}>
                 <RowFixed>
                   <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-                    {t('swap.route')}
+                    {t('swap.route') as string}
                   </TYPE.black>
                   {/* <QuestionHelper text={t('swap.routingHelper')} /> */}
                 </RowFixed>

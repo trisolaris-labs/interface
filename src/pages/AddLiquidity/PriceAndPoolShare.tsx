@@ -20,7 +20,8 @@ export default function PriceAndPoolShare({ currencies, noLiquidity, poolTokenPe
     <LightCard borderRadius={'20px'}>
       <Row marginBottom="1.5rem">
         <TYPE.subHeader fontWeight={500} fontSize={14}>
-          {noLiquidity ? t('addLiquidity.initialPrices') : t('addLiquidity.prices')} {t('addLiquidity.poolShare')}
+          {noLiquidity ? (t('addLiquidity.initialPrices') as string) : (t('addLiquidity.prices') as string)}{' '}
+          {t('addLiquidity.poolShare') as string}
         </TYPE.subHeader>
       </Row>
       <PoolPriceBar

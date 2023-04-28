@@ -54,30 +54,30 @@ export default function SettingsTab() {
             <RowBetween style={{ padding: '0 2rem' }}>
               <div />
               <Text fontWeight={500} fontSize={20}>
-                {t('settings.areYouSure')}
+                {t('settings.areYouSure') as string}
               </Text>
               <StyledCloseIcon onClick={() => setShowConfirmation(false)} />
             </RowBetween>
             <Break />
             <AutoColumn gap="lg" style={{ padding: '0 2rem' }}>
               <Text fontWeight={500} fontSize={20}>
-                {t('settings.expertInfo')}
+                {t('settings.expertInfo') as string}
               </Text>
               <Text fontWeight={600} fontSize={20}>
-                {t('settings.expertWarningCAPS')}
+                {t('settings.expertWarningCAPS') as string}
               </Text>
               <ButtonError
                 error={true}
                 padding={'12px'}
                 onClick={() => {
-                  if (window.prompt(t('settings.confirmExpertMode')) === t('settings.confirm')) {
+                  if (window.prompt(t('settings.confirmExpertMode') as string) === t('settings.confirm')) {
                     toggleExpertMode()
                     setShowConfirmation(false)
                   }
                 }}
               >
                 <Text fontSize={20} fontWeight={500} id="confirm-expert-mode">
-                  {t('settings.turnOnExpertMode')}
+                  {t('settings.turnOnExpertMode') as string}
                 </Text>
               </ButtonError>
             </AutoColumn>
@@ -98,7 +98,7 @@ export default function SettingsTab() {
         <SettingsMenuFlyout>
           <AutoColumn gap="md" style={{ padding: '1rem' }}>
             <Text fontWeight={600} fontSize={14}>
-              {t('settings.transactionSettings')}
+              {t('settings.transactionSettings') as string}
             </Text>
             <TransactionSettings
               rawSlippage={userSlippageTolerance}
@@ -107,12 +107,12 @@ export default function SettingsTab() {
               setDeadline={setTtl}
             />
             <Text fontWeight={600} fontSize={14}>
-              {t('settings.interfaceSettings')}
+              {t('settings.interfaceSettings') as string}
             </Text>
             <RowBetween>
               <RowFixed>
                 <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
-                  {t('settings.toggleExpertMode')}
+                  {t('settings.toggleExpertMode') as string}
                 </TYPE.black>
                 <QuestionHelper text={t('settings.expertModeHelper')} />
               </RowFixed>

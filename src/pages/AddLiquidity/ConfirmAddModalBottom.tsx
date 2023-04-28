@@ -28,7 +28,7 @@ export function ConfirmAddModalBottom({
     <>
       <RowBetween>
         <TYPE.body>
-          {currencies[Field.CURRENCY_A]?.symbol} {t('addLiquidity.deposited')}
+          {currencies[Field.CURRENCY_A]?.symbol} {t('addLiquidity.deposited') as string}
         </TYPE.body>
         <RowFixed>
           <CurrencyLogo currency={currencies[Field.CURRENCY_A]} style={{ marginRight: '8px' }} />
@@ -37,7 +37,7 @@ export function ConfirmAddModalBottom({
       </RowBetween>
       <RowBetween>
         <TYPE.body>
-          {currencies[Field.CURRENCY_B]?.symbol} {t('addLiquidity.deposited')}
+          {currencies[Field.CURRENCY_B]?.symbol} {t('addLiquidity.deposited') as string}
         </TYPE.body>
         <RowFixed>
           <CurrencyLogo currency={currencies[Field.CURRENCY_B]} style={{ marginRight: '8px' }} />
@@ -45,7 +45,7 @@ export function ConfirmAddModalBottom({
         </RowFixed>
       </RowBetween>
       <RowBetween>
-        <TYPE.body>{t('addLiquidity.rates')}</TYPE.body>
+        <TYPE.body>{t('addLiquidity.rates') as string}</TYPE.body>
         <TYPE.body>
           {`1 ${currencies[Field.CURRENCY_A]?.symbol} = ${price?.toSignificant(4)} ${
             currencies[Field.CURRENCY_B]?.symbol
@@ -58,12 +58,12 @@ export function ConfirmAddModalBottom({
         }`}
       </RowBetween>
       <RowBetween>
-        <TYPE.body> {t('addLiquidity.shareOfPool')}</TYPE.body>
+        <TYPE.body> {t('addLiquidity.shareOfPool') as string}</TYPE.body>
         <TYPE.body>{noLiquidity ? '100' : poolTokenPercentage?.toSignificant(4)}%</TYPE.body>
       </RowBetween>
       <ButtonPrimary id="confirm-add-liquidity-button" style={{ margin: '20px 0 0 0' }} onClick={onAdd}>
         <Text fontWeight={500} fontSize={20}>
-          {noLiquidity ? t('addLiquidity.createPoolSupply') : t('addLiquidity.confirmSupply')}
+          {noLiquidity ? (t('addLiquidity.createPoolSupply') as string) : (t('addLiquidity.confirmSupply') as string)}
         </Text>
       </ButtonPrimary>
     </>

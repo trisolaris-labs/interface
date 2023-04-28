@@ -165,10 +165,10 @@ export function useDerivedStakeInfo(
 
   let error: string | undefined
   if (!account) {
-    error = t('stakeHooks.connectWallet')
+    error = t('stakeHooks.connectWallet') as string
   }
   if (!parsedAmount) {
-    error = error ?? t('stakeHooks.enterAmount')
+    error = error ?? (t('stakeHooks.enterAmount') as string)
   }
 
   return {
@@ -194,10 +194,10 @@ export function useDerivedUnstakeInfo(
 
   let error: string | undefined
   if (!account) {
-    error = t('stakeHooks.connectWallet')
+    error = t('stakeHooks.connectWallet') as string
   }
   if (!parsedAmount) {
-    error = error ?? t('stakeHooks.enterAmount')
+    error = error ?? (t('stakeHooks.enterAmount') as string)
   }
 
   return {

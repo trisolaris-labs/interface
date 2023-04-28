@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import ReactGA from 'react-ga'
 import { ThemeContext } from 'styled-components'
-import { JSBI, Percent, Token, Trade } from '@trisolaris/sdk'
+import { Currency, JSBI, Percent, Token, Trade } from '@trisolaris/sdk'
 import { ChevronDown } from 'react-feather'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
@@ -155,13 +155,13 @@ export default function Swap() {
     () =>
       showWrap
         ? {
-          [Field.INPUT]: defaultswapParsedAmount,
-          [Field.OUTPUT]: defaultswapParsedAmount
-        }
+            [Field.INPUT]: defaultswapParsedAmount,
+            [Field.OUTPUT]: defaultswapParsedAmount
+          }
         : {
-          [Field.INPUT]: independentField === Field.INPUT ? defaultswapParsedAmount : trade?.inputAmount,
-          [Field.OUTPUT]: independentField === Field.OUTPUT ? defaultswapParsedAmount : trade?.outputAmount
-        },
+            [Field.INPUT]: independentField === Field.INPUT ? defaultswapParsedAmount : trade?.inputAmount,
+            [Field.OUTPUT]: independentField === Field.OUTPUT ? defaultswapParsedAmount : trade?.outputAmount
+          },
     [defaultswapParsedAmount, independentField, showWrap, trade]
   )
 
@@ -182,13 +182,13 @@ export default function Swap() {
   if (isRoutedViaStableSwap) {
     parsedAmounts = showWrap
       ? {
-        [Field.INPUT]: stableswapParsedAmount,
-        [Field.OUTPUT]: stableswapParsedAmount
-      }
+          [Field.INPUT]: stableswapParsedAmount,
+          [Field.OUTPUT]: stableswapParsedAmount
+        }
       : {
-        [Field.INPUT]: independentField === Field.INPUT ? stableswapParsedAmount : stableswapTrade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? stableswapParsedAmount : stableswapTrade?.outputAmount
-      }
+          [Field.INPUT]: independentField === Field.INPUT ? stableswapParsedAmount : stableswapTrade?.inputAmount,
+          [Field.OUTPUT]: independentField === Field.OUTPUT ? stableswapParsedAmount : stableswapTrade?.outputAmount
+        }
   }
 
   const swapInputError = isRoutedViaStableSwap ? stableswapInputError : defaultswapInputError
@@ -324,8 +324,8 @@ export default function Swap() {
             recipient === null
               ? 'Swap w/o Send'
               : (recipientAddress ?? recipient) === account
-                ? 'Swap w/o Send + recipient'
-                : 'Swap w/ Send',
+              ? 'Swap w/o Send + recipient'
+              : 'Swap w/ Send',
           label: [trade?.inputAmount?.currency?.symbol, trade?.outputAmount?.currency?.symbol, Version.v2].join('/')
         })
       })
@@ -381,7 +381,7 @@ export default function Swap() {
   }, [attemptingTxn, showConfirm, swapErrorMessage, trade, txHash])
 
   const handleInputSelect = useCallback(
-    inputCurrency => {
+    (inputCurrency: Currency) => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
       onCurrencySelection(Field.INPUT, inputCurrency)
     },
@@ -389,16 +389,17 @@ export default function Swap() {
   )
 
   const handleMaxInput = useCallback(
-    value => {
+    (value: any) => {
       const amount = getClickedAmount(value)
       onUserInput(Field.INPUT, amount)
     },
     [getClickedAmount, onUserInput]
   )
 
-  const handleOutputSelect = useCallback(outputCurrency => onCurrencySelection(Field.OUTPUT, outputCurrency), [
-    onCurrencySelection
-  ])
+  const handleOutputSelect = useCallback(
+    (outputCurrency: Currency) => onCurrencySelection(Field.OUTPUT, outputCurrency),
+    [onCurrencySelection]
+  )
 
   const renderSwapText = () => {
     if (!isExpertMode && onlyExpertTrade) {
@@ -406,7 +407,6 @@ export default function Swap() {
     }
     return highImpactTrade ? `${t('swapPage.swap')} ${t('swapPage.anyway')}` : t('swapPage.swap')
   }
-
 
   return (
     <>
@@ -466,8 +466,8 @@ export default function Swap() {
                 <CurrencyInputPanel
                   label={
                     independentField === Field.OUTPUT && !showWrap && trade
-                      ? t('swapPage.fromEstimated')
-                      : t('swapPage.from')
+                      ? (t('swapPage.fromEstimated') as string)
+                      : (t('swapPage.from') as string)
                   }
                   value={formattedAmounts[Field.INPUT]}
                   disableHalfButton={atHalfAmountInput}
@@ -480,14 +480,13 @@ export default function Swap() {
                   id="swap-currency-input"
                 />
 
-                {formattedAmounts[Field.INPUT] && coin &&
-                  (
-                    <LinkStyledButton onClick={() => setShowChartModal(true)}>
-                      <ChartBtnContainer>
-                        Open {currencies[Field.INPUT]?.symbol} chart <BarChart2 size={16} />
-                      </ChartBtnContainer>
-                    </LinkStyledButton>
-                  )}
+                {formattedAmounts[Field.INPUT] && coin && (
+                  <LinkStyledButton onClick={() => setShowChartModal(true)}>
+                    <ChartBtnContainer>
+                      Open {currencies[Field.INPUT]?.symbol} chart <BarChart2 size={16} />
+                    </ChartBtnContainer>
+                  </LinkStyledButton>
+                )}
 
                 <AutoColumn justify="space-between">
                   <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
@@ -503,7 +502,7 @@ export default function Swap() {
                     </ChevronWrapper>
                     {recipient === null && !showWrap && isExpertMode ? (
                       <LinkStyledButton id="add-recipient-button" onClick={() => onChangeRecipient('')}>
-                        {t('swapPage.addSend')}
+                        {t('swapPage.addSend') as string}
                       </LinkStyledButton>
                     ) : null}
                   </AutoRow>
@@ -513,8 +512,8 @@ export default function Swap() {
                   onUserInput={handleTypeOutput}
                   label={
                     independentField === Field.INPUT && !showWrap && trade
-                      ? t('swapPage.toEstimated')
-                      : t('swapPage.to')
+                      ? (t('swapPage.toEstimated') as string)
+                      : (t('swapPage.to') as string)
                   }
                   currency={currencies[Field.OUTPUT]}
                   onCurrencySelect={handleOutputSelect}
@@ -529,7 +528,7 @@ export default function Swap() {
                         <ChevronDown size="24" color={theme.text2} />
                       </ChevronWrapper>
                       <LinkStyledButton id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
-                        {t('swapPage.removeSend')}
+                        {t('swapPage.removeSend') as string}
                       </LinkStyledButton>
                     </AutoRow>
                     <AddressInputPanel id="recipient" value={recipient} onChange={onChangeRecipient} />
@@ -541,7 +540,7 @@ export default function Swap() {
                     <AutoColumn gap="4px">
                       <RowBetween align="center">
                         <Text fontWeight={500} fontSize={14} color={theme.text2}>
-                          {t('swapPage.price')}
+                          {t('swapPage.price') as string}
                         </Text>
                         <TradePrice
                           trade={isRoutedViaStableSwap ? stableswapTrade : trade}
@@ -553,7 +552,7 @@ export default function Swap() {
                       {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                         <RowBetween align="center">
                           <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
-                            {t('swapPage.slippageTolerance')}
+                            {t('swapPage.slippageTolerance') as string}
                           </ClickableText>
                           <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
                             {allowedSlippage / 100}%
@@ -566,19 +565,19 @@ export default function Swap() {
               </AutoColumn>
               <BottomGrouping>
                 {!account ? (
-                  <ButtonLight onClick={toggleWalletModal}>{t('swapPage.connectWallet')}</ButtonLight>
+                  <ButtonLight onClick={toggleWalletModal}>{t('swapPage.connectWallet') as string}</ButtonLight>
                 ) : showWrap ? (
                   <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>
                     {wrapInputError ??
                       (wrapType === WrapType.WRAP
-                        ? t('swapPage.wrap')
+                        ? (t('swapPage.wrap') as string)
                         : wrapType === WrapType.UNWRAP
-                          ? t('swapPage.unwrap')
-                          : null)}
+                        ? (t('swapPage.unwrap') as string)
+                        : null)}
                   </ButtonPrimary>
                 ) : noRoute && userHasSpecifiedInputOutput ? (
                   <GreyCard style={{ textAlign: 'center' }}>
-                    <TYPE.main mb="4px">{t('swapPage.insufficientLiquidity')}</TYPE.main>
+                    <TYPE.main mb="4px">{t('swapPage.insufficientLiquidity') as string}</TYPE.main>
                   </GreyCard>
                 ) : disableTradingUntilStableSwapRateIsCalculated ? (
                   <ButtonPrimary disabled>
@@ -595,12 +594,12 @@ export default function Swap() {
                     >
                       {approval === ApprovalState.PENDING ? (
                         <AutoRow gap="6px" justify="center">
-                          {t('swapPage.approving')} <Loader stroke="white" />
+                          {t('swapPage.approving') as string} <Loader stroke="white" />
                         </AutoRow>
                       ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                        t('swapPage.approved')
+                        (t('swapPage.approved') as string)
                       ) : (
-                        t('swapPage.approve') + currencies[Field.INPUT]?.symbol
+                        (t('swapPage.approve') as string) + currencies[Field.INPUT]?.symbol
                       )}
                     </ButtonConfirmed>
                     <ButtonError

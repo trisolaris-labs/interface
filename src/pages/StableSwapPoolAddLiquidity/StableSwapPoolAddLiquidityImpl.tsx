@@ -188,7 +188,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
             )
           })}
           <Text fontWeight={500} fontSize={20} marginTop="20px">
-            {t('addLiquidity.willReceive')}
+            {t('addLiquidity.willReceive') as string}
           </Text>
           <RowFlat>
             <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
@@ -203,7 +203,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
             priceImpact={priceImpact}
           />
           <TYPE.italic fontSize={12} textAlign="left">
-            {t('addLiquidity.outputEstimated', { allowedSlippage: allowedSlippage / 100 })}
+            {t('addLiquidity.outputEstimated', { allowedSlippage: allowedSlippage / 100 }) as string}
           </TYPE.italic>
         </AutoColumn>
       </Card>
@@ -214,7 +214,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
     return (
       <ButtonPrimary onClick={onAdd}>
         <Text fontWeight={500} fontSize={20}>
-          {t('addLiquidity.confirmSupply')}
+          {t('addLiquidity.confirmSupply') as string}
         </Text>
       </ButtonPrimary>
     )
@@ -236,7 +236,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               hash={txHash ? txHash : ''}
               content={() => (
                 <ConfirmationModalContent
-                  title={t('addLiquidity.supply')}
+                  title={t('addLiquidity.supply') as string}
                   onDismiss={handleDismissConfirmation}
                   topContent={modalHeader}
                   bottomContent={modalBottom}
@@ -352,7 +352,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
               />
             ) : null}
             {!account ? (
-              <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
+              <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet') as string}</ButtonLight>
             ) : (
               <AutoColumn gap={'md'}>
                 <RowBetween>
@@ -377,7 +377,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                       {disableAddLiquidity
                         ? 'Adding liquidity is disabled'
                         : ((isSlippageGreaterThanFivePercent && 'Slippage too high') || error) ??
-                          t('addLiquidity.supply')}
+                          (t('addLiquidity.supply') as string)}
                     </Text>
                   </ButtonError>
                 </StableSwapPoolAddLiquidityApprovalsRow>

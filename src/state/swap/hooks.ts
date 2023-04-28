@@ -199,27 +199,27 @@ export function useDerivedSwapInfo(
 
   let inputError: string | undefined
   if (!account) {
-    inputError = t('swapHooks.connectWallet')
+    inputError = t('swapHooks.connectWallet') as string
   }
 
   if (!parsedAmount) {
-    inputError = inputError ?? t('swapHooks.enterAmount')
+    inputError = inputError ?? (t('swapHooks.enterAmount') as string)
   }
 
   if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    inputError = inputError ?? t('swapHooks.selectToken')
+    inputError = inputError ?? (t('swapHooks.selectToken') as string)
   }
 
   const formattedTo = isAddress(to)
   if (!to || !formattedTo) {
-    inputError = inputError ?? t('swapHooks.enterRecipient')
+    inputError = inputError ?? (t('swapHooks.enterRecipient') as string)
   } else {
     if (
       BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
       (bestTradeExactIn && involvesAddress(bestTradeExactIn, formattedTo)) ||
       (bestTradeExactOut && involvesAddress(bestTradeExactOut, formattedTo))
     ) {
-      inputError = inputError ?? t('swapHooks.invalidRecipient')
+      inputError = inputError ?? (t('swapHooks.invalidRecipient') as string)
     }
   }
 

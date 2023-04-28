@@ -57,7 +57,7 @@ export default function SwapModalFooter({
       <AutoColumn gap="0px">
         <RowBetween align="center">
           <Text fontWeight={400} fontSize={14} color={theme.text2}>
-            {t('swap.price')} {isRoutedViaStableSwap && ` (Slippage Tolerance)`}
+            {t('swap.price') as string} {isRoutedViaStableSwap && ` (Slippage Tolerance)`}
           </Text>
           <Text
             fontWeight={500}
@@ -82,8 +82,8 @@ export default function SwapModalFooter({
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
               {trade?.tradeType === TradeType.EXACT_INPUT || isRoutedViaStableSwap
-                ? t('swap.minimumReceived')
-                : t('swap.maximumSold')}
+                ? (t('swap.minimumReceived') as string)
+                : (t('swap.maximumSold') as string)}
             </TYPE.black>
             <QuestionHelper text={t('swap.transactionRevertHelper')} />
           </RowFixed>
@@ -107,7 +107,7 @@ export default function SwapModalFooter({
         <RowBetween>
           <RowFixed>
             <TYPE.black color={theme.text2} fontSize={14} fontWeight={400}>
-              {t('swap.priceImpact')}
+              {t('swap.priceImpact') as string}
             </TYPE.black>
             <QuestionHelper text={t('swap.priceImpactHelper')} />
           </RowFixed>
@@ -121,7 +121,7 @@ export default function SwapModalFooter({
           <RowBetween>
             <RowFixed>
               <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-                {t('swap.liquidityProviderFee')}
+                {t('swap.liquidityProviderFee') as string}
               </TYPE.black>
               <QuestionHelper text={t('swap.liquidityProviderHelper')} />
             </RowFixed>
@@ -134,7 +134,7 @@ export default function SwapModalFooter({
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400}>
-              {t('swap.routedViaAmmType')}
+              {t('swap.routedViaAmmType') as string}
             </TYPE.black>
           </RowFixed>
           <TYPE.black
@@ -154,7 +154,7 @@ export default function SwapModalFooter({
           id="confirm-swap-or-send"
         >
           <Text fontSize={20} fontWeight={500}>
-            {severity > 2 ? t('swap.swapAnyway') : t('swap.confirmSwap')}
+            {severity > 2 ? (t('swap.swapAnyway') as string) : (t('swap.confirmSwap') as string)}
           </Text>
         </ButtonError>
 

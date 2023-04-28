@@ -67,7 +67,7 @@ export default function UnstakingModal({
           .withdraw(poolId, stakedAmount?.raw.toString())
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              summary: t('earn.withdrawDepositedLiquidity')
+              summary: t('earn.withdrawDepositedLiquidity') as string
             })
             setHash(response.hash)
           })
@@ -83,7 +83,7 @@ export default function UnstakingModal({
           .withdrawAndHarvest(poolId, stakedAmount?.raw.toString(), account)
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              summary: t('earn.withdrawDepositedLiquidity')
+              summary: t('earn.withdrawDepositedLiquidity') as string
             })
             setHash(response.hash)
           })
@@ -97,10 +97,10 @@ export default function UnstakingModal({
 
   let error: string | undefined
   if (!account) {
-    error = t('earn.connectWallet')
+    error = t('earn.connectWallet') as string
   }
   if (!stakedAmount) {
-    error = error ?? t('earn.enterAmount')
+    error = error ?? (t('earn.enterAmount') as string)
   }
 
   return (
@@ -116,7 +116,7 @@ export default function UnstakingModal({
               <TYPE.body fontWeight={600} fontSize={36}>
                 {<FormattedCurrencyAmount currencyAmount={stakedAmount} />}
               </TYPE.body>
-              <TYPE.body>{t('earn.depositedPglLiquidity')}</TYPE.body>
+              <TYPE.body>{t('earn.depositedPglLiquidity') as string}</TYPE.body>
             </AutoColumn>
           )}
           {earnedAmount?.greaterThan(BIG_INT_ZERO) && (
@@ -124,7 +124,7 @@ export default function UnstakingModal({
               <TYPE.body fontWeight={600} fontSize={36}>
                 {<FormattedCurrencyAmount currencyAmount={earnedAmount} />}
               </TYPE.body>
-              <TYPE.body>{t('earn.unclaimed')}</TYPE.body>
+              <TYPE.body>{t('earn.unclaimed') as string}</TYPE.body>
             </AutoColumn>
           )}
           {chefVersion == 1 && (earnedNonTriRewards.length > 0 || noTriRewards) && (
@@ -145,17 +145,21 @@ export default function UnstakingModal({
               </AutoRow>
             </AutoColumn>
           )}
-          <TYPE.subHeader style={{ textAlign: 'center' }}>{t('earn.whenYouWithdrawWarning')}</TYPE.subHeader>
+          <TYPE.subHeader style={{ textAlign: 'center' }}>{t('earn.whenYouWithdrawWarning') as string}</TYPE.subHeader>
           <ButtonError disabled={!!error} error={!!error && !!stakedAmount} onClick={onWithdraw}>
-            {error ?? t('earn.withdrawAndClaim')}
+            {error ?? (t('earn.withdrawAndClaim') as string)}
           </ButtonError>
         </ContentWrapper>
       )}
       {attempting && !hash && (
         <LoadingView onDismiss={wrappedOndismiss}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.body fontSize={20}>{t('earn.withdrawingPgl', { amount: stakedAmount?.toSignificant(4) })}</TYPE.body>
-            <TYPE.body fontSize={20}>{t('earn.claimingPng', { amount: earnedAmount?.toSignificant(4) })}</TYPE.body>
+            <TYPE.body fontSize={20}>
+              {t('earn.withdrawingPgl', { amount: stakedAmount?.toSignificant(4) }) as string}
+            </TYPE.body>
+            <TYPE.body fontSize={20}>
+              {t('earn.claimingPng', { amount: earnedAmount?.toSignificant(4) }) as string}
+            </TYPE.body>
             {chefVersion == 1 && (earnedNonTriRewards.length > 0 || noTriRewards) && (
               <TYPE.body fontSize={20}>
                 {'Claiming'}{' '}
@@ -171,9 +175,9 @@ export default function UnstakingModal({
       {hash && (
         <SubmittedView onDismiss={wrappedOndismiss} hash={hash}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.largeHeader>{t('earn.transactionSubmitted')}</TYPE.largeHeader>
-            <TYPE.body fontSize={20}>{t('earn.withdrewPgl')}</TYPE.body>
-            <TYPE.body fontSize={20}>{t('earn.claimedPng')}</TYPE.body>
+            <TYPE.largeHeader>{t('earn.transactionSubmitted') as string}</TYPE.largeHeader>
+            <TYPE.body fontSize={20}>{t('earn.withdrewPgl') as string}</TYPE.body>
+            <TYPE.body fontSize={20}>{t('earn.claimedPng') as string}</TYPE.body>
           </AutoColumn>
         </SubmittedView>
       )}

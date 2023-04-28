@@ -57,7 +57,7 @@ const MinimalPositionCard = ({ pair, showUnwrapped = false, border }: PositionCa
             <FixedHeightRow>
               <RowFixed>
                 <Text fontWeight={500} fontSize={16}>
-                  {t('positionCard.yourPosition')}
+                  {t('positionCard.yourPosition') as string}
                 </Text>
               </RowFixed>
             </FixedHeightRow>
@@ -77,7 +77,7 @@ const MinimalPositionCard = ({ pair, showUnwrapped = false, border }: PositionCa
             <AutoColumn gap="4px">
               <FixedHeightRow>
                 <Text fontSize={16} fontWeight={500}>
-                  {t('positionCard.poolShare')}
+                  {t('positionCard.poolShare') as string}
                 </Text>
                 <Text fontSize={16} fontWeight={500}>
                   {poolTokenPercentage ? poolTokenPercentage.toFixed(6) + '%' : '-'}
@@ -120,7 +120,7 @@ const MinimalPositionCard = ({ pair, showUnwrapped = false, border }: PositionCa
             <span role="img" aria-label="wizard-icon">
               ⭐️
             </span>{' '}
-            {t('positionCard.byAddingLiquidityInfo')}
+            {t('positionCard.byAddingLiquidityInfo') as string}
           </TYPE.subHeader>
         </LightCard>
       )}

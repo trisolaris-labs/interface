@@ -37,7 +37,9 @@ export default function TransactionPopup({
           {summary ?? t('popups.hash') + hash.slice(0, 8) + '...' + hash.slice(58, 65)}
         </TYPE.body>
         {chainId && (
-          <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>{t('popups.viewExplorer')}</ExternalLink>
+          <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
+            {t('popups.viewExplorer') as string}
+          </ExternalLink>
         )}
       </AutoColumn>
     </RowNoFlex>

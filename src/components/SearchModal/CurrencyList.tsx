@@ -137,14 +137,14 @@ function CurrencyRow({
           <StyledTokenName>{currency.name}</StyledTokenName>
           {!isOnSelectedList && !customAdded ? (
             <TYPE.main fontWeight={500}>
-              {t('searchModal.foundByAddress')}
+              {t('searchModal.foundByAddress') as string}
               <LinkStyledButton
                 onClick={event => {
                   event.stopPropagation()
                   if (currency instanceof Token) addToken(currency)
                 }}
               >
-                ({t('searchModal.add')})
+                ({t('searchModal.add') as string})
               </LinkStyledButton>
             </TYPE.main>
           ) : null}
@@ -154,14 +154,14 @@ function CurrencyRow({
         <TagContainer>
           <RowFixed>
             <TYPE.main fontWeight={500} fontSize={12}>
-              {t('searchModal.addedByUser')}
+              {t('searchModal.addedByUser') as string}
               <StyledRemoveTokenButton
                 onClick={event => {
                   event.stopPropagation()
                   if (chainId && currency instanceof Token) removeToken(chainId, currency.address)
                 }}
               >
-                ({t('searchModal.remove')})
+                ({t('searchModal.remove') as string})
               </StyledRemoveTokenButton>
             </TYPE.main>
           </RowFixed>
@@ -197,7 +197,7 @@ export default function CurrencyList({
   const itemData = useMemo(() => (showETH ? [Currency.CETH, ...currencies] : currencies), [currencies, showETH])
 
   const Row = useCallback(
-    ({ data, index, style }) => {
+    ({ data, index, style }: { data: any; index: number; style: any }) => {
       const currency: Currency = data[index]
       const isSelected = Boolean(selectedCurrency && currencyEquals(selectedCurrency, currency))
       const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency))

@@ -1,4 +1,13 @@
-import React, { memo, useCallback, useMemo, useRef, useState } from 'react'
+import React, {
+  memo,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  ChangeEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  KeyboardEventHandler
+} from 'react'
 import { ArrowLeft } from 'react-feather'
 import ReactGA from 'react-ga'
 import { usePopper } from 'react-popper'
@@ -146,7 +155,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
       action: 'Start Remove List',
       label: listUrl
     })
-    if (window.prompt(t('searchModal.confirmListRemovalPrompt')) === t('searchModal.remove')) {
+    if (window.prompt(t('searchModal.confirmListRemovalPrompt') as string) === t('searchModal.remove')) {
       ReactGA.event({
         category: 'Lists',
         action: 'Confirm Remove List',
@@ -205,14 +214,14 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
             <div>{list && listVersionLabel(list.version)}</div>
             <SeparatorDark />
             <ExternalLink href={`https://tokenlists.org/token-list?url=${listUrl}`}>
-              {t('searchModal.viewList')}
+              {t('searchModal.viewList') as string}
             </ExternalLink>
             <UnpaddedLinkStyledButton onClick={handleRemoveList} disabled={Object.keys(listsByUrl).length === 1}>
-              {t('searchModal.removeList')}
+              {t('searchModal.removeList') as string}
             </UnpaddedLinkStyledButton>
             {pending && (
               <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>
-                {t('searchModal.updateList')}
+                {t('searchModal.updateList') as string}
               </UnpaddedLinkStyledButton>
             )}
           </PopoverContainer>
@@ -245,7 +254,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
   const adding = Boolean(lists[listUrlInput]?.loadingRequestId)
   const [addError, setAddError] = useState<string | null>(null)
 
-  const handleInput = useCallback(e => {
+  const handleInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setListUrlInput(e.target.value)
     setAddError(null)
   }, [])
@@ -278,13 +287,13 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
     return uriToHttp(listUrlInput).length > 0 || Boolean(parseENSAddress(listUrlInput))
   }, [listUrlInput])
 
-  const handleEnterKey = useCallback(
-    e => {
+  const handleEnterKey: KeyboardEventHandler<HTMLInputElement> = useCallback(
+    (e: ReactKeyboardEvent<HTMLInputElement>) => {
       if (validUrl && e.key === 'Enter') {
         handleAddList()
       }
     },
-    [handleAddList, validUrl]
+    [validUrl, handleAddList]
   )
 
   const sortedLists = useMemo(() => {
@@ -320,7 +329,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
             <ArrowLeft style={{ cursor: 'pointer' }} onClick={onBack} />
           </div>
           <Text fontWeight={500} fontSize={20}>
-            {t('searchModal.manageLists')}
+            {t('searchModal.manageLists') as string}
           </Text>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
@@ -330,21 +339,21 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
 
       <PaddedColumn gap="14px">
         <Text fontWeight={600}>
-          {t('searchModal.addList')}
+          {t('searchModal.addList') as string}
           <QuestionHelper text={t('searchModal.tokenListHelper')} />
         </Text>
         <Row>
           <SearchInput
             type="text"
             id="list-add-input"
-            placeholder={t('searchModal.httpsPlaceholder')}
+            placeholder={t('searchModal.httpsPlaceholder') as string}
             value={listUrlInput}
             onChange={handleInput}
             onKeyDown={handleEnterKey}
             style={{ height: '2.75rem', borderRadius: 12, padding: '12px' }}
           />
           <AddListButton onClick={handleAddList} disabled={!validUrl}>
-            {t('searchModal.add')}
+            {t('searchModal.add') as string}
           </AddListButton>
         </Row>
         {addError ? (

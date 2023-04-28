@@ -118,7 +118,7 @@ function ApprovalText({ approvalState, symbol }: { approvalState: ApprovalState;
     default:
       return (
         <span>
-          {t('addLiquidity.approve')} {symbol}
+          {t('addLiquidity.approve') as string} {symbol}
         </span>
       )
   }

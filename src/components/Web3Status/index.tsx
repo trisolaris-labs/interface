@@ -154,7 +154,7 @@ function Web3StatusInner() {
         {hasPendingTransactions ? (
           <RowBetween>
             <Text>
-              {pending?.length} {t('web3Status.pending')}
+              {pending?.length} {t('web3Status.pending') as string}
             </Text>{' '}
             <Loader stroke="white" />
           </RowBetween>
@@ -170,13 +170,17 @@ function Web3StatusInner() {
     return (
       <Web3StatusError onClick={toggleWalletModal}>
         <NetworkIcon />
-        <Text>{error instanceof UnsupportedChainIdError ? t('web3Status.wrongNetwork') : t('web3Status.error')}</Text>
+        <Text>
+          {error instanceof UnsupportedChainIdError
+            ? (t('web3Status.wrongNetwork') as string)
+            : (t('web3Status.error') as string)}
+        </Text>
       </Web3StatusError>
     )
   } else {
     return (
       <Web3StatusConnect id="connect-wallet" onClick={toggleWalletModal} faded={!account}>
-        <Text>{t('web3Status.connectToWallet')}</Text>
+        <Text>{t('web3Status.connectToWallet') as string}</Text>
       </Web3StatusConnect>
     )
   }

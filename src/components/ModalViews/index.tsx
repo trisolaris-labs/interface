@@ -34,7 +34,7 @@ export function LoadingView({ children, onDismiss }: { children: any; onDismiss:
       </ConfirmedIcon>
       <AutoColumn gap="100px" justify={'center'}>
         {children}
-        <TYPE.subHeader>{t('modalView.confirmTransaction')}</TYPE.subHeader>
+        <TYPE.subHeader>{t('modalView.confirmTransaction') as string}</TYPE.subHeader>
       </AutoColumn>
     </ConfirmOrLoadingWrapper>
   )
@@ -66,7 +66,7 @@ export function SubmittedView({
         {children}
         {chainId && hash && (
           <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')} style={{ marginLeft: '4px' }}>
-            <TYPE.subHeader>{t('modalView.viewTransaction')}</TYPE.subHeader>
+            <TYPE.subHeader>{t('modalView.viewTransaction') as string}</TYPE.subHeader>
           </ExternalLink>
         )}
       </AutoColumn>

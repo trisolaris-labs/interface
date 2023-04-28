@@ -52,7 +52,7 @@ export function useDerivedMintInfo(
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
 
   // error handling
-  let insufficientInput: boolean = false
+  let insufficientInput = false
 
   // tokens
   const currencies: { [field in Field]?: Currency } = useMemo(
@@ -157,19 +157,19 @@ export function useDerivedMintInfo(
 
   let error: string | undefined
   if (!account) {
-    error = t('mintHooks.connectWallet')
+    error = t('mintHooks.connectWallet') as string
   }
 
   if (insufficientInput) {
-    error = t('mintHooks.insufficientInputAmount')
+    error = t('mintHooks.insufficientInputAmount') as string
   }
 
   if (pairState === PairState.INVALID) {
-    error = error ?? t('mintHooks.invalidPair')
+    error = error ?? (t('mintHooks.invalidPair') as string)
   }
 
   if (!parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]) {
-    error = error ?? t('mintHooks.enterAmount')
+    error = error ?? (t('mintHooks.enterAmount') as string)
   }
 
   const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts

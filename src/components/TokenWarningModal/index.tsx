@@ -77,7 +77,7 @@ function TokenWarningCard({ token }: TokenWarningCardProps) {
           {chainId && (
             <ExternalLink style={{ fontWeight: 400 }} href={getEtherscanLink(chainId, token.address, 'token')}>
               <TYPE.blue title={token.address}>
-                {shortenAddress(token.address)} ({t('tokenWarningModal.viewExplorer')})
+                {shortenAddress(token.address)} ({t('tokenWarningModal.viewExplorer') as string})
               </TYPE.blue>
             </ExternalLink>
           )}
@@ -124,7 +124,7 @@ export default function TokenWarningModal({
                   checked={understandChecked}
                   onChange={toggleUnderstand}
                 />{' '}
-                {t('tokenWarningModal.understand')}
+                {t('tokenWarningModal.understand') as string}
               </label>
             </div>
             <ButtonError
@@ -140,7 +140,7 @@ export default function TokenWarningModal({
                 onConfirm()
               }}
             >
-              <TYPE.body color="white">{t('tokenWarningModal.continue')}</TYPE.body>
+              <TYPE.body color="white">{t('tokenWarningModal.continue') as string}</TYPE.body>
             </ButtonError>
           </RowBetween>
         </AutoColumn>

@@ -31,7 +31,7 @@ export default function BalanceButton({ disableHalfButton, disableMaxButton, onC
         disabled={disableMaxButton}
         onClick={() => onClickBalanceButton(BalanceButtonValueEnum.MAX)}
       >
-        <TYPE.small>{t('currencyInputPanel.max')}</TYPE.small>
+        <TYPE.small>{t('currencyInputPanel.max') as string}</TYPE.small>
       </StyledBalanceRightButton>
     </StyledRowFlat>
   )

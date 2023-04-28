@@ -244,7 +244,7 @@ export default function AddLiquidity({
           </Text>
         </Row>
         <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
-          {t('addLiquidity.outputEstimated', { allowedSlippage: allowedSlippage / 100 })}
+          {t('addLiquidity.outputEstimated', { allowedSlippage: allowedSlippage / 100 }) as string}
         </TYPE.italic>
       </AutoColumn>
     )
@@ -332,13 +332,13 @@ export default function AddLiquidity({
                   <BlueCard>
                     <AutoColumn gap="10px">
                       <TYPE.link fontWeight={600} color={'primaryText1'}>
-                        {t('addLiquidity.firstLP')}
+                        {t('addLiquidity.firstLP') as string}
                       </TYPE.link>
                       <TYPE.link fontWeight={400} color={'primaryText1'}>
-                        {t('addLiquidity.ratioTokens')}
+                        {t('addLiquidity.ratioTokens') as string}
                       </TYPE.link>
                       <TYPE.link fontWeight={400} color={'primaryText1'}>
-                        {t('addLiquidity.happyRate')}
+                        {t('addLiquidity.happyRate') as string}
                       </TYPE.link>
                     </AutoColumn>
                   </BlueCard>
@@ -395,7 +395,7 @@ export default function AddLiquidity({
             )}
 
             {!account ? (
-              <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
+              <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet') as string}</ButtonLight>
             ) : (
               <AutoColumn id="defaultswap-add-liquidity" gap={'md'}>
                 {(approvalA === ApprovalState.NOT_APPROVED ||
@@ -443,7 +443,7 @@ export default function AddLiquidity({
                   error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                 >
                   <Text fontSize={20} fontWeight={500}>
-                    {error ?? t('addLiquidity.supply')}
+                    {error ?? (t('addLiquidity.supply') as string)}
                   </Text>
                 </ButtonError>
               </AutoColumn>

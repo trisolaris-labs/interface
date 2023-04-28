@@ -42,7 +42,8 @@ i18next
     fallbackLng: determineLngFn,
     preload: [defaultLocale],
     keySeparator: '.',
-    interpolation: { escapeValue: false }
+    interpolation: { escapeValue: false },
+    returnNull: false
   })
 
 export default i18next

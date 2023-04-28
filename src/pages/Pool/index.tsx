@@ -66,16 +66,16 @@ export default function Pool() {
           <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
             <HideSmall>
               <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>
-                {t('pool.yourLiquidity')}
+                {t('pool.yourLiquidity') as string}
               </TYPE.mediumHeader>
             </HideSmall>
             <ButtonRow>
               <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/create/ETH">
-                {t('pool.createPair')}
+                {t('pool.createPair') as string}
               </ResponsiveButtonSecondary>
               <ResponsiveButtonPrimary id="join-pool-button" as={Link} padding="6px 8px" to="/add/ETH">
                 <Text fontWeight={500} fontSize={16}>
-                  {t('pool.addLiquidity')}
+                  {t('pool.addLiquidity') as string}
                 </Text>
               </ResponsiveButtonPrimary>
             </ButtonRow>
@@ -84,13 +84,13 @@ export default function Pool() {
           {!account ? (
             <Card padding="40px">
               <TYPE.body color={theme.text3} textAlign="center">
-                {t('pool.connectWalletToView')}
+                {t('pool.connectWalletToView') as string}
               </TYPE.body>
             </Card>
           ) : v2IsLoading ? (
             <EmptyProposals>
               <TYPE.body color={theme.text3} textAlign="center">
-                <Dots>{t('pool.loading')}</Dots>
+                <Dots>{t('pool.loading') as string}</Dots>
               </TYPE.body>
             </EmptyProposals>
           ) : allV2PairsWithLiquidity?.length > 0 ? (
@@ -102,16 +102,16 @@ export default function Pool() {
           ) : (
             <EmptyProposals>
               <TYPE.body color={theme.text3} textAlign="center">
-                {t('pool.noLiquidity')}
+                {t('pool.noLiquidity') as string}
               </TYPE.body>
             </EmptyProposals>
           )}
 
           <AutoColumn justify={'center'} gap="md">
             <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
-              {hasV1Liquidity ? t('pool.uniswapV1Found') : t('pool.noSeePoolJoined')}{' '}
+              {hasV1Liquidity ? (t('pool.uniswapV1Found') as string) : (t('pool.noSeePoolJoined') as string)}{' '}
               <StyledInternalLink id="import-pool-link" to={hasV1Liquidity ? '/migrate/v1' : '/find'}>
-                {hasV1Liquidity ? t('pool.migrateNow') : t('pool.importIt')}
+                {hasV1Liquidity ? (t('pool.migrateNow') as string) : (t('pool.importIt') as string)}
               </StyledInternalLink>
             </Text>
           </AutoColumn>

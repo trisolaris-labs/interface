@@ -95,7 +95,7 @@ export default function StableSwapRemoveLiquidityInputPanel({
                   ? currency.symbol.slice(0, 4) +
                     '...' +
                     currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                  : currency?.symbol) || t('currencyInputPanel.selectToken')}
+                  : currency?.symbol) || (t('currencyInputPanel.selectToken') as string)}
               </StyledTokenName>
             </Aligner>
           </div>
