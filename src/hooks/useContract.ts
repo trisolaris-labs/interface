@@ -2,11 +2,6 @@ import { Contract } from '@ethersproject/contracts'
 import { ChainId, Token, WETH } from '@trisolaris/sdk'
 // eslint-disable-next-line @typescript-eslint/camelcase
 import IUniswapV2Pair_ABI from '../constants/abis/polygon/IUniswapV2Pair.json'
-import { abi as STAKING_REWARDS_ABI } from '@pangolindex/governance/artifacts/contracts/StakingRewards.sol/StakingRewards.json'
-import { abi as AIRDROP_ABI } from '@pangolindex/governance/artifacts/contracts/Airdrop.sol/Airdrop.json'
-import { abi as GOVERNANCE_ABI } from '@pangolindex/governance/artifacts/contracts/GovernorAlpha.sol/GovernorAlpha.json'
-import { abi as PNG_ABI } from '@pangolindex/governance/artifacts/contracts/PNG.sol/Png.json'
-import { abi as BRIDGE_MIGRATOR_ABI } from '@pangolindex/exchange-contracts/artifacts/contracts/pangolin-periphery/PangolinBridgeMigrationRouter.sol/PangolinBridgeMigrationRouter.json'
 import { useMemo } from 'react'
 
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
@@ -49,10 +44,6 @@ export function useV2MigratorContract(): Contract | null {
   return useContract(MIGRATOR_ADDRESS, MIGRATOR_ABI, true)
 }
 
-export function useBridgeMigratorContract(): Contract | null {
-  return useContract(BRIDGE_MIGRATOR_ADDRESS, BRIDGE_MIGRATOR_ABI, true)
-}
-
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
   return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
@@ -81,24 +72,6 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 export function useMulticallContract(): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(chainId && MULTICALL_NETWORKS[chainId], MULTICALL_ABI, false)
-}
-
-export function useGovernanceContract(): Contract | null {
-  return useContract(GOVERNANCE_ADDRESS, GOVERNANCE_ABI, true)
-}
-
-export function usePngContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId ? PNG[chainId].address : undefined, PNG_ABI, true)
-}
-
-export function useStakingContract(stakingAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(stakingAddress, STAKING_REWARDS_ABI, withSignerIfPossible)
-}
-
-export function useAirdropContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId ? AIRDROP_ADDRESS[chainId] : undefined, AIRDROP_ABI, true)
 }
 
 export function useUSDCWNEARPoolContract(): Contract | null {

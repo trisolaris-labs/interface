@@ -36,9 +36,8 @@ export default function EarnTri() {
   return (
     <>
       {/* <WidoWidget
-        onConnectWalletClick={handleConnectWalletClick}
-        ethProvider={ethersjsInstance}
-        // optional params
+
+      // optional params
       /> */}
       <EarnTriSortAndFilterContainer
         activeFarmsFilter={activeFarmsFilter}
