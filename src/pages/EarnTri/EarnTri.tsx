@@ -9,6 +9,7 @@ import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter
 import useFarmsSortAndFilter from './useFarmsSortAndFilter'
 import styled from 'styled-components'
 import Toggle from '../../components/Toggle'
+import { WidoWidget } from 'wido-widget'
 
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
@@ -34,6 +35,11 @@ export default function EarnTri() {
 
   return (
     <>
+      {/* <WidoWidget
+        onConnectWalletClick={handleConnectWalletClick}
+        ethProvider={ethersjsInstance}
+        // optional params
+      /> */}
       <EarnTriSortAndFilterContainer
         activeFarmsFilter={activeFarmsFilter}
         handleSort={handleSort}
