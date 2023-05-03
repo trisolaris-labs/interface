@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AutoColumn } from '../../components/Column'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
 import { TYPE } from '../../theme'
@@ -9,7 +9,6 @@ import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter
 import useFarmsSortAndFilter from './useFarmsSortAndFilter'
 import styled from 'styled-components'
 import Toggle from '../../components/Toggle'
-import { WidoWidget } from 'wido-widget'
 
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
@@ -35,10 +34,6 @@ export default function EarnTri() {
 
   return (
     <>
-      {/* <WidoWidget
-
-      // optional params
-      /> */}
       <EarnTriSortAndFilterContainer
         activeFarmsFilter={activeFarmsFilter}
         handleSort={handleSort}
