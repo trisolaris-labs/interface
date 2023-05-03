@@ -98,7 +98,7 @@ export function useDerivedStableSwapAddLiquidityInfo(
 
   let error: string | undefined
   if (!account) {
-    error = t('mintHooks.connectWallet') as string
+    error = t('mintHooks.connectWallet')
   }
 
   if (
@@ -108,7 +108,7 @@ export function useDerivedStableSwapAddLiquidityInfo(
     (hasFourthCurrency ? !parsedAmounts[Field.CURRENCY_3] : false) &&
     (hasFifthCurrency ? !parsedAmounts[Field.CURRENCY_4] : false)
   ) {
-    error = error ?? (t('mintHooks.enterAmount') as string)
+    error = error ?? t('mintHooks.enterAmount')
   }
 
   const {

@@ -65,7 +65,7 @@ export default function ClaimRewardModal({
           setAttempting(true)
           const response: TransactionResponse = await stakingContract.harvest(poolId)
           addTransaction(response, {
-            summary: t('earn.claimAccumulated') as string
+            summary: t('earn.claimAccumulated')
           })
           setHash(response.hash)
         } catch (error) {
@@ -78,7 +78,7 @@ export default function ClaimRewardModal({
         setAttempting(true)
         const response: TransactionResponse = await stakingContractv2.harvest(poolId, account)
         addTransaction(response, {
-          summary: t('earn.claimAccumulated') as string
+          summary: t('earn.claimAccumulated')
         })
         setHash(response.hash)
       } catch (error) {
@@ -90,9 +90,9 @@ export default function ClaimRewardModal({
 
   let error: string | undefined
   if (!account) {
-    error = t('earn.connectWallet') as string
+    error = t('earn.connectWallet')
   } else if (!stakedAmount) {
-    error = error ?? (t('earn.enterAmount') as string)
+    error = error ?? t('earn.enterAmount')
   }
 
   return (
@@ -100,7 +100,7 @@ export default function ClaimRewardModal({
       {!attempting && !hash && (
         <ContentWrapper gap="lg">
           <RowBetween>
-            <TYPE.mediumHeader>{t('earn.claim') as string}</TYPE.mediumHeader>
+            <TYPE.mediumHeader>{t('earn.claim')}</TYPE.mediumHeader>
             <CloseIcon onClick={wrappedOnDismiss} />
           </RowBetween>
           {earnedAmount?.greaterThan(BIG_INT_ZERO) && (
@@ -108,7 +108,7 @@ export default function ClaimRewardModal({
               <TYPE.body fontWeight={600} fontSize={36}>
                 {earnedAmount?.toSignificant(6)}
               </TYPE.body>
-              <TYPE.body>{t('earn.unclaimed') as string}</TYPE.body>
+              <TYPE.body>{t('earn.unclaimed')}</TYPE.body>
             </AutoColumn>
           )}
           {chefVersion == 1 && (earnedNonTriRewards.length > 0 || noTriRewards) && (
@@ -129,18 +129,16 @@ export default function ClaimRewardModal({
               </AutoRow>
             </AutoColumn>
           )}
-          <TYPE.subHeader style={{ textAlign: 'center' }}>{t('earn.liquidityRemainsPool') as string}</TYPE.subHeader>
+          <TYPE.subHeader style={{ textAlign: 'center' }}>{t('earn.liquidityRemainsPool')}</TYPE.subHeader>
           <ButtonError disabled={!!error} error={!!error && !!stakedAmount} onClick={onClaimReward}>
-            {error ?? (t('earn.claim') as string)}
+            {error ?? t('earn.claim')}
           </ButtonError>
         </ContentWrapper>
       )}
       {attempting && !hash && (
         <LoadingView onDismiss={wrappedOnDismiss}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.body fontSize={20}>
-              {t('earn.claimingPng', { amount: earnedAmount?.toSignificant(6) }) as string}
-            </TYPE.body>
+            <TYPE.body fontSize={20}>{t('earn.claimingPng', { amount: earnedAmount?.toSignificant(6) })}</TYPE.body>
             {chefVersion == 1 && (earnedNonTriRewards?.length > 0 || noTriRewards) && (
               <TYPE.body fontSize={20}>
                 {'Claiming'}{' '}
@@ -156,8 +154,8 @@ export default function ClaimRewardModal({
       {hash && (
         <SubmittedView onDismiss={wrappedOnDismiss} hash={hash}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.largeHeader>{t('earn.transactionSubmitted') as string}</TYPE.largeHeader>
-            <TYPE.body fontSize={20}>{t('earn.claimedPng') as string}</TYPE.body>
+            <TYPE.largeHeader>{t('earn.transactionSubmitted')}</TYPE.largeHeader>
+            <TYPE.body fontSize={20}>{t('earn.claimedPng')}</TYPE.body>
           </AutoColumn>
         </SubmittedView>
       )}

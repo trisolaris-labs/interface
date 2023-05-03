@@ -116,13 +116,13 @@ export default function SwapModalHeader({
           <RowBetween>
             <RowFixed>
               <AlertTriangle size={20} style={{ marginRight: '8px', minWidth: 24 }} />
-              <TYPE.main color={theme.primary1}>{t('swap.priceUpdated') as string}</TYPE.main>
+              <TYPE.main color={theme.primary1}>{t('swap.priceUpdated')}</TYPE.main>
             </RowFixed>
             <ButtonPrimary
               style={{ padding: '.5rem', width: 'fit-content', fontSize: '0.825rem', borderRadius: '12px' }}
               onClick={onAcceptChanges}
             >
-              {t('swap.accept') as string}
+              {t('swap.accept')}
             </ButtonPrimary>
           </RowBetween>
         </SwapShowAcceptChanges>
@@ -130,30 +130,30 @@ export default function SwapModalHeader({
       <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
         {isRoutedViaStableSwap || trade?.tradeType === TradeType.EXACT_INPUT ? (
           <TYPE.italic textAlign="left" style={{ width: '100%' }}>
-            {t('swap.outputEstimated') as string}
+            {t('swap.outputEstimated')}
             {
               <StyledMinimumReceived>
                 {tradeOutputAmountWithSlippage?.toSignificant(6)} {tradeOutputAmount?.currency.symbol}
               </StyledMinimumReceived>
             }
-            {t('swap.transactionRevert') as string}
+            {t('swap.transactionRevert')}
           </TYPE.italic>
         ) : (
           <TYPE.italic textAlign="left" style={{ width: '100%' }}>
-            {t('swap.inputEstimated') as string}
+            {t('swap.inputEstimated')}
             {
               <StyledMinimumReceived>
                 {slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)} {tradeInputAmount?.currency.symbol}
               </StyledMinimumReceived>
             }
-            {t('swap.transactionRevert') as string}
+            {t('swap.transactionRevert')}
           </TYPE.italic>
         )}
       </AutoColumn>
       {recipient !== null ? (
         <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
           <TYPE.main>
-            {t('swap.outputSentTo') as string}
+            {t('swap.outputSentTo')}
             <b title={recipient}>{isAddress(recipient) ? shortenAddress(recipient) : recipient}</b>
           </TYPE.main>
         </AutoColumn>

@@ -466,8 +466,8 @@ export default function Swap() {
                 <CurrencyInputPanel
                   label={
                     independentField === Field.OUTPUT && !showWrap && trade
-                      ? (t('swapPage.fromEstimated') as string)
-                      : (t('swapPage.from') as string)
+                      ? t('swapPage.fromEstimated')
+                      : t('swapPage.from')
                   }
                   value={formattedAmounts[Field.INPUT]}
                   disableHalfButton={atHalfAmountInput}
@@ -502,7 +502,7 @@ export default function Swap() {
                     </ChevronWrapper>
                     {recipient === null && !showWrap && isExpertMode ? (
                       <LinkStyledButton id="add-recipient-button" onClick={() => onChangeRecipient('')}>
-                        {t('swapPage.addSend') as string}
+                        {t('swapPage.addSend')}
                       </LinkStyledButton>
                     ) : null}
                   </AutoRow>
@@ -512,8 +512,8 @@ export default function Swap() {
                   onUserInput={handleTypeOutput}
                   label={
                     independentField === Field.INPUT && !showWrap && trade
-                      ? (t('swapPage.toEstimated') as string)
-                      : (t('swapPage.to') as string)
+                      ? t('swapPage.toEstimated')
+                      : t('swapPage.to')
                   }
                   currency={currencies[Field.OUTPUT]}
                   onCurrencySelect={handleOutputSelect}
@@ -528,7 +528,7 @@ export default function Swap() {
                         <ChevronDown size="24" color={theme.text2} />
                       </ChevronWrapper>
                       <LinkStyledButton id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
-                        {t('swapPage.removeSend') as string}
+                        {t('swapPage.removeSend')}
                       </LinkStyledButton>
                     </AutoRow>
                     <AddressInputPanel id="recipient" value={recipient} onChange={onChangeRecipient} />
@@ -540,7 +540,7 @@ export default function Swap() {
                     <AutoColumn gap="4px">
                       <RowBetween align="center">
                         <Text fontWeight={500} fontSize={14} color={theme.text2}>
-                          {t('swapPage.price') as string}
+                          {t('swapPage.price')}
                         </Text>
                         <TradePrice
                           trade={isRoutedViaStableSwap ? stableswapTrade : trade}
@@ -552,7 +552,7 @@ export default function Swap() {
                       {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                         <RowBetween align="center">
                           <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
-                            {t('swapPage.slippageTolerance') as string}
+                            {t('swapPage.slippageTolerance')}
                           </ClickableText>
                           <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
                             {allowedSlippage / 100}%
@@ -565,19 +565,19 @@ export default function Swap() {
               </AutoColumn>
               <BottomGrouping>
                 {!account ? (
-                  <ButtonLight onClick={toggleWalletModal}>{t('swapPage.connectWallet') as string}</ButtonLight>
+                  <ButtonLight onClick={toggleWalletModal}>{t('swapPage.connectWallet')}</ButtonLight>
                 ) : showWrap ? (
                   <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>
                     {wrapInputError ??
                       (wrapType === WrapType.WRAP
-                        ? (t('swapPage.wrap') as string)
+                        ? t('swapPage.wrap')
                         : wrapType === WrapType.UNWRAP
-                        ? (t('swapPage.unwrap') as string)
+                        ? t('swapPage.unwrap')
                         : null)}
                   </ButtonPrimary>
                 ) : noRoute && userHasSpecifiedInputOutput ? (
                   <GreyCard style={{ textAlign: 'center' }}>
-                    <TYPE.main mb="4px">{t('swapPage.insufficientLiquidity') as string}</TYPE.main>
+                    <TYPE.main mb="4px">{t('swapPage.insufficientLiquidity')}</TYPE.main>
                   </GreyCard>
                 ) : disableTradingUntilStableSwapRateIsCalculated ? (
                   <ButtonPrimary disabled>
@@ -594,12 +594,12 @@ export default function Swap() {
                     >
                       {approval === ApprovalState.PENDING ? (
                         <AutoRow gap="6px" justify="center">
-                          {t('swapPage.approving') as string} <Loader stroke="white" />
+                          {t('swapPage.approving')} <Loader stroke="white" />
                         </AutoRow>
                       ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                        (t('swapPage.approved') as string)
+                        t('swapPage.approved')
                       ) : (
-                        (t('swapPage.approve') as string) + currencies[Field.INPUT]?.symbol
+                        t('swapPage.approve') + currencies[Field.INPUT]?.symbol
                       )}
                     </ButtonConfirmed>
                     <ButtonError

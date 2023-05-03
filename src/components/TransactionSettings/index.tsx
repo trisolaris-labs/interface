@@ -150,7 +150,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
       <AutoColumn gap="sm">
         <RowFixed>
           <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
-            {t('transactionSettings.slippageTolerance') as string}
+            {t('transactionSettings.slippageTolerance')}
           </TYPE.black>
           <QuestionHelper text={t('transactionSettings.transactionRevertSlippageHelper')} />
         </RowFixed>
@@ -216,10 +216,10 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
             }}
           >
             {slippageError === SlippageError.InvalidInput
-              ? (t('transactionSettings.enterValidSlippage') as string)
+              ? t('transactionSettings.enterValidSlippage')
               : slippageError === SlippageError.RiskyLow
-              ? (t('transactionSettings.transactionMayFail') as string)
-              : (t('transactionSettings.transactionMayFrontrun') as string)}
+              ? t('transactionSettings.transactionMayFail')
+              : t('transactionSettings.transactionMayFrontrun')}
           </RowBetween>
         )}
       </AutoColumn>
@@ -227,7 +227,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
       <AutoColumn gap="sm">
         <RowFixed>
           <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-            {t('transactionSettings.transactionDeadline') as string}
+            {t('transactionSettings.transactionDeadline')}
           </TYPE.black>
           <QuestionHelper text={t('transactionSettings.transactionRevertDeadlineHelper')} />
         </RowFixed>
@@ -244,7 +244,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
             />
           </OptionCustom>
           <TYPE.body style={{ paddingLeft: '8px' }} fontSize={14}>
-            {t('transactionSettings.minutes') as string}
+            {t('transactionSettings.minutes')}
           </TYPE.body>
         </RowFixed>
       </AutoColumn>

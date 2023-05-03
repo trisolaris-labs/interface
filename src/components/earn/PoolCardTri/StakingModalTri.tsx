@@ -98,7 +98,7 @@ export default function StakingModal({
           .deposit(poolId, parseUnits(typedValue))
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              summary: t('earn.depositLiquidity') as string
+              summary: t('earn.depositLiquidity')
             })
             setHash(response.hash)
           })
@@ -108,7 +108,7 @@ export default function StakingModal({
           })
       } else {
         setAttempting(false)
-        throw new Error(t('earn.attemptingToStakeError') as string)
+        throw new Error(t('earn.attemptingToStakeError'))
       }
     } else {
       if (stakingContractv2 && parsedAmount && deadline) {
@@ -116,7 +116,7 @@ export default function StakingModal({
           .deposit(poolId, parseUnits(typedValue), account)
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              summary: t('earn.depositLiquidity') as string
+              summary: t('earn.depositLiquidity')
             })
             setHash(response.hash)
           })
@@ -126,7 +126,7 @@ export default function StakingModal({
           })
       } else {
         setAttempting(false)
-        throw new Error(t('earn.attemptingToStakeError') as string)
+        throw new Error(t('earn.attemptingToStakeError'))
       }
     }
   }
@@ -158,7 +158,7 @@ export default function StakingModal({
       {!attempting && !hash && (
         <ContentWrapper gap="lg">
           <RowBetween>
-            <TYPE.mediumHeader>{t('earn.deposit') as string}</TYPE.mediumHeader>
+            <TYPE.mediumHeader>{t('earn.deposit')}</TYPE.mediumHeader>
             <CloseIcon onClick={wrappedOnDismiss} />
           </RowBetween>
           <CurrencyInputPanel
@@ -171,7 +171,7 @@ export default function StakingModal({
             pair={dummyPair}
             label={''}
             disableCurrencySelect={true}
-            customBalanceText={t('earn.availableToDeposit') as string}
+            customBalanceText={t('earn.availableToDeposit')}
             id="stake-liquidity-token"
             tokens={orderedTokens}
           />
@@ -182,14 +182,14 @@ export default function StakingModal({
               confirmed={approval === ApprovalState.APPROVED || signatureData !== null}
               disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
             >
-              {t('earn.approve') as string}
+              {t('earn.approve')}
             </ButtonConfirmed>
             <ButtonError
               disabled={!!error || (signatureData === null && approval !== ApprovalState.APPROVED)}
               error={!!error && !!parsedAmount}
               onClick={onStake}
             >
-              {error ?? (t('earn.deposit') as string)}
+              {error ?? t('earn.deposit')}
             </ButtonError>
           </RowBetween>
           <ProgressCircles steps={[approval === ApprovalState.APPROVED || signatureData !== null]} disabled={true} />
@@ -198,7 +198,7 @@ export default function StakingModal({
       {attempting && !hash && (
         <LoadingView onDismiss={wrappedOnDismiss}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.largeHeader>{t('earn.depositingLiquidity') as string}</TYPE.largeHeader>
+            <TYPE.largeHeader>{t('earn.depositingLiquidity')}</TYPE.largeHeader>
             <TYPE.body fontSize={20}>{parsedAmount?.toSignificant(4)} TLP</TYPE.body>
           </AutoColumn>
         </LoadingView>
@@ -206,9 +206,9 @@ export default function StakingModal({
       {attempting && hash && (
         <SubmittedView onDismiss={wrappedOnDismiss} hash={hash}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.largeHeader>{t('earn.transactionSubmitted') as string}</TYPE.largeHeader>
+            <TYPE.largeHeader>{t('earn.transactionSubmitted')}</TYPE.largeHeader>
             <TYPE.body fontSize={20}>
-              {t('earn.deposited') as string} {parsedAmount?.toSignificant(4)} TLP
+              {t('earn.deposited')} {parsedAmount?.toSignificant(4)} TLP
             </TYPE.body>
           </AutoColumn>
         </SubmittedView>

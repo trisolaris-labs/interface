@@ -220,7 +220,7 @@ export default function CurrencyInputPanel({
                       ? currency.symbol.slice(0, 4) +
                         '...' +
                         currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                      : currency?.symbol) || (t('currencyInputPanel.selectToken') as string)}
+                      : currency?.symbol) || t('currencyInputPanel.selectToken')}
                   </StyledTokenName>
                 </>
               ) : null}

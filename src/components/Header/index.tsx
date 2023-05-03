@@ -105,7 +105,7 @@ export default function Header() {
         </HomeContainer>
         <HeaderLinks>
           <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
-            {t('header.swap') as string}
+            {t('header.swap')}
           </StyledNavLink>
           <StyledNavLink
             id={`pool-nav-link`}
@@ -117,17 +117,17 @@ export default function Header() {
               )
             }
           >
-            {t('header.pool') as string}
+            {t('header.pool')}
           </StyledNavLink>
           <StyledNavLink id={`ptri-nav-link`} to={'/stake'} isActive={Boolean}>
-            {t('header.stake') as string}
+            {t('header.stake')}
           </StyledNavLink>
           <StyledNavLink
             id={`png-nav-link`}
             to={'/farm'}
             isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/png')}
           >
-            {t('header.farm') as string}
+            {t('header.farm')}
           </StyledNavLink>
           <StyledBridgesMenu />
         </HeaderLinks>

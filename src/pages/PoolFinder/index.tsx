@@ -74,9 +74,7 @@ export default function PoolFinder() {
 
   const prerequisiteMessage = (
     <GreyCard padding="45px 10px">
-      <Text textAlign="center">
-        {!account ? (t('poolFinder.connectToFind') as string) : (t('poolFinder.selectTokenToFind') as string)}
-      </Text>
+      <Text textAlign="center">{!account ? t('poolFinder.connectToFind') : t('poolFinder.selectTokenToFind')}</Text>
     </GreyCard>
   )
 
@@ -99,7 +97,7 @@ export default function PoolFinder() {
             </Row>
           ) : (
             <Text fontWeight={500} fontSize={20} marginLeft={'12px'}>
-              {t('poolFinder.selectToken') as string}
+              {t('poolFinder.selectToken')}
             </Text>
           )}
         </ButtonDropdownLight>
@@ -123,7 +121,7 @@ export default function PoolFinder() {
             </Row>
           ) : (
             <Text fontWeight={500} fontSize={20} marginLeft={'12px'}>
-              {t('poolFinder.selectToken') as string}
+              {t('poolFinder.selectToken')}
             </Text>
           )}
         </ButtonDropdownLight>
@@ -133,10 +131,10 @@ export default function PoolFinder() {
             style={{ justifyItems: 'center', backgroundColor: '', padding: '12px 0px', borderRadius: '12px' }}
           >
             <Text textAlign="center" fontWeight={500}>
-              {t('poolFinder.poolFound') as string}
+              {t('poolFinder.poolFound')}
             </Text>
             <StyledInternalLink to={`/pool`}>
-              <Text textAlign="center">{t('poolFinder.importPool') as string}</Text>
+              <Text textAlign="center">{t('poolFinder.importPool')}</Text>
             </StyledInternalLink>
           </ColumnCenter>
         )}
@@ -148,9 +146,9 @@ export default function PoolFinder() {
             ) : (
               <GreyCard padding="45px 10px">
                 <AutoColumn gap="sm" justify="center">
-                  <Text textAlign="center">{t('poolFinder.noLiquidityYet') as string}</Text>
+                  <Text textAlign="center">{t('poolFinder.noLiquidityYet')}</Text>
                   <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
-                    <Text textAlign="center">{t('poolFinder.addLiquidity') as string}</Text>
+                    <Text textAlign="center">{t('poolFinder.addLiquidity')}</Text>
                   </StyledInternalLink>
                 </AutoColumn>
               </GreyCard>
@@ -158,9 +156,9 @@ export default function PoolFinder() {
           ) : validPairNoLiquidity ? (
             <GreyCard padding="45px 10px">
               <AutoColumn gap="sm" justify="center">
-                <Text textAlign="center">{t('poolFinder.noPoolFound') as string}</Text>
+                <Text textAlign="center">{t('poolFinder.noPoolFound')}</Text>
                 <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
-                  {t('poolFinder.createPool') as string}
+                  {t('poolFinder.createPool')}
                 </StyledInternalLink>
               </AutoColumn>
             </GreyCard>
@@ -168,7 +166,7 @@ export default function PoolFinder() {
             <GreyCard padding="45px 10px">
               <AutoColumn gap="sm" justify="center">
                 <Text textAlign="center" fontWeight={500}>
-                  {t('poolFinder.invalidPair') as string}
+                  {t('poolFinder.invalidPair')}
                 </Text>
               </AutoColumn>
             </GreyCard>
@@ -176,7 +174,7 @@ export default function PoolFinder() {
             <GreyCard padding="45px 10px">
               <AutoColumn gap="sm" justify="center">
                 <Text textAlign="center">
-                  {t('poolFinder.loading') as string}
+                  {t('poolFinder.loading')}
                   <Dots />
                 </Text>
               </AutoColumn>

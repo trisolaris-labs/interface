@@ -64,15 +64,15 @@ export default function ListUpdatePopup({
       <AutoColumn style={{ flex: '1' }} gap="8px">
         {auto ? (
           <TYPE.body fontWeight={500}>
-            {t('popups.tokenListUpdated', { oldList: oldList.name }) as string}{' '}
+            {t('popups.tokenListUpdated', { oldList: oldList.name })}{' '}
             <strong>{listVersionLabel(newList.version)}</strong>.
           </TYPE.body>
         ) : (
           <>
             <div>
               <Text>
-                {t('popups.updateAvailable', { oldList: oldList.name }) as string} ({listVersionLabel(oldList.version)}{' '}
-                to {listVersionLabel(newList.version)}).
+                {t('popups.updateAvailable', { oldList: oldList.name })} ({listVersionLabel(oldList.version)} to{' '}
+                {listVersionLabel(newList.version)}).
               </Text>
               <PopupUnorderedList>
                 {tokensAdded.length > 0 ? (
@@ -83,7 +83,7 @@ export default function ListUpdatePopup({
                         {i === tokensAdded.length - 1 ? null : ', '}
                       </React.Fragment>
                     ))}{' '}
-                    {t('popups.added') as string}
+                    {t('popups.added')}
                   </li>
                 ) : null}
                 {tokensRemoved.length > 0 ? (
@@ -94,22 +94,22 @@ export default function ListUpdatePopup({
                         {i === tokensRemoved.length - 1 ? null : ', '}
                       </React.Fragment>
                     ))}{' '}
-                    {t('popups.removed') as string}
+                    {t('popups.removed')}
                   </li>
                 ) : null}
                 {numTokensChanged > 0 ? (
                   <li>
-                    {numTokensChanged} {t('popups.tokensUpdated') as string}
+                    {numTokensChanged} {t('popups.tokensUpdated')}
                   </li>
                 ) : null}
               </PopupUnorderedList>
             </div>
             <AutoRow>
               <div style={{ flexGrow: 1, marginRight: 12 }}>
-                <ButtonSecondary onClick={handleAcceptUpdate}>{t('popups.acceptUpdate') as string} </ButtonSecondary>
+                <ButtonSecondary onClick={handleAcceptUpdate}>{t('popups.acceptUpdate')} </ButtonSecondary>
               </div>
               <div style={{ flexGrow: 1 }}>
-                <ButtonSecondary onClick={removeThisPopup}>{t('popups.dismiss') as string}</ButtonSecondary>
+                <ButtonSecondary onClick={removeThisPopup}>{t('popups.dismiss')}</ButtonSecondary>
               </div>
             </AutoRow>
           </>

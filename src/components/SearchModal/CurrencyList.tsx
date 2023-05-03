@@ -137,14 +137,14 @@ function CurrencyRow({
           <StyledTokenName>{currency.name}</StyledTokenName>
           {!isOnSelectedList && !customAdded ? (
             <TYPE.main fontWeight={500}>
-              {t('searchModal.foundByAddress') as string}
+              {t('searchModal.foundByAddress')}
               <LinkStyledButton
                 onClick={event => {
                   event.stopPropagation()
                   if (currency instanceof Token) addToken(currency)
                 }}
               >
-                ({t('searchModal.add') as string})
+                ({t('searchModal.add')})
               </LinkStyledButton>
             </TYPE.main>
           ) : null}
@@ -154,14 +154,14 @@ function CurrencyRow({
         <TagContainer>
           <RowFixed>
             <TYPE.main fontWeight={500} fontSize={12}>
-              {t('searchModal.addedByUser') as string}
+              {t('searchModal.addedByUser')}
               <StyledRemoveTokenButton
                 onClick={event => {
                   event.stopPropagation()
                   if (chainId && currency instanceof Token) removeToken(chainId, currency.address)
                 }}
               >
-                ({t('searchModal.remove') as string})
+                ({t('searchModal.remove')})
               </StyledRemoveTokenButton>
             </TYPE.main>
           </RowFixed>

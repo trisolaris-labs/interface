@@ -324,7 +324,7 @@ export default function RemoveLiquidity({
           // TODO: Translate using i18n
           addTransaction(response, {
             summary:
-              (t('removeLiquidity.remove') as string) +
+              t('removeLiquidity.remove') +
               ' ' +
               parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
               ' ' +
@@ -408,7 +408,7 @@ export default function RemoveLiquidity({
           <>
             <RowBetween>
               <Text color={theme.text2} fontWeight={500} fontSize={16}>
-                {t('removeLiquidity.price') as string}
+                {t('removeLiquidity.price')}
               </Text>
               <Text fontWeight={500} fontSize={16} color={theme.text1}>
                 1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
@@ -498,7 +498,7 @@ export default function RemoveLiquidity({
             hash={txHash ? txHash : ''}
             content={() => (
               <ConfirmationModalContent
-                title={t('removeLiquidity.youWillReceive') as string}
+                title={t('removeLiquidity.youWillReceive')}
                 onDismiss={handleDismissConfirmation}
                 topContent={modalHeader}
                 bottomContent={modalBottom}
@@ -533,7 +533,7 @@ export default function RemoveLiquidity({
               disableHalfButton={atHalfAmount}
               disableMaxButton={atMaxAmount}
               currency={currencyA}
-              label={t('removeLiquidity.output') as string}
+              label={t('removeLiquidity.output')}
               onCurrencySelect={handleSelectCurrencyA}
               id="remove-liquidity-tokena"
             />
@@ -550,7 +550,7 @@ export default function RemoveLiquidity({
               disableHalfButton={atHalfAmount}
               disableMaxButton={atMaxAmount}
               currency={currencyB}
-              label={t('removeLiquidity.output') as string}
+              label={t('removeLiquidity.output')}
               onCurrencySelect={handleSelectCurrencyB}
               id="remove-liquidity-tokenb"
             />
@@ -558,7 +558,7 @@ export default function RemoveLiquidity({
             {pair && (
               <div style={{ padding: '10px 20px' }}>
                 <RowBetween>
-                  {t('removeLiquidity.price') as string}
+                  {t('removeLiquidity.price')}
                   <div>
                     1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
                   </div>
@@ -586,11 +586,11 @@ export default function RemoveLiquidity({
                     fontSize={16}
                   >
                     {approval === ApprovalState.PENDING ? (
-                      <Dots>{t('removeLiquidity.approving') as string}</Dots>
+                      <Dots>{t('removeLiquidity.approving')}</Dots>
                     ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
-                      (t('removeLiquidity.approved') as string)
+                      t('removeLiquidity.approved')
                     ) : (
-                      (t('removeLiquidity.approve') as string)
+                      t('removeLiquidity.approve')
                     )}
                   </ButtonConfirmed>
                   <ButtonError
@@ -602,7 +602,7 @@ export default function RemoveLiquidity({
                     error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                   >
                     <Text fontSize={16} fontWeight={500}>
-                      {error || (t('removeLiquidity.remove') as string)}
+                      {error || t('removeLiquidity.remove')}
                     </Text>
                   </ButtonError>
                 </RowBetween>

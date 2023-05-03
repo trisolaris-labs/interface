@@ -84,20 +84,20 @@ export default function PendingView({
         <LoadingWrapper>
           {error ? (
             <ErrorGroup>
-              <div>{t('walletModal.errorConnecting') as string}.</div>
+              <div>{t('walletModal.errorConnecting')}.</div>
               <ErrorButton
                 onClick={() => {
                   setPendingError(false)
                   connector && tryActivation(connector)
                 }}
               >
-                {t('walletModal.tryAgain') as string}
+                {t('walletModal.tryAgain')}
               </ErrorButton>
             </ErrorGroup>
           ) : (
             <>
               <StyledLoader />
-              {t('walletModal.initializing') as string}
+              {t('walletModal.initializing')}
             </>
           )}
         </LoadingWrapper>

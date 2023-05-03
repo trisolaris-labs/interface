@@ -41,23 +41,23 @@ export default function Menu() {
         <NarrowMenuFlyout>
           <MenuItem id="link" href="https://github.com/trisolaris-labs">
             <GitHub size={14} />
-            {t('menu.code') as string}
+            {t('menu.code')}
           </MenuItem>
           <MenuItem id="link" href="https://trisolaris-labs.github.io/docs/">
             <Book size={14} />
-            {t('Docs') as string}
+            {t('Docs')}
           </MenuItem>
           <MenuItem id="link" href="https://t.me/TrisolarisLabs">
             <Send size={14} />
-            {t('menu.telegram') as string}
+            {t('menu.telegram')}
           </MenuItem>
           <MenuItem id="link" href="http://discord.gg/my6GtSTmmX">
             <MessageCircle size={14} />
-            {t('menu.discord') as string}
+            {t('menu.discord')}
           </MenuItem>
           <MenuItem id="link" href="https://twitter.com/trisolarislabs">
             <Twitter size={14} />
-            {t('menu.twitter') as string}
+            {t('menu.twitter')}
           </MenuItem>
         </NarrowMenuFlyout>
       )}

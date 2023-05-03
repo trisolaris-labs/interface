@@ -40,7 +40,7 @@ export default function CommonBases({
     <AutoColumn gap="md">
       <AutoRow>
         <Text fontWeight={500} fontSize={14}>
-          {t('searchModal.commonBases') as string}
+          {t('searchModal.commonBases')}
         </Text>
         <QuestionHelper text={t('searchModal.tokensPairsHelper')} />
       </AutoRow>

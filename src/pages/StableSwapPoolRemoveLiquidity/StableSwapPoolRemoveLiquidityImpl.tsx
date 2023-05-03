@@ -350,7 +350,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
                     }}
                   >
                     {insufficientBalanceError
-                      ? (t('mintHooks.insufficientInputAmount') as string)
+                      ? t('mintHooks.insufficientInputAmount')
                       : !hasZeroInput && error != null
                       ? error.reason
                       : 'Remove Liquidity'}

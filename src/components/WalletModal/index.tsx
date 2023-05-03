@@ -330,19 +330,17 @@ export default function WalletModal({
           </CloseIcon>
           <HeaderRow>
             {error instanceof UnsupportedChainIdError
-              ? (t('walletModal.wrongNetwork') as string)
-              : (t('walletModal.errorConnecting') as string)}
+              ? t('walletModal.wrongNetwork')
+              : t('walletModal.errorConnecting')}
           </HeaderRow>
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
               <>
-                <h5>{`${t('Please connect to') as string}:`}</h5>
-                {isMetamask() && (
-                  <ButtonLight onClick={addNetwork}>{t('walletModal.switchNetwork') as string}</ButtonLight>
-                )}
+                <h5>{`${t('Please connect to')}:`}</h5>
+                {isMetamask() && <ButtonLight onClick={addNetwork}>{t('walletModal.switchNetwork')}</ButtonLight>}
               </>
             ) : (
-              (t('walletModal.errorConnectingRefresh') as string)
+              t('walletModal.errorConnectingRefresh')
             )}
           </ContentWrapper>
         </UpperSection>
@@ -377,7 +375,7 @@ export default function WalletModal({
           </HeaderRow>
         ) : (
           <HeaderRow>
-            <HoverText>{t('walletModal.connectToWallet') as string}</HoverText>
+            <HoverText>{t('walletModal.connectToWallet')}</HoverText>
           </HeaderRow>
         )}
         <ContentWrapper>
@@ -393,8 +391,8 @@ export default function WalletModal({
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>
-              <span>{t('walletModal.newToAvalanche') as string} &nbsp;</span>{' '}
-              <ExternalLink href={WALLET_TUTORIAL}>{t('walletModal.learnMoreWallet') as string}</ExternalLink>
+              <span>{t('walletModal.newToAvalanche')} &nbsp;</span>{' '}
+              <ExternalLink href={WALLET_TUTORIAL}>{t('walletModal.learnMoreWallet')}</ExternalLink>
             </Blurb>
           )}
         </ContentWrapper>

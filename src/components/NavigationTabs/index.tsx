@@ -75,10 +75,10 @@ export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' }) {
   return (
     <Tabs style={{ marginBottom: '20px', display: 'none' }}>
       <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === 'swap'}>
-        {t('navigationTabs.swap') as string}
+        {t('navigationTabs.swap')}
       </StyledNavLink>
       <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === 'pool'}>
-        {t('navigationTabs.pool') as string}
+        {t('navigationTabs.pool')}
       </StyledNavLink>
     </Tabs>
   )
@@ -92,7 +92,7 @@ export function FindPoolTabs() {
         <HistoryLink to="/pool">
           <StyledArrowLeft />
         </HistoryLink>
-        <ActiveText>{t('navigationTabs.importPool') as string} </ActiveText>
+        <ActiveText>{t('navigationTabs.importPool')} </ActiveText>
         <QuestionHelper text={t('navigationTabs.useThisTool')} />
       </RowBetween>
     </Tabs>
@@ -115,10 +115,10 @@ export function AddRemoveTabs({
         <BackButton fallbackPath={isStablePool ? '/pool/stable' : '/pool'} />
         <ActiveText>
           {creating
-            ? (t('navigationTabs.createPair') as string)
+            ? t('navigationTabs.createPair')
             : adding
-            ? (t('navigationTabs.addLiquidity') as string)
-            : (t('navigationTabs.removeLiquidity') as string)}
+            ? t('navigationTabs.addLiquidity')
+            : t('navigationTabs.removeLiquidity')}
         </ActiveText>
         <Settings />
       </RowBetween>

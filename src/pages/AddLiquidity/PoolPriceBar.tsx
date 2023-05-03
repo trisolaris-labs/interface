@@ -28,15 +28,13 @@ export function PoolPriceBar({
         <AutoColumn justify="center">
           <TYPE.black>{price?.toSignificant(6) ?? '-'}</TYPE.black>
           <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1}>
-            {currencies[Field.CURRENCY_B]?.symbol} {t('addLiquidity.per') as string}{' '}
-            {currencies[Field.CURRENCY_A]?.symbol}
+            {currencies[Field.CURRENCY_B]?.symbol} {t('addLiquidity.per')} {currencies[Field.CURRENCY_A]?.symbol}
           </Text>
         </AutoColumn>
         <AutoColumn justify="center">
           <TYPE.black>{price?.invert()?.toSignificant(6) ?? '-'}</TYPE.black>
           <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1}>
-            {currencies[Field.CURRENCY_A]?.symbol} {t('addLiquidity.per') as string}{' '}
-            {currencies[Field.CURRENCY_B]?.symbol}
+            {currencies[Field.CURRENCY_A]?.symbol} {t('addLiquidity.per')} {currencies[Field.CURRENCY_B]?.symbol}
           </Text>
         </AutoColumn>
         <AutoColumn justify="center">
@@ -47,7 +45,7 @@ export function PoolPriceBar({
             %
           </TYPE.black>
           <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1}>
-            {t('addLiquidity.shareOfPool') as string}
+            {t('addLiquidity.shareOfPool')}
           </Text>
         </AutoColumn>
       </AutoRow>

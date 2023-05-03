@@ -35,7 +35,7 @@ export default function URLWarning() {
     return (
       <PhishAlert isActive={showURLWarning}>
         <div style={{ display: 'flex' }}>
-          <AlertTriangle style={{ marginRight: 6 }} size={12} /> {t('header.makeSureURLWarning') as string}
+          <AlertTriangle style={{ marginRight: 6 }} size={12} /> {t('header.makeSureURLWarning')}
           <code style={{ padding: '0 4px', display: 'inline', fontWeight: 'bold' }}>trisolaris.io</code>
         </div>
         <StyledClose size={12} onClick={toggleURLWarning} />
@@ -47,9 +47,9 @@ export default function URLWarning() {
     return (
       <PhishAlert isActive={showURLWarning}>
         <div style={{ display: 'flex' }}>
-          <AlertTriangle style={{ marginRight: 6 }} size={12} /> {t('header.alwaysMakeSureWarning') as string}
+          <AlertTriangle style={{ marginRight: 6 }} size={12} /> {t('header.alwaysMakeSureWarning')}
           <code style={{ padding: '0 4px', display: 'inline', fontWeight: 'bold' }}>trisolaris.io</code> -{' '}
-          {t('header.bookmarkIt') as string}
+          {t('header.bookmarkIt')}
         </div>
         <StyledClose size={12} onClick={toggleURLWarning} />
       </PhishAlert>

@@ -191,7 +191,7 @@ export function CurrencySearch({
       <PaddedColumn gap="14px">
         <RowBetween>
           <Text fontWeight={500} fontSize={16}>
-            {t('searchModal.selectToken') as string}
+            {t('searchModal.selectToken')}
             <QuestionHelper text={t('searchModal.findToken')} />
           </Text>
           <CloseIcon onClick={onDismiss} />
@@ -199,7 +199,7 @@ export function CurrencySearch({
         <StyledSearchInput
           type="text"
           id="token-search-input"
-          placeholder={t('searchModal.tokenSearchPlaceholder') as string}
+          placeholder={t('searchModal.tokenSearchPlaceholder')}
           value={searchQuery}
           ref={inputRef as RefObject<HTMLInputElement>}
           onChange={handleInput}
@@ -210,7 +210,7 @@ export function CurrencySearch({
         )}
         <RowBetween>
           <Text fontSize={14} fontWeight={500}>
-            {t('searchModal.tokenName') as string}
+            {t('searchModal.tokenName')}
           </Text>
           <SortButton ascending={invertSearchOrder} toggleSortOrder={() => setInvertSearchOrder(iso => !iso)} />
         </RowBetween>
@@ -242,7 +242,7 @@ export function CurrencySearch({
             onClick={onChangeList}
             id="currency-search-change-list-button"
           >
-            {t('searchModal.manageTokenLists') as string}
+            {t('searchModal.manageTokenLists')}
           </LinkStyledButton>
         ) : (
           <RowBetween>
@@ -263,7 +263,7 @@ export function CurrencySearch({
               onClick={onChangeList}
               id="currency-search-change-list-button"
             >
-              {selectedListInfo.current ? (t('searchModal.change') as string) : (t('searchModal.selectList') as string)}
+              {selectedListInfo.current ? t('searchModal.change') : t('searchModal.selectList')}
             </LinkStyledButton>
           </RowBetween>
         )}

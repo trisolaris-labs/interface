@@ -78,7 +78,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             <MultipleCurrencyLogo currencies={currencies} margin={true} size={20} />
             <Text fontWeight={500} fontSize={20}>
               {!currency0 || !currency1 ? (
-                <Dots>{t('positionCard.loading') as string}</Dots>
+                <Dots>{t('positionCard.loading')}</Dots>
               ) : (
                 `${currency0.symbol}/${currency1.symbol}`
               )}
@@ -122,7 +122,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             <FixedHeightRow>
               <RowFixed>
                 <Text fontSize={16} fontWeight={500}>
-                  {t('positionCard.pooled') as string} {currency0.symbol}:
+                  {t('positionCard.pooled')} {currency0.symbol}:
                 </Text>
               </RowFixed>
               {token0Deposited ? (
@@ -140,7 +140,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             <FixedHeightRow>
               <RowFixed>
                 <Text fontSize={16} fontWeight={500}>
-                  {t('positionCard.pooled') as string} {currency1.symbol}:
+                  {t('positionCard.pooled')} {currency1.symbol}:
                 </Text>
               </RowFixed>
               {token1Deposited ? (
@@ -180,7 +180,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                 to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
                 width="48%"
               >
-                {t('positionCard.add') as string}
+                {t('positionCard.add')}
               </ButtonPrimary>
               <ButtonPrimary
                 padding="8px"
@@ -188,7 +188,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                 width="48%"
                 to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
               >
-                {t('positionCard.remove') as string}
+                {t('positionCard.remove')}
               </ButtonPrimary>
             </RowBetween>
           </AutoColumn>

@@ -157,19 +157,19 @@ export function useDerivedMintInfo(
 
   let error: string | undefined
   if (!account) {
-    error = t('mintHooks.connectWallet') as string
+    error = t('mintHooks.connectWallet')
   }
 
   if (insufficientInput) {
-    error = t('mintHooks.insufficientInputAmount') as string
+    error = t('mintHooks.insufficientInputAmount')
   }
 
   if (pairState === PairState.INVALID) {
-    error = error ?? (t('mintHooks.invalidPair') as string)
+    error = error ?? t('mintHooks.invalidPair')
   }
 
   if (!parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]) {
-    error = error ?? (t('mintHooks.enterAmount') as string)
+    error = error ?? t('mintHooks.enterAmount')
   }
 
   const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts

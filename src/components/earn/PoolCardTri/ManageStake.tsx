@@ -159,7 +159,7 @@ function ManageStake({
           fontSize="14px"
           onClick={toggleIsStaking ? handleDepositClick : handleAddLp}
         >
-          {toggleIsStaking ? (t('earnPage.depositPglTokens') as string) : 'Add LP'}
+          {toggleIsStaking ? t('earnPage.depositPglTokens') : 'Add LP'}
         </ButtonPrimary>
         <ButtonPrimary
           disabled={

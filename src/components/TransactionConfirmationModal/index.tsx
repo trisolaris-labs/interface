@@ -46,7 +46,7 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
         </ConfirmedIcon>
         <AutoColumn gap="12px" justify={'center'}>
           <Text fontWeight={500} fontSize={20}>
-            {t('transactionConfirmation.waitingConfirmation') as string}
+            {t('transactionConfirmation.waitingConfirmation')}
           </Text>
           <AutoColumn gap="12px" justify={'center'}>
             <Text fontWeight={600} fontSize={14} color="" textAlign="center">
@@ -54,7 +54,7 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
             </Text>
           </AutoColumn>
           <Text fontSize={12} color="#565A69" textAlign="center">
-            {t('transactionConfirmation.confirmTransaction') as string}
+            {t('transactionConfirmation.confirmTransaction')}
           </Text>
         </AutoColumn>
       </Section>
@@ -85,18 +85,18 @@ function TransactionSubmittedContent({
         </ConfirmedIcon>
         <AutoColumn gap="12px" justify={'center'}>
           <Text fontWeight={500} fontSize={20}>
-            {t('transactionConfirmation.transactionSubmitted') as string}
+            {t('transactionConfirmation.transactionSubmitted')}
           </Text>
           {chainId && hash && (
             <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
               <Text fontWeight={500} fontSize={14} color={theme.primary1}>
-                {t('transactionConfirmation.viewExplorer') as string}
+                {t('transactionConfirmation.viewExplorer')}
               </Text>
             </ExternalLink>
           )}
           <ButtonPrimary onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>
             <Text fontWeight={500} fontSize={20}>
-              {t('transactionConfirmation.close') as string}
+              {t('transactionConfirmation.close')}
             </Text>
           </ButtonPrimary>
         </AutoColumn>
@@ -140,7 +140,7 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
       <Section>
         <RowBetween>
           <Text fontWeight={500} fontSize={20}>
-            {t('transactionConfirmation.error') as string}
+            {t('transactionConfirmation.error')}
           </Text>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
@@ -152,7 +152,7 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
         </AutoColumn>
       </Section>
       <BottomSection gap="12px">
-        <ButtonPrimary onClick={onDismiss}>{t('transactionConfirmation.dismiss') as string}</ButtonPrimary>
+        <ButtonPrimary onClick={onDismiss}>{t('transactionConfirmation.dismiss')}</ButtonPrimary>
       </BottomSection>
     </Wrapper>
   )
