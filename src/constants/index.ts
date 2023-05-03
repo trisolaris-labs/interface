@@ -1,6 +1,6 @@
 import { ChainId, JSBI, Percent, Token, WETH as _WETH } from '@trisolaris/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import { injected, walletlink, walletconnect, brave} from '../connectors'
+import { injected, walletlink, walletconnect, brave } from '../connectors'
 import {
   DAI,
   TRI,
