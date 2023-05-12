@@ -4,6 +4,9 @@
   "version": "0.2.47",
   "homepage": ".",
   "private": true,
+  "engines": {
+    "node": ">=16.14.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@babel/parser": "^7.21.4",
