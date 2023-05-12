@@ -141,8 +141,11 @@ export const InvestorLogo = styled.div<{}>`
     max-width: 200px;
     flex: 1 0 40%;
     ${({ theme }) => theme.mediaWidth.upToSmall`
-         max-width: 90%;
+         max-width: 50%;
          flex: 1 0 60%;
+    `};
+    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      max-width: 80%;
     `};
   }
 `
