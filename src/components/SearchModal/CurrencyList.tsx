@@ -197,7 +197,7 @@ export default function CurrencyList({
   const itemData = useMemo(() => (showETH ? [Currency.CETH, ...currencies] : currencies), [currencies, showETH])
 
   const Row = useCallback(
-    ({ data, index, style }) => {
+    ({ data, index, style }: { data: any; index: number; style: any }) => {
       const currency: Currency = data[index]
       const isSelected = Boolean(selectedCurrency && currencyEquals(selectedCurrency, currency))
       const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency))

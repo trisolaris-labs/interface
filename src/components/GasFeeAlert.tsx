@@ -25,7 +25,7 @@ export default function GasFeeAlert() {
         <AlertTriangle size={20} style={{ marginRight: '8px', minWidth: 24 }} />
         <Column>
           <TYPE.main color={theme.primary1}>
-            {t('gasFeeAlert.gasFeeReduction')}!<br />
+            {t('gasFeeAlert.gasFeeReduction')} !<br />
           </TYPE.main>
           <TYPE.main color={theme.primary1}>
             {t('gasFeeAlert.transactionsNotAccept', { gasPrice: GAS_PRICE })}

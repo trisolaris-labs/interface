@@ -27,11 +27,18 @@ const determineLngFn = (code: string): string => {
   return (i18next.language = defaultLocale)
 }
 
+declare module 'i18next' {
+  interface CustomTypeOptions {
+    returnNull: false
+  }
+}
+
 i18next
   .use(XHR)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
+    returnNull: false,
     backend: {
       loadPath: `./locales/aurora/{{lng}}.json`
     },

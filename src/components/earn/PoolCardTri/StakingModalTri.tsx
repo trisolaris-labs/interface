@@ -146,7 +146,7 @@ export default function StakingModal({
   })
 
   const handleMax = useCallback(
-    value => {
+    (value: any) => {
       const amount = getClickedAmount(value)
       onUserInput(amount)
     },

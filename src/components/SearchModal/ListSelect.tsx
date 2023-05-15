@@ -1,4 +1,13 @@
-import React, { memo, useCallback, useMemo, useRef, useState } from 'react'
+import React, {
+  memo,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  ChangeEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  KeyboardEventHandler
+} from 'react'
 import { ArrowLeft } from 'react-feather'
 import ReactGA from 'react-ga'
 import { usePopper } from 'react-popper'
@@ -245,7 +254,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
   const adding = Boolean(lists[listUrlInput]?.loadingRequestId)
   const [addError, setAddError] = useState<string | null>(null)
 
-  const handleInput = useCallback(e => {
+  const handleInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setListUrlInput(e.target.value)
     setAddError(null)
   }, [])
@@ -278,13 +287,13 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
     return uriToHttp(listUrlInput).length > 0 || Boolean(parseENSAddress(listUrlInput))
   }, [listUrlInput])
 
-  const handleEnterKey = useCallback(
-    e => {
+  const handleEnterKey: KeyboardEventHandler<HTMLInputElement> = useCallback(
+    (e: ReactKeyboardEvent<HTMLInputElement>) => {
       if (validUrl && e.key === 'Enter') {
         handleAddList()
       }
     },
-    [handleAddList, validUrl]
+    [validUrl, handleAddList]
   )
 
   const sortedLists = useMemo(() => {

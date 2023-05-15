@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import ReactGA from 'react-ga'
 import { ThemeContext } from 'styled-components'
-import { JSBI, Percent, Token, Trade } from '@trisolaris/sdk'
+import { Currency, JSBI, Percent, Token, Trade } from '@trisolaris/sdk'
 import { ChevronDown } from 'react-feather'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
@@ -155,13 +155,13 @@ export default function Swap() {
     () =>
       showWrap
         ? {
-          [Field.INPUT]: defaultswapParsedAmount,
-          [Field.OUTPUT]: defaultswapParsedAmount
-        }
+            [Field.INPUT]: defaultswapParsedAmount,
+            [Field.OUTPUT]: defaultswapParsedAmount
+          }
         : {
-          [Field.INPUT]: independentField === Field.INPUT ? defaultswapParsedAmount : trade?.inputAmount,
-          [Field.OUTPUT]: independentField === Field.OUTPUT ? defaultswapParsedAmount : trade?.outputAmount
-        },
+            [Field.INPUT]: independentField === Field.INPUT ? defaultswapParsedAmount : trade?.inputAmount,
+            [Field.OUTPUT]: independentField === Field.OUTPUT ? defaultswapParsedAmount : trade?.outputAmount
+          },
     [defaultswapParsedAmount, independentField, showWrap, trade]
   )
 
@@ -182,13 +182,13 @@ export default function Swap() {
   if (isRoutedViaStableSwap) {
     parsedAmounts = showWrap
       ? {
-        [Field.INPUT]: stableswapParsedAmount,
-        [Field.OUTPUT]: stableswapParsedAmount
-      }
+          [Field.INPUT]: stableswapParsedAmount,
+          [Field.OUTPUT]: stableswapParsedAmount
+        }
       : {
-        [Field.INPUT]: independentField === Field.INPUT ? stableswapParsedAmount : stableswapTrade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? stableswapParsedAmount : stableswapTrade?.outputAmount
-      }
+          [Field.INPUT]: independentField === Field.INPUT ? stableswapParsedAmount : stableswapTrade?.inputAmount,
+          [Field.OUTPUT]: independentField === Field.OUTPUT ? stableswapParsedAmount : stableswapTrade?.outputAmount
+        }
   }
 
   const swapInputError = isRoutedViaStableSwap ? stableswapInputError : defaultswapInputError
@@ -324,8 +324,8 @@ export default function Swap() {
             recipient === null
               ? 'Swap w/o Send'
               : (recipientAddress ?? recipient) === account
-                ? 'Swap w/o Send + recipient'
-                : 'Swap w/ Send',
+              ? 'Swap w/o Send + recipient'
+              : 'Swap w/ Send',
           label: [trade?.inputAmount?.currency?.symbol, trade?.outputAmount?.currency?.symbol, Version.v2].join('/')
         })
       })
@@ -381,7 +381,7 @@ export default function Swap() {
   }, [attemptingTxn, showConfirm, swapErrorMessage, trade, txHash])
 
   const handleInputSelect = useCallback(
-    inputCurrency => {
+    (inputCurrency: Currency) => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
       onCurrencySelection(Field.INPUT, inputCurrency)
     },
@@ -389,16 +389,17 @@ export default function Swap() {
   )
 
   const handleMaxInput = useCallback(
-    value => {
+    (value: any) => {
       const amount = getClickedAmount(value)
       onUserInput(Field.INPUT, amount)
     },
     [getClickedAmount, onUserInput]
   )
 
-  const handleOutputSelect = useCallback(outputCurrency => onCurrencySelection(Field.OUTPUT, outputCurrency), [
-    onCurrencySelection
-  ])
+  const handleOutputSelect = useCallback(
+    (outputCurrency: Currency) => onCurrencySelection(Field.OUTPUT, outputCurrency),
+    [onCurrencySelection]
+  )
 
   const renderSwapText = () => {
     if (!isExpertMode && onlyExpertTrade) {
@@ -406,7 +407,6 @@ export default function Swap() {
     }
     return highImpactTrade ? `${t('swapPage.swap')} ${t('swapPage.anyway')}` : t('swapPage.swap')
   }
-
 
   return (
     <>
@@ -480,14 +480,13 @@ export default function Swap() {
                   id="swap-currency-input"
                 />
 
-                {formattedAmounts[Field.INPUT] && coin &&
-                  (
-                    <LinkStyledButton onClick={() => setShowChartModal(true)}>
-                      <ChartBtnContainer>
-                        Open {currencies[Field.INPUT]?.symbol} chart <BarChart2 size={16} />
-                      </ChartBtnContainer>
-                    </LinkStyledButton>
-                  )}
+                {formattedAmounts[Field.INPUT] && coin && (
+                  <LinkStyledButton onClick={() => setShowChartModal(true)}>
+                    <ChartBtnContainer>
+                      Open {currencies[Field.INPUT]?.symbol} chart <BarChart2 size={16} />
+                    </ChartBtnContainer>
+                  </LinkStyledButton>
+                )}
 
                 <AutoColumn justify="space-between">
                   <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
@@ -573,8 +572,8 @@ export default function Swap() {
                       (wrapType === WrapType.WRAP
                         ? t('swapPage.wrap')
                         : wrapType === WrapType.UNWRAP
-                          ? t('swapPage.unwrap')
-                          : null)}
+                        ? t('swapPage.unwrap')
+                        : null)}
                   </ButtonPrimary>
                 ) : noRoute && userHasSpecifiedInputOutput ? (
                   <GreyCard style={{ textAlign: 'center' }}>

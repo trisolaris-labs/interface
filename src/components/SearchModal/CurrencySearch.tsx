@@ -1,5 +1,15 @@
 import { Currency, CETH, Token } from '@trisolaris/sdk'
-import React, { KeyboardEvent, RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  KeyboardEvent,
+  RefObject,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  ChangeEvent
+} from 'react'
 import ReactGA from 'react-ga'
 import { useTranslation } from 'react-i18next'
 import { FixedSizeList } from 'react-window'
@@ -148,7 +158,7 @@ export function CurrencySearch({
 
   // manage focus on modal show
   const inputRef = useRef<HTMLInputElement>()
-  const handleInput = useCallback(event => {
+  const handleInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value
     const checksummedInput = isAddress(input)
     setSearchQuery(checksummedInput || input)
@@ -212,7 +222,7 @@ export function CurrencySearch({
         <AutoSizer disableWidth>
           {({ height }) => (
             <CurrencyList
-              height={height}
+              height={height!}
               showETH={isStableSwap ? false : showETH}
               currencies={filteredSortedTokens}
               onCurrencySelect={handleCurrencySelect}

@@ -9,6 +9,7 @@
     }
   },
   "ignorePatterns": ["node_modules/**/*"],
+  "plugins": ["only-warn"],
   "settings": {
     "react": {
       "version": "detect"

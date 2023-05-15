@@ -31,11 +31,11 @@ export function useMigrateCallback(
         return tx.hash
       } catch (error) {
         setMigrationStatus(MIGRATION_STATUS.NOT_MIGRATED)
-        if (error?.code === 4001) {
+        if ((error as any)?.code === 4001) {
           throw new Error('Transaction rejected.')
         } else {
           console.error(`Migration failed`, error, 'migrate')
-          throw new Error(`Migration failed: ${error.message}`)
+          throw new Error(`Migration failed: ${(error as any).message}`)
         }
       }
     }

@@ -7,7 +7,7 @@ import React from 'react'
 export default function useGetTokenByAddress(): (address: string) => Token {
   const allTokens = useAllTokens()
   const getTokenByAddress = useCallback(
-    address =>
+    (address: string) =>
       _.find(allTokens, token => token.address.toLowerCase() === address.toLowerCase()) ??
       new Token(ChainId.AURORA, address, 18),
     [allTokens]

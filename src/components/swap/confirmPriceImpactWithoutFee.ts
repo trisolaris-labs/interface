@@ -11,7 +11,9 @@ export default function confirmPriceImpactWithoutFee(priceImpactWithoutFee: Perc
   if (!priceImpactWithoutFee.lessThan(PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN)) {
     return (
       window.prompt(
-        i18next.t('swap.priceImpactMinPrompt', { priceImpact: PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN.toFixed(0) })
+        i18next.t('swap.priceImpactMinPrompt', {
+          priceImpact: PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN.toFixed(0)
+        })
       ) === i18next.t('swap.confirm')
     )
   } else if (!priceImpactWithoutFee.lessThan(ALLOWED_PRICE_IMPACT_HIGH)) {
