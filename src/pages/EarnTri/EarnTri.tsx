@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { AutoColumn } from '../../components/Column'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
 import { TYPE } from '../../theme'
@@ -9,14 +9,6 @@ import EarnTriSortAndFilterContainer from '../../components/EarnTriSortAndFilter
 import useFarmsSortAndFilter from './useFarmsSortAndFilter'
 import styled from 'styled-components'
 import Toggle from '../../components/Toggle'
-
-import { WidoWidget } from 'wido-widget'
-import { Token, getSupportedTokens, quote } from 'wido'
-import { useWalletModalToggle } from '../../state/application/hooks'
-
-import { getNetworkLibrary } from '../../connectors'
-import { getProviderOrSigner } from '../../utils'
-import { useActiveWeb3React } from '../../hooks'
 
 const MemoizedPoolCardTRI = React.memo(PoolCardTRI)
 
@@ -40,47 +32,8 @@ export default function EarnTri() {
     isStaking
   } = useFarmsSortAndFilter()
 
-  const [fromTokens, setFromTokens] = useState<Token[]>([])
-  const [toTokens, setToTokens] = useState<Token[]>([])
-
-  const { library, account } = useActiveWeb3React()
-  // const provider = getProviderOrSigner(library, account) as any
-
-  useEffect(() => {
-    getSupportedTokens({
-      chainId: [1313161554]
-    })
-      .then(tokens => {
-        setFromTokens(tokens)
-        setToTokens(tokens.filter(token => token.protocol === 'trisolaris'))
-      })
-      .catch(error => console.error(error))
-  }, [setFromTokens, setToTokens])
-
-  const toggleWalletModal = useWalletModalToggle()
   return (
     <>
-      <WidoWidget
-        onConnectWalletClick={toggleWalletModal}
-        ethProvider={library}
-        fromTokens={fromTokens}
-        toTokens={toTokens}
-        quoteApi={async request => {
-          // To enable staking step, an override is set.
-          // `$trisolaris_auto_stake` must be set to 1.
-          //
-          // If the var is not set, or has a different value than 1,
-          //  the staking step won't be added.
-          //
-          // This variable will have no effect on tokens that are not
-          // Trisolaris LP tokens with a valid enabled farm.
-          request.varsOverride = {
-            $trisolaris_auto_stake: '1'
-          }
-          return quote(request)
-        }}
-      />
-
       <EarnTriSortAndFilterContainer
         activeFarmsFilter={activeFarmsFilter}
         handleSort={handleSort}

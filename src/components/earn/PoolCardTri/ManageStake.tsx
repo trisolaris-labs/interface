@@ -19,6 +19,7 @@ import { ChefVersions, EarnedNonTriRewards } from '../../../state/stake/stake-co
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from '../../../state/stake/hooks-sushi'
 
 import { StyledMutedSubHeader } from './PoolCardTri.styles'
+import ZapModal from './ZapModal'
 
 type ManageStakeProps = {
   stakedAmount: TokenAmount | null | undefined
@@ -62,6 +63,7 @@ function ManageStake({
   const [showStakingModal, setShowStakingModal] = useState(false)
   const [showUnstakingModal, setShowUnstakingModal] = useState(false)
   const [toggleIsStaking, setToggleIsStaking] = useState(isStaking || userHasLiquidity)
+  const [showZapModal, setShowZapModal] = useState(false)
 
   const stakingRewardAddress =
     chefVersion === ChefVersions.V1 ? MASTERCHEF_ADDRESS_V1[ChainId.AURORA] : MASTERCHEF_ADDRESS_V2[ChainId.AURORA]
@@ -96,6 +98,11 @@ function ManageStake({
   function handleRemoveLp(event: React.MouseEvent) {
     event.stopPropagation()
     history.push(removeLpLink)
+  }
+
+  function handleZapClick(event: React.MouseEvent) {
+    event.stopPropagation()
+    setShowZapModal(true)
   }
 
   useEffect(() => {
@@ -139,6 +146,9 @@ function ManageStake({
           stakedAmount={stakedAmount}
         />
       )}
+      {showZapModal && (
+        <ZapModal isOpen={showZapModal} onDismiss={() => setShowZapModal(false)} zapTokenAddress={lpAddress} />
+      )}
       <AutoRow justifyContent="space-between">
         <StyledMutedSubHeader>Manage</StyledMutedSubHeader>
         <Toggle
@@ -173,6 +183,10 @@ function ManageStake({
           fontSize="14px"
         >
           {toggleIsStaking ? 'Withdraw' : 'Remove LP'}
+        </ButtonPrimary>
+
+        <ButtonPrimary padding="5px" borderRadius="8px" width="98px" onClick={handleZapClick} fontSize="14px">
+          ZAP
         </ButtonPrimary>
       </AutoRow>
     </>
