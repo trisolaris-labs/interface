@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { WidoWidget } from 'wido-widget'
+import { WidoWidget, darkTheme } from 'wido-widget'
 import { getSupportedTokens, quote, Token as WidoToken } from 'wido'
 
 import Modal from '../../Modal'
@@ -19,6 +19,8 @@ export default function ZapModal({ isOpen, onDismiss, zapTokenAddress }: ZapModa
 
   const [fromTokens, setFromTokens] = useState<WidoToken[]>([])
 
+  const [delayedOpen, setDelayedOpen] = useState(false)
+
   useEffect(() => {
     getSupportedTokens({
       chainId: [1313161554]
@@ -29,16 +31,25 @@ export default function ZapModal({ isOpen, onDismiss, zapTokenAddress }: ZapModa
         // setToTokens(tokens.filter(token => token.protocol === 'trisolaris'))
       })
       .catch(error => console.error(error))
-  }, [
-    setFromTokens
-    // , setToTokens
-  ])
+  }, [isOpen])
+
+  // Wido tokens fetch is slow, so we add a little delay in opening the modal to optimize the UX
+  useEffect(() => {
+    if (isOpen) {
+      let timer = setTimeout(() => {
+        setDelayedOpen(true)
+      }, 500) // one second delay
+      return () => clearTimeout(timer) // cleanup the timer
+    } else {
+      setDelayedOpen(false)
+    }
+  }, [])
 
   const zapToken = { chainId: ChainId.AURORA, address: zapTokenAddress }
 
   return !account ? null : (
     <Modal
-      isOpen={isOpen}
+      isOpen={delayedOpen}
       onDismiss={onDismiss}
       // maxHeight={90}
     >
@@ -47,6 +58,7 @@ export default function ZapModal({ isOpen, onDismiss, zapTokenAddress }: ZapModa
         ethProvider={library}
         fromTokens={fromTokens}
         toTokens={[zapToken]}
+        theme={darkTheme}
         quoteApi={async request => {
           // To enable staking step, an override is set.
           // `$trisolaris_auto_stake` must be set to 1.
