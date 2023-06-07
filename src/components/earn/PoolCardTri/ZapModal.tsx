@@ -19,8 +19,6 @@ export default function ZapModal({ isOpen, onDismiss, zapTokenAddress }: ZapModa
 
   const [fromTokens, setFromTokens] = useState<WidoToken[]>([])
 
-  const [delayedOpen, setDelayedOpen] = useState(false)
-
   useEffect(() => {
     getSupportedTokens({
       chainId: [1313161554]
@@ -33,23 +31,11 @@ export default function ZapModal({ isOpen, onDismiss, zapTokenAddress }: ZapModa
       .catch(error => console.error(error))
   }, [isOpen])
 
-  // Wido tokens fetch is slow, so we add a little delay in opening the modal to optimize the UX
-  useEffect(() => {
-    if (isOpen) {
-      let timer = setTimeout(() => {
-        setDelayedOpen(true)
-      }, 500) // one second delay
-      return () => clearTimeout(timer) // cleanup the timer
-    } else {
-      setDelayedOpen(false)
-    }
-  }, [])
-
   const zapToken = { chainId: ChainId.AURORA, address: zapTokenAddress }
 
   return !account ? null : (
     <Modal
-      isOpen={delayedOpen}
+      isOpen={isOpen}
       onDismiss={onDismiss}
       // maxHeight={90}
     >

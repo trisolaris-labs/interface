@@ -155,7 +155,7 @@
     "lucide-react": "^0.16.28",
     "react-error-boundary": "^3.1.4",
     "wido": "^0.2.8",
-    "wido-widget": "^1.0.11"
+    "wido-widget": "^1.1.1"
   },
   "config": {
     "commitizen": {

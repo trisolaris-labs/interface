@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import styled from 'styled-components'
 import { TokenAmount, Token, ChainId } from '@trisolaris/sdk'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -9,7 +10,6 @@ import { AutoRow } from '../../Row'
 import StakingModal from './StakingModalTri'
 import UnstakingModal from './UnstakingModalTri'
 
-import { useActiveWeb3React } from '../../../hooks'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 
 import { BIG_INT_ZERO } from '../../../constants'
@@ -20,6 +20,12 @@ import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from '../../../state/sta
 
 import { StyledMutedSubHeader } from './PoolCardTri.styles'
 import ZapModal from './ZapModal'
+
+const StyledZapButton = styled(ButtonPrimary)`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 100% !important;
+  `};
+`
 
 type ManageStakeProps = {
   stakedAmount: TokenAmount | null | undefined
@@ -36,6 +42,7 @@ type ManageStakeProps = {
   userLiquidityUnstaked?: TokenAmount
   account?: string | null
   isLegacy: boolean
+  zapEnabled: boolean
 }
 
 function ManageStake({
@@ -52,7 +59,8 @@ function ManageStake({
   earnedAmount,
   userLiquidityUnstaked,
   account,
-  isLegacy
+  isLegacy,
+  zapEnabled
 }: ManageStakeProps) {
   const toggleWalletModal = useWalletModalToggle()
   const history = useHistory()
@@ -184,11 +192,14 @@ function ManageStake({
         >
           {toggleIsStaking ? 'Withdraw' : 'Remove LP'}
         </ButtonPrimary>
-
-        <ButtonPrimary padding="5px" borderRadius="8px" width="98px" onClick={handleZapClick} fontSize="14px">
-          ZAP
-        </ButtonPrimary>
       </AutoRow>
+      {zapEnabled && (
+        <AutoRow>
+          <StyledZapButton padding="5px" borderRadius="8px" onClick={handleZapClick} fontSize="14px" width="100%">
+            1-Click Deposit
+          </StyledZapButton>
+        </AutoRow>
+      )}
     </>
   )
 }
