@@ -37,7 +37,8 @@ import {
   META,
   PLY,
   NEARX,
-  NSTART
+  NSTART,
+  BAT
 } from '../../constants/tokens'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
@@ -584,7 +585,7 @@ const AURORA_POOLS: StakingTri[] = [
     stableSwapPoolName: StableSwapPoolName.NUSD_USDC_USDT,
     friendlyFarmName: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].friendlyName,
     isFeatured: true,
-    poolType: PoolType.STABLE
+    poolType: PoolType.LEGACY
   }),
   createMCV2Pool({
     ID: 40,
@@ -662,6 +663,15 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0x758E9fEF9E9F1a2fe55F14F33Bf5C6A96d84201b',
     allocPoint: 1,
     poolType: PoolType.ECOSYSTEM
+  }),
+  createMCV2Pool({
+    ID: 49,
+    poolId: 42,
+    tokens: [USDC[ChainId.AURORA], BAT[ChainId.AURORA]],
+    lpAddress: '0xb439e5B6D45f6734E9A840d5A3D6f66e45A52f8b',
+    rewarderAddress: '0xEfA0D8957101052D356DaDF4fa666b4AcC74b407',
+    allocPoint: 1,
+    poolType: PoolType.DUAL_REWARDS
   })
 ]
 
