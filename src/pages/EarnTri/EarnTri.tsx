@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { AutoColumn } from '../../components/Column'
 import PoolCardTRI from '../../components/earn/PoolCardTri'
 import { TYPE } from '../../theme'
@@ -64,6 +64,7 @@ export default function EarnTri() {
                   poolType={farm.poolType}
                   lpAddress={farm.lpAddress}
                   poolId={farm.poolId}
+                  zapEnabled={farm.zapEnabled}
                 />
               ))}
             </>
@@ -88,6 +89,7 @@ export default function EarnTri() {
                 poolType={farm.poolType}
                 lpAddress={farm.lpAddress}
                 poolId={farm.poolId}
+                zapEnabled={farm.zapEnabled}
               />
             ))}
         </PoolSection>
@@ -124,6 +126,7 @@ export default function EarnTri() {
                   poolType={farm.poolType}
                   lpAddress={farm.lpAddress}
                   poolId={farm.poolId}
+                  zapEnabled={farm.zapEnabled}
                 />
               ))}
             </PoolSection>

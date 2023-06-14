@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import styled from 'styled-components'
 import { TokenAmount, Token, ChainId } from '@trisolaris/sdk'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -9,7 +10,6 @@ import { AutoRow } from '../../Row'
 import StakingModal from './StakingModalTri'
 import UnstakingModal from './UnstakingModalTri'
 
-import { useActiveWeb3React } from '../../../hooks'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 
 import { BIG_INT_ZERO } from '../../../constants'
@@ -19,6 +19,13 @@ import { ChefVersions, EarnedNonTriRewards } from '../../../state/stake/stake-co
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from '../../../state/stake/hooks-sushi'
 
 import { StyledMutedSubHeader } from './PoolCardTri.styles'
+import ZapModal from './ZapModal'
+
+const StyledZapButton = styled(ButtonPrimary)`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 100% !important;
+  `};
+`
 
 type ManageStakeProps = {
   stakedAmount: TokenAmount | null | undefined
@@ -35,6 +42,7 @@ type ManageStakeProps = {
   userLiquidityUnstaked?: TokenAmount
   account?: string | null
   isLegacy: boolean
+  zapEnabled: boolean
 }
 
 function ManageStake({
@@ -51,7 +59,8 @@ function ManageStake({
   earnedAmount,
   userLiquidityUnstaked,
   account,
-  isLegacy
+  isLegacy,
+  zapEnabled
 }: ManageStakeProps) {
   const toggleWalletModal = useWalletModalToggle()
   const history = useHistory()
@@ -62,6 +71,7 @@ function ManageStake({
   const [showStakingModal, setShowStakingModal] = useState(false)
   const [showUnstakingModal, setShowUnstakingModal] = useState(false)
   const [toggleIsStaking, setToggleIsStaking] = useState(isStaking || userHasLiquidity)
+  const [showZapModal, setShowZapModal] = useState(false)
 
   const stakingRewardAddress =
     chefVersion === ChefVersions.V1 ? MASTERCHEF_ADDRESS_V1[ChainId.AURORA] : MASTERCHEF_ADDRESS_V2[ChainId.AURORA]
@@ -96,6 +106,11 @@ function ManageStake({
   function handleRemoveLp(event: React.MouseEvent) {
     event.stopPropagation()
     history.push(removeLpLink)
+  }
+
+  function handleZapClick(event: React.MouseEvent) {
+    event.stopPropagation()
+    setShowZapModal(true)
   }
 
   useEffect(() => {
@@ -139,6 +154,9 @@ function ManageStake({
           stakedAmount={stakedAmount}
         />
       )}
+      {showZapModal && (
+        <ZapModal isOpen={showZapModal} onDismiss={() => setShowZapModal(false)} zapTokenAddress={lpAddress} />
+      )}
       <AutoRow justifyContent="space-between">
         <StyledMutedSubHeader>Manage</StyledMutedSubHeader>
         <Toggle
@@ -175,6 +193,13 @@ function ManageStake({
           {toggleIsStaking ? 'Withdraw' : 'Remove LP'}
         </ButtonPrimary>
       </AutoRow>
+      {zapEnabled && (
+        <AutoRow>
+          <StyledZapButton padding="5px" borderRadius="8px" onClick={handleZapClick} fontSize="14px" width="100%">
+            1-Click Deposit
+          </StyledZapButton>
+        </AutoRow>
+      )}
     </>
   )
 }

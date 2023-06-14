@@ -67,6 +67,7 @@ export type PoolCardTriProps = {
   poolType: PoolType
   lpAddress: string
   poolId: number
+  zapEnabled: boolean
 }
 
 type ExtendedPoolCardTriProps = PoolCardTriProps & {
@@ -104,6 +105,7 @@ const DefaultPoolCardtri = ({
   poolId,
   lpToken,
   isExpanded,
+  zapEnabled,
   enableClaimModal = () => null,
   expandCard = () => null
 }: ExtendedPoolCardTriProps) => {
@@ -214,6 +216,7 @@ const DefaultPoolCardtri = ({
                 userLiquidityUnstaked={userLiquidityUnstaked}
                 account={account}
                 isLegacy={isLegacy}
+                zapEnabled={zapEnabled}
               />
             </StakeContainer>
           </>
