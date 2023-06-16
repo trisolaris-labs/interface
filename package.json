@@ -1,7 +1,7 @@
 {
   "name": "interface",
   "description": "Trisolaris Interface",
-  "version": "0.2.48",
+  "version": "0.2.49",
   "homepage": ".",
   "private": true,
   "engines": {
@@ -11,6 +11,7 @@
     "@babel/core": "^7.21.4",
     "@babel/parser": "^7.21.4",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.21.4",
