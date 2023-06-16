@@ -45,6 +45,7 @@ export default function ZapModal({ isOpen, onDismiss, zapTokenAddress }: ZapModa
         fromTokens={fromTokens}
         toTokens={[zapToken]}
         theme={darkTheme}
+        partner="0xf86119de6ee8d4447C8219eEC20E7561d09816d3"
         quoteApi={async request => {
           // To enable staking step, an override is set.
           // `$trisolaris_auto_stake` must be set to 1.
