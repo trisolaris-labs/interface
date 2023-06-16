@@ -6,6 +6,7 @@ import Modal from '../../Modal'
 import { useActiveWeb3React } from '../../../hooks'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { ChainId } from '@trisolaris/sdk'
+import { DAO_ADDRESS } from '../../../constants'
 
 type ZapModalProps = {
   isOpen: boolean
@@ -45,6 +46,7 @@ export default function ZapModal({ isOpen, onDismiss, zapTokenAddress }: ZapModa
         fromTokens={fromTokens}
         toTokens={[zapToken]}
         theme={darkTheme}
+        partner={DAO_ADDRESS}
         quoteApi={async request => {
           // To enable staking step, an override is set.
           // `$trisolaris_auto_stake` must be set to 1.

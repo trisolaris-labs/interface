@@ -277,3 +277,5 @@ export const CUSTOM_TOKEN_MAX_HOPS = {
 export const PRICE_IMPACT_NEGLIGIBLE_THRESHOLD = new Percent('1', '10000')
 export const PRICE_IMPACT_ERROR_THRESHOLD = new Percent('5', '100')
 export const PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE = new Percent('-5', '100')
+
+export const DAO_ADDRESS = '0xf86119de6ee8d4447C8219eEC20E7561d09816d3'
