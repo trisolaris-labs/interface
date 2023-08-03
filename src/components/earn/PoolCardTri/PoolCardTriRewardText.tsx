@@ -14,6 +14,7 @@ import useGetTokenByAddress from '../../../hooks/useGetTokenByAddress'
 import { NonTriAPR } from '../../../state/stake/stake-constants'
 
 import { roundDecimal } from '../../../utils'
+import MultipleCurrencyLogo from '../../MultipleCurrencyLogo'
 
 const IconWrapper = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -122,9 +123,13 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLe
       <IconWrapper onMouseEnter={open} onMouseLeave={close}>
         <AprContainer>
           <LogosContainer>
-            {tooltipData.map(({ token }) => (
-              <CurrencyLogo alt="" currency={token} key={token.address} size={'14px'} style={{ marginRight: '4px' }} />
-            ))}
+            {tooltipData.length > 2 ? (
+              <MultipleCurrencyLogo currencies={tooltipData.map(entry => entry.token)}></MultipleCurrencyLogo>
+            ) : (
+              tooltipData.map(({ token }) => (
+                <CurrencyLogo alt="" currency={token} key={token.address} size={'14px'} style={{ marginRight: '4px' }} />
+              ))
+            )}
           </LogosContainer>
           <AutoRow alignItems="center">
             <TYPE.white marginRight="4px" textAlign="end">
