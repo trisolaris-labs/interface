@@ -54,7 +54,8 @@ export enum PoolType {
   DUAL_REWARDS = 'Dual Rewards',
   ECOSYSTEM = 'Ecosystem',
   STABLE = 'Stable Pool',
-  LEGACY = 'Legacy'
+  LEGACY = 'Legacy',
+  MULTIPLE = 'Mult. Rewards'
 }
 
 export type StakingTri = StakingTriStakedAmounts & StakingTriFarms
@@ -692,7 +693,7 @@ const AURORA_POOLS: StakingTri[] = [
     lpAddress: '0x22E38A04c14624e6deb66762Dc98E793db2C80Cb',
     rewarderAddress: '0xB247fA13a9BE90123C4B94982A2b30c60E6182ab',
     allocPoint: 1,
-    poolType: PoolType.DUAL_REWARDS
+    poolType: PoolType.MULTIPLE
   })
 ]
 

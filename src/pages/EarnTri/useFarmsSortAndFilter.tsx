@@ -10,7 +10,8 @@ import {
   TRI_ONLY_REWARDS_POOLS,
   ECOSYSTEM_POOLS,
   STABLE_POOLS,
-  LEGACY_POOLS
+  LEGACY_POOLS,
+  MULTIPLE_REWARD_POOLS
 } from '../../constants/farms'
 
 export enum SortingType {
@@ -38,7 +39,12 @@ type FarmsSortAndFilterResult = {
 export default function useFarmsSortAndFilter(): FarmsSortAndFilterResult {
   const allFarmArrs = useFarms()
   const activeFarmsFilter = useIsFilterActiveFarms()
-  const allPools = STABLE_POOLS.concat(DUAL_REWARDS_POOLS, TRI_ONLY_REWARDS_POOLS, ECOSYSTEM_POOLS)
+  const allPools = STABLE_POOLS.concat(
+    MULTIPLE_REWARD_POOLS,
+    DUAL_REWARDS_POOLS,
+    TRI_ONLY_REWARDS_POOLS,
+    ECOSYSTEM_POOLS
+  )
 
   const [sortBy, setSortBy] = useState<SortingType>(SortingType.default)
   const [searchQuery, setSearchQuery] = useState<string>('')
