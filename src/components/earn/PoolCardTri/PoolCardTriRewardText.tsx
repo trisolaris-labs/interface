@@ -43,6 +43,12 @@ const AprContainer = styled.div`
   `};
 `
 
+const StyledAprText = styled(TYPE.white)`
+  text-overflow: ellipsis;
+  max-width: 50px;
+  overflow: hidden;
+`
+
 type Props = { isLegacy?: boolean; apr: number; inStaging: boolean; nonTriAPRs: NonTriAPR[] }
 
 export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLegacy = false }: Props) {
@@ -127,14 +133,20 @@ export default function PoolCardTriRewardText({ apr, inStaging, nonTriAPRs, isLe
               <MultipleCurrencyLogo currencies={tooltipData.map(entry => entry.token)}></MultipleCurrencyLogo>
             ) : (
               tooltipData.map(({ token }) => (
-                <CurrencyLogo alt="" currency={token} key={token.address} size={'14px'} style={{ marginRight: '4px' }} />
+                <CurrencyLogo
+                  alt=""
+                  currency={token}
+                  key={token.address}
+                  size={'14px'}
+                  style={{ marginRight: '4px' }}
+                />
               ))
             )}
           </LogosContainer>
           <AutoRow alignItems="center">
-            <TYPE.white marginRight="4px" textAlign="end">
+            <StyledAprText marginRight="4px" textAlign="end">
               {roundDecimal(totalAPR)}%
-            </TYPE.white>
+            </StyledAprText>
             <Info size="14px" />
           </AutoRow>
         </AprContainer>
