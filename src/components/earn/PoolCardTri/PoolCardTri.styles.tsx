@@ -152,6 +152,7 @@ export const RewardColumn = styled.div`
   font-size: 14px;
   display: flex;
   align-items: center;
+  margin-right: 3px;
 `
 
 export const RewardsContainer = styled(AutoColumn)`
