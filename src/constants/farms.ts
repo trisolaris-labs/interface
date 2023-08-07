@@ -1,4 +1,4 @@
-export const DUAL_REWARDS_POOLS = [50, 49, 30, 19, 38, 43, 46]
+export const DUAL_REWARDS_POOLS = [49, 30, 19, 38, 43, 46]
 
 export const TRI_ONLY_REWARDS_POOLS = [7, 8, 11, 0, 3, 4, 31, 32, 33, 45]
 
@@ -36,3 +36,5 @@ export const LEGACY_POOLS = [
   15,
   39
 ]
+
+export const MULTIPLE_REWARD_POOLS = [50]
