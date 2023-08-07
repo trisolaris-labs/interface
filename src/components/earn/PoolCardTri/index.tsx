@@ -109,6 +109,7 @@ const DefaultPoolCardtri = ({
   enableClaimModal = () => null,
   expandCard = () => null
 }: ExtendedPoolCardTriProps) => {
+
   const { t } = useTranslation()
 
   const { account } = useActiveWeb3React()
