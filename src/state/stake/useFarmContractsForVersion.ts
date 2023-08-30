@@ -8,12 +8,13 @@ import { useActiveWeb3React } from '../../hooks'
 import { useBlockNumber } from '../application/hooks'
 
 import { STABLESWAP_POOLS } from '../stableswap/constants'
+import { NETWORK_CHAIN_ID } from '../../connectors'
 
 // gets the staking info from the network for the active chain id
 export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTriStakedAmounts[] {
-  const { chainId, account } = useActiveWeb3React()
-
-  const activeFarms = STAKING[chainId ?? ChainId.AURORA]
+  const { account } = useActiveWeb3React()
+  const chainId = NETWORK_CHAIN_ID
+  const activeFarms = STAKING[ChainId.AURORA]
   // TODO: Add code back when implementing solution for incorrect farms data.
   // Ignore all stable farms
 

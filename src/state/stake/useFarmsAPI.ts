@@ -5,12 +5,13 @@ import { useFetchStakingInfoData } from '../../fetchers/farms'
 import React, { useRef } from 'react'
 
 import { roundDecimal } from '../../utils'
+import { NETWORK_CHAIN_ID } from '../../connectors'
 
 // gets the staking info from the network for the active chain id
 export function useFarmsAPI(): StakingTriFarms[] {
-  const { chainId } = useActiveWeb3React()
-
-  const activeFarms = STAKING[chainId ?? ChainId.AURORA]
+  // const { chainId } = useActiveWeb3React()
+  const chainId = NETWORK_CHAIN_ID
+  const activeFarms = STAKING[ChainId.AURORA]
   const lpAddresses = activeFarms.map(key => key.lpAddress)
 
   const result = useRef<StakingTriFarms[]>(activeFarms)

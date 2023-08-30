@@ -1,6 +1,8 @@
 import { ChainId, JSBI, Percent, Token, WETH as _WETH } from '@trisolaris/sdk'
-import { AbstractConnector } from '@web3-react/abstract-connector'
-import { injected, walletlink, walletconnect, brave } from '../connectors'
+// import { AbstractConnector } from '@web3-react/abstract-connector'
+import { coinbaseWallet, injected, Wallet, walletConnect } from '../connectors'
+import { Connector } from '@web3-react/types'
+
 import {
   DAI,
   TRI,
@@ -94,7 +96,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
 }
 
 export interface WalletInfo {
-  connector?: AbstractConnector
+  connector?: Connector
+  wallet?: Wallet
   name: string
   iconName: string
   description: string
@@ -108,6 +111,7 @@ export interface WalletInfo {
 export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
   INJECTED: {
     connector: injected,
+    wallet: Wallet.INJECTED,
     name: 'Injected',
     iconName: 'arrow-right.svg',
     description: 'Injected web3 provider.',
@@ -117,22 +121,16 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
   },
   METAMASK: {
     connector: injected,
+    wallet: Wallet.INJECTED,
     name: 'MetaMask',
     iconName: 'metamask.png',
     description: 'Easy-to-use browser extension.',
     href: null,
     color: '#E8831D'
   },
-  BRAVE: {
-    connector: brave,
-    name: 'Brave Wallet',
-    iconName: 'brave.png',
-    description: 'Brave wallet',
-    href: null,
-    color: '##fc5404'
-  },
-  WALLET_LINK: {
-    connector: walletlink,
+  COINBASE_WALLET: {
+    connector: coinbaseWallet,
+    wallet: Wallet.COINBASE_WALLET,
     name: 'Coinbase Wallet',
     iconName: 'coinbaseWalletIcon.svg',
     description: 'Use Coinbase Wallet app on mobile device',
@@ -140,7 +138,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     color: '#315CF5'
   },
   WALLET_CONNECT: {
-    connector: walletconnect,
+    connector: walletConnect,
+    wallet: Wallet.WALLET_CONNECT,
     name: 'Wallet Connect',
     iconName: 'walletConnectIcon.svg',
     description: 'Use Wallet Connect',
@@ -186,7 +185,7 @@ export const CHAIN_PARAMS = {
     blockExplorerUrls: ['https://polygonscan.com/']
   },
   [ChainId.AURORA]: {
-    chainId: '0x4e454152', // A 0x-prefixed hexadecimal chainId
+    chainId: '4e454152', // A 0x-prefixed hexadecimal chainId
     chainName: 'Aurora Mainnet',
     nativeCurrency: {
       name: 'ETH',

@@ -10,6 +10,7 @@ import { ChainId, JSBI, WETH } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../constants'
 import { WBTC } from '../constants/tokens'
 import useUSDCPrice from './useUSDCPrice'
+import { NETWORK_CHAIN_ID } from '../connectors'
 
 type StableSwapPoolStatuses = {
   [poolName in StableSwapPoolName]?: {
@@ -19,7 +20,8 @@ type StableSwapPoolStatuses = {
 }
 
 export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
-  const { chainId = ChainId.AURORA } = useActiveWeb3React()
+  // const { chainId = ChainId.AURORA } = useActiveWeb3React()
+  const chainId = NETWORK_CHAIN_ID
 
   const stableSwapPools = useMemo(() => Object.values(STABLESWAP_POOLS).filter(({ address }) => address), [])
 
@@ -40,7 +42,9 @@ export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
     'paused'
   )?.map(({ result }) => result?.[0] ?? FALLBACK_PAUSE_STATUS)
 
+  // @ts-ignore
   const btcPrice = useUSDCPrice(WBTC[chainId ?? ChainId.AURORA])
+  // @ts-ignore
   const ethPrice = useUSDCPrice(WETH[chainId ?? ChainId.AURORA])
 
   const tvlsUSD = useMemo(() => {

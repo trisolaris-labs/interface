@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter'
@@ -6,7 +6,7 @@ import Header from '../components/Header'
 import Polling from '../components/Header/Polling'
 import URLWarning from '../components/Header/URLWarning'
 import Popups from '../components/Popups'
-import Web3ReactManager from '../components/Web3ReactManager'
+// import Web3ReactManager from '../components/Web3ReactManager'
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
 import AddLiquidity from './AddLiquidity'
 import {
@@ -26,6 +26,9 @@ import StableSwapPoolRemoveLiquidity from './StableSwapPoolRemoveLiquidity'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 import StakeTri from './StakeTri'
 import Landing from './Landing'
+import { Connector } from '@web3-react/types'
+import { useActiveWeb3React, useEagerConnect } from '../hooks'
+import { NETWORK_CHAIN_ID, network } from '../connectors'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -64,6 +67,8 @@ const Marginer = styled.div`
 `
 
 export default function App() {
+  const triedEager = useEagerConnect()
+
   return (
     <Suspense fallback={null}>
       <Route component={GoogleAnalyticsReporter} />
@@ -75,36 +80,36 @@ export default function App() {
         <BodyWrapper>
           <Popups />
           <Polling />
-          <Web3ReactManager>
-            <Switch>
-              <Route exact strict path="/swap" component={Swap} />
-              <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
-              <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
-              <Route exact strict path="/find" component={PoolFinder} />
-              <Route exact strict path="/pool" component={Pool} />
-              <Route exact strict path="/pool/stable" component={StableSwapPool} />
-              <Route exact strict path="/pool/stable/add/:stableSwapPoolName" component={StableSwapPoolAddLiquidity} />
-              <Route
-                exact
-                strict
-                path="/pool/stable/remove/:stableSwapPoolName"
-                component={StableSwapPoolRemoveLiquidity}
-              />
-              <Route exact strict path="/farm" component={EarnTri} />
-              <Route exact strict path="/create" component={RedirectToAddLiquidity} />
-              <Route exact strict path="/stake" component={StakeTri} />
-              <Route exact path="/add" component={AddLiquidity} />
-              <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              <Route exact path="/create" component={AddLiquidity} />
-              <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
-              <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
-              <Route exact strict path="/" component={Landing} />
-              <Route component={RedirectPathToSwapOnly} />
-            </Switch>
-          </Web3ReactManager>
+          {/* <Web3ReactManager> */}
+          <Switch>
+            <Route exact strict path="/swap" component={Swap} />
+            <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
+            <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
+            <Route exact strict path="/find" component={PoolFinder} />
+            <Route exact strict path="/pool" component={Pool} />
+            <Route exact strict path="/pool/stable" component={StableSwapPool} />
+            <Route exact strict path="/pool/stable/add/:stableSwapPoolName" component={StableSwapPoolAddLiquidity} />
+            <Route
+              exact
+              strict
+              path="/pool/stable/remove/:stableSwapPoolName"
+              component={StableSwapPoolRemoveLiquidity}
+            />
+            <Route exact strict path="/farm" component={EarnTri} />
+            <Route exact strict path="/create" component={RedirectToAddLiquidity} />
+            <Route exact strict path="/stake" component={StakeTri} />
+            <Route exact path="/add" component={AddLiquidity} />
+            <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+            <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+            <Route exact path="/create" component={AddLiquidity} />
+            <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+            <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+            <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
+            <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+            <Route exact strict path="/" component={Landing} />
+            <Route component={RedirectPathToSwapOnly} />
+          </Switch>
+          {/* </Web3ReactManager> */}
           <Marginer />
         </BodyWrapper>
       </AppWrapper>

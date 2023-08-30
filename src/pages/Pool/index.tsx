@@ -19,13 +19,14 @@ import { usePairs } from '../../data/Reserves'
 import { useTrackedTokenPairs, toV2LiquidityToken } from '../../state/user/hooks'
 
 import { TitleRow, ButtonRow, ResponsiveButtonPrimary, ResponsiveButtonSecondary, EmptyProposals } from './styleds'
+import { NETWORK_CHAIN_ID } from '../../connectors'
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
   const { t } = useTranslation()
 
-  const { account, chainId } = useActiveWeb3React()
-
+  const { account } = useActiveWeb3React()
+  const chainId = NETWORK_CHAIN_ID
   const trackedTokenPairs = useTrackedTokenPairs()
 
   const tokenPairsWithLiquidityTokens = useMemo(
@@ -81,7 +82,7 @@ export default function Pool() {
             </ButtonRow>
           </TitleRow>
 
-          {!account ? (
+          {!account || chainId !== NETWORK_CHAIN_ID ? (
             <Card padding="40px">
               <TYPE.body color={theme.text3} textAlign="center">
                 {t('pool.connectWalletToView')}

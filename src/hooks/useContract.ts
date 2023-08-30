@@ -24,20 +24,21 @@ import { STAKING } from '../state/stake/stake-constants'
 import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import PTRI_ABI from '../constants/abis/pTri/ptri.json'
 import AUERC20 from '../constants/abis/stableswap/auErc20.json'
+import { NETWORK_CHAIN_ID } from '../connectors'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
-  const { library, account } = useActiveWeb3React()
+  const { provider, account } = useActiveWeb3React()
 
   return useMemo(() => {
-    if (!address || !ABI || !library) return null
+    if (!address || !ABI || !provider) return null
     try {
-      return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
+      return getContract(address, ABI, provider, withSignerIfPossible && account ? account : undefined)
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, ABI, library, withSignerIfPossible, account])
+  }, [address, ABI, provider, withSignerIfPossible, account])
 }
 
 export function useV2MigratorContract(): Contract | null {
@@ -53,7 +54,9 @@ export function useBridgeTokenContract(tokenAddress?: string, withSignerIfPossib
 }
 
 export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
+  // const { chainId } = useActiveWeb3React()
+  const chainId = NETWORK_CHAIN_ID
+  // @ts-ignore
   return useContract(chainId ? WETH[chainId]?.address : undefined, WETH_ABI, withSignerIfPossible)
 }
 
@@ -70,7 +73,9 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 }
 
 export function useMulticallContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
+  // const { chainId } = useActiveWeb3React()
+  const chainId = NETWORK_CHAIN_ID
+  // @ts-ignore
   return useContract(chainId && MULTICALL_NETWORKS[chainId], MULTICALL_ABI, false)
 }
 
@@ -109,15 +114,15 @@ export function useStableSwapContract(
   withSignerIfPossible = true,
   shouldUseUnwrappedTokens = false
 ): Contract | null {
-  const { chainId, library } = useActiveWeb3React()
-
+  const { provider } = useActiveWeb3React()
+  const chainId = NETWORK_CHAIN_ID
   const pool = poolName == null ? null : STABLESWAP_POOLS[poolName]
   const metaPool = useStableSwapMetaPoolDeposit(pool?.address, withSignerIfPossible)
   const metaPoolUnwrappedTokens = useStableSwapMetaPoolDeposit(pool?.metaSwapAddresses, withSignerIfPossible)
   const stableSwapPool = useStableSwapPool(pool?.address, withSignerIfPossible)
 
   return useMemo(() => {
-    if (!pool || !library || !chainId) {
+    if (!pool || !provider || !chainId) {
       return null
     }
 
@@ -130,7 +135,7 @@ export function useStableSwapContract(
     }
 
     return stableSwapPool
-  }, [pool, library, chainId, stableSwapPool, shouldUseUnwrappedTokens, metaPoolUnwrappedTokens, metaPool])
+  }, [pool, provider, chainId, stableSwapPool, shouldUseUnwrappedTokens, metaPoolUnwrappedTokens, metaPool])
 }
 
 export function useStableSwapLPTokenContract(
@@ -147,16 +152,17 @@ export function useStableSwapMetaPool(address?: string, withSignerIfPossible = t
 }
 
 export function usePTriContract(withSignerIfPossible = true): Contract | null {
-  const { chainId, library } = useActiveWeb3React()
+  const { provider } = useActiveWeb3React()
+  const chainId = NETWORK_CHAIN_ID
   const pTriContract = useContract(PTRI[ChainId.AURORA].address, PTRI_ABI, withSignerIfPossible)
 
   return useMemo(() => {
-    if (!library || !chainId) {
+    if (!provider || !chainId) {
       return null
     }
 
     return pTriContract
-  }, [library, chainId])
+  }, [provider, chainId])
 }
 
 export function useAuTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {

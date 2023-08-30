@@ -53,18 +53,22 @@ export function getContract(address: string, ABI: any, library: Web3Provider, ac
   return new Contract(address, ABI, getProviderOrSigner(library, account) as any)
 }
 
-export function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
-  const { library, account } = useActiveWeb3React()
+export function useContract(
+  address: string | undefined | number,
+  ABI: any,
+  withSignerIfPossible = true
+): Contract | null {
+  const { provider, account } = useActiveWeb3React()
 
   return useMemo(() => {
-    if (!address || !ABI || !library) return null
+    if (!address || !ABI || !provider) return null
     try {
-      return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
+      return getContract(`${address}`, ABI, provider, withSignerIfPossible && account ? account : undefined)
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, ABI, library, withSignerIfPossible, account])
+  }, [address, ABI, provider, withSignerIfPossible, account])
 }
 
 export function useMasterChefContract(withSignerIfPossible?: boolean): Contract | null {
@@ -86,7 +90,7 @@ export function useMasterChefV2ContractForVersion(
   const abi = chefVersion === ChefVersions.V1 ? MASTERCHEF_ABI : MASTERCHEF_V2_ABI
 
   return useContract(
-    chainId && (chefVersion === ChefVersions.V1 ? MASTERCHEF_ADDRESS_V1[chainId] : MASTERCHEF_ADDRESS_V2[chainId]),
+    chainId ? (chefVersion === ChefVersions.V1 ? MASTERCHEF_ADDRESS_V1[chainId] : MASTERCHEF_ADDRESS_V2[chainId]) : '',
     abi,
     withSignerIfPossible
   )
@@ -182,17 +186,17 @@ export function useMultipleContracts(
   ABI: any,
   withSignerIfPossible = true
 ): Contract[] | null {
-  const { library, account } = useActiveWeb3React()
+  const { provider, account } = useActiveWeb3React()
 
   return useMemo(() => {
-    if (!addressList || !addressList.length || !ABI || !library) return null
+    if (!addressList || !addressList.length || !ABI || !provider) return null
     try {
-      return getMultipleContracts(addressList, ABI, library, withSignerIfPossible && account ? account : undefined)
+      return getMultipleContracts(addressList, ABI, provider, withSignerIfPossible && account ? account : undefined)
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
     }
-  }, [addressList, ABI, library, withSignerIfPossible, account])
+  }, [addressList, ABI, provider, withSignerIfPossible, account])
 }
 
 export function useComplexRewarderMultipleContracts(

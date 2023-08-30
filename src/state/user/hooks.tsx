@@ -19,6 +19,7 @@ import {
 
 import { AppDispatch, AppState } from '../index'
 import { STAKING as trisolarisDefinedPools } from '../../state/stake/stake-constants'
+import { NETWORK_CHAIN_ID } from '../../connectors'
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -188,7 +189,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   // pinned pairs
   const pinnedPairs: [Token, Token][] = useMemo(
     () =>
-      chainId
+      chainId === NETWORK_CHAIN_ID
         ? trisolarisDefinedPools[chainId]
             .filter(pool => pool.stableSwapPoolName == null)
             .map(({ tokens: [token0, token1] }) => [token0, token1]) ?? []

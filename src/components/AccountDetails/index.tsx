@@ -13,7 +13,7 @@ import { SUPPORTED_WALLETS } from '../../constants'
 import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { getEtherscanLink } from '../../utils'
-import { brave, injected, walletlink } from '../../connectors'
+import { coinbaseWallet, injected } from '../../connectors'
 import Identicon from '../Identicon'
 import { ButtonSecondary } from '../Button'
 import { ExternalLink as LinkIcon } from 'react-feather'
@@ -244,7 +244,7 @@ export default function AccountDetails({
           <Identicon />
         </IconWrapper>
       )
-    } else if (connector === walletlink) {
+    } else if (connector === coinbaseWallet) {
       return (
         <IconWrapper size={16}>
           <img src={CoinbaseWalletIcon} alt={'Coinbase Wallet logo'} />
@@ -275,8 +275,10 @@ export default function AccountDetails({
                     <WalletAction
                       style={{ fontSize: '.825rem', fontWeight: 400, marginRight: '8px' }}
                       onClick={() => {
-                        ;(connector as any).close()
+                        connector.deactivate ? connector.deactivate() : connector.resetState()
+                        openOptions()
                       }}
+                      data-cy="wallet-disconnect"
                     >
                       {t('accountDetails.disconnect')}
                     </WalletAction>
@@ -324,7 +326,8 @@ export default function AccountDetails({
                           <AddressLink
                             hasENS={!!ENSName}
                             isENS={true}
-                            href={chainId && getEtherscanLink(chainId, ENSName, 'address')}
+                            href="https://eterscan.com"
+                            // href={chainId && getEtherscanLink(chainId, ENSName, 'address')}
                           >
                             <LinkIcon size={16} />
                             <span style={{ marginLeft: '4px' }}>{t('accountDetails.viewExplorer')}</span>

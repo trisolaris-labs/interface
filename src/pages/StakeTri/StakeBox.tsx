@@ -34,6 +34,7 @@ import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import { DarkGreyCard } from '../../components/Card'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import Popover from '../../components/Popover'
+import { NETWORK_CHAIN_ID } from '../../connectors'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -50,7 +51,7 @@ const IconWrapper = styled.div`
 
 function StakeBox() {
   const theme = useContext(ThemeContext)
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const pTriContract = usePTriContract()
   const addTransaction = useTransactionAdder()
   const { getMaxInputAmount } = useCurrencyInputPanel()
@@ -347,7 +348,7 @@ function StakeBox() {
             />
           </AutoColumn>
           <div style={{ marginTop: '1rem' }}>
-            {account == null ? (
+            {account == null || chainId !== NETWORK_CHAIN_ID ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : (
               <RowBetween>

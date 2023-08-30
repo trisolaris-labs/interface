@@ -43,6 +43,7 @@ import confirmStableSwapAddLiquiditySlippage from './confirmStableSwapAddLiquidi
 import Card from '../../components/Card'
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
 import { getLpTokenUsdEstimate } from '../../utils/stableSwap'
+import { NETWORK_CHAIN_ID } from '../../connectors'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -50,7 +51,7 @@ type Props = {
 
 export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: Props) {
   const { t } = useTranslation()
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, chainId, provider } = useActiveWeb3React()
   const [poolData, _userShareData] = useStablePoolsData(stableSwapPoolName)
   const { disableAddLiquidity, friendlyName, virtualPrice, name } = poolData
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -102,7 +103,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
   const { maxAmounts, atMaxAmounts, atHalfAmounts } = getMaxAmounts({ currencyBalances, parsedAmounts })
 
   async function onAdd() {
-    if (!chainId || !library || !account) {
+    if (!chainId || !provider || !account) {
       return
     }
 
@@ -351,7 +352,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                 showCommonBases
               />
             ) : null}
-            {!account ? (
+            {!account || chainId !== NETWORK_CHAIN_ID ? (
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
             ) : (
               <AutoColumn gap={'md'}>

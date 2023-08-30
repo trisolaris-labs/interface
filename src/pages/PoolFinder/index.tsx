@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next'
 import { GreyCard } from '../../components/Card'
 
 import { BIG_INT_ZERO } from '../../constants'
+import { NETWORK_CHAIN_ID } from '../../connectors'
 
 enum Fields {
   TOKEN0 = 0,
@@ -28,7 +29,7 @@ enum Fields {
 }
 
 export default function PoolFinder() {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
 
   const [showSearch, setShowSearch] = useState<boolean>(false)
@@ -74,7 +75,9 @@ export default function PoolFinder() {
 
   const prerequisiteMessage = (
     <GreyCard padding="45px 10px">
-      <Text textAlign="center">{!account ? t('poolFinder.connectToFind') : t('poolFinder.selectTokenToFind')}</Text>
+      <Text textAlign="center">
+        {!account || chainId !== NETWORK_CHAIN_ID ? t('poolFinder.connectToFind') : t('poolFinder.selectTokenToFind')}
+      </Text>
     </GreyCard>
   )
 

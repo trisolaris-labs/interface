@@ -7,6 +7,7 @@ import { useActiveWeb3React } from '../../../hooks'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { ChainId } from '@trisolaris/sdk'
 import { DAO_ADDRESS } from '../../../constants'
+import { NETWORK_CHAIN_ID } from '../../../connectors'
 
 type ZapModalProps = {
   isOpen: boolean
@@ -15,7 +16,7 @@ type ZapModalProps = {
 }
 
 export default function ZapModal({ isOpen, onDismiss, zapTokenAddress }: ZapModalProps) {
-  const { account, library } = useActiveWeb3React()
+  const { account, chainId, provider } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
   const [fromTokens, setFromTokens] = useState<WidoToken[]>([])
@@ -34,7 +35,7 @@ export default function ZapModal({ isOpen, onDismiss, zapTokenAddress }: ZapModa
 
   const zapToken = { chainId: ChainId.AURORA, address: zapTokenAddress }
 
-  return !account ? null : (
+  return !account || chainId !== NETWORK_CHAIN_ID ? null : (
     <Modal
       isOpen={isOpen}
       onDismiss={onDismiss}
@@ -42,7 +43,7 @@ export default function ZapModal({ isOpen, onDismiss, zapTokenAddress }: ZapModa
     >
       <WidoWidget
         onConnectWalletClick={toggleWalletModal}
-        ethProvider={library}
+        ethProvider={provider}
         fromTokens={fromTokens}
         toTokens={[zapToken]}
         theme={darkTheme}

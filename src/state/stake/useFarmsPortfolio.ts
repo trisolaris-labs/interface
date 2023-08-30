@@ -37,9 +37,9 @@ type Result = {
 
 export function useFarmsPortfolio(farmIds?: number[]): Result | null {
   const farmsReady = farmIds?.length || true
-  const { chainId, account: userAccount } = useActiveWeb3React()
+  const { account: userAccount } = useActiveWeb3React()
   const account = userAccount ?? ZERO_ADDRESS
-  const chain = chainId ?? ChainId.AURORA
+  const chain = ChainId.AURORA
   const activeFarms = STAKING[chain]
 
   const filteredFarms = farmIds ? activeFarms.filter(farm => farmIds?.includes(farm.ID)) : activeFarms
@@ -195,7 +195,7 @@ export function useFarmsPortfolio(farmIds?: number[]): Result | null {
 
     const { totalStakedInUSD, totalStaked } = stakingInfoData?.[index]
 
-    const userInfoPool = JSBI.BigInt(allUserInfo[index].result?.['amount'] ?? 0)
+    const userInfoPool = JSBI.BigInt(allUserInfo[index]?.result?.['amount'] ?? 0)
     const totalStakedTokenAmount = new TokenAmount(dummyToken, JSBI.BigInt(totalStaked))
     const lpToken = getLPToken(pairsResult[index][1] ?? null, stableSwapPoolName)
     const stakedAmount = new TokenAmount(lpToken, JSBI.BigInt(userInfoPool))

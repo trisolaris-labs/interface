@@ -6,6 +6,7 @@ import { useActiveWeb3React } from '../hooks'
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
+import { NETWORK_CHAIN_ID } from '../connectors'
 
 const PAIR_INTERFACE = new Interface(IUniswapV2Pair_ABI)
 
@@ -17,7 +18,8 @@ export enum PairState {
 }
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
-  const { chainId } = useActiveWeb3React()
+  // const { chainId } = useActiveWeb3React()
+  const chainId = NETWORK_CHAIN_ID
 
   const tokens = useMemo(
     () =>
@@ -31,9 +33,7 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   const pairAddresses = useMemo(
     () =>
       tokens.map(([tokenA, tokenB]) => {
-        return tokenA && tokenB && !tokenA.equals(tokenB)
-          ? Pair.getAddress(tokenA, tokenB, chainId ? chainId : ChainId.AVALANCHE)
-          : undefined
+        return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB, ChainId.AURORA) : undefined
       }),
     [tokens, chainId]
   )
@@ -56,7 +56,7 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
         new Pair(
           new TokenAmount(token0, reserve0.toString()),
           new TokenAmount(token1, reserve1.toString()),
-          chainId ? chainId : ChainId.AVALANCHE
+          ChainId.AURORA
         )
       ]
     })

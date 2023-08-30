@@ -1,4 +1,4 @@
-import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
+// import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import 'inter-ui'
 import React, { StrictMode } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -7,7 +7,9 @@ import ReactGA from 'react-ga'
 import { Provider } from 'react-redux'
 import { HashRouter } from 'react-router-dom'
 import { Dots } from './components/swap/styleds'
-import { NetworkContextName } from './constants'
+// import { NetworkContextName } from './constants'
+import Web3Provider from './components/Web3Provider'
+
 import { PersistGate } from 'redux-persist/integration/react'
 import './i18n'
 import App from './pages/App'
@@ -18,9 +20,9 @@ import MulticallUpdater from './state/multicall/updater'
 import TransactionUpdater from './state/transactions/updater'
 import UserUpdater from './state/user/updater'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
-import getLibrary from './utils/getLibrary'
+// import getLibrary from './utils/getLibrary'
 
-const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
+// const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 if ('ethereum' in window) {
   ;(window.ethereum as any).autoRefreshOnNetworkChange = false
@@ -58,20 +60,29 @@ function Updaters() {
 ReactDOM.render(
   <StrictMode>
     <FixedGlobalStyle />
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <Web3ProviderNetwork getLibrary={getLibrary}>
-        <PersistGate loading={<Dots>loading</Dots>} persistor={persistor}></PersistGate>
-        <Provider store={store}>
-          <Updaters />
-          <ThemeProvider>
-            <ThemedGlobalStyle />
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </ThemeProvider>
-        </Provider>
-      </Web3ProviderNetwork>
-    </Web3ReactProvider>
+    {/* 
+            <Blocklist>
+              <BlockNumberProvider>
+                <Updaters />
+                <ThemeProvider>
+                  <ThemedGlobalStyle />
+                  <App />
+                </ThemeProvider>
+              </BlockNumberProvider>
+            </Blocklist>
+          </Web3Provider> */}
+    <Web3Provider>
+      <PersistGate loading={<Dots>loading</Dots>} persistor={persistor}></PersistGate>
+      <Provider store={store}>
+        <Updaters />
+        <ThemeProvider>
+          <ThemedGlobalStyle />
+          <HashRouter>
+            <App />
+          </HashRouter>
+        </ThemeProvider>
+      </Provider>
+    </Web3Provider>
   </StrictMode>,
   document.getElementById('root')
 )

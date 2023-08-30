@@ -43,6 +43,7 @@ import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '
 
 import { Field } from '../../state/burn/actions'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
+import { NETWORK_CHAIN_ID } from '../../connectors'
 
 export default function RemoveLiquidity({
   history,
@@ -51,7 +52,7 @@ export default function RemoveLiquidity({
   }
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, chainId, provider } = useActiveWeb3React()
   const [tokenA, tokenB] = useMemo(() => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)], [
     currencyA,
     currencyB,
@@ -104,6 +105,7 @@ export default function RemoveLiquidity({
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
+    // @ts-ignore
     chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON]
   )
 
@@ -111,7 +113,8 @@ export default function RemoveLiquidity({
 
   async function onAttemptToApprove() {
     // TODO: Translate using i18n
-    if (!pairContract || !pair || !library || !deadline || !chainId || !account) throw new Error('missing dependencies')
+    if (!pairContract || !pair || !provider || !deadline || !chainId || !account)
+      throw new Error('missing dependencies')
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
     if (!liquidityAmount) throw new Error('missing liquidity amount')
 
@@ -143,6 +146,7 @@ export default function RemoveLiquidity({
     ]
     const message = {
       owner: account,
+      // @ts-ignore
       spender: ROUTER_ADDRESS[chainId],
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
@@ -158,10 +162,10 @@ export default function RemoveLiquidity({
       message
     })
 
-    library
+    provider
       .send('eth_signTypedData_v4', [account, data])
       .then(splitSignature)
-      .then(signature => {
+      .then((signature: any) => {
         setSignatureData({
           v: signature.v,
           r: signature.r,
@@ -169,7 +173,7 @@ export default function RemoveLiquidity({
           deadline: deadline.toNumber()
         })
       })
-      .catch(error => {
+      .catch((error: any) => {
         // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
         if (error?.code !== 4001) {
           approveCallback()
@@ -199,13 +203,13 @@ export default function RemoveLiquidity({
   // tx sending
   const addTransaction = useTransactionAdder()
   async function onRemove() {
-    if (!chainId || !library || !account || !deadline) throw new Error('missing dependencies')
+    if (!chainId || !provider || !account || !deadline) throw new Error('missing dependencies')
     const { [Field.CURRENCY_A]: currencyAmountA, [Field.CURRENCY_B]: currencyAmountB } = parsedAmounts
     if (!currencyAmountA || !currencyAmountB) {
       // TODO: Translate using i18n
       throw new Error('missing currency amounts')
     }
-    const router = getRouterContract(chainId, library, account)
+    const router = getRouterContract(chainId, provider, account)
 
     const amountsMin = {
       [Field.CURRENCY_A]: calculateSlippageAmount(currencyAmountA, allowedSlippage)[0],
@@ -451,7 +455,9 @@ export default function RemoveLiquidity({
   const oneCurrencyIsAVAX = currencyA === CETH || currencyB === CETH
   const oneCurrencyIsWETH = Boolean(
     chainId &&
+      // @ts-ignore
       ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||
+        // @ts-ignore
         (currencyB && currencyEquals(WETH[chainId], currencyB)))
   )
 
@@ -572,7 +578,7 @@ export default function RemoveLiquidity({
               </div>
             )}
             <div style={{ position: 'relative' }}>
-              {!account ? (
+              {!account || chainId !== NETWORK_CHAIN_ID ? (
                 <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
               ) : (
                 <RowBetween>

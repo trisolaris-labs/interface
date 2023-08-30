@@ -7,10 +7,13 @@ import { useActiveWeb3React } from './index'
 import { PairState, usePairs } from '../data/Reserves'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES, CUSTOM_TOKEN_MAX_HOPS } from '../constants'
+import { NETWORK_CHAIN_ID } from '../connectors'
 
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
-  const { chainId } = useActiveWeb3React()
+  // const { chainId } = useActiveWeb3React()
+  const chainId = NETWORK_CHAIN_ID
 
+  // @ts-ignore
   const bases: Token[] = chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : []
 
   const [tokenA, tokenB] = chainId
@@ -42,6 +45,7 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
             .filter(([t0, t1]) => t0.address !== t1.address)
             .filter(([tokenA, tokenB]) => {
               if (!chainId) return true
+              // @ts-ignore
               const customBases = CUSTOM_BASES[chainId]
               if (!customBases) return true
 

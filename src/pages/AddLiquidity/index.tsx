@@ -48,6 +48,7 @@ import { CardSection } from '../../components/earn/styled'
 import PriceAndPoolShare from './PriceAndPoolShare'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
+import { NETWORK_CHAIN_ID } from '../../connectors'
 
 export default function AddLiquidity({
   match: {
@@ -55,7 +56,7 @@ export default function AddLiquidity({
   },
   history
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, chainId, provider } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
   const currencyA = useCurrency(currencyIdA)
@@ -64,7 +65,9 @@ export default function AddLiquidity({
 
   const oneCurrencyIsWETH = Boolean(
     chainId &&
+      // @ts-ignore
       ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
+        // @ts-ignore
         (currencyB && currencyEquals(currencyB, WETH[chainId])))
   )
 
@@ -112,18 +115,20 @@ export default function AddLiquidity({
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
+    // @ts-ignore
     chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON]
   )
   const [approvalB, approveBCallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_B],
+    // @ts-ignore
     chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON]
   )
 
   const addTransaction = useTransactionAdder()
 
   async function onAdd() {
-    if (!chainId || !library || !account) return
-    const router = getRouterContract(chainId, library, account)
+    if (!chainId || !provider || !account) return
+    const router = getRouterContract(chainId, provider, account)
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
@@ -394,7 +399,7 @@ export default function AddLiquidity({
               />
             )}
 
-            {!account ? (
+            {!account || chainId !== NETWORK_CHAIN_ID ? (
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
             ) : (
               <AutoColumn id="defaultswap-add-liquidity" gap={'md'}>

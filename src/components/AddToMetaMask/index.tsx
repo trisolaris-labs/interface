@@ -8,9 +8,9 @@ import { useActiveWeb3React } from '../../hooks'
 import { registerToken } from '../../utils/wallet'
 
 function AddToMetaMaskButton({ token, ...otherProps }: { token: Token }) {
-  const { library } = useActiveWeb3React()
+  const { connector } = useActiveWeb3React()
 
-  if (!token || token?.symbol == null || library?.provider?.isMetaMask == null || token === CETH) {
+  if (!token || token?.symbol == null || connector.watchAsset == null || token === CETH) {
     return null
   }
 

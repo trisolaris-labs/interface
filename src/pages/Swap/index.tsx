@@ -75,6 +75,7 @@ import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
 import Modal from '../../components/Modal'
 import { ModalContentWrapper } from '../../components/Settings/Settings.styles'
 import useCoinSearch from '../../fetchers/coingecko-api-id'
+import { NETWORK_CHAIN_ID } from '../../connectors'
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -98,7 +99,7 @@ export default function Swap() {
     setDismissTokenWarning(true)
   }, [])
 
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -564,7 +565,7 @@ export default function Swap() {
                 )}
               </AutoColumn>
               <BottomGrouping>
-                {!account ? (
+                {!account || chainId !== NETWORK_CHAIN_ID ? (
                   <ButtonLight onClick={toggleWalletModal}>{t('swapPage.connectWallet')}</ButtonLight>
                 ) : showWrap ? (
                   <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>
