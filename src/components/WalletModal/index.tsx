@@ -374,7 +374,6 @@ export default function WalletModal({
   }
 
   function getModalContent() {
-    console.log(chainId, NETWORK_CHAIN_ID)
     if (chainId !== NETWORK_CHAIN_ID) {
       return (
         <UpperSection>

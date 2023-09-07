@@ -28,12 +28,12 @@ import { NETWORK_CHAIN_ID } from '../connectors'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
-  const { provider, account } = useActiveWeb3React()
+  const { provider, account, chainId } = useActiveWeb3React()
 
   return useMemo(() => {
     if (!address || !ABI || !provider) return null
     try {
-      return getContract(address, ABI, provider, withSignerIfPossible && account ? account : undefined)
+      return getContract(address, ABI, provider, withSignerIfPossible && account ? account : undefined, chainId)
     } catch (error) {
       console.error('Failed to get contract', error)
       return null

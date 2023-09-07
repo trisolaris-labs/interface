@@ -25,7 +25,6 @@ export default function Updater(): null {
 
   const blockNumberCallback = useCallback(
     (blockNumber: number) => {
-      console.log('wallet--', networkLibrary)
       setState(state => {
         if (chainId === state.chainId) {
           if (typeof state.blockNumber !== 'number') return { chainId, blockNumber }

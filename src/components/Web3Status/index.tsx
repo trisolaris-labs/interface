@@ -200,7 +200,6 @@ export default function Web3Status() {
 
   const pending = sortedRecentTransactions.filter(tx => !tx.receipt).map(tx => tx.hash)
   const confirmed = sortedRecentTransactions.filter(tx => tx.receipt).map(tx => tx.hash)
-  console.log('pdinging', allTransactions, pending, confirmed)
 
   return (
     <>

@@ -79,20 +79,29 @@ export function getSigner(library: Web3Provider, account: string): JsonRpcSigner
 }
 
 // account is optional
-export function getProviderOrSigner(library: Web3Provider, account?: string): Web3Provider | JsonRpcSigner {
-  const { chainId } = useActiveWeb3React()
+export function getProviderOrSigner(
+  library: Web3Provider,
+  account?: string,
+  chainId?: number
+): Web3Provider | JsonRpcSigner {
   // const chainId = NETWORK_CHAIN_ID
   // @ts-ignore
   return account && chainId === NETWORK_CHAIN_ID ? getSigner(library, account) : network.customProvider
 }
 
 // account is optional
-export function getContract(address: string, ABI: any, library: Web3Provider, account?: string): Contract {
+export function getContract(
+  address: string,
+  ABI: any,
+  library: Web3Provider,
+  account?: string,
+  chainId?: number
+): Contract {
   if (!isAddress(address) || address === AddressZero) {
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
-
-  return new Contract(address, ABI, getProviderOrSigner(library, account) as any)
+  const _provider = getProviderOrSigner(library, account, chainId)
+  return new Contract(address, ABI, _provider)
 }
 
 // account is optional
@@ -101,7 +110,8 @@ export function getRouterContract(chainId: ChainId, library: Web3Provider, accou
     chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON],
     IUniswapV2Router02_ABI,
     library,
-    account
+    account,
+    chainId
   )
 }
 
