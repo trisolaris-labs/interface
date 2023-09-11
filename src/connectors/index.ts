@@ -131,7 +131,7 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
     new WalletConnect({
       actions,
       options: {
-        projectId: '03219a485a6a9df1269c77f5b2f8c6d9',
+        projectId: 'c13edb0e380beb4872d04fa7dce7d169',
         chains: [NETWORK_CHAIN_ID],
         showQrModal: true
       }
