@@ -1,5 +1,4 @@
 import { ChainId, JSBI, Percent, Token, WETH as _WETH } from '@trisolaris/sdk'
-// import { AbstractConnector } from '@web3-react/abstract-connector'
 import { coinbaseWallet, injected, Wallet, walletConnect } from '../connectors'
 import { Connector } from '@web3-react/types'
 

@@ -6,15 +6,13 @@ import { Activity } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
-import { coinbaseWallet, injected, walletConnect, getWalletForConnector, NETWORK_CHAIN_ID } from '../../connectors'
-import { NetworkContextName } from '../../constants'
+import { coinbaseWallet, injected, NETWORK_CHAIN_ID } from '../../connectors'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { TransactionDetails } from '../../state/transactions/reducer'
 import { shortenAddress } from '../../utils'
 import { ButtonSecondary } from '../Button'
 
-// import { isChainAllowed } from '../../utils'
 import Identicon from '../Identicon'
 import Loader from '../Loader'
 
@@ -136,8 +134,8 @@ function StatusIcon({ connector }: { connector: Connector }) {
 
 function Web3StatusInner() {
   const { t } = useTranslation()
-  // const { account, connector, error } = useWeb3React()
-  const { account, connector, chainId, ENSName } = useWeb3React()
+
+  const { account, connector, chainId } = useWeb3React()
 
   const allTransactions = useAllTransactions()
 
@@ -186,9 +184,6 @@ function Web3StatusInner() {
 }
 
 export default function Web3Status() {
-  // const { active } = useWeb3React()
-  // const contextNetwork = useWeb3React(NetworkContextName)
-
   const { ENSName } = useWeb3React()
 
   const allTransactions = useAllTransactions()

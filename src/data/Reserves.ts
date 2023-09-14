@@ -2,7 +2,6 @@ import { TokenAmount, Pair, Currency, ChainId } from '@trisolaris/sdk'
 import { useMemo } from 'react'
 import IUniswapV2Pair_ABI from '../constants/abis/polygon/IUniswapV2Pair.json'
 import { Interface } from '@ethersproject/abi'
-import { useActiveWeb3React } from '../hooks'
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
@@ -18,7 +17,6 @@ export enum PairState {
 }
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
-  // const { chainId } = useActiveWeb3React()
   const chainId = NETWORK_CHAIN_ID
 
   const tokens = useMemo(

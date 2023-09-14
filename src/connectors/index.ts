@@ -1,53 +1,17 @@
+import { ChainId } from '@trisolaris/sdk'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 import { initializeConnector, Web3ReactHooks } from '@web3-react/core'
 import { GnosisSafe } from '@web3-react/gnosis-safe'
 import { MetaMask } from '@web3-react/metamask'
 import { Network } from '@web3-react/network'
 import { Connector } from '@web3-react/types'
-import { WalletConnect, WalletConnectConstructorArgs } from '@web3-react/walletconnect-v2'
-// import { SupportedChainId } from 'constants/chains'
+import { WalletConnect } from '@web3-react/walletconnect-v2'
 import { useMemo } from 'react'
 
 const NETWORK_URL = process.env.REACT_APP_NETWORK_URL ?? ''
 
-export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1313161554')
+export const NETWORK_CHAIN_ID: ChainId = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1313161554')
 const appLogoUrl = 'https://raw.githubusercontent.com/trisolaris-labs/interface/master/public/favicon.png'
-// if (typeof NETWORK_URL === 'undefined') {
-//   throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`)
-// }
-
-// export const network = new NetworkConnector({
-//   urls: { [NETWORK_CHAIN_ID]: NETWORK_URL },
-//   defaultChainId: NETWORK_CHAIN_ID
-// })
-
-// let networkLibrary: undefined
-// export function getNetworkLibrary(): Web3Provider | undefined {
-//   const { provider } = useActiveWeb3React()
-//   return provider
-// }
-
-// export const injected = new InjectedConnector({
-//   supportedChainIds: [NETWORK_CHAIN_ID]
-// })
-
-// export const brave = new InjectedConnector({
-//   supportedChainIds: [NETWORK_CHAIN_ID]
-// })
-
-// export const walletlink = new WalletLinkConnector({
-//   url: NETWORK_URL,
-//   appName: 'Trisolaris',
-//   appLogoUrl: 'https://raw.githubusercontent.com/trisolaris-labs/interface/master/public/favicon.png'
-// })
-
-// export const walletconnect = new WalletConnectConnector({
-//   rpc: {
-//     NETWORK_CHAIN_ID: NETWORK_URL
-//   },
-//   qrcode: true,
-//   bridge: 'https://bridge.walletconnect.org'
-// })
 
 export enum Wallet {
   INJECTED = 'INJECTED',
@@ -138,10 +102,6 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
     })
 )
 
-// export const [fortmatic, fortmaticHooks] = initializeConnector<EIP1193>(
-//   actions => new EIP1193({ actions, provider: new Fortmatic(process.env.REACT_APP_FORTMATIC_KEY).getProvider() })
-// )
-
 export const [coinbaseWallet, coinbaseWalletHooks] = initializeConnector<CoinbaseWallet>(
   actions =>
     new CoinbaseWallet({
@@ -171,8 +131,7 @@ export function useConnectors(selectedWallet: Wallet | undefined) {
   return useMemo(() => {
     const connectors: ConnectorListItem[] = [{ connector: gnosisSafe, hooks: gnosisSafeHooks }]
     if (selectedWallet) {
-      // @ts-ignore
-      connectors.push(getConnectorListItemForWallet(selectedWallet))
+      connectors.push(getConnectorListItemForWallet(selectedWallet) as ConnectorListItem)
     }
     connectors.push(
       // @ts-ignore

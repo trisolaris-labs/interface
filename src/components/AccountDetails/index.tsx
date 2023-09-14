@@ -326,8 +326,7 @@ export default function AccountDetails({
                           <AddressLink
                             hasENS={!!ENSName}
                             isENS={true}
-                            href="https://eterscan.com"
-                            // href={chainId && getEtherscanLink(chainId, ENSName, 'address')}
+                            href={chainId.toString() && getEtherscanLink(chainId, ENSName, 'address')}
                           >
                             <LinkIcon size={16} />
                             <span style={{ marginLeft: '4px' }}>{t('accountDetails.viewExplorer')}</span>

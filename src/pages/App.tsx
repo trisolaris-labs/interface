@@ -26,9 +26,6 @@ import StableSwapPoolRemoveLiquidity from './StableSwapPoolRemoveLiquidity'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 import StakeTri from './StakeTri'
 import Landing from './Landing'
-import { Connector } from '@web3-react/types'
-import { useActiveWeb3React, useEagerConnect } from '../hooks'
-import { NETWORK_CHAIN_ID, network } from '../connectors'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -67,8 +64,6 @@ const Marginer = styled.div`
 `
 
 export default function App() {
-  const triedEager = useEagerConnect()
-
   return (
     <Suspense fallback={null}>
       <Route component={GoogleAnalyticsReporter} />

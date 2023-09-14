@@ -75,7 +75,7 @@ export function CurrencySearch({
   stableSwapInputField
 }: CurrencySearchProps & StableSwapSearchProps) {
   const { t } = useTranslation()
-  // const { chainId } = useActiveWeb3React()
+
   const chainId = NETWORK_CHAIN_ID
   const theme = useContext(ThemeContext)
 
