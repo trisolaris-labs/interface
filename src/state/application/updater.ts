@@ -6,13 +6,11 @@ import { useDispatch } from 'react-redux'
 import useTimeout from '../../hooks/useTimeout'
 import useDebounce from '../../hooks/useDebounce'
 import { network } from '../../connectors'
-// import { getNetworkLibrary } from '../../connectors'
 
 const MAX_WAIT_BEFORE_MANUAL_DISPATCH = 2000
 
 export default function Updater(): null {
-  // const networkLibrary = getNetworkLibrary()
-  const { provider, chainId } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
   const dispatch = useDispatch()
   const networkLibrary = network.customProvider
   const windowVisible = useIsWindowVisible()

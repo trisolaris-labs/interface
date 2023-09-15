@@ -1,6 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
 import { ChainId, Token, WETH } from '@trisolaris/sdk'
-// eslint-disable-next-line @typescript-eslint/camelcase
 import IUniswapV2Pair_ABI from '../constants/abis/polygon/IUniswapV2Pair.json'
 import { useMemo } from 'react'
 
@@ -17,9 +16,7 @@ import WETH_ABI from '../constants/abis/polygon/weth.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
-import { AIRDROP_ADDRESS, BRIDGE_MIGRATOR_ADDRESS } from '../constants'
-import { PNG, PTRI, TRI, USDC, WNEAR } from '../constants/tokens'
-import { GOVERNANCE_ADDRESS } from '../constants'
+import { PTRI, TRI, USDC, WNEAR } from '../constants/tokens'
 import { STAKING } from '../state/stake/stake-constants'
 import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import PTRI_ABI from '../constants/abis/pTri/ptri.json'
@@ -54,9 +51,7 @@ export function useBridgeTokenContract(tokenAddress?: string, withSignerIfPossib
 }
 
 export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
-  // const { chainId } = useActiveWeb3React()
   const chainId = NETWORK_CHAIN_ID
-  // @ts-ignore
   return useContract(chainId ? WETH[chainId]?.address : undefined, WETH_ABI, withSignerIfPossible)
 }
 
@@ -73,9 +68,7 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 }
 
 export function useMulticallContract(): Contract | null {
-  // const { chainId } = useActiveWeb3React()
   const chainId = NETWORK_CHAIN_ID
-  // @ts-ignore
   return useContract(chainId && MULTICALL_NETWORKS[chainId], MULTICALL_ABI, false)
 }
 

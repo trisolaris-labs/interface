@@ -7,7 +7,6 @@ import ReactGA from 'react-ga'
 import { Provider } from 'react-redux'
 import { HashRouter } from 'react-router-dom'
 import { Dots } from './components/swap/styleds'
-// import { NetworkContextName } from './constants'
 import Web3Provider from './components/Web3Provider'
 
 import { PersistGate } from 'redux-persist/integration/react'
@@ -20,9 +19,6 @@ import MulticallUpdater from './state/multicall/updater'
 import TransactionUpdater from './state/transactions/updater'
 import UserUpdater from './state/user/updater'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
-// import getLibrary from './utils/getLibrary'
-
-// const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 if ('ethereum' in window) {
   ;(window.ethereum as any).autoRefreshOnNetworkChange = false
@@ -60,17 +56,6 @@ function Updaters() {
 ReactDOM.render(
   <StrictMode>
     <FixedGlobalStyle />
-    {/* 
-            <Blocklist>
-              <BlockNumberProvider>
-                <Updaters />
-                <ThemeProvider>
-                  <ThemedGlobalStyle />
-                  <App />
-                </ThemeProvider>
-              </BlockNumberProvider>
-            </Blocklist>
-          </Web3Provider> */}
     <Web3Provider>
       <PersistGate loading={<Dots>loading</Dots>} persistor={persistor}></PersistGate>
       <Provider store={store}>

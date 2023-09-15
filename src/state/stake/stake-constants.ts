@@ -697,7 +697,7 @@ const AURORA_POOLS: StakingTri[] = [
   })
 ]
 export const STAKING: {
-  [key: number]: StakingTri[]
+  [chainid in ChainId]: StakingTri[]
 } = {
   [ChainId.FUJI]: NULL_POOLS,
   [ChainId.AVALANCHE]: NULL_POOLS,

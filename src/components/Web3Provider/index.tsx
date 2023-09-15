@@ -19,7 +19,7 @@ export default function Web3Provider({ children }: { children: ReactNode }) {
   const connectors = useConnectors(undefined)
   useEffect(() => {
     connect(network)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
   return <Web3ReactProvider connectors={connectors}>{children}</Web3ReactProvider>
 }

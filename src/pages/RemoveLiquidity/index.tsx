@@ -20,10 +20,9 @@ import { ButtonPrimary, ButtonLight, ButtonError, ButtonConfirmed } from '../../
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import MinimalPositionCard from '../../components/PositionCard'
-import Row, { RowBetween, RowFixed } from '../../components/Row'
+import { RowBetween, RowFixed } from '../../components/Row'
 
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
-import useDebouncedChangeHandler from '../../utils/useDebouncedChangeHandler'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { usePairContract } from '../../hooks/useContract'
@@ -105,7 +104,6 @@ export default function RemoveLiquidity({
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
-    // @ts-ignore
     chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON]
   )
 
@@ -146,7 +144,6 @@ export default function RemoveLiquidity({
     ]
     const message = {
       owner: account,
-      // @ts-ignore
       spender: ROUTER_ADDRESS[chainId],
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
@@ -455,9 +452,7 @@ export default function RemoveLiquidity({
   const oneCurrencyIsAVAX = currencyA === CETH || currencyB === CETH
   const oneCurrencyIsWETH = Boolean(
     chainId &&
-      // @ts-ignore
       ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||
-        // @ts-ignore
         (currencyB && currencyEquals(WETH[chainId], currencyB)))
   )
 

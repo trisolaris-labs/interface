@@ -23,7 +23,7 @@ export default function ZapModal({ isOpen, onDismiss, zapTokenAddress }: ZapModa
 
   useEffect(() => {
     getSupportedTokens({
-      chainId: [1313161554]
+      chainId: [ChainId.AURORA]
     })
       .then(tokens => {
         setFromTokens(tokens)

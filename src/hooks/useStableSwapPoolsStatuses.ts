@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 
 import SWAP_FLASH_LOAN_ABI from '../constants/abis/stableswap/swapFlashLoan.json'
 import LPTOKEN_UNGUARDED_ABI from '../constants/abis/stableswap/lpToken.json'
-import { useActiveWeb3React } from '.'
 import { StableSwapPoolName, StableSwapPoolTypes, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { Interface } from '@ethersproject/abi'
@@ -20,7 +19,6 @@ type StableSwapPoolStatuses = {
 }
 
 export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
-  // const { chainId = ChainId.AURORA } = useActiveWeb3React()
   const chainId = NETWORK_CHAIN_ID
 
   const stableSwapPools = useMemo(() => Object.values(STABLESWAP_POOLS).filter(({ address }) => address), [])
@@ -42,9 +40,8 @@ export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
     'paused'
   )?.map(({ result }) => result?.[0] ?? FALLBACK_PAUSE_STATUS)
 
-  // @ts-ignore
   const btcPrice = useUSDCPrice(WBTC[chainId ?? ChainId.AURORA])
-  // @ts-ignore
+
   const ethPrice = useUSDCPrice(WETH[chainId ?? ChainId.AURORA])
 
   const tvlsUSD = useMemo(() => {

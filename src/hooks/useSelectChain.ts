@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
 
-import { useActiveWeb3React } from '.'
 import { NETWORK_CHAIN_ID, injected } from '../connectors'
 import { CHAIN_PARAMS } from '../constants'
 import { useWeb3React } from '@web3-react/core'
@@ -13,7 +12,6 @@ export default function useSelectChain() {
 
     try {
       try {
-        // @ts-ignore
         const addChainParameter = CHAIN_PARAMS[NETWORK_CHAIN_ID]
 
         if (injected !== connector) {
@@ -32,15 +30,7 @@ export default function useSelectChain() {
         }
       }
     } catch (error) {
-      // if (!didUserReject(connection, error) && error.code !== -32002 /* request already pending */) {
       console.error('Failed to switch networks', error)
-      //   dispatch(
-      //     addPopup({
-      //       content: { failedSwitchNetwork: targetChain, type: PopupType.FailedSwitchNetwork },
-      //       key: 'failed-network-switch'
-      //     })
-      //   )
-      // }
     }
   }, [connector])
 }

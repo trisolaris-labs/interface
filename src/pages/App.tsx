@@ -1,12 +1,10 @@
-import React, { Suspense, useEffect } from 'react'
+import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter'
 import Header from '../components/Header'
 import Polling from '../components/Header/Polling'
-import URLWarning from '../components/Header/URLWarning'
 import Popups from '../components/Popups'
-// import Web3ReactManager from '../components/Web3ReactManager'
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
 import AddLiquidity from './AddLiquidity'
 import {
@@ -75,7 +73,6 @@ export default function App() {
         <BodyWrapper>
           <Popups />
           <Polling />
-          {/* <Web3ReactManager> */}
           <Switch>
             <Route exact strict path="/swap" component={Swap} />
             <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
@@ -104,7 +101,6 @@ export default function App() {
             <Route exact strict path="/" component={Landing} />
             <Route component={RedirectPathToSwapOnly} />
           </Switch>
-          {/* </Web3ReactManager> */}
           <Marginer />
         </BodyWrapper>
       </AppWrapper>
