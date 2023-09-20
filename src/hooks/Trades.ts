@@ -1,15 +1,14 @@
-import { ChainId, Currency, CurrencyAmount, Pair, Token, TokenAmount, Trade } from '@trisolaris/sdk'
+import { Currency, CurrencyAmount, Pair, Token, Trade } from '@trisolaris/sdk'
 import flatMap from 'lodash.flatmap'
 import { useMemo } from 'react'
-
-import { useActiveWeb3React } from './index'
 
 import { PairState, usePairs } from '../data/Reserves'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES, CUSTOM_TOKEN_MAX_HOPS } from '../constants'
+import { NETWORK_CHAIN_ID } from '../connectors'
 
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
-  const { chainId } = useActiveWeb3React()
+  const chainId = NETWORK_CHAIN_ID
 
   const bases: Token[] = chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : []
 

@@ -15,7 +15,6 @@ import { useTranslation } from 'react-i18next'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
-import { useActiveWeb3React } from '../../hooks'
 import { useAllTokens, useAllStableSwapTokens, useToken, useAllValidStableSwapOutputTokens } from '../../hooks/Tokens'
 import { useSelectedListInfo } from '../../state/lists/hooks'
 import { CloseIcon, LinkStyledButton, TYPE } from '../../theme'
@@ -33,6 +32,7 @@ import { useTokenComparator } from './sorting'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { Field } from '../../state/stableswap/actions'
+import { NETWORK_CHAIN_ID } from '../../connectors'
 interface CurrencySearchProps {
   isOpen: boolean
   onDismiss: () => void
@@ -74,7 +74,8 @@ export function CurrencySearch({
   stableSwapInputField
 }: CurrencySearchProps & StableSwapSearchProps) {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
+
+  const chainId = NETWORK_CHAIN_ID
   const theme = useContext(ThemeContext)
 
   const fixedList = useRef<FixedSizeList>()

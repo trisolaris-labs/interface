@@ -7,6 +7,7 @@ import { injected } from '../../connectors'
 import { darken } from 'polished'
 import Loader from '../Loader'
 import { useTranslation } from 'react-i18next'
+import { Connector } from '@web3-react/types'
 
 const PendingSection = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -67,13 +68,13 @@ const LoadingWrapper = styled.div`
 export default function PendingView({
   connector,
   error = false,
-  setPendingError,
+  openOptions,
   tryActivation
 }: {
-  connector?: AbstractConnector
+  connector: Connector
   error?: boolean
-  setPendingError: (error: boolean) => void
-  tryActivation: (connector: AbstractConnector) => void
+  tryActivation: (connector: Connector) => void
+  openOptions: () => void
 }) {
   const isMetamask = window?.ethereum?.isMetaMask
   const { t } = useTranslation()
@@ -87,8 +88,7 @@ export default function PendingView({
               <div>{t('walletModal.errorConnecting')}.</div>
               <ErrorButton
                 onClick={() => {
-                  setPendingError(false)
-                  connector && tryActivation(connector)
+                  tryActivation(connector)
                 }}
               >
                 {t('walletModal.tryAgain')}

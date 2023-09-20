@@ -38,6 +38,7 @@ import useRemoveLiquidityPriceImpact from '../../hooks/useRemoveLiquidityPriceIm
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
 import { useStableSwapContract } from '../../hooks/useContract'
 import { getLpTokenUsdEstimate } from '../../utils/stableSwap'
+import { NETWORK_CHAIN_ID } from '../../connectors'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -66,7 +67,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
     isMetaPool(stableSwapPoolName) // if it's a metapool, use unwrapped tokens
   )
 
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
   const parsedAmount = tryParseAmount(input, currency)
   const parsedAmountString = parsedAmount?.raw?.toString() ?? null
@@ -329,7 +330,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
             })}
           </AutoColumn>
           <div style={{ marginTop: '1rem' }}>
-            {account == null ? (
+            {account == null || chainId !== NETWORK_CHAIN_ID ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : (
               <AutoColumn gap="8px">

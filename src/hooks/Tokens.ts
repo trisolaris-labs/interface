@@ -14,11 +14,12 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { useActiveWeb3React } from './index'
 import { useCalculateStableSwapPairs } from './useCalculateStableSwapPairs'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
+import { NETWORK_CHAIN_ID } from '../connectors'
 
 type TokensMap = { [address: string]: Token }
 
 export function useAllTokens(): TokensMap {
-  const { chainId } = useActiveWeb3React()
+  const chainId = NETWORK_CHAIN_ID
   const userAddedTokens = useUserAddedTokens()
   const allTokens = useSelectedTokenList()
 
@@ -34,6 +35,7 @@ export function useAllTokens(): TokensMap {
           },
           // must make a copy because reduce modifies the map, and we do not
           // want to make a copy in every iteration
+
           { ...allTokens[chainId] }
         )
     )
@@ -63,6 +65,7 @@ export function useAllStableSwapTokens(): TokensMap {
       },
       new Set()
     )
+
     const validStableTokens = _.filter(allTokens[chainId], token => validStablesSet.has(token.address))
 
     return validStableTokens

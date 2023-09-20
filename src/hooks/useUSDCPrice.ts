@@ -1,27 +1,28 @@
-// TODO: Actually calculate price
-
-import { ChainId, Currency, currencyEquals, JSBI, Price, TokenAmount, WETH } from '@trisolaris/sdk'
+import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from '@trisolaris/sdk'
 import { useMemo } from 'react'
 import { BIG_INT_ZERO } from '../constants'
 import { AUUSDC as auUsdcDef, AUUSDT as auUsdtDef, USDC as usdcDef, USDT as usdtDef } from '../constants/tokens'
 import { PairState, usePairs } from '../data/Reserves'
-import { useActiveWeb3React } from '.'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { useAuTokenContract } from './useContract'
 import { useSingleCallResult } from '../state/multicall/hooks'
+import { NETWORK_CHAIN_ID } from '../connectors'
 
 /**
  * Returns the price in USDC of the input currency
  * @param currency currency to compute the USDC price of
  */
 export default function useUSDCPrice(currency?: Currency): Price | undefined {
-  const { chainId } = useActiveWeb3React()
+  const chainId = NETWORK_CHAIN_ID
   const wrapped = wrappedCurrency(currency, chainId)
 
-  const USDC = chainId ? usdcDef[chainId] : usdcDef[ChainId.AURORA]
-  const USDT = chainId ? usdtDef[chainId] : usdtDef[ChainId.AURORA]
-  const AUUSDT = chainId ? auUsdtDef[chainId] : auUsdtDef[ChainId.AURORA]
-  const AUUSDC = chainId ? auUsdcDef[chainId] : auUsdcDef[ChainId.AURORA]
+  const USDC = usdcDef[ChainId.AURORA]
+
+  const USDT = usdtDef[ChainId.AURORA]
+
+  const AUUSDT = auUsdtDef[ChainId.AURORA]
+
+  const AUUSDC = auUsdcDef[ChainId.AURORA]
 
   const auUSDCContract = useAuTokenContract(AUUSDC.address)
   const auUSDTContract = useAuTokenContract(AUUSDT.address)
@@ -37,9 +38,11 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
     () => [
       [
         chainId && wrapped && currencyEquals(WETH[chainId], wrapped) ? undefined : currency,
+
         chainId ? WETH[chainId] : undefined
       ],
       [wrapped?.equals(USDC) ? undefined : wrapped, chainId === ChainId.AURORA ? USDC : undefined],
+
       [chainId ? WETH[chainId] : undefined, chainId === ChainId.AURORA ? USDC : undefined]
     ],
     [chainId, currency, wrapped, USDC]

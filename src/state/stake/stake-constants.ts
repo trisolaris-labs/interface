@@ -696,7 +696,6 @@ const AURORA_POOLS: StakingTri[] = [
     poolType: PoolType.MULTIPLE
   })
 ]
-
 export const STAKING: {
   [chainid in ChainId]: StakingTri[]
 } = {
