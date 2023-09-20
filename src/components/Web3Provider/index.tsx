@@ -1,11 +1,10 @@
 import { Web3ReactProvider } from '@web3-react/core'
 import { Connector } from '@web3-react/types'
-import { network, useConnectors, injected, walletConnect } from '../../connectors'
+import { Wallet, coinbaseWallet, injected, network, useConnectors, walletConnect } from '../../connectors'
 import { ReactNode, useEffect } from 'react'
 
 const connect = async (connector: Connector) => {
   try {
-    console.log(connector)
     if (connector.connectEagerly) {
       await connector.connectEagerly()
     } else {
@@ -18,12 +17,20 @@ const connect = async (connector: Connector) => {
 
 export default function Web3Provider({ children }: { children: ReactNode }) {
   const connectors = useConnectors(undefined)
-
   useEffect(() => {
-    connect(injected)
-    connect(walletConnect)
+    const selectedWallet = window.localStorage.getItem('selectedWallet')
+    // connect(gnosisSafe)
     connect(network)
-  }, [])
+    if (selectedWallet === Wallet.INJECTED) {
+      connect(injected)
+    }
+    if (selectedWallet === Wallet.COINBASE_WALLET) {
+      connect(coinbaseWallet)
+    }
+    if (selectedWallet === Wallet.WALLET_CONNECT) {
+      connect(walletConnect)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return <Web3ReactProvider connectors={connectors}>{children}</Web3ReactProvider>
 }
