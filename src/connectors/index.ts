@@ -97,7 +97,17 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
       options: {
         projectId: 'c13edb0e380beb4872d04fa7dce7d169',
         chains: [NETWORK_CHAIN_ID],
-        showQrModal: true
+        showQrModal: true,
+        qrModalOptions: {
+          explorerRecommendedWalletIds: [
+            '76260019aec5a3c44dd2421bf78e80f71a6c090d932c413a287193ed79450694',
+            'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96',
+            '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0',
+            'c03dfee351b6fcc421b4494ea33b9d4b92a984f87aa76d1663bb28705e95034a',
+            '163d2cf19babf05eb8962e9748f9ebe613ed52ebf9c8107c9a0f104bfcf161b3',
+            '18388be9ac2d02726dbac9777c96efaac06d744b2f6d580fccdd4127a6d01fd1'
+          ]
+        }
       }
     })
 )
