@@ -23,18 +23,18 @@ export const WBTC: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0xF4eB217Ba2454613b15dBdea6e5f22276410e89e', 8, 'WBTC', 'Wrapped Bitcoin'),
 }
 
-export const USDC: { [chainId in ChainId]: Token } = {
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', 6, 'USDC', 'USD Coin'),
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'USDC', 'USD Coin'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664', 6, 'USDC', 'USD Coin'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xB12BFcA5A55806AaF64E99521918A4bf0fC40802', 6, 'USDC', 'USD Coin'),
+export const USDC_E: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 6, 'USDC.e', 'USD Coin'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'USDC.e', 'USD Coin'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 6, 'USDC.e', 'USD Coin'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xB12BFcA5A55806AaF64E99521918A4bf0fC40802', 6, 'USDC.e', 'USD Coin'),
 }
 
-export const USDT: { [chainId in ChainId]: Token } = {
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0xc2132D05D31c914a87C6611C10748AEb04B58e8F', 6, 'USDT', 'Tether USD'),
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'USDT', 'Tether USD'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xde3A24028580884448a5397872046a019649b084', 6, 'USDT', 'Tether USD'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4988a896b1227218e4A686fdE5EabdcAbd91571f', 6, 'USDT', 'Tether USD'),
+export const USDT_E: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 6, 'USDT.e', 'Tether USD'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'USDT.e', 'Tether USD'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 6, 'USDT.e', 'Tether USD'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4988a896b1227218e4A686fdE5EabdcAbd91571f', 6, 'USDT.e', 'Tether USD'),
 }
 
 export const WNEAR: { [chainId in ChainId]: Token } = {
@@ -177,11 +177,11 @@ export const BBT: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4148d2Ce7816F0AE378d98b40eB3A7211E1fcF0D', 18, 'BBT', 'BlueBit Token'),
 }
 
-export const USD_TLP: { [chainId in ChainId]: Token } = {
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USD TLP', 'Trisolaris USDC/USDT'),
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USD TLP', 'Trisolaris USDC/USDT'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USD TLP', 'Trisolaris USDC/USDT'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9', 18, 'USD TLP', 'Trisolaris USDC/USDT'),
+export const USDC_E_USDT_E_TLP: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USDC.e/USDT.e TLP', 'Trisolaris USDC.e/USDT.e'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USDC.e/USDT.e TLP', 'Trisolaris USDC.e/USDT.e'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USDC.e/USDT.e TLP', 'Trisolaris USDC.e/USDT.e'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x5EB99863f7eFE88c447Bc9D52AA800421b1de6c9', 18, 'USDC.e/USDT.e TLP', 'Trisolaris USDC.e/USDT.e'),
 }
 
 export const AAVE: { [chainId in ChainId]: Token } = {
@@ -758,11 +758,32 @@ export const STAUR: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x8A7feB26ee5b202804AC11Dd5a739A945C5De11d', 18, 'stAUR', 'Staked Aurora Token'),
 }
 
+export const USDC: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', 6, 'USDC', 'USD Coin'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'USDC', 'USD Coin'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664', 6, 'USDC', 'USD Coin'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7', 6, 'USDC', 'USD Coin'),
+}
+
+export const USDC_USDC_E_TLP: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDC.e TLP', 'Trisolaris USDC/USDC.e'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDC.e TLP', 'Trisolaris USDC/USDC.e'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDC.e TLP', 'Trisolaris USDC/USDC.e'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x19e91C9b155D2A8B47B74e9e100f28355AC13879', 18, 'USDC/USDC.e TLP', 'Trisolaris USDC/USDC.e'),
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x60781C2586D68229fde47564546784ab3fACA982', 18, 'PNG', 'Pangolin'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0b20972B45ffB8e5d4D37AF4024E1bf0b03f15ae', 18, 'WETH', 'Ethereum'),
+}
+
+export const USDT: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0xc2132D05D31c914a87C6611C10748AEb04B58e8F', 6, 'USDT', 'Tether USD'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'USDT', 'Tether USD'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xde3A24028580884448a5397872046a019649b084', 6, 'USDT', 'Tether USD'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 6, 'USDT', 'Tether USD'),
 }
 
 export const PTRI: { [chainId in ChainId]: Token } = {

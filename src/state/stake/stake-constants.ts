@@ -437,12 +437,12 @@ const AURORA_POOLS: StakingTri[] = [
   createMCV2Pool({
     ID: 25,
     poolId: 18,
-    tokens: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT].poolTokens,
-    lpAddress: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT].lpToken.address,
+    tokens: STABLESWAP_POOLS[StableSwapPoolName.USDC_E_USDT_E].poolTokens,
+    lpAddress: STABLESWAP_POOLS[StableSwapPoolName.USDC_E_USDT_E].lpToken.address,
     rewarderAddress: '',
     allocPoint: 1,
     inStaging: true,
-    stableSwapPoolName: StableSwapPoolName.USDC_USDT,
+    stableSwapPoolName: StableSwapPoolName.USDC_E_USDT_E,
     poolType: PoolType.STABLE
   }),
   createMCV2Pool({
@@ -588,13 +588,13 @@ const AURORA_POOLS: StakingTri[] = [
   createMCV2Pool({
     ID: 39,
     poolId: 32,
-    tokens: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].poolTokens,
-    lpAddress: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].lpToken.address,
+    tokens: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_E_USDT_E].poolTokens,
+    lpAddress: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_E_USDT_E].lpToken.address,
     rewarderAddress: '0xf4ac19e819f5940E92543B544126E7F20b5f6978',
     allocPoint: 1,
     inStaging: false,
-    stableSwapPoolName: StableSwapPoolName.NUSD_USDC_USDT,
-    friendlyFarmName: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_USDT].friendlyName,
+    stableSwapPoolName: StableSwapPoolName.NUSD_USDC_E_USDT_E,
+    friendlyFarmName: STABLESWAP_POOLS[StableSwapPoolName.NUSD_USDC_E_USDT_E].friendlyName,
     isFeatured: true,
     poolType: PoolType.LEGACY
   }),
@@ -661,11 +661,11 @@ const AURORA_POOLS: StakingTri[] = [
   createMCV2Pool({
     ID: 47,
     poolId: 40,
-    tokens: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT_V2].poolTokens,
+    tokens: STABLESWAP_POOLS[StableSwapPoolName.USDC_E_USDT_E_V2].poolTokens,
     lpAddress: '0x3fADE6094373f7A91A91D4607b226791fB3BCEAf',
     isFeatured: true,
     poolType: PoolType.STABLE,
-    stableSwapPoolName: StableSwapPoolName.USDC_USDT_V2,
+    stableSwapPoolName: StableSwapPoolName.USDC_E_USDT_E_V2,
     zapEnabled: true
   }),
   createMCV2Pool({
