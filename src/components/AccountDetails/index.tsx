@@ -226,7 +226,7 @@ export default function AccountDetails({
 
   function formatConnectorName() {
     const name = isBraveWallet()
-      ? SUPPORTED_WALLETS.BRAVE.name
+      ? 'Brave Wallet'
       : Object.keys(SUPPORTED_WALLETS)
           .filter(
             k =>
