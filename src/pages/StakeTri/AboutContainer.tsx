@@ -31,14 +31,14 @@ const DynamicAPRContainer = styled.span`
   top: 0.1rem;
 `
 
-const { lpToken: USD_TLP } = STABLESWAP_POOLS[StableSwapPoolName.USDC_E_USDT_E_V2]
+const { lpToken: USDC_E_USDT_E_TLP } = STABLESWAP_POOLS[StableSwapPoolName.USDC_E_USDT_E_V2]
 
 export default function AboutContainer() {
   const farmsData = useFarmsAPI()
-  const { apr, inStaging, nonTriAPRs } = farmsData.filter(item => item.lpAddress === USD_TLP.address)?.[0]
+  const { apr, inStaging, nonTriAPRs } = farmsData.filter(item => item.lpAddress === USDC_E_USDT_E_TLP.address)?.[0]
 
   const usdTLPLink = (
-    <StyledExternalLink target="_blank" href={`https://explorer.aurora.dev/token/${USD_TLP.address}`}>
+    <StyledExternalLink target="_blank" href={`https://explorer.aurora.dev/token/${USDC_E_USDT_E_TLP.address}`}>
       USD TLP
     </StyledExternalLink>
   )
