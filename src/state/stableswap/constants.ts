@@ -1,13 +1,27 @@
 import { ChainId, Token, WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
-import { FRAX, USDC, USDT, WBTC, UST, USN, NUSD, AUUSDC, AUUSDT, USDC_USDT_V2 } from '../../constants/tokens'
+import {
+  FRAX,
+  USDC,
+  USDC_E,
+  USDT,
+  USDT_E,
+  WBTC,
+  UST,
+  USN,
+  NUSD,
+  AUUSDC,
+  AUUSDT,
+  USDC_USDT_V2,
+  USDC_USDC_E_TLP
+} from '../../constants/tokens'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
   return new Set(['dummy value']).has(poolName)
 }
 
 export function isMetaPool(poolName?: StableSwapPoolName): boolean {
-  const metapools = new Set<StableSwapPoolName | undefined>([StableSwapPoolName.NUSD_USDC_USDT])
+  const metapools = new Set<StableSwapPoolName | undefined>([StableSwapPoolName.NUSD_USDC_E_USDT_E])
 
   return metapools.has(poolName)
 }
@@ -18,18 +32,20 @@ export enum STABLE_SWAP_TYPES {
 }
 
 export enum StableSwapPoolName {
-  USDC_USDT = 'USDC_USDT',
+  USDC_E_USDT_E = 'USDC.e_USDT.e',
   USDC_USDT_UST_FRAX_USN = 'USDC_USDT_UST_FRAX_USN',
   USDC_USDT_USN = 'USDC_USDT_USN',
-  USDC_USDT_V2 = 'USDC_USDT_V2',
-  NUSD_USDC_USDT = 'NUSD_USDC_USDT',
-  AUUSDC_AUUSDT = 'AUUSDC_AUUSDT'
+  USDC_E_USDT_E_V2 = 'USDC_USDT_V2',
+  NUSD_USDC_E_USDT_E = 'NUSD_USDC_USDT',
+  AUUSDC_AUUSDT = 'AUUSDC_AUUSDT',
+  USDC_USDC_E = 'USDC_USDC.e'
 }
 
 export enum StableSwapPoolTypes {
   BTC,
   ETH,
   USD,
+  USDC_NATIVE,
   AURIGAMI,
   OTHER
 }
@@ -40,9 +56,11 @@ export function getTokenForStablePoolType(poolType: StableSwapPoolTypes): Token 
   } else if (poolType === StableSwapPoolTypes.ETH) {
     return WETH[ChainId.AURORA]
   } else if (poolType === StableSwapPoolTypes.USD) {
+    return USDC_E[ChainId.AURORA]
+  } else if (poolType === StableSwapPoolTypes.USDC_NATIVE) {
     return USDC[ChainId.AURORA]
   } else if (poolType === StableSwapPoolTypes.AURIGAMI) {
-    return USDC[ChainId.AURORA]
+    return USDC_E[ChainId.AURORA]
   } else {
     throw new Error('[getTokenForStablePoolType] Error getting token')
   }
@@ -90,8 +108,8 @@ export type StableSwapTokenToPoolsMap = {
 export type StableSwapPools = { [name in StableSwapPoolName]: StableSwapPool }
 
 export const STABLESWAP_POOLS: StableSwapPools = {
-  [StableSwapPoolName.USDC_USDT]: {
-    name: StableSwapPoolName.USDC_USDT,
+  [StableSwapPoolName.USDC_E_USDT_E]: {
+    name: StableSwapPoolName.USDC_E_USDT_E,
     friendlyName: 'USDC/USDT (Deprecated)',
     // @TODO Move the prod version of this token to the Tokens repo
     lpToken: new Token(
@@ -103,7 +121,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     ),
     // *** NOTE *** - For future reference, this order of the pool tokens must be equivalent to the LP token name order
     // Also to verify, please query the swap contract for the individual stable token indexes
-    poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
+    poolTokens: [USDC_E[ChainId.AURORA], USDT_E[ChainId.AURORA]],
     address: '0x13e7a001EC72AB30D66E2f386f677e25dCFF5F59',
     type: StableSwapPoolTypes.USD,
     route: 'usd',
@@ -122,8 +140,8 @@ export const STABLESWAP_POOLS: StableSwapPools = {
       'USDC/USDT/UST/FRAX/USN'
     ),
     poolTokens: [
-      USDC[ChainId.AURORA],
-      USDT[ChainId.AURORA],
+      USDC_E[ChainId.AURORA],
+      USDT_E[ChainId.AURORA],
       UST[ChainId.AURORA],
       FRAX[ChainId.AURORA],
       USN[ChainId.AURORA]
@@ -139,41 +157,41 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     name: StableSwapPoolName.USDC_USDT_USN,
     friendlyName: 'USDC/USDT/USN',
     lpToken: new Token(ChainId.AURORA, '0x87BCC091d0A7F9352728100268Ac8D25729113bB', 18, 'USD TLP', 'USDC/USDT/USN'),
-    poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA], USN[ChainId.AURORA]],
+    poolTokens: [USDC_E[ChainId.AURORA], USDT_E[ChainId.AURORA], USN[ChainId.AURORA]],
     address: '0x458459E48dbAC0C8Ca83F8D0b7b29FEfE60c3970',
     type: StableSwapPoolTypes.USD,
     route: 'usd',
     isOutdated: false,
     rewardPids: null
   },
-  [StableSwapPoolName.USDC_USDT_V2]: {
-    name: StableSwapPoolName.USDC_USDT_V2,
-    friendlyName: 'USDC/USDT',
+  [StableSwapPoolName.USDC_E_USDT_E_V2]: {
+    name: StableSwapPoolName.USDC_E_USDT_E_V2,
+    friendlyName: 'USDC.e/USDT.e',
     lpToken: USDC_USDT_V2[ChainId.AURORA],
-    poolTokens: [USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
+    poolTokens: [USDC_E[ChainId.AURORA], USDT_E[ChainId.AURORA]],
     address: '0x51d96EF6960cC7b4C884E1215564f926011A4064',
     type: StableSwapPoolTypes.USD,
     route: 'usd',
     isOutdated: false,
     rewardPids: null
   },
-  [StableSwapPoolName.NUSD_USDC_USDT]: {
-    name: StableSwapPoolName.NUSD_USDC_USDT,
-    friendlyName: 'nUSD-USDC/USDT',
+  [StableSwapPoolName.NUSD_USDC_E_USDT_E]: {
+    name: StableSwapPoolName.NUSD_USDC_E_USDT_E,
+    friendlyName: 'nUSD-USDC.e/USDT.e',
     lpToken: new Token(
       ChainId.AURORA,
       '0xffb69779f14E851A8c550Bf5bB1933c44BBDE129',
       18,
-      'nUSD-USDC/USDT TLP',
+      'nUSD-USDC.e/USDT.e TLP',
       'Trisolaris nUSD-USDC/USDT'
     ),
-    poolTokens: [NUSD[ChainId.AURORA], USDC[ChainId.AURORA], USDT[ChainId.AURORA]],
+    poolTokens: [NUSD[ChainId.AURORA], USDC_E[ChainId.AURORA], USDT_E[ChainId.AURORA]],
     address: '0x3CE7AAD78B9eb47Fd2b487c463A17AAeD038B7EC', // MetaSwap
     metaSwapAddresses: '0xCCd87854f58773fe75CdDa542457aC48E46c2D65', // MetaSwapDeposit
     type: StableSwapPoolTypes.USD,
     route: 'usd',
     underlyingPoolTokens: [NUSD[ChainId.AURORA], USDC_USDT_V2[ChainId.AURORA]],
-    underlyingPool: StableSwapPoolName.USDC_USDT,
+    underlyingPool: StableSwapPoolName.USDC_E_USDT_E,
     isOutdated: false,
     rewardPids: null
   },
@@ -191,6 +209,19 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     address: '0x46F27692de8aA76E86e7E665e573828b9ddcB2b8',
     type: StableSwapPoolTypes.AURIGAMI,
     route: 'usd',
+    isOutdated: false,
+    rewardPids: null
+  },
+  [StableSwapPoolName.USDC_USDC_E]: {
+    name: StableSwapPoolName.USDC_USDC_E,
+    friendlyName: 'USDC/USDC.e',
+    // TODO - This LP token needs to be added in the tokenlist repo first before generating the new js bundle
+    lpToken: USDC_USDC_E_TLP[ChainId.AURORA],
+    // TODO - These tokens need to be swapped in the tokenlist repo first before generating the new js bundle
+    poolTokens: [USDC[ChainId.AURORA], USDC_E[ChainId.AURORA]],
+    address: '0x35529BbDd64a561D8A29004C7eFcb1a5D0F6eA4a',
+    type: StableSwapPoolTypes.USDC_NATIVE,
+    route: 'usdc native',
     isOutdated: false,
     rewardPids: null
   }

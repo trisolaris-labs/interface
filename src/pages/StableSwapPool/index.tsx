@@ -35,14 +35,14 @@ export default function Pool() {
             </TYPE.mediumHeader>
           </TitleRow>
           <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_USN} />
-          <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_V2} />
+          <FullStablePositionCard poolName={StableSwapPoolName.USDC_E_USDT_E_V2} />
           <FullStablePositionCard poolName={StableSwapPoolName.AUUSDC_AUUSDT} />
         </AutoColumn>
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <TitleRow style={{ marginTop: '1rem' }} padding={'0'}>
             <TYPE.mediumHeader style={{ marginTop: '0.5rem', justifySelf: 'flex-start' }}>Meta Pools</TYPE.mediumHeader>
           </TitleRow>
-          <FullStablePositionCard poolName={StableSwapPoolName.NUSD_USDC_USDT} />
+          <FullStablePositionCard poolName={StableSwapPoolName.NUSD_USDC_E_USDT_E} />
         </AutoColumn>
         <AutoColumn gap="lg" style={{ width: '100%' }}>
           <TitleRow style={{ marginTop: '2.5rem' }} padding={'0'}>
@@ -56,7 +56,7 @@ export default function Pool() {
           </TitleRow>
           {showDeprecatedPools ? (
             <>
-              <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT} />
+              <FullStablePositionCard poolName={StableSwapPoolName.USDC_E_USDT_E} />
               <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_UST_FRAX_USN} />
             </>
           ) : null}
