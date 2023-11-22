@@ -661,11 +661,11 @@ const AURORA_POOLS: StakingTri[] = [
   createMCV2Pool({
     ID: 47,
     poolId: 40,
-    tokens: STABLESWAP_POOLS[StableSwapPoolName.USDC_E_USDT_E_V2].poolTokens,
+    tokens: STABLESWAP_POOLS[StableSwapPoolName.USDC_USDT_V2].poolTokens,
     lpAddress: '0x3fADE6094373f7A91A91D4607b226791fB3BCEAf',
     isFeatured: true,
     poolType: PoolType.STABLE,
-    stableSwapPoolName: StableSwapPoolName.USDC_E_USDT_E_V2,
+    stableSwapPoolName: StableSwapPoolName.USDC_USDT_V2,
     zapEnabled: true
   }),
   createMCV2Pool({

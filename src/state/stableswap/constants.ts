@@ -32,13 +32,13 @@ export enum STABLE_SWAP_TYPES {
 }
 
 export enum StableSwapPoolName {
-  USDC_E_USDT_E = 'USDC.e_USDT.e',
+  USDC_E_USDT_E = 'USDC_E_USDT_E',
   USDC_USDT_UST_FRAX_USN = 'USDC_USDT_UST_FRAX_USN',
   USDC_USDT_USN = 'USDC_USDT_USN',
-  USDC_E_USDT_E_V2 = 'USDC_USDT_V2',
-  NUSD_USDC_E_USDT_E = 'NUSD_USDC_USDT',
+  USDC_USDT_V2 = 'USDC_USDT_V2',
+  NUSD_USDC_E_USDT_E = 'NUSD_USDC_E_USDT_E',
   AUUSDC_AUUSDT = 'AUUSDC_AUUSDT',
-  USDC_USDC_E = 'USDC_USDC.e'
+  USDC_USDC_E = 'USDC_USDC_E'
 }
 
 export enum StableSwapPoolTypes {
@@ -164,8 +164,8 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     isOutdated: false,
     rewardPids: null
   },
-  [StableSwapPoolName.USDC_E_USDT_E_V2]: {
-    name: StableSwapPoolName.USDC_E_USDT_E_V2,
+  [StableSwapPoolName.USDC_USDT_V2]: {
+    name: StableSwapPoolName.USDC_USDT_V2,
     friendlyName: 'USDC.e/USDT.e',
     lpToken: USDC_USDT_V2[ChainId.AURORA],
     poolTokens: [USDC_E[ChainId.AURORA], USDT_E[ChainId.AURORA]],
@@ -215,9 +215,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
   [StableSwapPoolName.USDC_USDC_E]: {
     name: StableSwapPoolName.USDC_USDC_E,
     friendlyName: 'USDC/USDC.e',
-    // TODO - This LP token needs to be added in the tokenlist repo first before generating the new js bundle
     lpToken: USDC_USDC_E_TLP[ChainId.AURORA],
-    // TODO - These tokens need to be swapped in the tokenlist repo first before generating the new js bundle
     poolTokens: [USDC[ChainId.AURORA], USDC_E[ChainId.AURORA]],
     address: '0x35529BbDd64a561D8A29004C7eFcb1a5D0F6eA4a',
     type: StableSwapPoolTypes.USDC_NATIVE,

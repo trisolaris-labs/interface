@@ -26,7 +26,7 @@ export function usePtriStakeInfo() {
   const ptriContract = usePTriContract()
   const { getTriPrice } = useTriPrice()
   const triPrice = getTriPrice()
-  const [{ virtualPrice }] = useStablePoolsData(StableSwapPoolName.USDC_E_USDT_E_V2)
+  const [{ virtualPrice }] = useStablePoolsData(StableSwapPoolName.USDC_USDT_V2)
 
   const totalStaked = useTotalSupply(PTRI[ChainId.AURORA]) ?? NULL_PTRI_AMOUNT
   const totalStakedInUsd = totalStaked.multiply(triPrice ?? BIG_INT_ZERO).toFixed(2)
