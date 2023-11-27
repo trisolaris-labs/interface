@@ -34,7 +34,7 @@ export default function Pool() {
               Factory Pools
             </TYPE.mediumHeader>
           </TitleRow>
-          <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDC_E} />
+          {/* <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDC_E} /> */}
           <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_USN} />
           <FullStablePositionCard poolName={StableSwapPoolName.USDC_USDT_V2} />
           <FullStablePositionCard poolName={StableSwapPoolName.AUUSDC_AUUSDT} />
