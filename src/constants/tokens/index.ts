@@ -772,6 +772,13 @@ export const USDC_USDC_E_TLP: { [chainId in ChainId]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x19e91C9b155D2A8B47B74e9e100f28355AC13879', 18, 'USDC/USDC.e TLP', 'Trisolaris USDC/USDC.e'),
 }
 
+export const SCM: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'SCM', 'Scamfari'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'SCM', 'Scamfari'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'SCM', 'Scamfari'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0xE3ff873C1e104118Ec83310E39aAfDE17d18005d', 18, 'SCM', 'Scamfari'),
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),
