@@ -140,12 +140,15 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 
   return useMemo(() => {
     if (token) {
-      if (token.symbol === 'USDC' && token.address === USDC_E[ChainId.AURORA].address) {
-        return USDC_E[ChainId.AURORA]
-      } else if (token.symbol === 'USDT' && token.address === USDT_E[ChainId.AURORA].address) {
+      if (token.symbol?.includes('USDT') && token.address === USDT_E[ChainId.AURORA].address) {
+        console.log('aiaiai')
         return USDT_E[ChainId.AURORA]
+      } else if (token.symbol?.includes('USDC') && token.address === USDC_E[ChainId.AURORA].address) {
+        console.log('dededed')
+        return USDC_E[ChainId.AURORA]
+      } else {
+        return token
       }
-      return token
     }
     if (!chainId || !address) return undefined
     if (decimals.loading || symbol.loading || tokenName.loading) return null
