@@ -197,13 +197,13 @@ export const STABLESWAP_POOLS: StableSwapPools = {
   },
   [StableSwapPoolName.AUUSDC_AUUSDT]: {
     name: StableSwapPoolName.AUUSDC_AUUSDT,
-    friendlyName: 'auUSDC/auUSDT',
+    friendlyName: 'auUSDC.e/auUSDT.e',
     lpToken: new Token(
       ChainId.AURORA,
       '0x2e5F03c34A771F50C97E8f77EF801C426636e5Cd',
       18,
-      'auUSDC/auUSDT TLP',
-      'Trisolaris auUSDC/auUSDT TLP'
+      'auUSDC.e/auUSDT.e TLP',
+      'Trisolaris auUSDC.e/auUSDT.e TLP'
     ),
     poolTokens: [AUUSDC[ChainId.AURORA], AUUSDT[ChainId.AURORA]],
     address: '0x46F27692de8aA76E86e7E665e573828b9ddcB2b8',

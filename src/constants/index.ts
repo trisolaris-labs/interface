@@ -7,7 +7,6 @@ import {
   TRI,
   USDT,
   WNEAR,
-  ATLUNA,
   AURORA,
   POLAR,
   SPOLAR,
@@ -22,7 +21,9 @@ import {
   ORBITAL,
   SMARTPAD,
   USP,
-  BINARIS
+  BINARIS,
+  USDC_E,
+  USDT_E
 } from './tokens'
 
 export const GAS_PRICE = 250
@@ -57,11 +58,12 @@ const COMMON_BASES: ChainTokenList = {
   [ChainId.AVALANCHE]: [DAI[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
   [ChainId.POLYGON]: [DAI[ChainId.POLYGON], USDT[ChainId.POLYGON]],
   [ChainId.AURORA]: [
+    USDC_E[ChainId.AURORA],
+    USDT_E[ChainId.AURORA],
     USDC[ChainId.AURORA],
     USDT[ChainId.AURORA],
     createProperlyNamedWETH(),
     TRI[ChainId.AURORA],
-    ATLUNA[ChainId.AURORA],
     XTRI[ChainId.AURORA],
     WNEAR[ChainId.AURORA],
     STNEAR[ChainId.AURORA],
