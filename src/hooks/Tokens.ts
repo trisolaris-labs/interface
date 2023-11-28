@@ -1,5 +1,5 @@
 import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, CETH, Token, currencyEquals } from '@trisolaris/sdk'
+import { Currency, CETH, Token, currencyEquals, ChainId } from '@trisolaris/sdk'
 import _ from 'lodash'
 import { useMemo } from 'react'
 import { useSelectedTokenList } from '../state/lists/hooks'
@@ -15,6 +15,7 @@ import { useActiveWeb3React } from './index'
 import { useCalculateStableSwapPairs } from './useCalculateStableSwapPairs'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 import { NETWORK_CHAIN_ID } from '../connectors'
+import { USDC_E, USDT_E } from '../constants/tokens'
 
 type TokensMap = { [address: string]: Token }
 
@@ -138,7 +139,14 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   const decimals = useSingleCallResult(token ? undefined : tokenContract, 'decimals', undefined, NEVER_RELOAD)
 
   return useMemo(() => {
-    if (token) return token
+    if (token) {
+      if (token.symbol === 'USDC' && token.address === USDC_E[ChainId.AURORA].address) {
+        return USDC_E[ChainId.AURORA]
+      } else if (token.symbol === 'USDT' && token.address === USDT_E[ChainId.AURORA].address) {
+        return USDT_E[ChainId.AURORA]
+      }
+      return token
+    }
     if (!chainId || !address) return undefined
     if (decimals.loading || symbol.loading || tokenName.loading) return null
     if (decimals.result) {
