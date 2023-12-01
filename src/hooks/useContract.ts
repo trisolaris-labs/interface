@@ -16,7 +16,7 @@ import WETH_ABI from '../constants/abis/polygon/weth.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
-import { PTRI, TRI, USDC, WNEAR } from '../constants/tokens'
+import { PTRI, TRI, USDC_E, WNEAR } from '../constants/tokens'
 import { STAKING } from '../state/stake/stake-constants'
 import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import PTRI_ABI from '../constants/abis/pTri/ptri.json'
@@ -72,8 +72,8 @@ export function useMulticallContract(): Contract | null {
   return useContract(chainId && MULTICALL_NETWORKS[chainId], MULTICALL_ABI, false)
 }
 
-export function useUSDCWNEARPoolContract(): Contract | null {
-  const contractAddress = findPoolContract(WNEAR[ChainId.AURORA], USDC[ChainId.AURORA])?.lpAddress
+export function useUSDC_EWNEARPoolContract(): Contract | null {
+  const contractAddress = findPoolContract(WNEAR[ChainId.AURORA], USDC_E[ChainId.AURORA])?.lpAddress
   return useContract(contractAddress, IUniswapV2Pair_ABI)
 }
 
