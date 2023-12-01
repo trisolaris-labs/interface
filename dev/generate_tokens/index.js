@@ -12,7 +12,7 @@ const TOKEN_MAP = require('./base_tokens_map')
 const { createXChainToken } = require('./utils')
 
 const TOKENS_FOLDER_PATH = path.join(__dirname, '../../src/constants/tokens')
-const TOKENS_URL = 'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/lists/1313161554/list.json'
+const TOKENS_URL = 'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/lists/204/list.json'
 
 // This kicks it all off
 init()

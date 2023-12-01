@@ -10,7 +10,7 @@ import { useMemo } from 'react'
 
 const NETWORK_URL = process.env.REACT_APP_NETWORK_URL ?? ''
 
-export const NETWORK_CHAIN_ID: ChainId = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1313161554')
+export const NETWORK_CHAIN_ID: ChainId = parseInt(process.env.REACT_APP_CHAIN_ID ?? '204')
 const appLogoUrl = 'https://raw.githubusercontent.com/trisolaris-labs/interface/master/public/favicon.png'
 
 export enum Wallet {
