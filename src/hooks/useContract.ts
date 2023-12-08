@@ -35,7 +35,7 @@ function useContract(address: string | undefined, ABI: any, withSignerIfPossible
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, ABI, provider, withSignerIfPossible, account])
+  }, [chainId, address, ABI, provider, withSignerIfPossible, account])
 }
 
 export function useV2MigratorContract(): Contract | null {
@@ -113,7 +113,6 @@ export function useStableSwapContract(
   const metaPool = useStableSwapMetaPoolDeposit(pool?.address, withSignerIfPossible)
   const metaPoolUnwrappedTokens = useStableSwapMetaPoolDeposit(pool?.metaSwapAddresses, withSignerIfPossible)
   const stableSwapPool = useStableSwapPool(pool?.address, withSignerIfPossible)
-
   return useMemo(() => {
     if (!pool || !provider || !chainId) {
       return null
