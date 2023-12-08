@@ -7,6 +7,7 @@ export const ECOSYSTEM_POOLS = [24, 48]
 export const STABLE_POOLS = [47, 44]
 
 export const LEGACY_POOLS = [
+  20,
   41,
   1,
   2,
