@@ -14,7 +14,7 @@ import { useSingleCallResult, useSingleContractMultipleData } from '../state/mul
 import { useTokenBalance } from '../state/wallet/hooks'
 import { useTotalSupply } from '../data/TotalSupply'
 import { BIG_INT_ZERO, ZERO_ADDRESS } from '../constants'
-import { USDC } from '../constants/tokens'
+import { USDC_E } from '../constants/tokens'
 import useGetTokenPrice from './useGetTokenPrice'
 
 const STABLE_POOL_CONTRACT_DECIMALS = 18
@@ -55,11 +55,10 @@ export type PoolDataHookReturnType = [StablePoolDataType, UserShareType | null]
 
 export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDataHookReturnType {
   const { account } = useActiveWeb3React()
-
   const pool = STABLESWAP_POOLS[poolName]
   const { disableAddLiquidity, lpToken, poolTokens, type, underlyingPoolTokens } = pool
   const effectivePoolTokens =
-    underlyingPoolTokens != null && underlyingPoolTokens.length > 0 ? underlyingPoolTokens : poolTokens
+    underlyingPoolTokens != null && underlyingPoolTokens?.length > 0 ? underlyingPoolTokens : poolTokens
   const isMetaSwap = isMetaPool(poolName)
 
   const swapContract = useStableSwapContract(poolName)
@@ -86,10 +85,21 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
 
   // Pool token data
   const tokenBalanceInputs: number[][] = (effectivePoolTokens ?? []).map((_, i) => [i])
-  const tokenBalances = useSingleContractMultipleData(effectiveContract, 'getTokenBalance', tokenBalanceInputs)
-    ?.map(response => response?.result)
-    ?.flat()
-    ?.map((item: any) => JSBI.BigInt(item ?? BIG_INT_ZERO))
+  const response = useSingleContractMultipleData(effectiveContract, 'getTokenBalance', tokenBalanceInputs)
+  const tokenBalances =
+    response.length !== tokenBalanceInputs.length
+      ? new Array(tokenBalanceInputs.length).fill(BIG_INT_ZERO)
+      : response
+          ?.map(item => item?.result)
+          ?.flat()
+          ?.map((item: any, index: number) => {
+            if (item && index < tokenBalanceInputs.length) {
+              return JSBI.BigInt(item)
+            } else {
+              return JSBI.BigInt(BIG_INT_ZERO)
+            }
+          })
+          .slice(0, tokenBalanceInputs.length)
 
   const tokenBalancesSum = sumAllJSBI(tokenBalances)
 
@@ -102,11 +112,11 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
   const presentationTokenHasMoreDecimals = poolPresentationTokenDecimals > STABLE_POOL_CONTRACT_DECIMALS
   const presentationTokenHasLessDecimals = poolPresentationTokenDecimals < STABLE_POOL_CONTRACT_DECIMALS
 
-  const USDCPrice1 = useGetTokenPrice(effectivePoolTokens[0] ?? USDC[ChainId.AURORA])
-  const USDCPrice2 = useGetTokenPrice(effectivePoolTokens[1] ?? USDC[ChainId.AURORA])
-  const USDCPrice3 = useGetTokenPrice(effectivePoolTokens[2] ?? USDC[ChainId.AURORA])
-  const USDCPrice4 = useGetTokenPrice(effectivePoolTokens[3] ?? USDC[ChainId.AURORA])
-  const USDCPrice5 = useGetTokenPrice(effectivePoolTokens[4] ?? USDC[ChainId.AURORA])
+  const USDCPrice1 = useGetTokenPrice(effectivePoolTokens[0] ?? USDC_E[ChainId.AURORA])
+  const USDCPrice2 = useGetTokenPrice(effectivePoolTokens[1] ?? USDC_E[ChainId.AURORA])
+  const USDCPrice3 = useGetTokenPrice(effectivePoolTokens[2] ?? USDC_E[ChainId.AURORA])
+  const USDCPrice4 = useGetTokenPrice(effectivePoolTokens[3] ?? USDC_E[ChainId.AURORA])
+  const USDCPrice5 = useGetTokenPrice(effectivePoolTokens[4] ?? USDC_E[ChainId.AURORA])
 
   const tokenPrices = [USDCPrice1, USDCPrice2, USDCPrice3, USDCPrice4, USDCPrice5]
 
@@ -120,13 +130,15 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
       return JSBI.divide(balance, tokenDecimalDiff)
     } else if (token.decimals < STABLE_POOL_CONTRACT_DECIMALS) {
       return JSBI.multiply(balance, tokenDecimalDiff)
+    } else if (!balance) {
+      return JSBI.BigInt(0)
     } else {
       return balance
     }
   }
 
   const tokenBalancesUSD = effectivePoolTokens.map((token, i) => {
-    const balance = tokenBalances[i]
+    const balance = tokenBalances?.[i] ?? BIG_INT_ZERO
     const tokenPrice = tokenPrices[i]
 
     const poolAssetPrice = JSBI.divide(
@@ -166,7 +178,7 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
         totalLpTokenBalance.raw
       )
 
-  const lpTokenPriceUSDC = new TokenAmount(USDC[ChainId.AURORA], lpTokenPrice)
+  const lpTokenPriceUSDC = new TokenAmount(USDC_E[ChainId.AURORA], lpTokenPrice)
 
   const tokenBalancesNormalized = normalizeTokensToFewestDecimalCount(effectivePoolTokens, tokenBalances)
   const tokenBalancesSumNormalized = sumAllJSBI(tokenBalancesNormalized)
@@ -203,7 +215,7 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
 
   const userPoolTokenBalancesUSD = tokenBalancesUSD.map(balance => userShare.multiply(balance).quotient)
   const userPoolTokenBalancesUSDSum = new TokenAmount(
-    USDC[ChainId.AURORA],
+    USDC_E[ChainId.AURORA],
     JSBI.divide(sumAllJSBI(userPoolTokenBalancesUSD), decimalDelta)
   )
 
