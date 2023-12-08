@@ -99,7 +99,6 @@ export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDa
               return JSBI.BigInt(BIG_INT_ZERO)
             }
           })
-          .slice(0, tokenBalanceInputs.length)
 
   const tokenBalancesSum = sumAllJSBI(tokenBalances)
 
