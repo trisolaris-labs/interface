@@ -231,7 +231,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     name: StableSwapPoolName.USDT_USDT_E,
     friendlyName: 'USDT/USDT.e',
     lpToken: USDC_USDC_E_TLP[ChainId.AURORA],
-    poolTokens: [USDC[ChainId.AURORA], USDC_E[ChainId.AURORA]],
+    poolTokens: [USDT[ChainId.AURORA], USDT_E[ChainId.AURORA]],
     address: '0x3e8795F95B6D0B063A054f40e3D50178fc463763',
     type: StableSwapPoolTypes.USDT_NATIVE,
     route: 'usdc native',
