@@ -38,7 +38,8 @@ export enum StableSwapPoolName {
   USDC_USDT_V2 = 'USDC_USDT_V2',
   NUSD_USDC_E_USDT_E = 'NUSD_USDC_E_USDT_E',
   AUUSDC_AUUSDT = 'AUUSDC_AUUSDT',
-  USDC_USDC_E = 'USDC_USDC_E'
+  USDC_USDC_E = 'USDC_USDC_E',
+  USDT_USDT_E = 'USDT_USDT_E'
 }
 
 export enum StableSwapPoolTypes {
@@ -46,6 +47,7 @@ export enum StableSwapPoolTypes {
   ETH,
   USD,
   USDC_NATIVE,
+  USDT_NATIVE,
   AURIGAMI,
   OTHER
 }
@@ -59,6 +61,8 @@ export function getTokenForStablePoolType(poolType: StableSwapPoolTypes): Token 
     return USDC_E[ChainId.AURORA]
   } else if (poolType === StableSwapPoolTypes.USDC_NATIVE) {
     return USDC[ChainId.AURORA]
+  } else if (poolType === StableSwapPoolTypes.USDT_NATIVE) {
+    return USDT[ChainId.AURORA]
   } else if (poolType === StableSwapPoolTypes.AURIGAMI) {
     return USDC_E[ChainId.AURORA]
   } else {
@@ -218,6 +222,17 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     lpToken: USDC_USDC_E_TLP[ChainId.AURORA],
     poolTokens: [USDC[ChainId.AURORA], USDC_E[ChainId.AURORA]],
     address: '0x35529BbDd64a561D8A29004C7eFcb1a5D0F6eA4a',
+    type: StableSwapPoolTypes.USDC_NATIVE,
+    route: 'usdc native',
+    isOutdated: false,
+    rewardPids: null
+  },
+  [StableSwapPoolName.USDT_USDT_E]: {
+    name: StableSwapPoolName.USDT_USDT_E,
+    friendlyName: 'USDT/USDT.e',
+    lpToken: USDC_USDC_E_TLP[ChainId.AURORA],
+    poolTokens: [USDC[ChainId.AURORA], USDC_E[ChainId.AURORA]],
+    address: '0x3e8795F95B6D0B063A054f40e3D50178fc463763',
     type: StableSwapPoolTypes.USDC_NATIVE,
     route: 'usdc native',
     isOutdated: false,
