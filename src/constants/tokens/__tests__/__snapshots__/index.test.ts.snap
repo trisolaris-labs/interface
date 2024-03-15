@@ -3,9 +3,9 @@
 exports[`constants/index.ts Base Tokens 1`] = `
 Object {
   "PNG": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0x0b20972B45ffB8e5d4D37AF4024E1bf0b03f15ae",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Ethereum",
       "symbol": "WETH",
@@ -38,9 +38,9 @@ Object {
 exports[`constants/index.ts Base Tokens 2`] = `
 Object {
   "USDT": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "Tether USD",
       "symbol": "USDT",
@@ -73,9 +73,9 @@ Object {
 exports[`constants/index.ts Base Tokens 3`] = `
 Object {
   "WBTC": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0xF4eB217Ba2454613b15dBdea6e5f22276410e89e",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 8,
       "name": "Wrapped Bitcoin",
       "symbol": "WBTC",
@@ -108,9 +108,9 @@ Object {
 exports[`constants/index.ts Base Tokens 4`] = `
 Object {
   "DAI": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0xe3520349F477A5F6EB06107066048508498A291b",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Dai Stablecoin",
       "symbol": "DAI",
@@ -143,9 +143,9 @@ Object {
 exports[`constants/index.ts Base Tokens 5`] = `
 Object {
   "TRI": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0xFa94348467f64D5A457F75F8bc40495D33c65aBB",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Trisolaris Token",
       "symbol": "TRI",
@@ -178,9 +178,9 @@ Object {
 exports[`constants/index.ts Base Tokens 6`] = `
 Object {
   "XTRI": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0x802119e4e253D5C19aA06A5d567C5a41596D6803",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "xTRI",
       "symbol": "xTRI",
@@ -213,9 +213,9 @@ Object {
 exports[`constants/index.ts Base Tokens 7`] = `
 Object {
   "AURORA": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Aurora",
       "symbol": "AURORA",
@@ -248,9 +248,9 @@ Object {
 exports[`constants/index.ts Base Tokens 8`] = `
 Object {
   "ATUST": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0x5ce9F0B6AFb36135b5ddBF11705cEB65E634A9dC",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Wrapped UST",
       "symbol": "atUST",
@@ -283,9 +283,9 @@ Object {
 exports[`constants/index.ts Base Tokens 9`] = `
 Object {
   "ATLUNA": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0xC4bdd27c33ec7daa6fcfd8532ddB524Bf4038096",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Wrapped LUNA",
       "symbol": "atLUNA",
@@ -318,9 +318,9 @@ Object {
 exports[`constants/index.ts Base Tokens 10`] = `
 Object {
   "USDC": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "USD Coin",
       "symbol": "USDC",
@@ -353,9 +353,9 @@ Object {
 exports[`constants/index.ts Base Tokens 11`] = `
 Object {
   "AAVE": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0x4e834cDCc911605227eedDDb89Fad336AB9dc00a",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Aave Token",
       "symbol": "AAVE",
@@ -388,9 +388,9 @@ Object {
 exports[`constants/index.ts Base Tokens 12`] = `
 Object {
   "WNEAR": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
@@ -423,9 +423,9 @@ Object {
 exports[`constants/index.ts Base Tokens 13`] = `
 Object {
   "AVAX": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Avalanche",
       "symbol": "AVAX",
@@ -458,9 +458,9 @@ Object {
 exports[`constants/index.ts Base Tokens 14`] = `
 Object {
   "MATIC": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Polygon",
       "symbol": "MATIC",
@@ -493,9 +493,9 @@ Object {
 exports[`constants/index.ts Base Tokens 15`] = `
 Object {
   "BNB": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0x2bF9b864cdc97b08B6D79ad4663e71B8aB65c45c",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Binance Coin",
       "symbol": "BNB",
@@ -528,9 +528,9 @@ Object {
 exports[`constants/index.ts Base Tokens 16`] = `
 Object {
   "FLX": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0xea62791aa682d455614eaA2A12Ba3d9A2fD197af",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Flux Token",
       "symbol": "FLX",
@@ -563,9 +563,9 @@ Object {
 exports[`constants/index.ts Base Tokens 17`] = `
 Object {
   "MECHA": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0xa33C3B53694419824722C10D99ad7cB16Ea62754",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Mecha",
       "symbol": "MECHA",
@@ -598,9 +598,9 @@ Object {
 exports[`constants/index.ts Base Tokens 18`] = `
 Object {
   "SOLACE": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0x501acE9c35E60f03A2af4d484f49F9B1EFde9f40",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Solace Token",
       "symbol": "SOLACE",
@@ -633,9 +633,9 @@ Object {
 exports[`constants/index.ts Base Tokens 19`] = `
 Object {
   "STNEAR": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Staked NEAR",
       "symbol": "stNEAR",
@@ -668,9 +668,9 @@ Object {
 exports[`constants/index.ts Base Tokens 20`] = `
 Object {
   "META": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0xc21Ff01229e982d7c8b8691163B0A3Cb8F357453",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Meta Pool",
       "symbol": "META",
@@ -703,9 +703,9 @@ Object {
 exports[`constants/index.ts Base Tokens 21`] = `
 Object {
   "GBA": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0xc2ac78FFdDf39e5cD6D83bbD70c1D67517C467eF",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Golden Banana",
       "symbol": "GBA",
@@ -738,9 +738,9 @@ Object {
 exports[`constants/index.ts Base Tokens 22`] = `
 Object {
   "XNL": Object {
-    "1313161554": Token {
+    "204": Token {
       "address": "0x7cA1C28663b76CFDe424A9494555B94846205585",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Chronicle",
       "symbol": "XNL",

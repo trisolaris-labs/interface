@@ -187,14 +187,14 @@ export const CHAIN_PARAMS = {
   },
   [ChainId.AURORA]: {
     chainId: '4e454152', // A 0x-prefixed hexadecimal chainId
-    chainName: 'Aurora Mainnet',
+    chainName: 'OPBNB Mainnet',
     nativeCurrency: {
       name: 'ETH',
       symbol: 'ETH',
       decimals: 18
     },
-    rpcUrls: ['https://mainnet.aurora.dev'],
-    blockExplorerUrls: ['https://explorer.aurora.dev/']
+    rpcUrls: ['https://opbnb-mainnet-rpc.bnbchain.org'],
+    blockExplorerUrls: ['https://mainnet.opbnbscan.com']
   }
 }
 
