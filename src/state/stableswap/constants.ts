@@ -13,7 +13,8 @@ import {
   AUUSDC,
   AUUSDT,
   USDC_USDT_V2,
-  USDC_USDC_E_TLP
+  USDC_USDC_E_TLP,
+  USDT_USDT_E_TLP
 } from '../../constants/tokens'
 
 export function isLegacySwapABIPool(poolName: string): boolean {
@@ -230,7 +231,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
   [StableSwapPoolName.USDT_USDT_E]: {
     name: StableSwapPoolName.USDT_USDT_E,
     friendlyName: 'USDT/USDT.e',
-    lpToken: USDC_USDC_E_TLP[ChainId.AURORA],
+    lpToken: USDT_USDT_E_TLP[ChainId.AURORA],
     poolTokens: [USDT[ChainId.AURORA], USDT_E[ChainId.AURORA]],
     address: '0x3e8795F95B6D0B063A054f40e3D50178fc463763',
     type: StableSwapPoolTypes.USDT_NATIVE,
