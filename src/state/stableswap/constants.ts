@@ -224,7 +224,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     poolTokens: [USDC[ChainId.AURORA], USDC_E[ChainId.AURORA]],
     address: '0x35529BbDd64a561D8A29004C7eFcb1a5D0F6eA4a',
     type: StableSwapPoolTypes.USDC_NATIVE,
-    route: 'usdc native',
+    route: 'usd',
     isOutdated: false,
     rewardPids: null
   },
@@ -235,7 +235,7 @@ export const STABLESWAP_POOLS: StableSwapPools = {
     poolTokens: [USDT[ChainId.AURORA], USDT_E[ChainId.AURORA]],
     address: '0x3e8795F95B6D0B063A054f40e3D50178fc463763',
     type: StableSwapPoolTypes.USDT_NATIVE,
-    route: 'usdc native',
+    route: 'usd',
     isOutdated: false,
     rewardPids: null
   }
