@@ -38,6 +38,7 @@ type FarmsSortAndFilterResult = {
 
 export default function useFarmsSortAndFilter(): FarmsSortAndFilterResult {
   const allFarmArrs = useFarms()
+  // console.log({ allFarmArrs })
   const activeFarmsFilter = useIsFilterActiveFarms()
   const allPools = STABLE_POOLS.concat(
     MULTIPLE_REWARD_POOLS,
