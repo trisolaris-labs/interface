@@ -736,7 +736,6 @@ const AURORA_POOLS: StakingTri[] = [
     stableSwapPoolName: StableSwapPoolName.USDT_USDT_E,
     poolType: PoolType.STABLE
   }),
-  // NOTE - this is actually id 56 but evie screwed up the lp token when setting up the stableswap pool farms :(
   // NOTE - you may have to replace the body if this object with the data of pool id 50 if it does not work
   // Probs only in the case for a new stable farm pool being added as pool id 50
   createMCV2Pool({
