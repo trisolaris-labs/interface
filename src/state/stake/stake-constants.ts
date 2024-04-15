@@ -696,6 +696,24 @@ const AURORA_POOLS: StakingTri[] = [
     rewarderAddress: '0xB247fA13a9BE90123C4B94982A2b30c60E6182ab',
     allocPoint: 1,
     poolType: PoolType.MULTIPLE
+  }),
+  createMCV2Pool({
+    ID: 51,
+    poolId: 46,
+    tokens: [USDC[ChainId.AURORA], USDC_E[ChainId.AURORA]],
+    lpAddress: '0x19e91C9b155D2A8B47B74e9e100f28355AC13879',
+    rewarderAddress: '0x44aa0E85A8a1b8da723258292b588e67d40717AA',
+    allocPoint: 12,
+    poolType: PoolType.STABLE
+  }),
+  createMCV2Pool({
+    ID: 52,
+    poolId: 49,
+    tokens: [USDT[ChainId.AURORA], USDT_E[ChainId.AURORA]],
+    lpAddress: '0x261ed544822455101F5D2Baa66ED5C7A004A42C7',
+    rewarderAddress: '0x2bE9519c860dFBeE6Fb55b3EC225976f7F7f1d09',
+    allocPoint: 12,
+    poolType: PoolType.STABLE
   })
 ]
 export const STAKING: {

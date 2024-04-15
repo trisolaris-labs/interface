@@ -4,7 +4,7 @@ export const TRI_ONLY_REWARDS_POOLS = [7, 8, 11, 0, 3, 4, 31, 32, 33, 45]
 
 export const ECOSYSTEM_POOLS = [48]
 
-export const STABLE_POOLS = [47, 44]
+export const STABLE_POOLS = [47, 44, 51, 52]
 
 export const LEGACY_POOLS = [
   24,
