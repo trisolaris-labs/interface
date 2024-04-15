@@ -9,7 +9,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -21,7 +21,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -38,7 +38,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -50,7 +50,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -61,7 +61,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -73,7 +73,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -83,14 +83,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Wrapped ETH",
       "symbol": "ETH",
     },
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
@@ -100,7 +100,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -112,7 +112,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -131,7 +131,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -143,7 +143,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -160,7 +160,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -172,7 +172,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -183,7 +183,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -195,7 +195,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -205,14 +205,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "USD Coin",
       "symbol": "USDC",
@@ -222,7 +222,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -234,7 +234,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -253,7 +253,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -265,7 +265,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -282,7 +282,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -294,7 +294,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -305,7 +305,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -317,7 +317,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -327,14 +327,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "Tether USD",
       "symbol": "USDT",
@@ -344,7 +344,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -356,7 +356,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -375,7 +375,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -387,7 +387,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -404,7 +404,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -416,7 +416,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -427,7 +427,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -439,7 +439,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -449,14 +449,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "Tether USD",
       "symbol": "USDT",
     },
     Token {
       "address": "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "USD Coin",
       "symbol": "USDC",
@@ -466,7 +466,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -478,7 +478,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -497,7 +497,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -509,7 +509,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -526,7 +526,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -538,7 +538,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -549,7 +549,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -561,7 +561,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -571,14 +571,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0xF4eB217Ba2454613b15dBdea6e5f22276410e89e",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 8,
       "name": "Wrapped Bitcoin",
       "symbol": "WBTC",
@@ -588,7 +588,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -600,7 +600,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -619,7 +619,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -631,7 +631,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -648,7 +648,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -660,7 +660,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -671,7 +671,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -683,7 +683,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -693,14 +693,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xFa94348467f64D5A457F75F8bc40495D33c65aBB",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Trisolaris Token",
       "symbol": "TRI",
     },
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
@@ -710,7 +710,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -722,7 +722,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -741,7 +741,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -753,7 +753,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -770,7 +770,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -782,7 +782,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -793,7 +793,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -805,7 +805,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -815,14 +815,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Aurora",
       "symbol": "AURORA",
     },
     Token {
       "address": "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Wrapped ETH",
       "symbol": "ETH",
@@ -832,7 +832,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -844,7 +844,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -863,7 +863,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -875,7 +875,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -892,7 +892,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -904,7 +904,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -915,7 +915,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -927,7 +927,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -937,14 +937,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Aurora",
       "symbol": "AURORA",
     },
     Token {
       "address": "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Wrapped ETH",
       "symbol": "ETH",
@@ -954,7 +954,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -966,7 +966,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -985,7 +985,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -997,7 +997,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1014,7 +1014,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1026,7 +1026,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1037,7 +1037,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1049,7 +1049,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1059,14 +1059,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xFa94348467f64D5A457F75F8bc40495D33c65aBB",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Trisolaris Token",
       "symbol": "TRI",
     },
     Token {
       "address": "0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Aurora",
       "symbol": "AURORA",
@@ -1076,7 +1076,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1088,7 +1088,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1107,7 +1107,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1119,7 +1119,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1136,7 +1136,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1148,7 +1148,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1159,7 +1159,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1171,7 +1171,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1181,14 +1181,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0xC4bdd27c33ec7daa6fcfd8532ddB524Bf4038096",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Wrapped LUNA",
       "symbol": "atLUNA",
@@ -1198,7 +1198,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1210,7 +1210,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1229,7 +1229,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1241,7 +1241,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1258,7 +1258,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1270,7 +1270,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1281,7 +1281,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1293,7 +1293,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1303,14 +1303,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x5ce9F0B6AFb36135b5ddBF11705cEB65E634A9dC",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Wrapped UST",
       "symbol": "atUST",
@@ -1320,7 +1320,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1332,7 +1332,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1351,7 +1351,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1363,7 +1363,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1380,7 +1380,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1392,7 +1392,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1403,7 +1403,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1415,7 +1415,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1425,14 +1425,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xFa94348467f64D5A457F75F8bc40495D33c65aBB",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Trisolaris Token",
       "symbol": "TRI",
     },
     Token {
       "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "Tether USD",
       "symbol": "USDT",
@@ -1442,7 +1442,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1454,7 +1454,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1473,7 +1473,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1485,7 +1485,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1502,7 +1502,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1514,7 +1514,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1525,7 +1525,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1537,7 +1537,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1547,14 +1547,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Avalanche",
       "symbol": "AVAX",
@@ -1564,7 +1564,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1576,7 +1576,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1595,7 +1595,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1607,7 +1607,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1624,7 +1624,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1636,7 +1636,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1647,7 +1647,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1659,7 +1659,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1669,14 +1669,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x2bF9b864cdc97b08B6D79ad4663e71B8aB65c45c",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Binance Coin",
       "symbol": "BNB",
@@ -1686,7 +1686,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1698,7 +1698,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1717,7 +1717,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1729,7 +1729,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1746,7 +1746,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1758,7 +1758,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1769,7 +1769,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1781,7 +1781,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1791,14 +1791,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Polygon",
       "symbol": "MATIC",
@@ -1808,7 +1808,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1820,7 +1820,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1839,7 +1839,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1851,7 +1851,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1868,7 +1868,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1880,7 +1880,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1891,7 +1891,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1903,7 +1903,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1913,14 +1913,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0xea62791aa682d455614eaA2A12Ba3d9A2fD197af",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Flux Token",
       "symbol": "FLX",
@@ -1930,7 +1930,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1942,7 +1942,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1961,7 +1961,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1973,7 +1973,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -1990,7 +1990,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2002,7 +2002,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2013,7 +2013,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2025,7 +2025,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2035,14 +2035,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0xa33C3B53694419824722C10D99ad7cB16Ea62754",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Mecha",
       "symbol": "MECHA",
@@ -2052,7 +2052,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2064,7 +2064,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2083,7 +2083,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2095,7 +2095,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2112,7 +2112,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2124,7 +2124,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2135,7 +2135,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2147,7 +2147,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2157,14 +2157,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x501acE9c35E60f03A2af4d484f49F9B1EFde9f40",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Solace Token",
       "symbol": "SOLACE",
@@ -2174,7 +2174,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2186,7 +2186,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2205,7 +2205,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2217,7 +2217,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2234,7 +2234,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2246,7 +2246,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2257,7 +2257,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2269,7 +2269,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2279,14 +2279,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0x802119e4e253D5C19aA06A5d567C5a41596D6803",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "xTRI",
       "symbol": "xTRI",
     },
     Token {
       "address": "0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Staked NEAR",
       "symbol": "stNEAR",
@@ -2296,7 +2296,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2308,7 +2308,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2327,7 +2327,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2339,7 +2339,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2356,7 +2356,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2368,7 +2368,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2379,7 +2379,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2391,7 +2391,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2401,14 +2401,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Staked NEAR",
       "symbol": "stNEAR",
@@ -2418,7 +2418,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2430,7 +2430,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2449,7 +2449,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2461,7 +2461,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2478,7 +2478,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2490,7 +2490,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2501,7 +2501,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2513,7 +2513,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2523,14 +2523,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Aurora",
       "symbol": "AURORA",
     },
     Token {
       "address": "0x7cA1C28663b76CFDe424A9494555B94846205585",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Chronicle",
       "symbol": "XNL",
@@ -2540,7 +2540,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2552,7 +2552,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2571,7 +2571,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2583,7 +2583,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2600,7 +2600,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2612,7 +2612,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2623,7 +2623,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2635,7 +2635,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2645,14 +2645,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x7cA1C28663b76CFDe424A9494555B94846205585",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Chronicle",
       "symbol": "XNL",
@@ -2662,7 +2662,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2674,7 +2674,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2693,7 +2693,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2705,7 +2705,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2722,7 +2722,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2734,7 +2734,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2745,7 +2745,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2757,7 +2757,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2767,14 +2767,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "Tether USD",
       "symbol": "USDT",
     },
     Token {
       "address": "0xc2ac78FFdDf39e5cD6D83bbD70c1D67517C467eF",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Golden Banana",
       "symbol": "GBA",
@@ -2784,7 +2784,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2796,7 +2796,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2815,7 +2815,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2827,7 +2827,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2844,7 +2844,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2856,7 +2856,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2867,7 +2867,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2879,7 +2879,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2889,14 +2889,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "Tether USD",
       "symbol": "USDT",
     },
     Token {
       "address": "0x293074789b247cab05357b08052468B5d7A23c5a",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 8,
       "name": "aUSDO",
       "symbol": "aUSDO",
@@ -2906,7 +2906,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2918,7 +2918,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2937,7 +2937,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2949,7 +2949,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2966,7 +2966,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2978,7 +2978,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -2989,7 +2989,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3001,7 +3001,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3011,14 +3011,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x4148d2Ce7816F0AE378d98b40eB3A7211E1fcF0D",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "BlueBit Token",
       "symbol": "BBT",
@@ -3028,7 +3028,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3040,7 +3040,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3059,7 +3059,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3071,7 +3071,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3088,7 +3088,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3100,7 +3100,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3111,7 +3111,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3123,7 +3123,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3133,14 +3133,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "USD Coin",
       "symbol": "USDC",
     },
     Token {
       "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "Tether USD",
       "symbol": "USDT",
@@ -3150,7 +3150,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3162,7 +3162,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3181,7 +3181,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3193,7 +3193,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3210,7 +3210,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3222,7 +3222,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3233,7 +3233,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3245,7 +3245,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3255,14 +3255,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0x68e401B61eA53889505cc1366710f733A60C2d41",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Shitzu",
       "symbol": "SHITZU",
     },
     Token {
       "address": "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "USD Coin",
       "symbol": "USDC",
@@ -3272,7 +3272,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3284,7 +3284,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3303,7 +3303,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3315,7 +3315,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3332,7 +3332,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3344,7 +3344,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3355,7 +3355,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3367,7 +3367,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3377,14 +3377,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0xdcD6D4e2B3e1D1E1E6Fa8C21C8A323DcbecfF970",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Rose Token",
       "symbol": "ROSE",
@@ -3394,7 +3394,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3406,7 +3406,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3425,7 +3425,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3437,7 +3437,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3454,7 +3454,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3466,7 +3466,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3477,7 +3477,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3489,7 +3489,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3499,14 +3499,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x19cc40283B057D6608C22F1D20F17e16C245642E",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Rose USD",
       "symbol": "RUSD",
@@ -3516,7 +3516,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3528,7 +3528,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3547,7 +3547,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3559,7 +3559,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3576,7 +3576,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3588,7 +3588,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3599,7 +3599,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3611,7 +3611,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3621,14 +3621,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x918dBe087040A41b786f0Da83190c293DAe24749",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "LiNEAR",
       "symbol": "LINEAR",
@@ -3638,7 +3638,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3650,7 +3650,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3669,7 +3669,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3681,7 +3681,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3698,7 +3698,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3710,7 +3710,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3721,7 +3721,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3733,7 +3733,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3743,14 +3743,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x9f1F933C660a1DC856F0E0Fe058435879c5CCEf0",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Bastion",
       "symbol": "BSTN",
@@ -3760,7 +3760,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3772,7 +3772,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3791,7 +3791,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3803,7 +3803,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3820,7 +3820,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3832,7 +3832,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3843,7 +3843,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3855,7 +3855,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3865,14 +3865,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "Aurora",
       "symbol": "AURORA",
@@ -3882,7 +3882,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3894,7 +3894,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3913,7 +3913,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3925,7 +3925,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3942,7 +3942,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3954,7 +3954,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3965,7 +3965,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3977,7 +3977,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -3987,14 +3987,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "USD Coin",
       "symbol": "USDC",
@@ -4004,7 +4004,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4016,7 +4016,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4035,7 +4035,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4047,7 +4047,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4064,7 +4064,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4076,7 +4076,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4087,7 +4087,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4099,7 +4099,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4109,14 +4109,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
     },
     Token {
       "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "Tether USD",
       "symbol": "USDT",
@@ -4126,7 +4126,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4138,7 +4138,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4157,7 +4157,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4169,7 +4169,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4186,7 +4186,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4198,7 +4198,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4209,7 +4209,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4221,7 +4221,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4231,14 +4231,14 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xE4eB03598f4DCAB740331fa432f4b85FF58AA97E",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "KillSwitchToken",
       "symbol": "KSW",
     },
     Token {
       "address": "0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 24,
       "name": "Wrapped Near",
       "symbol": "wNEAR",
@@ -4248,7 +4248,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4260,7 +4260,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4279,7 +4279,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4291,7 +4291,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4308,7 +4308,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4320,7 +4320,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4331,7 +4331,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4343,7 +4343,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4353,21 +4353,21 @@ Object {
   "tokens": Array [
     Token {
       "address": "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "USD Coin",
       "symbol": "USDC",
     },
     Token {
       "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 6,
       "name": "Tether USD",
       "symbol": "USDT",
     },
     Token {
       "address": "0x5183e1B1091804BC2602586919E6880ac1cf2896",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "USN",
       "symbol": "USN",
@@ -4377,7 +4377,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4389,7 +4389,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4408,7 +4408,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4420,7 +4420,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4437,7 +4437,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4449,7 +4449,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4460,7 +4460,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4472,7 +4472,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4499,7 +4499,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4511,7 +4511,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4530,7 +4530,7 @@ Object {
   "earnedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4542,7 +4542,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4559,7 +4559,7 @@ Object {
   "rewardRate": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4571,7 +4571,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4582,7 +4582,7 @@ Object {
   "stakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4594,7 +4594,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4621,7 +4621,7 @@ Object {
   "totalStakedAmount": TokenAmount {
     "currency": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",
@@ -4633,7 +4633,7 @@ Object {
     "numerator": JSBI [],
     "token": Token {
       "address": "0x0000000000000000000000000000000000000000",
-      "chainId": 1313161554,
+      "chainId": 204,
       "decimals": 18,
       "name": "ZERO",
       "symbol": "ZERO",

@@ -274,7 +274,7 @@ export default function WalletModal({
 
   const selectChain = useSelectChain()
   async function addNetwork() {
-    const chainID: ChainId = 1313161554 // n-
+    const chainID: ChainId = 204 // n-
     return selectChain()
   }
 
