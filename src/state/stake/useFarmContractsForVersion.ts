@@ -17,7 +17,6 @@ export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTr
   const activeFarms = STAKING[ChainId.AURORA]
   // TODO: Add code back when implementing solution for incorrect farms data.
   // Ignore all stable farms
-
   const contract = useMasterChefV2ContractForVersion(chefVersion)
   const latestBlock = useBlockNumber()
 
@@ -54,7 +53,7 @@ export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTr
       const userStaked = userInfo[index]
       const activeFarmID = getActiveFarmID(lpAddress)
 
-      const stablePoolFarm = activeFarms[activeFarmID].stableSwapPoolName
+      const stablePoolFarm = activeFarms[activeFarmID]?.stableSwapPoolName
       const stablePool = stablePoolFarm ? STABLESWAP_POOLS[stablePoolFarm] : null
 
       const [_pairState, pair] = pairs[index]
@@ -76,7 +75,7 @@ export function useFarmContractsForVersion(chefVersion: ChefVersions): StakingTr
         stakedAmount: stakedAmount
       }
     })
-  }, [chainId, lpAddresses, chefVersion, latestBlock, isLoading])
+  }, [chainId, lpAddresses, isLoading, userInfo, pairs, activeFarms, getActiveFarmID])
 
   return data
 }
