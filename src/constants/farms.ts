@@ -1,8 +1,8 @@
-export const DUAL_REWARDS_POOLS = [30, 19, 38, 43, 46, 51, 52]
+export const DUAL_REWARDS_POOLS = [38, 43, 51, 52]
 
 export const TRI_ONLY_REWARDS_POOLS = [7, 8, 11, 0, 3, 4, 31, 32, 33, 45]
 
-export const ECOSYSTEM_POOLS = [48]
+export const ECOSYSTEM_POOLS = []
 
 export const STABLE_POOLS = [
   47,
@@ -44,7 +44,11 @@ export const LEGACY_POOLS = [
   35,
   15,
   39,
-  21
+  21,
+  30,
+  48,
+  19,
+  46
 ]
 
 export const MULTIPLE_REWARD_POOLS = [50]
