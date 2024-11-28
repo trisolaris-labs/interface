@@ -1,4 +1,4 @@
-export const DUAL_REWARDS_POOLS = [38, 43, 51, 52]
+export const DUAL_REWARDS_POOLS = [51, 52]
 
 export const TRI_ONLY_REWARDS_POOLS = [7, 8, 11, 0, 3, 4, 31, 32, 33, 45]
 
@@ -6,7 +6,6 @@ export const ECOSYSTEM_POOLS = []
 
 export const STABLE_POOLS = [
   47,
-  44,
   53,
   // NOTE - this is actually mcv2 pool id 56 but evie screwed up the lp token when setting up the stableswap pool farms :(
   54
@@ -48,7 +47,10 @@ export const LEGACY_POOLS = [
   30,
   48,
   19,
-  46
+  46,
+  38,
+  43,
+  44
 ]
 
 export const MULTIPLE_REWARD_POOLS = [50]
