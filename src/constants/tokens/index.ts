@@ -799,7 +799,15 @@ export const MOCKTRI: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
-  [1313161567 as ChainId]: new Token(1313161567 as ChainId, '0xb14e7F8D5C307495AD24256A2FDa0C56Ae953CA1', 18, 'mockTRI', 'mock Trisolaris'),
+  [TURBO]: new Token(TURBO, '0xb14e7F8D5C307495AD24256A2FDa0C56Ae953CA1', 18, 'mockTRI', 'mock Trisolaris'),
+}
+
+export const MOCKUSDC: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'mockUSDC', 'mock USDC'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'mockUSDC', 'mock USDC'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'mockUSDC', 'mock USDC'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'mockUSDC', 'mock USDC'),
+  [TURBO]: new Token(TURBO, '0x91A3AE29a6F269ef5d992Af15F5892410c4Ed0c7', 18, 'mockUSDC', 'mock USDC'),
 }
 
 export const PNG: { [chainId in ChainId]: Token } = {

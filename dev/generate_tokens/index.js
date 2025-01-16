@@ -63,7 +63,7 @@ async function init() {
             break
           }
           case 1313161567: {
-            chainEnumString = '1313161567 as ChainId'
+            chainEnumString = 'TURBO'
             break
           }
           default:
