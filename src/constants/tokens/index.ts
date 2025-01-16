@@ -8,6 +8,7 @@
  **********************************************************************************************/
 
 import { ChainId, Token } from '@trisolaris/sdk'
+import { TURBO } from '../chains'
 
 export const DAI: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063', 18, 'DAI', 'Dai Stablecoin'),
@@ -791,6 +792,14 @@ export const SCM: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'SCM', 'Scamfari'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'SCM', 'Scamfari'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0xE3ff873C1e104118Ec83310E39aAfDE17d18005d', 18, 'SCM', 'Scamfari'),
+}
+
+export const MOCKTRI: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
+  [1313161567 as ChainId]: new Token(1313161567 as ChainId, '0xb14e7F8D5C307495AD24256A2FDa0C56Ae953CA1', 18, 'mockTRI', 'mock Trisolaris'),
 }
 
 export const PNG: { [chainId in ChainId]: Token } = {

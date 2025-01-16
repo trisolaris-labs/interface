@@ -12,7 +12,7 @@ const TOKEN_MAP = require('./base_tokens_map')
 const { createXChainToken } = require('./utils')
 
 const TOKENS_FOLDER_PATH = path.join(__dirname, '../../src/constants/tokens')
-const TOKENS_URL = 'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/lists/1313161554/list.json'
+const TOKENS_URL = 'https://raw.githubusercontent.com/trisolaris-labs/tokens/turbo/lists/1313161554/list.json'
 
 // This kicks it all off
 init()
@@ -32,7 +32,7 @@ async function init() {
     '\n * RUN `yarn build-tokens` TO UPDATE THIS FILE' +
     '\n **********************************************************************************************/'
 
-  const imports = "\n\nimport { ChainId, Token } from '@trisolaris/sdk'"
+  const imports = "\n\nimport { ChainId, Token } from '@trisolaris/sdk'\nimport { TURBO } from '../chains'"
 
   const tokens = _.map(mergedTokenMap, (tokenObj, symbol) => {
     // Removes extra whitespace and replaces spaces with `_`
@@ -60,6 +60,10 @@ async function init() {
           }
           case ChainId.AURORA: {
             chainEnumString = 'ChainId.AURORA'
+            break
+          }
+          case 1313161567: {
+            chainEnumString = '1313161567 as ChainId'
             break
           }
           default:

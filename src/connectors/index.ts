@@ -7,6 +7,7 @@ import { Network } from '@web3-react/network'
 import { Connector } from '@web3-react/types'
 import { WalletConnect } from '@web3-react/walletconnect-v2'
 import { useMemo } from 'react'
+import { TURBO } from '../constants/chains'
 
 const NETWORK_URL = process.env.REACT_APP_NETWORK_URL ?? ''
 
@@ -80,6 +81,8 @@ export const [network, networkHooks] = initializeConnector<Network>(
     new Network({
       actions,
       urlMap: {
+        [ChainId.AURORA]: 'https://mainnet.aurora.dev/',
+        [TURBO]: 'https://rpc-0x4e45415f.aurora-cloud.dev/',
         [NETWORK_CHAIN_ID]: NETWORK_URL
       },
       defaultChainId: NETWORK_CHAIN_ID
