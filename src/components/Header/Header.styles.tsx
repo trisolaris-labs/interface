@@ -142,6 +142,20 @@ background: ${({ theme }) => theme.primary1}
 }
 `
 
+export const NetworkSelectButton = styled(ButtonSecondary)`
+color: white;
+padding: 4px 8px;
+height: 36px;
+font-weight: 500;
+border: none;
+background: ${({ theme }) => theme.primary1}
+&:hover, &:focus, &:active {
+  border: none;
+  box-shadow: none;
+  background: ${({ theme }) => darken(0.12, theme.primary1)}
+}
+`
+
 export const TRIWrapper = styled(AccountElement)`
   color: white;
   padding: 4px 0;

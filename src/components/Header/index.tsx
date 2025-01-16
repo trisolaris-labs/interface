@@ -28,7 +28,8 @@ import {
   IconWrapper,
   StyledHomeNavLink,
   HomeContainer,
-  StyledBridgesMenu
+  StyledBridgesMenu,
+  NetworkSelectButton
 } from './Header.styles'
 import useEmbeddedSwapUI from '../../hooks/useEmbeddedSwapUI'
 import { StyledExternalLink } from '../BridgesMenu/BridgesMenu.styles'
@@ -154,6 +155,11 @@ export default function Header() {
             </TRIButton>
             <TriPriceModal />
           </TRIWrapper>
+          <NetworkSelectButton>
+            <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
+              Turbo
+            </Text>
+          </NetworkSelectButton>
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             <Web3Status />
           </AccountElement>
