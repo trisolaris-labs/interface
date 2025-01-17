@@ -45,6 +45,7 @@ import {
 } from '../../constants/tokens'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
+import { TURBO } from '../../constants/chains'
 
 export enum ChefVersions {
   V1,
@@ -146,6 +147,39 @@ const NULL_POOL: StakingTri = {
   zapEnabled: false
 }
 const NULL_POOLS = [NULL_POOL]
+
+const TURBO_POOL: StakingTri = {
+  ID: 0,
+  poolId: 0,
+  tokens: [
+    new Token(TURBO, ZERO_ADDRESS, 18, 'ZERO', 'ZERO'),
+    new Token(TURBO, '0x0000000000000000000000000000000000000001', 18, 'ONE', 'ONE')
+  ],
+  stakingRewardAddress: ZERO_ADDRESS,
+  lpAddress: ZERO_ADDRESS,
+  rewarderAddress: '',
+  isPeriodFinished: false,
+  stakedAmount: dummyAmount,
+  earnedAmount: dummyAmount,
+  totalStakedAmount: dummyAmount,
+  totalStakedInUSD: 0,
+  allocPoint: 0,
+  totalRewardRate: 1,
+  rewardRate: dummyAmount,
+  apr: 0,
+  nonTriAPRs: [],
+  chefVersion: ChefVersions.V2,
+  hasNonTriRewards: false,
+  inStaging: false,
+  noTriRewards: false,
+  earnedNonTriRewards: [],
+  stableSwapPoolName: null,
+  friendlyFarmName: null,
+  isFeatured: false,
+  poolType: PoolType.TRI_ONLY,
+  zapEnabled: false
+}
+const TURBO_POOLS = [TURBO_POOL]
 
 /**
  * Creates a pool
@@ -765,7 +799,8 @@ export const STAKING: {
   [ChainId.FUJI]: NULL_POOLS,
   [ChainId.AVALANCHE]: NULL_POOLS,
   [ChainId.POLYGON]: POLYGON_POOLS,
-  [ChainId.AURORA]: AURORA_POOLS
+  [ChainId.AURORA]: AURORA_POOLS,
+  [TURBO]: TURBO_POOLS
 }
 
 export const ADDRESS_PRICE_MAP: { [key: string]: string } = {

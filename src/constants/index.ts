@@ -25,6 +25,7 @@ import {
   USDC_E,
   USDT_E
 } from './tokens'
+import { TURBO } from './chains'
 
 export const GAS_PRICE = 250
 
@@ -195,6 +196,17 @@ export const CHAIN_PARAMS = {
     },
     rpcUrls: ['https://mainnet.aurora.dev'],
     blockExplorerUrls: ['https://explorer.aurora.dev/']
+  },
+  [TURBO]: {
+    chainId: '4e45415f', // A 0x-prefixed hexadecimal chainId
+    chainName: 'Turbochain',
+    nativeCurrency: {
+      name: 'Turbo',
+      symbol: 'TURBO',
+      decimals: 18
+    },
+    rpcUrls: ['https://rpc-0x4e45415f.aurora-cloud.dev'],
+    blockExplorerUrls: ['https://explorer.turbo.aurora.dev/']
   }
 }
 

@@ -234,3 +234,7 @@ export function useToggleFilterActiveFarms(): () => void {
   const dispatch = useDispatch()
   return useCallback(() => dispatch(toggleFilterActiveFarms()), [dispatch])
 }
+
+export function useUserChainId(): number {
+  return useSelector((state: AppState) => state.user.chainId)
+}

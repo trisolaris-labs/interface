@@ -10,7 +10,7 @@ import Web3Status from '../Web3Status'
 import { useActiveWeb3React } from '../../hooks'
 
 import useTriPrice from '../../hooks/useTriPrice'
-import { useToggleTriPriceModal } from '../../state/application/hooks'
+import { useToggleNetworkSelectModal, useToggleTriPriceModal } from '../../state/application/hooks'
 
 import {
   HeaderFrame,
@@ -33,14 +33,23 @@ import {
 } from './Header.styles'
 import useEmbeddedSwapUI from '../../hooks/useEmbeddedSwapUI'
 import { StyledExternalLink } from '../BridgesMenu/BridgesMenu.styles'
+import NetworkSelectModal from '../NetworkSelectModal'
+import { ChainId } from '@trisolaris/sdk'
+import { TURBO } from '../../constants/chains'
+
+const networkNames = {
+  [ChainId.AURORA]: 'Aurora',
+  [TURBO]: 'Turbo'
+}
 
 export default function Header() {
-  const { account } = useActiveWeb3React()
+  const { account, selectedChain } = useActiveWeb3React()
   const { t } = useTranslation()
 
   const { triPriceFriendly } = useTriPrice()
 
   const toggleTriPriceModal = useToggleTriPriceModal()
+  const toggleNetworkSelectModal = useToggleNetworkSelectModal()
 
   const isEmbedded = useEmbeddedSwapUI()
 
@@ -155,11 +164,22 @@ export default function Header() {
             </TRIButton>
             <TriPriceModal />
           </TRIWrapper>
-          <NetworkSelectButton>
-            <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
-              Turbo
-            </Text>
-          </NetworkSelectButton>
+          <TRIWrapper active={false} style={{ pointerEvents: 'auto' }}>
+            <NetworkSelectButton
+              onClick={e => {
+                e.currentTarget.blur()
+                toggleNetworkSelectModal()
+              }}
+            >
+              <IconWrapper size={16}>
+                <img src={'https://s2.coinmarketcap.com/static/img/coins/64x64/24911.png'} />
+              </IconWrapper>
+              <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
+                {networkNames[selectedChain]}
+              </Text>
+            </NetworkSelectButton>
+            <NetworkSelectModal />
+          </TRIWrapper>
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             <Web3Status />
           </AccountElement>
