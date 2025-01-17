@@ -84,7 +84,7 @@ export function CurrencySearch({
   const allTokens = useAllTokens()
   const allStableSwapTokens = useAllStableSwapTokens()
   const allValidStableSwapOutputTokens = useAllValidStableSwapOutputTokens()
-
+  
   const tokens = useMemo(() => {
     if (isStableSwap === true && stableSwapInputField != null) {
       // If stableswapping, input should show all available token options
@@ -100,7 +100,6 @@ export function CurrencySearch({
 
     return allTokens
   }, [allStableSwapTokens, allTokens, allValidStableSwapOutputTokens, isStableSwap, stableSwapInputField])
-
   // if they input an address, use it
   const isAddressSearch = isAddress(searchQuery)
   const searchToken = useToken(searchQuery)
@@ -126,7 +125,7 @@ export function CurrencySearch({
     if (isAddressSearch) return searchToken ? [searchToken] : []
     return filterTokens(Object.values(tokens), searchQuery)
   }, [isAddressSearch, searchToken, tokens, searchQuery])
-
+  
   const filteredSortedTokens: Token[] = useMemo(() => {
     if (searchToken) return [searchToken]
     const sorted = filteredTokens.sort(tokenComparator)

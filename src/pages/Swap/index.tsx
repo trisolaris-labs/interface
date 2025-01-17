@@ -123,6 +123,7 @@ export default function Swap() {
     currencies,
     inputError: defaultswapInputError
   } = useDerivedSwapInfo()
+
   const {
     isLoadingSwapResponse,
     priceImpact: stableswapPriceImpact,

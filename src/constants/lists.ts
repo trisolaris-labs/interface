@@ -1,6 +1,7 @@
 import { ChainId } from '@trisolaris/sdk'
 import { TURBO } from './chains'
 
+
 // the Pangolin Default token list lives here
 export const AEB_TOKENLIST = 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/aeb.tokenlist.json'
 export const TOP_15_TOKEN_List = 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/top15.tokenlist.json'
@@ -34,6 +35,11 @@ const LIST_OF_LISTS: Map<ChainId, string[]> = new Map([
   [ChainId.AURORA, [TRISOLARIS_LIST]],
   [TURBO, [TURBO_LIST]]
 ])
+export const TURBO_CURRENCY = {
+  name: 'TURBO',
+  symbol: 'TURBO',
+  decimals: 18,
+}
 
 export const DEFAULT_LIST_OF_LISTS = LIST_OF_LISTS.get(TURBO)!
 export const DEFAULT_TOKEN_LIST_URL = DEFAULT_LISTS.get(TURBO)!

@@ -55,7 +55,15 @@ export default function CurrencyLogo({
     }
     return []
   }, [currency, uriLocations])
-
+  if(currency?.name === 'TURBO') {
+    return <StyledEthereumLogo
+    src={
+      '/images/turbo-token-logo.jpg'
+    }
+    size={size}
+    style={style}
+  />
+  }
   if (currency === CETH) {
     if (chainId === 137) {
       return (

@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, CETH, JSBI, Token, TokenAmount } from '@trisolaris/sdk'
+import { Currency, CurrencyAmount, CETH, JSBI, Token, TokenAmount, ChainId } from '@trisolaris/sdk'
 import { useMemo } from 'react'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useAllTokens } from '../../hooks/Tokens'
@@ -14,7 +14,9 @@ export function useETHBalances(
   uncheckedAddresses?: (string | undefined)[]
 ): { [address: string]: CurrencyAmount | undefined } {
   const multicallContract = useMulticallContract()
-
+  const { chainId } = useActiveWeb3React()
+  // console.log('chainId', chainId)
+  // console.log(multicallContract)
   const addresses: string[] = useMemo(
     () =>
       uncheckedAddresses
@@ -103,15 +105,15 @@ export function useCurrencyBalances(
   ])
 
   const tokenBalances = useTokenBalances(account, tokens)
-  const containsETH: boolean = useMemo(() => currencies?.some(currency => currency === CETH) ?? false, [currencies])
-  const ethBalance = useETHBalances(containsETH ? [account] : [])
 
+  const containsETH: boolean = useMemo(() => currencies?.some(currency => currency === CETH || currency?.name === 'TURBO') ?? false, [currencies])
+  const ethBalance = useETHBalances(containsETH ? [account] : [])
   return useMemo(
     () =>
       currencies?.map(currency => {
         if (!account || !currency) return undefined
         if (currency instanceof Token) return tokenBalances[currency.address]
-        if (currency === CETH) return ethBalance[account]
+        if (currency === CETH || currency?.name === 'TURBO') return ethBalance[account]
         return undefined
       }) ?? [],
     [account, currencies, ethBalance, tokenBalances]

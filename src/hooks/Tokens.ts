@@ -16,14 +16,13 @@ import { useCalculateStableSwapPairs } from './useCalculateStableSwapPairs'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 import { NETWORK_CHAIN_ID } from '../connectors'
 import { USDC_E, USDT_E } from '../constants/tokens'
-
+import { TURBO_CURRENCY } from '../constants/lists'
 type TokensMap = { [address: string]: Token }
 
 export function useAllTokens(): TokensMap {
   const chainId = NETWORK_CHAIN_ID
   const userAddedTokens = useUserAddedTokens()
   const allTokens = useSelectedTokenList()
-
   return useMemo(() => {
     if (!chainId) return {}
     return (
@@ -177,6 +176,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
   const isAVAX = currencyId?.toUpperCase() === 'ETH'
+  const isTurbo = currencyId?.toUpperCase() === 'TURBO'
   const token = useToken(isAVAX ? undefined : currencyId)
-  return isAVAX ? CETH : token
+  return isAVAX ? CETH : isTurbo ? TURBO_CURRENCY : token
 }

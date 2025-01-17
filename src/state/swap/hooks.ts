@@ -30,6 +30,7 @@ import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useTranslation } from 'react-i18next'
 import { find } from 'lodash'
 import { STABLESWAP_POOLS } from '../stableswap/constants'
+import { TURBO } from '../../constants/chains'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap)
@@ -132,7 +133,6 @@ export function useDerivedSwapInfo(
   const { t } = useTranslation()
 
   const toggledVersion = useToggledVersion()
-
   const swapData = customSwap ?? useSwapState()
   const {
     independentField,
@@ -141,7 +141,6 @@ export function useDerivedSwapInfo(
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     recipient
   } = swapData
-
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const recipientAddress = isAddress(recipient)
@@ -264,7 +263,8 @@ function parseCurrencyFromURLParameter(urlParam: any): string {
     if (urlParam.toUpperCase() === 'AVAX') return 'ETH'
     if (valid === false) return 'ETH'
   }
-  return 'ETH' ?? ''
+
+  return 'ETH'
 }
 
 function parseTokenAmountURLParameter(urlParam: any): string {
@@ -296,7 +296,6 @@ export function queryParametersToSwapState(parsedQs: ParsedQs): SwapState {
       outputCurrency = ''
     }
   }
-
   const recipient = validatedRecipient(parsedQs.recipient)
 
   return {
@@ -322,16 +321,20 @@ export function useDefaultsFromURLSearch():
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
   >()
-
   useEffect(() => {
     if (!chainId) return
     const parsed = queryParametersToSwapState(parsedQs)
+    let inputCurrencyId = parsed[Field.INPUT].currencyId
+    //check if turbo chain
+    if(chainId === TURBO && inputCurrencyId === 'ETH') {
+      inputCurrencyId = 'TURBO'
+    }
 
     dispatch(
       replaceSwapState({
         typedValue: parsed.typedValue,
         field: parsed.independentField,
-        inputCurrencyId: parsed[Field.INPUT].currencyId,
+        inputCurrencyId: inputCurrencyId,
         outputCurrencyId: parsed[Field.OUTPUT].currencyId,
         recipient: parsed.recipient
       })

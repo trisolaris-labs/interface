@@ -17,7 +17,8 @@ import { FadedSpan, MenuItem } from './styleds'
 import Loader from '../Loader'
 import { isTokenOnList } from '../../utils'
 import { useTranslation } from 'react-i18next'
-
+import { TURBO } from '../../constants/chains'
+import { TURBO_CURRENCY } from '../../constants/lists'
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === CETH ? 'ETH' : ''
 }
@@ -114,7 +115,7 @@ function CurrencyRow({
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)
-
+ 
   const removeToken = useRemoveUserAddedToken()
   const addToken = useAddUserToken()
   const { t } = useTranslation()
@@ -194,8 +195,13 @@ export default function CurrencyList({
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   showETH: boolean
 }) {
-  const itemData = useMemo(() => (showETH ? [Currency.CETH, ...currencies] : currencies), [currencies, showETH])
-
+  const { account, chainId } = useActiveWeb3React()
+  const itemData = useMemo(() => {
+    if(chainId === TURBO) {
+      return (showETH ? [TURBO_CURRENCY, ...currencies] : currencies)
+    }
+    return (showETH ? [Currency.CETH, ...currencies] : currencies)
+  }, [currencies, showETH])
   const Row = useCallback(
     ({ data, index, style }: { data: any; index: number; style: any }) => {
       const currency: Currency = data[index]

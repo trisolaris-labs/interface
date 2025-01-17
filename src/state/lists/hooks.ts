@@ -7,7 +7,9 @@ import { AEB_TOKENLIST } from '../../constants/lists'
 import { WETH } from '@trisolaris/sdk'
 import { PNG } from '../../constants/tokens'
 import { TURBO } from '../../constants/chains'
-
+import { use } from 'i18next'
+import { chain } from 'lodash'
+import { useActiveWeb3React } from '../../hooks'
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {
   id: string
@@ -77,7 +79,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 
 export function useTokenList(urls: string[] | undefined): TokenAddressMap {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
-
+  const {chainId} = useActiveWeb3React()
   const tokenList = {} as { [chainId: string]: { [tokenAddress: string]: WrappedTokenInfo } }
   return useMemo(() => {
     ;([] as string[]).concat(urls || []).forEach(url => {
@@ -97,6 +99,7 @@ export function useTokenList(urls: string[] | undefined): TokenAddressMap {
         }
       }
     })
+    //add turbo 
     return tokenList as TokenAddressMap
   }, [lists, urls])
 }
