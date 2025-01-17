@@ -1,18 +1,20 @@
 import { useCallback } from 'react'
 
-import { NETWORK_CHAIN_ID, injected } from '../connectors'
+import { injected } from '../connectors'
 import { CHAIN_PARAMS } from '../constants'
 import { useWeb3React } from '@web3-react/core'
+import { useActiveWeb3React } from '.'
 
 export default function useSelectChain() {
   const { connector } = useWeb3React()
+  const { selectedChain } = useActiveWeb3React()
 
   return useCallback(async () => {
     if (!connector) return
 
     try {
       try {
-        const addChainParameter = CHAIN_PARAMS[NETWORK_CHAIN_ID]
+        const addChainParameter = CHAIN_PARAMS[selectedChain]
 
         if (injected !== connector) {
           console.log('Please switch to Aurora network in wallet settings.')
@@ -32,5 +34,5 @@ export default function useSelectChain() {
     } catch (error) {
       console.error('Failed to switch networks', error)
     }
-  }, [connector])
+  }, [connector, selectedChain])
 }

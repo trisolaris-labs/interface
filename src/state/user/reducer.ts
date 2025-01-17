@@ -14,8 +14,10 @@ import {
   updateUserSlippageTolerance,
   updateUserDeadline,
   toggleURLWarning,
-  toggleFilterActiveFarms
+  toggleFilterActiveFarms,
+  updateChainId
 } from './actions'
+import { NETWORK_CHAIN_ID } from '../../connectors'
 
 const currentTimestamp = () => new Date().getTime()
 
@@ -33,6 +35,8 @@ export interface UserState {
 
   // deadline set by user in minutes, used in all txns
   userDeadline: number
+
+  chainId: number
 
   tokens: {
     [chainId: number]: {
@@ -62,6 +66,7 @@ export const initialState: UserState = {
   userExpertMode: false,
   userSlippageTolerance: INITIAL_ALLOWED_SLIPPAGE,
   userDeadline: DEFAULT_DEADLINE_FROM_NOW,
+  chainId: NETWORK_CHAIN_ID,
   tokens: {},
   pairs: {},
   timestamp: currentTimestamp(),
@@ -141,5 +146,8 @@ export default createReducer(initialState, builder =>
     .addCase(toggleFilterActiveFarms, state => {
       state.filterActiveFarms = !state.filterActiveFarms
       state.timestamp = currentTimestamp()
+    })
+    .addCase(updateChainId, (state, { payload: { chainId } }) => {
+      state.chainId = chainId
     })
 )

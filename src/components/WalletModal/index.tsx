@@ -273,10 +273,6 @@ export default function WalletModal({
   }
 
   const selectChain = useSelectChain()
-  async function addNetwork() {
-    const chainID: ChainId = 1313161554 // n-
-    return selectChain()
-  }
 
   function getModalContent() {
     if (chainId !== NETWORK_CHAIN_ID) {
@@ -290,7 +286,7 @@ export default function WalletModal({
             {connector === injected ? (
               <>
                 <h5>{`${t('Please connect to')}:`}</h5>
-                {isMetamask() && <ButtonLight onClick={addNetwork}>{t('walletModal.switchNetwork')}</ButtonLight>}
+                {isMetamask() && <ButtonLight onClick={selectChain}>{t('walletModal.switchNetwork')}</ButtonLight>}
               </>
             ) : (
               <h5>{`${'Please connect to Aurora network in your wallet settings.'}`}</h5>

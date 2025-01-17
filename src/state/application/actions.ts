@@ -30,7 +30,8 @@ export enum ApplicationModal {
   LANGUAGE,
   TRI_PRICE,
   BRIDGES_MENU,
-  GOVERNANCE_MENU
+  GOVERNANCE_MENU,
+  NETWORK_SELECT
 }
 
 export const updateBlockNumber = createAction<{ chainId: number; blockNumber: number }>('application/updateBlockNumber')
