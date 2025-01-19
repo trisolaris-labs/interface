@@ -176,8 +176,13 @@ export function useURLWarningToggle(): () => void {
  * @param tokenA one of the two tokens
  * @param tokenB the other token
  */
-export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token], chainId: ChainId): Token {
+export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token], chainId: ChainId): Token | undefined {
+  try {
   return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB, chainId), 18, 'PGL', 'Pangolin Liquidity')
+  } catch (e) {
+    console.error('error creating liquidity token', tokenA, tokenB, chainId)
+    console.error(e)
+  }
 }
 
 /**
@@ -185,7 +190,6 @@ export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token], chainId: Ch
  */
 export function useTrackedTokenPairs(): [Token, Token][] {
   const { chainId } = useActiveWeb3React()
-
   // pinned pairs
   const pinnedPairs: [Token, Token][] = useMemo(
     () =>

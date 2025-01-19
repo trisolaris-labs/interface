@@ -20,6 +20,7 @@ import { useTrackedTokenPairs, toV2LiquidityToken } from '../../state/user/hooks
 
 import { TitleRow, ButtonRow, ResponsiveButtonPrimary, ResponsiveButtonSecondary, EmptyProposals } from './styleds'
 import { NETWORK_CHAIN_ID } from '../../connectors'
+import { TURBO } from '../../constants/chains'
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
@@ -28,7 +29,7 @@ export default function Pool() {
   const { account } = useActiveWeb3React()
   const chainId = NETWORK_CHAIN_ID
   const trackedTokenPairs = useTrackedTokenPairs()
-
+  
   const tokenPairsWithLiquidityTokens = useMemo(
     () =>
       trackedTokenPairs.map(tokens => ({
@@ -49,7 +50,7 @@ export default function Pool() {
   const liquidityTokensWithBalances = useMemo(
     () =>
       tokenPairsWithLiquidityTokens.filter(({ liquidityToken }) =>
-        v2PairsBalances[liquidityToken.address]?.greaterThan('0')
+        liquidityToken && v2PairsBalances[liquidityToken.address]?.greaterThan('0')
       ),
     [tokenPairsWithLiquidityTokens, v2PairsBalances]
   )
@@ -71,10 +72,10 @@ export default function Pool() {
               </TYPE.mediumHeader>
             </HideSmall>
             <ButtonRow>
-              <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/create/ETH">
+              <ResponsiveButtonSecondary as={Link} padding="6px 8px" to={`/create/${chainId === TURBO ? 'TURBO' : 'ETH'}`}>
                 {t('pool.createPair')}
               </ResponsiveButtonSecondary>
-              <ResponsiveButtonPrimary id="join-pool-button" as={Link} padding="6px 8px" to="/add/ETH">
+              <ResponsiveButtonPrimary id="join-pool-button" as={Link} padding="6px 8px" to={`/add/${chainId === TURBO ? 'TURBO' : 'ETH'}`}>
                 <Text fontWeight={500} fontSize={16}>
                   {t('pool.addLiquidity')}
                 </Text>

@@ -54,7 +54,7 @@ export interface UserShareType {
 export type PoolDataHookReturnType = [StablePoolDataType, UserShareType | null]
 
 export default function useStablePoolsData(poolName: StableSwapPoolName): PoolDataHookReturnType {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const pool = STABLESWAP_POOLS[poolName]
   const { disableAddLiquidity, lpToken, poolTokens, type, underlyingPoolTokens } = pool
   const effectivePoolTokens =
