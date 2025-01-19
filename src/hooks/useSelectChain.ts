@@ -7,14 +7,14 @@ import { useActiveWeb3React } from '.'
 
 export default function useSelectChain() {
   const { connector } = useWeb3React()
-  const { selectedChain } = useActiveWeb3React()
+  const { appSelectedChain } = useActiveWeb3React()
 
   return useCallback(async () => {
     if (!connector) return
 
     try {
       try {
-        const addChainParameter = CHAIN_PARAMS[selectedChain]
+        const addChainParameter = CHAIN_PARAMS[appSelectedChain]
 
         if (injected !== connector) {
           console.log('Please switch to Aurora network in wallet settings.')
@@ -34,5 +34,5 @@ export default function useSelectChain() {
     } catch (error) {
       console.error('Failed to switch networks', error)
     }
-  }, [connector, selectedChain])
+  }, [connector, appSelectedChain])
 }
