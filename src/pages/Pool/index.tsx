@@ -26,8 +26,8 @@ export default function Pool() {
   const theme = useContext(ThemeContext)
   const { t } = useTranslation()
 
-  const { account } = useActiveWeb3React()
-  const chainId = NETWORK_CHAIN_ID
+  const { account, chainId } = useActiveWeb3React()
+  
   const trackedTokenPairs = useTrackedTokenPairs()
   
   const tokenPairsWithLiquidityTokens = useMemo(
