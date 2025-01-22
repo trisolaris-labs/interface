@@ -117,15 +117,15 @@ const OptionGrid = styled.div`
 export default function NetworkSelectModal() {
   const isModalOpen = useModalOpen(ApplicationModal.NETWORK_SELECT)
   const toggleWalletModal = useToggleNetworkSelectModal()
-  const { selectedChain, setSelectedChain } = useActiveWeb3React()
+  const { appSelectedChain, setSelectedChain } = useActiveWeb3React()
 
   const changeNetwork = useCallback(
     async (chainId: number) => {
-      if (selectedChain !== chainId) {
+      if (appSelectedChain !== chainId) {
         setSelectedChain(chainId.toString())
       }
     },
-    [selectedChain, setSelectedChain]
+    [appSelectedChain, setSelectedChain]
   )
 
   return (
@@ -139,7 +139,7 @@ export default function NetworkSelectModal() {
           <ContentWrapper mobile={isMobile}>
             <OptionGrid data-cy="option-grid">
               <Option
-                active={selectedChain === ChainId.AURORA}
+                active={appSelectedChain === ChainId.AURORA}
                 id={`connect-${ChainId.AURORA}`}
                 key={ChainId.AURORA}
                 color={'#E8831D'}
@@ -149,7 +149,7 @@ export default function NetworkSelectModal() {
                 onClick={() => changeNetwork(ChainId.AURORA)}
               />
               <Option
-                active={selectedChain === TURBO}
+                active={appSelectedChain === TURBO}
                 id={`chain-${TURBO}`}
                 key={TURBO}
                 color={'#E8831D'}

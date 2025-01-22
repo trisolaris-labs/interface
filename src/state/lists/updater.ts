@@ -16,7 +16,7 @@ export default function Updater(): null {
   const { provider } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
-
+  const {chainId} = useActiveWeb3React()
   // Code for making trisolaris list the default.
   const lastInitializedList = useSelector<AppState, AppState['lists']['lastInitializedDefaultListOfLists']>(
     state => state.lists.lastInitializedDefaultListOfLists
@@ -35,7 +35,7 @@ export default function Updater(): null {
     Object.keys(lists).forEach(url =>
       fetchList(url).catch(error => console.debug('interval list fetching error', error))
     )
-  }, [fetchList, isWindowVisible, lists])
+  }, [fetchList, isWindowVisible, lists, chainId])
 
   // fetch all lists every 10 minutes, but only after we initialize provider
   useInterval(fetchAllListsCallback, provider ? 1000 * 60 * 10 : null)

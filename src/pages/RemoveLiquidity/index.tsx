@@ -43,6 +43,7 @@ import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '
 import { Field } from '../../state/burn/actions'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { NETWORK_CHAIN_ID } from '../../connectors'
+import { TURBO } from '../../constants/chains'
 
 export default function RemoveLiquidity({
   history,
@@ -573,7 +574,7 @@ export default function RemoveLiquidity({
               </div>
             )}
             <div style={{ position: 'relative' }}>
-              {!account || chainId !== NETWORK_CHAIN_ID ? (
+              {!account || (chainId !== TURBO && chainId !== ChainId.AURORA) ! ? (
                 <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
               ) : (
                 <RowBetween>

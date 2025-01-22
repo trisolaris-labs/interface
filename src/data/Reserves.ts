@@ -6,7 +6,8 @@ import { Interface } from '@ethersproject/abi'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { NETWORK_CHAIN_ID } from '../connectors'
-
+import { use } from 'i18next'
+import { useActiveWeb3React } from '../hooks'
 const PAIR_INTERFACE = new Interface(IUniswapV2Pair_ABI)
 
 export enum PairState {
@@ -17,8 +18,8 @@ export enum PairState {
 }
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
-  const chainId = NETWORK_CHAIN_ID
-
+  // const chainId = NETWORK_CHAIN_ID
+  const {chainId} = useActiveWeb3React()
   const tokens = useMemo(
     () =>
       currencies.map(([currencyA, currencyB]) => [
@@ -31,11 +32,10 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   const pairAddresses = useMemo(
     () =>
       tokens.map(([tokenA, tokenB]) => {
-        return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB, ChainId.AURORA) : undefined
+        return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB, chainId ?? ChainId.AURORA) : undefined
       }),
     [tokens, chainId]
   )
-
   const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')
 
   return useMemo(() => {

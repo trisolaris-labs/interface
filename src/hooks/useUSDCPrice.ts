@@ -7,13 +7,18 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { useAuTokenContract } from './useContract'
 import { useSingleCallResult } from '../state/multicall/hooks'
 import { NETWORK_CHAIN_ID } from '../connectors'
+import { useActiveWeb3React } from '.'
 
 /**
  * Returns the price in USDC of the input currency
  * @param currency currency to compute the USDC price of
  */
 export default function useUSDCPrice(currency?: Currency): Price | undefined {
-  const chainId = NETWORK_CHAIN_ID
+  let {chainId} = useActiveWeb3React()
+  if(!chainId) {
+    chainId = NETWORK_CHAIN_ID
+  }
+
   const wrapped = wrappedCurrency(currency, chainId)
 
   const USDC = usdcDef[ChainId.AURORA]
@@ -72,7 +77,7 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
   }, [auUSDTExchangeRate])
 
   return useMemo(() => {
-    if (!currency || !wrapped || !chainId) {
+    if (!currency || !wrapped || !chainId || !wrapped.hasOwnProperty(chainId)) {
       return undefined
     }
     // handle weth/eth

@@ -13,7 +13,7 @@ const Wrapper = styled.div<{ margin: boolean; sizeraw: number }>`
 interface MultipleCurrencyLogoProps {
   margin?: boolean
   size?: number
-  currencies: Currency[]
+  currencies?: Currency[] | undefined
   separation?: number
   className?: string
 }
@@ -36,12 +36,12 @@ export default function MultipleCurrencyLogo({
   separation,
   className
 }: MultipleCurrencyLogoProps) {
-  const currenciesQty = currencies.length
+  const currenciesQty = currencies?.length
   const logosSeparation = separation ?? 10
 
   return (
     <Wrapper sizeraw={size} margin={margin} className={className}>
-      {currenciesQty > 2 ? (
+      {currenciesQty && currenciesQty > 2 ? (
         <>
           <HigherLogo currency={currencies[0]} size={size.toString() + 'px'} order={currenciesQty} />
           {currencies.slice(1).map((currency, index) => (
@@ -57,8 +57,8 @@ export default function MultipleCurrencyLogo({
         </>
       ) : (
         <>
-          {currencies[0] && <CurrencyLogo currency={currencies[0]} size={size.toString() + 'px'} />}
-          {currencies[1] && <CurrencyLogo currency={currencies[1]} size={size.toString() + 'px'} />}
+          {(currenciesQty && currencies[0]) && <CurrencyLogo currency={currencies[0]} size={size.toString() + 'px'} />}
+          {(currenciesQty && currencies[1]) && <CurrencyLogo currency={currencies[1]} size={size.toString() + 'px'} />}
         </>
       )}
     </Wrapper>

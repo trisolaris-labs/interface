@@ -8,6 +8,7 @@ import { ETHERSCAN_PREFIXES } from '../constants/index'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, CETH, ROUTER_ADDRESS } from '@trisolaris/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { NETWORK_CHAIN_ID, network } from '../connectors'
+import { TURBO } from '../constants/chains'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -82,7 +83,7 @@ export function getProviderOrSigner(
   account?: string,
   chainId?: number
 ): Web3Provider | JsonRpcSigner {
-  return account && chainId === NETWORK_CHAIN_ID
+  return (account && (chainId === TURBO || chainId === ChainId.AURORA))
     ? getSigner(library, account)
     : (network.customProvider as Web3Provider)
 }

@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI } from '@trisolaris/sdk'
+import { ChainId, CurrencyAmount, JSBI } from '@trisolaris/sdk'
 import React, { useEffect, useRef, useState, useContext, useCallback } from 'react'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { ButtonLight, ButtonConfirmed, ButtonError } from '../../components/Button'
@@ -39,6 +39,7 @@ import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySli
 import { useStableSwapContract } from '../../hooks/useContract'
 import { getLpTokenUsdEstimate } from '../../utils/stableSwap'
 import { NETWORK_CHAIN_ID } from '../../connectors'
+import { TURBO } from '../../constants/chains'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -330,7 +331,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
             })}
           </AutoColumn>
           <div style={{ marginTop: '1rem' }}>
-            {account == null || chainId !== NETWORK_CHAIN_ID ? (
+            {account == null || (chainId !== TURBO && chainId !== ChainId.AURORA) ! ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : (
               <AutoColumn gap="8px">

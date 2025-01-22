@@ -121,8 +121,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
   const [stablePoolData, userData] = useStablePoolsData(poolName)
   const { disableAddLiquidity, name, friendlyName } = stablePoolData
   const { address: poolAddress, poolTokens: stablePoolTokens } = STABLESWAP_POOLS[poolName]
-
-  const currencies = stablePoolTokens.map(token => unwrappedToken(token))
+  const currencies = stablePoolTokens.length > 0 ? stablePoolTokens.map(token => unwrappedToken(token)) : []
   const [showMore, setShowMore] = useState(false)
 
   const backgroundColor1 = useColorWithDefault('#2172E5', stablePoolTokens[0])
@@ -206,7 +205,7 @@ export default function FullStablePositionCard({ poolName, border }: StablePosit
               <TYPE.subHeader fontSize={16} fontWeight={600}>
                 Currency Reserves
               </TYPE.subHeader>
-              {stablePoolData.tokens.map(({ token, percent, value }) => (
+              {stablePoolData.tokens.length > 0 && stablePoolData.tokens.map(({ token, percent, value }) => (
                 <FixedHeightRow key={token.name}>
                   <CurrencyContainer>
                     <CurrencyLogo size="20px" currency={unwrappedToken(token)} style={{ marginRight: '5px' }} />

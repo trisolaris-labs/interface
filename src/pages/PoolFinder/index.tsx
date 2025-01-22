@@ -1,4 +1,4 @@
-import { Currency, CETH, JSBI, TokenAmount } from '@trisolaris/sdk'
+import { Currency, CETH, JSBI, TokenAmount, ChainId } from '@trisolaris/sdk'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Plus } from 'react-feather'
 import { Text } from 'rebass'
@@ -22,6 +22,8 @@ import { GreyCard } from '../../components/Card'
 
 import { BIG_INT_ZERO } from '../../constants'
 import { NETWORK_CHAIN_ID } from '../../connectors'
+import { TURBO } from '../../constants/chains'
+
 
 enum Fields {
   TOKEN0 = 0,
@@ -45,7 +47,7 @@ export default function PoolFinder() {
       addPair(pair)
     }
   }, [pair, addPair])
-
+  
   const validPairNoLiquidity: boolean =
     pairState === PairState.NOT_EXISTS ||
     Boolean(
@@ -76,7 +78,7 @@ export default function PoolFinder() {
   const prerequisiteMessage = (
     <GreyCard padding="45px 10px">
       <Text textAlign="center">
-        {!account || chainId !== NETWORK_CHAIN_ID ? t('poolFinder.connectToFind') : t('poolFinder.selectTokenToFind')}
+        {!account || (chainId !== TURBO && chainId !== ChainId.AURORA) ? t('poolFinder.connectToFind') : t('poolFinder.selectTokenToFind')}
       </Text>
     </GreyCard>
   )

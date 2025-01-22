@@ -1,10 +1,12 @@
 import { Currency, CETH, Token } from '@trisolaris/sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-
+import AuroraIcon from '../../assets/images/aurora.png'
+import TurboIcon from '../../assets/images/turbo.png'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import { useActiveWeb3React } from '../../hooks'
+
 import Logo from '../Logo'
 
 export const getTokenLogoURL = (address: string) => {
@@ -42,7 +44,6 @@ export default function CurrencyLogo({
 }) {
   const { chainId } = useActiveWeb3React()
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
-
   const srcs: string[] = useMemo(() => {
     if (currency === CETH) return []
 
@@ -58,12 +59,12 @@ export default function CurrencyLogo({
   if(currency?.name === 'TURBO') {
     return <StyledEthereumLogo
     src={
-      '/images/turbo-token-logo.jpg'
+      TurboIcon
     }
     size={size}
     style={style}
   />
-  }
+  } 
   if (currency === CETH) {
     if (chainId === 137) {
       return (
