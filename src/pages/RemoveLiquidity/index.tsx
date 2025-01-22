@@ -574,7 +574,7 @@ export default function RemoveLiquidity({
               </div>
             )}
             <div style={{ position: 'relative' }}>
-              {!account || (chainId !== TURBO && chainId !== ChainId.AURORA) ! ? (
+              {!account || (chainId !== TURBO && chainId !== ChainId.AURORA) ? (
                 <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
               ) : (
                 <RowBetween>

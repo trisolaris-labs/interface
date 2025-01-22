@@ -331,7 +331,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
             })}
           </AutoColumn>
           <div style={{ marginTop: '1rem' }}>
-            {account == null || (chainId !== TURBO && chainId !== ChainId.AURORA) ! ? (
+            {account == null || (chainId !== TURBO && chainId !== ChainId.AURORA) ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : (
               <AutoColumn gap="8px">
