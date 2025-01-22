@@ -391,7 +391,7 @@ export default function AddLiquidity({
               />
             )}
 
-            {!account || chainId !== NETWORK_CHAIN_ID ? (
+            {!account || (chainId !== TURBO && chainId !== ChainId.AURORA) ? (
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
             ) : (
               <AutoColumn id="defaultswap-add-liquidity" gap={'md'}>

@@ -19,6 +19,8 @@ import { isTokenOnList } from '../../utils'
 import { useTranslation } from 'react-i18next'
 import { TURBO } from '../../constants/chains'
 import { TURBO_CURRENCY } from '../../constants/lists'
+import {network, networkHooks} from '../../connectors'
+import { useEffect } from 'react'
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === CETH ? 'ETH' : ''
 }
@@ -115,10 +117,10 @@ function CurrencyRow({
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)
- 
   const removeToken = useRemoveUserAddedToken()
   const addToken = useAddUserToken()
   const { t } = useTranslation()
+
 
   // only show add or remove buttons if not on selected list
   return (

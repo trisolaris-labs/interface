@@ -83,7 +83,7 @@ export default function Pool() {
             </ButtonRow>
           </TitleRow>
 
-          {!account || chainId !== NETWORK_CHAIN_ID ? (
+          {!account || (chainId !== TURBO && chainId !== ChainId.AURORA) ? (
             <Card padding="40px">
               <TYPE.body color={theme.text3} textAlign="center">
                 {t('pool.connectWalletToView')}

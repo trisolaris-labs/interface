@@ -97,6 +97,7 @@ export default function Popover({ content, show, children, placement = 'auto' }:
   const updateCallback = useCallback(() => {
     update && update()
   }, [update])
+  
   useInterval(updateCallback, show ? 100 : null)
 
   return (

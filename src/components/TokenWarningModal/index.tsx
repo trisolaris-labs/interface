@@ -1,4 +1,4 @@
-import { Token } from '@trisolaris/sdk'
+import { ChainId, Token } from '@trisolaris/sdk'
 import { transparentize } from 'polished'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
@@ -14,6 +14,7 @@ import { AlertTriangle } from 'react-feather'
 import { ButtonError } from '../Button'
 import { Trans, useTranslation } from 'react-i18next'
 import { NETWORK_CHAIN_ID } from '../../connectors'
+import { TURBO } from '../../constants/chains'
 
 const Wrapper = styled.div<{ error: boolean }>`
   background: ${({ theme }) => transparentize(0.6, theme.bg3)};
@@ -49,7 +50,7 @@ function TokenWarningCard({ token }: TokenWarningCardProps) {
   const { t } = useTranslation()
 
   const duplicateNameOrSymbol = useMemo(() => {
-    if (!token || chainId !== NETWORK_CHAIN_ID) return false
+    if (!token || (chainId !== TURBO && chainId !== ChainId.AURORA)) return false
 
     return Object.keys(allTokens).some(tokenAddress => {
       const userToken = allTokens[tokenAddress]

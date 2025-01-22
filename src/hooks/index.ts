@@ -7,6 +7,8 @@ import { useState } from 'react'
 import { CHAIN_PARAMS } from '../constants'
 import { set } from 'lodash'
 import { ChainId } from '@trisolaris/sdk'
+import { network } from '../connectors'
+
 export function useActiveWeb3React() {
   const result = useWeb3ReactCore()
   const appSelectedChain = useUserChainId()
@@ -31,7 +33,7 @@ export function useSwitchProviderChain(): {
   const { connector, account } = useWeb3ReactCore()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
- 
+
   async function switchProviderChain(chainId: number) {
     const networkData = CHAIN_PARAMS[chainId]
     const params = {
@@ -41,7 +43,6 @@ export function useSwitchProviderChain(): {
       rpcUrls: networkData.rpcUrls,
       blockExplorerUrls: networkData.blockExplorerUrls
     }
-    
     if (!connector) {
       console.error('Missing connector')
       setError('Missing connector')
@@ -50,12 +51,11 @@ export function useSwitchProviderChain(): {
     try {
       setLoading(true)
       const connectionType = getWalletForConnector(connector)
-      console.log('connectionType', connectionType)
       if (connectionType === Wallet.WALLET_CONNECT || connectionType === Wallet.NETWORK || Wallet.GNOSIS_SAFE) {
+        await network.activate(chainId)
         await connector.activate(chainId)
         return
       } else {
-        
         if (!networkData) {
           console.error('Missing network data')
           setError('Missing network data')

@@ -34,7 +34,7 @@ import { RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { ButtonPrimary } from '../../components/Button'
 import { RowBetween } from '../../components/Row'
-import { JSBI, Rounding } from '@trisolaris/sdk'
+import { JSBI, Rounding, ChainId } from '@trisolaris/sdk'
 import { BIG_INT_ZERO, PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE } from '../../constants'
 import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
@@ -44,6 +44,7 @@ import Card from '../../components/Card'
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
 import { getLpTokenUsdEstimate } from '../../utils/stableSwap'
 import { NETWORK_CHAIN_ID } from '../../connectors'
+import { TURBO } from '../../constants/chains'
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -352,7 +353,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                 showCommonBases
               />
             ) : null}
-            {!account || chainId !== NETWORK_CHAIN_ID ? (
+            {!account || (chainId !== TURBO && chainId !== ChainId.AURORA) ? (
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
             ) : (
               <AutoColumn gap={'md'}>

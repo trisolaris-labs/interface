@@ -14,9 +14,7 @@ export function useETHBalances(
   uncheckedAddresses?: (string | undefined)[]
 ): { [address: string]: CurrencyAmount | undefined } {
   const multicallContract = useMulticallContract()
-  const { chainId } = useActiveWeb3React()
-  // console.log('chainId', chainId)
-  // console.log(multicallContract)
+
   const addresses: string[] = useMemo(
     () =>
       uncheckedAddresses
@@ -56,7 +54,6 @@ export function useTokenBalancesWithLoadingIndicator(
     () => tokens?.filter((t?: Token): t is Token => isAddress(t?.address) !== false) ?? [],
     [tokens]
   )
-
   const validatedTokenAddresses = useMemo(() => validatedTokens.map(vt => vt.address), [validatedTokens])
 
   const balances = useMultipleContractSingleData(validatedTokenAddresses, ERC20_INTERFACE, 'balanceOf', [address])
@@ -100,14 +97,15 @@ export function useCurrencyBalances(
   account?: string,
   currencies?: (Currency | undefined)[]
 ): (CurrencyAmount | undefined)[] {
+
   const tokens = useMemo(() => currencies?.filter((currency): currency is Token => currency instanceof Token) ?? [], [
     currencies
   ])
 
   const tokenBalances = useTokenBalances(account, tokens)
-
   const containsETH: boolean = useMemo(() => currencies?.some(currency => currency === CETH || currency?.name === 'TURBO') ?? false, [currencies])
   const ethBalance = useETHBalances(containsETH ? [account] : [])
+ 
   return useMemo(
     () =>
       currencies?.map(currency => {

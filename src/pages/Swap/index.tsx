@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import ReactGA from 'react-ga'
 import { ThemeContext } from 'styled-components'
-import { Currency, JSBI, Percent, Token, Trade } from '@trisolaris/sdk'
+import { ChainId, Currency, JSBI, Percent, Token, Trade } from '@trisolaris/sdk'
 import { ChevronDown } from 'react-feather'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
@@ -76,6 +76,7 @@ import Modal from '../../components/Modal'
 import { ModalContentWrapper } from '../../components/Settings/Settings.styles'
 import useCoinSearch from '../../fetchers/coingecko-api-id'
 import { NETWORK_CHAIN_ID } from '../../connectors'
+import { TURBO } from '../../constants/chains'
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -566,7 +567,7 @@ export default function Swap() {
                 )}
               </AutoColumn>
               <BottomGrouping>
-                {!account || chainId !== NETWORK_CHAIN_ID ? (
+                {!account || !(chainId !== ChainId.AURORA || chainId !== TURBO) ? (
                   <ButtonLight onClick={toggleWalletModal}>{t('swapPage.connectWallet')}</ButtonLight>
                 ) : showWrap ? (
                   <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>

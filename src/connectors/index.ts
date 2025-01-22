@@ -8,7 +8,8 @@ import { Connector } from '@web3-react/types'
 import { WalletConnect } from '@web3-react/walletconnect-v2'
 import { useMemo } from 'react'
 import { TURBO } from '../constants/chains'
-
+import { useActiveWeb3React } from '../hooks'
+import { useUserChainId } from '../state/user/hooks'
 const NETWORK_URL = process.env.REACT_APP_NETWORK_URL ?? ''
 
 export const NETWORK_CHAIN_ID: ChainId = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1313161554')
@@ -76,18 +77,16 @@ function getHooksForWallet(wallet: Wallet) {
   }
 }
 
+
 export const [network, networkHooks] = initializeConnector<Network>(
   actions =>
     new Network({
       actions,
       urlMap: {
         [ChainId.AURORA]: 'https://mainnet.aurora.dev/',
-        [TURBO]: 'https://rpc-0x4e45415f.aurora-cloud.dev/',
-        [NETWORK_CHAIN_ID]: NETWORK_URL
+        [TURBO]: 'https://rpc-0x4e45415f.aurora-cloud.dev/'
       },
-      defaultChainId: NETWORK_CHAIN_ID
-    })
-)
+}))
 
 export const [injected, injectedHooks] = initializeConnector<MetaMask>(actions => new MetaMask({ actions, onError }))
 
@@ -99,7 +98,7 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
       actions,
       options: {
         projectId: 'c13edb0e380beb4872d04fa7dce7d169',
-        chains: [NETWORK_CHAIN_ID],
+        chains: [NETWORK_CHAIN_ID, ChainId.AURORA, TURBO],
         showQrModal: true,
         qrModalOptions: {
           explorerRecommendedWalletIds: [
@@ -158,3 +157,6 @@ export function useConnectors(selectedWallet: Wallet | undefined) {
     return web3ReactConnectors
   }, [selectedWallet])
 }
+
+
+

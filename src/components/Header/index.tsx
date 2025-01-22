@@ -38,7 +38,8 @@ import NetworkSelectModal from '../NetworkSelectModal'
 import { ChainId } from '@trisolaris/sdk'
 import { TURBO } from '../../constants/chains'
 import { useSwitchProviderChain } from '../../hooks'
-import { chain } from 'lodash'
+
+
 const networkNames = {
   [ChainId.AURORA]: 'Aurora',
   [TURBO]: 'Turbo'
@@ -57,7 +58,9 @@ export default function Header() {
 
   useEffect(() => {
     switchProviderChain(appSelectedChain)
+
   }, [appSelectedChain])
+
 
   // Use a minimal header/footer when the `/swap` page is embedded on third-party websites
   if (isEmbedded) {
