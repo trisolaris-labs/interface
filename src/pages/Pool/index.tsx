@@ -38,6 +38,7 @@ export default function Pool() {
       })),
     [trackedTokenPairs, chainId]
   )
+
   const liquidityTokens = useMemo(() => tokenPairsWithLiquidityTokens.map(tpwlt => tpwlt.liquidityToken), [
     tokenPairsWithLiquidityTokens
   ])

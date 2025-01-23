@@ -8,8 +8,7 @@ import { Connector } from '@web3-react/types'
 import { WalletConnect } from '@web3-react/walletconnect-v2'
 import { useMemo } from 'react'
 import { TURBO } from '../constants/chains'
-import { useActiveWeb3React } from '../hooks'
-import { useUserChainId } from '../state/user/hooks'
+
 const NETWORK_URL = process.env.REACT_APP_NETWORK_URL ?? ''
 
 export const NETWORK_CHAIN_ID: ChainId = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1313161554')

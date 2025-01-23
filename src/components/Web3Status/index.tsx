@@ -167,7 +167,7 @@ function Web3StatusInner() {
         {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
       </Web3StatusConnected>
     )
-  } else if (chainId !== TURBO || chainId !== ChainId.AURORA) {
+  } else if (chainId !== TURBO && chainId !== ChainId.AURORA) {
     return (
       <Web3StatusError onClick={toggleWalletModal}>
         <NetworkIcon />

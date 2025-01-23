@@ -178,12 +178,8 @@ export function useURLWarningToggle(): () => void {
  * @param tokenB the other token
  */
 export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token], chainId: ChainId): Token | undefined {
-  try {
   return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB, chainId), 18, 'PGL', 'Pangolin Liquidity')
-  } catch (e) {
-    console.error('error creating liquidity token', tokenA, tokenB, chainId)
-    console.error(e)
-  }
+
 }
 
 /**

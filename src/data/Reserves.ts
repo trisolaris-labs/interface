@@ -1,13 +1,15 @@
-import { TokenAmount, Pair, Currency, ChainId } from '@trisolaris/sdk'
+import { TokenAmount, Pair, Currency, ChainId, FACTORY_ADDRESS, ROUTER_ADDRESS, Token, INIT_CODE_HASH } from '@trisolaris/sdk'
 import { useMemo } from 'react'
 import IUniswapV2Pair_ABI from '../constants/abis/polygon/IUniswapV2Pair.json'
 import { Interface } from '@ethersproject/abi'
-
+import { TURBO } from '../constants/chains'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
-import { NETWORK_CHAIN_ID } from '../connectors'
-import { use } from 'i18next'
 import { useActiveWeb3React } from '../hooks'
+import { pack, keccak256 } from '@ethersproject/solidity'
+import { getCreate2Address } from '@ethersproject/address'
+
+
 const PAIR_INTERFACE = new Interface(IUniswapV2Pair_ABI)
 
 export enum PairState {
@@ -17,8 +19,37 @@ export enum PairState {
   INVALID
 }
 
+export const LOCAL_FACTORY_ADDRESS = {
+  ...FACTORY_ADDRESS,
+  [TURBO]: '0xf0BE0075F8De10044a7115FdCf7feC3afB3B8FE0'
+}
+
+export const LOCAL_ROUTER_ADDRESS = {
+  ...ROUTER_ADDRESS,
+  [TURBO]: '0x317f7714F49efCFdBF150640cf9E73C136676c0c'
+}
+
+export const LOCAL_INIT_CODE_HASH = {
+  ...INIT_CODE_HASH,
+  [TURBO]: '0x754e1d90e536e4c1df81b7f030f47b4ca80c87120e145c294f098c83a6cb5ace'
+}
+
+export class LocalPairs extends Pair {
+  static getAddress(tokenA: Token, tokenB: Token, chainId: ChainId) {
+    const tokens = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
+    return getCreate2Address(
+      LOCAL_FACTORY_ADDRESS[chainId],
+      keccak256(['bytes'], [pack(['address', 'address'], [tokens[0].address, tokens[1].address])]),
+      LOCAL_INIT_CODE_HASH[chainId]
+    )
+  }
+}
+
+
+
+
+
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
-  // const chainId = NETWORK_CHAIN_ID
   const {chainId} = useActiveWeb3React()
   const tokens = useMemo(
     () =>
@@ -28,11 +59,12 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       ]),
     [chainId, currencies]
   )
+  FACTORY_ADDRESS[TURBO] = '0xf0BE0075F8De10044a7115FdCf7feC3afB3B8FE0'
 
   const pairAddresses = useMemo(
     () =>
       tokens.map(([tokenA, tokenB]) => {
-        return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB, chainId ?? ChainId.AURORA) : undefined
+        return tokenA && tokenB && !tokenA.equals(tokenB) ? LocalPairs.getAddress(tokenA, tokenB, chainId ?? ChainId.AURORA) : undefined
       }),
     [tokens, chainId]
   )

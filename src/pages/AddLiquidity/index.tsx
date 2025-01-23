@@ -1,6 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, CETH, TokenAmount, WETH, ROUTER_ADDRESS } from '@trisolaris/sdk'
+import { Currency, currencyEquals, CETH, TokenAmount, WETH } from '@trisolaris/sdk'
+import { LOCAL_ROUTER_ADDRESS } from '../../data/Reserves'
 import React, { useCallback, useContext, useState } from 'react'
 import { Plus } from 'react-feather'
 import ReactGA from 'react-ga'
@@ -111,11 +112,11 @@ export default function AddLiquidity({
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
-    chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON]
+    chainId ? LOCAL_ROUTER_ADDRESS[chainId] : LOCAL_ROUTER_ADDRESS[ChainId.POLYGON]
   )
   const [approvalB, approveBCallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_B],
-    chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON]
+    chainId ? LOCAL_ROUTER_ADDRESS[chainId] : LOCAL_ROUTER_ADDRESS[ChainId.POLYGON]
   )
 
   const addTransaction = useTransactionAdder()

@@ -5,7 +5,8 @@ import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import IUniswapV2Router02_ABI from '../constants/abis/polygon/IUniswapV2Router02.json'
 import { ETHERSCAN_PREFIXES } from '../constants/index'
-import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, CETH, ROUTER_ADDRESS } from '@trisolaris/sdk'
+import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, CETH } from '@trisolaris/sdk'
+import { LOCAL_ROUTER_ADDRESS } from '../data/Reserves'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { NETWORK_CHAIN_ID, network } from '../connectors'
 import { TURBO } from '../constants/chains'
@@ -106,7 +107,7 @@ export function getContract(
 // account is optional
 export function getRouterContract(chainId: ChainId, library: Web3Provider, account?: string): Contract {
   return getContract(
-    chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON],
+    chainId ? LOCAL_ROUTER_ADDRESS[chainId] : LOCAL_ROUTER_ADDRESS[ChainId.POLYGON],
     IUniswapV2Router02_ABI,
     library,
     account,

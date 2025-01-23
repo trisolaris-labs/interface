@@ -49,7 +49,6 @@ const listCache: WeakMap<TokenList, TokenAddressMap> | null =
 
 export function listToTokenMap(list: TokenList): TokenAddressMap {
   const result = listCache?.get(list)
-
   if (result) return result
 
   const map = list.tokens.reduce<TokenAddressMap>(
@@ -79,6 +78,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 
 export function useTokenList(urls: string[] | undefined): TokenAddressMap {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
+  
   const {chainId:providerChainId} = useActiveWeb3React()
   const tokenList = {} as { [chainId: string]: { [tokenAddress: string]: WrappedTokenInfo } }
   return useMemo(() => {

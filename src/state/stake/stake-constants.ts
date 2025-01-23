@@ -1,4 +1,4 @@
-import { ChainId, Token, TokenAmount, WETH, JSBI } from '@trisolaris/sdk'
+import { ChainId, Token, TokenAmount, WETH, JSBI, FACTORY_ADDRESS, ROUTER_ADDRESS,  } from '@trisolaris/sdk'
 import _ from 'lodash'
 import { ZERO_ADDRESS } from '../../constants'
 import {
@@ -148,38 +148,7 @@ const NULL_POOL: StakingTri = {
 }
 const NULL_POOLS = [NULL_POOL]
 
-const TURBO_POOL: StakingTri = {
-  ID: 0,
-  poolId: 0,
-  tokens: [
-    new Token(TURBO, ZERO_ADDRESS, 18, 'ZERO', 'ZERO'),
-    new Token(TURBO, '0x0000000000000000000000000000000000000001', 18, 'ONE', 'ONE')
-  ],
-  stakingRewardAddress: ZERO_ADDRESS,
-  lpAddress: ZERO_ADDRESS,
-  rewarderAddress: '',
-  isPeriodFinished: false,
-  stakedAmount: dummyAmount,
-  earnedAmount: dummyAmount,
-  totalStakedAmount: dummyAmount,
-  totalStakedInUSD: 0,
-  allocPoint: 0,
-  totalRewardRate: 1,
-  rewardRate: dummyAmount,
-  apr: 0,
-  nonTriAPRs: [],
-  chefVersion: ChefVersions.V2,
-  hasNonTriRewards: false,
-  inStaging: false,
-  noTriRewards: false,
-  earnedNonTriRewards: [],
-  stableSwapPoolName: null,
-  friendlyFarmName: null,
-  isFeatured: false,
-  poolType: PoolType.TRI_ONLY,
-  zapEnabled: false
-}
-const TURBO_POOLS = [TURBO_POOL]
+const TURBO_POOLS: StakingTri | [] = []
 
 /**
  * Creates a pool

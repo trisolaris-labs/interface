@@ -23,7 +23,9 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
       ),
     [bases]
   )
-
+  if(bases === undefined) {
+    return []
+  }
   const allPairCombinations: [Token, Token][] = useMemo(
     () =>
       tokenA && tokenB

@@ -57,9 +57,10 @@ export default function Header() {
   const isEmbedded = useEmbeddedSwapUI()
 
   useEffect(() => {
+    if(appSelectedChain !== chainId) {
     switchProviderChain(appSelectedChain)
-
-  }, [appSelectedChain])
+    }
+  }, [appSelectedChain, chainId])
 
 
   // Use a minimal header/footer when the `/swap` page is embedded on third-party websites

@@ -1,9 +1,12 @@
 import { Token, TokenAmount, CETH } from '@trisolaris/sdk'
 import { TRI } from '../constants/tokens'
 import { unwrappedToken } from './wrappedCurrency'
-
+import { TURBO } from '../constants/chains'
 export const getPairRenderOrder = (tokens: Token[]) => {
-  const currencyMap = tokens.map(token => unwrappedToken(token))
+  const currencyMap = tokens.map(token => {
+      return unwrappedToken(token)
+  })
+
   if (tokens.length > 2) {
     return {
       currencies: currencyMap,
@@ -32,7 +35,7 @@ export const getPairRenderOrder = (tokens: Token[]) => {
   }
 
   // If pair has TRI, put TRI first
-  return token0.equals(TRI[token0.chainId]) ? token0IsFirst : token1IsFirst
+  return TRI.hasOwnProperty(token0.chainId) && token0.equals(TRI[token0.chainId]) ? token0IsFirst : token1IsFirst
 }
 
 export const isTokenAmountPositive = (stakedAmount: TokenAmount | null | undefined) => {

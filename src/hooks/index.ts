@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux'
 import { updateChainId } from '../state/user/actions'
 import { useState } from 'react'
 import { CHAIN_PARAMS } from '../constants'
-import { set } from 'lodash'
 import { ChainId } from '@trisolaris/sdk'
 import { network } from '../connectors'
 

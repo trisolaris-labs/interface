@@ -276,7 +276,8 @@ export default function WalletModal({
   const selectChain = useSelectChain()
 
   function getModalContent() {
-    if (chainId !== TURBO || chainId !== ChainId.AURORA) {
+    
+    if (chainId !== TURBO && chainId !== ChainId.AURORA) {
       return (
         <UpperSection>
           <CloseIcon onClick={toggleWalletModal}>
