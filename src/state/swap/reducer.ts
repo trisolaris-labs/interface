@@ -74,7 +74,7 @@ export default createReducer<SwapState>(initialState, builder =>
       return {
         ...state,
         independentField: field,
-        typedValue
+        typedValue: typedValue
       }
     })
     .addCase(setRecipient, (state, { payload: { recipient } }) => {

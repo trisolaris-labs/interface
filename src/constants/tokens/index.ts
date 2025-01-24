@@ -810,6 +810,14 @@ export const MOCKUSDC: { [chainId in ChainId]: Token } = {
   [TURBO]: new Token(TURBO, '0x91A3AE29a6F269ef5d992Af15F5892410c4Ed0c7', 18, 'mockUSDC', 'mock USDC'),
 }
 
+export const MOCKMOCK: { [chainId in ChainId]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'mockMock', 'mock Mock'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'mockMock', 'mock Mock'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'mockMock', 'mock Mock'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'mockMock', 'mock Mock'),
+  [TURBO]: new Token(TURBO, '0xA22d6bD9789283b6AaA57808d5875B7B9f0fD813', 18, 'mockMock', 'mock Mock'),
+}
+
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),

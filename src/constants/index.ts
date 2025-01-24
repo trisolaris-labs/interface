@@ -73,7 +73,8 @@ const COMMON_BASES: ChainTokenList = {
     WBTC[ChainId.AURORA],
     USP[ChainId.AURORA],
     BINARIS[ChainId.AURORA]
-  ]
+  ],
+  [TURBO]: []
 }
 
 // used to construct intermediary pairs for trading

@@ -146,6 +146,7 @@ export function useDerivedSwapInfo(
   const recipientAddress = isAddress(recipient)
   const to: string | null = (recipientAddress ? recipientAddress : account) ?? null
 
+
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
     outputCurrency ?? undefined
@@ -153,7 +154,6 @@ export function useDerivedSwapInfo(
 
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
-
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
 
@@ -171,7 +171,6 @@ export function useDerivedSwapInfo(
     }),
     [inputCurrency, outputCurrency]
   )
-
   const isStableSwap = useMemo(
     () =>
       find(STABLESWAP_POOLS, pool => {
