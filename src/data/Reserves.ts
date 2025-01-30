@@ -1,4 +1,20 @@
-import { TokenAmount, Pair, Currency, ChainId, FACTORY_ADDRESS, ROUTER_ADDRESS, Token, INIT_CODE_HASH } from '@trisolaris/sdk'
+import {
+  TokenAmount,
+  Pair,
+  Currency,
+  ChainId,
+  BigintIsh,
+  FACTORY_ADDRESS,
+  ROUTER_ADDRESS,
+  Token,
+  INIT_CODE_HASH,
+  Price,
+  InsufficientInputAmountError,
+  InsufficientReservesError,
+  JSBI,
+  MINIMUM_LIQUIDITY
+} from '@trisolaris/sdk'
+
 import { useMemo } from 'react'
 import IUniswapV2Pair_ABI from '../constants/abis/polygon/IUniswapV2Pair.json'
 import { Interface } from '@ethersproject/abi'
@@ -8,7 +24,7 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { useActiveWeb3React } from '../hooks'
 import { pack, keccak256 } from '@ethersproject/solidity'
 import { getCreate2Address } from '@ethersproject/address'
-
+import invariant from 'tiny-invariant'
 
 const PAIR_INTERFACE = new Interface(IUniswapV2Pair_ABI)
 
@@ -34,23 +50,9 @@ export const LOCAL_INIT_CODE_HASH = {
   [TURBO]: '0x754e1d90e536e4c1df81b7f030f47b4ca80c87120e145c294f098c83a6cb5ace'
 }
 
-export class LocalPairs extends Pair {
-  static getAddress(tokenA: Token, tokenB: Token, chainId: ChainId) {
-    const tokens = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
-    return getCreate2Address(
-      LOCAL_FACTORY_ADDRESS[chainId],
-      keccak256(['bytes'], [pack(['address', 'address'], [tokens[0].address, tokens[1].address])]),
-      LOCAL_INIT_CODE_HASH[chainId]
-    )
-  }
-}
-
-
-
-
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
-  const {chainId} = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
   const tokens = useMemo(
     () =>
       currencies.map(([currencyA, currencyB]) => [
@@ -59,12 +61,13 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       ]),
     [chainId, currencies]
   )
-  FACTORY_ADDRESS[TURBO] = '0xf0BE0075F8De10044a7115FdCf7feC3afB3B8FE0'
 
   const pairAddresses = useMemo(
     () =>
       tokens.map(([tokenA, tokenB]) => {
-        return tokenA && tokenB && !tokenA.equals(tokenB) ? LocalPairs.getAddress(tokenA, tokenB, chainId ?? ChainId.AURORA) : undefined
+        return tokenA && tokenB && !tokenA.equals(tokenB)
+          ? Pair.getAddress(tokenA, tokenB, chainId ?? ChainId.AURORA)
+          : undefined
       }),
     [tokens, chainId]
   )
@@ -75,7 +78,6 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       const { result: reserves, loading } = result
       const tokenA = tokens[i][0]
       const tokenB = tokens[i][1]
-
       if (loading) return [PairState.LOADING, null]
       if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, null]
       if (!reserves) return [PairState.NOT_EXISTS, null]
@@ -86,10 +88,10 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
         new Pair(
           new TokenAmount(token0, reserve0.toString()),
           new TokenAmount(token1, reserve1.toString()),
-          ChainId.AURORA
+          chainId
         )
       ]
-    })
+    }) as [PairState, Pair | null][]
   }, [results, tokens, chainId])
 }
 

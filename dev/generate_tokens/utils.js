@@ -27,7 +27,8 @@ function createXChainToken(props = {}) {
     [ChainId.FUJI]: createDummyToken({ chainID: ChainId.FUJI, ...tokenProps }),
     [ChainId.AVALANCHE]: createDummyToken({ chainID: ChainId.AVALANCHE, ...tokenProps }),
     [ChainId.POLYGON]: createDummyToken({ chainID: ChainId.POLYGON, ...tokenProps }),
-    [ChainId.AURORA]: createDummyToken({ chainID: ChainId.AURORA, ...tokenProps })
+    [ChainId.AURORA]: createDummyToken({ chainID: ChainId.AURORA, ...tokenProps }),
+    [ChainId.TURBO]: createDummyToken({ chainID: ChainId.TURBO, ...tokenProps })
   })
 }
 

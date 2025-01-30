@@ -1,6 +1,5 @@
 import { ChainId, JSBI, TokenAmount, Fraction, Token, Pair } from '@trisolaris/sdk'
 import { Interface } from '@ethersproject/abi'
-
 import { useComplexRewarderMultipleContracts, useMasterChefV2ContractForVersion } from './hooks-sushi'
 import { useActiveWeb3React } from '../../hooks'
 import { useMultipleContractSingleData, useSingleContractMultipleData } from '../multicall/hooks'

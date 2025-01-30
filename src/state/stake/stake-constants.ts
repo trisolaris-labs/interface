@@ -41,7 +41,9 @@ import {
   BAT,
   STAUR,
   USDC_E,
-  USDT_E
+  USDT_E,
+  MOCKMOCK,
+  MOCKTRI
 } from '../../constants/tokens'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
@@ -148,7 +150,7 @@ const NULL_POOL: StakingTri = {
 }
 const NULL_POOLS = [NULL_POOL]
 
-const TURBO_POOLS: StakingTri | [] = []
+const TURBO_POOLS: StakingTri[] | [] = []
 
 /**
  * Creates a pool
@@ -769,7 +771,7 @@ export const STAKING: {
   [ChainId.AVALANCHE]: NULL_POOLS,
   [ChainId.POLYGON]: POLYGON_POOLS,
   [ChainId.AURORA]: AURORA_POOLS,
-  [TURBO]: TURBO_POOLS
+  [ChainId.TURBO]: TURBO_POOLS
 }
 
 export const ADDRESS_PRICE_MAP: { [key: string]: string } = {
