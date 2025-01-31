@@ -30,12 +30,12 @@ export function useSwitchProviderChain(): {
   loading: boolean
   error: string | null
 } {
+ 
   const { connector, account } = useWeb3ReactCore()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   async function switchProviderChain(chainId: ChainId) {
-    
     const networkData = CHAIN_PARAMS[chainId]
     if(!networkData) {
       return

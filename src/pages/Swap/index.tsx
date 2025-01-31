@@ -568,7 +568,7 @@ export default function Swap() {
                 )}
               </AutoColumn>
               <BottomGrouping>
-                {!account || !(chainId !== ChainId.AURORA && chainId !== ChainId.TURBO) ? (
+                {!account || (chainId !== ChainId.AURORA && chainId !== ChainId.TURBO) ? (
                   <ButtonLight onClick={toggleWalletModal}>{t('swapPage.connectWallet')}</ButtonLight>
                 ) : showWrap ? (
                   <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>

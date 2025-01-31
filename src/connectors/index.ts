@@ -96,7 +96,7 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
       actions,
       options: {
         projectId: 'c13edb0e380beb4872d04fa7dce7d169',
-        chains: [NETWORK_CHAIN_ID, ChainId.AURORA, ChainId.TURBO],
+        chains: [ChainId.AURORA, ChainId.TURBO],
         showQrModal: true,
         qrModalOptions: {
           explorerRecommendedWalletIds: [
