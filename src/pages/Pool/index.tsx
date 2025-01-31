@@ -19,8 +19,7 @@ import { usePairs } from '../../data/Reserves'
 import { useTrackedTokenPairs, toV2LiquidityToken } from '../../state/user/hooks'
 
 import { TitleRow, ButtonRow, ResponsiveButtonPrimary, ResponsiveButtonSecondary, EmptyProposals } from './styleds'
-import { NETWORK_CHAIN_ID } from '../../connectors'
-import { TURBO } from '../../constants/chains'
+
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
@@ -29,7 +28,7 @@ export default function Pool() {
   const { account, chainId } = useActiveWeb3React()
   
   const trackedTokenPairs = useTrackedTokenPairs()
-  
+
   const tokenPairsWithLiquidityTokens = useMemo(
     () =>
       trackedTokenPairs.map(tokens => ({
@@ -38,6 +37,7 @@ export default function Pool() {
       })),
     [trackedTokenPairs, chainId]
   )
+
   const liquidityTokens = useMemo(() => tokenPairsWithLiquidityTokens.map(tpwlt => tpwlt.liquidityToken), [
     tokenPairsWithLiquidityTokens
   ])
@@ -55,9 +55,10 @@ export default function Pool() {
     [tokenPairsWithLiquidityTokens, v2PairsBalances]
   )
   const v2Pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
+
   const v2IsLoading =
     fetchingV2PairBalances || v2Pairs?.length < liquidityTokensWithBalances.length || v2Pairs?.some(V2Pair => !V2Pair)
-
+    
   const allV2PairsWithLiquidity = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair))
   const hasV1Liquidity = undefined
   return (
@@ -72,10 +73,10 @@ export default function Pool() {
               </TYPE.mediumHeader>
             </HideSmall>
             <ButtonRow>
-              <ResponsiveButtonSecondary as={Link} padding="6px 8px" to={`/create/${chainId === TURBO ? 'TURBO' : 'ETH'}`}>
+              <ResponsiveButtonSecondary as={Link} padding="6px 8px" to={`/create/${chainId === ChainId.TURBO ? 'TURBO' : 'ETH'}`}>
                 {t('pool.createPair')}
               </ResponsiveButtonSecondary>
-              <ResponsiveButtonPrimary id="join-pool-button" as={Link} padding="6px 8px" to={`/add/${chainId === TURBO ? 'TURBO' : 'ETH'}`}>
+              <ResponsiveButtonPrimary id="join-pool-button" as={Link} padding="6px 8px" to={`/add/${chainId === ChainId.TURBO ? 'TURBO' : 'ETH'}`}>
                 <Text fontWeight={500} fontSize={16}>
                   {t('pool.addLiquidity')}
                 </Text>
@@ -83,7 +84,7 @@ export default function Pool() {
             </ButtonRow>
           </TitleRow>
 
-          {!account || (chainId !== TURBO && chainId !== ChainId.AURORA) ? (
+          {!account || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? (
             <Card padding="40px">
               <TYPE.body color={theme.text3} textAlign="center">
                 {t('pool.connectWalletToView')}

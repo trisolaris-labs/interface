@@ -5,11 +5,10 @@ import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import IUniswapV2Router02_ABI from '../constants/abis/polygon/IUniswapV2Router02.json'
 import { ETHERSCAN_PREFIXES } from '../constants/index'
-import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, CETH, ROUTER_ADDRESS } from '@trisolaris/sdk'
+import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, CETH } from '@trisolaris/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
-import { NETWORK_CHAIN_ID, network } from '../connectors'
-import { TURBO } from '../constants/chains'
-
+import {network } from '../connectors'
+import { ROUTER_ADDRESS } from '@trisolaris/sdk'
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
   try {
@@ -83,7 +82,7 @@ export function getProviderOrSigner(
   account?: string,
   chainId?: number
 ): Web3Provider | JsonRpcSigner {
-  return (account && (chainId === TURBO || chainId === ChainId.AURORA))
+  return (account && (chainId === ChainId.TURBO || chainId === ChainId.AURORA))
     ? getSigner(library, account)
     : (network.customProvider as Web3Provider)
 }

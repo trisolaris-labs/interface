@@ -19,7 +19,6 @@ import PendingView from './PendingView'
 import { useTranslation } from 'react-i18next'
 import { isBraveWallet, isMetamask } from '../../utils'
 import useSelectChain from '../../hooks/useSelectChain'
-import { TURBO } from '../../constants/chains'
 import { ChainId } from '@trisolaris/sdk'
 
 const WALLET_TUTORIAL = 'https://metamask.io/faqs'
@@ -276,7 +275,8 @@ export default function WalletModal({
   const selectChain = useSelectChain()
 
   function getModalContent() {
-    if (chainId !== TURBO || chainId !== ChainId.AURORA) {
+    
+    if (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) {
       return (
         <UpperSection>
           <CloseIcon onClick={toggleWalletModal}>
@@ -313,7 +313,7 @@ export default function WalletModal({
         <CloseIcon onClick={toggleWalletModal}>
           <CloseColor />
         </CloseIcon>
-        {walletView === WALLET_VIEWS.ACCOUNT || (!!account && chainId === TURBO || chainId === ChainId.AURORA) ? (
+        {walletView === WALLET_VIEWS.ACCOUNT || (!!account && chainId === ChainId.TURBO || chainId === ChainId.AURORA) ? (
           <HeaderRow color="blue">
             <HoverText onClick={() => setWalletView(account ? WALLET_VIEWS.ACCOUNT : WALLET_VIEWS.OPTIONS)}>
               Back

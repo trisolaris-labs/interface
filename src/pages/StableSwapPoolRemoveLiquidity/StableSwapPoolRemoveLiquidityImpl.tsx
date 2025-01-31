@@ -38,8 +38,6 @@ import useRemoveLiquidityPriceImpact from '../../hooks/useRemoveLiquidityPriceIm
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
 import { useStableSwapContract } from '../../hooks/useContract'
 import { getLpTokenUsdEstimate } from '../../utils/stableSwap'
-import { NETWORK_CHAIN_ID } from '../../connectors'
-import { TURBO } from '../../constants/chains'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -331,7 +329,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
             })}
           </AutoColumn>
           <div style={{ marginTop: '1rem' }}>
-            {account == null || (chainId !== TURBO && chainId !== ChainId.AURORA) ! ? (
+            {account == null || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : (
               <AutoColumn gap="8px">

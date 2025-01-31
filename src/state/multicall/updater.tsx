@@ -202,9 +202,6 @@ export default function Updater(): null {
         return cancel
       })
     }
-    // return () => {
-    //   cancellations.current?.cancellations.forEach(c => c())
-    // }
   }, [chainId, multicallContract, dispatch, serializedOutdatedCallKeys, latestBlockNumber])
 
   return null

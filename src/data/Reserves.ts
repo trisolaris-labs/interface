@@ -1,13 +1,12 @@
 import { TokenAmount, Pair, Currency, ChainId } from '@trisolaris/sdk'
+
 import { useMemo } from 'react'
 import IUniswapV2Pair_ABI from '../constants/abis/polygon/IUniswapV2Pair.json'
 import { Interface } from '@ethersproject/abi'
-
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
-import { NETWORK_CHAIN_ID } from '../connectors'
-import { use } from 'i18next'
 import { useActiveWeb3React } from '../hooks'
+
 const PAIR_INTERFACE = new Interface(IUniswapV2Pair_ABI)
 
 export enum PairState {
@@ -18,24 +17,18 @@ export enum PairState {
 }
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
-  // const chainId = NETWORK_CHAIN_ID
-  const {chainId} = useActiveWeb3React()
-  const tokens = useMemo(
-    () =>
-      currencies.map(([currencyA, currencyB]) => [
-        wrappedCurrency(currencyA, chainId),
-        wrappedCurrency(currencyB, chainId)
-      ]),
-    [chainId, currencies]
-  )
+  const { chainId } = useActiveWeb3React()
+  const tokens = currencies.map(([currencyA, currencyB]) => [
+    wrappedCurrency(currencyA, chainId),
+    wrappedCurrency(currencyB, chainId)
+  ])
 
-  const pairAddresses = useMemo(
-    () =>
-      tokens.map(([tokenA, tokenB]) => {
-        return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB, chainId ?? ChainId.AURORA) : undefined
-      }),
-    [tokens, chainId]
-  )
+  const pairAddresses = tokens.map(([tokenA, tokenB]) => {
+    if(tokenA?.chainId !== tokenB?.chainId) return undefined
+    return tokenA && tokenB && !tokenA.equals(tokenB)
+      ? Pair.getAddress(tokenA, tokenB, chainId ?? ChainId.AURORA)
+      : undefined
+  })
   const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')
 
   return useMemo(() => {
@@ -43,7 +36,6 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       const { result: reserves, loading } = result
       const tokenA = tokens[i][0]
       const tokenB = tokens[i][1]
-
       if (loading) return [PairState.LOADING, null]
       if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, null]
       if (!reserves) return [PairState.NOT_EXISTS, null]
@@ -51,13 +43,9 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
       return [
         PairState.EXISTS,
-        new Pair(
-          new TokenAmount(token0, reserve0.toString()),
-          new TokenAmount(token1, reserve1.toString()),
-          ChainId.AURORA
-        )
+        new Pair(new TokenAmount(token0, reserve0.toString()), new TokenAmount(token1, reserve1.toString()), chainId)
       ]
-    })
+    }) as [PairState, Pair | null][]
   }, [results, tokens, chainId])
 }
 

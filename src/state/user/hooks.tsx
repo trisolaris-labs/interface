@@ -19,8 +19,7 @@ import {
 
 import { AppDispatch, AppState } from '../index'
 import { STAKING as trisolarisDefinedPools } from '../../state/stake/stake-constants'
-import { NETWORK_CHAIN_ID } from '../../connectors'
-import { TURBO } from '../../constants/chains'
+
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -178,12 +177,8 @@ export function useURLWarningToggle(): () => void {
  * @param tokenB the other token
  */
 export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token], chainId: ChainId): Token | undefined {
-  try {
   return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB, chainId), 18, 'PGL', 'Pangolin Liquidity')
-  } catch (e) {
-    console.error('error creating liquidity token', tokenA, tokenB, chainId)
-    console.error(e)
-  }
+
 }
 
 /**
@@ -194,7 +189,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   // pinned pairs
   const pinnedPairs: [Token, Token][] = useMemo(
     () =>
-      chainId === TURBO || chainId === ChainId.AURORA
+      chainId === ChainId.TURBO || chainId === ChainId.AURORA
         ? trisolarisDefinedPools[chainId]
             .filter(pool => pool.stableSwapPoolName == null)
             .map(({ tokens: [token0, token1] }) => [token0, token1]) ?? []
@@ -240,6 +235,6 @@ export function useToggleFilterActiveFarms(): () => void {
   return useCallback(() => dispatch(toggleFilterActiveFarms()), [dispatch])
 }
 
-export function useUserChainId(): number {
+export function useUserChainId(): ChainId {
   return useSelector((state: AppState) => state.user.chainId)
 }

@@ -177,5 +177,6 @@ export function useCurrency(currencyId: string | undefined): Currency | null | u
   const isAVAX = currencyId?.toUpperCase() === 'ETH'
   const isTurbo = currencyId?.toUpperCase() === 'TURBO'
   const token = useToken(isAVAX ? undefined : currencyId)
-  return isAVAX ? CETH : isTurbo ? TURBO_CURRENCY : token
+  const result = isAVAX ? CETH : isTurbo ? TURBO_CURRENCY : token
+  return result
 }

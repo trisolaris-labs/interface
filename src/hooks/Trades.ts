@@ -5,13 +5,11 @@ import { useMemo } from 'react'
 import { PairState, usePairs } from '../data/Reserves'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES, CUSTOM_TOKEN_MAX_HOPS } from '../constants'
-import { NETWORK_CHAIN_ID } from '../connectors'
-
+import { useActiveWeb3React } from '../hooks'
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
-  const chainId = NETWORK_CHAIN_ID
+  const { chainId } = useActiveWeb3React()
 
   const bases: Token[] = chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : []
-
   const [tokenA, tokenB] = chainId
     ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
     : [undefined, undefined]
@@ -23,7 +21,9 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
       ),
     [bases]
   )
-
+  if(bases === undefined) {
+    return []
+  }
   const allPairCombinations: [Token, Token][] = useMemo(
     () =>
       tokenA && tokenB

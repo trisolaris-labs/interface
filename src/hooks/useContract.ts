@@ -51,7 +51,7 @@ export function useBridgeTokenContract(tokenAddress?: string, withSignerIfPossib
 }
 
 export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
-  const chainId = NETWORK_CHAIN_ID
+  const { chainId } = useActiveWeb3React()
   return useContract(chainId ? WETH[chainId]?.address : undefined, WETH_ABI, withSignerIfPossible)
 }
 

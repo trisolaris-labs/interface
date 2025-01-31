@@ -2,7 +2,6 @@ import { Web3ReactProvider } from '@web3-react/core'
 import { Connector } from '@web3-react/types'
 import { Wallet, coinbaseWallet, injected, network, useConnectors, walletConnect } from '../../connectors'
 import { ReactNode, useEffect } from 'react'
-import { useUserChainId } from '../../state/user/hooks'
 
 const connect = async (connector: Connector) => {
   try {

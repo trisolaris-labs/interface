@@ -6,7 +6,6 @@ import { AppState } from '../index'
 import { AEB_TOKENLIST } from '../../constants/lists'
 import { WETH } from '@trisolaris/sdk'
 import { PNG } from '../../constants/tokens'
-import { TURBO } from '../../constants/chains'
 import { t, use } from 'i18next'
 import { chain } from 'lodash'
 import { useActiveWeb3React } from '../../hooks'
@@ -41,7 +40,7 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.AVALANCHE]: {},
   [ChainId.POLYGON]: {},
   [ChainId.AURORA]: {},
-  [TURBO]: {}
+  [ChainId.TURBO]: {}
 }
 
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =
@@ -49,7 +48,6 @@ const listCache: WeakMap<TokenList, TokenAddressMap> | null =
 
 export function listToTokenMap(list: TokenList): TokenAddressMap {
   const result = listCache?.get(list)
-
   if (result) return result
 
   const map = list.tokens.reduce<TokenAddressMap>(
@@ -79,6 +77,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 
 export function useTokenList(urls: string[] | undefined): TokenAddressMap {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
+  
   const {chainId:providerChainId} = useActiveWeb3React()
   const tokenList = {} as { [chainId: string]: { [tokenAddress: string]: WrappedTokenInfo } }
   return useMemo(() => {

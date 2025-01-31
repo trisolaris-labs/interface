@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+
 const { ChainId, Token } = require('@trisolaris/sdk')
 const { writeFile } = require('fs')
 const path = require('path')
@@ -32,7 +32,7 @@ async function init() {
     '\n * RUN `yarn build-tokens` TO UPDATE THIS FILE' +
     '\n **********************************************************************************************/'
 
-  const imports = "\n\nimport { ChainId, Token } from '@trisolaris/sdk'\nimport { TURBO } from '../chains'"
+  const imports = "\n\nimport { ChainId, Token } from '@trisolaris/sdk'"
 
   const tokens = _.map(mergedTokenMap, (tokenObj, symbol) => {
     // Removes extra whitespace and replaces spaces with `_`
@@ -62,8 +62,8 @@ async function init() {
             chainEnumString = 'ChainId.AURORA'
             break
           }
-          case 1313161567: {
-            chainEnumString = 'TURBO'
+          case ChainId.TURBO: {
+            chainEnumString = 'ChainId.TURBO'
             break
           }
           default:

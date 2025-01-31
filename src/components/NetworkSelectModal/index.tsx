@@ -9,7 +9,6 @@ import { ExternalLink, TYPE } from '../../theme'
 import { isMobile } from 'react-device-detect'
 import React, { useCallback } from 'react'
 import Option from '../WalletModal/Option'
-import { TURBO } from '../../constants/chains'
 import { ChainId } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
 
@@ -149,14 +148,14 @@ export default function NetworkSelectModal() {
                 onClick={() => changeNetwork(ChainId.AURORA)}
               />
               <Option
-                active={appSelectedChain === TURBO}
-                id={`chain-${TURBO}`}
-                key={TURBO}
+                active={appSelectedChain === ChainId.TURBO}
+                id={`chain-${ChainId.TURBO}`}
+                key={ChainId.TURBO}
                 color={'#E8831D'}
                 header={'Turbo'}
                 subheader={null}
                 icon={TurboIcon}
-                onClick={() => changeNetwork(TURBO)}
+                onClick={() => changeNetwork(ChainId.TURBO)}
               />
             </OptionGrid>
           </ContentWrapper>
