@@ -18,14 +18,13 @@ export enum PairState {
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
   const { chainId } = useActiveWeb3React()
-
   const tokens = currencies.map(([currencyA, currencyB]) => [
     wrappedCurrency(currencyA, chainId),
     wrappedCurrency(currencyB, chainId)
   ])
 
   const pairAddresses = tokens.map(([tokenA, tokenB]) => {
-    if(tokenA?.chainId !== tokenB?.chainId && chainId == ChainId.TURBO) return undefined
+    if(tokenA?.chainId !== tokenB?.chainId) return undefined
     return tokenA && tokenB && !tokenA.equals(tokenB)
       ? Pair.getAddress(tokenA, tokenB, chainId ?? ChainId.AURORA)
       : undefined
