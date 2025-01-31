@@ -1,4 +1,4 @@
-import { Currency, CETH, JSBI, TokenAmount } from '@trisolaris/sdk'
+import { Currency, CETH, JSBI, TokenAmount, ChainId } from '@trisolaris/sdk'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Plus } from 'react-feather'
 import { Text } from 'rebass'
@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next'
 import { GreyCard } from '../../components/Card'
 
 import { BIG_INT_ZERO } from '../../constants'
-import { NETWORK_CHAIN_ID } from '../../connectors'
+import { TURBO_CURRENCY } from '../../constants/lists'
 
 enum Fields {
   TOKEN0 = 0,
@@ -35,17 +35,21 @@ export default function PoolFinder() {
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [activeField, setActiveField] = useState<number>(Fields.TOKEN1)
 
-  const [currency0, setCurrency0] = useState<Currency | null>(CETH)
+  const [currency0, setCurrency0] = useState<Currency | null>(chainId === ChainId.AURORA ? CETH : chainId === ChainId.TURBO ? TURBO_CURRENCY : CETH)
   const [currency1, setCurrency1] = useState<Currency | null>(null)
 
   const [pairState, pair] = usePair(currency0 ?? undefined, currency1 ?? undefined)
+console.log(PairState[pairState], pair)
   const addPair = usePairAdder()
   useEffect(() => {
     if (pair) {
       addPair(pair)
     }
-  }, [pair, addPair])
-
+  }, [pair, addPair, chainId])
+  useEffect(() => {
+    setCurrency0(chainId === ChainId.AURORA ? CETH : chainId === ChainId.TURBO ? TURBO_CURRENCY : CETH)
+    setCurrency1(null)
+  }, [chainId])
   const validPairNoLiquidity: boolean =
     pairState === PairState.NOT_EXISTS ||
     Boolean(
@@ -57,7 +61,6 @@ export default function PoolFinder() {
 
   const position: TokenAmount | undefined = useTokenBalance(account ?? undefined, pair?.liquidityToken)
   const hasPosition = Boolean(position && JSBI.greaterThan(position.raw, BIG_INT_ZERO))
-
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
       if (activeField === Fields.TOKEN0) {
@@ -76,7 +79,7 @@ export default function PoolFinder() {
   const prerequisiteMessage = (
     <GreyCard padding="45px 10px">
       <Text textAlign="center">
-        {!account || chainId !== NETWORK_CHAIN_ID ? t('poolFinder.connectToFind') : t('poolFinder.selectTokenToFind')}
+        {!account || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? t('poolFinder.connectToFind') : t('poolFinder.selectTokenToFind')}
       </Text>
     </GreyCard>
   )

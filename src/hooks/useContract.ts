@@ -26,7 +26,7 @@ import { NETWORK_CHAIN_ID } from '../connectors'
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
   const { provider, account, chainId } = useActiveWeb3React()
-
+  
   return useMemo(() => {
     if (!address || !ABI || !provider) return null
     try {
@@ -51,7 +51,7 @@ export function useBridgeTokenContract(tokenAddress?: string, withSignerIfPossib
 }
 
 export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
-  const chainId = NETWORK_CHAIN_ID
+  const { chainId } = useActiveWeb3React()
   return useContract(chainId ? WETH[chainId]?.address : undefined, WETH_ABI, withSignerIfPossible)
 }
 

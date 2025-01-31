@@ -12,13 +12,13 @@ import { isTransactionRecent, useAllTransactions } from '../../state/transaction
 import { TransactionDetails } from '../../state/transactions/reducer'
 import { shortenAddress } from '../../utils'
 import { ButtonSecondary } from '../Button'
-
 import Identicon from '../Identicon'
 import Loader from '../Loader'
 
 import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
 import { Connector } from '@web3-react/types'
+import { ChainId } from '@trisolaris/sdk'
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -148,8 +148,7 @@ function Web3StatusInner() {
 
   const hasPendingTransactions = !!pending.length
   const toggleWalletModal = useWalletModalToggle()
-
-  if (account && chainId === NETWORK_CHAIN_ID) {
+  if (account && (chainId === ChainId.TURBO || chainId === ChainId.AURORA)) {
     return (
       <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletModal} pending={hasPendingTransactions}>
         {hasPendingTransactions ? (
@@ -167,7 +166,7 @@ function Web3StatusInner() {
         {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
       </Web3StatusConnected>
     )
-  } else if (chainId !== NETWORK_CHAIN_ID) {
+  } else if (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) {
     return (
       <Web3StatusError onClick={toggleWalletModal}>
         <NetworkIcon />

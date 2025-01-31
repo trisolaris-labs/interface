@@ -20,7 +20,7 @@ import { TURBO_CURRENCY } from '../constants/lists'
 type TokensMap = { [address: string]: Token }
 
 export function useAllTokens(): TokensMap {
-  const chainId = NETWORK_CHAIN_ID
+  const { chainId } = useActiveWeb3React()
   const userAddedTokens = useUserAddedTokens()
   const allTokens = useSelectedTokenList()
   return useMemo(() => {
@@ -46,7 +46,6 @@ export function useAllTokens(): TokensMap {
 export function useAllStableSwapTokens(): TokensMap {
   const { chainId } = useActiveWeb3React()
   const allTokens = useSelectedTokenList()
-
   return useMemo(() => {
     if (!chainId) {
       return {}
@@ -178,5 +177,6 @@ export function useCurrency(currencyId: string | undefined): Currency | null | u
   const isAVAX = currencyId?.toUpperCase() === 'ETH'
   const isTurbo = currencyId?.toUpperCase() === 'TURBO'
   const token = useToken(isAVAX ? undefined : currencyId)
-  return isAVAX ? CETH : isTurbo ? TURBO_CURRENCY : token
+  const result = isAVAX ? CETH : isTurbo ? TURBO_CURRENCY : token
+  return result
 }

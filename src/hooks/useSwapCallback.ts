@@ -58,7 +58,7 @@ function useSwapCallArguments(
     deadline = currentTime.add(10)
   }
 
-  return useMemo(() => {
+  return useMemo(() => { 
     const tradeVersion = Version.v2
     if (!trade || !recipient || !provider || !account || !tradeVersion || !chainId || !deadline) return []
 

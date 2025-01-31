@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, currencyEquals, CETH, Token } from '@trisolaris/sdk'
+import { Currency, CurrencyAmount, currencyEquals, CETH, Token, ChainId } from '@trisolaris/sdk'
 import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
@@ -17,8 +17,8 @@ import { FadedSpan, MenuItem } from './styleds'
 import Loader from '../Loader'
 import { isTokenOnList } from '../../utils'
 import { useTranslation } from 'react-i18next'
-import { TURBO } from '../../constants/chains'
 import { TURBO_CURRENCY } from '../../constants/lists'
+
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === CETH ? 'ETH' : ''
 }
@@ -115,10 +115,10 @@ function CurrencyRow({
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)
- 
   const removeToken = useRemoveUserAddedToken()
   const addToken = useAddUserToken()
   const { t } = useTranslation()
+
 
   // only show add or remove buttons if not on selected list
   return (
@@ -197,7 +197,7 @@ export default function CurrencyList({
 }) {
   const { account, chainId } = useActiveWeb3React()
   const itemData = useMemo(() => {
-    if(chainId === TURBO) {
+    if(chainId === ChainId.TURBO) {
       return (showETH ? [TURBO_CURRENCY, ...currencies] : currencies)
     }
     return (showETH ? [Currency.CETH, ...currencies] : currencies)

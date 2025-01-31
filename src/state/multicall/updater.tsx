@@ -16,6 +16,7 @@ import {
   updateMulticallResults
 } from './actions'
 
+
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500
 
@@ -28,20 +29,20 @@ const CALL_CHUNK_SIZE = 500
 async function fetchChunk(
   multicallContract: Contract,
   chunk: Call[],
-  minBlockNumber: number
+  minBlockNumber: number,
 ): Promise<{ results: string[]; blockNumber: number }> {
-  console.debug('Fetching chunk', multicallContract, chunk, minBlockNumber)
+  console.log('Fetching chunk', multicallContract, chunk)
   let resultsBlockNumber, returnData
   try {
-    ;[resultsBlockNumber, returnData] = await multicallContract.callStatic.aggregate(
+    [resultsBlockNumber, returnData] = await multicallContract.callStatic.aggregate(
       chunk.map(obj => [obj.address, obj.callData])
     )
   } catch (error) {
-    console.debug('Failed to fetch chunk inside retry', error)
+    console.log('Failed to fetch chunk inside retry', error)
     throw error
   }
   if (resultsBlockNumber.toNumber() < minBlockNumber) {
-    console.debug(`Fetched results for old block number: ${resultsBlockNumber.toString()} vs. ${minBlockNumber}`)
+    console.log(`Fetched results for old block number: ${resultsBlockNumber.toString()} vs. ${minBlockNumber}`)
     throw new RetryableError('Fetched for old block number')
   }
   return { results: returnData, blockNumber: resultsBlockNumber.toNumber() }
@@ -115,13 +116,12 @@ export function outdatedListeningKeys(
 export default function Updater(): null {
   const dispatch = useDispatch<AppDispatch>()
   const state = useSelector<AppState, AppState['multicall']>(state => state.multicall)
-  // wait for listeners to settle before triggering updates
+  // wait for listeners to settle before triggering updates  
   const debouncedListeners = useDebounce(state.callListeners, 100)
   const latestBlockNumber = useBlockNumber()
   const { chainId } = useActiveWeb3React()
   const multicallContract = useMulticallContract()
   const cancellations = useRef<{ blockNumber: number; cancellations: (() => void)[] }>()
-
   const listeningKeys: { [callKey: string]: number } = useMemo(() => {
     return activeListeningKeys(debouncedListeners, chainId)
   }, [debouncedListeners, chainId])
@@ -189,7 +189,8 @@ export default function Updater(): null {
               console.debug('Cancelled fetch for blockNumber', latestBlockNumber)
               return
             }
-            console.error('Failed to fetch multicall chunk', chunk, chainId, error)
+            console.error('Failed to fetch multicall chunk', chunk, chainId, error, multicallContract)
+            cancellations.current?.cancellations.forEach(c => c())
             dispatch(
               errorFetchingMulticallResults({
                 calls: chunk,

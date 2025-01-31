@@ -14,7 +14,6 @@ import Circle from '../../assets/images/blue-loader.svg'
 import { getEtherscanLink } from '../../utils'
 import { useActiveWeb3React } from '../../hooks'
 import { useTranslation } from 'react-i18next'
-import { NETWORK_CHAIN_ID } from '../../connectors'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -178,7 +177,7 @@ export default function TransactionConfirmationModal({
 }: ConfirmationModalProps) {
   const { chainId } = useActiveWeb3React()
 
-  if (!chainId || chainId !== NETWORK_CHAIN_ID) return null
+  if (!chainId || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA)) return null
 
   // confirmation screen
   return (

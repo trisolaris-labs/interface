@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
 
@@ -6,7 +6,8 @@ import LogoDark from '../../assets/svg/planets.svg'
 import Menu from '../Menu'
 import TriPriceModal from '../TriPriceModal'
 import Web3Status from '../Web3Status'
-
+import AuroraIcon from '../../assets/images/aurora.png'
+import TurboIcon from '../../assets/images/turbo.png'
 import { useActiveWeb3React } from '../../hooks'
 
 import useTriPrice from '../../hooks/useTriPrice'
@@ -35,23 +36,34 @@ import useEmbeddedSwapUI from '../../hooks/useEmbeddedSwapUI'
 import { StyledExternalLink } from '../BridgesMenu/BridgesMenu.styles'
 import NetworkSelectModal from '../NetworkSelectModal'
 import { ChainId } from '@trisolaris/sdk'
-import { TURBO } from '../../constants/chains'
+import { useSwitchProviderChain } from '../../hooks'
 
-const networkNames = {
+
+const networkNames: { [key in ChainId]: string } = {
   [ChainId.AURORA]: 'Aurora',
-  [TURBO]: 'Turbo'
+  [ChainId.TURBO]: 'Turbo',
+  [ChainId.FUJI]: 'Fuji',
+  [ChainId.AVALANCHE]: 'Avalanche',
+  [ChainId.POLYGON]: 'Polygon'
 }
 
 export default function Header() {
-  const { account, selectedChain } = useActiveWeb3React()
+  const { account, appSelectedChain, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
 
   const { triPriceFriendly } = useTriPrice()
-
+  const {switchProviderChain} = useSwitchProviderChain()
   const toggleTriPriceModal = useToggleTriPriceModal()
   const toggleNetworkSelectModal = useToggleNetworkSelectModal()
 
   const isEmbedded = useEmbeddedSwapUI()
+
+  useEffect(() => {
+    if(appSelectedChain !== chainId) {
+    switchProviderChain(appSelectedChain)
+    }
+  }, [appSelectedChain, chainId])
+
 
   // Use a minimal header/footer when the `/swap` page is embedded on third-party websites
   if (isEmbedded) {
@@ -171,11 +183,13 @@ export default function Header() {
                 toggleNetworkSelectModal()
               }}
             >
-              <IconWrapper size={16}>
-                <img src={'https://s2.coinmarketcap.com/static/img/coins/64x64/24911.png'} />
-              </IconWrapper>
+              {chainId === ChainId.TURBO ? <IconWrapper size={16}>
+                <img src={TurboIcon} />
+              </IconWrapper> : <IconWrapper size={16}>
+                <img src={AuroraIcon} />
+              </IconWrapper>}
               <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
-                {networkNames[selectedChain]}
+                {networkNames[appSelectedChain]}
               </Text>
             </NetworkSelectButton>
             <NetworkSelectModal />

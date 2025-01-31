@@ -34,7 +34,7 @@ import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import { DarkGreyCard } from '../../components/Card'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import Popover from '../../components/Popover'
-import { NETWORK_CHAIN_ID } from '../../connectors'
+
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -348,7 +348,7 @@ function StakeBox() {
             />
           </AutoColumn>
           <div style={{ marginTop: '1rem' }}>
-            {account == null || chainId !== NETWORK_CHAIN_ID ? (
+            {account == null || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : (
               <RowBetween>

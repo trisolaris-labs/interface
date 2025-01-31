@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import ReactGA from 'react-ga'
 import { ThemeContext } from 'styled-components'
-import { Currency, JSBI, Percent, Token, Trade } from '@trisolaris/sdk'
+import { ChainId, Currency, JSBI, Percent, Token, Trade } from '@trisolaris/sdk'
 import { ChevronDown } from 'react-feather'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
@@ -73,9 +73,8 @@ import {
 import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
 import Modal from '../../components/Modal'
-import { ModalContentWrapper } from '../../components/Settings/Settings.styles'
 import useCoinSearch from '../../fetchers/coingecko-api-id'
-import { NETWORK_CHAIN_ID } from '../../connectors'
+
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -148,23 +147,25 @@ export default function Swap() {
     [Version.v2]: v2Trade
   }
   const trade = showWrap ? undefined : tradesByVersion[toggledVersion]
+
   const defaultTrade = showWrap ? undefined : tradesByVersion[DEFAULT_VERSION]
-  const [isCoingeckoApiIDFound, setCoingeckoApiIDFound] = useState(false)
+
 
   const betterTradeLinkVersion: Version | undefined = undefined
-
   let parsedAmounts = useMemo(
-    () =>
-      showWrap
-        ? {
-            [Field.INPUT]: defaultswapParsedAmount,
-            [Field.OUTPUT]: defaultswapParsedAmount
-          }
-        : {
-            [Field.INPUT]: independentField === Field.INPUT ? defaultswapParsedAmount : trade?.inputAmount,
-            [Field.OUTPUT]: independentField === Field.OUTPUT ? defaultswapParsedAmount : trade?.outputAmount
-          },
-    [defaultswapParsedAmount, independentField, showWrap, trade]
+    () => {
+      if(showWrap) {
+        return {
+          [Field.INPUT]: defaultswapParsedAmount,
+          [Field.OUTPUT]: defaultswapParsedAmount
+        }
+      } else {
+        return {
+          [Field.INPUT]: independentField === Field.INPUT ? defaultswapParsedAmount : trade?.inputAmount,
+          [Field.OUTPUT]: independentField === Field.OUTPUT ? defaultswapParsedAmount : trade?.outputAmount
+        }
+      }
+    }, [defaultswapParsedAmount, independentField, showWrap, trade]
   )
 
   const isRoutedViaStableSwap: boolean =
@@ -195,6 +196,7 @@ export default function Swap() {
 
   const swapInputError = isRoutedViaStableSwap ? stableswapInputError : defaultswapInputError
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
+
   const isValid = !swapInputError
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
 
@@ -227,7 +229,6 @@ export default function Swap() {
   })
 
   const [showChartModal, setShowChartModal] = useState<boolean>(false)
-
   const formattedAmounts = {
     [independentField]: typedValue,
     [dependentField]: showWrap
@@ -239,6 +240,7 @@ export default function Swap() {
   const userHasSpecifiedInputOutput = Boolean(
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(BIG_INT_ZERO)
   )
+
   const noRoute = !route && !stableswapTrade?.stableSwapData?.route
 
   // check whether the user has approved the router on the input token
@@ -566,7 +568,7 @@ export default function Swap() {
                 )}
               </AutoColumn>
               <BottomGrouping>
-                {!account || chainId !== NETWORK_CHAIN_ID ? (
+                {!account || (chainId !== ChainId.AURORA && chainId !== ChainId.TURBO) ? (
                   <ButtonLight onClick={toggleWalletModal}>{t('swapPage.connectWallet')}</ButtonLight>
                 ) : showWrap ? (
                   <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>
