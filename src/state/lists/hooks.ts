@@ -6,7 +6,6 @@ import { AppState } from '../index'
 import { AEB_TOKENLIST } from '../../constants/lists'
 import { WETH } from '@trisolaris/sdk'
 import { PNG } from '../../constants/tokens'
-import { TURBO } from '../../constants/chains'
 import { t, use } from 'i18next'
 import { chain } from 'lodash'
 import { useActiveWeb3React } from '../../hooks'
@@ -41,7 +40,7 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.AVALANCHE]: {},
   [ChainId.POLYGON]: {},
   [ChainId.AURORA]: {},
-  [TURBO]: {}
+  [ChainId.TURBO]: {}
 }
 
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =

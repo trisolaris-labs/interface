@@ -36,13 +36,15 @@ import useEmbeddedSwapUI from '../../hooks/useEmbeddedSwapUI'
 import { StyledExternalLink } from '../BridgesMenu/BridgesMenu.styles'
 import NetworkSelectModal from '../NetworkSelectModal'
 import { ChainId } from '@trisolaris/sdk'
-import { TURBO } from '../../constants/chains'
 import { useSwitchProviderChain } from '../../hooks'
 
 
-const networkNames = {
+const networkNames: { [key in ChainId]: string } = {
   [ChainId.AURORA]: 'Aurora',
-  [TURBO]: 'Turbo'
+  [ChainId.TURBO]: 'Turbo',
+  [ChainId.FUJI]: 'Fuji',
+  [ChainId.AVALANCHE]: 'Avalanche',
+  [ChainId.POLYGON]: 'Polygon'
 }
 
 export default function Header() {
@@ -181,7 +183,7 @@ export default function Header() {
                 toggleNetworkSelectModal()
               }}
             >
-              {chainId === TURBO ? <IconWrapper size={16}>
+              {chainId === ChainId.TURBO ? <IconWrapper size={16}>
                 <img src={TurboIcon} />
               </IconWrapper> : <IconWrapper size={16}>
                 <img src={AuroraIcon} />

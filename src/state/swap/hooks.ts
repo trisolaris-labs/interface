@@ -30,7 +30,7 @@ import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useTranslation } from 'react-i18next'
 import { find } from 'lodash'
 import { STABLESWAP_POOLS } from '../stableswap/constants'
-import { TURBO } from '../../constants/chains'
+
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap)
@@ -325,7 +325,7 @@ export function useDefaultsFromURLSearch():
     const parsed = queryParametersToSwapState(parsedQs)
     let inputCurrencyId = parsed[Field.INPUT].currencyId
     //check if turbo chain
-    if(chainId === TURBO && inputCurrencyId === 'ETH') {
+    if(chainId === ChainId.TURBO && inputCurrencyId === 'ETH') {
       inputCurrencyId = 'TURBO'
     }
 

@@ -1,5 +1,5 @@
 import { ChainId } from '@trisolaris/sdk'
-import { TURBO } from './chains'
+
 
 
 // the Pangolin Default token list lives here
@@ -23,7 +23,7 @@ const DEFAULT_LISTS: Map<ChainId, string> = new Map([
   [ChainId.AVALANCHE, AVAX_BRIDGE_LIST],
   [ChainId.POLYGON, POLYGON_BRIDGE_LIST],
   [ChainId.AURORA, TRISOLARIS_LIST],
-  [TURBO, TURBO_LIST]
+  [ChainId.TURBO, TURBO_LIST]
 ])
 const STABLECOIN_LISTS: Map<ChainId, string> = new Map([[ChainId.AVALANCHE, AVAX_STABLECOIN_TOKEN_LIST]])
 const LIST_OF_LISTS: Map<ChainId, string[]> = new Map([
@@ -33,7 +33,7 @@ const LIST_OF_LISTS: Map<ChainId, string[]> = new Map([
   ],
   [ChainId.POLYGON, [POLYGON_BRIDGE_LIST]],
   [ChainId.AURORA, [TRISOLARIS_LIST]],
-  [TURBO, [TURBO_LIST]]
+  [ChainId.TURBO, [TURBO_LIST]]
 ])
 export const TURBO_CURRENCY = {
   name: 'TURBO',
@@ -41,6 +41,6 @@ export const TURBO_CURRENCY = {
   decimals: 18,
 }
 
-export const DEFAULT_LIST_OF_LISTS = LIST_OF_LISTS.get(TURBO)!
-export const DEFAULT_TOKEN_LIST_URL = DEFAULT_LISTS.get(TURBO)!
+export const DEFAULT_LIST_OF_LISTS = LIST_OF_LISTS.get(ChainId.TURBO)!
+export const DEFAULT_TOKEN_LIST_URL = DEFAULT_LISTS.get(ChainId.TURBO)!
 export const STABLECOIN_TOKEN_LIST = STABLECOIN_LISTS.get(ChainId.AVALANCHE)!

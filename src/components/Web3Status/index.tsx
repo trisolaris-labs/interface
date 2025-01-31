@@ -12,7 +12,6 @@ import { isTransactionRecent, useAllTransactions } from '../../state/transaction
 import { TransactionDetails } from '../../state/transactions/reducer'
 import { shortenAddress } from '../../utils'
 import { ButtonSecondary } from '../Button'
-import { TURBO } from '../../constants/chains'
 import Identicon from '../Identicon'
 import Loader from '../Loader'
 
@@ -149,7 +148,7 @@ function Web3StatusInner() {
 
   const hasPendingTransactions = !!pending.length
   const toggleWalletModal = useWalletModalToggle()
-  if (account && (chainId === TURBO || chainId === ChainId.AURORA)) {
+  if (account && (chainId === ChainId.TURBO || chainId === ChainId.AURORA)) {
     return (
       <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletModal} pending={hasPendingTransactions}>
         {hasPendingTransactions ? (
@@ -167,7 +166,7 @@ function Web3StatusInner() {
         {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
       </Web3StatusConnected>
     )
-  } else if (chainId !== TURBO && chainId !== ChainId.AURORA) {
+  } else if (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) {
     return (
       <Web3StatusError onClick={toggleWalletModal}>
         <NetworkIcon />

@@ -23,7 +23,7 @@ import _ from 'lodash'
 import { Contract } from 'ethers'
 import { USDC } from '../../constants/tokens'
 import { computeSlippageAdjustedMinAmount } from '../../utils/prices'
-import { TURBO } from '../../constants/chains'
+
 
 const NATIVE_USDC = USDC[ChainId.AURORA]
 
@@ -435,7 +435,7 @@ export function useDefaultsFromURLSearch():
     const parsed = queryParametersToSwapState(parsedQs)
     let inputCurrencyId = parsed[Field.INPUT].currencyId
     //check if turbo chain
-    if(chainId === TURBO && inputCurrencyId === 'ETH') {
+    if(chainId === ChainId.TURBO && inputCurrencyId === 'ETH') {
       inputCurrencyId = 'TURBO'
     }
     

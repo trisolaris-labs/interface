@@ -25,7 +25,6 @@ import {
   USDC_E,
   USDT_E
 } from './tokens'
-import { TURBO } from './chains'
 
 export const GAS_PRICE = 250
 
@@ -74,7 +73,7 @@ const COMMON_BASES: ChainTokenList = {
     USP[ChainId.AURORA],
     BINARIS[ChainId.AURORA]
   ],
-  [TURBO]: []
+  [ChainId.TURBO]: []
 }
 
 // used to construct intermediary pairs for trading
@@ -153,7 +152,17 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 
 export const NetworkContextName = 'NETWORK'
 
-export const CHAIN_PARAMS = {
+export const CHAIN_PARAMS:{ [chainId in ChainId]: {
+  chainId: string
+  chainName: string
+  nativeCurrency: {
+    name: string
+    symbol: string
+    decimals: number
+  }
+  rpcUrls: string[]
+  blockExplorerUrls: string[]
+} } = {
   [ChainId.FUJI]: {
     chainId: '0xA869', // A 0x-prefixed hexadecimal chainId
     chainName: 'Avalanche FUJI C-Chain',
@@ -198,7 +207,7 @@ export const CHAIN_PARAMS = {
     rpcUrls: ['https://mainnet.aurora.dev'],
     blockExplorerUrls: ['https://explorer.aurora.dev/']
   },
-  [TURBO]: {
+  [ChainId.TURBO]: {
     chainId: '4e45415f', // A 0x-prefixed hexadecimal chainId
     chainName: 'Turbochain',
     nativeCurrency: {
@@ -229,7 +238,8 @@ export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
   [ChainId.FUJI]: 'https://cchain.explorer.avax-test.network',
   [ChainId.AVALANCHE]: 'https://cchain.explorer.avax.network',
   [ChainId.POLYGON]: 'https://polygonscan.com/',
-  [ChainId.AURORA]: 'https://explorer.aurora.dev'
+  [ChainId.AURORA]: 'https://explorer.aurora.dev',
+  [ChainId.TURBO]: 'https://explorer.turbo.aurora.dev'
 }
 //TODO NEED TO CHANGE WITH CORRECT EXPLORER LINK
 

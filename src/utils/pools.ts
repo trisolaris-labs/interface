@@ -1,7 +1,7 @@
 import { Token, TokenAmount, CETH } from '@trisolaris/sdk'
 import { TRI } from '../constants/tokens'
 import { unwrappedToken } from './wrappedCurrency'
-import { TURBO } from '../constants/chains'
+
 export const getPairRenderOrder = (tokens: Token[]) => {
   const currencyMap = tokens.map(token => {
       return unwrappedToken(token)

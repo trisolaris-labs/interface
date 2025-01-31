@@ -12,7 +12,6 @@ export default function useSelectChain() {
     try {
       try {
         const addChainParameter = CHAIN_PARAMS[appSelectedChain]
-       
         if (injected !== connector) {
           console.log('Please switch to Aurora network in wallet settings.')
         } else {

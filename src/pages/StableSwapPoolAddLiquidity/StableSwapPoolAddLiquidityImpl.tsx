@@ -43,8 +43,7 @@ import confirmStableSwapAddLiquiditySlippage from './confirmStableSwapAddLiquidi
 import Card from '../../components/Card'
 import StableSwapLiquiditySlippage from '../../components/StableSwapLiquiditySlippage'
 import { getLpTokenUsdEstimate } from '../../utils/stableSwap'
-import { NETWORK_CHAIN_ID } from '../../connectors'
-import { TURBO } from '../../constants/chains'
+
 
 type Props = {
   stableSwapPoolName: StableSwapPoolName
@@ -353,7 +352,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                 showCommonBases
               />
             ) : null}
-            {!account || (chainId !== TURBO && chainId !== ChainId.AURORA) ? (
+            {!account || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? (
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
             ) : (
               <AutoColumn gap={'md'}>

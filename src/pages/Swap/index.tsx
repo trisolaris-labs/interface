@@ -73,10 +73,8 @@ import {
 import { isStableSwapHighPriceImpact, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 import { useStableSwapCallback } from '../../hooks/useStableSwapCallback'
 import Modal from '../../components/Modal'
-import { ModalContentWrapper } from '../../components/Settings/Settings.styles'
 import useCoinSearch from '../../fetchers/coingecko-api-id'
-import { NETWORK_CHAIN_ID } from '../../connectors'
-import { TURBO } from '../../constants/chains'
+
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -570,7 +568,7 @@ export default function Swap() {
                 )}
               </AutoColumn>
               <BottomGrouping>
-                {!account || !(chainId !== ChainId.AURORA || chainId !== TURBO) ? (
+                {!account || !(chainId !== ChainId.AURORA && chainId !== ChainId.TURBO) ? (
                   <ButtonLight onClick={toggleWalletModal}>{t('swapPage.connectWallet')}</ButtonLight>
                 ) : showWrap ? (
                   <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>

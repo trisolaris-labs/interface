@@ -7,8 +7,7 @@ import { useActiveWeb3React } from '../../../hooks'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { ChainId } from '@trisolaris/sdk'
 import { DAO_ADDRESS } from '../../../constants'
-import { NETWORK_CHAIN_ID } from '../../../connectors'
-import { TURBO } from '../../../constants/chains'
+
 
 type ZapModalProps = {
   isOpen: boolean
@@ -36,7 +35,7 @@ export default function ZapModal({ isOpen, onDismiss, zapTokenAddress }: ZapModa
 
   const zapToken = { chainId: ChainId.AURORA, address: zapTokenAddress }
 
-  return !account || (chainId !== TURBO && chainId !== ChainId.AURORA) ? null : (
+  return !account || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? null : (
     <Modal
       isOpen={isOpen}
       onDismiss={onDismiss}

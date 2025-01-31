@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { CHAIN_PARAMS } from '../constants'
 import { ChainId } from '@trisolaris/sdk'
 import { network } from '../connectors'
+import { chain } from 'lodash'
 
 export function useActiveWeb3React() {
   const result = useWeb3ReactCore()
@@ -25,7 +26,7 @@ export function useActiveWeb3React() {
 }
 
 export function useSwitchProviderChain(): {
-  switchProviderChain: (chainId: number) => Promise<void>
+  switchProviderChain: (chainId: ChainId) => Promise<void>
   loading: boolean
   error: string | null
 } {
@@ -33,8 +34,12 @@ export function useSwitchProviderChain(): {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  async function switchProviderChain(chainId: number) {
+  async function switchProviderChain(chainId: ChainId) {
+    
     const networkData = CHAIN_PARAMS[chainId]
+    if(!networkData) {
+      return
+    }
     const params = {
       chainId: +chainId,
       chainName: networkData.chainName,

@@ -47,7 +47,7 @@ import {
 } from '../../constants/tokens'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'
-import { TURBO } from '../../constants/chains'
+
 
 export enum ChefVersions {
   V1,
