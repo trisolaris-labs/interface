@@ -434,6 +434,7 @@ export function useDefaultsFromURLSearch():
     if (!chainId) return
     const parsed = queryParametersToSwapState(parsedQs)
     let inputCurrencyId = parsed[Field.INPUT].currencyId
+    console.log('inputCurrencyId', inputCurrencyId)
     //check if turbo chain
     if(chainId === ChainId.TURBO && inputCurrencyId === 'ETH') {
       inputCurrencyId = 'TURBO'

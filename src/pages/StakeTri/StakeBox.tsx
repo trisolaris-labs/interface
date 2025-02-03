@@ -29,7 +29,7 @@ import { usePtriStakeInfo } from '../../hooks/usePtri'
 import { PTRI, TRI } from '../../constants/tokens'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import { TYPE } from '../../theme'
-import { BIG_INT_ZERO } from '../../constants'
+import { AVAILABLE_CHAINS_DATA, BIG_INT_ZERO } from '../../constants'
 import { STABLESWAP_POOLS } from '../../state/stableswap/constants'
 import { DarkGreyCard } from '../../components/Card'
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -348,7 +348,7 @@ function StakeBox() {
             />
           </AutoColumn>
           <div style={{ marginTop: '1rem' }}>
-            {account == null || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? (
+            {account == null || chainId == undefined || !AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId) ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : (
               <RowBetween>

@@ -3,15 +3,13 @@ import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleNetworkSelectModal, useToggleTriPriceModal } from '../../state/application/hooks'
 import Modal from '../Modal'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
-import AuroraIcon from '../../assets/images/aurora.png'
-import TurboIcon from '../../assets/images/turbo.png'
 import { ExternalLink, TYPE } from '../../theme'
 import { isMobile } from 'react-device-detect'
 import React, { useCallback } from 'react'
 import Option from '../WalletModal/Option'
 import { ChainId } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
-
+import { AVAILABLE_CHAINS_DATA } from '../../constants'
 const CloseIcon = styled.div`
   position: absolute;
   right: 1rem;
@@ -126,7 +124,20 @@ export default function NetworkSelectModal() {
     },
     [appSelectedChain, setSelectedChain]
   )
-
+  const chainOptions = Object.keys(AVAILABLE_CHAINS_DATA).map((chainId) => {
+    const numericChainId = Number(chainId) as ChainId;
+    const chainData = AVAILABLE_CHAINS_DATA[numericChainId]
+    return  <Option
+    active={appSelectedChain === numericChainId}
+    id={`connect-${ChainId[numericChainId]}`}
+    key={ChainId[numericChainId]}
+    color={'#E8831D'}
+    header={chainData.chainLabel}
+    subheader={null}
+    icon={chainData.icon}
+    onClick={() => changeNetwork(numericChainId)}
+  />
+})
   return (
     <Modal isOpen={isModalOpen} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}>
       <Wrapper>
@@ -137,26 +148,7 @@ export default function NetworkSelectModal() {
           <HeaderRow>Network</HeaderRow>
           <ContentWrapper mobile={isMobile}>
             <OptionGrid data-cy="option-grid">
-              <Option
-                active={appSelectedChain === ChainId.AURORA}
-                id={`connect-${ChainId.AURORA}`}
-                key={ChainId.AURORA}
-                color={'#E8831D'}
-                header={'Aurora'}
-                subheader={null}
-                icon={AuroraIcon}
-                onClick={() => changeNetwork(ChainId.AURORA)}
-              />
-              <Option
-                active={appSelectedChain === ChainId.TURBO}
-                id={`chain-${ChainId.TURBO}`}
-                key={ChainId.TURBO}
-                color={'#E8831D'}
-                header={'Turbo'}
-                subheader={null}
-                icon={TurboIcon}
-                onClick={() => changeNetwork(ChainId.TURBO)}
-              />
+              {chainOptions}
             </OptionGrid>
           </ContentWrapper>
         </UpperSection>

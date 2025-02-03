@@ -54,7 +54,8 @@ import {
   INITIAL_ALLOWED_SLIPPAGE,
   BIG_INT_ZERO,
   TOKEN_WARNING_MODAL_ALLOWLIST,
-  PRICE_IMPACT_ERROR_THRESHOLD
+  PRICE_IMPACT_ERROR_THRESHOLD,
+  AVAILABLE_CHAINS_DATA
 } from '../../constants'
 
 import { ClickableText, Dots } from '../Pool/styleds'
@@ -568,7 +569,7 @@ export default function Swap() {
                 )}
               </AutoColumn>
               <BottomGrouping>
-                {!account || (chainId !== ChainId.AURORA && chainId !== ChainId.TURBO) ? (
+                {!account || !(chainId !== undefined && AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)) ? (
                   <ButtonLight onClick={toggleWalletModal}>{t('swapPage.connectWallet')}</ButtonLight>
                 ) : showWrap ? (
                   <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>

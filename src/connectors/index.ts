@@ -7,8 +7,22 @@ import { Network } from '@web3-react/network'
 import { Connector } from '@web3-react/types'
 import { WalletConnect } from '@web3-react/walletconnect-v2'
 import { useMemo } from 'react'
+import { AVAILABLE_CHAINS_DATA } from '../constants'
 
 const NETWORK_URL = process.env.REACT_APP_NETWORK_URL ?? ''
+
+export interface WalletInfo {
+  connector?: Connector
+  wallet?: Wallet
+  name: string
+  iconName: string
+  description: string
+  href: string | null
+  color: string
+  primary?: true
+  mobile?: true
+  mobileOnly?: true
+}
 
 export const NETWORK_CHAIN_ID: ChainId = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1313161554')
 const appLogoUrl = 'https://raw.githubusercontent.com/trisolaris-labs/interface/master/public/favicon.png'
@@ -76,6 +90,8 @@ function getHooksForWallet(wallet: Wallet) {
 }
 
 
+
+
 export const [network, networkHooks] = initializeConnector<Network>(
   actions =>
     new Network({
@@ -96,7 +112,7 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
       actions,
       options: {
         projectId: 'c13edb0e380beb4872d04fa7dce7d169',
-        chains: [ChainId.AURORA, ChainId.TURBO],
+        chains: Object.keys(AVAILABLE_CHAINS_DATA).map(chainId => parseInt(chainId)),
         showQrModal: true,
         qrModalOptions: {
           explorerRecommendedWalletIds: [
@@ -137,6 +153,45 @@ function getConnectorListItemForWallet(wallet: Wallet) {
   }
 }
 
+export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
+  INJECTED: {
+    connector: injected,
+    wallet: Wallet.INJECTED,
+    name: 'Injected',
+    iconName: 'arrow-right.svg',
+    description: 'Injected web3 provider.',
+    href: null,
+    color: '#010101',
+    primary: true
+  },
+  METAMASK: {
+    connector: injected,
+    wallet: Wallet.INJECTED,
+    name: 'MetaMask',
+    iconName: 'metamask.png',
+    description: 'Easy-to-use browser extension.',
+    href: null,
+    color: '#E8831D'
+  },
+  COINBASE_WALLET: {
+    connector: coinbaseWallet,
+    wallet: Wallet.COINBASE_WALLET,
+    name: 'Coinbase Wallet',
+    iconName: 'coinbaseWalletIcon.svg',
+    description: 'Use Coinbase Wallet app on mobile device',
+    href: null,
+    color: '#315CF5'
+  },
+  WALLET_CONNECT: {
+    connector: walletConnect,
+    wallet: Wallet.WALLET_CONNECT,
+    name: 'Wallet Connect',
+    iconName: 'walletConnectIcon.svg',
+    description: 'Use Wallet Connect',
+    href: null,
+    color: '#315CF5'
+  }
+}
 export function useConnectors(selectedWallet: Wallet | undefined) {
   return useMemo(() => {
     const connectors: ConnectorListItem[] = [{ connector: gnosisSafe, hooks: gnosisSafeHooks }]

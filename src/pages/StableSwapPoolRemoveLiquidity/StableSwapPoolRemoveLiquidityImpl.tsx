@@ -7,7 +7,7 @@ import { AutoColumn } from '../../components/Column'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
 import { PageWrapper } from '../../components/Page'
 import { AutoRow, RowBetween } from '../../components/Row'
-import { BIG_INT_ZERO, PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE } from '../../constants'
+import { AVAILABLE_CHAINS_DATA, BIG_INT_ZERO, PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
@@ -329,7 +329,7 @@ export default function StableSwapPoolAddLiquidity({ stableSwapPoolName }: Props
             })}
           </AutoColumn>
           <div style={{ marginTop: '1rem' }}>
-            {account == null || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? (
+            {account == null || !(chainId !== undefined && AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)) ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : (
               <AutoColumn gap="8px">

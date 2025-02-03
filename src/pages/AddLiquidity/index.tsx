@@ -45,6 +45,8 @@ import { useTranslation } from 'react-i18next'
 import PriceAndPoolShare from './PriceAndPoolShare'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
+import { AVAILABLE_CHAINS_DATA } from '../../constants'
+import { chain } from 'lodash'
 
 
 export default function AddLiquidity({
@@ -286,7 +288,7 @@ export default function AddLiquidity({
           history.push(`/add/${newCurrencyIdB}`)
         }
       } else {
-        history.push(`/add/${currencyIdA ? currencyIdA : chainId === ChainId.TURBO ? 'TURBO' : 'ETH'}/${newCurrencyIdB}`)
+        history.push(`/add/${currencyIdA ? currencyIdA : AVAILABLE_CHAINS_DATA[chainId] ? AVAILABLE_CHAINS_DATA[chainId].baseCurrencyLabel : 'ETH'}/${newCurrencyIdB}`)
       }
     },
     [currencyIdA, history, currencyIdB]
@@ -390,7 +392,7 @@ export default function AddLiquidity({
               />
             )}
 
-            {!account || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? (
+            {!account || chainId === undefined || !AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId) ? (
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
             ) : (
               <AutoColumn id="defaultswap-add-liquidity" gap={'md'}>

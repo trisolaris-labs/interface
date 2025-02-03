@@ -1,7 +1,9 @@
-import { ChainId, JSBI, Percent, Token, WETH as _WETH } from '@trisolaris/sdk'
+import { CETH, ChainId, JSBI, Percent, Token, WETH as _WETH, Currency } from '@trisolaris/sdk'
 import { coinbaseWallet, injected, Wallet, walletConnect } from '../connectors'
 import { Connector } from '@web3-react/types'
-
+import AuroraIcon from '../assets/images/aurora.png'
+import TurboIcon from '../assets/images/turbo.png'
+import tokenLogo from '../assets/images/token-logo.png'
 import {
   DAI,
   TRI,
@@ -25,6 +27,8 @@ import {
   USDC_E,
   USDT_E
 } from './tokens'
+import { TURBO_CURRENCY } from './lists'
+
 
 export const GAS_PRICE = 250
 
@@ -49,7 +53,6 @@ export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
 // This is actually WETH
 function createProperlyNamedWETH() {
   const { address, decimals, name } = _WETH[ChainId.AURORA]
-
   return new Token(ChainId.AURORA, address, decimals, 'WETH', name)
 }
 
@@ -97,72 +100,9 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...COMMON_BASES
 }
 
-export interface WalletInfo {
-  connector?: Connector
-  wallet?: Wallet
-  name: string
-  iconName: string
-  description: string
-  href: string | null
-  color: string
-  primary?: true
-  mobile?: true
-  mobileOnly?: true
-}
 
-export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
-  INJECTED: {
-    connector: injected,
-    wallet: Wallet.INJECTED,
-    name: 'Injected',
-    iconName: 'arrow-right.svg',
-    description: 'Injected web3 provider.',
-    href: null,
-    color: '#010101',
-    primary: true
-  },
-  METAMASK: {
-    connector: injected,
-    wallet: Wallet.INJECTED,
-    name: 'MetaMask',
-    iconName: 'metamask.png',
-    description: 'Easy-to-use browser extension.',
-    href: null,
-    color: '#E8831D'
-  },
-  COINBASE_WALLET: {
-    connector: coinbaseWallet,
-    wallet: Wallet.COINBASE_WALLET,
-    name: 'Coinbase Wallet',
-    iconName: 'coinbaseWalletIcon.svg',
-    description: 'Use Coinbase Wallet app on mobile device',
-    href: null,
-    color: '#315CF5'
-  },
-  WALLET_CONNECT: {
-    connector: walletConnect,
-    wallet: Wallet.WALLET_CONNECT,
-    name: 'Wallet Connect',
-    iconName: 'walletConnectIcon.svg',
-    description: 'Use Wallet Connect',
-    href: null,
-    color: '#315CF5'
-  }
-}
 
-export const NetworkContextName = 'NETWORK'
-
-export const CHAIN_PARAMS:{ [chainId in ChainId]: {
-  chainId: string
-  chainName: string
-  nativeCurrency: {
-    name: string
-    symbol: string
-    decimals: number
-  }
-  rpcUrls: string[]
-  blockExplorerUrls: string[]
-} } = {
+const CHAIN_PARAMS:{ [chainId in ChainId]: chainNetworkParamsType} = {
   [ChainId.FUJI]: {
     chainId: '0xA869', // A 0x-prefixed hexadecimal chainId
     chainName: 'Avalanche FUJI C-Chain',
@@ -172,7 +112,7 @@ export const CHAIN_PARAMS:{ [chainId in ChainId]: {
       decimals: 18
     },
     rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
-    blockExplorerUrls: ['https://cchain.explorer.avax-test.network']
+    blockExplorerUrls: ['https://cchain.explorer.avax-test.network'],
   },
   [ChainId.AVALANCHE]: {
     chainId: '0xa86a', // A 0x-prefixed hexadecimal chainId
@@ -183,7 +123,7 @@ export const CHAIN_PARAMS:{ [chainId in ChainId]: {
       decimals: 18
     },
     rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
-    blockExplorerUrls: ['https://avascan.info/blockchain/c/']
+    blockExplorerUrls: ['https://avascan.info/blockchain/c/'],
   },
   [ChainId.POLYGON]: {
     chainId: '0x89', // A 0x-prefixed hexadecimal chainId
@@ -194,7 +134,7 @@ export const CHAIN_PARAMS:{ [chainId in ChainId]: {
       decimals: 18
     },
     rpcUrls: ['https://rpc-mainnet.matic.network'],
-    blockExplorerUrls: ['https://polygonscan.com/']
+    blockExplorerUrls: ['https://polygonscan.com/'],
   },
   [ChainId.AURORA]: {
     chainId: '4e454152', // A 0x-prefixed hexadecimal chainId
@@ -205,7 +145,7 @@ export const CHAIN_PARAMS:{ [chainId in ChainId]: {
       decimals: 18
     },
     rpcUrls: ['https://mainnet.aurora.dev'],
-    blockExplorerUrls: ['https://explorer.aurora.dev/']
+    blockExplorerUrls: ['https://explorer.aurora.dev/'],
   },
   [ChainId.TURBO]: {
     chainId: '4e45415f', // A 0x-prefixed hexadecimal chainId
@@ -216,9 +156,62 @@ export const CHAIN_PARAMS:{ [chainId in ChainId]: {
       decimals: 18
     },
     rpcUrls: ['https://rpc-0x4e45415f.aurora-cloud.dev'],
-    blockExplorerUrls: ['https://explorer.turbo.aurora.dev/']
+    blockExplorerUrls: ['https://explorer.turbo.aurora.dev/'],
   }
 }
+
+
+export const AVAILABLE_CHAINS_DATA: { [chainId in ChainId]: {
+networkParams: chainNetworkParamsType,
+chainLabel: string,
+baseCurrencyLabel: string,
+icon: string,
+defaultCurrencyObject: Currency
+multiCallAddress: string
+}} = {
+  [ChainId.FUJI]: {
+    networkParams: CHAIN_PARAMS[ChainId.FUJI],
+    chainLabel: 'Fuji',
+    baseCurrencyLabel: 'AVAX',
+    icon: tokenLogo,
+    defaultCurrencyObject: CETH,
+    multiCallAddress: '0xb465Fd2d9C71d5D6e6c069aaC9b4E21c69aAA78f'
+
+  },
+  [ChainId.AVALANCHE]: {
+    networkParams: CHAIN_PARAMS[ChainId.AVALANCHE],
+    chainLabel: 'Avalanche',
+    baseCurrencyLabel: 'AVAX',
+    icon: tokenLogo,
+    defaultCurrencyObject: CETH,
+    multiCallAddress: '0x0FB54156B496b5a040b51A71817aED9e2927912E'
+  },
+  [ChainId.POLYGON]: {
+    networkParams: CHAIN_PARAMS[ChainId.POLYGON],
+    chainLabel: 'Polygon',
+    baseCurrencyLabel: 'MATIC',
+    icon: tokenLogo,
+    defaultCurrencyObject: CETH,
+    multiCallAddress: '0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507'
+  },
+  [ChainId.AURORA]: {
+    networkParams: CHAIN_PARAMS[ChainId.AURORA],
+    chainLabel: 'Aurora',
+    baseCurrencyLabel: 'ETH',
+    icon: AuroraIcon,
+    defaultCurrencyObject: CETH,
+    multiCallAddress: '0x49eb1F160e167aa7bA96BdD88B6C1f2ffda5212A'
+  },
+  [ChainId.TURBO]: {
+    networkParams: CHAIN_PARAMS[ChainId.TURBO],
+    chainLabel: 'Turbochain',
+    baseCurrencyLabel: 'TURBO',
+    icon: TurboIcon,
+    defaultCurrencyObject: TURBO_CURRENCY,
+    multiCallAddress: '0x5FE8fF8c5Ae435f0EB613B063C684FE10099BFEa'
+  }
+}
+
 
 export const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: 'Fuji',
@@ -302,3 +295,17 @@ export const PRICE_IMPACT_ERROR_THRESHOLD = new Percent('5', '100')
 export const PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE = new Percent('-5', '100')
 
 export const DAO_ADDRESS = '0xf86119de6ee8d4447C8219eEC20E7561d09816d3'
+
+
+
+type chainNetworkParamsType = {
+  chainId: string
+  chainName: string
+  nativeCurrency: {
+    name: string
+    symbol: string
+    decimals: number
+  }
+  rpcUrls: string[]
+  blockExplorerUrls: string[]
+}

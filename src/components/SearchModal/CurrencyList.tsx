@@ -18,6 +18,7 @@ import Loader from '../Loader'
 import { isTokenOnList } from '../../utils'
 import { useTranslation } from 'react-i18next'
 import { TURBO_CURRENCY } from '../../constants/lists'
+import { AVAILABLE_CHAINS_DATA } from '../../constants'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === CETH ? 'ETH' : ''
@@ -196,12 +197,11 @@ export default function CurrencyList({
   showETH: boolean
 }) {
   const { account, chainId } = useActiveWeb3React()
+  
   const itemData = useMemo(() => {
-    if(chainId === ChainId.TURBO) {
-      return (showETH ? [TURBO_CURRENCY, ...currencies] : currencies)
-    }
-    return (showETH ? [Currency.CETH, ...currencies] : currencies)
+    return (showETH ? [AVAILABLE_CHAINS_DATA[chainId].defaultCurrencyObject, ...currencies] : currencies)
   }, [currencies, showETH])
+
   const Row = useCallback(
     ({ data, index, style }: { data: any; index: number; style: any }) => {
       const currency: Currency = data[index]

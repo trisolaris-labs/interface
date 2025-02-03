@@ -13,7 +13,7 @@ import ERC20_ABI from '../constants/abis/erc20.json'
 import BRIDGE_TOKEN_ABI from '../constants/abis/bridge-token.json'
 import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator'
 import WETH_ABI from '../constants/abis/polygon/weth.json'
-import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
+import { MULTICALL_ABI } from '../constants/multicall'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
 import { PTRI, TRI, USDC_E, WNEAR } from '../constants/tokens'
@@ -22,6 +22,7 @@ import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stabl
 import PTRI_ABI from '../constants/abis/pTri/ptri.json'
 import AUERC20 from '../constants/abis/stableswap/auErc20.json'
 import { NETWORK_CHAIN_ID } from '../connectors'
+import { AVAILABLE_CHAINS_DATA } from '../constants'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -69,7 +70,7 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 
 export function useMulticallContract(): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId && MULTICALL_NETWORKS[chainId], MULTICALL_ABI, false)
+  return useContract(chainId && AVAILABLE_CHAINS_DATA[chainId].multiCallAddress, MULTICALL_ABI, false)
 }
 
 export function useUSDC_EWNEARPoolContract(): Contract | null {
