@@ -6,7 +6,7 @@ import { updateChainId } from '../state/user/actions'
 import { useState } from 'react'
 import { AVAILABLE_CHAINS_DATA } from '../constants'
 import { ChainId } from '@trisolaris/sdk'
-import { network } from '../connectors'
+import { network, injected } from '../connectors'
 
 export function useActiveWeb3React() {
   const result = useWeb3ReactCore()
@@ -18,7 +18,7 @@ export function useActiveWeb3React() {
 
   return {
     ...result,
-    chainId: result.chainId as ChainId,
+    chainId: result.chainId as number & ChainId,
     appSelectedChain,
     setSelectedChain
   }
@@ -53,8 +53,7 @@ export function useSwitchProviderChain(): {
     
     try {
       setLoading(true)
-      const connectionType = getWalletForConnector(connector)
-      if (connectionType === Wallet.WALLET_CONNECT || connectionType === Wallet.NETWORK || Wallet.GNOSIS_SAFE) {
+      if (injected === connector) {
         await network.activate(chainId)
         await connector.activate(networkData)
         return
@@ -64,7 +63,8 @@ export function useSwitchProviderChain(): {
           setError('Missing network data')
           return
         }
-       
+        console.log('Please switch to Aurora network in wallet settings.')
+        setError('Please switch to Aurora network in wallet settings.')
       }
     } catch (error) {
       try {

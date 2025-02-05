@@ -104,7 +104,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
 
 const CHAIN_PARAMS:{ [chainId in ChainId]: chainNetworkParamsType} = {
   [ChainId.FUJI]: {
-    chainId: '0xA869', // A 0x-prefixed hexadecimal chainId
+    chainId: 'A869', // A 0x-prefixed hexadecimal chainId
     chainName: 'Avalanche FUJI C-Chain',
     nativeCurrency: {
       name: 'Avax',
@@ -115,7 +115,7 @@ const CHAIN_PARAMS:{ [chainId in ChainId]: chainNetworkParamsType} = {
     blockExplorerUrls: ['https://cchain.explorer.avax-test.network'],
   },
   [ChainId.AVALANCHE]: {
-    chainId: '0xa86a', // A 0x-prefixed hexadecimal chainId
+    chainId: 'A86A', // A 0x-prefixed hexadecimal chainId
     chainName: 'Avalanche Mainnet',
     nativeCurrency: {
       name: 'Avax',
@@ -126,7 +126,7 @@ const CHAIN_PARAMS:{ [chainId in ChainId]: chainNetworkParamsType} = {
     blockExplorerUrls: ['https://avascan.info/blockchain/c/'],
   },
   [ChainId.POLYGON]: {
-    chainId: '0x89', // A 0x-prefixed hexadecimal chainId
+    chainId: '89', // A 0x-prefixed hexadecimal chainId
     chainName: 'Polygon Mainnet',
     nativeCurrency: {
       name: 'Matic',
@@ -161,7 +161,7 @@ const CHAIN_PARAMS:{ [chainId in ChainId]: chainNetworkParamsType} = {
 }
 
 
-export const AVAILABLE_CHAINS_DATA: { [chainId in ChainId]: {
+export const AVAILABLE_CHAINS_DATA: { [chainId:number]: {
 networkParams: chainNetworkParamsType,
 chainLabel: string,
 baseCurrencyLabel: string,
@@ -169,31 +169,30 @@ icon: string,
 defaultCurrencyObject: Currency
 multiCallAddress: string
 }} = {
-  [ChainId.FUJI]: {
-    networkParams: CHAIN_PARAMS[ChainId.FUJI],
-    chainLabel: 'Fuji',
-    baseCurrencyLabel: 'AVAX',
-    icon: tokenLogo,
-    defaultCurrencyObject: CETH,
-    multiCallAddress: '0xb465Fd2d9C71d5D6e6c069aaC9b4E21c69aAA78f'
-
-  },
-  [ChainId.AVALANCHE]: {
-    networkParams: CHAIN_PARAMS[ChainId.AVALANCHE],
-    chainLabel: 'Avalanche',
-    baseCurrencyLabel: 'AVAX',
-    icon: tokenLogo,
-    defaultCurrencyObject: CETH,
-    multiCallAddress: '0x0FB54156B496b5a040b51A71817aED9e2927912E'
-  },
-  [ChainId.POLYGON]: {
-    networkParams: CHAIN_PARAMS[ChainId.POLYGON],
-    chainLabel: 'Polygon',
-    baseCurrencyLabel: 'MATIC',
-    icon: tokenLogo,
-    defaultCurrencyObject: CETH,
-    multiCallAddress: '0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507'
-  },
+  // [ChainId.FUJI]: {
+  //   networkParams: CHAIN_PARAMS[ChainId.FUJI],
+  //   chainLabel: 'Fuji',
+  //   baseCurrencyLabel: 'AVAX',
+  //   icon: tokenLogo,
+  //   defaultCurrencyObject: CETH,
+  //   multiCallAddress: '0xb465Fd2d9C71d5D6e6c069aaC9b4E21c69aAA78f'
+  // },
+  // [ChainId.AVALANCHE]: {
+  //   networkParams: CHAIN_PARAMS[ChainId.AVALANCHE],
+  //   chainLabel: 'Avalanche',
+  //   baseCurrencyLabel: 'AVAX',
+  //   icon: tokenLogo,
+  //   defaultCurrencyObject: CETH,
+  //   multiCallAddress: '0x0FB54156B496b5a040b51A71817aED9e2927912E'
+  // },
+  // [ChainId.POLYGON]: {
+  //   networkParams: CHAIN_PARAMS[ChainId.POLYGON],
+  //   chainLabel: 'Polygon',
+  //   baseCurrencyLabel: 'MATIC',
+  //   icon: tokenLogo,
+  //   defaultCurrencyObject: CETH,
+  //   multiCallAddress: '0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507'
+  // },
   [ChainId.AURORA]: {
     networkParams: CHAIN_PARAMS[ChainId.AURORA],
     chainLabel: 'Aurora',

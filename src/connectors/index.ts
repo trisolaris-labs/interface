@@ -96,10 +96,11 @@ export const [network, networkHooks] = initializeConnector<Network>(
   actions =>
     new Network({
       actions,
-      urlMap: {
-        [ChainId.AURORA]: 'https://mainnet.aurora.dev/',
-        [ChainId.TURBO]: 'https://rpc-0x4e45415f.aurora-cloud.dev/'
-      },
+      urlMap: Object.keys(AVAILABLE_CHAINS_DATA).reduce((acc, curr) => {
+        acc[+curr] = AVAILABLE_CHAINS_DATA[+curr].networkParams.rpcUrls[0]
+        return acc
+      }, {} as { [chainId: number]: string }),
+      defaultChainId: NETWORK_CHAIN_ID
 }))
 
 export const [injected, injectedHooks] = initializeConnector<MetaMask>(actions => new MetaMask({ actions, onError }))

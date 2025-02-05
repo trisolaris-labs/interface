@@ -50,7 +50,7 @@ export default function Header() {
   const isEmbedded = useEmbeddedSwapUI()
 
   useEffect(() => {
-    if(appSelectedChain !== chainId) {
+    if(appSelectedChain && appSelectedChain !== chainId) {
     switchProviderChain(appSelectedChain)
     }
   }, [appSelectedChain, chainId])
@@ -177,9 +177,9 @@ export default function Header() {
               {AVAILABLE_CHAINS_DATA[chainId] && <IconWrapper size={16}>
                 <img src={AVAILABLE_CHAINS_DATA[chainId].icon} />
               </IconWrapper>}
-              <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
-                {AVAILABLE_CHAINS_DATA[appSelectedChain].chainLabel}
-              </Text>
+              {AVAILABLE_CHAINS_DATA[chainId] ? <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
+                {AVAILABLE_CHAINS_DATA[chainId].chainLabel}
+              </Text> : '-'}
             </NetworkSelectButton>
             <NetworkSelectModal />
           </TRIWrapper>

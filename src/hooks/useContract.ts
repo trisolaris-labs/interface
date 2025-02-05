@@ -70,7 +70,8 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 
 export function useMulticallContract(): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId && AVAILABLE_CHAINS_DATA[chainId].multiCallAddress, MULTICALL_ABI, false)
+  return useContract(AVAILABLE_CHAINS_DATA[chainId]?.multiCallAddress, MULTICALL_ABI, false)
+ 
 }
 
 export function useUSDC_EWNEARPoolContract(): Contract | null {

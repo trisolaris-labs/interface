@@ -114,21 +114,19 @@ const OptionGrid = styled.div`
 export default function NetworkSelectModal() {
   const isModalOpen = useModalOpen(ApplicationModal.NETWORK_SELECT)
   const toggleWalletModal = useToggleNetworkSelectModal()
-  const { appSelectedChain, setSelectedChain } = useActiveWeb3React()
+  const { appSelectedChain, setSelectedChain, chainId:providerChainId } = useActiveWeb3React()
 
   const changeNetwork = useCallback(
     async (chainId: number) => {
-      if (appSelectedChain !== chainId) {
         setSelectedChain(chainId.toString())
-      }
     },
-    [appSelectedChain, setSelectedChain]
+    [appSelectedChain, setSelectedChain, providerChainId]
   )
   const chainOptions = Object.keys(AVAILABLE_CHAINS_DATA).map((chainId) => {
     const numericChainId = Number(chainId) as ChainId;
     const chainData = AVAILABLE_CHAINS_DATA[numericChainId]
     return  <Option
-    active={appSelectedChain === numericChainId}
+    active={+providerChainId === numericChainId}
     id={`connect-${ChainId[numericChainId]}`}
     key={ChainId[numericChainId]}
     color={'#E8831D'}
