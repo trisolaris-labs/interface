@@ -19,7 +19,7 @@ import { usePairs } from '../../data/Reserves'
 import { useTrackedTokenPairs, toV2LiquidityToken } from '../../state/user/hooks'
 
 import { TitleRow, ButtonRow, ResponsiveButtonPrimary, ResponsiveButtonSecondary, EmptyProposals } from './styleds'
-import { AVAILABLE_CHAINS_DATA } from '../../constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 import { chain } from 'lodash'
 
 

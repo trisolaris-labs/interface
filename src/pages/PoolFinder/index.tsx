@@ -19,9 +19,8 @@ import AppBody from '../AppBody'
 import { Dots } from '../Pool/styleds'
 import { useTranslation } from 'react-i18next'
 import { GreyCard } from '../../components/Card'
-
-import { AVAILABLE_CHAINS_DATA, BIG_INT_ZERO } from '../../constants'
-import { TURBO_CURRENCY } from '../../constants/lists'
+import { BIG_INT_ZERO } from '../../constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 enum Fields {
   TOKEN0 = 0,
@@ -35,7 +34,7 @@ export default function PoolFinder() {
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [activeField, setActiveField] = useState<number>(Fields.TOKEN1)
 
-  const [currency0, setCurrency0] = useState<Currency | null>(chainId !== undefined ? AVAILABLE_CHAINS_DATA[chainId].defaultCurrencyObject : CETH)
+  const [currency0, setCurrency0] = useState<Currency | null>(chainId !== undefined ? AVAILABLE_CHAINS_DATA[chainId].networkParams.nativeCurrency : CETH)
   const [currency1, setCurrency1] = useState<Currency | null>(null)
 
   const [pairState, pair] = usePair(currency0 ?? undefined, currency1 ?? undefined)
@@ -48,7 +47,7 @@ console.log(PairState[pairState], pair)
   }, [pair, addPair, chainId])
   useEffect(() => {
     if(chainId === undefined) return
-    setCurrency0(AVAILABLE_CHAINS_DATA[chainId].defaultCurrencyObject ?? CETH)
+    setCurrency0(AVAILABLE_CHAINS_DATA[chainId].networkParams.nativeCurrency ?? CETH)
     setCurrency1(null)
   }, [chainId])
 

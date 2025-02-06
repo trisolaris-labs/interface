@@ -14,7 +14,7 @@ import Circle from '../../assets/images/blue-loader.svg'
 import { getEtherscanLink } from '../../utils'
 import { useActiveWeb3React } from '../../hooks'
 import { useTranslation } from 'react-i18next'
-import { AVAILABLE_CHAINS_DATA } from '../../constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 const Wrapper = styled.div`
   width: 100%;

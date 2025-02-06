@@ -2,7 +2,8 @@ import { useCallback } from 'react'
 import { injected } from '../connectors'
 import { useWeb3React } from '@web3-react/core'
 import { useActiveWeb3React } from '.'
-import { AVAILABLE_CHAINS_DATA } from '../constants'
+import { AVAILABLE_CHAINS_DATA } from '../constants/availableChainsData'
+
 export default function useSelectChain() {
   const { connector } = useWeb3React()
   const { appSelectedChain } = useActiveWeb3React()

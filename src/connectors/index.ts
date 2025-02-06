@@ -7,7 +7,7 @@ import { Network } from '@web3-react/network'
 import { Connector } from '@web3-react/types'
 import { WalletConnect } from '@web3-react/walletconnect-v2'
 import { useMemo } from 'react'
-import { AVAILABLE_CHAINS_DATA } from '../constants'
+import { AVAILABLE_CHAINS_DATA } from '../constants/availableChainsData'
 
 const NETWORK_URL = process.env.REACT_APP_NETWORK_URL ?? ''
 

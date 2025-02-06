@@ -7,7 +7,7 @@ import Menu from '../Menu'
 import TriPriceModal from '../TriPriceModal'
 import Web3Status from '../Web3Status'
 import { useActiveWeb3React } from '../../hooks'
-import { AVAILABLE_CHAINS_DATA } from '../../constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 import useTriPrice from '../../hooks/useTriPrice'
 import { useToggleNetworkSelectModal, useToggleTriPriceModal } from '../../state/application/hooks'
 
@@ -50,10 +50,10 @@ export default function Header() {
   const isEmbedded = useEmbeddedSwapUI()
 
   useEffect(() => {
-    if(appSelectedChain && appSelectedChain !== chainId) {
+    if(appSelectedChain) {
     switchProviderChain(appSelectedChain)
     }
-  }, [appSelectedChain, chainId])
+  }, [appSelectedChain])
 
 
   // Use a minimal header/footer when the `/swap` page is embedded on third-party websites

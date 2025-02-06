@@ -4,7 +4,7 @@ import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import IUniswapV2Router02_ABI from '../constants/abis/polygon/IUniswapV2Router02.json'
-import { AVAILABLE_CHAINS_DATA, ETHERSCAN_PREFIXES } from '../constants/index'
+import { AVAILABLE_CHAINS_DATA } from '../constants/availableChainsData'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, CETH } from '@trisolaris/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
 import {network } from '../connectors'
@@ -23,7 +23,7 @@ export function getEtherscanLink(
   data: string,
   type: 'transaction' | 'token' | 'address' | 'block'
 ): string {
-  const prefix = ETHERSCAN_PREFIXES[chainId]
+  const prefix = AVAILABLE_CHAINS_DATA[chainId].networkParams.blockExplorerUrls[0]
 
   switch (type) {
     case 'transaction': {

@@ -45,7 +45,7 @@ import { useTranslation } from 'react-i18next'
 import PriceAndPoolShare from './PriceAndPoolShare'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
 import useCurrencyInputPanel from '../../components/CurrencyInputPanel/useCurrencyInputPanel'
-import { AVAILABLE_CHAINS_DATA } from '../../constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 import { chain } from 'lodash'
 
 

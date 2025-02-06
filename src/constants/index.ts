@@ -1,9 +1,4 @@
 import { CETH, ChainId, JSBI, Percent, Token, WETH as _WETH, Currency } from '@trisolaris/sdk'
-import { coinbaseWallet, injected, Wallet, walletConnect } from '../connectors'
-import { Connector } from '@web3-react/types'
-import AuroraIcon from '../assets/images/aurora.png'
-import TurboIcon from '../assets/images/turbo.png'
-import tokenLogo from '../assets/images/token-logo.png'
 import {
   DAI,
   TRI,
@@ -27,7 +22,6 @@ import {
   USDC_E,
   USDT_E
 } from './tokens'
-import { TURBO_CURRENCY } from './lists'
 
 
 export const GAS_PRICE = 250
@@ -102,137 +96,6 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
 
 
 
-const CHAIN_PARAMS:{ [chainId in ChainId]: chainNetworkParamsType} = {
-  [ChainId.FUJI]: {
-    chainId: 'A869', // A 0x-prefixed hexadecimal chainId
-    chainName: 'Avalanche FUJI C-Chain',
-    nativeCurrency: {
-      name: 'Avax',
-      symbol: 'AVAX',
-      decimals: 18
-    },
-    rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
-    blockExplorerUrls: ['https://cchain.explorer.avax-test.network'],
-  },
-  [ChainId.AVALANCHE]: {
-    chainId: 'A86A', // A 0x-prefixed hexadecimal chainId
-    chainName: 'Avalanche Mainnet',
-    nativeCurrency: {
-      name: 'Avax',
-      symbol: 'AVAX',
-      decimals: 18
-    },
-    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
-    blockExplorerUrls: ['https://avascan.info/blockchain/c/'],
-  },
-  [ChainId.POLYGON]: {
-    chainId: '89', // A 0x-prefixed hexadecimal chainId
-    chainName: 'Polygon Mainnet',
-    nativeCurrency: {
-      name: 'Matic',
-      symbol: 'MATIC',
-      decimals: 18
-    },
-    rpcUrls: ['https://rpc-mainnet.matic.network'],
-    blockExplorerUrls: ['https://polygonscan.com/'],
-  },
-  [ChainId.AURORA]: {
-    chainId: '4e454152', // A 0x-prefixed hexadecimal chainId
-    chainName: 'Aurora Mainnet',
-    nativeCurrency: {
-      name: 'ETH',
-      symbol: 'ETH',
-      decimals: 18
-    },
-    rpcUrls: ['https://mainnet.aurora.dev'],
-    blockExplorerUrls: ['https://explorer.aurora.dev/'],
-  },
-  [ChainId.TURBO]: {
-    chainId: '4e45415f', // A 0x-prefixed hexadecimal chainId
-    chainName: 'Turbochain',
-    nativeCurrency: {
-      name: 'Turbo',
-      symbol: 'TURBO',
-      decimals: 18
-    },
-    rpcUrls: ['https://rpc-0x4e45415f.aurora-cloud.dev'],
-    blockExplorerUrls: ['https://explorer.turbo.aurora.dev/'],
-  }
-}
-
-
-export const AVAILABLE_CHAINS_DATA: { [chainId:number]: {
-networkParams: chainNetworkParamsType,
-chainLabel: string,
-baseCurrencyLabel: string,
-icon: string,
-defaultCurrencyObject: Currency
-multiCallAddress: string
-}} = {
-  // [ChainId.FUJI]: {
-  //   networkParams: CHAIN_PARAMS[ChainId.FUJI],
-  //   chainLabel: 'Fuji',
-  //   baseCurrencyLabel: 'AVAX',
-  //   icon: tokenLogo,
-  //   defaultCurrencyObject: CETH,
-  //   multiCallAddress: '0xb465Fd2d9C71d5D6e6c069aaC9b4E21c69aAA78f'
-  // },
-  // [ChainId.AVALANCHE]: {
-  //   networkParams: CHAIN_PARAMS[ChainId.AVALANCHE],
-  //   chainLabel: 'Avalanche',
-  //   baseCurrencyLabel: 'AVAX',
-  //   icon: tokenLogo,
-  //   defaultCurrencyObject: CETH,
-  //   multiCallAddress: '0x0FB54156B496b5a040b51A71817aED9e2927912E'
-  // },
-  // [ChainId.POLYGON]: {
-  //   networkParams: CHAIN_PARAMS[ChainId.POLYGON],
-  //   chainLabel: 'Polygon',
-  //   baseCurrencyLabel: 'MATIC',
-  //   icon: tokenLogo,
-  //   defaultCurrencyObject: CETH,
-  //   multiCallAddress: '0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507'
-  // },
-  [ChainId.AURORA]: {
-    networkParams: CHAIN_PARAMS[ChainId.AURORA],
-    chainLabel: 'Aurora',
-    baseCurrencyLabel: 'ETH',
-    icon: AuroraIcon,
-    defaultCurrencyObject: CETH,
-    multiCallAddress: '0x49eb1F160e167aa7bA96BdD88B6C1f2ffda5212A'
-  },
-  [ChainId.TURBO]: {
-    networkParams: CHAIN_PARAMS[ChainId.TURBO],
-    chainLabel: 'Turbochain',
-    baseCurrencyLabel: 'TURBO',
-    icon: TurboIcon,
-    defaultCurrencyObject: TURBO_CURRENCY,
-    multiCallAddress: '0x5FE8fF8c5Ae435f0EB613B063C684FE10099BFEa'
-  }
-}
-
-
-export const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: 'Fuji',
-  [ChainId.AVALANCHE]: 'Avalanche',
-  [ChainId.POLYGON]: 'Polygon',
-  [ChainId.AURORA]: 'Aurora'
-}
-
-export const BASE_CURRENCIES: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: 'AVAX',
-  [ChainId.AVALANCHE]: 'AVAX',
-  [ChainId.POLYGON]: 'MATIC',
-  [ChainId.AURORA]: 'ETH'
-}
-
-export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
-  [ChainId.FUJI]: 'https://cchain.explorer.avax-test.network',
-  [ChainId.AVALANCHE]: 'https://cchain.explorer.avax.network',
-  [ChainId.POLYGON]: 'https://polygonscan.com/',
-  [ChainId.AURORA]: 'https://explorer.aurora.dev',
-  [ChainId.TURBO]: 'https://explorer.turbo.aurora.dev'
-}
 //TODO NEED TO CHANGE WITH CORRECT EXPLORER LINK
 
 // default allowed slippage, in bips
@@ -297,14 +160,4 @@ export const DAO_ADDRESS = '0xf86119de6ee8d4447C8219eEC20E7561d09816d3'
 
 
 
-type chainNetworkParamsType = {
-  chainId: string
-  chainName: string
-  nativeCurrency: {
-    name: string
-    symbol: string
-    decimals: number
-  }
-  rpcUrls: string[]
-  blockExplorerUrls: string[]
-}
+

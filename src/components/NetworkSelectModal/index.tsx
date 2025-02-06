@@ -7,9 +7,11 @@ import { ExternalLink, TYPE } from '../../theme'
 import { isMobile } from 'react-device-detect'
 import React, { useCallback } from 'react'
 import Option from '../WalletModal/Option'
+import Loader from '../Loader'
 import { ChainId } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../../hooks'
-import { AVAILABLE_CHAINS_DATA } from '../../constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
+import defaultIcon from '../../assets/svg/icon.svg'
 const CloseIcon = styled.div`
   position: absolute;
   right: 1rem;
@@ -114,27 +116,27 @@ const OptionGrid = styled.div`
 export default function NetworkSelectModal() {
   const isModalOpen = useModalOpen(ApplicationModal.NETWORK_SELECT)
   const toggleWalletModal = useToggleNetworkSelectModal()
-  const { appSelectedChain, setSelectedChain, chainId:providerChainId } = useActiveWeb3React()
+  const { setSelectedChain, chainId:providerChainId, isSwitchingChain } = useActiveWeb3React()
 
-  const changeNetwork = useCallback(
-    async (chainId: number) => {
-        setSelectedChain(chainId.toString())
-    },
-    [appSelectedChain, setSelectedChain, providerChainId]
-  )
+  const changeNetwork = async (chainId: number) => {
+      setSelectedChain(chainId)
+    }
   const chainOptions = Object.keys(AVAILABLE_CHAINS_DATA).map((chainId) => {
     const numericChainId = Number(chainId) as ChainId;
     const chainData = AVAILABLE_CHAINS_DATA[numericChainId]
-    return  <Option
-    active={+providerChainId === numericChainId}
-    id={`connect-${ChainId[numericChainId]}`}
-    key={ChainId[numericChainId]}
-    color={'#E8831D'}
-    header={chainData.chainLabel}
-    subheader={null}
-    icon={chainData.icon}
-    onClick={() => changeNetwork(numericChainId)}
-  />
+    return (
+      <Option
+        active={+providerChainId === numericChainId}
+        id={`connect-${ChainId[numericChainId]}`}
+        key={ChainId[numericChainId]}
+        color={'#E8831D'}
+        header={chainData.chainLabel}
+        subheader={null}
+        icon={chainData.icon ?? defaultIcon}
+        onClick={() => changeNetwork(numericChainId)} 
+        isLoading={isSwitchingChain}
+      />
+    )
 })
   return (
     <Modal isOpen={isModalOpen} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}>

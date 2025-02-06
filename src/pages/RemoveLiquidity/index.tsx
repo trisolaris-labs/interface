@@ -42,7 +42,7 @@ import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '
 
 import { Field } from '../../state/burn/actions'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
-import { AVAILABLE_CHAINS_DATA } from '../../constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 
 export default function RemoveLiquidity({

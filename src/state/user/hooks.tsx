@@ -19,7 +19,7 @@ import {
 
 import { AppDispatch, AppState } from '../index'
 import { STAKING as trisolarisDefinedPools } from '../../state/stake/stake-constants'
-import { AVAILABLE_CHAINS_DATA } from '../../constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 
 function serializeToken(token: Token): SerializedToken {

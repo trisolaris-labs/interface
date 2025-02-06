@@ -22,14 +22,15 @@ import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stabl
 import PTRI_ABI from '../constants/abis/pTri/ptri.json'
 import AUERC20 from '../constants/abis/stableswap/auErc20.json'
 import { NETWORK_CHAIN_ID } from '../connectors'
-import { AVAILABLE_CHAINS_DATA } from '../constants'
+import { AVAILABLE_CHAINS_DATA } from '../constants/availableChainsData'
+import { ZERO_ADDRESS } from '../constants'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
   const { provider, account, chainId } = useActiveWeb3React()
   
   return useMemo(() => {
-    if (!address || !ABI || !provider) return null
+    if (!address || !ABI || !provider || address === ZERO_ADDRESS) return null
     try {
       return getContract(address, ABI, provider, withSignerIfPossible && account ? account : undefined, chainId)
     } catch (error) {

@@ -17,8 +17,7 @@ import { FadedSpan, MenuItem } from './styleds'
 import Loader from '../Loader'
 import { isTokenOnList } from '../../utils'
 import { useTranslation } from 'react-i18next'
-import { TURBO_CURRENCY } from '../../constants/lists'
-import { AVAILABLE_CHAINS_DATA } from '../../constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === CETH ? 'ETH' : ''
@@ -199,7 +198,10 @@ export default function CurrencyList({
   const { account, chainId } = useActiveWeb3React()
   
   const itemData = useMemo(() => {
-    return (showETH ? [AVAILABLE_CHAINS_DATA[chainId].defaultCurrencyObject, ...currencies] : currencies)
+    if (chainId === ChainId.AURORA) { 
+      return (showETH ? [CETH, ...currencies] : currencies)
+    }
+    return (showETH ? [AVAILABLE_CHAINS_DATA[chainId].networkParams.nativeCurrency, ...currencies] : currencies)
   }, [currencies, showETH])
 
   const Row = useCallback(

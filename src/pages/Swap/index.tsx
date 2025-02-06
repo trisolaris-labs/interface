@@ -55,9 +55,8 @@ import {
   BIG_INT_ZERO,
   TOKEN_WARNING_MODAL_ALLOWLIST,
   PRICE_IMPACT_ERROR_THRESHOLD,
-  AVAILABLE_CHAINS_DATA
 } from '../../constants'
-
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 import { ClickableText, Dots } from '../Pool/styleds'
 import { CloseIcon, LinkStyledButton, TYPE } from '../../theme'
 import {
