@@ -75,7 +75,6 @@ function getHooksForWallet(wallet: Wallet) {
   }
 }
 
-
 export const [network, networkHooks] = initializeConnector<Network>(
   actions =>
     new Network({
@@ -83,8 +82,9 @@ export const [network, networkHooks] = initializeConnector<Network>(
       urlMap: {
         [ChainId.AURORA]: 'https://mainnet.aurora.dev/',
         [ChainId.TURBO]: 'https://rpc-0x4e45415f.aurora-cloud.dev/'
-      },
-}))
+      }
+    })
+)
 
 export const [injected, injectedHooks] = initializeConnector<MetaMask>(actions => new MetaMask({ actions, onError }))
 
@@ -96,7 +96,8 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
       actions,
       options: {
         projectId: 'c13edb0e380beb4872d04fa7dce7d169',
-        chains: [ChainId.AURORA, ChainId.TURBO],
+        chains: [ChainId.AURORA],
+        optionalChains: [ChainId.TURBO],
         showQrModal: true,
         qrModalOptions: {
           explorerRecommendedWalletIds: [
@@ -107,6 +108,9 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
             '163d2cf19babf05eb8962e9748f9ebe613ed52ebf9c8107c9a0f104bfcf161b3',
             '18388be9ac2d02726dbac9777c96efaac06d744b2f6d580fccdd4127a6d01fd1'
           ]
+        },
+        rpcMap: {
+          [ChainId.TURBO]: 'https://rpc-0x4e45415f.aurora-cloud.dev/'
         }
       }
     })
@@ -155,6 +159,3 @@ export function useConnectors(selectedWallet: Wallet | undefined) {
     return web3ReactConnectors
   }, [selectedWallet])
 }
-
-
-
