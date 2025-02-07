@@ -6,7 +6,6 @@ import TurboIcon from '../../assets/images/turbo.png'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import { useActiveWeb3React } from '../../hooks'
-
 import Logo from '../Logo'
 
 export const getTokenLogoURL = (address: string) => {

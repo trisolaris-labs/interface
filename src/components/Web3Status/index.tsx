@@ -1,12 +1,12 @@
 // import { AbstractConnector } from '@web3-react/abstract-connector'
 import { useWeb3React } from '@web3-react/core'
 import { darken, lighten } from 'polished'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { Activity } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
-import { coinbaseWallet, injected, NETWORK_CHAIN_ID } from '../../connectors'
+import { coinbaseWallet, injected } from '../../connectors'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { TransactionDetails } from '../../state/transactions/reducer'
@@ -14,11 +14,10 @@ import { shortenAddress } from '../../utils'
 import { ButtonSecondary } from '../Button'
 import Identicon from '../Identicon'
 import Loader from '../Loader'
-
 import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
 import { Connector } from '@web3-react/types'
-import { ChainId } from '@trisolaris/sdk'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -148,7 +147,7 @@ function Web3StatusInner() {
 
   const hasPendingTransactions = !!pending.length
   const toggleWalletModal = useWalletModalToggle()
-  if (account && (chainId === ChainId.TURBO || chainId === ChainId.AURORA)) {
+  if (account && (chainId !== undefined && AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId))) {
     return (
       <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletModal} pending={hasPendingTransactions}>
         {hasPendingTransactions ? (
@@ -166,7 +165,7 @@ function Web3StatusInner() {
         {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
       </Web3StatusConnected>
     )
-  } else if (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) {
+  } else if (chainId !== undefined && !AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)) {
     return (
       <Web3StatusError onClick={toggleWalletModal}>
         <NetworkIcon />

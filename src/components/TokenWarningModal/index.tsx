@@ -13,6 +13,7 @@ import { AutoColumn } from '../Column'
 import { AlertTriangle } from 'react-feather'
 import { ButtonError } from '../Button'
 import { Trans, useTranslation } from 'react-i18next'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 const Wrapper = styled.div<{ error: boolean }>`
   background: ${({ theme }) => transparentize(0.6, theme.bg3)};
@@ -48,7 +49,7 @@ function TokenWarningCard({ token }: TokenWarningCardProps) {
   const { t } = useTranslation()
 
   const duplicateNameOrSymbol = useMemo(() => {
-    if (!token || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA)) return false
+    if (!token || !AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)) return false
 
     return Object.keys(allTokens).some(tokenAddress => {
       const userToken = allTokens[tokenAddress]

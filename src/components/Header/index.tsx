@@ -6,10 +6,8 @@ import LogoDark from '../../assets/svg/planets.svg'
 import Menu from '../Menu'
 import TriPriceModal from '../TriPriceModal'
 import Web3Status from '../Web3Status'
-import AuroraIcon from '../../assets/images/aurora.png'
-import TurboIcon from '../../assets/images/turbo.png'
 import { useActiveWeb3React } from '../../hooks'
-
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 import useTriPrice from '../../hooks/useTriPrice'
 import { useToggleNetworkSelectModal, useToggleTriPriceModal } from '../../state/application/hooks'
 
@@ -35,17 +33,10 @@ import {
 import useEmbeddedSwapUI from '../../hooks/useEmbeddedSwapUI'
 import { StyledExternalLink } from '../BridgesMenu/BridgesMenu.styles'
 import NetworkSelectModal from '../NetworkSelectModal'
-import { ChainId } from '@trisolaris/sdk'
 import { useSwitchProviderChain } from '../../hooks'
 
 
-const networkNames: { [key in ChainId]: string } = {
-  [ChainId.AURORA]: 'Aurora',
-  [ChainId.TURBO]: 'Turbo',
-  [ChainId.FUJI]: 'Fuji',
-  [ChainId.AVALANCHE]: 'Avalanche',
-  [ChainId.POLYGON]: 'Polygon'
-}
+
 
 export default function Header() {
   const { account, appSelectedChain, chainId } = useActiveWeb3React()
@@ -59,10 +50,10 @@ export default function Header() {
   const isEmbedded = useEmbeddedSwapUI()
 
   useEffect(() => {
-    if(appSelectedChain !== chainId) {
+    if(appSelectedChain) {
     switchProviderChain(appSelectedChain)
     }
-  }, [appSelectedChain, chainId])
+  }, [appSelectedChain])
 
 
   // Use a minimal header/footer when the `/swap` page is embedded on third-party websites
@@ -183,14 +174,12 @@ export default function Header() {
                 toggleNetworkSelectModal()
               }}
             >
-              {chainId === ChainId.TURBO ? <IconWrapper size={16}>
-                <img src={TurboIcon} />
-              </IconWrapper> : <IconWrapper size={16}>
-                <img src={AuroraIcon} />
+              {AVAILABLE_CHAINS_DATA[chainId] && <IconWrapper size={16}>
+                <img src={AVAILABLE_CHAINS_DATA[chainId].icon} />
               </IconWrapper>}
-              <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
-                {networkNames[appSelectedChain]}
-              </Text>
+              {AVAILABLE_CHAINS_DATA[chainId] ? <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
+                {AVAILABLE_CHAINS_DATA[chainId].chainLabel}
+              </Text> : '-'}
             </NetworkSelectButton>
             <NetworkSelectModal />
           </TRIWrapper>

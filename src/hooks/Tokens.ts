@@ -14,7 +14,6 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { useActiveWeb3React } from './index'
 import { useCalculateStableSwapPairs } from './useCalculateStableSwapPairs'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
-import { NETWORK_CHAIN_ID } from '../connectors'
 import { USDC_E, USDT_E } from '../constants/tokens'
 import { TURBO_CURRENCY } from '../constants/lists'
 type TokensMap = { [address: string]: Token }

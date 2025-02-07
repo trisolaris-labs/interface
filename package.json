@@ -126,7 +126,7 @@
     "wcag-contrast": "^3.0.0"
   },
   "scripts": {
-    "start": "yarn build-tokens && react-scripts start",
+    "start": "yarn build-tokens && yarn get-available-chains && react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "clean": "rm -rf node_modules && yarn install",
     "predeploy": "yarn clean && yarn build",
@@ -142,6 +142,7 @@
     "format": "prettier --write \"src/**/*.+(js|jsx|ts|tsx|json|css|md)\"",
     "prepare": "husky install",
     "build-tokens": "node dev/generate_tokens/index.js",
+    "get-available-chains": "node dev/get_chains/index.js",
     "commit": "cz"
   },
   "eslintConfig": {

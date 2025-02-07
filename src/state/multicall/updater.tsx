@@ -16,7 +16,6 @@ import {
   updateMulticallResults
 } from './actions'
 
-
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500
 
@@ -29,12 +28,12 @@ const CALL_CHUNK_SIZE = 500
 async function fetchChunk(
   multicallContract: Contract,
   chunk: Call[],
-  minBlockNumber: number,
+  minBlockNumber: number
 ): Promise<{ results: string[]; blockNumber: number }> {
   console.log('Fetching chunk', multicallContract, chunk)
   let resultsBlockNumber, returnData
   try {
-    [resultsBlockNumber, returnData] = await multicallContract.callStatic.aggregate(
+    ;[resultsBlockNumber, returnData] = await multicallContract.callStatic.aggregate(
       chunk.map(obj => [obj.address, obj.callData])
     )
   } catch (error) {
@@ -116,7 +115,7 @@ export function outdatedListeningKeys(
 export default function Updater(): null {
   const dispatch = useDispatch<AppDispatch>()
   const state = useSelector<AppState, AppState['multicall']>(state => state.multicall)
-  // wait for listeners to settle before triggering updates  
+  // wait for listeners to settle before triggering updates
   const debouncedListeners = useDebounce(state.callListeners, 100)
   const latestBlockNumber = useBlockNumber()
   const { chainId } = useActiveWeb3React()
