@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { WidoWidget, darkTheme } from 'wido-widget'
 import { getSupportedTokens, quote, Token as WidoToken } from 'wido'
-
 import Modal from '../../Modal'
 import { useActiveWeb3React } from '../../../hooks'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { ChainId } from '@trisolaris/sdk'
 import { DAO_ADDRESS } from '../../../constants'
+import { AVAILABLE_CHAINS_DATA } from '../../../constants/availableChainsData'
 
 
 type ZapModalProps = {
@@ -35,7 +35,7 @@ export default function ZapModal({ isOpen, onDismiss, zapTokenAddress }: ZapModa
 
   const zapToken = { chainId: ChainId.AURORA, address: zapTokenAddress }
 
-  return !account || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? null : (
+  return !account || !AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId) ? null : (
     <Modal
       isOpen={isOpen}
       onDismiss={onDismiss}

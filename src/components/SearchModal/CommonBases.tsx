@@ -3,7 +3,8 @@ import { Text } from 'rebass'
 import { ChainId, Currency, currencyEquals, CETH, Token } from '@trisolaris/sdk'
 import styled from 'styled-components'
 
-import { SUGGESTED_BASES, BASE_CURRENCIES } from '../../constants'
+import { SUGGESTED_BASES } from '../../constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 import { AutoColumn } from '../Column'
 import QuestionHelper from '../QuestionHelper'
 import { AutoRow } from '../Row'
@@ -54,9 +55,9 @@ export default function CommonBases({
           disable={selectedCurrency === CETH}
         >
           <CurrencyLogo currency={CETH} style={{ marginRight: 8 }} />
-          {chainId && BASE_CURRENCIES[chainId] ? (
+          {chainId && AVAILABLE_CHAINS_DATA[chainId] ? (
             <Text fontWeight={500} fontSize={16}>
-              {BASE_CURRENCIES[chainId]}
+              {AVAILABLE_CHAINS_DATA[chainId].baseCurrencyLabel}
             </Text>
           ) : null}
         </BaseWrapper>

@@ -19,9 +19,8 @@ import AppBody from '../AppBody'
 import { Dots } from '../Pool/styleds'
 import { useTranslation } from 'react-i18next'
 import { GreyCard } from '../../components/Card'
-
 import { BIG_INT_ZERO } from '../../constants'
-import { TURBO_CURRENCY } from '../../constants/lists'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 enum Fields {
   TOKEN0 = 0,
@@ -35,7 +34,7 @@ export default function PoolFinder() {
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [activeField, setActiveField] = useState<number>(Fields.TOKEN1)
 
-  const [currency0, setCurrency0] = useState<Currency | null>(chainId === ChainId.AURORA ? CETH : chainId === ChainId.TURBO ? TURBO_CURRENCY : CETH)
+  const [currency0, setCurrency0] = useState<Currency | null>(chainId !== undefined ? AVAILABLE_CHAINS_DATA[chainId].networkParams.nativeCurrency : CETH)
   const [currency1, setCurrency1] = useState<Currency | null>(null)
 
   const [pairState, pair] = usePair(currency0 ?? undefined, currency1 ?? undefined)
@@ -47,9 +46,11 @@ console.log(PairState[pairState], pair)
     }
   }, [pair, addPair, chainId])
   useEffect(() => {
-    setCurrency0(chainId === ChainId.AURORA ? CETH : chainId === ChainId.TURBO ? TURBO_CURRENCY : CETH)
+    if(chainId === undefined) return
+    setCurrency0(AVAILABLE_CHAINS_DATA[chainId].networkParams.nativeCurrency ?? CETH)
     setCurrency1(null)
   }, [chainId])
+
   const validPairNoLiquidity: boolean =
     pairState === PairState.NOT_EXISTS ||
     Boolean(
@@ -79,7 +80,7 @@ console.log(PairState[pairState], pair)
   const prerequisiteMessage = (
     <GreyCard padding="45px 10px">
       <Text textAlign="center">
-        {!account || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? t('poolFinder.connectToFind') : t('poolFinder.selectTokenToFind')}
+        {!account || !(chainId !== undefined && AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)) ? t('poolFinder.connectToFind') : t('poolFinder.selectTokenToFind')}
       </Text>
     </GreyCard>
   )

@@ -1,0 +1,101 @@
+{
+  "137": {
+    "networkParams": {
+      "chainId": "89",
+      "chainName": "Polygon Mainnet",
+      "nativeCurrency": {
+        "name": "Matic",
+        "symbol": "MATIC",
+        "decimals": 18
+      },
+      "rpcUrls": [
+        "https://rpc-mainnet.matic.network"
+      ],
+      "blockExplorerUrls": [
+        "https://polygonscan.com/"
+      ]
+    },
+    "chainLabel": "Polygon",
+    "baseCurrencyLabel": "MATIC"
+  },
+  "43113": {
+    "networkParams": {
+      "chainId": "A869",
+      "chainName": "Avalanche FUJI C-Chain",
+      "nativeCurrency": {
+        "name": "Avax",
+        "symbol": "AVAX",
+        "decimals": 18
+      },
+      "rpcUrls": [
+        "https://api.avax-test.network/ext/bc/C/rpc"
+      ],
+      "blockExplorerUrls": [
+        "https://cchain.explorer.avax-test.network"
+      ]
+    },
+    "chainLabel": "Fuji",
+    "baseCurrencyLabel": "AVAX"
+  },
+  "43114": {
+    "networkParams": {
+      "chainId": "A86A",
+      "chainName": "Avalanche Mainnet",
+      "nativeCurrency": {
+        "name": "Avax",
+        "symbol": "AVAX",
+        "decimals": 18
+      },
+      "rpcUrls": [
+        "https://api.avax.network/ext/bc/C/rpc"
+      ],
+      "blockExplorerUrls": [
+        "https://avascan.info/blockchain/c/"
+      ]
+    },
+    "chainLabel": "Avalanche",
+    "baseCurrencyLabel": "AVAX"
+  },
+  "1313161554": {
+    "networkParams": {
+      "chainId": "4e454152",
+      "chainName": "Aurora Mainnet",
+      "nativeCurrency": {
+        "name": "ETH",
+        "symbol": "ETH",
+        "decimals": 18
+      },
+      "rpcUrls": [
+        "https://mainnet.aurora.dev"
+      ],
+      "blockExplorerUrls": [
+        "https://explorer.aurora.dev/"
+      ]
+    },
+    "chainLabel": "Aurora",
+    "baseCurrencyLabel": "ETH",
+    "icon": "https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/chains/aurora.png",
+    "multiCallAddress": "0x49eb1F160e167aa7bA96BdD88B6C1f2ffda5212A"
+  },
+  "1313161567": {
+    "networkParams": {
+      "chainId": "4e45415f",
+      "chainName": "Turbochain",
+      "nativeCurrency": {
+        "name": "Turbo",
+        "symbol": "TURBO",
+        "decimals": 18
+      },
+      "rpcUrls": [
+        "https://rpc-0x4e45415f.aurora-cloud.dev"
+      ],
+      "blockExplorerUrls": [
+        "https://explorer.turbo.aurora.dev/"
+      ]
+    },
+    "chainLabel": "Turbochain",
+    "baseCurrencyLabel": "TURBO",
+    "icon": "https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/chains/turbo.png",
+    "multiCallAddress": "0x5FE8fF8c5Ae435f0EB613B063C684FE10099BFEa"
+  }
+}

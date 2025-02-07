@@ -1,7 +1,4 @@
-import { ChainId, JSBI, Percent, Token, WETH as _WETH } from '@trisolaris/sdk'
-import { coinbaseWallet, injected, Wallet, walletConnect } from '../connectors'
-import { Connector } from '@web3-react/types'
-
+import { CETH, ChainId, JSBI, Percent, Token, WETH as _WETH, Currency } from '@trisolaris/sdk'
 import {
   DAI,
   TRI,
@@ -26,6 +23,7 @@ import {
   USDT_E
 } from './tokens'
 
+
 export const GAS_PRICE = 250
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
@@ -49,7 +47,6 @@ export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
 // This is actually WETH
 function createProperlyNamedWETH() {
   const { address, decimals, name } = _WETH[ChainId.AURORA]
-
   return new Token(ChainId.AURORA, address, decimals, 'WETH', name)
 }
 
@@ -97,150 +94,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...COMMON_BASES
 }
 
-export interface WalletInfo {
-  connector?: Connector
-  wallet?: Wallet
-  name: string
-  iconName: string
-  description: string
-  href: string | null
-  color: string
-  primary?: true
-  mobile?: true
-  mobileOnly?: true
-}
 
-export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
-  INJECTED: {
-    connector: injected,
-    wallet: Wallet.INJECTED,
-    name: 'Injected',
-    iconName: 'arrow-right.svg',
-    description: 'Injected web3 provider.',
-    href: null,
-    color: '#010101',
-    primary: true
-  },
-  METAMASK: {
-    connector: injected,
-    wallet: Wallet.INJECTED,
-    name: 'MetaMask',
-    iconName: 'metamask.png',
-    description: 'Easy-to-use browser extension.',
-    href: null,
-    color: '#E8831D'
-  },
-  COINBASE_WALLET: {
-    connector: coinbaseWallet,
-    wallet: Wallet.COINBASE_WALLET,
-    name: 'Coinbase Wallet',
-    iconName: 'coinbaseWalletIcon.svg',
-    description: 'Use Coinbase Wallet app on mobile device',
-    href: null,
-    color: '#315CF5'
-  },
-  WALLET_CONNECT: {
-    connector: walletConnect,
-    wallet: Wallet.WALLET_CONNECT,
-    name: 'Wallet Connect',
-    iconName: 'walletConnectIcon.svg',
-    description: 'Use Wallet Connect',
-    href: null,
-    color: '#315CF5'
-  }
-}
 
-export const NetworkContextName = 'NETWORK'
-
-export const CHAIN_PARAMS:{ [chainId in ChainId]: {
-  chainId: string
-  chainName: string
-  nativeCurrency: {
-    name: string
-    symbol: string
-    decimals: number
-  }
-  rpcUrls: string[]
-  blockExplorerUrls: string[]
-} } = {
-  [ChainId.FUJI]: {
-    chainId: '0xA869', // A 0x-prefixed hexadecimal chainId
-    chainName: 'Avalanche FUJI C-Chain',
-    nativeCurrency: {
-      name: 'Avax',
-      symbol: 'AVAX',
-      decimals: 18
-    },
-    rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
-    blockExplorerUrls: ['https://cchain.explorer.avax-test.network']
-  },
-  [ChainId.AVALANCHE]: {
-    chainId: '0xa86a', // A 0x-prefixed hexadecimal chainId
-    chainName: 'Avalanche Mainnet',
-    nativeCurrency: {
-      name: 'Avax',
-      symbol: 'AVAX',
-      decimals: 18
-    },
-    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
-    blockExplorerUrls: ['https://avascan.info/blockchain/c/']
-  },
-  [ChainId.POLYGON]: {
-    chainId: '0x89', // A 0x-prefixed hexadecimal chainId
-    chainName: 'Polygon Mainnet',
-    nativeCurrency: {
-      name: 'Matic',
-      symbol: 'MATIC',
-      decimals: 18
-    },
-    rpcUrls: ['https://rpc-mainnet.matic.network'],
-    blockExplorerUrls: ['https://polygonscan.com/']
-  },
-  [ChainId.AURORA]: {
-    chainId: '4e454152', // A 0x-prefixed hexadecimal chainId
-    chainName: 'Aurora Mainnet',
-    nativeCurrency: {
-      name: 'ETH',
-      symbol: 'ETH',
-      decimals: 18
-    },
-    rpcUrls: ['https://mainnet.aurora.dev'],
-    blockExplorerUrls: ['https://explorer.aurora.dev/']
-  },
-  [ChainId.TURBO]: {
-    chainId: '4e45415f', // A 0x-prefixed hexadecimal chainId
-    chainName: 'Turbochain',
-    nativeCurrency: {
-      name: 'Turbo',
-      symbol: 'TURBO',
-      decimals: 18
-    },
-    rpcUrls: ['https://rpc-0x4e45415f.aurora-cloud.dev'],
-    blockExplorerUrls: ['https://explorer.turbo.aurora.dev/']
-  }
-}
-
-export const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: 'Fuji',
-  [ChainId.AVALANCHE]: 'Avalanche',
-  [ChainId.POLYGON]: 'Polygon',
-  [ChainId.AURORA]: 'Aurora'
-}
-
-export const BASE_CURRENCIES: { [chainId in ChainId]?: string } = {
-  [ChainId.FUJI]: 'AVAX',
-  [ChainId.AVALANCHE]: 'AVAX',
-  [ChainId.POLYGON]: 'MATIC',
-  [ChainId.AURORA]: 'ETH'
-}
-
-export const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
-  [ChainId.FUJI]: 'https://cchain.explorer.avax-test.network',
-  [ChainId.AVALANCHE]: 'https://cchain.explorer.avax.network',
-  [ChainId.POLYGON]: 'https://polygonscan.com/',
-  [ChainId.AURORA]: 'https://explorer.aurora.dev',
-  [ChainId.TURBO]: 'https://explorer.turbo.aurora.dev'
-}
 //TODO NEED TO CHANGE WITH CORRECT EXPLORER LINK
 
 // default allowed slippage, in bips
@@ -302,3 +157,7 @@ export const PRICE_IMPACT_ERROR_THRESHOLD = new Percent('5', '100')
 export const PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE = new Percent('-5', '100')
 
 export const DAO_ADDRESS = '0xf86119de6ee8d4447C8219eEC20E7561d09816d3'
+
+
+
+
