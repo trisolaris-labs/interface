@@ -37,13 +37,6 @@ export function useSwitchProviderChain(): {
     if (!networkData) {
       return
     }
-    const params = {
-      chainId: +chainId,
-      chainName: networkData.chainName,
-      nativeCurrency: networkData.nativeCurrency,
-      rpcUrls: networkData.rpcUrls,
-      blockExplorerUrls: networkData.blockExplorerUrls
-    }
     if (!connector) {
       console.error('Missing connector')
       setError('Missing connector')
@@ -53,10 +46,11 @@ export function useSwitchProviderChain(): {
     try {
       setLoading(true)
       if (injected === connector) {
+        await connector.activate('wallet_addEthereumChain', networkData)
+        await connector.activate(networkData)
         await network.activate(chainId)
         await connector.activate(networkData)
         dispatch(updateChainId({ chainId: chainId }))
-        return
       } else {
         if (!networkData) {
           console.error('Missing network data')
@@ -69,8 +63,9 @@ export function useSwitchProviderChain(): {
         }
       }
     } catch (error) {
+      console.error('Failed to switch networks', error)
       try {
-        await connector.activate('wallet_addEthereumChain', params)
+        await connector.activate('wallet_addEthereumChain', networkData)
       } catch (error) {
         console.error('Failed to switch networks', error)
         setError('Failed to switch networks')

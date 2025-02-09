@@ -7,7 +7,7 @@ import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import Logo from '../Logo'
-
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 export const getTokenLogoURL = (address: string) => {
   return [
     `https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/${address}/logo.svg`,
@@ -42,28 +42,19 @@ export default function CurrencyLogo({
   style?: React.CSSProperties
 }) {
   const { chainId } = useActiveWeb3React()
+  const nativeCurrency = (chainId &&  AVAILABLE_CHAINS_DATA[chainId]) ? AVAILABLE_CHAINS_DATA[chainId].networkParams?.nativeCurrency : undefined
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
   const srcs: string[] = useMemo(() => {
-    if (currency === CETH) return []
+      if (currency instanceof Token) {
+        if (currency instanceof WrappedTokenInfo) {
+          return [...uriLocations, ...getTokenLogoURL(currency.address)]
+        }
 
-    if (currency instanceof Token) {
-      if (currency instanceof WrappedTokenInfo) {
         return [...uriLocations, ...getTokenLogoURL(currency.address)]
       }
-
-      return [...uriLocations, ...getTokenLogoURL(currency.address)]
-    }
     return []
-  }, [currency, uriLocations])
-  if(currency?.name === 'TURBO') {
-    return <StyledEthereumLogo
-    src={
-      TurboIcon
-    }
-    size={size}
-    style={style}
-  />
-  } 
+  }, [currency, uriLocations, chainId])
+
   if (currency === CETH) {
     if (chainId === 137) {
       return (
@@ -85,6 +76,15 @@ export default function CurrencyLogo({
         />
       )
     }
+  } else if (nativeCurrency && nativeCurrency.symbol === currency?.symbol && AVAILABLE_CHAINS_DATA[chainId].icon) {
+    return (
+      <StyledEthereumLogo
+        src={AVAILABLE_CHAINS_DATA[chainId].icon}
+        size={size}
+        style={style}
+        {...rest}
+      />
+    )
   }
 
   return (

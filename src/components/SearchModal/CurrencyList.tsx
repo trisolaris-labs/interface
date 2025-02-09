@@ -119,7 +119,6 @@ function CurrencyRow({
   const addToken = useAddUserToken()
   const { t } = useTranslation()
 
-
   // only show add or remove buttons if not on selected list
   return (
     <MenuItem
@@ -196,12 +195,10 @@ export default function CurrencyList({
   showETH: boolean
 }) {
   const { account, chainId } = useActiveWeb3React()
-  
+
   const itemData = useMemo(() => {
-    if (chainId === ChainId.AURORA) { 
-      return (showETH ? [CETH, ...currencies] : currencies)
-    }
-    return (showETH ? [AVAILABLE_CHAINS_DATA[chainId].networkParams.nativeCurrency, ...currencies] : currencies)
+    const currency = AVAILABLE_CHAINS_DATA[chainId].networkParams?.nativeCurrency
+    return showETH ? [currency, ...currencies] : currencies
   }, [currencies, showETH])
 
   const Row = useCallback(

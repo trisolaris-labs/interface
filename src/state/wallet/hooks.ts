@@ -6,6 +6,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useMulticallContract } from '../../hooks/useContract'
 import { isAddress } from '../../utils'
 import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -103,7 +104,13 @@ export function useCurrencyBalances(
   ])
 
   const tokenBalances = useTokenBalances(account, tokens)
-  const containsETH: boolean = useMemo(() => currencies?.some(currency => currency === CETH || currency?.name === 'TURBO') ?? false, [currencies])
+  const { chainId } = useActiveWeb3React()
+  const nativeCurrency = (chainId && AVAILABLE_CHAINS_DATA[chainId]) ? AVAILABLE_CHAINS_DATA[chainId]?.networkParams?.nativeCurrency : undefined
+  const containsETH: boolean = useMemo(
+    () => currencies?.some(currency => currency === CETH || currency?.symbol === nativeCurrency?.symbol) ?? false,
+    [currencies, nativeCurrency]
+  )
+  
   const ethBalance = useETHBalances(containsETH ? [account] : [])
  
   return useMemo(
@@ -111,10 +118,10 @@ export function useCurrencyBalances(
       currencies?.map(currency => {
         if (!account || !currency) return undefined
         if (currency instanceof Token) return tokenBalances[currency.address]
-        if (currency === CETH || currency?.name === 'TURBO') return ethBalance[account]
+        if (currency === CETH || currency?.symbol === nativeCurrency?.symbol) return ethBalance[account]
         return undefined
       }) ?? [],
-    [account, currencies, ethBalance, tokenBalances]
+    [account, currencies, ethBalance, tokenBalances, nativeCurrency]
   )
 }
 

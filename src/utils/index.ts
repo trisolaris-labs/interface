@@ -9,6 +9,7 @@ import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, CETH } from '@
 import { TokenAddressMap } from '../state/lists/hooks'
 import {network } from '../connectors'
 import { ROUTER_ADDRESS } from '@trisolaris/sdk'
+import { useActiveWeb3React } from '../hooks'
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
   try {
@@ -23,8 +24,10 @@ export function getEtherscanLink(
   data: string,
   type: 'transaction' | 'token' | 'address' | 'block'
 ): string {
+  if (!AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)) {
+    return ''
+  }
   const prefix = AVAILABLE_CHAINS_DATA[chainId].networkParams.blockExplorerUrls[0]
-
   switch (type) {
     case 'transaction': {
       return `${prefix}/tx/${data}`
@@ -118,7 +121,9 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency): boolean {
-  if (currency === CETH || currency?.name === 'TURBO') return true
+  const { chainId } = useActiveWeb3React()
+  const nativeCurrency = chainId ? AVAILABLE_CHAINS_DATA[chainId].networkParams?.nativeCurrency : undefined
+  if (currency === CETH || (nativeCurrency && nativeCurrency.symbol === currency?.symbol)) return true
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }
 
