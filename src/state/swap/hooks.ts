@@ -30,6 +30,7 @@ import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useTranslation } from 'react-i18next'
 import { find } from 'lodash'
 import { STABLESWAP_POOLS } from '../stableswap/constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 
 export function useSwapState(): AppState['swap'] {
@@ -129,9 +130,8 @@ export function useDerivedSwapInfo(
   inputError?: string
   v1Trade: Trade | undefined
 } {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-
   const toggledVersion = useToggledVersion()
   const swapData = customSwap ?? useSwapState()
   const {
@@ -145,53 +145,50 @@ export function useDerivedSwapInfo(
   const outputCurrency = useCurrency(outputCurrencyId)
   const recipientAddress = isAddress(recipient)
   const to: string | null = (recipientAddress ? recipientAddress : account) ?? null
-
-
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
     outputCurrency ?? undefined
   ])
-
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
 
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
-
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1]
   }
 
-  const currencies: { [field in Field]?: Currency } = useMemo(
-    () => ({
-      [Field.INPUT]: inputCurrency ?? undefined,
-      [Field.OUTPUT]: outputCurrency ?? undefined
-    }),
-    [inputCurrency, outputCurrency]
-  )
-  const isStableSwap = useMemo(
-    () =>
-      find(STABLESWAP_POOLS, pool => {
-        return (
-          Boolean(
-            pool.poolTokens?.find(
-              stableToken => stableToken?.name?.toLowerCase() === currencies[Field.INPUT]?.name?.toLowerCase()
-            )
-          ) &&
-          Boolean(
-            pool.poolTokens?.find(
-              stableToken => stableToken?.name?.toLowerCase() === currencies[Field.OUTPUT]?.name?.toLowerCase()
+    const currencies: { [field in Field]?: Currency } = useMemo(
+      () => ({
+        [Field.INPUT]: inputCurrency ?? undefined,
+        [Field.OUTPUT]: outputCurrency ?? undefined
+      }),
+      [inputCurrency, outputCurrency]
+    )
+
+    const isStableSwap = useMemo(
+      () =>
+        find(STABLESWAP_POOLS, pool => {
+          return (
+            Boolean(
+              pool.poolTokens?.find(
+                stableToken => stableToken?.name?.toLowerCase() === currencies[Field.INPUT]?.name?.toLowerCase()
+              )
+            ) &&
+            Boolean(
+              pool.poolTokens?.find(
+                stableToken => stableToken?.name?.toLowerCase() === currencies[Field.OUTPUT]?.name?.toLowerCase()
+              )
             )
           )
-        )
-      })
-        ? true
-        : false,
-    [currencies]
-  )
-
+        })
+          ? true
+          : false,
+      [currencies]
+    )
+console.log('isStableSwap', isStableSwap)
   // get link to trade on v1, if a better rate exists
   const v1Trade = undefined
 

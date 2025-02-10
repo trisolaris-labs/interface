@@ -167,22 +167,22 @@ export default function Header() {
             </TRIButton>
             <TriPriceModal />
           </TRIWrapper>
-          <TRIWrapper active={false} style={{ pointerEvents: 'auto' }}>
+          {(AVAILABLE_CHAINS_DATA[chainId] && account) && <TRIWrapper active={false} style={{ pointerEvents: 'auto' }}>
             <NetworkSelectButton
               onClick={e => {
                 e.currentTarget.blur()
                 toggleNetworkSelectModal()
               }}
             >
-              {AVAILABLE_CHAINS_DATA[chainId] && <IconWrapper size={16}>
+              <IconWrapper size={16}>
                 <img src={AVAILABLE_CHAINS_DATA[chainId].icon} />
-              </IconWrapper>}
-              {AVAILABLE_CHAINS_DATA[chainId] ? <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
+              </IconWrapper>
+              <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
                 {AVAILABLE_CHAINS_DATA[chainId].chainLabel}
-              </Text> : '-'}
+              </Text>
             </NetworkSelectButton>
             <NetworkSelectModal />
-          </TRIWrapper>
+          </TRIWrapper>}
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             <Web3Status />
           </AccountElement>

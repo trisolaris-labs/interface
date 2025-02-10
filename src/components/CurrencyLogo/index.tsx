@@ -42,7 +42,7 @@ export default function CurrencyLogo({
   style?: React.CSSProperties
 }) {
   const { chainId } = useActiveWeb3React()
-  const nativeCurrency = (chainId &&  AVAILABLE_CHAINS_DATA[chainId]) ? AVAILABLE_CHAINS_DATA[chainId].networkParams?.nativeCurrency : undefined
+  const nativeCurrency = (chainId && AVAILABLE_CHAINS_DATA[chainId]) ? AVAILABLE_CHAINS_DATA[chainId].networkParams?.nativeCurrency : undefined
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
   const srcs: string[] = useMemo(() => {
       if (currency instanceof Token) {

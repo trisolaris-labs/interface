@@ -28,13 +28,15 @@ export function useSwitchProviderChain(): {
   loading: boolean
   error: string | null
 } {
-  const { connector, account, accounts, provider } = useWeb3ReactCore()
+  const { connector, account, accounts, provider, chainId:providerChainId } = useWeb3ReactCore()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const dispatch = useDispatch()
+
   async function switchProviderChain(chainId: ChainId) {
-    const networkData = AVAILABLE_CHAINS_DATA[chainId].networkParams
+    const networkData = AVAILABLE_CHAINS_DATA[chainId]?.networkParams
     if (!networkData) {
+      console.error('Missing network data', chainId)
       return
     }
     if (!connector) {
@@ -42,14 +44,12 @@ export function useSwitchProviderChain(): {
       setError('Missing connector')
       return
     }
-
     try {
       setLoading(true)
       if (injected === connector) {
-        await connector.activate('wallet_addEthereumChain', networkData)
-        await connector.activate(networkData)
         await network.activate(chainId)
         await connector.activate(networkData)
+        
         dispatch(updateChainId({ chainId: chainId }))
       } else {
         if (!networkData) {

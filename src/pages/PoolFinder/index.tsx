@@ -34,19 +34,24 @@ export default function PoolFinder() {
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [activeField, setActiveField] = useState<number>(Fields.TOKEN1)
 
-  const [currency0, setCurrency0] = useState<Currency | null>(chainId !== undefined ? AVAILABLE_CHAINS_DATA[chainId].networkParams.nativeCurrency : CETH)
+  const [currency0, setCurrency0] = useState<Currency | null>(
+    chainId !== undefined && AVAILABLE_CHAINS_DATA[chainId]
+      ? AVAILABLE_CHAINS_DATA[chainId].networkParams.nativeCurrency
+      : CETH
+  )
   const [currency1, setCurrency1] = useState<Currency | null>(null)
 
   const [pairState, pair] = usePair(currency0 ?? undefined, currency1 ?? undefined)
-console.log(PairState[pairState], pair)
+
   const addPair = usePairAdder()
   useEffect(() => {
     if (pair) {
       addPair(pair)
     }
   }, [pair, addPair, chainId])
+
   useEffect(() => {
-    if(chainId === undefined) return
+    if (chainId === undefined || !AVAILABLE_CHAINS_DATA[chainId]) return
     setCurrency0(AVAILABLE_CHAINS_DATA[chainId].networkParams.nativeCurrency ?? CETH)
     setCurrency1(null)
   }, [chainId])
@@ -80,7 +85,9 @@ console.log(PairState[pairState], pair)
   const prerequisiteMessage = (
     <GreyCard padding="45px 10px">
       <Text textAlign="center">
-        {!account || !(chainId !== undefined && AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)) ? t('poolFinder.connectToFind') : t('poolFinder.selectTokenToFind')}
+        {!account || !(chainId !== undefined && AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId))
+          ? t('poolFinder.connectToFind')
+          : t('poolFinder.selectTokenToFind')}
       </Text>
     </GreyCard>
   )
