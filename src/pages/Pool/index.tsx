@@ -75,10 +75,27 @@ export default function Pool() {
               </TYPE.mediumHeader>
             </HideSmall>
             <ButtonRow>
-              <ResponsiveButtonSecondary as={Link} padding="6px 8px" to={`/create/${chainId !== undefined ? AVAILABLE_CHAINS_DATA[chainId].baseCurrencyLabel : 'ETH'}`}>
+              <ResponsiveButtonSecondary
+                as={Link}
+                padding="6px 8px"
+                to={`/create/${
+                  (chainId !== undefined && AVAILABLE_CHAINS_DATA[chainId]?.baseCurrencyLabel)
+                    ? AVAILABLE_CHAINS_DATA[chainId].baseCurrencyLabel
+                    : 'ETH'
+                }`}
+              >
                 {t('pool.createPair')}
               </ResponsiveButtonSecondary>
-              <ResponsiveButtonPrimary id="join-pool-button" as={Link} padding="6px 8px" to={`/add/${chainId !== undefined ? AVAILABLE_CHAINS_DATA[chainId].baseCurrencyLabel : 'ETH'}`}>
+              <ResponsiveButtonPrimary
+                id="join-pool-button"
+                as={Link}
+                padding="6px 8px"
+                to={`/add/${
+                  (chainId !== undefined && AVAILABLE_CHAINS_DATA[chainId]?.baseCurrencyLabel)
+                    ? AVAILABLE_CHAINS_DATA[chainId].baseCurrencyLabel
+                    : 'ETH'
+                }`}
+              >
                 <Text fontWeight={500} fontSize={16}>
                   {t('pool.addLiquidity')}
                 </Text>
