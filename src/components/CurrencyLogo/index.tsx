@@ -77,14 +77,17 @@ export default function CurrencyLogo({
       )
     }
   } else if (nativeCurrency && nativeCurrency.symbol === currency?.symbol && AVAILABLE_CHAINS_DATA[chainId].icon) {
-    return (
-      <StyledEthereumLogo
-        src={AVAILABLE_CHAINS_DATA[chainId].icon}
-        size={size}
-        style={style}
-        {...rest}
-      />
-    )
+    if (currency.symbol === 'ETH') {
+      return (
+        <StyledEthereumLogo
+          src={'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/ethlogo.svg'}
+          size={size}
+          style={style}
+          {...rest}
+        />
+      )
+    }
+      return <StyledEthereumLogo src={AVAILABLE_CHAINS_DATA[chainId].icon} size={size} style={style} {...rest} />
   }
 
   return (

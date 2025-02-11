@@ -8,8 +8,7 @@ import { Connector } from '@web3-react/types'
 import { WalletConnect } from '@web3-react/walletconnect-v2'
 import { useMemo } from 'react'
 import { AVAILABLE_CHAINS_DATA } from '../constants/availableChainsData'
-
-const NETWORK_URL = process.env.REACT_APP_NETWORK_URL ?? ''
+import { Buffer } from 'buffer'
 
 export interface WalletInfo {
   connector?: Connector
@@ -27,6 +26,10 @@ export interface WalletInfo {
 export const NETWORK_CHAIN_ID: ChainId = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1313161554')
 const appLogoUrl = 'https://raw.githubusercontent.com/trisolaris-labs/interface/master/public/favicon.png'
 
+// polyfill Buffer for client
+if (!window.Buffer) {
+  window.Buffer = Buffer;
+}
 export enum Wallet {
   INJECTED = 'INJECTED',
   COINBASE_WALLET = 'COINBASE_WALLET',
@@ -89,9 +92,6 @@ function getHooksForWallet(wallet: Wallet) {
   }
 }
 
-
-
-
 export const [network, networkHooks] = initializeConnector<Network>(
   actions =>
     new Network({
@@ -101,7 +101,8 @@ export const [network, networkHooks] = initializeConnector<Network>(
         return acc
       }, {} as { [chainId: number]: string }),
       defaultChainId: NETWORK_CHAIN_ID
-}))
+    })
+)
 
 export const [injected, injectedHooks] = initializeConnector<MetaMask>(actions => new MetaMask({ actions, onError }))
 
@@ -114,6 +115,10 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
       options: {
         projectId: 'c13edb0e380beb4872d04fa7dce7d169',
         chains: Object.keys(AVAILABLE_CHAINS_DATA).map(chainId => parseInt(chainId)),
+        rpcMap: Object.keys(AVAILABLE_CHAINS_DATA).reduce((acc, chainId) => {
+          acc[parseInt(chainId)] = AVAILABLE_CHAINS_DATA[parseInt(chainId)].networkParams.rpcUrls[0]
+          return acc
+        }, {} as { [chainId: number]: string }),
         showQrModal: true,
         qrModalOptions: {
           explorerRecommendedWalletIds: [
@@ -130,17 +135,17 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
 )
 
 export const [coinbaseWallet, coinbaseWalletHooks] = initializeConnector<CoinbaseWallet>(
-  actions =>
-    new CoinbaseWallet({
-      actions,
-      options: {
-        url: NETWORK_URL,
-        appName: 'Uniswap',
-        appLogoUrl: appLogoUrl
-      },
-      onError
-    })
-)
+         actions =>
+           new CoinbaseWallet({
+             actions,
+             options: {
+               url: AVAILABLE_CHAINS_DATA[NETWORK_CHAIN_ID].networkParams.rpcUrls[0],
+               appName: 'Uniswap',
+               appLogoUrl: appLogoUrl
+             },
+             onError
+           })
+       )
 
 interface ConnectorListItem {
   connector: Connector
@@ -211,6 +216,3 @@ export function useConnectors(selectedWallet: Wallet | undefined) {
     return web3ReactConnectors
   }, [selectedWallet])
 }
-
-
-

@@ -39,21 +39,21 @@ import { useSwitchProviderChain } from '../../hooks'
 
 
 export default function Header() {
-  const { account, appSelectedChain, chainId } = useActiveWeb3React()
+  const { account, appSelectedChain, chainId, isActive } = useActiveWeb3React()
   const { t } = useTranslation()
 
   const { triPriceFriendly } = useTriPrice()
   const {switchProviderChain} = useSwitchProviderChain()
   const toggleTriPriceModal = useToggleTriPriceModal()
   const toggleNetworkSelectModal = useToggleNetworkSelectModal()
-
   const isEmbedded = useEmbeddedSwapUI()
-
+  const chainData = chainId ? AVAILABLE_CHAINS_DATA[chainId] : appSelectedChain ? AVAILABLE_CHAINS_DATA[appSelectedChain] : null
+  console.log
   useEffect(() => {
-    if(appSelectedChain) {
-    switchProviderChain(appSelectedChain)
+    if (appSelectedChain && appSelectedChain !== chainId && account) {
+      switchProviderChain(appSelectedChain)
     }
-  }, [appSelectedChain])
+  }, [appSelectedChain, account])
 
 
   // Use a minimal header/footer when the `/swap` page is embedded on third-party websites
@@ -167,22 +167,24 @@ export default function Header() {
             </TRIButton>
             <TriPriceModal />
           </TRIWrapper>
-          {(AVAILABLE_CHAINS_DATA[chainId] && account) && <TRIWrapper active={false} style={{ pointerEvents: 'auto' }}>
-            <NetworkSelectButton
-              onClick={e => {
-                e.currentTarget.blur()
-                toggleNetworkSelectModal()
-              }}
-            >
-              <IconWrapper size={16}>
-                <img src={AVAILABLE_CHAINS_DATA[chainId].icon} />
-              </IconWrapper>
-              <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
-                {AVAILABLE_CHAINS_DATA[chainId].chainLabel}
-              </Text>
-            </NetworkSelectButton>
-            <NetworkSelectModal />
-          </TRIWrapper>}
+          {chainData && (
+            <TRIWrapper active={false} style={{ pointerEvents: 'auto' }}>
+              <NetworkSelectButton
+                onClick={e => {
+                  e.currentTarget.blur()
+                  toggleNetworkSelectModal()
+                }}
+              >
+                <IconWrapper size={16}>
+                  <img src={chainData.icon} />
+                </IconWrapper>
+                <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
+                  {chainData.chainLabel}
+                </Text>
+              </NetworkSelectButton>
+              <NetworkSelectModal />
+            </TRIWrapper>
+          )}
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             <Web3Status />
           </AccountElement>

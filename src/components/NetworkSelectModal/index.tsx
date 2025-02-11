@@ -117,12 +117,11 @@ export default function NetworkSelectModal() {
   const isModalOpen = useModalOpen(ApplicationModal.NETWORK_SELECT)
   const toggleWalletModal = useToggleNetworkSelectModal()
   const { setSelectedChain, chainId:providerChainId, isSwitchingChain } = useActiveWeb3React()
-
   const changeNetwork = async (chainId: number) => {
       setSelectedChain(chainId)
     }
   const chainOptions = Object.keys(AVAILABLE_CHAINS_DATA).map((chainId) => {
-    const numericChainId = Number(chainId) as ChainId;
+    const numericChainId = Number(chainId) as ChainId
     const chainData = AVAILABLE_CHAINS_DATA[numericChainId]
     return (
       <Option
