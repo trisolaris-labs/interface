@@ -28,7 +28,7 @@ const appLogoUrl = 'https://raw.githubusercontent.com/trisolaris-labs/interface/
 
 // polyfill Buffer for client
 if (!window.Buffer) {
-  window.Buffer = Buffer;
+  window.Buffer = Buffer
 }
 export enum Wallet {
   INJECTED = 'INJECTED',
@@ -114,7 +114,8 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
       actions,
       options: {
         projectId: 'c13edb0e380beb4872d04fa7dce7d169',
-        chains: Object.keys(AVAILABLE_CHAINS_DATA).map(chainId => parseInt(chainId)),
+        chains: [ChainId.AURORA],
+        optionalChains: Object.keys(AVAILABLE_CHAINS_DATA).map(chainId => +chainId).filter(chainId => chainId !== ChainId.AURORA),
         rpcMap: Object.keys(AVAILABLE_CHAINS_DATA).reduce((acc, chainId) => {
           acc[parseInt(chainId)] = AVAILABLE_CHAINS_DATA[parseInt(chainId)].networkParams.rpcUrls[0]
           return acc
@@ -135,17 +136,17 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
 )
 
 export const [coinbaseWallet, coinbaseWalletHooks] = initializeConnector<CoinbaseWallet>(
-         actions =>
-           new CoinbaseWallet({
-             actions,
-             options: {
-               url: AVAILABLE_CHAINS_DATA[NETWORK_CHAIN_ID].networkParams.rpcUrls[0],
-               appName: 'Uniswap',
-               appLogoUrl: appLogoUrl
-             },
-             onError
-           })
-       )
+  actions =>
+    new CoinbaseWallet({
+      actions,
+      options: {
+        url: AVAILABLE_CHAINS_DATA[NETWORK_CHAIN_ID].networkParams.rpcUrls[0],
+        appName: 'Uniswap',
+        appLogoUrl: appLogoUrl
+      },
+      onError
+    })
+)
 
 interface ConnectorListItem {
   connector: Connector

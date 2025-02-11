@@ -60,7 +60,7 @@ export function useSwitchProviderChain(): {
           return
         } else {
           await network.activate(chainId)
-          await connector.activate(networkData)
+           connector.activate(+chainId)
           dispatch(updateChainId({ chainId: chainId }))
         }
       }
