@@ -21,7 +21,7 @@ import { STAKING } from '../state/stake/stake-constants'
 import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import PTRI_ABI from '../constants/abis/pTri/ptri.json'
 import AUERC20 from '../constants/abis/stableswap/auErc20.json'
-import { NETWORK_CHAIN_ID } from '../connectors'
+import { DEFAULT_NETWORK_CHAIN_ID } from '../connectors'
 import { AVAILABLE_CHAINS_DATA } from '../constants/availableChainsData'
 import { ZERO_ADDRESS } from '../constants'
 
@@ -111,7 +111,7 @@ export function useStableSwapContract(
   shouldUseUnwrappedTokens = false
 ): Contract | null {
   const { provider } = useActiveWeb3React()
-  const chainId = NETWORK_CHAIN_ID
+  const chainId = DEFAULT_NETWORK_CHAIN_ID
   const pool = poolName == null ? null : STABLESWAP_POOLS[poolName]
   const metaPool = useStableSwapMetaPoolDeposit(pool?.address, withSignerIfPossible)
   const metaPoolUnwrappedTokens = useStableSwapMetaPoolDeposit(pool?.metaSwapAddresses, withSignerIfPossible)
@@ -148,7 +148,7 @@ export function useStableSwapMetaPool(address?: string, withSignerIfPossible = t
 
 export function usePTriContract(withSignerIfPossible = true): Contract | null {
   const { provider } = useActiveWeb3React()
-  const chainId = NETWORK_CHAIN_ID
+  const chainId = DEFAULT_NETWORK_CHAIN_ID
   const pTriContract = useContract(PTRI[ChainId.AURORA].address, PTRI_ABI, withSignerIfPossible)
 
   return useMemo(() => {

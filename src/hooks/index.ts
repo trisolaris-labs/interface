@@ -27,11 +27,13 @@ export function useSwitchProviderChain(): {
   loading: boolean
   error: string | null
 } {
-  const { connector, account } = useWeb3ReactCore()
+  const { connector, account, chainId:providerChainId } = useWeb3ReactCore()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const dispatch = useDispatch()
+
   async function switchProviderChain(chainId: ChainId) {
+    const connectorType = getWalletForConnector(connector)
     const networkData = AVAILABLE_CHAINS_DATA[chainId]?.networkParams
     if (account === undefined && networkData) {
       dispatch(updateChainId({ chainId: chainId }))
@@ -60,7 +62,7 @@ export function useSwitchProviderChain(): {
           return
         } else {
           await network.activate(chainId)
-           connector.activate(+chainId)
+          await connector.activate(+chainId)
           dispatch(updateChainId({ chainId: chainId }))
         }
       }

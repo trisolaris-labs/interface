@@ -72,7 +72,6 @@ const COMMON_BASES: ChainTokenList = {
   ],
   [ChainId.TURBO]: []
 }
-
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...COMMON_BASES

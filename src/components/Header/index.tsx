@@ -39,7 +39,7 @@ import { useSwitchProviderChain } from '../../hooks'
 
 
 export default function Header() {
-  const { account, appSelectedChain, chainId, isActive } = useActiveWeb3React()
+  const { account, appSelectedChain, chainId, isActive, connector } = useActiveWeb3React()
   const { t } = useTranslation()
 
   const { triPriceFriendly } = useTriPrice()
@@ -48,9 +48,11 @@ export default function Header() {
   const toggleNetworkSelectModal = useToggleNetworkSelectModal()
   const isEmbedded = useEmbeddedSwapUI()
   const chainData = chainId ? AVAILABLE_CHAINS_DATA[chainId] : appSelectedChain ? AVAILABLE_CHAINS_DATA[appSelectedChain] : null
-  console.log
+
+
+
   useEffect(() => {
-    if (appSelectedChain && appSelectedChain !== chainId && account) {
+    if (appSelectedChain && account) {
       switchProviderChain(appSelectedChain)
     }
   }, [appSelectedChain, account])

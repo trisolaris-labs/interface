@@ -1,8 +1,9 @@
 import { ChainId, Currency, CurrencyAmount, CETH, Token, TokenAmount, WETH } from '@trisolaris/sdk'
 
 export function wrappedCurrency(currency: Currency | undefined, chainId: ChainId | undefined): Token | undefined {
-  if(!chainId) return undefined
-  return chainId && currency === CETH ? WETH[chainId] : currency instanceof Token ? currency : undefined
+  if (!chainId) return undefined
+  const res = chainId && currency === CETH ? WETH[chainId] : currency instanceof Token ? currency : undefined
+  return res
 }
 
 export function wrappedCurrencyAmount(

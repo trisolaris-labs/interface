@@ -32,7 +32,7 @@ import { useTokenComparator } from './sorting'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { Field } from '../../state/stableswap/actions'
-import { NETWORK_CHAIN_ID } from '../../connectors'
+import { DEFAULT_NETWORK_CHAIN_ID } from '../../connectors'
 interface CurrencySearchProps {
   isOpen: boolean
   onDismiss: () => void
@@ -75,7 +75,7 @@ export function CurrencySearch({
 }: CurrencySearchProps & StableSwapSearchProps) {
   const { t } = useTranslation()
 
-  const chainId = NETWORK_CHAIN_ID
+  const chainId = DEFAULT_NETWORK_CHAIN_ID
   const theme = useContext(ThemeContext)
 
   const fixedList = useRef<FixedSizeList>()

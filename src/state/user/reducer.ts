@@ -17,7 +17,7 @@ import {
   toggleFilterActiveFarms,
   updateChainId
 } from './actions'
-import { NETWORK_CHAIN_ID } from '../../connectors'
+import { DEFAULT_NETWORK_CHAIN_ID } from '../../connectors'
 
 const currentTimestamp = () => new Date().getTime()
 
@@ -61,18 +61,18 @@ function pairKey(token0Address: string, token1Address: string) {
 }
 
 export const initialState: UserState = {
-  userDarkMode: null,
-  matchesDarkMode: false,
-  userExpertMode: false,
-  userSlippageTolerance: INITIAL_ALLOWED_SLIPPAGE,
-  userDeadline: DEFAULT_DEADLINE_FROM_NOW,
-  chainId: NETWORK_CHAIN_ID,
-  tokens: {},
-  pairs: {},
-  timestamp: currentTimestamp(),
-  URLWarningVisible: true,
-  filterActiveFarms: false
-}
+         userDarkMode: null,
+         matchesDarkMode: false,
+         userExpertMode: false,
+         userSlippageTolerance: INITIAL_ALLOWED_SLIPPAGE,
+         userDeadline: DEFAULT_DEADLINE_FROM_NOW,
+         chainId: DEFAULT_NETWORK_CHAIN_ID,
+         tokens: {},
+         pairs: {},
+         timestamp: currentTimestamp(),
+         URLWarningVisible: true,
+         filterActiveFarms: false
+       }
 
 export default createReducer(initialState, builder =>
   builder
