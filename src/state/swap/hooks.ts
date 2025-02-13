@@ -3,7 +3,6 @@ import { parseUnits } from '@ethersproject/units'
 import {
   Currency,
   CurrencyAmount,
-  CETH,
   JSBI,
   Token,
   TokenAmount,
@@ -31,6 +30,7 @@ import { useTranslation } from 'react-i18next'
 import { find } from 'lodash'
 import { STABLESWAP_POOLS } from '../stableswap/constants'
 import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
+import { currencyId } from '../../utils/currencyId'
 
 
 export function useSwapState(): AppState['swap'] {
@@ -43,17 +43,21 @@ export function useSwapActionHandlers(): {
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
 } {
+  const {chainId} = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
+      const baseCurrency = AVAILABLE_CHAINS_DATA[chainId]?.networkParams.nativeCurrency
+      
       dispatch(
         selectCurrency({
           field,
-          currencyId: currency instanceof Token ? currency.address : currency === CETH ? 'ETH' : ''
+          currencyId:
+            currency instanceof Token ? currency.address : currency.symbol === baseCurrency.symbol ? baseCurrency.symbol : ''
         })
       )
     },
-    [dispatch]
+    [dispatch, chainId]
   )
 
   const onSwitchTokens = useCallback(() => {

@@ -285,8 +285,8 @@ export default function Swap() {
     allowedSlippage
   )
 
-  const swapCallbackError = isRoutedViaStableSwap ? stableswapCallbackError : defaultswapCallbackError
 
+  const swapCallbackError = isRoutedViaStableSwap ? stableswapCallbackError : defaultswapCallbackError
   const { priceImpactWithoutFee: defaultswapPriceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 
   const disableTradingUntilStableSwapRateIsCalculated = isStableSwap && isLoadingSwapResponse

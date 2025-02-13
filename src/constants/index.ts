@@ -1,4 +1,4 @@
-import { CETH, ChainId, JSBI, Percent, Token, WETH as _WETH, Currency } from '@trisolaris/sdk'
+import { ChainId, JSBI, Percent, Token, WETH as _WETH, Currency } from '@trisolaris/sdk'
 import {
   DAI,
   TRI,

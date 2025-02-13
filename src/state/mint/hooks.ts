@@ -1,7 +1,6 @@
 import {
   Currency,
   CurrencyAmount,
-  CETH,
   InsufficientInputAmountError,
   JSBI,
   Pair,
@@ -23,6 +22,7 @@ import { Field, typeInput } from './actions'
 import { useTranslation } from 'react-i18next'
 
 import { BIG_INT_ZERO } from '../../constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 export function useMintState(): AppState['mint'] {
   return useSelector<AppState, AppState['mint']>(state => state.mint)
@@ -65,6 +65,7 @@ export function useDerivedMintInfo(
 
   // pair
   const [pairState, pair] = usePair(currencies[Field.CURRENCY_A], currencies[Field.CURRENCY_B])
+
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
   const noLiquidity: boolean =
@@ -91,6 +92,7 @@ export function useDerivedMintInfo(
     } else if (independentAmount) {
       // we wrap the currencies just to get the price in terms of the other token
       const wrappedIndependentAmount = wrappedCurrencyAmount(independentAmount, chainId)
+      const nativeCurrency = AVAILABLE_CHAINS_DATA[chainId]?.networkParams?.nativeCurrency
       const [tokenA, tokenB] = [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
       if (tokenA && tokenB && wrappedIndependentAmount && pair) {
         const dependentCurrency = dependentField === Field.CURRENCY_B ? currencyB : currencyA
@@ -98,7 +100,7 @@ export function useDerivedMintInfo(
           dependentField === Field.CURRENCY_B
             ? pair.priceOf(tokenA).quote(wrappedIndependentAmount)
             : pair.priceOf(tokenB).quote(wrappedIndependentAmount)
-        return dependentCurrency === CETH ? CurrencyAmount.ether(dependentTokenAmount.raw) : dependentTokenAmount
+        return dependentCurrency?.symbol === nativeCurrency.symbol ? CurrencyAmount.ether(dependentTokenAmount.raw) : dependentTokenAmount
       }
       return undefined
     } else {

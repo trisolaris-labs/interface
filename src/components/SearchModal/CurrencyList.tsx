@@ -197,10 +197,10 @@ export default function CurrencyList({
   const { account, chainId } = useActiveWeb3React()
 
   const itemData = useMemo(() => {
-    const currency =
+    const baseCurrency =
       chainId && AVAILABLE_CHAINS_DATA[chainId] && AVAILABLE_CHAINS_DATA[chainId].networkParams?.nativeCurrency
-    if (!currency) return currencies
-    return showETH ? [currency, ...currencies] : currencies
+    if (!baseCurrency) return currencies
+    return showETH ? [baseCurrency, ...currencies] : currencies
   }, [currencies, showETH, chainId])
 
   const Row = useCallback(
@@ -209,7 +209,10 @@ export default function CurrencyList({
       const isSelected = Boolean(selectedCurrency && currencyEquals(selectedCurrency, currency))
       const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency))
 
-      const handleSelect = () => onCurrencySelect(currency)
+      const handleSelect = () => {
+        onCurrencySelect(currency)
+      }
+
       return (
         <CurrencyRow
           style={style}

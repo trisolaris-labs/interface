@@ -39,7 +39,7 @@ import { useSwitchProviderChain } from '../../hooks'
 
 
 export default function Header() {
-  const { account, appSelectedChain, chainId, isActive, connector } = useActiveWeb3React()
+  const { account, appSelectedChain, chainId} = useActiveWeb3React()
   const { t } = useTranslation()
 
   const { triPriceFriendly } = useTriPrice()
@@ -52,7 +52,7 @@ export default function Header() {
 
 
   useEffect(() => {
-    if (appSelectedChain && account) {
+    if (appSelectedChain) {
       switchProviderChain(appSelectedChain)
     }
   }, [appSelectedChain, account])

@@ -1,5 +1,5 @@
 import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, CETH, Token, currencyEquals, ChainId } from '@trisolaris/sdk'
+import { Currency, Token, currencyEquals, ChainId } from '@trisolaris/sdk'
 import _ from 'lodash'
 import { useMemo } from 'react'
 import { useSelectedTokenList } from '../state/lists/hooks'
@@ -15,7 +15,7 @@ import { useActiveWeb3React } from './index'
 import { useCalculateStableSwapPairs } from './useCalculateStableSwapPairs'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 import { USDC_E, USDT_E } from '../constants/tokens'
-import { TURBO_CURRENCY } from '../constants/lists'
+import { AVAILABLE_CHAINS_DATA } from '../constants/availableChainsData'
 type TokensMap = { [address: string]: Token }
 
 export function useAllTokens(): TokensMap {
@@ -173,9 +173,10 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 }
 
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
-  const isAVAX = currencyId?.toUpperCase() === 'ETH'
-  const isTurbo = currencyId?.toUpperCase() === 'TURBO'
-  const token = useToken(isAVAX ? undefined : currencyId)
-  const result = isAVAX ? CETH : isTurbo ? TURBO_CURRENCY : token
+  const { chainId } = useActiveWeb3React()
+  const baseCurrency = AVAILABLE_CHAINS_DATA[chainId]?.networkParams?.nativeCurrency
+  const isBaseCurrency = currencyId === baseCurrency?.symbol
+  const token = useToken(isBaseCurrency ? undefined : currencyId)
+  const result = isBaseCurrency ? baseCurrency : token
   return result
 }

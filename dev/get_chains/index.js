@@ -1,4 +1,4 @@
-const { ChainId, Token, Currency, CETH } = require('@trisolaris/sdk')
+const { Token } = require('@trisolaris/sdk')
 const { writeFile } = require('fs')
 const path = require('path')
 const { data_sources } = require('../../configs')
@@ -36,13 +36,27 @@ async function init() {
     const contractAddresses = await getContractAddresses(chainID)
     if (contractAddresses && Object.keys(contractAddresses).length > 0) {
       allChainsData[chainID].multiCallAddress = contractAddresses['multicall']
+      if (contractAddresses['weth']) {
+        const contractAddress = contractAddresses['weth']
+        const symbol = 'W' + allChainsData[chainID].baseCurrencyLabel
+        const name =
+          'Wrapped ' +
+          allChainsData[chainID].baseCurrencyLabel.replace(
+            /\w\S*/g,
+            text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+          )
+        allChainsData[chainID].WETH = {
+          address: contractAddress,
+          symbol,
+          name,
+          decimals: 18
+        }
+      }
       allChainsData[chainID].factoryAddress = contractAddresses['factory']
       allChainsData[chainID].routerAddress = contractAddresses['router']
       allChainsData[chainID].initCodeHash = contractAddresses['initCodeHash']
     }
   }
-
-
 
   writeFile(
     path.join(AVALIABLE_CHAINS_DATA_FOLDER_PATH, 'availableChainsData.json'),

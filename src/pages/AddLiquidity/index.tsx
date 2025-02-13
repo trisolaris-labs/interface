@@ -61,13 +61,12 @@ export default function AddLiquidity({
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
   const { t } = useTranslation()
-
+  const baseCurrency = AVAILABLE_CHAINS_DATA[chainId]?.networkParams?.nativeCurrency
   const oneCurrencyIsWETH = Boolean(
     chainId &&
       ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
         (currencyB && currencyEquals(currencyB, WETH[chainId])))
   )
-
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
   const expertMode = useIsExpertMode()
@@ -139,8 +138,8 @@ export default function AddLiquidity({
       method: (...args: any) => Promise<TransactionResponse>,
       args: Array<string | string[] | number>,
       value: BigNumber | null
-    if (currencyA === CETH || currencyB === CETH) {
-      const tokenBIsETH = currencyB === CETH
+    if (currencyA.symbol === baseCurrency.symbol || currencyB.symbol === baseCurrency.symbol) {
+      const tokenBIsETH = currencyB.symbol === baseCurrency.symbol
       estimate = router.estimateGas.addLiquidityETH
       method = router.addLiquidityETH
       args = [
@@ -269,7 +268,7 @@ export default function AddLiquidity({
 
   const handleCurrencyASelect = useCallback(
     (currencyA: Currency) => {
-      const newCurrencyIdA = currencyId(currencyA)
+      const newCurrencyIdA = currencyId(currencyA, chainId)
       if (newCurrencyIdA === currencyIdB) {
         history.push(`/add/${currencyIdB}/${currencyIdA}`)
       } else {
@@ -280,7 +279,7 @@ export default function AddLiquidity({
   )
   const handleCurrencyBSelect = useCallback(
     (currencyB: Currency) => {
-      const newCurrencyIdB = currencyId(currencyB)
+      const newCurrencyIdB = currencyId(currencyB, chainId)
       if (currencyIdA === newCurrencyIdB) {
         if (currencyIdB) {
           history.push(`/add/${currencyIdB}/${newCurrencyIdB}`)
@@ -304,6 +303,7 @@ export default function AddLiquidity({
   }, [onFieldAInput, txHash])
 
   const isCreate = history.location.pathname.includes('/create')
+
 
   return (
     <>

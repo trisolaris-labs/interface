@@ -1,8 +1,11 @@
 import { ChainId, Currency, CurrencyAmount, CETH, Token, TokenAmount, WETH } from '@trisolaris/sdk'
+import { AVAILABLE_CHAINS_DATA } from '../constants/availableChainsData'
 
 export function wrappedCurrency(currency: Currency | undefined, chainId: ChainId | undefined): Token | undefined {
   if (!chainId) return undefined
-  const res = chainId && currency === CETH ? WETH[chainId] : currency instanceof Token ? currency : undefined
+  const baseCurrency = AVAILABLE_CHAINS_DATA[chainId]?.networkParams?.nativeCurrency
+  const res =
+    chainId && currency?.symbol === baseCurrency.symbol ? WETH[chainId] : currency instanceof Token ? currency : undefined
   return res
 }
 
@@ -15,7 +18,8 @@ export function wrappedCurrencyAmount(
 }
 
 export function unwrappedToken(token: Token): Currency {
+  const baseCurrency = AVAILABLE_CHAINS_DATA[token.chainId]?.networkParams?.nativeCurrency
   if(!WETH[token.chainId]) return token
-  if (token.equals(WETH[token.chainId])) return CETH
+  if (token.equals(WETH[token.chainId])) return baseCurrency
   return token
 }

@@ -161,7 +161,7 @@ export default function PoolFinder() {
               <GreyCard padding="45px 10px">
                 <AutoColumn gap="sm" justify="center">
                   <Text textAlign="center">{t('poolFinder.noLiquidityYet')}</Text>
-                  <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                  <StyledInternalLink to={`/add/${currencyId(currency0, chainId)}/${currencyId(currency1, chainId)}`}>
                     <Text textAlign="center">{t('poolFinder.addLiquidity')}</Text>
                   </StyledInternalLink>
                 </AutoColumn>
@@ -171,7 +171,7 @@ export default function PoolFinder() {
             <GreyCard padding="45px 10px">
               <AutoColumn gap="sm" justify="center">
                 <Text textAlign="center">{t('poolFinder.noPoolFound')}</Text>
-                <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                <StyledInternalLink to={`/add/${currencyId(currency0, chainId)}/${currencyId(currency1, chainId)}`}>
                   {t('poolFinder.createPool')}
                 </StyledInternalLink>
               </AutoColumn>
