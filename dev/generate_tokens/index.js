@@ -3,7 +3,7 @@ const { writeFile } = require('fs')
 const path = require('path')
 const _ = require('lodash')
 const data_sources = require('../../configs.js')
-
+const CryptoJS = require('crypto-js')
 // eslint-disable-next-line no-new-func
 const importDynamic = new Function('modulePath', 'return import(modulePath)')
 
@@ -17,6 +17,14 @@ const TOKENS_URL = data_sources.tokens
 
 // This kicks it all off
 init()
+
+
+function generateRandomHash() {
+  const randomValue = CryptoJS.lib.WordArray.random(16) // Generate 16 random bytes
+  const hash = CryptoJS.SHA256(randomValue).toString(CryptoJS.enc.Hex) // Generate SHA-256 hash and convert to hex
+  return hash
+}
+const randomHash = generateRandomHash()
 
 async function init() {
   const allTokens = await getAllTokensFromTokenLists()
@@ -77,7 +85,8 @@ async function init() {
 
     return token
   })
-
+  const hash = `\n\nexport const versionHash = '${randomHash}'`
+  tokens.push(hash)
   await createTokenFile(generatedFileWarningMessage + imports + tokens.join(''))
 }
 

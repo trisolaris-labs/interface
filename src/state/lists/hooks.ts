@@ -6,9 +6,6 @@ import { AppState } from '../index'
 import { AEB_TOKENLIST } from '../../constants/lists'
 import { WETH } from '@trisolaris/sdk'
 import { PNG } from '../../constants/tokens'
-import { t, use } from 'i18next'
-import { chain } from 'lodash'
-import { useActiveWeb3React } from '../../hooks'
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {
   id: string
@@ -43,13 +40,12 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.TURBO]: {}
 }
 
-const listCache: WeakMap<TokenList, TokenAddressMap> | null =
+let listCache: WeakMap<TokenList, TokenAddressMap> | null =
   typeof WeakMap !== 'undefined' ? new WeakMap<TokenList, TokenAddressMap>() : null
 
-export function listToTokenMap(list: TokenList): TokenAddressMap {
-  const result = listCache?.get(list)
+export function listToTokenMap(list: TokenList & { versionHash?: string }): TokenAddressMap {
+  let result = listCache?.get(list)
   if (result) return result
-
   const map = list.tokens.reduce<TokenAddressMap>(
     (tokenMap, tokenInfo) => {
       const tags: TagInfo[] =
