@@ -1,9 +1,9 @@
-
 const { ChainId, Token } = require('@trisolaris/sdk')
 const { writeFile } = require('fs')
 const path = require('path')
 const _ = require('lodash')
-const {data_sources} = require('../../configs')
+const data_sources = require('../../configs.js')
+
 // eslint-disable-next-line no-new-func
 const importDynamic = new Function('modulePath', 'return import(modulePath)')
 

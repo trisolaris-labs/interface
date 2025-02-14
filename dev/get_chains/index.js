@@ -1,7 +1,7 @@
 const { Token } = require('@trisolaris/sdk')
 const { writeFile } = require('fs')
 const path = require('path')
-const { data_sources } = require('../../configs')
+const data_sources = require('../../configs')
 const { configManager } = require('@trisolaris/sdk')
 // eslint-disable-next-line no-new-func
 const importDynamic = new Function('modulePath', 'return import(modulePath)')

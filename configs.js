@@ -6,4 +6,4 @@ const data_sources = {
 }
 
 
-exports.data_sources = data_sources
+module.exports = data_sources

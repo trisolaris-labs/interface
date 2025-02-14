@@ -60,7 +60,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
           })
           ?.filter((x): x is TagInfo => Boolean(x)) ?? []
       const token = new WrappedTokenInfo(tokenInfo, tags)
-      if (tokenMap[token.chainId][token.address] !== undefined) throw Error('Duplicate tokens.')
+      if (tokenMap[token.chainId][token.address] !== undefined) throw Error(`Duplicate tokens. ${token.address}, ${token.chainId}, ${token.symbol}`)
       return {
         ...tokenMap,
         [token.chainId]: {

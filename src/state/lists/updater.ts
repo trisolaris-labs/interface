@@ -22,9 +22,6 @@ export default function Updater(): null {
     state => state.lists.lastInitializedDefaultListOfLists
   )
 
-  if (lastInitializedList?.[0] === AURORA_LIST) {
-    dispatch(setDefaultList())
-  }
 
   const isWindowVisible = useIsWindowVisible()
 

@@ -38,7 +38,7 @@ export const USDT_E: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'USDT.e', 'Tether USD (Rainbow Bridged)'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 6, 'USDT.e', 'Tether USD (Rainbow Bridged)'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x4988a896b1227218e4A686fdE5EabdcAbd91571f', 6, 'USDT.e', 'Tether USD (Rainbow Bridged)'),
-  [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 6, 'USDT.e', 'Tether USD (Rainbow Bridged)'),
+  [ChainId.TURBO]: new Token(ChainId.TURBO, '0x4988a896b1227218e4A686fdE5EabdcAbd91571f', 6, 'USDT.e', 'Tether USD (Rainbow Bridged)'),
 }
 
 export const WNEAR: { [chainId in ChainId]: Token } = {
