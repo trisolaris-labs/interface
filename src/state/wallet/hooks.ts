@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, CETH, JSBI, Token, TokenAmount, ChainId } from '@trisolaris/sdk'
+import { Currency, CurrencyAmount, CETH, JSBI, Token, TokenAmount, ChainId, currencyEquals } from '@trisolaris/sdk'
 import { useMemo } from 'react'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useAllTokens } from '../../hooks/Tokens'
@@ -15,7 +15,7 @@ export function useETHBalances(
   uncheckedAddresses?: (string | undefined)[]
 ): { [address: string]: CurrencyAmount | undefined } {
   const multicallContract = useMulticallContract()
-
+  const { chainId } = useActiveWeb3React()
   const addresses: string[] = useMemo(
     () =>
       uncheckedAddresses
@@ -32,12 +32,17 @@ export function useETHBalances(
     'getEthBalance',
     addresses.map(address => [address])
   )
+  const nativeCurrency = (chainId && AVAILABLE_CHAINS_DATA[chainId]) ? AVAILABLE_CHAINS_DATA[chainId]?.networkParams?.nativeCurrency : CETH
 
   return useMemo(
     () =>
       addresses.reduce<{ [address: string]: CurrencyAmount }>((memo, address, i) => {
         const value = results?.[i]?.result?.[0]
-        if (value) memo[address] = CurrencyAmount.ether(JSBI.BigInt(value.toString()))
+        if (value) {
+          const test = CurrencyAmount.fromRawAmount(nativeCurrency, value.toString())
+          memo[address] = test
+          // memo[address] = CurrencyAmount.ether(JSBI.BigInt(value.toString()))
+        }
         return memo
       }, {}),
     [addresses, results]

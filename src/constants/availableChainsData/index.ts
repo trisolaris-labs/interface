@@ -72,6 +72,7 @@ const addressesByChainIdConfig = Object.keys(AVAILABLE_CHAINS_DATA).reduce(
     nativeCurrency: { [chainId: string]: { name: string; symbol: string; decimals: number } }
   }
 )
+
 //configure the sdk with the addresses
 configManager.configure(addressesByChainIdConfig)
 //configure the sdk with the addresses

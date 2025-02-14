@@ -86,7 +86,6 @@ function useSwapCallArguments(
         })
       )
     }
-  console.log('swapMethods', swapMethods)
     return swapMethods.map(parameters => ({ parameters, contract }))
   }, [account, allowedSlippage, chainId, deadline, provider, recipient, trade])
 }
@@ -106,7 +105,6 @@ export function useSwapCallback(
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
-
   return useMemo(() => {
     if (!trade || !provider || !account || !chainId) {
       return { state: SwapCallbackState.INVALID, callback: null, error: 'Missing dependencies' }
@@ -120,7 +118,8 @@ export function useSwapCallback(
     }
 
     const tradeVersion = Version.v2
-    console.log('swapCalls', swapCalls)
+
+
     return {
       state: SwapCallbackState.VALID,
       callback: async function onSwap(): Promise<string> {

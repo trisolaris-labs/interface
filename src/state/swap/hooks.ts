@@ -157,7 +157,6 @@ export function useDerivedSwapInfo(
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
-
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -192,7 +191,6 @@ export function useDerivedSwapInfo(
           : false,
       [currencies]
     )
-
   // get link to trade on v1, if a better rate exists
   const v1Trade = undefined
 
@@ -326,8 +324,9 @@ export function useDefaultsFromURLSearch():
     const parsed = queryParametersToSwapState(parsedQs)
     let inputCurrencyId = parsed[Field.INPUT].currencyId
     //check if turbo chain
-    if(chainId === ChainId.TURBO && inputCurrencyId === 'ETH') {
-      inputCurrencyId = 'TURBO'
+    if (inputCurrencyId === 'ETH') {
+      const nativeCurrency = AVAILABLE_CHAINS_DATA[chainId]?.networkParams.nativeCurrency
+      inputCurrencyId = nativeCurrency.symbol
     }
 
     dispatch(
