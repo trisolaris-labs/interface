@@ -30,8 +30,8 @@ export const getPairRenderOrder = (tokens: Token[]) => {
 
   // If pair has CETH, put CETH second
   //      If TRI is the other token, it'll be first
-  if (currency0 === CETH || currency1 === CETH) {
-    return currency0 === CETH ? token1IsFirst : token0IsFirst
+  if (currency0.symbol === CETH.symbol || currency1.symbol === CETH.symbol) {
+    return currency0.symbol === CETH.symbol ? token1IsFirst : token0IsFirst
   }
 
   // If pair has TRI, put TRI first

@@ -1,0 +1,62 @@
+{
+  "1313161554": {
+    "networkParams": {
+      "chainId": "4e454152",
+      "chainName": "Aurora Mainnet",
+      "nativeCurrency": {
+        "name": "ETH",
+        "symbol": "ETH",
+        "decimals": 18
+      },
+      "rpcUrls": [
+        "https://mainnet.aurora.dev"
+      ],
+      "blockExplorerUrls": [
+        "https://explorer.aurora.dev/"
+      ]
+    },
+    "chainLabel": "Aurora",
+    "baseCurrencyLabel": "ETH",
+    "icon": "https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/chains/aurora.png",
+    "multiCallAddress": "0x49eb1F160e167aa7bA96BdD88B6C1f2ffda5212A",
+    "WETH": {
+      "address": "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB",
+      "symbol": "WETH",
+      "name": "Wrapped Eth",
+      "decimals": 18
+    },
+    "factoryAddress": "0xc66F594268041dB60507F00703b152492fb176E7",
+    "routerAddress": "0x2CB45Edb4517d5947aFdE3BEAbF95A582506858B",
+    "initCodeHash": "0x754e1d90e536e4c1df81b7f030f47b4ca80c87120e145c294f098c83a6cb5ace"
+  },
+  "1313161567": {
+    "networkParams": {
+      "chainId": "4e45415f",
+      "chainName": "Turbochain",
+      "nativeCurrency": {
+        "name": "Turbo",
+        "symbol": "TURBO",
+        "decimals": 18
+      },
+      "rpcUrls": [
+        "https://rpc-0x4e45415f.aurora-cloud.dev"
+      ],
+      "blockExplorerUrls": [
+        "https://explorer.turbo.aurora.dev/"
+      ]
+    },
+    "chainLabel": "Turbochain",
+    "baseCurrencyLabel": "TURBO",
+    "icon": "https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/chains/turbo.png",
+    "multiCallAddress": "0x5FE8fF8c5Ae435f0EB613B063C684FE10099BFEa",
+    "WETH": {
+      "address": "0x21Cc007d2b777BBaB55d51e62F5C3F31DEaa7E5d",
+      "symbol": "WTURBO",
+      "name": "Wrapped Turbo",
+      "decimals": 18
+    },
+    "factoryAddress": "0xf0BE0075F8De10044a7115FdCf7feC3afB3B8FE0",
+    "routerAddress": "0x317f7714F49efCFdBF150640cf9E73C136676c0c",
+    "initCodeHash": "0x754e1d90e536e4c1df81b7f030f47b4ca80c87120e145c294f098c83a6cb5ace"
+  }
+}

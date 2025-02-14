@@ -3,7 +3,6 @@ import { parseUnits } from '@ethersproject/units'
 import {
   Currency,
   CurrencyAmount,
-  CETH,
   JSBI,
   Token,
   TokenAmount,
@@ -30,6 +29,8 @@ import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useTranslation } from 'react-i18next'
 import { find } from 'lodash'
 import { STABLESWAP_POOLS } from '../stableswap/constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
+import { currencyId } from '../../utils/currencyId'
 
 
 export function useSwapState(): AppState['swap'] {
@@ -42,17 +43,21 @@ export function useSwapActionHandlers(): {
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
 } {
+  const {chainId} = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
+      const baseCurrency = AVAILABLE_CHAINS_DATA[chainId]?.networkParams.nativeCurrency
+      
       dispatch(
         selectCurrency({
           field,
-          currencyId: currency instanceof Token ? currency.address : currency === CETH ? 'ETH' : ''
+          currencyId:
+            currency instanceof Token ? currency.address : currency.symbol === baseCurrency.symbol ? baseCurrency.symbol : ''
         })
       )
     },
-    [dispatch]
+    [dispatch, chainId]
   )
 
   const onSwitchTokens = useCallback(() => {
@@ -129,9 +134,8 @@ export function useDerivedSwapInfo(
   inputError?: string
   v1Trade: Trade | undefined
 } {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-
   const toggledVersion = useToggledVersion()
   const swapData = customSwap ?? useSwapState()
   const {
@@ -145,53 +149,48 @@ export function useDerivedSwapInfo(
   const outputCurrency = useCurrency(outputCurrencyId)
   const recipientAddress = isAddress(recipient)
   const to: string | null = (recipientAddress ? recipientAddress : account) ?? null
-
-
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
     outputCurrency ?? undefined
   ])
-
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
-
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
-
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1]
   }
 
-  const currencies: { [field in Field]?: Currency } = useMemo(
-    () => ({
-      [Field.INPUT]: inputCurrency ?? undefined,
-      [Field.OUTPUT]: outputCurrency ?? undefined
-    }),
-    [inputCurrency, outputCurrency]
-  )
-  const isStableSwap = useMemo(
-    () =>
-      find(STABLESWAP_POOLS, pool => {
-        return (
-          Boolean(
-            pool.poolTokens?.find(
-              stableToken => stableToken?.name?.toLowerCase() === currencies[Field.INPUT]?.name?.toLowerCase()
-            )
-          ) &&
-          Boolean(
-            pool.poolTokens?.find(
-              stableToken => stableToken?.name?.toLowerCase() === currencies[Field.OUTPUT]?.name?.toLowerCase()
+    const currencies: { [field in Field]?: Currency } = useMemo(
+      () => ({
+        [Field.INPUT]: inputCurrency ?? undefined,
+        [Field.OUTPUT]: outputCurrency ?? undefined
+      }),
+      [inputCurrency, outputCurrency]
+    )
+
+    const isStableSwap = useMemo(
+      () =>
+        find(STABLESWAP_POOLS, pool => {
+          return (
+            Boolean(
+              pool.poolTokens?.find(
+                stableToken => stableToken?.name?.toLowerCase() === currencies[Field.INPUT]?.name?.toLowerCase()
+              )
+            ) &&
+            Boolean(
+              pool.poolTokens?.find(
+                stableToken => stableToken?.name?.toLowerCase() === currencies[Field.OUTPUT]?.name?.toLowerCase()
+              )
             )
           )
-        )
-      })
-        ? true
-        : false,
-    [currencies]
-  )
-
+        })
+          ? true
+          : false,
+      [currencies]
+    )
   // get link to trade on v1, if a better rate exists
   const v1Trade = undefined
 
@@ -325,8 +324,9 @@ export function useDefaultsFromURLSearch():
     const parsed = queryParametersToSwapState(parsedQs)
     let inputCurrencyId = parsed[Field.INPUT].currencyId
     //check if turbo chain
-    if(chainId === ChainId.TURBO && inputCurrencyId === 'ETH') {
-      inputCurrencyId = 'TURBO'
+    if (inputCurrencyId === 'ETH') {
+      const nativeCurrency = AVAILABLE_CHAINS_DATA[chainId]?.networkParams.nativeCurrency
+      inputCurrencyId = nativeCurrency.symbol
     }
 
     dispatch(

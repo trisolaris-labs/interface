@@ -34,8 +34,9 @@ import { RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { ButtonPrimary } from '../../components/Button'
 import { RowBetween } from '../../components/Row'
-import { JSBI, Rounding, ChainId } from '@trisolaris/sdk'
+import { JSBI, Rounding,  } from '@trisolaris/sdk'
 import { BIG_INT_ZERO, PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE } from '../../constants'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import useStablePoolsData from '../../hooks/useStablePoolsData'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
@@ -352,7 +353,7 @@ export default function StableSwapPoolAddLiquidityImpl({ stableSwapPoolName }: P
                 showCommonBases
               />
             ) : null}
-            {!account || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? (
+            {!account || !(chainId !== undefined && AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)) ? (
               <ButtonLight onClick={toggleWalletModal}>{t('addLiquidity.connectWallet')}</ButtonLight>
             ) : (
               <AutoColumn gap={'md'}>

@@ -78,7 +78,6 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 export function useTokenList(urls: string[] | undefined): TokenAddressMap {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
   
-  const {chainId:providerChainId} = useActiveWeb3React()
   const tokenList = {} as { [chainId: string]: { [tokenAddress: string]: WrappedTokenInfo } }
   return useMemo(() => {
     ;([] as string[]).concat(urls || []).forEach(url => {
@@ -98,7 +97,6 @@ export function useTokenList(urls: string[] | undefined): TokenAddressMap {
         }
       }
     })
-    //add turbo 
     return tokenList as TokenAddressMap
   }, [lists, urls])
 }

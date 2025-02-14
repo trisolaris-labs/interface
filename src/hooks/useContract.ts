@@ -13,7 +13,7 @@ import ERC20_ABI from '../constants/abis/erc20.json'
 import BRIDGE_TOKEN_ABI from '../constants/abis/bridge-token.json'
 import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator'
 import WETH_ABI from '../constants/abis/polygon/weth.json'
-import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
+import { MULTICALL_ABI } from '../constants/multicall'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
 import { PTRI, TRI, USDC_E, WNEAR } from '../constants/tokens'
@@ -21,14 +21,16 @@ import { STAKING } from '../state/stake/stake-constants'
 import { isMetaPool, StableSwapPoolName, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import PTRI_ABI from '../constants/abis/pTri/ptri.json'
 import AUERC20 from '../constants/abis/stableswap/auErc20.json'
-import { NETWORK_CHAIN_ID } from '../connectors'
+import { DEFAULT_NETWORK_CHAIN_ID } from '../connectors'
+import { AVAILABLE_CHAINS_DATA } from '../constants/availableChainsData'
+import { ZERO_ADDRESS } from '../constants'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
   const { provider, account, chainId } = useActiveWeb3React()
   
   return useMemo(() => {
-    if (!address || !ABI || !provider) return null
+    if (!address || !ABI || !provider || address === ZERO_ADDRESS) return null
     try {
       return getContract(address, ABI, provider, withSignerIfPossible && account ? account : undefined, chainId)
     } catch (error) {
@@ -69,7 +71,8 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 
 export function useMulticallContract(): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId && MULTICALL_NETWORKS[chainId], MULTICALL_ABI, false)
+  return useContract(AVAILABLE_CHAINS_DATA[chainId]?.multiCallAddress, MULTICALL_ABI, false)
+ 
 }
 
 export function useUSDC_EWNEARPoolContract(): Contract | null {
@@ -108,7 +111,7 @@ export function useStableSwapContract(
   shouldUseUnwrappedTokens = false
 ): Contract | null {
   const { provider } = useActiveWeb3React()
-  const chainId = NETWORK_CHAIN_ID
+  const chainId = DEFAULT_NETWORK_CHAIN_ID
   const pool = poolName == null ? null : STABLESWAP_POOLS[poolName]
   const metaPool = useStableSwapMetaPoolDeposit(pool?.address, withSignerIfPossible)
   const metaPoolUnwrappedTokens = useStableSwapMetaPoolDeposit(pool?.metaSwapAddresses, withSignerIfPossible)
@@ -145,7 +148,7 @@ export function useStableSwapMetaPool(address?: string, withSignerIfPossible = t
 
 export function usePTriContract(withSignerIfPossible = true): Contract | null {
   const { provider } = useActiveWeb3React()
-  const chainId = NETWORK_CHAIN_ID
+  const chainId = DEFAULT_NETWORK_CHAIN_ID
   const pTriContract = useContract(PTRI[ChainId.AURORA].address, PTRI_ABI, withSignerIfPossible)
 
   return useMemo(() => {

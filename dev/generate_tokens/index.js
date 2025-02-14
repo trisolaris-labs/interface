@@ -3,6 +3,7 @@ const { ChainId, Token } = require('@trisolaris/sdk')
 const { writeFile } = require('fs')
 const path = require('path')
 const _ = require('lodash')
+const {data_sources} = require('../../configs')
 // eslint-disable-next-line no-new-func
 const importDynamic = new Function('modulePath', 'return import(modulePath)')
 
@@ -12,7 +13,7 @@ const TOKEN_MAP = require('./base_tokens_map')
 const { createXChainToken } = require('./utils')
 
 const TOKENS_FOLDER_PATH = path.join(__dirname, '../../src/constants/tokens')
-const TOKENS_URL = 'https://raw.githubusercontent.com/trisolaris-labs/tokens/turbo/lists/1313161554/list.json'
+const TOKENS_URL = data_sources.tokens
 
 // This kicks it all off
 init()

@@ -16,8 +16,10 @@ const connect = async (connector: Connector) => {
 }
 
 export default function Web3Provider({ children }: { children: ReactNode }) {
-  const selectedChainId = JSON.parse(JSON.parse(window.localStorage.getItem('persist:root') || '').user).chainId
- 
+  const persistedStorage = window.localStorage.getItem('persist:root')
+  const selectedChainId = persistedStorage
+    ? JSON.parse(JSON.parse(window.localStorage.getItem('persist:root') ?? '').user).chainId
+    : undefined
   const connectors = useConnectors(undefined)
   useEffect(() => {
     const selectedWallet = window.localStorage.getItem('selectedWallet')

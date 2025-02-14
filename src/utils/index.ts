@@ -4,11 +4,12 @@ import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import IUniswapV2Router02_ABI from '../constants/abis/polygon/IUniswapV2Router02.json'
-import { ETHERSCAN_PREFIXES } from '../constants/index'
+import { AVAILABLE_CHAINS_DATA } from '../constants/availableChainsData'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, CETH } from '@trisolaris/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
 import {network } from '../connectors'
 import { ROUTER_ADDRESS } from '@trisolaris/sdk'
+import { useActiveWeb3React } from '../hooks'
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
   try {
@@ -23,8 +24,10 @@ export function getEtherscanLink(
   data: string,
   type: 'transaction' | 'token' | 'address' | 'block'
 ): string {
-  const prefix = ETHERSCAN_PREFIXES[chainId]
-
+  if (!AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)) {
+    return ''
+  }
+  const prefix = AVAILABLE_CHAINS_DATA[chainId].networkParams.blockExplorerUrls[0]
   switch (type) {
     case 'transaction': {
       return `${prefix}/tx/${data}`
@@ -82,7 +85,7 @@ export function getProviderOrSigner(
   account?: string,
   chainId?: number
 ): Web3Provider | JsonRpcSigner {
-  return (account && (chainId === ChainId.TURBO || chainId === ChainId.AURORA))
+  return (account && (chainId !== undefined && AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)))
     ? getSigner(library, account)
     : (network.customProvider as Web3Provider)
 }
@@ -118,7 +121,9 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency): boolean {
-  if (currency === CETH || currency?.name === 'TURBO') return true
+  const { chainId } = useActiveWeb3React()
+  const nativeCurrency = chainId ? AVAILABLE_CHAINS_DATA[chainId].networkParams?.nativeCurrency : undefined
+  if (currency === CETH || (nativeCurrency && nativeCurrency.symbol === currency?.symbol)) return true
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }
 

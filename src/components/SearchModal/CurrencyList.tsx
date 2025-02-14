@@ -17,7 +17,7 @@ import { FadedSpan, MenuItem } from './styleds'
 import Loader from '../Loader'
 import { isTokenOnList } from '../../utils'
 import { useTranslation } from 'react-i18next'
-import { TURBO_CURRENCY } from '../../constants/lists'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === CETH ? 'ETH' : ''
@@ -119,7 +119,6 @@ function CurrencyRow({
   const addToken = useAddUserToken()
   const { t } = useTranslation()
 
-
   // only show add or remove buttons if not on selected list
   return (
     <MenuItem
@@ -196,18 +195,24 @@ export default function CurrencyList({
   showETH: boolean
 }) {
   const { account, chainId } = useActiveWeb3React()
+
   const itemData = useMemo(() => {
-    if(chainId === ChainId.TURBO) {
-      return (showETH ? [TURBO_CURRENCY, ...currencies] : currencies)
-    }
-    return (showETH ? [Currency.CETH, ...currencies] : currencies)
-  }, [currencies, showETH])
+    const baseCurrency =
+      chainId && AVAILABLE_CHAINS_DATA[chainId] && AVAILABLE_CHAINS_DATA[chainId].networkParams?.nativeCurrency
+    if (!baseCurrency) return currencies
+    return showETH ? [baseCurrency, ...currencies] : currencies
+  }, [currencies, showETH, chainId])
+
   const Row = useCallback(
     ({ data, index, style }: { data: any; index: number; style: any }) => {
       const currency: Currency = data[index]
       const isSelected = Boolean(selectedCurrency && currencyEquals(selectedCurrency, currency))
       const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency))
-      const handleSelect = () => onCurrencySelect(currency)
+
+      const handleSelect = () => {
+        onCurrencySelect(currency)
+      }
+
       return (
         <CurrencyRow
           style={style}

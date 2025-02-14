@@ -1,6 +1,6 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Trade, TokenAmount, CurrencyAmount, CETH, ChainId, ROUTER_ADDRESS } from '@trisolaris/sdk'
+import { Trade, TokenAmount, CurrencyAmount, ChainId, ROUTER_ADDRESS, CETH } from '@trisolaris/sdk'
 import { useCallback, useMemo } from 'react'
 import { useTokenAllowance } from '../data/Allowances'
 import { Field } from '../state/swap/actions'
@@ -9,7 +9,7 @@ import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { calculateGasMargin } from '../utils'
 import { useTokenContract } from './useContract'
 import { useActiveWeb3React } from './index'
-import { NETWORK_CHAIN_ID } from '../connectors'
+import { AVAILABLE_CHAINS_DATA } from '../constants/availableChainsData'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -23,15 +23,16 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
+  const baseCurrency = AVAILABLE_CHAINS_DATA[chainId].networkParams.nativeCurrency
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
- 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
-    if (amountToApprove.currency === CETH) return ApprovalState.APPROVED
+    if (amountToApprove.currency.symbol === baseCurrency.symbol || amountToApprove.currency.symbol === CETH.symbol)
+      return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
@@ -41,7 +42,7 @@ export function useApproveCallback(
         ? ApprovalState.PENDING
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED
-  }, [amountToApprove, currentAllowance, pendingApproval, spender])
+  }, [amountToApprove, currentAllowance, pendingApproval, spender, baseCurrency])
 
   const tokenContract = useTokenContract(token?.address)
   const addTransaction = useTransactionAdder()
@@ -99,7 +100,7 @@ export function useApproveCallback(
 
 // wraps useApproveCallback in the context of a swap
 export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) {
-  const chainId = NETWORK_CHAIN_ID
+  const { chainId } = useActiveWeb3React()
   const amountToApprove = useMemo(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
     [trade, allowedSlippage]

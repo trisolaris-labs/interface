@@ -54,9 +54,9 @@ import {
   INITIAL_ALLOWED_SLIPPAGE,
   BIG_INT_ZERO,
   TOKEN_WARNING_MODAL_ALLOWLIST,
-  PRICE_IMPACT_ERROR_THRESHOLD
+  PRICE_IMPACT_ERROR_THRESHOLD,
 } from '../../constants'
-
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 import { ClickableText, Dots } from '../Pool/styleds'
 import { CloseIcon, LinkStyledButton, TYPE } from '../../theme'
 import {
@@ -285,8 +285,8 @@ export default function Swap() {
     allowedSlippage
   )
 
-  const swapCallbackError = isRoutedViaStableSwap ? stableswapCallbackError : defaultswapCallbackError
 
+  const swapCallbackError = isRoutedViaStableSwap ? stableswapCallbackError : defaultswapCallbackError
   const { priceImpactWithoutFee: defaultswapPriceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 
   const disableTradingUntilStableSwapRateIsCalculated = isStableSwap && isLoadingSwapResponse
@@ -568,7 +568,7 @@ export default function Swap() {
                 )}
               </AutoColumn>
               <BottomGrouping>
-                {!account || (chainId !== ChainId.AURORA && chainId !== ChainId.TURBO) ? (
+                {!account || !(chainId !== undefined && AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)) ? (
                   <ButtonLight onClick={toggleWalletModal}>{t('swapPage.connectWallet')}</ButtonLight>
                 ) : showWrap ? (
                   <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>

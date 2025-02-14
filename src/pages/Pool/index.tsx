@@ -19,6 +19,8 @@ import { usePairs } from '../../data/Reserves'
 import { useTrackedTokenPairs, toV2LiquidityToken } from '../../state/user/hooks'
 
 import { TitleRow, ButtonRow, ResponsiveButtonPrimary, ResponsiveButtonSecondary, EmptyProposals } from './styleds'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
+import { chain } from 'lodash'
 
 
 export default function Pool() {
@@ -73,10 +75,27 @@ export default function Pool() {
               </TYPE.mediumHeader>
             </HideSmall>
             <ButtonRow>
-              <ResponsiveButtonSecondary as={Link} padding="6px 8px" to={`/create/${chainId === ChainId.TURBO ? 'TURBO' : 'ETH'}`}>
+              <ResponsiveButtonSecondary
+                as={Link}
+                padding="6px 8px"
+                to={`/create/${
+                  (chainId !== undefined && AVAILABLE_CHAINS_DATA[chainId]?.baseCurrencyLabel)
+                    ? AVAILABLE_CHAINS_DATA[chainId].baseCurrencyLabel
+                    : 'ETH'
+                }`}
+              >
                 {t('pool.createPair')}
               </ResponsiveButtonSecondary>
-              <ResponsiveButtonPrimary id="join-pool-button" as={Link} padding="6px 8px" to={`/add/${chainId === ChainId.TURBO ? 'TURBO' : 'ETH'}`}>
+              <ResponsiveButtonPrimary
+                id="join-pool-button"
+                as={Link}
+                padding="6px 8px"
+                to={`/add/${
+                  (chainId !== undefined && AVAILABLE_CHAINS_DATA[chainId]?.baseCurrencyLabel)
+                    ? AVAILABLE_CHAINS_DATA[chainId].baseCurrencyLabel
+                    : 'ETH'
+                }`}
+              >
                 <Text fontWeight={500} fontSize={16}>
                   {t('pool.addLiquidity')}
                 </Text>
@@ -84,7 +103,7 @@ export default function Pool() {
             </ButtonRow>
           </TitleRow>
 
-          {!account || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? (
+          {!account || chainId === undefined || !AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId) ? (
             <Card padding="40px">
               <TYPE.body color={theme.text3} textAlign="center">
                 {t('pool.connectWalletToView')}

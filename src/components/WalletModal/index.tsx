@@ -1,13 +1,14 @@
 import { useWeb3React } from '@web3-react/core'
 import { Connector } from '@web3-react/types'
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import ReactGA from 'react-ga'
 import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
-import { NETWORK_CHAIN_ID, getWalletForConnector, injected } from '../../connectors'
-import { SUPPORTED_WALLETS } from '../../constants'
+import { getWalletForConnector, injected } from '../../connectors'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
+import { SUPPORTED_WALLETS } from '../../connectors'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ExternalLink } from '../../theme'
@@ -19,6 +20,7 @@ import PendingView from './PendingView'
 import { useTranslation } from 'react-i18next'
 import { isBraveWallet, isMetamask } from '../../utils'
 import useSelectChain from '../../hooks/useSelectChain'
+import { useSwitchProviderChain } from '../../hooks'
 import { ChainId } from '@trisolaris/sdk'
 
 const WALLET_TUTORIAL = 'https://metamask.io/faqs'
@@ -272,11 +274,11 @@ export default function WalletModal({
     })
   }
 
-  const selectChain = useSelectChain()
+const {switchProviderChain:selectChain} = useSwitchProviderChain()
 
   function getModalContent() {
     
-    if (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) {
+    if (chainId !== undefined && !AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)) {
       return (
         <UpperSection>
           <CloseIcon onClick={toggleWalletModal}>
@@ -287,7 +289,7 @@ export default function WalletModal({
             {connector === injected ? (
               <>
                 <h5>{`${t('Please connect to')}:`}</h5>
-                {isMetamask() && <ButtonLight onClick={selectChain}>{t('walletModal.switchNetwork')}</ButtonLight>}
+                {isMetamask() && <ButtonLight onClick={() => selectChain(ChainId.AURORA)}>{t('walletModal.switchNetwork')}</ButtonLight>}
               </>
             ) : (
               <h5>{`${'Please connect to Aurora network in your wallet settings.'}`}</h5>
@@ -313,7 +315,7 @@ export default function WalletModal({
         <CloseIcon onClick={toggleWalletModal}>
           <CloseColor />
         </CloseIcon>
-        {walletView === WALLET_VIEWS.ACCOUNT || (!!account && chainId === ChainId.TURBO || chainId === ChainId.AURORA) ? (
+        {walletView === WALLET_VIEWS.ACCOUNT || (!!account && chainId !== undefined && AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)) ? (
           <HeaderRow color="blue">
             <HoverText onClick={() => setWalletView(account ? WALLET_VIEWS.ACCOUNT : WALLET_VIEWS.OPTIONS)}>
               Back

@@ -6,10 +6,8 @@ import LogoDark from '../../assets/svg/planets.svg'
 import Menu from '../Menu'
 import TriPriceModal from '../TriPriceModal'
 import Web3Status from '../Web3Status'
-import AuroraIcon from '../../assets/images/aurora.png'
-import TurboIcon from '../../assets/images/turbo.png'
 import { useActiveWeb3React } from '../../hooks'
-
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 import useTriPrice from '../../hooks/useTriPrice'
 import { useToggleNetworkSelectModal, useToggleTriPriceModal } from '../../state/application/hooks'
 
@@ -35,34 +33,29 @@ import {
 import useEmbeddedSwapUI from '../../hooks/useEmbeddedSwapUI'
 import { StyledExternalLink } from '../BridgesMenu/BridgesMenu.styles'
 import NetworkSelectModal from '../NetworkSelectModal'
-import { ChainId } from '@trisolaris/sdk'
 import { useSwitchProviderChain } from '../../hooks'
 
 
-const networkNames: { [key in ChainId]: string } = {
-  [ChainId.AURORA]: 'Aurora',
-  [ChainId.TURBO]: 'Turbo',
-  [ChainId.FUJI]: 'Fuji',
-  [ChainId.AVALANCHE]: 'Avalanche',
-  [ChainId.POLYGON]: 'Polygon'
-}
+
 
 export default function Header() {
-  const { account, appSelectedChain, chainId } = useActiveWeb3React()
+  const { account, appSelectedChain, chainId} = useActiveWeb3React()
   const { t } = useTranslation()
 
   const { triPriceFriendly } = useTriPrice()
   const {switchProviderChain} = useSwitchProviderChain()
   const toggleTriPriceModal = useToggleTriPriceModal()
   const toggleNetworkSelectModal = useToggleNetworkSelectModal()
-
   const isEmbedded = useEmbeddedSwapUI()
+  const chainData = chainId ? AVAILABLE_CHAINS_DATA[chainId] : appSelectedChain ? AVAILABLE_CHAINS_DATA[appSelectedChain] : null
+
+
 
   useEffect(() => {
-    if(appSelectedChain !== chainId) {
-    switchProviderChain(appSelectedChain)
+    if (appSelectedChain) {
+      switchProviderChain(appSelectedChain)
     }
-  }, [appSelectedChain, chainId])
+  }, [appSelectedChain, account])
 
 
   // Use a minimal header/footer when the `/swap` page is embedded on third-party websites
@@ -176,24 +169,24 @@ export default function Header() {
             </TRIButton>
             <TriPriceModal />
           </TRIWrapper>
-          <TRIWrapper active={false} style={{ pointerEvents: 'auto' }}>
-            <NetworkSelectButton
-              onClick={e => {
-                e.currentTarget.blur()
-                toggleNetworkSelectModal()
-              }}
-            >
-              {chainId === ChainId.TURBO ? <IconWrapper size={16}>
-                <img src={TurboIcon} />
-              </IconWrapper> : <IconWrapper size={16}>
-                <img src={AuroraIcon} />
-              </IconWrapper>}
-              <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
-                {networkNames[appSelectedChain]}
-              </Text>
-            </NetworkSelectButton>
-            <NetworkSelectModal />
-          </TRIWrapper>
+          {chainData && (
+            <TRIWrapper active={false} style={{ pointerEvents: 'auto' }}>
+              <NetworkSelectButton
+                onClick={e => {
+                  e.currentTarget.blur()
+                  toggleNetworkSelectModal()
+                }}
+              >
+                <IconWrapper size={16}>
+                  <img src={chainData.icon} />
+                </IconWrapper>
+                <Text style={{ flexShrink: 0 }} pl="0.75rem" fontWeight={500}>
+                  {chainData.chainLabel}
+                </Text>
+              </NetworkSelectButton>
+              <NetworkSelectModal />
+            </TRIWrapper>
+          )}
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             <Web3Status />
           </AccountElement>

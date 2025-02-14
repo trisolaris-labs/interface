@@ -42,6 +42,7 @@ import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '
 
 import { Field } from '../../state/burn/actions'
 import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButtonValueEnum'
+import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 
 export default function RemoveLiquidity({
@@ -57,7 +58,7 @@ export default function RemoveLiquidity({
     currencyB,
     chainId
   ])
-
+  const nativeCurrency = AVAILABLE_CHAINS_DATA[chainId]?.networkParams.nativeCurrency
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -218,8 +219,8 @@ export default function RemoveLiquidity({
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
     if (!liquidityAmount) throw new Error('missing liquidity amount')
 
-    const currencyBIsETH = currencyB === CETH
-    const oneCurrencyIsETH = currencyA === CETH || currencyBIsETH
+    const currencyBIsETH = currencyB.symbol === nativeCurrency.symbol
+    const oneCurrencyIsETH = currencyA.symbol === nativeCurrency.symbol || currencyBIsETH
 
     // TODO: Translate using i18n
     if (!tokenA || !tokenB) throw new Error('could not wrap')
@@ -458,20 +459,20 @@ export default function RemoveLiquidity({
 
   const handleSelectCurrencyA = useCallback(
     (currency: Currency) => {
-      if (currencyIdB && currencyId(currency) === currencyIdB) {
-        history.push(`/remove/${currencyId(currency)}/${currencyIdA}`)
+      if (currencyIdB && currencyId(currency, chainId) === currencyIdB) {
+        history.push(`/remove/${currencyId(currency, chainId)}/${currencyIdA}`)
       } else {
-        history.push(`/remove/${currencyId(currency)}/${currencyIdB}`)
+        history.push(`/remove/${currencyId(currency, chainId)}/${currencyIdB}`)
       }
     },
     [currencyIdA, currencyIdB, history]
   )
   const handleSelectCurrencyB = useCallback(
     (currency: Currency) => {
-      if (currencyIdA && currencyId(currency) === currencyIdA) {
-        history.push(`/remove/${currencyIdB}/${currencyId(currency)}`)
+      if (currencyIdA && currencyId(currency, chainId) === currencyIdA) {
+        history.push(`/remove/${currencyIdB}/${currencyId(currency, chainId)}`)
       } else {
-        history.push(`/remove/${currencyIdA}/${currencyId(currency)}`)
+        history.push(`/remove/${currencyIdA}/${currencyId(currency, chainId)}`)
       }
     },
     [currencyIdA, currencyIdB, history]
@@ -573,7 +574,7 @@ export default function RemoveLiquidity({
               </div>
             )}
             <div style={{ position: 'relative' }}>
-              {!account || (chainId !== ChainId.TURBO && chainId !== ChainId.AURORA) ? (
+              {!account || !(chainId !== undefined && AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)) ? (
                 <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
               ) : (
                 <RowBetween>

@@ -6,7 +6,7 @@ import { PairState, usePairs } from '../data/Reserves'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { useAuTokenContract } from './useContract'
 import { useSingleCallResult } from '../state/multicall/hooks'
-import { NETWORK_CHAIN_ID } from '../connectors'
+import { DEFAULT_NETWORK_CHAIN_ID } from '../connectors'
 import { useActiveWeb3React } from '.'
 
 /**
@@ -16,7 +16,7 @@ import { useActiveWeb3React } from '.'
 export default function useUSDCPrice(currency?: Currency): Price | undefined {
   let {chainId} = useActiveWeb3React()
   if(!chainId) {
-    chainId = NETWORK_CHAIN_ID
+    chainId = DEFAULT_NETWORK_CHAIN_ID
   }
 
   const wrapped = wrappedCurrency(currency, chainId)
@@ -55,7 +55,7 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
   const [[currencyEthState, currencyEth], [usdcPairState, usdcPair], [usdcEthPairState, usdcEthPair]] = usePairs(
     tokenPairs
   )
-
+  
   const calculateAuUSDCExchangeRate = useMemo(() => {
     return JSBI.divide(
       JSBI.multiply(

@@ -45,9 +45,8 @@ function useSwapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
-  const { account, provider, appSelectedChain } = useActiveWeb3React()
-  const chainId = appSelectedChain
 
+  const { account, provider, chainId } = useActiveWeb3React()
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
   let deadline = useTransactionDeadline()
@@ -87,7 +86,6 @@ function useSwapCallArguments(
         })
       )
     }
-
     return swapMethods.map(parameters => ({ parameters, contract }))
   }, [account, allowedSlippage, chainId, deadline, provider, recipient, trade])
 }
@@ -99,15 +97,15 @@ export function useSwapCallback(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-  const { account, provider, appSelectedChain } = useActiveWeb3React()
-  const chainId = appSelectedChain
+
+  const { account, provider, chainId} = useActiveWeb3React()
+
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
 
   const addTransaction = useTransactionAdder()
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
-
   return useMemo(() => {
     if (!trade || !provider || !account || !chainId) {
       return { state: SwapCallbackState.INVALID, callback: null, error: 'Missing dependencies' }
@@ -121,6 +119,7 @@ export function useSwapCallback(
     }
 
     const tradeVersion = Version.v2
+
 
     return {
       state: SwapCallbackState.VALID,
