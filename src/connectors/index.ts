@@ -132,9 +132,6 @@ export const [walletConnect, walletConnectHooks] = initializeConnector<WalletCon
             '18388be9ac2d02726dbac9777c96efaac06d744b2f6d580fccdd4127a6d01fd1'
           ]
         },
-        rpcMap: {
-          [ChainId.TURBO]: 'https://rpc-0x4e45415f.aurora-cloud.dev/'
-        }
       }
     })
 )
