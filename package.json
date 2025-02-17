@@ -1,7 +1,7 @@
 {
   "name": "interface",
   "description": "Trisolaris Interface",
-  "version": "0.2.72",
+  "version": "0.2.73",
   "homepage": ".",
   "private": true,
   "engines": {
@@ -39,7 +39,7 @@
     "@types/react-redux": "^7.1.8",
     "@types/react-router-dom": "^5.0.0",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
-    "@types/react-window": "^1.8.2", 
+    "@types/react-window": "^1.8.2",
     "@types/rebass": "^4.0.5",
     "@types/styled-components": "^5.1.26",
     "@types/testing-library__cypress": "^5.0.5",
