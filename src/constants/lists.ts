@@ -15,7 +15,14 @@ export const TRISOLARIS_LIST =
 export const TURBO_LIST =
          'https://raw.githubusercontent.com/trisolaris-labs/tokens/refs/heads/feature/extandable_chains/lists/tokens.json'
 export const AURORA_LIST =
-         'https://raw.githubusercontent.com/trisolaris-labs/tokens/refs/heads/feature/extandable_chains/lists/tokens.json'
+  'https://raw.githubusercontent.com/trisolaris-labs/tokens/refs/heads/feature/extandable_chains/lists/tokens.json'
+// export const TRISOLARIS_LIST =
+//   'https://raw.githubusercontent.com/trisolaris-labs/tokens/refs/heads/turbo/lists/1313161554/list.json'
+// export const TURBO_LIST =
+//   'https://raw.githubusercontent.com/trisolaris-labs/tokens/refs/heads/turbo/lists/1313161554/list.json'
+// export const AURORA_LIST =
+//          'https://raw.githubusercontent.com/trisolaris-labs/tokens/refs/heads/turbo/lists/1313161554/list.json'
+
 
 const DEFAULT_LISTS: Map<ChainId, string> = new Map([
   [ChainId.AVALANCHE, AVAX_BRIDGE_LIST],

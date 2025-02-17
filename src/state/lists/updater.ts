@@ -7,7 +7,7 @@ import useInterval from '../../hooks/useInterval'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { addPopup } from '../application/actions'
 import { AppDispatch, AppState } from '../index'
-import { acceptListUpdate, resetStore } from './actions'
+import { acceptListUpdate } from './actions'
 
 
 export default function Updater(): null {
