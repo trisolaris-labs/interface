@@ -36,10 +36,10 @@ export default function Web3Provider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (versionHash && cachedVersionHash !== versionHash) {
-      window.localStorage.clear()
+      window.localStorage.removeItem('persist:root')
       window.localStorage.setItem('versionHash', versionHash)
     }
-  }, [cachedVersionHash])
+  }, [])
 
   return <Web3ReactProvider connectors={connectors}>{children}</Web3ReactProvider>
 }

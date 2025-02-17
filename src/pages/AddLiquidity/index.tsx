@@ -1,6 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, CETH, TokenAmount, WETH, ROUTER_ADDRESS } from '@trisolaris/sdk'
+import { Currency, currencyEquals, configManager } from '@trisolaris/sdk'
+import { CONFIGURED_WETH } from '../../constants'
 import React, { useCallback, useContext, useState } from 'react'
 import { Plus } from 'react-feather'
 import ReactGA from 'react-ga'
@@ -57,15 +58,15 @@ export default function AddLiquidity({
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
   const { account, chainId, provider } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
-
+  const ROUTER_ADDRESS = configManager.getConfig().routerAddress
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
   const { t } = useTranslation()
   const baseCurrency = AVAILABLE_CHAINS_DATA[chainId]?.networkParams?.nativeCurrency
   const oneCurrencyIsWETH = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
-        (currencyB && currencyEquals(currencyB, WETH[chainId])))
+      ((currencyA && currencyEquals(currencyA, CONFIGURED_WETH[chainId])) ||
+        (currencyB && currencyEquals(currencyB, CONFIGURED_WETH[chainId])))
   )
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 

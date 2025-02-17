@@ -1,5 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
-import { ChainId, Token, WETH } from '@trisolaris/sdk'
+import { ChainId, Token, configManager } from '@trisolaris/sdk'
 import IUniswapV2Pair_ABI from '../constants/abis/polygon/IUniswapV2Pair.json'
 import { useMemo } from 'react'
 
@@ -54,6 +54,7 @@ export function useBridgeTokenContract(tokenAddress?: string, withSignerIfPossib
 
 export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
+  const WETH = configManager.getConfig().WETH
   return useContract(chainId ? WETH[chainId]?.address : undefined, WETH_ABI, withSignerIfPossible)
 }
 

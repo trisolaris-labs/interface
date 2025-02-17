@@ -50,7 +50,7 @@ async function init() {
       .trim()
       .replace(/\W+/g, '_')
     const token =
-      `\n\nexport const ${formattedSymbol}: { [chainId in ChainId]: Token } = {` +
+      `\n\nexport const ${formattedSymbol}: { [chainId: number]: Token } = {` +
       `${_.map(tokenObj, (token, chainID) => {
         let chainEnumString = null
 
@@ -76,10 +76,12 @@ async function init() {
             break
           }
           default:
-            throw new Error('ChainID not found: ' + chainID)
+            chainEnumString = Number(chainID)
+            break
         }
 
-        return `\n  [${chainEnumString}]: new Token(${chainEnumString}, '${token.address}', ${token.decimals}, '${token.symbol}', '${token.name}'),`
+        return `\n  ${typeof chainEnumString !== 'number' ? `[${chainEnumString}]` : chainEnumString
+        }: new Token(${chainEnumString}, '${token.address}', ${token.decimals}, '${token.symbol}', '${token.name}'),`
       }).join('')}` +
       '\n}'
 

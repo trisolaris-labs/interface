@@ -1,4 +1,4 @@
-import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WETH } from '@trisolaris/sdk'
+import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, DEFAULT_WETH as WETH } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../../constants'
 import { USDT, WBTC } from '../../constants/tokens'
 import { useActiveWeb3React } from '../../hooks'

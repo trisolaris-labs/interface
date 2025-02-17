@@ -29,6 +29,36 @@
     "routerAddress": "0x2CB45Edb4517d5947aFdE3BEAbF95A582506858B",
     "initCodeHash": "0x754e1d90e536e4c1df81b7f030f47b4ca80c87120e145c294f098c83a6cb5ace"
   },
+  "1313161555": {
+    "networkParams": {
+      "chainId": "4e454153",
+      "chainName": "Aurora Testnet",
+      "nativeCurrency": {
+        "name": "ETH",
+        "symbol": "ETH",
+        "decimals": 18
+      },
+      "rpcUrls": [
+        "https://testnet.aurora.dev"
+      ],
+      "blockExplorerUrls": [
+        "https://explorer.testnet.aurora.dev/"
+      ]
+    },
+    "chainLabel": "Aurora Testnet",
+    "baseCurrencyLabel": "ETH",
+    "icon": "https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/chains/aurora.png",
+    "multiCallAddress": "0xD8A9A3Ff4d76618ddBbEcfbaff4ACEe26cf316cF",
+    "WETH": {
+      "address": "0xA22d6bD9789283b6AaA57808d5875B7B9f0fD813",
+      "symbol": "WETH",
+      "name": "Wrapped Eth",
+      "decimals": 18
+    },
+    "factoryAddress": "0xB7B4802D9Dcf4eE7414b39556eB73683992Ad003",
+    "routerAddress": "0x1360f83a9348fBa26eD6C44b9F9874e8c42BC287",
+    "initCodeHash": "0x754e1d90e536e4c1df81b7f030f47b4ca80c87120e145c294f098c83a6cb5ace"
+  },
   "1313161567": {
     "networkParams": {
       "chainId": "4e45415f",

@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../index'
 import { AEB_TOKENLIST } from '../../constants/lists'
-import { WETH } from '@trisolaris/sdk'
+import { DEFAULT_WETH as WETH } from '@trisolaris/sdk'
 import { PNG } from '../../constants/tokens'
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {
@@ -27,7 +27,7 @@ export class WrappedTokenInfo extends Token {
   }
 }
 
-export type TokenAddressMap = Readonly<{ [chainId in ChainId]: Readonly<{ [tokenAddress: string]: WrappedTokenInfo }> }>
+export type TokenAddressMap = Readonly<{ [chainId: number]: Readonly<{ [tokenAddress: string]: WrappedTokenInfo }> }>
 
 /**
  * An empty result, useful as a default.
@@ -43,7 +43,7 @@ const EMPTY_LIST: TokenAddressMap = {
 let listCache: WeakMap<TokenList, TokenAddressMap> | null =
   typeof WeakMap !== 'undefined' ? new WeakMap<TokenList, TokenAddressMap>() : null
 
-export function listToTokenMap(list: TokenList & { versionHash?: string }): TokenAddressMap {
+export function listToTokenMap(list: TokenList): TokenAddressMap {
   let result = listCache?.get(list)
   if (result) return result
   const map = list.tokens.reduce<TokenAddressMap>(
@@ -56,7 +56,7 @@ export function listToTokenMap(list: TokenList & { versionHash?: string }): Toke
           })
           ?.filter((x): x is TagInfo => Boolean(x)) ?? []
       const token = new WrappedTokenInfo(tokenInfo, tags)
-      if (tokenMap[token.chainId][token.address] !== undefined) throw Error(`Duplicate tokens. ${token.address}, ${token.chainId}, ${token.symbol}`)
+      if (tokenMap[token.chainId] && tokenMap[token.chainId][token.address] !== undefined) throw Error(`Duplicate tokens. ${token.address}, ${token.chainId}, ${token.symbol}`)
       return {
         ...tokenMap,
         [token.chainId]: {

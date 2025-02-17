@@ -126,8 +126,8 @@ export default function NetworkSelectModal() {
     return (
       <Option
         active={+providerChainId === numericChainId}
-        id={`connect-${ChainId[numericChainId]}`}
-        key={ChainId[numericChainId]}
+        id={`connect-${numericChainId}`}
+        key={numericChainId}
         color={'#E8831D'}
         header={chainData.chainLabel}
         subheader={null}

@@ -7,9 +7,9 @@ import {
   Token,
   TokenAmount,
   Trade,
-  FACTORY_ADDRESS,
+  FACTORY_ADDRESS as DEFAULT_FACTORY_ADDRESS,
   ChainId,
-  ROUTER_ADDRESS
+  ROUTER_ADDRESS as DEFAULT_ROUTER_ADDRESS
 } from '@trisolaris/sdk'
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -107,8 +107,8 @@ export function tryParseAmount(value?: string, currency?: Currency): CurrencyAmo
 }
 
 const BAD_RECIPIENT_ADDRESSES: string[] = [
-  FACTORY_ADDRESS[ChainId.POLYGON], // v2 factory
-  ROUTER_ADDRESS[ChainId.POLYGON] // v2 router 02
+  DEFAULT_FACTORY_ADDRESS[ChainId.POLYGON], // v2 factory
+  DEFAULT_ROUTER_ADDRESS[ChainId.POLYGON] // v2 router 02
 ]
 
 /**

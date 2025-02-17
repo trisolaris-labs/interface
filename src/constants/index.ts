@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Percent, Token, WETH as _WETH, Currency } from '@trisolaris/sdk'
+import { ChainId, JSBI, Percent, Token, DEFAULT_WETH as _WETH, configManager } from '@trisolaris/sdk'
 import {
   DAI,
   TRI,
@@ -31,6 +31,7 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 export const GOVERNANCE_ADDRESS = '0xb0Ff2b1047d9E8d294c2eD798faE3fA817F43Ee1'
 
 export const BRIDGE_MIGRATOR_ADDRESS = '0x4b23Aa72A1214d0E4fd3f2c8Da7C6ba660F7483C'
+
 
 // a list of tokens by chain
 type ChainTokenList = {
@@ -157,6 +158,8 @@ export const PRICE_IMPACT_ERROR_THRESHOLD_NEGATIVE = new Percent('-5', '100')
 
 export const DAO_ADDRESS = '0xf86119de6ee8d4447C8219eEC20E7561d09816d3'
 
+
+export const CONFIGURED_WETH = configManager.getConfig().WETH
 
 
 

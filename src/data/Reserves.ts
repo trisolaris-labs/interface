@@ -29,6 +29,7 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       ? Pair.getAddress(tokenA, tokenB, chainId ?? ChainId.AURORA)
       : undefined
   })
+
   const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')
 
   return useMemo(() => {

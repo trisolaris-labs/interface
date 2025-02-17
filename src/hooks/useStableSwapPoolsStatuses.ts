@@ -5,7 +5,7 @@ import LPTOKEN_UNGUARDED_ABI from '../constants/abis/stableswap/lpToken.json'
 import { StableSwapPoolName, StableSwapPoolTypes, STABLESWAP_POOLS } from '../state/stableswap/constants'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { Interface } from '@ethersproject/abi'
-import { ChainId, JSBI, WETH } from '@trisolaris/sdk'
+import { ChainId, JSBI, configManager } from '@trisolaris/sdk'
 import { BIG_INT_ZERO } from '../constants'
 import { WBTC } from '../constants/tokens'
 import useUSDCPrice from './useUSDCPrice'
@@ -20,7 +20,7 @@ type StableSwapPoolStatuses = {
 
 export default function useStableSwapPoolsStatuses(): StableSwapPoolStatuses {
   const chainId = DEFAULT_NETWORK_CHAIN_ID
-
+  const WETH = configManager.getConfig().WETH
   const stableSwapPools = useMemo(() => Object.values(STABLESWAP_POOLS).filter(({ address }) => address), [])
 
   const stableSwapPoolLPTokens: string[] = chainId == null ? [] : stableSwapPools.map(({ lpToken }) => lpToken.address)

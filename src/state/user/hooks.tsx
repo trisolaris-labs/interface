@@ -190,7 +190,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   // pinned pairs
   const pinnedPairs: [Token, Token][] = useMemo(
     () =>
-      chainId !== undefined && AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId)
+      chainId !== undefined && AVAILABLE_CHAINS_DATA.hasOwnProperty(chainId) && trisolarisDefinedPools[chainId]
         ? trisolarisDefinedPools[chainId]
             .filter(pool => pool.stableSwapPoolName == null)
             .map(({ tokens: [token0, token1] }) => [token0, token1]) ?? []
