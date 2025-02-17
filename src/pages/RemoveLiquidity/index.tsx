@@ -1,10 +1,11 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react'
+import { CONFIGURED_WETH } from '../../constants'
 import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router'
 import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, CETH, Percent, WETH, ROUTER_ADDRESS, ChainId } from '@trisolaris/sdk'
+import { Currency, currencyEquals, CETH, Percent, ChainId, configManager } from '@trisolaris/sdk'
 import { ArrowDown, Plus } from 'react-feather'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
@@ -45,6 +46,8 @@ import BalanceButtonValueEnum from '../../components/BalanceButton/BalanceButton
 import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 
 
+
+
 export default function RemoveLiquidity({
   history,
   match: {
@@ -53,6 +56,7 @@ export default function RemoveLiquidity({
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
   const { account, chainId, provider } = useActiveWeb3React()
+  const ROUTER_ADDRESS = configManager.getConfig().routerAddress
   const [tokenA, tokenB] = useMemo(() => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)], [
     currencyA,
     currencyB,
@@ -453,8 +457,8 @@ export default function RemoveLiquidity({
   const oneCurrencyIsAVAX = currencyA === CETH || currencyB === CETH
   const oneCurrencyIsWETH = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||
-        (currencyB && currencyEquals(WETH[chainId], currencyB)))
+      ((currencyA && currencyEquals(CONFIGURED_WETH[chainId], currencyA)) ||
+        (currencyB && currencyEquals(CONFIGURED_WETH[chainId], currencyB)))
   )
 
   const handleSelectCurrencyA = useCallback(

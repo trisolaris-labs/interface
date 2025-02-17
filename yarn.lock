@@ -3950,10 +3950,10 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@trisolaris/sdk@1.12.3":
-  version "1.12.3"
-  resolved "https://registry.yarnpkg.com/@trisolaris/sdk/-/sdk-1.12.3.tgz#b004df3e68127e1b6af897d8c097063da42b9f88"
-  integrity sha512-KjclFSG+TmBSYHLQRP0FHAa1apYs0uHSZRd0O6L0mfoykVtRS0+PzeoEJODP8B4cxnxTFJjP08O+ZKiRLeqgQA==
+"@trisolaris/sdk@1.12.4":
+  version "1.12.4"
+  resolved "https://registry.yarnpkg.com/@trisolaris/sdk/-/sdk-1.12.4.tgz#a56bee2fff92a540783f86b8a71612d9da89c067"
+  integrity sha512-Sl30QzGuXFiFITgEQMFPW/hWt2j5htPU7pt2lv0QQi9m5DDvf6MOqZ+L/0dC+uPLYdjxCGVRqwOGBsi2QLlRvA==
   dependencies:
     "@openzeppelin/cli" "^2.8.2"
     big.js "^5.2.2"
@@ -14982,9 +14982,9 @@ long@^4.0.0:
   integrity sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==
 
 long@^5.0.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/long/-/long-5.3.0.tgz#3bab70330c40c2c1b5cb73c4254723c81f00e15c"
-  integrity sha512-5vvY5yF1zF/kXk+L94FRiTDa1Znom46UjPCH6/XbSvS8zBKMFBHTJk8KDMqJ+2J6QezQFi7k1k8v21ClJYHPaw==
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/long/-/long-5.3.1.tgz#9d4222d3213f38a5ec809674834e0f0ab21abe96"
+  integrity sha512-ka87Jz3gcx/I7Hal94xaN2tZEOPoUOEVftkQqZx2EeQRN7LGdfLlI3FvZ+7WDplm+vK2Urx9ULrvSowtdCieng==
 
 longest@^2.0.1:
   version "2.0.1"

@@ -1,4 +1,5 @@
-import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from '@trisolaris/sdk'
+import { ChainId, Currency, currencyEquals, JSBI, Price, configManager } from '@trisolaris/sdk'
+
 import { useMemo } from 'react'
 import { BIG_INT_ZERO } from '../constants'
 import { AUUSDC as auUsdcDef, AUUSDT as auUsdtDef, USDC as usdcDef, USDT as usdtDef } from '../constants/tokens'
@@ -18,7 +19,7 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
   if(!chainId) {
     chainId = DEFAULT_NETWORK_CHAIN_ID
   }
-
+  const WETH = configManager.getConfig().WETH
   const wrapped = wrappedCurrency(currency, chainId)
 
   const USDC = usdcDef[ChainId.AURORA]

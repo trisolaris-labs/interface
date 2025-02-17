@@ -1,4 +1,4 @@
-import { ChainId, Token, WETH } from '@trisolaris/sdk'
+import { ChainId, Token, DEFAULT_WETH as WETH } from '@trisolaris/sdk'
 import _ from 'lodash'
 import {
   FRAX,

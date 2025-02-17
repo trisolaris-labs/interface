@@ -1,4 +1,4 @@
-import { Currency, currencyEquals, CETH, WETH } from '@trisolaris/sdk'
+import { Currency, currencyEquals, CETH, configManager } from '@trisolaris/sdk'
 import { useMemo } from 'react'
 import { tryParseAmount } from '../state/swap/hooks'
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -27,6 +27,7 @@ export default function useWrapCallback(
   const { chainId, account } = useActiveWeb3React()
   const wethContract = useWETHContract()
   const balance = useCurrencyBalance(account ?? undefined, inputCurrency)
+  const WETH = configManager.getConfig().WETH
   // we can always parse the amount typed as the input currency, since wrapping is 1:1
   const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [inputCurrency, typedValue])
   const addTransaction = useTransactionAdder()

@@ -5,11 +5,11 @@ import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import IUniswapV2Router02_ABI from '../constants/abis/polygon/IUniswapV2Router02.json'
 import { AVAILABLE_CHAINS_DATA } from '../constants/availableChainsData'
-import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, CETH } from '@trisolaris/sdk'
+import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, CETH, configManager} from '@trisolaris/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
 import {network } from '../connectors'
-import { ROUTER_ADDRESS } from '@trisolaris/sdk'
 import { useActiveWeb3React } from '../hooks'
+import { config } from 'process'
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
   try {
@@ -107,6 +107,7 @@ export function getContract(
 
 // account is optional
 export function getRouterContract(chainId: ChainId, library: Web3Provider, account?: string): Contract {
+  const ROUTER_ADDRESS = configManager.getConfig().routerAddress
   return getContract(
     chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.POLYGON],
     IUniswapV2Router02_ABI,

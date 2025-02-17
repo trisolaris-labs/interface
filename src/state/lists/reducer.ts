@@ -8,7 +8,7 @@ import {
   AURORA_LIST
 } from '../../constants/lists'
 import { updateVersion } from '../global/actions'
-import { acceptListUpdate, addList, fetchTokenList, removeList, selectList, setDefaultList } from './actions'
+import { acceptListUpdate, addList, fetchTokenList, removeList, selectList, setDefaultList, resetStore } from './actions'
 
 export interface ListsState {
   readonly byUrl: {
@@ -195,4 +195,7 @@ export default createReducer(initialState, builder =>
       state.lastInitializedDefaultListOfLists = [DEFAULT_TOKEN_LIST_URL]
       state.selectedListUrl = [DEFAULT_TOKEN_LIST_URL]
     })
+    .addCase(resetStore, state => {
+    state = initialState
+  })
 )

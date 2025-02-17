@@ -7,14 +7,13 @@ import useInterval from '../../hooks/useInterval'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { addPopup } from '../application/actions'
 import { AppDispatch, AppState } from '../index'
-import { acceptListUpdate } from './actions'
+import { acceptListUpdate, resetStore } from './actions'
 
-import { setDefaultList } from '../../state/lists/actions'
-import { AURORA_LIST } from '../../constants/lists'
 
 export default function Updater(): null {
   const { provider } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
+
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
   const {chainId} = useActiveWeb3React()
   // Code for making trisolaris list the default.
@@ -26,7 +25,6 @@ export default function Updater(): null {
   const isWindowVisible = useIsWindowVisible()
 
   const fetchList = useFetchListCallback()
-
   const fetchAllListsCallback = useCallback(() => {
     if (!isWindowVisible) return
     Object.keys(lists).forEach(url =>

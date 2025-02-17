@@ -9,7 +9,7 @@
 
 import { ChainId, Token } from '@trisolaris/sdk'
 
-export const DAI: { [chainId in ChainId]: Token } = {
+export const DAI: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063', 18, 'DAI', 'Dai Stablecoin'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'DAI', 'Dai Stablecoin'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a', 18, 'DAI', 'Dai Stablecoin'),
@@ -17,7 +17,7 @@ export const DAI: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'DAI', 'Dai Stablecoin'),
 }
 
-export const WBTC: { [chainId in ChainId]: Token } = {
+export const WBTC: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6', 8, 'WBTC', 'Wrapped Bitcoin'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 8, 'WBTC', 'Wrapped Bitcoin'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x408D4cD0ADb7ceBd1F1A1C33A0Ba2098E1295bAB', 8, 'WBTC', 'Wrapped Bitcoin'),
@@ -25,7 +25,7 @@ export const WBTC: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 8, 'WBTC', 'Wrapped Bitcoin'),
 }
 
-export const USDC_E: { [chainId in ChainId]: Token } = {
+export const USDC_E: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 6, 'USDC.e', 'USD Coin (Rainbow Bridged)'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'USDC.e', 'USD Coin (Rainbow Bridged)'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 6, 'USDC.e', 'USD Coin (Rainbow Bridged)'),
@@ -33,7 +33,7 @@ export const USDC_E: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 6, 'USDC.e', 'USD Coin (Rainbow Bridged)'),
 }
 
-export const USDT_E: { [chainId in ChainId]: Token } = {
+export const USDT_E: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 6, 'USDT.e', 'Tether USD (Rainbow Bridged)'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'USDT.e', 'Tether USD (Rainbow Bridged)'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 6, 'USDT.e', 'Tether USD (Rainbow Bridged)'),
@@ -41,7 +41,7 @@ export const USDT_E: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x4988a896b1227218e4A686fdE5EabdcAbd91571f', 6, 'USDT.e', 'Tether USD (Rainbow Bridged)'),
 }
 
-export const WNEAR: { [chainId in ChainId]: Token } = {
+export const WNEAR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 24, 'wNEAR', 'Wrapped Near'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 24, 'wNEAR', 'Wrapped Near'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 24, 'wNEAR', 'Wrapped Near'),
@@ -49,7 +49,7 @@ export const WNEAR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 24, 'wNEAR', 'Wrapped Near'),
 }
 
-export const TRI: { [chainId in ChainId]: Token } = {
+export const TRI: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'TRI', 'Trisolaris Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'TRI', 'Trisolaris Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'TRI', 'Trisolaris Token'),
@@ -57,7 +57,7 @@ export const TRI: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'TRI', 'Trisolaris Token'),
 }
 
-export const AURORA: { [chainId in ChainId]: Token } = {
+export const AURORA: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'AURORA', 'Aurora'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'AURORA', 'Aurora'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'AURORA', 'Aurora'),
@@ -65,7 +65,7 @@ export const AURORA: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79', 18, 'AURORA', 'Aurora'),
 }
 
-export const XTRI: { [chainId in ChainId]: Token } = {
+export const XTRI: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'xTRI', 'xTRI'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'xTRI', 'xTRI'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'xTRI', 'xTRI'),
@@ -73,7 +73,7 @@ export const XTRI: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'xTRI', 'xTRI'),
 }
 
-export const ATLUNA: { [chainId in ChainId]: Token } = {
+export const ATLUNA: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'atLUNA', 'Wrapped LUNA'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'atLUNA', 'Wrapped LUNA'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'atLUNA', 'Wrapped LUNA'),
@@ -81,7 +81,7 @@ export const ATLUNA: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'atLUNA', 'Wrapped LUNA'),
 }
 
-export const ATUST: { [chainId in ChainId]: Token } = {
+export const ATUST: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'atUST', 'Wrapped UST'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'atUST', 'Wrapped UST'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'atUST', 'Wrapped UST'),
@@ -89,7 +89,7 @@ export const ATUST: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'atUST', 'Wrapped UST'),
 }
 
-export const AVAX: { [chainId in ChainId]: Token } = {
+export const AVAX: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'AVAX', 'Avalanche'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'AVAX', 'Avalanche'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'AVAX', 'Avalanche'),
@@ -97,7 +97,7 @@ export const AVAX: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'AVAX', 'Avalanche'),
 }
 
-export const MATIC: { [chainId in ChainId]: Token } = {
+export const MATIC: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'MATIC', 'Polygon'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'MATIC', 'Polygon'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'MATIC', 'Polygon'),
@@ -105,7 +105,7 @@ export const MATIC: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'MATIC', 'Polygon'),
 }
 
-export const BNB: { [chainId in ChainId]: Token } = {
+export const BNB: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'BNB', 'Binance Coin'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'BNB', 'Binance Coin'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BNB', 'Binance Coin'),
@@ -113,7 +113,7 @@ export const BNB: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'BNB', 'Binance Coin'),
 }
 
-export const EMPYR: { [chainId in ChainId]: Token } = {
+export const EMPYR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 9, 'EMPYR', 'Empyrean'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 9, 'EMPYR', 'Empyrean'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 9, 'EMPYR', 'Empyrean'),
@@ -121,7 +121,7 @@ export const EMPYR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 9, 'EMPYR', 'Empyrean'),
 }
 
-export const FLX: { [chainId in ChainId]: Token } = {
+export const FLX: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'FLX', 'Flux Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'FLX', 'Flux Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'FLX', 'Flux Token'),
@@ -129,7 +129,7 @@ export const FLX: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'FLX', 'Flux Token'),
 }
 
-export const SOLACE: { [chainId in ChainId]: Token } = {
+export const SOLACE: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'SOLACE', 'Solace Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'SOLACE', 'Solace Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'SOLACE', 'Solace Token'),
@@ -137,7 +137,7 @@ export const SOLACE: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'SOLACE', 'Solace Token'),
 }
 
-export const META: { [chainId in ChainId]: Token } = {
+export const META: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 24, 'META', 'Meta Pool'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 24, 'META', 'Meta Pool'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 24, 'META', 'Meta Pool'),
@@ -145,7 +145,7 @@ export const META: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 24, 'META', 'Meta Pool'),
 }
 
-export const STNEAR: { [chainId in ChainId]: Token } = {
+export const STNEAR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 24, 'stNEAR', 'Staked NEAR'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 24, 'stNEAR', 'Staked NEAR'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 24, 'stNEAR', 'Staked NEAR'),
@@ -153,7 +153,7 @@ export const STNEAR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 24, 'stNEAR', 'Staked NEAR'),
 }
 
-export const POLAR: { [chainId in ChainId]: Token } = {
+export const POLAR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'POLAR', 'Polar'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'POLAR', 'Polar'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'POLAR', 'Polar'),
@@ -161,7 +161,7 @@ export const POLAR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'POLAR', 'Polar'),
 }
 
-export const SPOLAR: { [chainId in ChainId]: Token } = {
+export const SPOLAR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'SPOLAR', 'Polar Share'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'SPOLAR', 'Polar Share'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'SPOLAR', 'Polar Share'),
@@ -169,7 +169,7 @@ export const SPOLAR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'SPOLAR', 'Polar Share'),
 }
 
-export const LUNAR: { [chainId in ChainId]: Token } = {
+export const LUNAR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'LUNAR', 'Lunar'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'LUNAR', 'Lunar'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'LUNAR', 'Lunar'),
@@ -177,7 +177,7 @@ export const LUNAR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'LUNAR', 'Lunar'),
 }
 
-export const ORBITAL: { [chainId in ChainId]: Token } = {
+export const ORBITAL: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'ORBITAL', 'ORBITAL'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'ORBITAL', 'ORBITAL'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'ORBITAL', 'ORBITAL'),
@@ -185,7 +185,7 @@ export const ORBITAL: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'ORBITAL', 'ORBITAL'),
 }
 
-export const AUSDO: { [chainId in ChainId]: Token } = {
+export const AUSDO: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 8, 'aUSDO', 'aUSDO'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 8, 'aUSDO', 'aUSDO'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 8, 'aUSDO', 'aUSDO'),
@@ -193,7 +193,7 @@ export const AUSDO: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 8, 'aUSDO', 'aUSDO'),
 }
 
-export const BBT: { [chainId in ChainId]: Token } = {
+export const BBT: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'BBT', 'BlueBit Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'BBT', 'BlueBit Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BBT', 'BlueBit Token'),
@@ -201,7 +201,7 @@ export const BBT: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'BBT', 'BlueBit Token'),
 }
 
-export const USDC_E_USDT_E_TLP: { [chainId in ChainId]: Token } = {
+export const USDC_E_USDT_E_TLP: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USDC.e/USDT.e TLP', 'Trisolaris USDC.e/USDT.e'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USDC.e/USDT.e TLP', 'Trisolaris USDC.e/USDT.e'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USDC.e/USDT.e TLP', 'Trisolaris USDC.e/USDT.e'),
@@ -209,7 +209,7 @@ export const USDC_E_USDT_E_TLP: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'USDC.e/USDT.e TLP', 'Trisolaris USDC.e/USDT.e'),
 }
 
-export const AAVE: { [chainId in ChainId]: Token } = {
+export const AAVE: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0xD6DF932A45C0f255f85145f286eA0b292B21C90B', 18, 'AAVE', 'Aave Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'AAVE', 'Aave Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x63a72806098Bd3D9520cC43356dD78afe5D386D9', 18, 'AAVE', 'Aave Token'),
@@ -217,7 +217,7 @@ export const AAVE: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'AAVE', 'Aave Token'),
 }
 
-export const ABR: { [chainId in ChainId]: Token } = {
+export const ABR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'ABR', 'Allbridge - Allbridge'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'ABR', 'Allbridge - Allbridge'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'ABR', 'Allbridge - Allbridge'),
@@ -225,7 +225,7 @@ export const ABR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'ABR', 'Allbridge - Allbridge'),
 }
 
-export const ABBUSD: { [chainId in ChainId]: Token } = {
+export const ABBUSD: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'abBUSD', 'BUSD BSC - Allbridge'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'abBUSD', 'BUSD BSC - Allbridge'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'abBUSD', 'BUSD BSC - Allbridge'),
@@ -233,7 +233,7 @@ export const ABBUSD: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'abBUSD', 'BUSD BSC - Allbridge'),
 }
 
-export const PAD: { [chainId in ChainId]: Token } = {
+export const PAD: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'NearPad Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'NearPad Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'NearPad Token'),
@@ -241,7 +241,7 @@ export const PAD: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'NearPad Token'),
 }
 
-export const SOL: { [chainId in ChainId]: Token } = {
+export const SOL: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'SOL', 'SOL - Allbridge'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'SOL', 'SOL - Allbridge'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'SOL', 'SOL - Allbridge'),
@@ -249,7 +249,7 @@ export const SOL: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'SOL', 'SOL - Allbridge'),
 }
 
-export const AGEUR: { [chainId in ChainId]: Token } = {
+export const AGEUR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'agEUR', 'agEUR'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'agEUR', 'agEUR'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'agEUR', 'agEUR'),
@@ -257,7 +257,7 @@ export const AGEUR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'agEUR', 'agEUR'),
 }
 
-export const ANGLE: { [chainId in ChainId]: Token } = {
+export const ANGLE: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'ANGLE', 'ANGLE'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'ANGLE', 'ANGLE'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'ANGLE', 'ANGLE'),
@@ -265,7 +265,7 @@ export const ANGLE: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'ANGLE', 'ANGLE'),
 }
 
-export const AVRIT: { [chainId in ChainId]: Token } = {
+export const AVRIT: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'AVRIT', 'Avrit Learning'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'AVRIT', 'Avrit Learning'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'AVRIT', 'Avrit Learning'),
@@ -273,7 +273,7 @@ export const AVRIT: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'AVRIT', 'Avrit Learning'),
 }
 
-export const BAKED: { [chainId in ChainId]: Token } = {
+export const BAKED: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'BAKED', 'BakedToken'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'BAKED', 'BakedToken'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BAKED', 'BakedToken'),
@@ -281,7 +281,7 @@ export const BAKED: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'BAKED', 'BakedToken'),
 }
 
-export const BAL: { [chainId in ChainId]: Token } = {
+export const BAL: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'BAL', 'Balancer'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'BAL', 'Balancer'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BAL', 'Balancer'),
@@ -289,7 +289,7 @@ export const BAL: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'BAL', 'Balancer'),
 }
 
-export const BAT: { [chainId in ChainId]: Token } = {
+export const BAT: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'BAT', 'Basic Attention Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'BAT', 'Basic Attention Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BAT', 'Basic Attention Token'),
@@ -297,7 +297,7 @@ export const BAT: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'BAT', 'Basic Attention Token'),
 }
 
-export const BHOME: { [chainId in ChainId]: Token } = {
+export const BHOME: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 6, 'bHOME', 'bHome'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'bHOME', 'bHome'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 6, 'bHOME', 'bHome'),
@@ -305,7 +305,7 @@ export const BHOME: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 6, 'bHOME', 'bHome'),
 }
 
-export const BIVE: { [chainId in ChainId]: Token } = {
+export const BIVE: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 4, 'BIVE', 'Bizverse'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 4, 'BIVE', 'Bizverse'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 4, 'BIVE', 'Bizverse'),
@@ -313,7 +313,7 @@ export const BIVE: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 4, 'BIVE', 'Bizverse'),
 }
 
-export const BSTN: { [chainId in ChainId]: Token } = {
+export const BSTN: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'BSTN', 'Bastion'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'BSTN', 'Bastion'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BSTN', 'Bastion'),
@@ -321,7 +321,7 @@ export const BSTN: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'BSTN', 'Bastion'),
 }
 
-export const COMP: { [chainId in ChainId]: Token } = {
+export const COMP: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'COMP', 'Compound'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'COMP', 'Compound'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'COMP', 'Compound'),
@@ -329,7 +329,7 @@ export const COMP: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'COMP', 'Compound'),
 }
 
-export const CREAM: { [chainId in ChainId]: Token } = {
+export const CREAM: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'CREAM', 'Cream Finance'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'CREAM', 'Cream Finance'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'CREAM', 'Cream Finance'),
@@ -337,7 +337,7 @@ export const CREAM: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'CREAM', 'Cream Finance'),
 }
 
-export const CRF: { [chainId in ChainId]: Token } = {
+export const CRF: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'CRF', 'Crafting Finance'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'CRF', 'Crafting Finance'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'CRF', 'Crafting Finance'),
@@ -345,7 +345,7 @@ export const CRF: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'CRF', 'Crafting Finance'),
 }
 
-export const DLTA: { [chainId in ChainId]: Token } = {
+export const DLTA: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'DLTA', 'delta.theta'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'DLTA', 'delta.theta'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'DLTA', 'delta.theta'),
@@ -353,7 +353,7 @@ export const DLTA: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'DLTA', 'delta.theta'),
 }
 
-export const DODO: { [chainId in ChainId]: Token } = {
+export const DODO: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'DODO', 'DODO bird'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'DODO', 'DODO bird'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'DODO', 'DODO bird'),
@@ -361,7 +361,7 @@ export const DODO: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'DODO', 'DODO bird'),
 }
 
-export const FAME: { [chainId in ChainId]: Token } = {
+export const FAME: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'FAME', 'FAME'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'FAME', 'FAME'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'FAME', 'FAME'),
@@ -369,7 +369,7 @@ export const FAME: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'FAME', 'FAME'),
 }
 
-export const RNBWFRAX: { [chainId in ChainId]: Token } = {
+export const RNBWFRAX: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'rnbwFRAX', 'Frax (Rainbow Bridge)'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'rnbwFRAX', 'Frax (Rainbow Bridge)'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'rnbwFRAX', 'Frax (Rainbow Bridge)'),
@@ -377,7 +377,7 @@ export const RNBWFRAX: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'rnbwFRAX', 'Frax (Rainbow Bridge)'),
 }
 
-export const FXS: { [chainId in ChainId]: Token } = {
+export const FXS: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'FXS', 'Frax Share'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'FXS', 'Frax Share'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'FXS', 'Frax Share'),
@@ -385,7 +385,7 @@ export const FXS: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'FXS', 'Frax Share'),
 }
 
-export const HAK: { [chainId in ChainId]: Token } = {
+export const HAK: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'HAK', 'Hakuna Matata'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'HAK', 'Hakuna Matata'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'HAK', 'Hakuna Matata'),
@@ -393,7 +393,7 @@ export const HAK: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'HAK', 'Hakuna Matata'),
 }
 
-export const HAPI: { [chainId in ChainId]: Token } = {
+export const HAPI: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'HAPI', 'HAPI'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'HAPI', 'HAPI'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'HAPI', 'HAPI'),
@@ -401,7 +401,7 @@ export const HAPI: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'HAPI', 'HAPI'),
 }
 
-export const JUMBO: { [chainId in ChainId]: Token } = {
+export const JUMBO: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'JUMBO', 'Jumbo Exchange'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'JUMBO', 'Jumbo Exchange'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'JUMBO', 'Jumbo Exchange'),
@@ -409,7 +409,7 @@ export const JUMBO: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'JUMBO', 'Jumbo Exchange'),
 }
 
-export const KSW: { [chainId in ChainId]: Token } = {
+export const KSW: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'KSW', 'KillSwitchToken'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'KSW', 'KillSwitchToken'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'KSW', 'KillSwitchToken'),
@@ -417,7 +417,7 @@ export const KSW: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'KSW', 'KillSwitchToken'),
 }
 
-export const LINEAR: { [chainId in ChainId]: Token } = {
+export const LINEAR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 24, 'LINEAR', 'LiNEAR'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 24, 'LINEAR', 'LiNEAR'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 24, 'LINEAR', 'LiNEAR'),
@@ -425,7 +425,7 @@ export const LINEAR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 24, 'LINEAR', 'LiNEAR'),
 }
 
-export const LINK: { [chainId in ChainId]: Token } = {
+export const LINK: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'LINK', 'ChainLink Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'LINK', 'ChainLink Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'LINK', 'ChainLink Token'),
@@ -433,7 +433,7 @@ export const LINK: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'LINK', 'ChainLink Token'),
 }
 
-export const MKR: { [chainId in ChainId]: Token } = {
+export const MKR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'MKR', 'Maker'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'MKR', 'Maker'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'MKR', 'Maker'),
@@ -441,7 +441,7 @@ export const MKR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'MKR', 'Maker'),
 }
 
-export const MNFT: { [chainId in ChainId]: Token } = {
+export const MNFT: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'MNFT', 'MANUFACTORY'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'MNFT', 'MANUFACTORY'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'MNFT', 'MANUFACTORY'),
@@ -449,7 +449,7 @@ export const MNFT: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'MNFT', 'MANUFACTORY'),
 }
 
-export const MODA: { [chainId in ChainId]: Token } = {
+export const MODA: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'MODA', 'moda'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'MODA', 'moda'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'MODA', 'moda'),
@@ -457,7 +457,7 @@ export const MODA: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'MODA', 'moda'),
 }
 
-export const NDOL: { [chainId in ChainId]: Token } = {
+export const NDOL: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'NDOL', 'Necc Dollars'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'NDOL', 'Necc Dollars'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'NDOL', 'Necc Dollars'),
@@ -465,7 +465,7 @@ export const NDOL: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'NDOL', 'Necc Dollars'),
 }
 
-export const NECC: { [chainId in ChainId]: Token } = {
+export const NECC: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 9, 'NECC', 'Necc'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 9, 'NECC', 'Necc'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 9, 'NECC', 'Necc'),
@@ -473,7 +473,7 @@ export const NECC: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 9, 'NECC', 'Necc'),
 }
 
-export const NFD: { [chainId in ChainId]: Token } = {
+export const NFD: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'NFD', 'Feisty Doge NFT'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'NFD', 'Feisty Doge NFT'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'NFD', 'Feisty Doge NFT'),
@@ -481,7 +481,7 @@ export const NFD: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'NFD', 'Feisty Doge NFT'),
 }
 
-export const NNECC: { [chainId in ChainId]: Token } = {
+export const NNECC: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'nNECC', 'Wrapped Staked Necc'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'nNECC', 'Wrapped Staked Necc'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'nNECC', 'Wrapped Staked Necc'),
@@ -489,7 +489,7 @@ export const NNECC: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'nNECC', 'Wrapped Staked Necc'),
 }
 
-export const OCT: { [chainId in ChainId]: Token } = {
+export const OCT: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'OCT', 'Octopus Network Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'OCT', 'Octopus Network Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'OCT', 'Octopus Network Token'),
@@ -497,7 +497,7 @@ export const OCT: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'OCT', 'Octopus Network Token'),
 }
 
-export const OIN: { [chainId in ChainId]: Token } = {
+export const OIN: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 8, 'OIN', 'oinfinance'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 8, 'OIN', 'oinfinance'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 8, 'OIN', 'oinfinance'),
@@ -505,7 +505,7 @@ export const OIN: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 8, 'OIN', 'oinfinance'),
 }
 
-export const PACHA: { [chainId in ChainId]: Token } = {
+export const PACHA: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'PACHA', 'PachaVerse DAO'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'PACHA', 'PachaVerse DAO'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'PACHA', 'PachaVerse DAO'),
@@ -513,7 +513,7 @@ export const PACHA: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'PACHA', 'PachaVerse DAO'),
 }
 
-export const PICKLE: { [chainId in ChainId]: Token } = {
+export const PICKLE: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'PICKLE', 'PickleToken'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'PICKLE', 'PickleToken'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'PICKLE', 'PickleToken'),
@@ -521,7 +521,7 @@ export const PICKLE: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'PICKLE', 'PickleToken'),
 }
 
-export const PLY: { [chainId in ChainId]: Token } = {
+export const PLY: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'PLY', 'Aurigami Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'PLY', 'Aurigami Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'PLY', 'Aurigami Token'),
@@ -529,7 +529,7 @@ export const PLY: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'PLY', 'Aurigami Token'),
 }
 
-export const PULSE: { [chainId in ChainId]: Token } = {
+export const PULSE: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'PULSE', 'Pulse'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'PULSE', 'Pulse'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'PULSE', 'Pulse'),
@@ -537,7 +537,7 @@ export const PULSE: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'PULSE', 'Pulse'),
 }
 
-export const REF: { [chainId in ChainId]: Token } = {
+export const REF: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'REF', 'Ref Finance Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'REF', 'Ref Finance Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'REF', 'Ref Finance Token'),
@@ -545,7 +545,7 @@ export const REF: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'REF', 'Ref Finance Token'),
 }
 
-export const REN: { [chainId in ChainId]: Token } = {
+export const REN: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'REN', 'Republic'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'REN', 'Republic'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'REN', 'Republic'),
@@ -553,7 +553,7 @@ export const REN: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'REN', 'Republic'),
 }
 
-export const RMC: { [chainId in ChainId]: Token } = {
+export const RMC: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'rMC', 'rMutantCoin'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'rMC', 'rMutantCoin'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'rMC', 'rMutantCoin'),
@@ -561,7 +561,7 @@ export const RMC: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'rMC', 'rMutantCoin'),
 }
 
-export const SNX: { [chainId in ChainId]: Token } = {
+export const SNX: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'SNX', 'Synthetix Network Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'SNX', 'Synthetix Network Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'SNX', 'Synthetix Network Token'),
@@ -569,7 +569,7 @@ export const SNX: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'SNX', 'Synthetix Network Token'),
 }
 
-export const SUSHI: { [chainId in ChainId]: Token } = {
+export const SUSHI: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'SUSHI', 'SushiToken'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'SUSHI', 'SushiToken'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'SUSHI', 'SushiToken'),
@@ -577,7 +577,7 @@ export const SUSHI: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'SUSHI', 'SushiToken'),
 }
 
-export const TUSD: { [chainId in ChainId]: Token } = {
+export const TUSD: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'TUSD', 'TrueUSD'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'TUSD', 'TrueUSD'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'TUSD', 'TrueUSD'),
@@ -585,7 +585,7 @@ export const TUSD: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'TUSD', 'TrueUSD'),
 }
 
-export const UMINT: { [chainId in ChainId]: Token } = {
+export const UMINT: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'UMINT', 'YouMinter'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'UMINT', 'YouMinter'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'UMINT', 'YouMinter'),
@@ -593,7 +593,7 @@ export const UMINT: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'UMINT', 'YouMinter'),
 }
 
-export const VRA: { [chainId in ChainId]: Token } = {
+export const VRA: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 4, 'VRA', 'Virtual Reality Asset'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 4, 'VRA', 'Virtual Reality Asset'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 4, 'VRA', 'Virtual Reality Asset'),
@@ -601,7 +601,7 @@ export const VRA: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 4, 'VRA', 'Virtual Reality Asset'),
 }
 
-export const WANNA: { [chainId in ChainId]: Token } = {
+export const WANNA: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'WANNA', 'WannaSwap'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'WANNA', 'WannaSwap'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'WANNA', 'WannaSwap'),
@@ -609,7 +609,7 @@ export const WANNA: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'WANNA', 'WannaSwap'),
 }
 
-export const WOO: { [chainId in ChainId]: Token } = {
+export const WOO: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'WOO', 'Wootrade Network'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'WOO', 'Wootrade Network'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'WOO', 'Wootrade Network'),
@@ -617,7 +617,7 @@ export const WOO: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'WOO', 'Wootrade Network'),
 }
 
-export const WSTR: { [chainId in ChainId]: Token } = {
+export const WSTR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'WSTR', 'WrappedStar'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'WSTR', 'WrappedStar'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'WSTR', 'WrappedStar'),
@@ -625,7 +625,7 @@ export const WSTR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'WSTR', 'WrappedStar'),
 }
 
-export const YFI: { [chainId in ChainId]: Token } = {
+export const YFI: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'YFI', 'yearn.finance'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'YFI', 'yearn.finance'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'YFI', 'yearn.finance'),
@@ -633,7 +633,7 @@ export const YFI: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'YFI', 'yearn.finance'),
 }
 
-export const MECHA: { [chainId in ChainId]: Token } = {
+export const MECHA: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'MECHA', 'Mecha'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'MECHA', 'Mecha'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'MECHA', 'Mecha'),
@@ -641,7 +641,7 @@ export const MECHA: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'MECHA', 'Mecha'),
 }
 
-export const UNI: { [chainId in ChainId]: Token } = {
+export const UNI: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'UNI', 'Uniswap'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'UNI', 'Uniswap'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'UNI', 'Uniswap'),
@@ -649,7 +649,7 @@ export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'UNI', 'Uniswap'),
 }
 
-export const XNL: { [chainId in ChainId]: Token } = {
+export const XNL: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'XNL', 'Chronicle'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'XNL', 'Chronicle'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'XNL', 'Chronicle'),
@@ -657,7 +657,7 @@ export const XNL: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'XNL', 'Chronicle'),
 }
 
-export const SHITZU: { [chainId in ChainId]: Token } = {
+export const SHITZU: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'SHITZU', 'Shitzu'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'SHITZU', 'Shitzu'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'SHITZU', 'Shitzu'),
@@ -665,7 +665,7 @@ export const SHITZU: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'SHITZU', 'Shitzu'),
 }
 
-export const GBA: { [chainId in ChainId]: Token } = {
+export const GBA: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'GBA', 'Golden Banana'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'GBA', 'Golden Banana'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'GBA', 'Golden Banana'),
@@ -673,7 +673,7 @@ export const GBA: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'GBA', 'Golden Banana'),
 }
 
-export const TRIPOLAR: { [chainId in ChainId]: Token } = {
+export const TRIPOLAR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'TRIPOLAR', 'TRIPOLAR'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'TRIPOLAR', 'TRIPOLAR'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'TRIPOLAR', 'TRIPOLAR'),
@@ -681,7 +681,7 @@ export const TRIPOLAR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'TRIPOLAR', 'TRIPOLAR'),
 }
 
-export const ROSE: { [chainId in ChainId]: Token } = {
+export const ROSE: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'ROSE', 'Rose Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'ROSE', 'Rose Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'ROSE', 'Rose Token'),
@@ -689,7 +689,7 @@ export const ROSE: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'ROSE', 'Rose Token'),
 }
 
-export const RUSD: { [chainId in ChainId]: Token } = {
+export const RUSD: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'RUSD', 'Rose USD'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'RUSD', 'Rose USD'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'RUSD', 'Rose USD'),
@@ -697,7 +697,7 @@ export const RUSD: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'RUSD', 'Rose USD'),
 }
 
-export const VWAVE: { [chainId in ChainId]: Token } = {
+export const VWAVE: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'VWAVE', 'vaporwave.finance'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'VWAVE', 'vaporwave.finance'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'VWAVE', 'vaporwave.finance'),
@@ -705,7 +705,7 @@ export const VWAVE: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'VWAVE', 'vaporwave.finance'),
 }
 
-export const FRAX: { [chainId in ChainId]: Token } = {
+export const FRAX: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'FRAX', 'Frax'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'FRAX', 'Frax'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'FRAX', 'Frax'),
@@ -713,7 +713,7 @@ export const FRAX: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'FRAX', 'Frax'),
 }
 
-export const UST: { [chainId in ChainId]: Token } = {
+export const UST: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 6, 'UST', 'UST (WormHole)'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'UST', 'UST (WormHole)'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 6, 'UST', 'UST (WormHole)'),
@@ -721,7 +721,7 @@ export const UST: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 6, 'UST', 'UST (WormHole)'),
 }
 
-export const USN: { [chainId in ChainId]: Token } = {
+export const USN: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USN', 'USN'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USN', 'USN'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USN', 'USN'),
@@ -729,7 +729,7 @@ export const USN: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'USN', 'USN'),
 }
 
-export const ETHERNAL: { [chainId in ChainId]: Token } = {
+export const ETHERNAL: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'ETHERNAL', 'ETHERNAL'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'ETHERNAL', 'ETHERNAL'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'ETHERNAL', 'ETHERNAL'),
@@ -737,7 +737,7 @@ export const ETHERNAL: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'ETHERNAL', 'ETHERNAL'),
 }
 
-export const BRRR: { [chainId in ChainId]: Token } = {
+export const BRRR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'BRRR', 'BRRR'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'BRRR', 'BRRR'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BRRR', 'BRRR'),
@@ -745,7 +745,7 @@ export const BRRR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'BRRR', 'BRRR'),
 }
 
-export const NUSD: { [chainId in ChainId]: Token } = {
+export const NUSD: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'nUSD', 'nUSD'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'nUSD', 'nUSD'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'nUSD', 'nUSD'),
@@ -753,7 +753,7 @@ export const NUSD: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'nUSD', 'nUSD'),
 }
 
-export const SYN: { [chainId in ChainId]: Token } = {
+export const SYN: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'SYN', 'Synapse'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'SYN', 'Synapse'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'SYN', 'Synapse'),
@@ -761,7 +761,7 @@ export const SYN: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'SYN', 'Synapse'),
 }
 
-export const USP: { [chainId in ChainId]: Token } = {
+export const USP: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USP', 'USP'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USP', 'USP'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USP', 'USP'),
@@ -769,7 +769,7 @@ export const USP: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'USP', 'USP'),
 }
 
-export const ABBNB: { [chainId in ChainId]: Token } = {
+export const ABBNB: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'abBNB', 'BNB - Allbridge'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'abBNB', 'BNB - Allbridge'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'abBNB', 'BNB - Allbridge'),
@@ -777,7 +777,7 @@ export const ABBNB: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'abBNB', 'BNB - Allbridge'),
 }
 
-export const BINARIS: { [chainId in ChainId]: Token } = {
+export const BINARIS: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'BINARIS', 'BINARIS'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'BINARIS', 'BINARIS'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BINARIS', 'BINARIS'),
@@ -785,7 +785,7 @@ export const BINARIS: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'BINARIS', 'BINARIS'),
 }
 
-export const AUUSDT: { [chainId in ChainId]: Token } = {
+export const AUUSDT: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 8, 'auUSDT', 'auUSDT'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 8, 'auUSDT', 'auUSDT'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 8, 'auUSDT', 'auUSDT'),
@@ -793,7 +793,7 @@ export const AUUSDT: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 8, 'auUSDT', 'auUSDT'),
 }
 
-export const AUUSDC: { [chainId in ChainId]: Token } = {
+export const AUUSDC: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 8, 'auUSDC', 'auUSDC'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 8, 'auUSDC', 'auUSDC'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 8, 'auUSDC', 'auUSDC'),
@@ -801,7 +801,7 @@ export const AUUSDC: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 8, 'auUSDC', 'auUSDC'),
 }
 
-export const ORA: { [chainId in ChainId]: Token } = {
+export const ORA: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'ORA', 'ORA'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'ORA', 'ORA'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'ORA', 'ORA'),
@@ -809,7 +809,7 @@ export const ORA: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'ORA', 'ORA'),
 }
 
-export const OSHARE: { [chainId in ChainId]: Token } = {
+export const OSHARE: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'OSHARE', 'OSHARE'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'OSHARE', 'OSHARE'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'OSHARE', 'OSHARE'),
@@ -817,7 +817,7 @@ export const OSHARE: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'OSHARE', 'OSHARE'),
 }
 
-export const OBOND: { [chainId in ChainId]: Token } = {
+export const OBOND: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'OBOND', 'OBOND'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'OBOND', 'OBOND'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'OBOND', 'OBOND'),
@@ -825,7 +825,7 @@ export const OBOND: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'OBOND', 'OBOND'),
 }
 
-export const NEARX: { [chainId in ChainId]: Token } = {
+export const NEARX: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 24, 'NearX', 'NearX'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 24, 'NearX', 'NearX'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 24, 'NearX', 'NearX'),
@@ -833,7 +833,7 @@ export const NEARX: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 24, 'NearX', 'NearX'),
 }
 
-export const SD: { [chainId in ChainId]: Token } = {
+export const SD: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'SD', 'Stader'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'SD', 'Stader'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'SD', 'Stader'),
@@ -841,7 +841,7 @@ export const SD: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'SD', 'Stader'),
 }
 
-export const AXLUSDC: { [chainId in ChainId]: Token } = {
+export const AXLUSDC: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 6, 'axlUSDC', 'Axelar Wrapped USDC'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'axlUSDC', 'Axelar Wrapped USDC'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 6, 'axlUSDC', 'Axelar Wrapped USDC'),
@@ -849,7 +849,7 @@ export const AXLUSDC: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 6, 'axlUSDC', 'Axelar Wrapped USDC'),
 }
 
-export const NSTART: { [chainId in ChainId]: Token } = {
+export const NSTART: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 24, 'NSTART', 'NearStarter'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 24, 'NSTART', 'NearStarter'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 24, 'NSTART', 'NearStarter'),
@@ -857,7 +857,7 @@ export const NSTART: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 24, 'NSTART', 'NearStarter'),
 }
 
-export const STAUR: { [chainId in ChainId]: Token } = {
+export const STAUR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'stAUR', 'Staked Aurora Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'stAUR', 'Staked Aurora Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'stAUR', 'Staked Aurora Token'),
@@ -865,7 +865,7 @@ export const STAUR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'stAUR', 'Staked Aurora Token'),
 }
 
-export const USDC: { [chainId in ChainId]: Token } = {
+export const USDC: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', 6, 'USDC', 'USD Coin'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'USDC', 'USD Coin'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664', 6, 'USDC', 'USD Coin'),
@@ -873,7 +873,7 @@ export const USDC: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7', 6, 'USDC', 'USDC'),
 }
 
-export const USDT: { [chainId in ChainId]: Token } = {
+export const USDT: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0xc2132D05D31c914a87C6611C10748AEb04B58e8F', 6, 'USDT', 'Tether USD'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 6, 'USDT', 'Tether USD'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xde3A24028580884448a5397872046a019649b084', 6, 'USDT', 'Tether USD'),
@@ -881,7 +881,7 @@ export const USDT: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF', 6, 'USDt', 'Tether USD'),
 }
 
-export const USDC_USDC_E_TLP: { [chainId in ChainId]: Token } = {
+export const USDC_USDC_E_TLP: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDC.e TLP', 'Trisolaris USDC/USDC.e'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDC.e TLP', 'Trisolaris USDC/USDC.e'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDC.e TLP', 'Trisolaris USDC/USDC.e'),
@@ -889,7 +889,7 @@ export const USDC_USDC_E_TLP: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDC.e TLP', 'Trisolaris USDC/USDC.e'),
 }
 
-export const USDT_USDT_E_TLP: { [chainId in ChainId]: Token } = {
+export const USDT_USDT_E_TLP: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USDT/USDT.e TLP', 'Trisolaris USDT/USDT.e'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USDT/USDT.e TLP', 'Trisolaris USDT/USDT.e'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USDT/USDT.e TLP', 'Trisolaris USDT/USDT.e'),
@@ -897,7 +897,7 @@ export const USDT_USDT_E_TLP: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'USDT/USDT.e TLP', 'Trisolaris USDT/USDT.e'),
 }
 
-export const SCM: { [chainId in ChainId]: Token } = {
+export const SCM: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'SCM', 'Scamfari'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'SCM', 'Scamfari'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'SCM', 'Scamfari'),
@@ -905,7 +905,7 @@ export const SCM: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'SCM', 'Scamfari'),
 }
 
-export const MOCKTRI: { [chainId in ChainId]: Token } = {
+export const MOCKTRI: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
@@ -913,7 +913,7 @@ export const MOCKTRI: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0xb14e7F8D5C307495AD24256A2FDa0C56Ae953CA1', 18, 'mockTRI', 'mock Trisolaris'),
 }
 
-export const MOCKUSDC: { [chainId in ChainId]: Token } = {
+export const MOCKUSDC: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'mockUSDC', 'mock USDC'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'mockUSDC', 'mock USDC'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'mockUSDC', 'mock USDC'),
@@ -921,15 +921,16 @@ export const MOCKUSDC: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x91A3AE29a6F269ef5d992Af15F5892410c4Ed0c7', 18, 'mockUSDC', 'mock USDC'),
 }
 
-export const MOCKMOCK: { [chainId in ChainId]: Token } = {
+export const MOCKMOCK: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'mockMock', 'mock Mock'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'mockMock', 'mock Mock'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'mockMock', 'mock Mock'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'mockMock', 'mock Mock'),
+  1313161555: new Token(1313161555, '0x55404F107DEaf15ff9a6c744F0D820a8A9B31Ba2', 18, 'mockMock', 'mock Mock'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0xA22d6bD9789283b6AaA57808d5875B7B9f0fD813', 18, 'mockMock', 'mock Mock'),
 }
 
-export const ETH: { [chainId in ChainId]: Token } = {
+export const ETH: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'ETH', 'Ether'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'ETH', 'Ether'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'ETH', 'Ether'),
@@ -937,7 +938,7 @@ export const ETH: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x5a524251df27A25AC6b9964a93E1c23AD692688D', 18, 'ETH', 'Ether'),
 }
 
-export const NEAR: { [chainId in ChainId]: Token } = {
+export const NEAR: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 24, 'NEAR', 'NEAR'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 24, 'NEAR', 'NEAR'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 24, 'NEAR', 'NEAR'),
@@ -945,7 +946,7 @@ export const NEAR: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d', 24, 'NEAR', 'NEAR'),
 }
 
-export const PNG: { [chainId in ChainId]: Token } = {
+export const PNG: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x831753DD7087CaC61aB5644b308642cc1c33Dc13', 18, 'QUICK', 'Quick'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x83080D4b5fC60e22dFFA8d14AD3BB41Dde48F199', 18, 'PNG', 'Pangolin'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x60781C2586D68229fde47564546784ab3fACA982', 18, 'PNG', 'Pangolin'),
@@ -953,7 +954,7 @@ export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'QUICK', 'Quick'),
 }
 
-export const PTRI: { [chainId in ChainId]: Token } = {
+export const PTRI: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'pTRI', 'pTRI Token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'pTRI', 'pTRI Token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'pTRI', 'pTRI Token'),
@@ -961,7 +962,7 @@ export const PTRI: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'pTRI', 'pTRI Token'),
 }
 
-export const SMARTPAD: { [chainId in ChainId]: Token } = {
+export const SMARTPAD: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'SmartPad token'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'SmartPad token'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'SmartPad token'),
@@ -969,10 +970,12 @@ export const SMARTPAD: { [chainId in ChainId]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'SmartPad token'),
 }
 
-export const USDC_USDT_V2: { [chainId in ChainId]: Token } = {
+export const USDC_USDT_V2: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDT TLP', 'Trisolaris USDC/USDT'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDT TLP', 'Trisolaris USDC/USDT'),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDT TLP', 'Trisolaris USDC/USDT'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x3fADE6094373f7A91A91D4607b226791fB3BCEAf', 18, 'USDC/USDT TLP', 'Trisolaris USDC/USDT'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDT TLP', 'Trisolaris USDC/USDT'),
 }
+
+export const versionHash = 'd3b104356c0208abac27fddb1caf698068107d0f65eef08037635da0f6639eee'
