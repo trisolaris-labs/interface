@@ -55,11 +55,8 @@ export const MenuItem = styled(ExternalLink)`
   flex: 1;
   padding: 0.5rem 0.5rem;
   color: ${({ theme }) => theme.text2};
-  :hover {
-    color: ${({ theme }) => theme.text1};
-    cursor: pointer;
-    text-decoration: none;
-  }
+  text-decoration: none;
+  cursor:pointer;
   > svg {
     margin-right: 8px;
   }

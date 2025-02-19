@@ -10,7 +10,8 @@ import { useActiveWeb3React } from '../../hooks'
 import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 import useTriPrice from '../../hooks/useTriPrice'
 import { useToggleNetworkSelectModal, useToggleTriPriceModal } from '../../state/application/hooks'
-
+import { persistor } from '../../state'
+import { versionHash } from '../../constants/tokens'
 import {
   HeaderFrame,
   HeaderControls,
@@ -41,7 +42,7 @@ import { useSwitchProviderChain } from '../../hooks'
 export default function Header() {
   const { account, appSelectedChain, chainId} = useActiveWeb3React()
   const { t } = useTranslation()
-
+  const cachedVersionHash = window.localStorage.getItem('versionHash')
   const { triPriceFriendly } = useTriPrice()
   const {switchProviderChain} = useSwitchProviderChain()
   const toggleTriPriceModal = useToggleTriPriceModal()
@@ -49,6 +50,14 @@ export default function Header() {
   const isEmbedded = useEmbeddedSwapUI()
   const chainData = chainId ? AVAILABLE_CHAINS_DATA[chainId] : appSelectedChain ? AVAILABLE_CHAINS_DATA[appSelectedChain] : null
 
+ useEffect(() => {
+   if (versionHash && cachedVersionHash !== versionHash) {
+       persistor.pause()
+       persistor.flush().then(() => {
+         return persistor.purge()
+       })
+   }
+ }, [cachedVersionHash])
 
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import { Connector } from '@web3-react/types'
 import { Wallet, coinbaseWallet, injected, network, useConnectors, walletConnect } from '../../connectors'
 import { ReactNode, useEffect } from 'react'
 import { versionHash } from '../../constants/tokens'
+
 const connect = async (connector: Connector) => {
   try {
     if (connector.connectEagerly) {
@@ -17,7 +18,6 @@ const connect = async (connector: Connector) => {
 
 export default function Web3Provider({ children }: { children: ReactNode }) {
   const persistedStorage = window.localStorage.getItem('persist:root')
-  const cachedVersionHash = window.localStorage.getItem('versionHash')
   const selectedChainId = persistedStorage ? JSON.parse(JSON.parse(persistedStorage).user).chainId : undefined
   const connectors = useConnectors(undefined)
   useEffect(() => {
@@ -34,12 +34,7 @@ export default function Web3Provider({ children }: { children: ReactNode }) {
     }
   }, [network, selectedChainId]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    if (versionHash && cachedVersionHash !== versionHash) {
-      window.localStorage.removeItem('persist:root')
-      window.localStorage.setItem('versionHash', versionHash)
-    }
-  }, [])
+ 
 
   return <Web3ReactProvider connectors={connectors}>{children}</Web3ReactProvider>
 }
