@@ -89,16 +89,12 @@ const StyledLink = styled.a`
   cursor: pointer;
   color: ${({ theme }) => theme.primary1};
   font-weight: 500;
-
   :hover {
     text-decoration: underline;
   }
-
-  :focus {
-    outline: none;
-    text-decoration: underline;
+  :visited {
+    text-decoration: none;
   }
-
   :active {
     text-decoration: none;
   }
