@@ -35,37 +35,37 @@ import useEmbeddedSwapUI from '../../hooks/useEmbeddedSwapUI'
 import { StyledExternalLink } from '../BridgesMenu/BridgesMenu.styles'
 import NetworkSelectModal from '../NetworkSelectModal'
 import { useSwitchProviderChain } from '../../hooks'
-
-
-
+import { ChainId } from '@trisolaris/sdk'
 
 export default function Header() {
-  const { account, appSelectedChain, chainId} = useActiveWeb3React()
+  const { account, appSelectedChain, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const cachedVersionHash = window.localStorage.getItem('versionHash')
   const { triPriceFriendly } = useTriPrice()
-  const {switchProviderChain} = useSwitchProviderChain()
+  const { switchProviderChain } = useSwitchProviderChain()
   const toggleTriPriceModal = useToggleTriPriceModal()
   const toggleNetworkSelectModal = useToggleNetworkSelectModal()
   const isEmbedded = useEmbeddedSwapUI()
-  const chainData = chainId ? AVAILABLE_CHAINS_DATA[chainId] : appSelectedChain ? AVAILABLE_CHAINS_DATA[appSelectedChain] : null
+  const chainData = chainId
+    ? AVAILABLE_CHAINS_DATA[chainId]
+    : appSelectedChain
+    ? AVAILABLE_CHAINS_DATA[appSelectedChain]
+    : null
 
- useEffect(() => {
-   if (versionHash && cachedVersionHash !== versionHash) {
-       persistor.pause()
-       persistor.flush().then(() => {
-         return persistor.purge()
-       })
-   }
- }, [cachedVersionHash])
-
+  useEffect(() => {
+    if (versionHash && cachedVersionHash !== versionHash) {
+      persistor.pause()
+      persistor.flush().then(() => {
+        return persistor.purge()
+      })
+    }
+  }, [cachedVersionHash])
 
   useEffect(() => {
     if (appSelectedChain) {
       switchProviderChain(appSelectedChain)
     }
   }, [appSelectedChain, account])
-
 
   // Use a minimal header/footer when the `/swap` page is embedded on third-party websites
   if (isEmbedded) {
@@ -143,17 +143,21 @@ export default function Header() {
           >
             {t('header.pool')}
           </StyledNavLink>
-          <StyledNavLink id={`ptri-nav-link`} to={'/stake'} isActive={Boolean}>
-            {t('header.stake')}
-          </StyledNavLink>
-          <StyledNavLink
-            id={`png-nav-link`}
-            to={'/farm'}
-            isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/png')}
-          >
-            {t('header.farm')}
-          </StyledNavLink>
-          <StyledBridgesMenu />
+          {appSelectedChain === ChainId.AURORA && (
+            <>
+              <StyledNavLink id={`ptri-nav-link`} to={'/stake'} isActive={Boolean}>
+                {t('header.stake')}
+              </StyledNavLink>
+              <StyledNavLink
+                id={`png-nav-link`}
+                to={'/farm'}
+                isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/png')}
+              >
+                {t('header.farm')}
+              </StyledNavLink>
+              <StyledBridgesMenu />
+            </>
+          )}
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
