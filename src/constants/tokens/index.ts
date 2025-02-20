@@ -905,31 +905,6 @@ export const SCM: { [chainId: number]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'SCM', 'Scamfari'),
 }
 
-export const MOCKTRI: { [chainId: number]: Token } = {
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'mockTRI', 'mock Trisolaris'),
-  [ChainId.TURBO]: new Token(ChainId.TURBO, '0xb14e7F8D5C307495AD24256A2FDa0C56Ae953CA1', 18, 'mockTRI', 'mock Trisolaris'),
-}
-
-export const MOCKUSDC: { [chainId: number]: Token } = {
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'mockUSDC', 'mock USDC'),
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'mockUSDC', 'mock USDC'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'mockUSDC', 'mock USDC'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'mockUSDC', 'mock USDC'),
-  [ChainId.TURBO]: new Token(ChainId.TURBO, '0x91A3AE29a6F269ef5d992Af15F5892410c4Ed0c7', 18, 'mockUSDC', 'mock USDC'),
-}
-
-export const MOCKMOCK: { [chainId: number]: Token } = {
-  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'mockMock', 'mock Mock'),
-  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'mockMock', 'mock Mock'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'mockMock', 'mock Mock'),
-  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'mockMock', 'mock Mock'),
-  1313161555: new Token(1313161555, '0x55404F107DEaf15ff9a6c744F0D820a8A9B31Ba2', 18, 'mockMock', 'mock Mock'),
-  [ChainId.TURBO]: new Token(ChainId.TURBO, '0xA22d6bD9789283b6AaA57808d5875B7B9f0fD813', 18, 'mockMock', 'mock Mock'),
-}
-
 export const ETH: { [chainId: number]: Token } = {
   [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'ETH', 'Ether'),
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'ETH', 'Ether'),
@@ -978,4 +953,4 @@ export const USDC_USDT_V2: { [chainId: number]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDT TLP', 'Trisolaris USDC/USDT'),
 }
 
-export const versionHash = '0bd445a0cf47373c98957d57344f07eb252d9da741ba4b59c2cbcca5bf2a1cf4'
+export const versionHash = 'd8d07560d88adc63befd0b4778ee687607ac5f563fcc989b96d99ca06024c2b5'
