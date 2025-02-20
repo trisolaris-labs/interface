@@ -42,8 +42,6 @@ import {
   STAUR,
   USDC_E,
   USDT_E,
-  MOCKMOCK,
-  MOCKTRI
 } from '../../constants/tokens'
 import { StableSwapPoolName, STABLESWAP_POOLS } from '../stableswap/constants'
 import { MASTERCHEF_ADDRESS_V1, MASTERCHEF_ADDRESS_V2 } from './hooks-sushi'

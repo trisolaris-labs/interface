@@ -978,4 +978,4 @@ export const USDC_USDT_V2: { [chainId: number]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDT TLP', 'Trisolaris USDC/USDT'),
 }
 
-export const versionHash = '474d78a9272d2ff9f240d5f60a4bd57e2b3812727f64ca67b7edc4806dfb7590'
+export const versionHash = '0bd445a0cf47373c98957d57344f07eb252d9da741ba4b59c2cbcca5bf2a1cf4'
