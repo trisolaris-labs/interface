@@ -63,6 +63,7 @@ export const AURORA: { [chainId: number]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'AURORA', 'Aurora'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79', 18, 'AURORA', 'Aurora'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79', 18, 'AURORA', 'Aurora'),
+  1313161573: new Token(1313161573, '0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79', 18, 'AURORA', 'Aurora'),
 }
 
 export const XTRI: { [chainId: number]: Token } = {
@@ -295,6 +296,7 @@ export const BAT: { [chainId: number]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BAT', 'Basic Attention Token'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x2b9025aecc5Ce7A8E6880D3E9c6E458927eCba04', 18, 'BAT', 'Basic Attention Token'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'BAT', 'Basic Attention Token'),
+  1313161573: new Token(1313161573, '0x2b9025aecc5Ce7A8E6880D3E9c6E458927eCba04', 18, 'BAT', 'Basic Attention Token'),
 }
 
 export const BHOME: { [chainId: number]: Token } = {
@@ -871,6 +873,7 @@ export const USDC: { [chainId: number]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664', 6, 'USDC', 'USD Coin'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7', 6, 'USDC', 'USD Coin'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7', 6, 'USDC', 'USDC'),
+  1313161573: new Token(1313161573, '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7', 6, 'USDC', 'USD Coin'),
 }
 
 export const USDT: { [chainId: number]: Token } = {
@@ -879,6 +882,7 @@ export const USDT: { [chainId: number]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xde3A24028580884448a5397872046a019649b084', 6, 'USDT', 'Tether USD'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF', 6, 'USDT', 'Tether USD'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF', 6, 'USDt', 'Tether USD'),
+  1313161573: new Token(1313161573, '0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF', 6, 'USDT', 'Tether USD'),
 }
 
 export const USDC_USDC_E_TLP: { [chainId: number]: Token } = {
@@ -911,6 +915,7 @@ export const ETH: { [chainId: number]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'ETH', 'Ether'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'ETH', 'Ether'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x5a524251df27A25AC6b9964a93E1c23AD692688D', 18, 'ETH', 'Ether'),
+  1313161573: new Token(1313161573, '0x5a524251df27A25AC6b9964a93E1c23AD692688D', 18, 'ETH', 'Ether'),
 }
 
 export const NEAR: { [chainId: number]: Token } = {
@@ -919,6 +924,16 @@ export const NEAR: { [chainId: number]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 24, 'NEAR', 'NEAR'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 24, 'NEAR', 'NEAR'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d', 24, 'NEAR', 'NEAR'),
+  1313161573: new Token(1313161573, '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d', 24, 'NEAR', 'NEAR'),
+}
+
+export const USDD: { [chainId: number]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'USDD', 'Decentralized USD'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'USDD', 'Decentralized USD'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'USDD', 'Decentralized USD'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'USDD', 'Decentralized USD'),
+  [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'USDD', 'Decentralized USD'),
+  1313161573: new Token(1313161573, '0x941b45cb782CcEd9814821E9b684261fa353BCD5', 18, 'USDD', 'Decentralized USD'),
 }
 
 export const PNG: { [chainId: number]: Token } = {
@@ -953,4 +968,4 @@ export const USDC_USDT_V2: { [chainId: number]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDT TLP', 'Trisolaris USDC/USDT'),
 }
 
-export const versionHash = 'd8d07560d88adc63befd0b4778ee687607ac5f563fcc989b96d99ca06024c2b5'
+export const versionHash = '988b606b57ded15e3657daf38991d1a79073a3a63be5972fe69029094bef6261'
