@@ -11,11 +11,11 @@ export const POLYGON_BRIDGE_LIST =
   'https://gist.githubusercontent.com/baboobhaiya/8ba0cdfc6d942e2d828500dee3ff1a16/raw/07dc935f7ebc8e1716296719b8b06ebf5ee977bd/polygon_token_list'
 
 export const TRISOLARIS_LIST =
-         'https://raw.githubusercontent.com/trisolaris-labs/tokens/refs/heads/feature/extandable_chains/lists/tokens.json'
+         'https://raw.githubusercontent.com/trisolaris-labs/tokens/refs/heads/master/lists/tokens.json'
 export const TURBO_LIST =
-         'https://raw.githubusercontent.com/trisolaris-labs/tokens/refs/heads/feature/extandable_chains/lists/tokens.json'
+         'https://raw.githubusercontent.com/trisolaris-labs/tokens/refs/heads/master/lists/tokens.json'
 export const AURORA_LIST =
-  'https://raw.githubusercontent.com/trisolaris-labs/tokens/refs/heads/feature/extandable_chains/lists/tokens.json'
+  'https://raw.githubusercontent.com/trisolaris-labs/tokens/refs/heads/master/lists/tokens.json'
 // export const TRISOLARIS_LIST =
 //   'https://raw.githubusercontent.com/trisolaris-labs/tokens/refs/heads/turbo/lists/1313161554/list.json'
 // export const TURBO_LIST =
