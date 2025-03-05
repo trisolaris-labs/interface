@@ -19,6 +19,7 @@ import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
 import { useTranslation } from 'react-i18next'
 import { StableSwapTrade } from '../../state/stableswap/hooks'
+import { useNativeTokenSymbol } from '../../hooks/useNativeToken'
 
 export default function SwapModalFooter({
   trade,
@@ -97,10 +98,10 @@ export default function SwapModalFooter({
             </TYPE.black>
             <TYPE.black fontSize={14} marginLeft={'4px'}>
               {isRoutedViaStableSwap
-                ? stableSwapTrade?.outputAmount.currency.symbol
+                ? useNativeTokenSymbol(stableSwapTrade?.outputAmount.currency.symbol)
                 : trade?.tradeType === TradeType.EXACT_INPUT
-                ? trade?.outputAmount.currency.symbol
-                : trade?.inputAmount.currency.symbol}
+                ? useNativeTokenSymbol(trade?.outputAmount.currency.symbol)
+                : useNativeTokenSymbol(trade?.inputAmount.currency.symbol)}
             </TYPE.black>
           </RowFixed>
         </RowBetween>

@@ -11,7 +11,7 @@ import FormattedPriceImpact from './FormattedPriceImpact'
 import { SectionBreak } from './styleds'
 import SwapRoute from './SwapRoute'
 import { useTranslation } from 'react-i18next'
-
+import { useNativeTokenSymbol } from '../../hooks/useNativeToken'
 import { StableSwapTrade, useDerivedStableSwapInfo } from '../../state/stableswap/hooks'
 
 function TradeSummary({
@@ -81,7 +81,7 @@ function TradeSummary({
               {/* <QuestionHelper text={t('swap.liquidityProviderHelper')} /> */}
             </RowFixed>
             <TYPE.black fontSize={14} color={theme.text1}>
-              {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.currency.symbol}` : '-'}
+              {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${useNativeTokenSymbol(trade.inputAmount.currency.symbol)}` : '-'}
             </TYPE.black>
           </RowBetween>
         )}
