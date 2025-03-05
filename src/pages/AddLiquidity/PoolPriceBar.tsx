@@ -8,7 +8,7 @@ import { ONE_BIPS } from '../../constants'
 import { Field } from '../../state/mint/actions'
 import { TYPE } from '../../theme'
 import { useTranslation } from 'react-i18next'
-
+import { useNativeTokenSymbol } from '../../hooks/useNativeToken'
 export function PoolPriceBar({
   currencies,
   noLiquidity,
@@ -28,13 +28,15 @@ export function PoolPriceBar({
         <AutoColumn justify="center">
           <TYPE.black>{price?.toSignificant(6) ?? '-'}</TYPE.black>
           <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1}>
-            {currencies[Field.CURRENCY_B]?.symbol} {t('addLiquidity.per')} {currencies[Field.CURRENCY_A]?.symbol}
+            {useNativeTokenSymbol(currencies[Field.CURRENCY_B]?.symbol)} {t('addLiquidity.per')}{' '}
+            {useNativeTokenSymbol(currencies[Field.CURRENCY_A]?.symbol)}
           </Text>
         </AutoColumn>
         <AutoColumn justify="center">
           <TYPE.black>{price?.invert()?.toSignificant(6) ?? '-'}</TYPE.black>
           <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1}>
-            {currencies[Field.CURRENCY_A]?.symbol} {t('addLiquidity.per')} {currencies[Field.CURRENCY_B]?.symbol}
+            {useNativeTokenSymbol(currencies[Field.CURRENCY_A]?.symbol)} {t('addLiquidity.per')}{' '}
+            {useNativeTokenSymbol(currencies[Field.CURRENCY_B]?.symbol)}
           </Text>
         </AutoColumn>
         <AutoColumn justify="center">
