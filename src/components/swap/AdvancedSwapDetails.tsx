@@ -35,12 +35,16 @@ function TradeSummary({
   const { t } = useTranslation()
 
   const receivedAmountEstimate = isRoutedViaStableSwap
-    ? `${stableswapTrade?.outputAmountLessSlippage.toSignificant(4)} ${
+    ? `${stableswapTrade?.outputAmountLessSlippage.toSignificant(4)} ${useNativeTokenSymbol(
         stableswapTrade?.outputAmountLessSlippage.currency.symbol
-      }` ?? '-'
+      )}` ?? '-'
     : isExactIn
-    ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade.outputAmount.currency.symbol}` ?? '-'
-    : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${trade.inputAmount.currency.symbol}` ?? '-'
+    ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${useNativeTokenSymbol(
+        trade.outputAmount.currency.symbol
+      )}` ?? '-'
+    : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${useNativeTokenSymbol(
+        trade.inputAmount.currency.symbol
+      )}` ?? '-'
 
   return (
     <>
@@ -123,7 +127,7 @@ function StableTradeSummary({
   const receivedAmountEstimate =
     (isRoutedViaStableSwap &&
       `${stableswapTrade?.outputAmountLessSlippage.toSignificant(4)} ${
-        stableswapTrade?.outputAmountLessSlippage.currency.symbol
+        useNativeTokenSymbol(stableswapTrade?.outputAmountLessSlippage.currency.symbol)
       }`) ??
     '-'
 

@@ -6,6 +6,7 @@ import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 import { StyledBalanceMaxMini } from './styleds'
 import { StableSwapTrade } from '../../state/stableswap/hooks'
+import { useNativeTokenSymbol } from '../../hooks/useNativeToken'
 
 interface TradePriceProps {
   trade?: Trade | StableSwapTrade
@@ -34,8 +35,12 @@ export default function TradePrice({ trade, showInverted, setShowInverted, isRou
 
   const show = Boolean(trade?.executionPrice?.baseCurrency && trade?.executionPrice?.quoteCurrency)
   const label = showInverted
-    ? `${trade?.executionPrice?.quoteCurrency?.symbol} per ${trade?.executionPrice?.baseCurrency?.symbol}`
-    : `${trade?.executionPrice?.baseCurrency?.symbol} per ${trade?.executionPrice?.quoteCurrency?.symbol}`
+    ? `${useNativeTokenSymbol(trade?.executionPrice?.quoteCurrency?.symbol)} per ${useNativeTokenSymbol(
+        trade?.executionPrice?.baseCurrency?.symbol
+      )}`
+    : `${useNativeTokenSymbol(trade?.executionPrice?.baseCurrency?.symbol)} per ${useNativeTokenSymbol(
+        trade?.executionPrice?.quoteCurrency?.symbol
+      )}`
 
   return (
     <Text
