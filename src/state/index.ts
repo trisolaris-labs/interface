@@ -109,3 +109,19 @@ export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppState, unkn
 export default store!
 
 export const persistor = persistStore(store)
+
+
+
+
+//WindowStore for debugging
+declare global {
+  interface Window {
+    store: any
+  }
+}
+
+if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+  window.store = () => {
+    return store?.getState()
+  }
+}

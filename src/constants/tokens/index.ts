@@ -874,6 +874,7 @@ export const USDC: { [chainId: number]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7', 6, 'USDC', 'USD Coin'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7', 6, 'USDC', 'USDC'),
   1313161573: new Token(1313161573, '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7', 6, 'USDC', 'USD Coin'),
+  1313161585: new Token(1313161585, '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7', 6, 'USDC', 'USD Coin'),
 }
 
 export const USDT: { [chainId: number]: Token } = {
@@ -883,6 +884,7 @@ export const USDT: { [chainId: number]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF', 6, 'USDT', 'Tether USD'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF', 6, 'USDt', 'Tether USD'),
   1313161573: new Token(1313161573, '0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF', 6, 'USDT', 'Tether USD'),
+  1313161585: new Token(1313161585, '0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF', 6, 'USDT', 'Tether USD'),
 }
 
 export const USDC_USDC_E_TLP: { [chainId: number]: Token } = {
@@ -925,6 +927,7 @@ export const NEAR: { [chainId: number]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 24, 'NEAR', 'NEAR'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d', 24, 'NEAR', 'NEAR'),
   1313161573: new Token(1313161573, '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d', 24, 'NEAR', 'NEAR'),
+  1313161585: new Token(1313161585, '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d', 24, 'NEAR', 'NEAR'),
 }
 
 export const USDD: { [chainId: number]: Token } = {
@@ -968,4 +971,4 @@ export const USDC_USDT_V2: { [chainId: number]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDT TLP', 'Trisolaris USDC/USDT'),
 }
 
-export const versionHash = '5136e86162e2db5e3a01f6bc4aab3d04748facaa5cff07e0828b65c9d1b935a2'
+export const versionHash = '22ae116b22e9af4698942598a33079128f58d216edb0937ca4296248eda821e4'
