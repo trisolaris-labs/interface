@@ -88,5 +88,35 @@
     "factoryAddress": "0xB7B4802D9Dcf4eE7414b39556eB73683992Ad003",
     "routerAddress": "0x1360f83a9348fBa26eD6C44b9F9874e8c42BC287",
     "initCodeHash": "0x754e1d90e536e4c1df81b7f030f47b4ca80c87120e145c294f098c83a6cb5ace"
+  },
+  "1313161585": {
+    "networkParams": {
+      "chainId": "4e454171",
+      "chainName": "Neat",
+      "nativeCurrency": {
+        "name": "Ethereum",
+        "symbol": "ETH",
+        "decimals": 18
+      },
+      "rpcUrls": [
+        "https://rpc-0x4e454171.aurora-cloud.dev"
+      ],
+      "blockExplorerUrls": [
+        "https://explorer.0x4e454171.aurora-cloud.dev"
+      ]
+    },
+    "chainLabel": "Neat",
+    "baseCurrencyLabel": "ETH",
+    "icon": "https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/chains/neat.png",
+    "multiCallAddress": "0x55404F107DEaf15ff9a6c744F0D820a8A9B31Ba2",
+    "WETH": {
+      "address": "0xB7B4802D9Dcf4eE7414b39556eB73683992Ad003",
+      "symbol": "WETH",
+      "name": "Wrapped Eth",
+      "decimals": 18
+    },
+    "factoryAddress": "0x1360f83a9348fBa26eD6C44b9F9874e8c42BC287",
+    "routerAddress": "0xD8A9A3Ff4d76618ddBbEcfbaff4ACEe26cf316cF",
+    "initCodeHash": "0x754e1d90e536e4c1df81b7f030f47b4ca80c87120e145c294f098c83a6cb5ace"
   }
 }

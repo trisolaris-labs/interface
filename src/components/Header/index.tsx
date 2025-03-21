@@ -53,11 +53,12 @@ export default function Header() {
     : null
 
   useEffect(() => {
-    if (versionHash && cachedVersionHash !== versionHash) {
+    if (versionHash && cachedVersionHash && cachedVersionHash !== versionHash) {
       persistor.pause()
       persistor.flush().then(() => {
         return persistor.purge()
       })
+      window.localStorage.setItem('versionHash', versionHash)
     }
   }, [cachedVersionHash])
 
