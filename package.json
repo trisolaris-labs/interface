@@ -1,7 +1,7 @@
 {
   "name": "interface",
   "description": "Trisolaris Interface",
-  "version": "0.2.78",
+  "version": "0.2.79",
   "homepage": ".",
   "private": true,
   "engines": {
