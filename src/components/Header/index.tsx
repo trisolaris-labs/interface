@@ -59,6 +59,13 @@ export default function Header() {
         return persistor.purge()
       })
       window.localStorage.setItem('versionHash', versionHash)
+    } 
+    if (!cachedVersionHash) {
+      persistor.pause()
+      persistor.flush().then(() => {
+        return persistor.purge()
+      })
+      window.localStorage.setItem('versionHash', versionHash)
     }
   }, [cachedVersionHash])
 
