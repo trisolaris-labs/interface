@@ -240,6 +240,7 @@ export const PAD: { [chainId: number]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'NearPad Token'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x885f8CF6E45bdd3fdcDc644efdcd0AC93880c781', 18, 'PAD', 'NearPad Token'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'PAD', 'NearPad Token'),
+  1313161587: new Token(1313161587, '0x885f8CF6E45bdd3fdcDc644efdcd0AC93880c781', 18, 'PAD', 'SmartPad token'),
 }
 
 export const SOL: { [chainId: number]: Token } = {
@@ -321,6 +322,7 @@ export const BSTN: { [chainId: number]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'BSTN', 'Bastion'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x9f1F933C660a1DC856F0E0Fe058435879c5CCEf0', 18, 'BSTN', 'Bastion'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'BSTN', 'Bastion'),
+  1313161587: new Token(1313161587, '0x9f1F933C660a1DC856F0E0Fe058435879c5CCEf0', 18, 'BSTN', 'Bastion'),
 }
 
 export const COMP: { [chainId: number]: Token } = {
@@ -529,6 +531,7 @@ export const PLY: { [chainId: number]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'PLY', 'Aurigami Token'),
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x09C9D464b58d96837f8d8b6f4d9fE4aD408d3A4f', 18, 'PLY', 'Aurigami Token'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'PLY', 'Aurigami Token'),
+  1313161587: new Token(1313161587, '0x09C9D464b58d96837f8d8b6f4d9fE4aD408d3A4f', 18, 'PLY', 'Aurigami Token'),
 }
 
 export const PULSE: { [chainId: number]: Token } = {
@@ -875,6 +878,7 @@ export const USDC: { [chainId: number]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7', 6, 'USDC', 'USDC'),
   1313161573: new Token(1313161573, '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7', 6, 'USDC', 'USD Coin'),
   1313161585: new Token(1313161585, '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7', 6, 'USDC', 'USD Coin'),
+  1313161587: new Token(1313161587, '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7', 6, 'USDC', 'USDC'),
 }
 
 export const USDT: { [chainId: number]: Token } = {
@@ -885,6 +889,7 @@ export const USDT: { [chainId: number]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF', 6, 'USDt', 'Tether USD'),
   1313161573: new Token(1313161573, '0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF', 6, 'USDT', 'Tether USD'),
   1313161585: new Token(1313161585, '0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF', 6, 'USDT', 'Tether USD'),
+  1313161587: new Token(1313161587, '0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF', 6, 'USDt', 'Tether USD'),
 }
 
 export const USDC_USDC_E_TLP: { [chainId: number]: Token } = {
@@ -918,6 +923,7 @@ export const ETH: { [chainId: number]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'ETH', 'Ether'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x5a524251df27A25AC6b9964a93E1c23AD692688D', 18, 'ETH', 'Ether'),
   1313161573: new Token(1313161573, '0x5a524251df27A25AC6b9964a93E1c23AD692688D', 18, 'ETH', 'Ether'),
+  1313161587: new Token(1313161587, '0x5a524251df27A25AC6b9964a93E1c23AD692688D', 18, 'ETH', 'Ether'),
 }
 
 export const NEAR: { [chainId: number]: Token } = {
@@ -928,6 +934,7 @@ export const NEAR: { [chainId: number]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d', 24, 'NEAR', 'NEAR'),
   1313161573: new Token(1313161573, '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d', 24, 'NEAR', 'NEAR'),
   1313161585: new Token(1313161585, '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d', 24, 'NEAR', 'NEAR'),
+  1313161587: new Token(1313161587, '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d', 24, 'NEAR', 'NEAR'),
 }
 
 export const USDD: { [chainId: number]: Token } = {
@@ -937,6 +944,52 @@ export const USDD: { [chainId: number]: Token } = {
   [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'USDD', 'Decentralized USD'),
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'USDD', 'Decentralized USD'),
   1313161573: new Token(1313161573, '0x941b45cb782CcEd9814821E9b684261fa353BCD5', 18, 'USDD', 'Decentralized USD'),
+  1313161587: new Token(1313161587, '0x941b45cb782CcEd9814821E9b684261fa353BCD5', 18, 'USDD', 'Decentralized USD'),
+}
+
+export const HBTC: { [chainId: number]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'HBTC', 'Huobi BTC'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'HBTC', 'Huobi BTC'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'HBTC', 'Huobi BTC'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'HBTC', 'Huobi BTC'),
+  [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'HBTC', 'Huobi BTC'),
+  1313161587: new Token(1313161587, '0x95f09a800e80A17EAC1ba746489C48a1e012d855', 18, 'HBTC', 'Huobi BTC'),
+}
+
+export const TURBO: { [chainId: number]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'TURBO', 'Turbo'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'TURBO', 'Turbo'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'TURBO', 'Turbo'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'TURBO', 'Turbo'),
+  [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'TURBO', 'Turbo'),
+  1313161587: new Token(1313161587, '0x91B72833c45844D2182B7BcB49a08EC927b14DcA', 18, 'TURBO', 'Turbo'),
+}
+
+export const TUXA: { [chainId: number]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'TUXA', 'Tuxa'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'TUXA', 'Tuxa'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'TUXA', 'Tuxa'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'TUXA', 'Tuxa'),
+  [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'TUXA', 'Tuxa'),
+  1313161587: new Token(1313161587, '0x8529b5B153a65A178207eC4b9cA51490882bE841', 18, 'TUXA', 'Tuxa'),
+}
+
+export const VLT: { [chainId: number]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'VLT', 'Valorant'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'VLT', 'Valorant'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'VLT', 'Valorant'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'VLT', 'Valorant'),
+  [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'VLT', 'Valorant'),
+  1313161587: new Token(1313161587, '0x4500948EdadD4C4dD9853B89c3aD9a8777acaA3f', 18, 'VLT', 'Valorant'),
+}
+
+export const TPRO: { [chainId: number]: Token } = {
+  [ChainId.POLYGON]: new Token(ChainId.POLYGON, '0x0000000000000000000000000000000000000000', 18, 'TPRO', 'TPRO Network'),
+  [ChainId.FUJI]: new Token(ChainId.FUJI, '0x0000000000000000000000000000000000000000', 18, 'TPRO', 'TPRO Network'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x0000000000000000000000000000000000000000', 18, 'TPRO', 'TPRO Network'),
+  [ChainId.AURORA]: new Token(ChainId.AURORA, '0x0000000000000000000000000000000000000000', 18, 'TPRO', 'TPRO Network'),
+  [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'TPRO', 'TPRO Network'),
+  1313161587: new Token(1313161587, '0xaf40a53B7e20331F4199d43Bc3b8957D4082bB71', 18, 'TPRO', 'TPRO Network'),
 }
 
 export const PNG: { [chainId: number]: Token } = {
@@ -971,4 +1024,4 @@ export const USDC_USDT_V2: { [chainId: number]: Token } = {
   [ChainId.TURBO]: new Token(ChainId.TURBO, '0x0000000000000000000000000000000000000000', 18, 'USDC/USDT TLP', 'Trisolaris USDC/USDT'),
 }
 
-export const versionHash = 'ae192a33896e594addfa2a6dcd49ab6afb5709624baa88110d2094d582c79aae'
+export const versionHash = '25f759b9f736a4e28095129229ef524f71e1b90fcd1ebcf49903331734b28cdb'

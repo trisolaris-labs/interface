@@ -7,6 +7,7 @@ import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import Logo from '../Logo'
+import { useAllTokens } from '../../hooks/Tokens'
 import { AVAILABLE_CHAINS_DATA } from '../../constants/availableChainsData'
 export const getTokenLogoURL = (address: string) => {
   return [
@@ -86,6 +87,8 @@ export default function CurrencyLogo({
           {...rest}
         />
       )
+    } else if (currency.symbol === 'AURORA') {
+      return <StyledEthereumLogo src={AuroraIcon} size={size} style={style} {...rest} />
     }
       return <StyledEthereumLogo src={AVAILABLE_CHAINS_DATA[chainId].icon} size={size} style={style} {...rest} />
   }

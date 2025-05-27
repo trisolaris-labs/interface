@@ -24,10 +24,15 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   ])
 
   const pairAddresses = tokens.map(([tokenA, tokenB]) => {
-    if(tokenA?.chainId !== tokenB?.chainId) return undefined
-    return tokenA && tokenB && !tokenA.equals(tokenB)
-      ? Pair.getAddress(tokenA, tokenB, chainId ?? ChainId.AURORA)
-      : undefined
+    if (tokenA?.chainId !== tokenB?.chainId) return undefined
+    if (!tokenA || !tokenB) return undefined
+    try {
+      return tokenA && tokenB && !tokenA.equals(tokenB)
+        ? Pair.getAddress(tokenA, tokenB, chainId ?? ChainId.AURORA)
+        : undefined
+    } catch (error) {
+      console.error('Error getting pair address:', tokenA, tokenB, error)
+    }
   })
 
   const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')

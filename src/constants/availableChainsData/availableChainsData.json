@@ -118,5 +118,34 @@
     "factoryAddress": "0x1360f83a9348fBa26eD6C44b9F9874e8c42BC287",
     "routerAddress": "0xD8A9A3Ff4d76618ddBbEcfbaff4ACEe26cf316cF",
     "initCodeHash": "0x754e1d90e536e4c1df81b7f030f47b4ca80c87120e145c294f098c83a6cb5ace"
+  },
+  "1313161587": {
+    "networkParams": {
+      "chainId": "4e454173",
+      "chainName": "Vertex",
+      "nativeCurrency": {
+        "name": "Aurora",
+        "symbol": "AURORA",
+        "decimals": 18
+      },
+      "rpcUrls": [
+        "https://rpc-0x4e454173.aurora-cloud.dev"
+      ],
+      "blockExplorerUrls": [
+        "https://explorer.0x4e454173.aurora-cloud.dev"
+      ]
+    },
+    "chainLabel": "Vertex",
+    "baseCurrencyLabel": "Aurora",
+    "icon": "https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/chains/vertex.jpeg",
+    "multiCallAddress": "0xD8A9A3Ff4d76618ddBbEcfbaff4ACEe26cf316cF",
+    "WETH": {
+      "address": "0xA22d6bD9789283b6AaA57808d5875B7B9f0fD813",
+      "symbol": "WAurora",
+      "name": "Wrapped Aurora",
+      "decimals": 18
+    },
+    "factoryAddress": "0xB7B4802D9Dcf4eE7414b39556eB73683992Ad003",
+    "routerAddress": "0x1360f83a9348fBa26eD6C44b9F9874e8c42BC287"
   }
 }
