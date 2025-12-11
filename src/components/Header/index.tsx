@@ -119,9 +119,6 @@ export default function Header() {
           >
             {t('header.pool')}
           </StyledNavLink>
-          <StyledNavLink id={`ptri-nav-link`} to={'/stake'} isActive={Boolean}>
-            {t('header.stake')}
-          </StyledNavLink>
           <StyledNavLink
             id={`png-nav-link`}
             to={'/farm'}
