@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.f9ea61fb.css",
-    "main.js": "./static/js/main.eb6980af.js",
+    "main.js": "./static/js/main.fa011958.js",
     "static/js/514.71647b34.chunk.js": "./static/js/514.71647b34.chunk.js",
     "static/js/726.a6fa00bf.chunk.js": "./static/js/726.a6fa00bf.chunk.js",
     "static/js/199.7a2f7ff7.chunk.js": "./static/js/199.7a2f7ff7.chunk.js",
@@ -53,10 +53,12 @@
     "static/media/Inter-Regular.woff2?v=3.19": "./static/media/Inter-Regular.c8ba52b05a9ef10f4758.woff2",
     "static/media/spacemen_and_planets.svg": "./static/media/spacemen_and_planets.cd0e0004a13546d3552416238083b6cc.svg",
     "static/media/coinbaseWalletIcon.svg": "./static/media/coinbaseWalletIcon.a3a7d7fd2e88e9cbec769e827507b863.svg",
+    "static/media/aurora.png": "./static/media/aurora.1123c206725a3d3e1c27.png",
     "static/media/spaceman_on_planet.svg": "./static/media/spaceman_on_planet.6d419386461c317f7a89b99dc21a9606.svg",
     "static/media/dragonfly.svg": "./static/media/dragonfly.3124ded9efe0e532924780e6ce3d013f.svg",
     "static/media/avalanche_token_round.png": "./static/media/avalanche_token_round.73b3f250e1f0e7bdad4a.png",
     "static/media/brave.png": "./static/media/brave.85ee8ca82ecea3a2bb20.png",
+    "static/media/icon.svg": "./static/media/icon.edc4775d6fdf829c2b3c28fd96dec793.svg",
     "static/media/token-logo.png": "./static/media/token-logo.3230af05f871e3c0a5cc.png",
     "static/media/trustWallet.png": "./static/media/trustWallet.6f5dd7727c008d0bd23c.png",
     "static/media/ethereal.svg": "./static/media/ethereal.fb215a47d127dbbe86d3fab5786fdaea.svg",
@@ -91,6 +93,6 @@
   },
   "entrypoints": [
     "static/css/main.f9ea61fb.css",
-    "static/js/main.eb6980af.js"
+    "static/js/main.fa011958.js"
   ]
 }
