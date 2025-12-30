@@ -153,9 +153,6 @@ export default function Header() {
           </StyledNavLink>
           {appSelectedChain === ChainId.AURORA && (
             <>
-              <StyledNavLink id={`ptri-nav-link`} to={'/stake'} isActive={Boolean}>
-                {t('header.stake')}
-              </StyledNavLink>
               <StyledNavLink
                 id={`png-nav-link`}
                 to={'/farm'}
